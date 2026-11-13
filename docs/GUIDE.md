@@ -45,6 +45,7 @@ quoted here come from those references and age in weeks. The measurements in Par
 
 ### The picture
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
 flowchart TD
     you(["YOU<br/>the goal, the limits,<br/>the approvals"])
     agent["THE AGENT<br/>Claude Code, Codex<br/>or Cursor<br/>follows the skill:<br/>seven phases with gates"]
@@ -107,6 +108,7 @@ skill is loaded as soon as your request touches training.
 
 #### Step 3: Every action passes the guard
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
 flowchart LR
     act["The agent wants to act:<br/>run a command,<br/>read or edit a file"] --> g{{"THE GUARD<br/>compares the action<br/>with your rules<br/>and the live runs"}}
     g -- "harmless" --> ok["ALLOWED<br/>it happens"]
@@ -194,6 +196,7 @@ So a number can be traced back, months later, to the code, the command and the s
 
 #### Step 5: The agent works in seven phases and stops at each gate
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
 flowchart LR
     p0["0<br/>Look around"] --> p1["1<br/>Wire in the<br/>run tools"] --> p2["2<br/>Audit, then<br/>freeze the rules"] --> p3["3<br/>Baseline and<br/>noise floor"] --> p4["4<br/>Improve, one<br/>change at a time"] --> p5["5<br/>Confirm, then the<br/>final evaluation"] --> p6["6<br/>Hand over"]
     classDef report fill:#fef3c7,stroke:#d97706,color:#1f2937
@@ -540,6 +543,7 @@ the samplers, pruners and budgets.
 For cheap runs, seconds to minutes each, after Phases 0 to 3: the protocol is frozen and you trust the evaluator.
 The project must be a git repository with the kit's files committed. What a campaign does, in one picture:
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
 flowchart TD
     start(["nnloop start,<br/>with the limits you set"]) --> base["One scouting session,<br/>an evaluator self-test,<br/>a baseline on every seed"]
     base --> it["A fresh agent session<br/>makes one change,<br/>in a fresh worktree"]

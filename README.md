@@ -32,6 +32,7 @@ evaluator to "win", destroying uncommitted work, changing dependencies under a r
 
 ## How it fits together
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
 flowchart TD
     you(["YOU<br/>the goal, the limits,<br/>the approvals"])
     agent["THE AGENT<br/>Claude Code, Codex<br/>or Cursor<br/>follows the skill:<br/>seven phases with gates"]

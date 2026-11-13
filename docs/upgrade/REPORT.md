@@ -116,8 +116,8 @@ belong to the history before it, which is not part of the public repository. Dec
     claims no more than point 1 allows. Trying its first commands on a fresh practice project showed that a
     run of a practice script started by hand with `expctl launch` was not logged. That is fixed and has a
     test.
-13. **The full tests pass, the fine-tuning script runs, two faults are fixed, and the kit is in a private
-    repository on your GitHub account** (13 November, on your request; "After the guide"). All seven test
+13. **The full tests pass, the fine-tuning script runs, two faults are fixed, and the kit is public on your
+    GitHub account** (13 November, on your request; "After the guide"). All seven test
     files pass on both platforms with three interpreters each. The fine-tuning practice script trained for
     30 seconds through `expctl launch` and gave 0.34 exact answers on the development split. Fixed: the
     practice projects listed no best run, and `expctl status` dropped a run whose checkpoint path was
@@ -2032,6 +2032,22 @@ that explains in detail how the kit works.
     which found only examples and vendor documentation. The two original documents under `docs/` and the
     fixture of the old kit hold nothing personal. The records under `docs/upgrade/` went along as they are:
     they quote your messages and describe this machine, as I had said.
+  - *A repository that never held the old commits.* GitHub keeps a replaced history retrievable by commit
+    id, and a repository's activity page lists every push with the ids before and after it. The commits of
+    the first upload carry your private address, so replacing the history in place would have left the
+    address findable once the repository was public. I asked you, and you chose a fresh repository: the one
+    of the first upload is renamed to `nn-training-harness-dev-history` and stays private (delete it when
+    you like; my login may not delete repositories), and a new `nn-training-harness` received only the new
+    commit, with the same description and topics.
+  - *Tested from a clone that holds only that commit*, on Windows and in WSL at the same time, with the
+    default interpreters. WSL: 874 checks, all pass. Windows: 865 pass, one fails, "session hook injects
+    status after compaction". Nothing in it depends on the history: the two practice runs that this check
+    and the guard's checks need running lasted about 68 seconds, the checks before it take about 64 on an
+    idle machine, and with the second suite running beside it the runs ended first. **An existing test
+    changed for it, the only one of this step:** in `tests/test_kit.py` those runs get 30000 steps instead
+    of 3000. The test's cleanup stops them as before, so the test takes as long as it did (97 seconds), and
+    no check changed. At the fix, again side by side: Windows 866 and WSL 874 checks, all pass; the runs
+    stood at a tenth of their length when the check ran.
 - **Not done.** The fine-tuning script ran with one seed, on native Windows only. The status fix is not tried
   on a real remote run. The commands of the guide's scenario A were not run on Linux.
 
@@ -3023,9 +3039,10 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     guide"); it is yours to remove.
 11. **Whether the repository becomes public**: decided on 13 November, and done ("After the guide", "Public,
     on your word"). Still yours: the name on the licence and in later commits, which is now the account's
-    name; and the setting of your GitHub account that refuses a push which would expose your e-mail address
-    (Settings, Emails: keep the address private, and block command-line pushes that expose it). I recommend
-    it and cannot set it.
+    name; the private repository of the first upload, `nn-training-harness-dev-history`, which you can
+    delete; and the setting of your GitHub account that refuses a push which would expose your e-mail
+    address (Settings, Emails: keep the address private, and block command-line pushes that expose it). I
+    recommend it and cannot set it.
 12. **A fifth installer run on the real install**, if you want the fix of `expctl status` there ("After the
     guide").
 

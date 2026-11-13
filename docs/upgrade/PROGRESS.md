@@ -568,6 +568,19 @@ Last updated: 13 November 2026.
     hit), and a search for network addresses, session ids, time zones and login names (only examples and
     vendor documentation). `docs/original-brief.txt`, `docs/original-prompt.txt` and the fixture of the old
     kit hold nothing personal.
+  - How the repository came about, on the user's answer to one question ("Fresh repo, rename old"). GitHub
+    keeps a replaced history retrievable by commit id and lists every push in the repository's activity
+    log, and the commits of the first upload carry the private e-mail address. So the repository of the
+    first upload was renamed to `nn-training-harness-dev-history` and stays private, the user's to delete,
+    and a new repository with the kit's name received the one commit, with the description and the twelve
+    topics of the first.
+  - Tested from a clone that holds only that commit, Windows and WSL at the same time, default
+    interpreters. WSL: 874 checks, all pass. Windows: 865 pass, one fails, "session hook injects status
+    after compaction" in `tests/test_kit.py`. The two practice runs that this check and the guard's checks
+    need running lasted about 68 seconds and the checks before it take about 64 on an idle machine, so
+    beside a second suite the runs ended first. An existing test changed for it, the only one: those runs
+    get 30000 steps instead of 3000, and the test's cleanup stops them as before. No check changed. At the
+    fix, side by side again: Windows 866, WSL 874, all pass.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -619,7 +632,8 @@ Last updated: 13 November 2026.
   checkouts has a guard entry, which the self-test's count of nine without one implies.
 - The PyTorch pin in `references/stack.md` is not shown to work on a GPU here; the reference says so.
 - The repository on GitHub is public since 13 Nov ("After the guide"). Left with the user: the name on the
-  licence and in later commits (now the account's name), and the setting of the GitHub account that refuses
+  licence and in later commits (now the account's name); the private repository of the first upload,
+  `nn-training-harness-dev-history`, to delete or keep; and the setting of the GitHub account that refuses
   a push which would expose the private e-mail address (Settings, Emails). It is recommended, and only the
   user can turn it on.
 - The fix for checkpoints recorded on another machine (`0450067`) is not tried on a real remote run or on a

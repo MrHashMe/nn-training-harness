@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+# Describes the machine the upgrade ran on; kept out of git on purpose.
+docs/upgrade/PROMPT.md
+docs/upgrade/scout/scouts/user-*.md
+.claude/state/

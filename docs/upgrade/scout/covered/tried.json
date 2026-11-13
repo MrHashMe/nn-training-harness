@@ -1,0 +1,18 @@
+[
+ {"match": ["stack pin update to pytorch 2.15"], "any_note": true, "ok": false,
+  "note": "the pinned build was not shown to work on a GPU: in WSL2 on 2026-11-11 torch 2.15.0+cu132 installed and ran on the CPU, and its first CUDA call crashed the interpreter (segmentation fault, cause not found)"},
+ {"match": ["uv lock file", "uv sync"], "ok": true,
+  "note": "in WSL2 on 2026-11-11: uv 0.13.7 from PyPI ran uv add, uv sync --locked and uv run --frozen on a one-package project"},
+ {"match": ["optuna 5"], "ok": true,
+  "note": "in WSL2 on 2026-11-11: optuna 5.0.0 installed at the pin and ran a 15-trial TPE study with SQLite storage"},
+ {"match": ["sacrebleu"], "ok": true,
+  "note": "in WSL2 on 2026-11-11: sacrebleu 2.6.0 installed at the pin and gave a corpus score with its signature"},
+ {"match": ["lm-evaluation-harness"], "ok": true,
+  "note": "in WSL2 on 2026-11-11: lm_eval[hf] 0.4.13 installed in its own environment and the lm-eval command starts; no task was run"},
+ {"match": ["trackio 0.45"], "ok": true,
+  "note": "in WSL2 on 2026-11-11: trackio 0.45.0 installed at the pin and logged two points to a local project; not tried as a runlog mirror"},
+ {"match": ["transformers 5.22", "trl 1.17", "peft 0.21", "bitsandbytes 0.50"], "ok": true,
+  "note": "in WSL2 on 2026-11-11: the pinned Transformers, TRL, PEFT and bitsandbytes installed together and import (GPU hidden); no model was trained"},
+ {"match": ["context7 mcp", "hugging face mcp server v0.4.34"], "ok": false,
+  "note": "only the installer flag was run, in temporary projects (its merge is tested); no agent session connected to the server"}
+]

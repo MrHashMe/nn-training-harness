@@ -1,0 +1,4300 @@
+{
+  "meta": {
+    "topic": "coding agent sandbox",
+    "phrases": [
+      "coding agent sandbox",
+      "prompt injection coding agent",
+      "unattended coding agent"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 20:06 UTC",
+    "count": 212
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "omnigent-ai/omnigent",
+      "url": "https://github.com/omnigent-ai/omnigent",
+      "date": "2026-06-11",
+      "signal": 11325,
+      "signal_name": "stars",
+      "summary": "Omnigent is an open-source AI agent framework and meta-harness: orchestrate Claude Code, Codex, Cursor, Pi, and custom agents — swap harnesses without rewriting, enforce policies and sandboxing, and collaborate in real time from any device.",
+      "extra": {
+        "topics": [
+          "agent-framework",
+          "agent-governance",
+          "agent-orchestration",
+          "agents",
+          "ai",
+          "ai-agent",
+          "ai-agents",
+          "claude-code",
+          "codex",
+          "coding-agents",
+          "developer-tools",
+          "llm",
+          "ml",
+          "multi-agent",
+          "python",
+          "sandbox"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-11",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "HarnessMD/munder-difflin",
+      "url": "https://github.com/HarnessMD/munder-difflin",
+      "date": "2026-05-31",
+      "signal": 9470,
+      "signal_name": "stars",
+      "summary": "an open-source alternative to the dots, bots and muses of the world, run an office of claude code/codex like agents on your laptop, sandboxes or anywhere, uses your existing subscriptions",
+      "extra": {
+        "topics": [
+          "agent-harness",
+          "agent-orchestration",
+          "agents",
+          "ai-agents",
+          "autonomous-agents",
+          "claude-code",
+          "codex",
+          "coding-agents",
+          "desktop-app",
+          "developer-tools",
+          "electron",
+          "gemini-cli",
+          "harness",
+          "harness-engineering",
+          "local-first",
+          "memory",
+          "multi-agent",
+          "opencode",
+          "orchestration",
+          "typescript"
+        ],
+        "license": "MIT",
+        "created": "2026-05-31",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "perplexityai/SPACE",
+      "url": "https://github.com/perplexityai/SPACE",
+      "date": "2026-10-01",
+      "signal": 2096,
+      "signal_name": "stars",
+      "summary": "Sandboxed Platform for Agentic Code Execution: pluggable-runtime sandboxes for running agent and user code in isolation.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-10-01",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "davidondrej/cloudroom",
+      "url": "https://github.com/davidondrej/cloudroom",
+      "date": "2026-09-17",
+      "signal": 1595,
+      "signal_name": "stars",
+      "summary": "Cloud agents for any harness. Claude Code, Codex, Pi, and OpenCode run in isolated sandboxes, and live sessions move between your Mac and the cloud.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "background-agents",
+          "claude",
+          "claude-code",
+          "claude-code-cli",
+          "cloud-agents",
+          "cloudroom",
+          "codex",
+          "codex-cli",
+          "coding-agents",
+          "cursor",
+          "hermes-agent",
+          "omp",
+          "opencode",
+          "pi",
+          "rust",
+          "self-hosted"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-17",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "clawkwork/clawk",
+      "url": "https://github.com/clawkwork/clawk",
+      "date": "2026-07-06",
+      "signal": 1042,
+      "signal_name": "stars",
+      "summary": "Give coding agents a disposable Linux VM, not your laptop",
+      "extra": {
+        "topics": [
+          "agent-sandbox",
+          "ai-agent-sandbox",
+          "ai-agents",
+          "claude",
+          "claude-code",
+          "codex",
+          "microvm",
+          "sandbox",
+          "virtualization",
+          "vm"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-06",
+        "pushed": "2026-08-13",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ruvnet/metaharness",
+      "url": "https://github.com/ruvnet/metaharness",
+      "date": "2026-06-13",
+      "signal": 743,
+      "signal_name": "stars",
+      "summary": "🛠️ The meta-harness for AI agents — scaffold your own focused, branded agent harness with its own npx CLI, MCP server, memory, learning loop, and witness-signed releases. Works with Claude Code, Codex, pi.dev, Hermes, OpenClaw, and RVM (hardware-isolated sandbox).",
+      "extra": {
+        "topics": [
+          "agent-evaluation",
+          "agent-harness",
+          "agent-harness-generator",
+          "agent-scaffolding",
+          "agentic-ai",
+          "agentic-framework",
+          "autonomous-agents",
+          "claude-code",
+          "codex",
+          "create-agent-harness",
+          "github-actions",
+          "hermes-agent",
+          "mcp",
+          "mcp-server",
+          "multi-agent",
+          "openai-codex",
+          "openclaw",
+          "pi-dev",
+          "rvm",
+          "sandboxing"
+        ],
+        "license": "MIT",
+        "created": "2026-06-13",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "devvmhq/devvm",
+      "url": "https://github.com/devvmhq/devvm",
+      "date": "2026-11-06",
+      "signal": 533,
+      "signal_name": "stars",
+      "summary": "One VM for every project. An isolated sandbox with your project’s toolchain, ready for you or a coding agent to start coding",
+      "extra": {
+        "topics": [
+          "coding-agent",
+          "coding-agents",
+          "developer-tools",
+          "development",
+          "lima",
+          "lima-vm",
+          "linux",
+          "sandbox",
+          "sandbox-environment",
+          "ubuntu",
+          "virtual-machine",
+          "vm"
+        ],
+        "license": "MIT",
+        "created": "2026-11-06",
+        "pushed": "2026-11-09",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "getkern/kern",
+      "url": "https://github.com/getkern/kern",
+      "date": "2026-07-18",
+      "signal": 465,
+      "signal_name": "stars",
+      "summary": "Rootless container runtime with no daemon. Runs agent tool calls and LLM-generated code in kernel-enforced containers.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "cgroups",
+          "code-execution",
+          "code-interpreter",
+          "container-runtime",
+          "containers",
+          "daemonless",
+          "docker",
+          "docker-alternative",
+          "linux",
+          "linux-namespaces",
+          "oci",
+          "oci-runtime",
+          "overlayfs",
+          "podman",
+          "rootless",
+          "rust",
+          "sandbox",
+          "seccomp",
+          "virtualization"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-18",
+        "pushed": "2026-11-01",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "boringcomputers/nehemiah",
+      "url": "https://github.com/boringcomputers/nehemiah",
+      "date": "2026-06-30",
+      "signal": 347,
+      "signal_name": "stars",
+      "summary": "On-demand Linux computers you can hand to an AI — real Firecracker microVMs with a browser, terminal, coding agents, and an AI that drives them.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "computer-use",
+          "firecracker",
+          "golang",
+          "mcp",
+          "microvm",
+          "sandbox",
+          "svelte"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-30",
+        "pushed": "2026-09-19",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MiniMax-AI/OpenAgentCore",
+      "url": "https://github.com/MiniMax-AI/OpenAgentCore",
+      "date": "2026-09-21",
+      "signal": 323,
+      "signal_name": "stars",
+      "summary": "The OpenAI Agents API, open source and self-hosted. Run Codex, Claude Code or MiniMax Code on your own machines with your own models, through the official OpenAI SDK.",
+      "extra": {
+        "topics": [
+          "agent-runtime",
+          "ai-agents",
+          "claude-code",
+          "codex",
+          "coding-agent",
+          "llm",
+          "mcp",
+          "openai",
+          "openai-agents-api",
+          "sandbox",
+          "self-hosted"
+        ],
+        "license": "MIT",
+        "created": "2026-09-21",
+        "pushed": "2026-11-08",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "cluster1900/apexo-code",
+      "url": "https://github.com/cluster1900/apexo-code",
+      "date": "2026-05-27",
+      "signal": 304,
+      "signal_name": "stars",
+      "summary": "Apexo: An open-source, general-purpose coding agent for terminal (TUI), web, and desktop with autonomous goals, workflows, persistent memory, command sandboxing, and first-class support for Gemini, Grok, and OpenAI-compatible models.",
+      "extra": {
+        "topics": [
+          "ai-agent",
+          "cli",
+          "coding-agent",
+          "electron",
+          "gemini",
+          "grok",
+          "llm",
+          "mcp",
+          "openai",
+          "tui",
+          "typescript",
+          "xai"
+        ],
+        "license": "MIT",
+        "created": "2026-05-27",
+        "pushed": "2026-11-04",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "brig-sh/brig",
+      "url": "https://github.com/brig-sh/brig",
+      "date": "2026-08-12",
+      "signal": 260,
+      "signal_name": "stars",
+      "summary": "Brig: run coding agents in a microVM sandbox - the Go cli (brig) and session daemon (brigd)",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "microvm",
+          "sandboxing"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-12",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mll-lab-nu/embodied-first-exam",
+      "url": "https://github.com/mll-lab-nu/embodied-first-exam",
+      "date": "2026-09-18",
+      "signal": 247,
+      "signal_name": "stars",
+      "summary": "The first exam for code agents in the physical world: frozen robot tasks from many benchmark suites, each answered with a program and verified in a separate sandbox. Runs on Harbor.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "benchmark",
+          "coding-agents",
+          "embodied-ai",
+          "evaluation",
+          "harbor",
+          "llm-agents",
+          "robot-learning",
+          "robotics",
+          "simulation"
+        ],
+        "license": "MIT",
+        "created": "2026-09-18",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Makson179/Bello",
+      "url": "https://github.com/Makson179/Bello",
+      "date": "2026-05-24",
+      "signal": 197,
+      "signal_name": "stars",
+      "summary": "3x more usage on your coding agent, same quality. Have an multi-agent setup in mind? Bello already supports it. Mix models, run agents in parallel, have them check each other’s work, and reduce unnecessary model calls and noisy tool output. Turn on only what you need.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "agentic-workflow",
+          "ai-agents",
+          "ai-coding",
+          "automation",
+          "autonomous-agents",
+          "cli",
+          "codex",
+          "codex-cli",
+          "coding-agent",
+          "developer-tools",
+          "generative-ai",
+          "guardrails",
+          "llm",
+          "multi-agent",
+          "openai-codex",
+          "python",
+          "sandbox",
+          "security",
+          "software-engineering"
+        ],
+        "license": "MIT",
+        "created": "2026-05-24",
+        "pushed": "2026-11-07",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "langgenius/mosoo",
+      "url": "https://github.com/langgenius/mosoo",
+      "date": "2026-06-13",
+      "signal": 166,
+      "signal_name": "stars",
+      "summary": "Open-source managed runtime for OpenAI Codex, Claude Agent SDK, OpenCode, and Pi Agent. Run coding agents through one Agents API with isolated cloud sandboxes, durable sessions, tool streaming, and managed files.",
+      "extra": {
+        "topics": [
+          "agent-api",
+          "agent-runtime",
+          "agent-sandbox",
+          "agents-api",
+          "claude-agent-sdk",
+          "codex",
+          "codex-api",
+          "openai-codex",
+          "opencode",
+          "pi-agent",
+          "pi-coding-agent"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-13",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "date": "2026-11-10",
+      "signal": 85222,
+      "signal_name": "stars",
+      "summary": "An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agentic",
+          "agentic-framework",
+          "agentic-workflow",
+          "ai",
+          "ai-agents",
+          "deep-research",
+          "harness",
+          "langchain",
+          "langgraph",
+          "langmanus",
+          "llm",
+          "multi-agent",
+          "nodejs",
+          "podcast",
+          "python",
+          "superagent",
+          "typescript"
+        ],
+        "license": "MIT",
+        "created": "2025-05-07",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "mksglu/context-mode",
+      "url": "https://github.com/mksglu/context-mode",
+      "date": "2026-11-10",
+      "signal": 33805,
+      "signal_name": "stars",
+      "summary": "Free, local plugin that keeps tool output out of your coding agent's context window. Sandbox and SQLite FTS5 search, 99% fewer bytes in context. Works with Claude Code, Codex, Pi, OpenCode, Gemini CLI, Copilot CLI and 4 more agents. Zero telemetry.",
+      "extra": {
+        "topics": [
+          "antigravity",
+          "claude",
+          "claude-code",
+          "claude-code-hooks",
+          "claude-code-plugins",
+          "claude-code-skill",
+          "codex",
+          "codex-cli",
+          "context-mode",
+          "copilot",
+          "cursor-plugin",
+          "kiro",
+          "mcp",
+          "mcp-server",
+          "mcp-tools",
+          "openclaw",
+          "opencode",
+          "pi-agent",
+          "skills",
+          "zed-extension"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-02-23",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "nexu-io/html-anything",
+      "url": "https://github.com/nexu-io/html-anything",
+      "date": "2026-11-10",
+      "signal": 9493,
+      "signal_name": "stars",
+      "summary": "✨ The agentic HTML editor — your local AI agent writes the HTML, you ship it. 🚀 75 Skills × 9 Surfaces (magazine · deck · poster · XHS / tweet · prototype · data report · Hyperframes) 🛡️ Sandboxed preview · 📤 1-click to WeChat / X / Zhihu / HTML / PNG 🔑 Zero API key — Claude Code / Cursor / Codex / Gemini / Copilot / OpenCode / Qwen / Aider.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "agentic",
+          "ai-agents",
+          "ai-design",
+          "ai-editor",
+          "byok",
+          "claude",
+          "claude-code",
+          "claude-skills",
+          "coding-agents",
+          "generative-ai",
+          "html",
+          "html-editor",
+          "hyperframes",
+          "local-first",
+          "markdown",
+          "nextjs",
+          "vibe-coding",
+          "wechat",
+          "xiaohongshu"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-05-11",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "mattpocock/sandcastle",
+      "url": "https://github.com/mattpocock/sandcastle",
+      "date": "2026-11-10",
+      "signal": 8973,
+      "signal_name": "stars",
+      "summary": "Orchestrate sandboxed coding agents in TypeScript with sandcastle.run()",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-03-17",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "standardagents/arrow-js",
+      "url": "https://github.com/standardagents/arrow-js",
+      "date": "2026-07-01",
+      "signal": 3784,
+      "signal_name": "stars",
+      "summary": "The first UI framework for the agentic era — tiny, performant, with WASM sandboxes for safe code execution.",
+      "extra": {
+        "topics": [
+          "declarative",
+          "reactive",
+          "rendering",
+          "ui",
+          "ux",
+          "web",
+          "webcomponents"
+        ],
+        "license": "MIT",
+        "created": "2022-11-08",
+        "pushed": "2026-07-01",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "samugit83/redamon",
+      "url": "https://github.com/samugit83/redamon",
+      "date": "2026-11-10",
+      "signal": 3364,
+      "signal_name": "stars",
+      "summary": "Open-source, self-hosted AI penetration testing framework: maps your attack surface into a graph, autonomously exploits it from a Kali sandbox with human approval gates, and opens PRs that fix what it finds. MCP both ways: plug in any MCP server as a tool, or drive RedAmon from Claude Code or your own agent.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai",
+          "ai-penetration-testing",
+          "ai-pentesting",
+          "autonomous-agents",
+          "bug-bounty",
+          "cybersecurity",
+          "ethical-hacking",
+          "ethical-hacking-tools",
+          "exploitation",
+          "kali-linux",
+          "llm-agents",
+          "mcp",
+          "metasploit",
+          "neo4j",
+          "osint",
+          "penetration-testing",
+          "penetration-testing-tools",
+          "red-team",
+          "skills"
+        ],
+        "license": "MIT",
+        "created": "2025-12-29",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "OpenCoworkAI/open-cowork",
+      "url": "https://github.com/OpenCoworkAI/open-cowork",
+      "date": "2026-10-20",
+      "signal": 2268,
+      "signal_name": "stars",
+      "summary": "Open-source AI agent desktop app for Windows & macOS. One-click install Claude Code, MCP tools, and Skills — with sandbox isolation, multi-model support, and Feishu/Slack integration.",
+      "extra": {
+        "topics": [
+          "ai-agent",
+          "ai-coding",
+          "ai-tools",
+          "anthropic",
+          "claude-code",
+          "coding-agent",
+          "computer-use",
+          "desktop-app",
+          "electron",
+          "mcp",
+          "multi-model",
+          "open-cowork",
+          "sandbox",
+          "skills"
+        ],
+        "license": "MIT",
+        "created": "2026-01-13",
+        "pushed": "2026-10-20",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "vercel-labs/coding-agent-template",
+      "url": "https://github.com/vercel-labs/coding-agent-template",
+      "date": "2026-08-25",
+      "signal": 1799,
+      "signal_name": "stars",
+      "summary": "Multi-agent AI coding platform powered by Vercel Sandbox and AI Gateway",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2025-09-23",
+        "pushed": "2026-08-25",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "poco-ai/poco-claw",
+      "url": "https://github.com/poco-ai/poco-claw",
+      "date": "2026-10-19",
+      "signal": 1361,
+      "signal_name": "stars",
+      "summary": "A more beautiful and easier-to-use alternative to OpenClaw. It features a nicer Web UI, built-in IM support, a sandboxed runtime and channel-based team collaboration. Under the hood, it is powered by a Claude Code–based agent.",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "chatbot",
+          "claude-code",
+          "clawdbot",
+          "manus",
+          "openclaw"
+        ],
+        "license": "MIT",
+        "created": "2026-01-08",
+        "pushed": "2026-10-19",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "KroMiose/nekro-agent",
+      "url": "https://github.com/KroMiose/nekro-agent",
+      "date": "2026-10-09",
+      "signal": 1166,
+      "signal_name": "stars",
+      "summary": "NekroAgent 是一个面向多人互动场景的跨平台 Agent 框架，集 Claude Code 沙盒执行、工作区编排、长期记忆、结构化 MCP 管理与可视化控制台于一体，兼具高扩展性、多模态交互、实时状态推送和自动化运行能力。项目支持 QQ、Discord、Telegram、Minecraft、BilibiliLive、WeChat、Email、SSE(SDK) 等多种平台接入，应用于构建高智能聊天机器人，可扩展为具备代码执行、工具调用、插件协作和复杂任务处理能力的通用 Agent 系统",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "chatbot",
+          "claudecode",
+          "multiuserchat",
+          "openai",
+          "python",
+          "sandbox"
+        ],
+        "license": "NOASSERTION",
+        "created": "2024-07-26",
+        "pushed": "2026-10-09",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "cloudflare/sandbox-sdk",
+      "url": "https://github.com/cloudflare/sandbox-sdk",
+      "date": "2026-11-10",
+      "signal": 1162,
+      "signal_name": "stars",
+      "summary": "Run sandboxed code environments on Cloudflare's edge network",
+      "extra": {
+        "topics": [
+          "agent",
+          "agents",
+          "ai",
+          "code-interpreter",
+          "containers",
+          "devtools",
+          "sandbox"
+        ],
+        "license": "NOASSERTION",
+        "created": "2025-06-22",
+        "pushed": "2026-11-10",
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "AWS Serverless Infrastructure from WebAssembly Components",
+      "url": "http://arxiv.org/abs/2611.11293v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The infrastructure definitions and the code for serverless applications are often only loosely connected. This yields a large error class: the referenced infrastructure components might not exist. It is also hard to keep the application and its permissions in sync. To address this problem we present an infrastructure from code solution where we provision cloud infrastructure from Wasm Interface Ty",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Firepool: Brokering Warm GPU Capacity for Agentic and RL Workloads at LinkedIn",
+      "url": "http://arxiv.org/abs/2611.10832v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI agents and reinforcement-learning (RL) trainers run thousands of short, isolated GPU jobs: tool calls, verifiers, and rollouts. A job often finishes in seconds, but starting a GPU pod for it takes 20-35 s even when the container image is already on the node, and minutes when it is not. A warm pod removes the wait only if it can serve the next job, and keeping pods warm must neither waste GPUs n",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Devil Wears Markdown: Detecting Malicious Intent Hidden in AI Agent Skill Instructions through Hybrid Static, Dynamic, and Agentic Analysis",
+      "url": "http://arxiv.org/abs/2611.10830v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agentic AI ecosystems increasingly rely on reusable agent skills that combine executable code, natural-language instructions, configuration artifacts, and external tool integrations. These hybrid artifacts create software supply-chain risks because malicious intent may be distributed across instructions, code, metadata, and runtime behavior, making isolated alerts difficult to interpret. We evalua",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "BlenderFORGE: Framework for Optimizing Reactive 3D-Graphics Editing Ability of MLLMs",
+      "url": "http://arxiv.org/abs/2611.10768v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Multimodal Large Language Models (MLLMs) have shown promise as interactive agents, yet precise, programmatic 3D graphics editing remains difficult to train because existing systems largely rely on closed-source model APIs and lack deterministic, state-verifiable execution environments. We present BlenderFORGE, a trainable data-environment-optimization framework for open-weight MLLM agents that edi",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "KnowEvo: Knowledge Evolution for Protein Optimization",
+      "url": "http://arxiv.org/abs/2611.09013v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language models (LLMs) have shown promise in scientific discovery, yet systematically accumulating and refining reusable scientific knowledge remains challenging. Existing approaches primarily improve LLM-based problem solving through parameter optimization or feedback-driven refinement of prompts, programs, and solution trajectories, leaving acquired expertise either embedded in model weigh",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "FedReason: Large Language Models as Weight-Space Meta-Aggregators for Heterogeneous Federated Learning",
+      "url": "http://arxiv.org/abs/2611.08383v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Federated learning servers combine client models with a fixed aggregation rule, and each rule in common use is designed for one kind of heterogeneity. We study whether a large language model (LLM) that inspects the client models can choose the rule itself, without any training on the server. In FedReason, the LLM is called every ten rounds. It analyses the weights by running code in a restricted s",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Hard to Fool: A Bounded LLM Research Loop for Quantitative Finance, and What Two Dozen Campaigns Found",
+      "url": "http://arxiv.org/abs/2611.06607v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agentic research loops that let a language model propose a change, run a fixed experiment and keep whatever improves the metric work well in machine learning. In trading research the same loop is a machine for producing false discoveries: a backtest that \"improves the metric\" is, by default, overfit, look-ahead, a multiple-comparisons artifact, cost-free, or market drift wearing a strategy. We des",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Accelerating QUIC Encryption in WebAssembly Using WASM-SIMD",
+      "url": "http://arxiv.org/abs/2611.01989v1",
+      "date": "2026-11-01",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "WebAssembly (Wasm) runs untrusted code in a portable, lightweight sandbox and is increasingly used to host services on shared servers and edge platforms. Running the QUIC transport protocol inside Wasm would let each application choose and update its own transport without changing the host. QUIC, however, encrypts every packet, and Wasm offers neither dedicated AES instructions nor carry-less mult",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Toward Executable Multi-framework Front-end Code Generation with Self-Correction",
+      "url": "http://arxiv.org/abs/2611.01383v1",
+      "date": "2026-11-01",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Generating codes from UI screenshots has recently benefited from MLLMs, yet existing methods centered on HTML targets and transfer poorly to multi-frameworks such as React, Vue, and Angular. However, unlike HTML, which does not entail compilation issues, generating executable code in multi-framework settings is more challenging due to framework-specific differences in syntax and failure modes, as ",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Evaluating Instrument-Centered AI Agents for Table-Top Science Experiments",
+      "url": "http://arxiv.org/abs/2610.41717v1",
+      "date": "2026-10-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reliable evaluation of AI agents for table-top science experiments has remained elusive because live instruments are hard to reset and share at scale, while instrument statefulness and safety constraints complicate evaluation. We introduce instrMCP and q-devBench, an evaluation stack for instrument-centered AI agents in table-top experiments. instrMCP connects coding agents to scientific instrumen",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "\"Shall We Approve?\" Consequence-Aware Approval for Autonomous Coding Agents",
+      "url": "http://arxiv.org/abs/2610.40753v1",
+      "date": "2026-10-29",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Coding agents increasingly rely on automated approvers to decide whether a proposed shell command may run. Existing approvers, from rule-based checkers to guardrail models and deployed permission classifiers, base their decisions on the text of the request and command. Yet a command's behavior depends on the code it invokes and the state of the workspace, and systems that observe file changes leav",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Sandman: A Sandbox Service for Production Agentic Reinforcement Learning",
+      "url": "http://arxiv.org/abs/2610.39711v2",
+      "date": "2026-10-29",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agentic reinforcement learning (RL) needs stateful environments for tool execution and evaluation. Training jobs request thousands of environments in bursts that can overwhelm shared cluster services, while cancelled or timed-out requests can leave resources running. We present Sandman, a sandbox service built and operated at Amazon for large-scale agentic RL workloads in production on shared Kube",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Tracekit Box: Running AI Agents in Micro-VMs Where Every Way Out Is Decided and Signed",
+      "url": "http://arxiv.org/abs/2610.38458v1",
+      "date": "2026-10-28",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI agents now install packages, call model APIs with their operators' keys and change code in repositories that deploy to production. The network, credentials and write access they need are also how they can leak data, steal a key or change a system nobody approved. Sandboxes contain an agent but leave little evidence of what crossed their boundary; tracing records what happened but contains nothi",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Polymorphic First-Class Environments",
+      "url": "http://arxiv.org/abs/2610.36798v1",
+      "date": "2026-10-27",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "First-class environments expose runtime environments as ordinary values and support a substitution-free, environment-based operational semantics. They also support applications such as first-class modules, dynamic composition of environment fragments, and sandboxing via local environments. Existing environment-based calculi, however, are mostly studied in a simply typed setting and stop short of S",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "BUSTA: Teaching Small Language Models to Reason About Binary Execution",
+      "url": "http://arxiv.org/abs/2610.36288v1",
+      "date": "2026-10-26",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large Language Models (LLM) are increasingly applied to Reverse Engineering (RE) workflows. RE, however, differs from common LLM coding tasks as it requires models to reason about low-level program behavior. Furthermore, the deployment of tooling in resource-constrained sandboxed RE environments limits the ability to use frontier-scale solutions. We examine whether a targeted LLM training approach",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Code as Agent Harness",
+      "url": "https://huggingface.co/papers/2605.18747",
+      "date": "2026-05-18",
+      "signal": 194,
+      "signal_name": "upvotes",
+      "summary": "This survey frames code as the operational foundation for agent reasoning, action, and verification, organizing agent harnesses across interface, mechanism, and multi-agent scaling layers.",
+      "extra": {
+        "keywords": [
+          "agent harnesses",
+          "code as agent harness",
+          "harness interface",
+          "harness mechanisms",
+          "planning",
+          "memory",
+          "tool use",
+          "feedback-driven control",
+          "multi-agent coordination",
+          "verification",
+          "executable AI agents"
+        ],
+        "github": "https://github.com/YennNing/Awesome-Code-as-Agent-Harness-Papers",
+        "github_stars": 777,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SWE-Explore: Benchmarking How Coding Agents Explore Repositories",
+      "url": "https://huggingface.co/papers/2606.07297",
+      "date": "2026-06-05",
+      "signal": 122,
+      "signal_name": "upvotes",
+      "summary": "SWE-Explore introduces a benchmark for evaluating coding agents' repository exploration capabilities by requiring ranked lists of relevant code regions within line budgets, demonstrating that agentic exploration outperforms traditional retrieval methods.",
+      "extra": {
+        "keywords": [
+          "repository exploration",
+          "coding agents",
+          "SWE-bench",
+          "SWE-Explore",
+          "line budget",
+          "code localization",
+          "context retrieval",
+          "repository understanding",
+          "bug diagnosis",
+          "retrieval methods",
+          "agentic explorers",
+          "line-level coverage",
+          "ranking",
+          "context-efficiency"
+        ],
+        "github": "https://github.com/Qiushao-E/SWE-Explore-Bench",
+        "github_stars": 44,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CodeMidas: Scaling Agentic Coding RL Environments from Code Itself",
+      "url": "https://huggingface.co/papers/2609.22068",
+      "date": "2026-09-18",
+      "signal": 115,
+      "signal_name": "upvotes",
+      "summary": "CodeMidas converts existing source code into executable reinforcement learning tasks for training coding agents, improving performance across repair, construction, and terminal benchmarks.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "GRPO",
+          "agentic pipeline",
+          "executable RL environments",
+          "behavioral specifications",
+          "self-verification",
+          "codebase exploration"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AgentSWE: Can Coding Agents Build the Agent You Actually Want?",
+      "url": "https://huggingface.co/papers/2610.13361",
+      "date": "2026-10-09",
+      "signal": 56,
+      "signal_name": "upvotes",
+      "summary": "AgentSWE evaluates whether coding agents build software that truly meets user requirements across creation, editing, and optimization stages, revealing widespread failures to deliver faithful behavior.",
+      "extra": {
+        "keywords": [
+          "AgentSWE",
+          "agent software engineering",
+          "coding agents",
+          "overfitting",
+          "failure trajectories",
+          "requirement-derived rubrics"
+        ],
+        "github": "https://github.com/VectorSpaceLab/AgentSWE",
+        "github_stars": 45,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ProgramGym: Scaling Training Environments for Long-Horizon Program Reproduction Agents",
+      "url": "https://huggingface.co/papers/2610.13395",
+      "date": "2026-10-09",
+      "signal": 44,
+      "signal_name": "upvotes",
+      "summary": "ProgramGym introduces scalable verifiable training environments and a role-isolated agent workflow to improve long-horizon program reproduction from scratch.",
+      "extra": {
+        "keywords": [
+          "ProgramGym",
+          "Program-Env",
+          "Program-Agent",
+          "long-horizon program reproduction",
+          "feedback-driven loop",
+          "black-box tests",
+          "role-isolated workflow",
+          "revision management",
+          "supervised fine-tuning",
+          "Qwen3.8-27B"
+        ],
+        "github": "https://github.com/Acm1011/ProgramGym",
+        "github_stars": 15,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ProgramDistill: From Interactive Web Apps to Verifiable Reference-Guided SWE Tasks",
+      "url": "https://huggingface.co/papers/2609.18805",
+      "date": "2026-09-16",
+      "signal": 39,
+      "signal_name": "upvotes",
+      "summary": "ProgramDistill introduces a scalable benchmark that evaluates coding agents by requiring them to infer and implement features discovered through interaction with fully functional reference applications.",
+      "extra": {
+        "keywords": [
+          "ProgramDistill",
+          "coding agents",
+          "replayable behaviors",
+          "gold patch",
+          "mine-craft-patch",
+          "full-application reconstruction",
+          "partial-application reconstruction",
+          "curriculum-based training"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CompoWorld: Compositional Environment Scaling for General Agents",
+      "url": "https://huggingface.co/papers/2609.33665",
+      "date": "2026-09-27",
+      "signal": 34,
+      "signal_name": "upvotes",
+      "summary": "CompoWorld scales agent training by composing reusable services across environments, using verified trajectories and a completion-focused reward to improve cross-service task performance.",
+      "extra": {
+        "keywords": [
+          "Compositional Environment Scaling",
+          "CompoWorld",
+          "coding agents",
+          "world model",
+          "dependency graphs",
+          "supervised fine-tuning",
+          "Completion-Focused Rubric Reward",
+          "reinforcement learning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "MindForge: Teaching Small Language Models Whole-Life-Cycle Software Engineering via Source-Free Program Synthesis",
+      "url": "https://huggingface.co/papers/2607.27146",
+      "date": "2026-07-29",
+      "signal": 29,
+      "signal_name": "upvotes",
+      "summary": "MindForge automates creation of source-free training environments from command-line programs to improve from-scratch code generation via curated synthesis trajectories.",
+      "extra": {
+        "keywords": [
+          "MindForge",
+          "source-free environments",
+          "program synthesis",
+          "GLM-5.2",
+          "Qwen3.6-27B",
+          "fine-tuning",
+          "ProgramBench",
+          "RepoZero-C2Rust",
+          "DeepSWE",
+          "NL2Repo-Bench",
+          "SWE-bench"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LEGO-RL: Harness-Native Reinforcement Learning for Coding Agents",
+      "url": "https://huggingface.co/papers/2608.17393",
+      "date": "2026-08-18",
+      "signal": 27,
+      "signal_name": "upvotes",
+      "summary": "LEGO-RL connects native coding-agent harnesses to scalable policy-gradient training via in-process LLM proxying, sandbox orchestration, and integrated monitoring, improving sparse MoE model performance across multiple harnesses.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "policy-gradient optimization",
+          "LLM proxying",
+          "log-probability recomputation",
+          "sandbox orchestration",
+          "reward hacking",
+          "sparse MoE",
+          "GSPO",
+          "SWE-bench Verified"
+        ],
+        "github": "https://github.com/LegoX/Lego-RL",
+        "github_stars": 128,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "KAT-Coder-V2.5 Technical Report",
+      "url": "https://huggingface.co/papers/2607.05471",
+      "date": "2026-07-06",
+      "signal": 14,
+      "signal_name": "upvotes",
+      "summary": "KAT-Coder-V2.5 is an agentic coding model trained via scalable sandboxed environment reconstruction, process-aware trajectory filtering, and reinforcement learning with asymmetric actor-critic optimization to perform autonomous software engineering tasks.",
+      "extra": {
+        "keywords": [
+          "agentic post-training",
+          "AutoBuilder",
+          "process-aware filtering",
+          "KwaiClawEnv",
+          "reinforcement learning",
+          "harness randomization",
+          "asymmetric actor-critic PPO",
+          "hindsight-augmented value estimation",
+          "harness-oriented reward framework",
+          "Multi-Teacher On-Policy Distillation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SWE-Together: Evaluating Coding Agents in Interactive User Sessions",
+      "url": "https://huggingface.co/papers/2606.29957",
+      "date": "2026-06-29",
+      "signal": 14,
+      "signal_name": "upvotes",
+      "summary": "SWE-Together is a multi-turn coding benchmark created from real user-agent interactions, featuring a reactive LLM simulator to evaluate agents based on both final correctness and interaction efficiency.",
+      "extra": {
+        "keywords": [
+          "coding-agent benchmarks",
+          "multi-turn benchmark",
+          "user-agent coding sessions",
+          "repository-level tasks",
+          "user simulator",
+          "corrective feedback turns",
+          "final repository correctness",
+          "interaction efficiency"
+        ],
+        "github": "https://github.com/Togetherbench/SWE-Together",
+        "github_stars": 87,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ENPIRE: Agentic Robot Policy Self-Improvement in the Real World",
+      "url": "https://huggingface.co/papers/2606.19980",
+      "date": "2026-06-18",
+      "signal": 14,
+      "signal_name": "upvotes",
+      "summary": "ENPIRE framework enables autonomous robotics research through a closed-loop system that automates policy improvement via environment feedback, policy refinement, and evolutionary code optimization.",
+      "extra": {
+        "keywords": [
+          "coding agents",
+          "policy improvement",
+          "environment module",
+          "rollout module",
+          "evolution module",
+          "physical feedback routine",
+          "autonomous robotics",
+          "dexterous manipulation",
+          "robot fleet",
+          "algorithm search"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "One Success Isn't Reliability: Thinkingbox, a Sandbox and Benchmark for Agents in Stateful Business Workflows",
+      "url": "https://huggingface.co/papers/2608.19741",
+      "date": "2026-08-20",
+      "signal": 12,
+      "signal_name": "upvotes",
+      "summary": "Recent agent benchmarks increasingly ground evaluation in executable environments, from code repair to web navigation, app APIs, and function calling. Yet completing consequential work beyond code requires more than producing a plausible response or valid tool call: agents must gather missing information over multiple turns, follow domain policies, coordinate dependent tools, and realize the corre",
+      "extra": {
+        "keywords": [],
+        "github": "https://github.com/microsoft/thinkingbox",
+        "github_stars": 113,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CheckerBench: Can Long-Horizon Agents Synthesize Static-Analysis Checkers?",
+      "url": "https://huggingface.co/papers/2610.07557",
+      "date": "2026-10-06",
+      "signal": 10,
+      "signal_name": "upvotes",
+      "summary": "CheckerBench evaluates coding agents on synthesizing static-analysis checkers from defect specifications across diverse repositories, revealing substantial challenges in reliable checker development.",
+      "extra": {
+        "keywords": [
+          "static-analysis checker synthesis",
+          "CheckerBench",
+          "CVEs",
+          "CWEs",
+          "CheckerLab",
+          "vulnerable-fixed diagnostic contrast",
+          "false positives"
+        ],
+        "github": "https://github.com/ahang0712/CheckerBench-Dataset",
+        "github_stars": 3,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Pi pod – Run your pi coding agent in sandboxes on your own server",
+      "url": "https://pipod.dev/",
+      "date": "2026-10-02",
+      "signal": 121,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49937304",
+        "comments": 45,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "I ran each AI coding-agent sandbox's own tests against the others",
+      "url": "https://github.com/carlostapiacl/sandbox-conformance",
+      "date": "2026-10-28",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50269082",
+        "comments": 1,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Coding Agent Sandboxes Don't Solve Credential Authorization",
+      "url": "https://www.permit.io/blog/coding-agent-sandboxes-credentials",
+      "date": "2026-06-15",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48539504",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: VT Code – A terminal-first coding agent with sandboxed tools",
+      "url": "https://github.com/vinhnx/VTCode",
+      "date": "2026-10-21",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50181072",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Fire the slop cannons (safely): on coding agents and sandboxing",
+      "url": "https://www.latacora.com/blog/2026/09/18/fire-the-slop-cannons-safely-on-coding-agents-and-sandboxing/",
+      "date": "2026-09-23",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49818897",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Ax-check.com – Can agents use your product?",
+      "url": "https://www.ax-check.com/",
+      "date": "2026-09-17",
+      "signal": 38,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49744416",
+        "comments": 41,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Launch HN: Runtime (YC P26) – Sandboxed coding agents for everyone on a team",
+      "url": "https://www.runtm.com/",
+      "date": "2026-05-21",
+      "signal": 103,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48225040",
+        "comments": 30,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Agent-run – Run a coding agent in a sandboxed environment",
+      "url": "https://github.com/sin-ack/agent-run",
+      "date": "2026-07-12",
+      "signal": 8,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48884885",
+        "comments": 3,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Open source platform for automating sandboxed coding agents",
+      "url": "https://github.com/mistlehq/mistle",
+      "date": "2026-05-21",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48227871",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Sandboxing Coding Agents",
+      "url": "https://micahflee.com/sandboxing-coding-agents/",
+      "date": "2026-08-28",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49473133",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: BoundaryBench – benchmarking coding agents under real sandbox policy",
+      "url": "https://github.com/boundary-bench/boundary-bench",
+      "date": "2026-08-05",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49186033",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "DiscoBox: AI Coding Agents in Disposable Sandboxes",
+      "url": "https://github.com/discobox-ai/discobox",
+      "date": "2026-09-22",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49806850",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Why coding agents belong in remote sandboxes",
+      "url": "https://www.superconductor.com/blog/remote-sandboxes-agent-security",
+      "date": "2026-08-04",
+      "signal": 14,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49172611",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "SCH: An affordable sandbox for Coding Agents in your AWS account",
+      "url": "https://c-daniele.github.io/en/posts/2026-09-07-close-the-lid-serverless-coding-harness/",
+      "date": "2026-09-13",
+      "signal": 8,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49688741",
+        "comments": 8,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Sandbox AI coding agents with microVMs on Fedora Linux",
+      "url": "https://fedoramagazine.org/sandbox-ai-coding-agents-with-microvms-on-fedora-linux/",
+      "date": "2026-06-15",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48540375",
+        "comments": 0,
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SkillOpt: Executive Strategy for Self-Evolving Agent Skills",
+      "url": "https://doi.org/10.48550/arxiv.2605.23904",
+      "date": "2026-05-22",
+      "signal": 232,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Transforming Science with Large Language Models: A Survey on AI-assisted Scientific Discovery, Experimentation, Content Generation, and Evaluation",
+      "url": "https://doi.org/10.1145/3845596",
+      "date": "2026-09-05",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI4Research: a survey of artificial intelligence for scientific research",
+      "url": "https://doi.org/10.1007/s11432-025-5000-y",
+      "date": "2026-09-28",
+      "signal": 110,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Flooding spread of manipulated knowledge in LLM-based multi-agent communities",
+      "url": "https://doi.org/10.1007/s11432-024-4663-2",
+      "date": "2026-06-11",
+      "signal": 102,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Harness VLA: Steering Frozen VLAs into Reliable Manipulation Primitives via Memory-Guided Agents",
+      "url": "https://doi.org/10.48550/arxiv.2607.08448",
+      "date": "2026-07-09",
+      "signal": 99,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An AI system to help scientists write expert-level empirical software",
+      "url": "https://doi.org/10.1038/s41586-026-10658-6",
+      "date": "2026-05-19",
+      "signal": 99,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Large language models for multi-robot systems: a survey",
+      "url": "https://doi.org/10.1007/s10514-026-10257-4",
+      "date": "2026-06-10",
+      "signal": 93,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "MOPD: Multi-Teacher On-Policy Distillation for Capability Integration in LLM Post-Training",
+      "url": "https://doi.org/10.48550/arxiv.2606.30406",
+      "date": "2026-06-29",
+      "signal": 92,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agentic Software Engineering: Foundational Pillars and a Research Roadmap",
+      "url": "https://doi.org/10.1145/3861334",
+      "date": "2026-11-05",
+      "signal": 87,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "OSWorld 2.0: Benchmarking Computer Use Agents on Long-Horizon Real-World Tasks",
+      "url": "https://doi.org/10.48550/arxiv.2606.29537",
+      "date": "2026-06-28",
+      "signal": 82,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The MiniMax-M2 Series: Mini Activations Unleashing Max Real-World Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2605.26494",
+      "date": "2026-05-26",
+      "signal": 82,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DeepSWE: Measuring Frontier Coding Agents on Original, Long-Horizon Engineering Tasks",
+      "url": "https://doi.org/10.48550/arxiv.2607.07946",
+      "date": "2026-07-08",
+      "signal": 81,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "coding agent sandbox"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "leepokai/jev-guard",
+      "url": "https://github.com/leepokai/jev-guard",
+      "date": "2026-09-17",
+      "signal": 152,
+      "signal_name": "stars",
+      "summary": "Auto mode for every coding agent, built on Jev: risk-scores every tool call with session context (deny / ask / allow), flags prompt injection in results, checks skills and plugins. Claude Code, Codex, Copilot, Gemini, Cursor, pi, OpenCode, ACP.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "claude-code",
+          "codex",
+          "cursor",
+          "gemini-cli",
+          "hooks",
+          "jev",
+          "opencode",
+          "prompt-injection",
+          "security"
+        ],
+        "license": "MIT",
+        "created": "2026-09-17",
+        "pushed": "2026-10-02",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "DaoyuanLi2816/RepoGuardBench",
+      "url": "https://github.com/DaoyuanLi2816/RepoGuardBench",
+      "date": "2026-06-29",
+      "signal": 75,
+      "signal_name": "stars",
+      "summary": "Benchmarking repository-borne prompt injection attacks and lightweight defenses for local coding agents. DL4C @ ICML 2026.",
+      "extra": {
+        "topics": [
+          "ai-security",
+          "benchmark",
+          "coding-agents",
+          "llm-security",
+          "local-llm",
+          "prompt-injection",
+          "reproducible-research",
+          "software-engineering"
+        ],
+        "license": "MIT",
+        "created": "2026-06-29",
+        "pushed": "2026-10-03",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "tenet-security/agent-jackstop",
+      "url": "https://github.com/tenet-security/agent-jackstop",
+      "date": "2026-06-15",
+      "signal": 29,
+      "signal_name": "stars",
+      "summary": "Harden Cursor and Claude Code against prompt injection via untrusted tool output (Agentjacking)",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-15",
+        "pushed": "2026-06-15",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Hannay001/lockkeeper",
+      "url": "https://github.com/Hannay001/lockkeeper",
+      "date": "2026-08-24",
+      "signal": 18,
+      "signal_name": "stars",
+      "summary": "Skill router and prompt-injection firewall for AI coding agents: gives Claude Code, Codex and Cursor the few skills, MCP servers and tools each task needs.",
+      "extra": {
+        "topics": [
+          "agent-skill",
+          "agent-skills",
+          "ai-agents",
+          "claude-code",
+          "claude-code-plugin",
+          "cli",
+          "codex",
+          "context-window",
+          "cursor",
+          "developer-tools",
+          "llm-security",
+          "mcp",
+          "prompt-injection",
+          "python",
+          "security",
+          "skill-router",
+          "skills"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-08-24",
+        "pushed": "2026-10-17",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "compass-group-tue/prompt_injections_so_back",
+      "url": "https://github.com/compass-group-tue/prompt_injections_so_back",
+      "date": "2026-05-14",
+      "signal": 16,
+      "signal_name": "stars",
+      "summary": "Code and data used in our NeurIPS 2026 paper: AI Agents May Always Fall for Prompt Injections",
+      "extra": {
+        "topics": [
+          "contextual-integrity",
+          "llm-security",
+          "prompt-injection"
+        ],
+        "license": null,
+        "created": "2026-05-14",
+        "pushed": "2026-05-19",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "brave/bravebot",
+      "url": "https://github.com/brave/bravebot",
+      "date": "2026-08-20",
+      "signal": 15,
+      "signal_name": "stars",
+      "summary": "Coding agent with structural resistance to indirect prompt injection",
+      "extra": {
+        "topics": [],
+        "license": "MPL-2.0",
+        "created": "2026-08-20",
+        "pushed": "2026-11-10",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "harshwasan/jev-sentinel",
+      "url": "https://github.com/harshwasan/jev-sentinel",
+      "date": "2026-09-19",
+      "signal": 15,
+      "signal_name": "stars",
+      "summary": "Pi coding-agent extension: TypeSafe Jev checks for tool calls, tool outputs and replies (prompt injection, approvals, secret scrubbing, task pinning)",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-09-19",
+        "pushed": "2026-09-20",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "magicmadeint/wipedown",
+      "url": "https://github.com/magicmadeint/wipedown",
+      "date": "2026-05-25",
+      "signal": 15,
+      "signal_name": "stars",
+      "summary": "Zero-Trust Semantic Scraper & Firewall Proxy for AI Coding Agents. Intercepts and neutralizes web-scraped prompt injections locally before they hit your terminal window.",
+      "extra": {
+        "topics": [
+          "agentic-workflow",
+          "ai-security",
+          "aider",
+          "cursor-agent",
+          "developer-tools",
+          "fastapi",
+          "hermes",
+          "local-llm",
+          "ollama",
+          "openclaw",
+          "prompt-injection",
+          "python-cli",
+          "scrapers",
+          "wipedown"
+        ],
+        "license": "MIT",
+        "created": "2026-05-25",
+        "pushed": "2026-06-02",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "aimenhamzi01-dot/mizan",
+      "url": "https://github.com/aimenhamzi01-dot/mizan",
+      "date": "2026-10-27",
+      "signal": 13,
+      "signal_name": "stars",
+      "summary": "Mizan — an AI triage agent for security vulnerability reports, built on Meta's models. Reads reports and code, flags prompt-injection attempts, verifies claims by reasoning only (never executes anything), and proposes a decision for human review.",
+      "extra": {
+        "topics": [
+          "bug-bounty",
+          "hackathon",
+          "llm-agent",
+          "meta-llama",
+          "prompt-injection",
+          "security",
+          "triage"
+        ],
+        "license": "MIT",
+        "created": "2026-10-27",
+        "pushed": "2026-11-05",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "xhOwenMa/AutoDojo",
+      "url": "https://github.com/xhOwenMa/AutoDojo",
+      "date": "2026-06-11",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Code for \"AutoDojo: A Generative Benchmark for Evaluating Prompt Injection Defenses in LLM Agents\"",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-11",
+        "pushed": "2026-09-29",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AnYejun/blind-vault",
+      "url": "https://github.com/AnYejun/blind-vault",
+      "date": "2026-07-10",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "🔒 Secrets your AI agent can USE but never SEE — Claude Code skill + zero-dependency macOS Keychain CLI. Env injection, pointer manifest, prompt-injection tripwire.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "claude-code",
+          "claude-skill",
+          "macos",
+          "secrets-management",
+          "security"
+        ],
+        "license": "MIT",
+        "created": "2026-07-10",
+        "pushed": "2026-10-28",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AgentLatch/agent-latch",
+      "url": "https://github.com/AgentLatch/agent-latch",
+      "date": "2026-10-01",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Local-first AI agent security scanner and MCP traffic monitor. Finds prompt injection, over-privileged tools, and secrets in agent code, manifests, and prompts; records MCP tool calls with secrets masked. CLI, pre-commit, GitHub Action, SARIF, OWASP Agentic Top 10.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-agent-security",
+          "ai-security",
+          "crewai",
+          "github-actions",
+          "langchain",
+          "langgraph",
+          "llm-security",
+          "mcp",
+          "mcp-security",
+          "model-context-protocol",
+          "owasp-agentic-top-10",
+          "pre-commit-hook",
+          "prompt-injection",
+          "python",
+          "python3",
+          "sarif",
+          "sast",
+          "security-scanner",
+          "static-analysis"
+        ],
+        "license": "MIT",
+        "created": "2026-10-01",
+        "pushed": "2026-11-10",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SECBLOK/belay",
+      "url": "https://github.com/SECBLOK/belay",
+      "date": "2026-07-03",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Belay is an open-source, local-first security layer for AI coding agents (Claude Code, Codex, Cursor, OpenClaw, Hermes Agent and MCP) that blocks dangerous commands, secret leaks, and prompt injection at the tool-call boundary in under 100ms — no LLM in the decision path by default, no cloud, no phone-home.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "ai-safety",
+          "ai-security",
+          "ai-security-tool",
+          "claude-code",
+          "cybersecurity",
+          "devsecops",
+          "firewall",
+          "llm-security",
+          "mcp",
+          "model-context-protocol",
+          "owasp",
+          "prompt-injection",
+          "prompt-injection-defense",
+          "rust",
+          "sast",
+          "security",
+          "self-hosted",
+          "supply-chain-security",
+          "vulnerability-scanner"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-07-03",
+        "pushed": "2026-10-17",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bestagentkits/jev-skillful",
+      "url": "https://github.com/bestagentkits/jev-skillful",
+      "date": "2026-09-17",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "Per-prompt capability router for coding agents: resolves installed skills, MCP servers, agents and commands against your prompt via TypeSafe Jev, and measures whether the injection actually helps.",
+      "extra": {
+        "topics": [
+          "agent-tooling",
+          "ai-agents",
+          "claude-code",
+          "codex",
+          "coding-agents",
+          "developer-tools",
+          "llm-evaluation",
+          "skill-routing"
+        ],
+        "license": "MIT",
+        "created": "2026-09-17",
+        "pushed": "2026-09-17",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "rdwr-gabin/github-ipi-in-the-wild",
+      "url": "https://github.com/rdwr-gabin/github-ipi-in-the-wild",
+      "date": "2026-10-26",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "GitHub-scale measurement of indirect prompt injection of coding agents in the wild",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-10-26",
+        "pushed": "2026-11-03",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "date": "2026-11-10",
+      "signal": 25197,
+      "signal_name": "stars",
+      "summary": "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data exfiltration, and supply-chain risks in Claude Code, Codex, and MCP skills before you install them.",
+      "extra": {
+        "topics": [
+          "agent-security",
+          "agent-skills",
+          "agentic-ai",
+          "ai-security",
+          "claude-code",
+          "mcp",
+          "prompt-injection",
+          "security-scanner",
+          "security-tools",
+          "security-workflow",
+          "supply-chain-security"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-03-21",
+        "pushed": "2026-11-10",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "arcjet/arcjet-js",
+      "url": "https://github.com/arcjet/arcjet-js",
+      "date": "2026-11-10",
+      "signal": 699,
+      "signal_name": "stars",
+      "summary": "Runtime security for AI apps and agents: prompt injection detection, tool-call authorization, sensitive-data redaction, bot protection, and rate limiting. Drop it into your JS/TS code.",
+      "extra": {
+        "topics": [
+          "agent-security",
+          "ai-agents",
+          "ai-security",
+          "application-security",
+          "bot-detection",
+          "llm-security",
+          "mcp",
+          "pii-detection",
+          "prompt-injection-detection",
+          "rate-limiter",
+          "runtime-security",
+          "tool-authorization",
+          "typescipt"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-11-30",
+        "pushed": "2026-11-10",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Austin1serb/agents-md",
+      "url": "https://github.com/Austin1serb/agents-md",
+      "date": "2026-07-15",
+      "signal": 167,
+      "signal_name": "stars",
+      "summary": "AGENTS.md patterns for context engineering in coding agents: safer command output, token efficiency, validation, and prompt-injection resistance.",
+      "extra": {
+        "topics": [
+          "agent-prompts",
+          "agents-skills",
+          "coding-prompts",
+          "prompt-engineering",
+          "token-usage"
+        ],
+        "license": null,
+        "created": "2026-05-07",
+        "pushed": "2026-07-15",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "sinewaveai/agent-security-scanner-mcp",
+      "url": "https://github.com/sinewaveai/agent-security-scanner-mcp",
+      "date": "2026-10-18",
+      "signal": 123,
+      "signal_name": "stars",
+      "summary": "Security scanner MCP server for AI coding agents. Prompt injection firewall, package hallucination detection (4.3M+ packages), 1000+ vulnerability rules with AST & taint analysis, auto-fix.",
+      "extra": {
+        "topics": [
+          "agent-security",
+          "ai-agent-security",
+          "ai-security",
+          "claude-code",
+          "codex",
+          "cursor",
+          "hallucination-detection",
+          "llm-security",
+          "mcp",
+          "mcp-security",
+          "mcp-server",
+          "openclaw",
+          "owasp",
+          "package-hallucination",
+          "prompt-injection",
+          "sast",
+          "security",
+          "supply-chain-security",
+          "vulnerability-scanner",
+          "windsurf"
+        ],
+        "license": "MIT",
+        "created": "2026-02-04",
+        "pushed": "2026-10-18",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "jiaxiaojunQAQ/SkillJect",
+      "url": "https://github.com/jiaxiaojunQAQ/SkillJect",
+      "date": "2026-06-11",
+      "signal": 83,
+      "signal_name": "stars",
+      "summary": "SkillJect: Automating Stealthy Skill-Based Prompt Injection for Coding Agents with Trace-Driven Closed-Loop Refinement",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-02-14",
+        "pushed": "2026-06-11",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ax128/AegisGate",
+      "url": "https://github.com/ax128/AegisGate",
+      "date": "2026-09-14",
+      "signal": 73,
+      "signal_name": "stars",
+      "summary": "Open-source security gateway for LLM APIs — prompt injection detection, PII redaction, dangerous response sanitization, and audit logging. OpenAI/Claude compatible, MCP & Agent SKILL support. Drop-in proxy for AI coding agents (Cursor, Claude Code, Codex).",
+      "extra": {
+        "topics": [
+          "ai-agent",
+          "ai-gateway",
+          "api-security",
+          "claude",
+          "codex",
+          "cursor",
+          "data-loss-prevention",
+          "fastapi",
+          "llm-firewall",
+          "llm-security",
+          "mcp",
+          "openai-proxy",
+          "output-sanitization",
+          "pii-redaction",
+          "prompt-injection"
+        ],
+        "license": "MIT",
+        "created": "2026-02-25",
+        "pushed": "2026-09-14",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "enkryptai/skill-sentinel",
+      "url": "https://github.com/enkryptai/skill-sentinel",
+      "date": "2026-09-19",
+      "signal": 43,
+      "signal_name": "stars",
+      "summary": "A security scanner for Agent Skill packages. Skill Sentinel uses multi-agent AI analysis to detect prompt injection, data exfiltration, command injection, malware, and other threats hiding in skill packages for Cursor, Claude Code, Codex, and OpenClaw.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-02-09",
+        "pushed": "2026-09-19",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "arcjet/arcjet-py",
+      "url": "https://github.com/arcjet/arcjet-py",
+      "date": "2026-11-10",
+      "signal": 33,
+      "signal_name": "stars",
+      "summary": "Runtime security for AI apps and agents: prompt injection detection, tool-call authorization, sensitive-data redaction, bot protection, and rate limiting. Drop it into your Python code.",
+      "extra": {
+        "topics": [
+          "agent-security",
+          "ai-agents",
+          "ai-security",
+          "application-security",
+          "bot-detection",
+          "llm-security",
+          "mcp",
+          "pii-detection",
+          "prompt-injection-detection",
+          "python",
+          "rate-limiter",
+          "runtime-security",
+          "tool-authorization"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-12-17",
+        "pushed": "2026-11-10",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "inkog-io/inkog",
+      "url": "https://github.com/inkog-io/inkog",
+      "date": "2026-11-01",
+      "signal": 31,
+      "signal_name": "stars",
+      "summary": "Static security scanner for AI agents. Catches prompt injection, runaway loops, missing oversight, and compliance gaps across 21 frameworks. Use from Claude Code, Cursor, ChatGPT (MCP), the CLI, or GitHub Actions.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-agent",
+          "ai-security",
+          "claude-code",
+          "cli",
+          "compliance",
+          "cursor",
+          "devsecops",
+          "eu-ai-act",
+          "golang",
+          "llm-security",
+          "mcp",
+          "mcp-security",
+          "nist-ai-rmf",
+          "owasp",
+          "owasp-llm-top-10",
+          "prompt-injection",
+          "sast",
+          "security-tools",
+          "static-analysis"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-10-26",
+        "pushed": "2026-11-01",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "microsoft/llmail-inject-challenge",
+      "url": "https://github.com/microsoft/llmail-inject-challenge",
+      "date": "2026-11-01",
+      "signal": 28,
+      "signal_name": "stars",
+      "summary": "Code for the API, workload execution, and agents underlying the LLMail-Inject Adpative Prompt Injection Challenge",
+      "extra": {
+        "topics": [
+          "llm-security",
+          "prompt-injection"
+        ],
+        "license": "MIT",
+        "created": "2025-05-01",
+        "pushed": "2026-11-01",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "GoldenWing-360/claude-security-skills",
+      "url": "https://github.com/GoldenWing-360/claude-security-skills",
+      "date": "2026-10-27",
+      "signal": 21,
+      "signal_name": "stars",
+      "summary": "25 production-tested defensive security skills for Claude Code - WordPress, VPS, Cloudflare, Next.js hardening, AI agent guardrails, MCP security, prompt injection defense, OWASP LLM Top 10, LLM coding failure modes (slopsquatting, hallucinated APIs, sycophancy), incident response, GDPR/DACH compliance. MIT, battle-tested.",
+      "extra": {
+        "topics": [
+          "ai-agent-security",
+          "ai-security",
+          "claude-code",
+          "claude-skills",
+          "cloudflare",
+          "defensive-security",
+          "docker-security",
+          "gdpr",
+          "github-actions-security",
+          "incident-response",
+          "llm-security",
+          "mcp-server",
+          "nextjs-security",
+          "owasp-llm",
+          "prompt-injection",
+          "slopsquatting",
+          "vibe-coding",
+          "vps-hardening",
+          "webshell-detection",
+          "wordpress-security"
+        ],
+        "license": "MIT",
+        "created": "2026-05-12",
+        "pushed": "2026-10-27",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Virtue-Research/guard-eval-harness",
+      "url": "https://github.com/Virtue-Research/guard-eval-harness",
+      "date": "2026-06-26",
+      "signal": 19,
+      "signal_name": "stars",
+      "summary": "One command to benchmark AI guardrails and coding agents across safety, security, jailbreak, prompt-injection, and secure-code tasks.",
+      "extra": {
+        "topics": [
+          "ai-safety",
+          "benchmark",
+          "cli",
+          "eval-harness",
+          "guardrails",
+          "jailbreak",
+          "llm-evaluation",
+          "llm-safety",
+          "redteaming",
+          "safety-evaluation",
+          "vibecoding"
+        ],
+        "license": "MIT",
+        "created": "2026-04-07",
+        "pushed": "2026-06-26",
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Anchor Behavior, Not Parameters: Rehearsal-Free Continual Learning with a Single Shared Prompt",
+      "url": "http://arxiv.org/abs/2611.12777v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Prompt-based continual learning adapts a frozen pre-trained vision transformer by tuning a small set of prompt tokens. Recently, one-prompt methods which share one single prompt across all tasks make this paradigm maximally parameter efficient. The open question is how a shared prompt can keep the knowledge of old classes while being updated for new ones. Existing methods protect old knowledge in ",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Toward Self-Evolving Geospatial Algorithms: An LLM-Driven Framework with a Case Study on Spatial Regime Discovery",
+      "url": "http://arxiv.org/abs/2611.11669v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Geospatial algorithms have been developed through expert-driven discovery: a researcher spots a limitation, proposes a structural fix, and checks it by hand. With LLM-driven multi-agent systems becoming practical, much of the candidate-generation, evaluation, and selection work can now be largely automated, while the researcher's role shifts upstream toward problem formulation, evaluation design, ",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Treating the Model as an Untrusted Component: Deterministic Policy Enforcement, Human Approval and Taint Tracking Against Prompt Injection in Tool-Using Agents, with Validation on Open-Weights Models",
+      "url": "http://arxiv.org/abs/2611.11571v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Tool-using LLM agents act on instructions embedded in the data they read, so prompt injection is a structural rather than a prompt-wording problem. We compare in-prompt defences (hardened prompts, spotlighting, LLM detectors) with deterministic enforcement outside the model (four reference monitors of increasing strength), human approval and taint tracking, judged by one effect-based oracle indepe",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "When Coding Agents Get Arms: Safety Risks Across the Digital-Physical Boundary",
+      "url": "http://arxiv.org/abs/2611.11438v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Advances in spatial understanding have enabled frontier models to power coding agents that control a real robot arm zero-shot and end-to-end, without task-specific demonstrations or retraining. This brings two new safety challenges. First, the extensive knowledge of frontier models lets these agents perform tasks that earlier VLA and WAM paradigms could not, opening the door to new forms of capabi",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Agents of Chaos: A Systematization of Knowledge (SoK) on Malicious Attacks on Agentic AI Systems",
+      "url": "http://arxiv.org/abs/2611.10843v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agentic AI systems extend large language models with tools, memory, retrieval, browser or computer-use interfaces, code execution, external services, and multi-agent coordination. Although these capabilities enable agents to act beyond text generation and perform tasks, they also create attack paths through which adversaries can exploit untrusted content, deceptive metadata, poisoned state, compro",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Enmo Safety: External, Non-invasive, Model-agnostic Oversight for Off-the-Shelf Language Models",
+      "url": "http://arxiv.org/abs/2611.10099v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We study a safety harness that improves itself without touching model weights. Enmo Safety wraps a chat model with a deterministic input assessment, trigger-matched safety guidance, spotlighting of untrusted content, and an output guard. A reflector model turns failures into one bounded update per round, and an update is kept only if it lowers harm without raising refusal of benign prompts on a he",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Power of Meta Access in the Software of the Future --- Demonstrated on LLM Chat UIs and Chat AI",
+      "url": "http://arxiv.org/abs/2611.08428v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Chat remains the default surface for many large language model (LLM) tasks, even as agentic tools such as OpenCode excel at coding and automation. Yet the model sees the current dialogue but not the workspace around it. We explore meta access---giving the assistant a structured, permissioned view of the interface itself and propose a ladder of levels: feature tutoring; metadata, settings, and pref",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Beyond Instruction Override: Benchmarking Indirect Prompt Injection with Task-Tampering Attacks",
+      "url": "http://arxiv.org/abs/2611.07640v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Indirect prompt-injection (IPI) benchmarks predominantly test planted instructions that redirect a tool-using agent toward an attacker-chosen task. Yet attacker-controlled content can instead tamper with the outcome of the task already in progress. A buyer's dispute evidence can cite a false refund policy to inflate a refund without changing the task. We define IPI by authority rather than instruc",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Where Do Reported Long-Video QA Gains Come From? A Controlled Audit of Frame Selection, Evidence Injection, and Expert Routing",
+      "url": "http://arxiv.org/abs/2611.07329v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Long-video question answering is usually studied as frame selection: which few frames should a vision-language model see? We introduce VideoRouteAudit, a controlled audit that separates this choice from two alternatives, injecting non-visual evidence and routing to another answering model. It holds the backbone, frame budget, decoding, prompt and grader fixed while varying one decision at a time. ",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What Drives the Zero-to-One Jump? Diagnosing and Steering Hard-Prompt Learning in RLVR",
+      "url": "http://arxiv.org/abs/2611.02747v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement Learning with Verifiable Rewards (RLVR) has substantially improved mathematical reasoning, yet progress on hard prompts often stalls: a prompt can remain unsolved for many training steps before abruptly transitioning to solved--a discrete \"zero-to-one\" jump whose underlying dynamics and steerability remain poorly understood. We investigate two questions: what drives this transition, ",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "When Neither Side Confirms: Destructive Tool Approval Across MCP Servers and Hosts",
+      "url": "http://arxiv.org/abs/2611.02527v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "LLM agents call tools that delete data or move money through the Model Context Protocol (MCP). The specification asks for a human who can deny tool calls but splits the mechanism between the server, which can annotate a tool or ask the user through the host (elicitation), and the host application, which decides whether to prompt. We measure both sides from source code. In a 1,000-repository sample",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Long Con on the Web: Earn-then-Exploit Fraud Attacks against Coding Agents",
+      "url": "http://arxiv.org/abs/2611.00725v1",
+      "date": "2026-10-31",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Coding agents increasingly operate with web access and high privileges, creating a new attack surface where web fraud can directly target autonomous agents. Existing studies mainly focus on malicious links, prompt injection, and interface deception, while content-level web fraud against agents and the amplification of attacks through agent trust remain underexplored. In this paper, we present EtE ",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SecPO: Principled Adversarial Training for Prompt Injection Security",
+      "url": "http://arxiv.org/abs/2610.41998v1",
+      "date": "2026-10-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Recognized as a top threat to AI agents, prompt injection allows instructions from untrusted data (email, documents, websites) to manipulate the agent's operation. The existing best-defended LLM, Meta-SecAlign, is trained with the DPO loss but still suffers from attack success rates (ASRs) approaching 100% under adaptive prompt injections. One reason is that DPO anchors the model around the undefe",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Erase the Injected Region: Multimodal Prompt-Injection Defense with On-Policy Self-Distillation",
+      "url": "http://arxiv.org/abs/2610.41307v1",
+      "date": "2026-10-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Multimodal indirect prompt injection embeds malicious instructions in external media that also contains information needed for the user's task. Existing defenses can block the attack yet impair the model's use of that information, leaving a gap between attack defense and task preservation. We propose ERASE, an on-policy self-distillation method that constructs its reference by erasing the injected",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Appreciation Teaches Unauthorized Execution: Self-Evolution Degrades the Robustness of Personal Agents to Indirect Prompt Injection",
+      "url": "http://arxiv.org/abs/2610.39122v1",
+      "date": "2026-10-29",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Self-evolving personal agents act for users and learn from user feedback. However, if an agent obeys an instruction that an untrusted third party hides in content, the third party gains control of the agent. Such indirect prompt injection (IPI) poses severe risks. We investigate whether self-evolution degrades the robustness of personal agents to IPI. To study this question, we design a controlled",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "VideoCoCo: Code-as-CoT for Physically-Consistent Video Generation via an Agentic Dual-Engine System",
+      "url": "https://huggingface.co/papers/2607.27380",
+      "date": "2026-07-29",
+      "signal": 54,
+      "signal_name": "upvotes",
+      "summary": "VideoCoCo uses executable Blender code as an intermediate reasoning step to generate physically consistent videos via simulation and draft-conditioned editing.",
+      "extra": {
+        "keywords": [
+          "text-to-video",
+          "chain-of-thought",
+          "executable Blender code",
+          "simulation engine",
+          "generative video engine",
+          "draft-conditioned editing",
+          "VideoCoCo-3K",
+          "PhyGenBench",
+          "VBench-2.0"
+        ],
+        "github": "https://github.com/micky-li-hd/VideoCoCo",
+        "github_stars": 130,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SecOPD: Mitigating Adaptive Prompt Injections by On-Policy Distillation",
+      "url": "https://huggingface.co/papers/2608.21500",
+      "date": "2026-08-21",
+      "signal": 38,
+      "signal_name": "upvotes",
+      "summary": "SecOPD improves defense against adaptive prompt injection by using token-level feedback during fine-tuning, sharply reducing attack success rates on language models.",
+      "extra": {
+        "keywords": [
+          "prompt injection",
+          "secure LLMs",
+          "defensive fine-tuning",
+          "DPO",
+          "GRPO",
+          "token-level feedback",
+          "Secure On-Policy Distillation",
+          "SecOPD",
+          "adaptive prompt injections",
+          "ASR"
+        ],
+        "github": "https://github.com/pppyb/SecOPD",
+        "github_stars": 16,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "WideSWE: Can Coding Agents Coordinate Changes Across Repositories?",
+      "url": "https://huggingface.co/papers/2609.33382",
+      "date": "2026-09-27",
+      "signal": 19,
+      "signal_name": "upvotes",
+      "summary": "WideSWE introduces a benchmark for evaluating coding agents on cross-repository software tasks, finding that joint execution across repositories improves implementation and verification compared to independent sequential work.",
+      "extra": {
+        "keywords": [
+          "cross-repository tasks",
+          "coding agents",
+          "WideSWE",
+          "joint execution",
+          "independent execution",
+          "hidden tests",
+          "software ecosystems"
+        ],
+        "github": "https://github.com/ZJU-ACES-ISE/WideSWE",
+        "github_stars": 21,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "From Prompt Injection to Persistent Control: Defending Agentic Harness Against Trojan Backdoors",
+      "url": "https://huggingface.co/papers/2605.31042",
+      "date": "2026-05-29",
+      "signal": 16,
+      "signal_name": "upvotes",
+      "summary": "Multi-step trojan attacks in local LLM agents can bypass existing defenses by embedding malicious prompts across multiple operations, requiring new detection methods like DASGuard for effective protection.",
+      "extra": {
+        "keywords": [
+          "LLM agents",
+          "prompt injection",
+          "multi-step trojan attack",
+          "OpenClaw",
+          "DASGuard",
+          "runtime attack blocking",
+          "sanitized commits"
+        ],
+        "github": "https://github.com/RUC-NLPIR/ClawTrojan",
+        "github_stars": 22,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SkillZip: Evaluation-Free Skill Compression for Self-Evolving Agents by Discovering Reusable Structure",
+      "url": "https://huggingface.co/papers/2608.11079",
+      "date": "2026-08-11",
+      "signal": 10,
+      "signal_name": "upvotes",
+      "summary": "SkillZip compresses self-evolving agent skills by finding a minimal faithful structural explanation that shares repeated rules and procedures while preserving rare exceptions, without requiring evaluation rollouts.",
+      "extra": {
+        "keywords": [
+          "self-evolving agents",
+          "skill compression",
+          "minimum description length",
+          "typed contract",
+          "structural explanation",
+          "Zip-on-Write",
+          "cross-attention"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Control-Data Flow Separation: Stable Prompt Optimization in Multi-Agent LLMs",
+      "url": "https://huggingface.co/papers/2609.00621",
+      "date": "2026-09-01",
+      "signal": 8,
+      "signal_name": "upvotes",
+      "summary": "The framework separates structured execution protocols from optimizable language content to prevent prompt optimization from corrupting multi-agent pipelines.",
+      "extra": {
+        "keywords": [
+          "multi-agent LLM systems",
+          "prompt optimization",
+          "control-data flow separation",
+          "typed validated program objects",
+          "protocol validity"
+        ],
+        "github": "https://github.com/yuntian-group/cdsep",
+        "github_stars": 3,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Same Bytes, Different Authority: Reserved-Token Representations in Chat-Template Prompt Injection",
+      "url": "https://huggingface.co/papers/2609.35932",
+      "date": "2026-09-28",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "Reserved control tokens in chat templates significantly amplify prompt injection attacks against LLM agents compared to equivalent subword sequences, with instruction tuning reinforcing this vulnerability and standard tokenizer mitigations failing to protect tool-protocol channels.",
+      "extra": {
+        "keywords": [
+          "prompt injection",
+          "LLM agents",
+          "chat template",
+          "reserved control tokens",
+          "subword tokens",
+          "tokenization",
+          "instruction tuning",
+          "tool-protocol tokens",
+          "tokenizer configurations"
+        ],
+        "github": "https://github.com/Byte-Authority/Byte-Authority",
+        "github_stars": 2,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Bounded Agents: Delegation Security for Multi-Agent AI Systems",
+      "url": "https://huggingface.co/papers/2608.15888",
+      "date": "2026-08-16",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "The Agentic Principal Chain enforces session-aware authorization checks to prevent harmful action combinations and delegation abuses in LLM agents.",
+      "extra": {
+        "keywords": [
+          "Agentic Principal Chain",
+          "authorization architecture",
+          "delegated authority",
+          "composition closure",
+          "Blast Radius Monotonicity",
+          "Composition Soundness",
+          "prompt injection",
+          "session state",
+          "intent binding"
+        ],
+        "github": "https://github.com/xmuruaga/bounded-agents",
+        "github_stars": 5,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AdaPRA: Process Reward Agents with Adaptive Rubrics for Data Science",
+      "url": "https://huggingface.co/papers/2610.33245",
+      "date": "2026-10-23",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "AdaPRA improves data science agents via persistent knowledge accumulation and adaptive rubric-guided process supervision, reducing errors and boosting leaderboard performance.",
+      "extra": {
+        "keywords": [
+          "data science agents",
+          "machine learning workflows",
+          "process supervision",
+          "rubric-guided supervision",
+          "process reward agent",
+          "trajectory auditing",
+          "rubric adaptation",
+          "process errors",
+          "leaderboard percentile",
+          "DataPRM"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agent Against Agent: An Agentic System for Automatic Prompt Injection Red Teaming",
+      "url": "https://huggingface.co/papers/2608.05108",
+      "date": "2026-08-05",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "PIMiner is an agentic red-teaming system that learns transferable prompt injection strategies to attack unseen LLM agents with minimal queries.",
+      "extra": {
+        "keywords": [
+          "prompt injection",
+          "red-teaming",
+          "LLM agents",
+          "reinforcement learning",
+          "strategy library",
+          "transfer learning",
+          "ASR"
+        ],
+        "github": "https://github.com/wang-yanting/PIMiner",
+        "github_stars": 15,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "PISmith: Reinforcement Learning-based Red Teaming for Prompt Injection Defenses",
+      "url": "https://huggingface.co/papers/2603.13026",
+      "date": "2026-07-23",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "PISmith uses reinforcement learning with adaptive exploration techniques to generate black-box prompt-injection attacks that expose vulnerabilities in state-of-the-art LLM defenses and autonomous agents.",
+      "extra": {
+        "keywords": [
+          "prompt injection",
+          "reinforcement learning",
+          "red-teaming",
+          "GRPO",
+          "entropy regularization",
+          "dynamic advantage weighting",
+          "black-box attack",
+          "autonomous agents",
+          "LLM defenses"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Google: Attackers are using prompt injection against coding agents",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/from-prompting-to-autonomy-the-evolution-of-adversarial-ai",
+      "date": "2026-09-09",
+      "signal": 13,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49628034",
+        "comments": 1,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "A prompt injection nearly hijacked my coding agent mid-task",
+      "url": "https://senthex.com/en/blog/prompt-injection-hijacked-my-coding-agent/",
+      "date": "2026-07-01",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48746262",
+        "comments": 1,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Undisclosed addition in jqwik instructed AI coding agents to delete app output",
+      "url": "https://arstechnica.com/security/2026/05/fed-up-with-vibe-coders-dev-sneaks-data-nuking-prompt-injection-into-their-code/",
+      "date": "2026-05-29",
+      "signal": 67,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48319968",
+        "comments": 1,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: OneCLI – OSS credential gateway that keeps secrets out of AI agents",
+      "url": "https://github.com/onecli/onecli",
+      "date": "2026-07-23",
+      "signal": 110,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49023427",
+        "comments": 32,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Launch HN: machine0 (YC S26) – Persistent CPU and GPU VMs from the CLI",
+      "url": "https://machine0.io",
+      "date": "2026-08-18",
+      "signal": 83,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49348136",
+        "comments": 44,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Hands-Rust MCP/CLI that sees the Windows desktop and clicks real Chrome",
+      "url": "https://news.ycombinator.com/item?id=49405405",
+      "date": "2026-08-23",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49405405",
+        "comments": 2,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: OpenHive – AI agents share solutions so other agents dont re-solve them",
+      "url": "https://openhivemind.vercel.app/",
+      "date": "2026-05-29",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48323606",
+        "comments": 0,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: AVP – an agent can't leak a secret it never had",
+      "url": "https://github.com/inflightsec/agent-vault-proxy",
+      "date": "2026-06-11",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48495018",
+        "comments": 1,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Silta: family assistant on Matrix with continuity across context limits",
+      "url": "https://github.com/dmitry-markin/silta",
+      "date": "2026-10-01",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49920621",
+        "comments": 0,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Statey – the database your AI shares across every chat, over MCP",
+      "url": "https://www.statey.ai",
+      "date": "2026-06-26",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48691461",
+        "comments": 3,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: A chess game you play with Claude as your wing-bot in the CLI",
+      "url": "https://github.com/goawaygeek/ground-control",
+      "date": "2026-07-20",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48986313",
+        "comments": 4,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Grist, open source coding harness",
+      "url": "https://grist.lol/",
+      "date": "2026-10-01",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49928275",
+        "comments": 0,
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models",
+      "url": "https://doi.org/10.1145/3845797",
+      "date": "2026-09-15",
+      "signal": 213,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Sequential diagnosis with language models",
+      "url": "https://doi.org/10.1126/science.aeh7930",
+      "date": "2026-10-22",
+      "signal": 160,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Usable XAI: 10 Strategies Towards Exploiting Explainability in the LLM Era",
+      "url": "https://doi.org/10.1145/3816150",
+      "date": "2026-05-26",
+      "signal": 126,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A Survey on Medical Large Language Models: Technology, Application, Trustworthiness, and Future Directions",
+      "url": "https://doi.org/10.1109/tkde.2026.3709941",
+      "date": "2026-07-03",
+      "signal": 116,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Towards Trustworthy Retrieval Augmented Generation for Large Language Models: A Survey",
+      "url": "https://doi.org/10.1145/3837074",
+      "date": "2026-08-06",
+      "signal": 108,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation",
+      "url": "https://doi.org/10.48550/arxiv.2607.05147",
+      "date": "2026-07-06",
+      "signal": 83,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Toward Secure Code Generation: Bridging Correctness and Security via Task-Adaptive Vulnerability Modeling and Execution-Based Benchmarking",
+      "url": "https://doi.org/10.1145/3832159",
+      "date": "2026-10-01",
+      "signal": 77,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Empowering time series analysis with foundation models: A comprehensive survey",
+      "url": "https://doi.org/10.1016/j.inffus.2026.104601",
+      "date": "2026-07-11",
+      "signal": 76,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Infinite Worlds with Versatile Interactions",
+      "url": "https://doi.org/10.48550/arxiv.2607.07534",
+      "date": "2026-07-08",
+      "signal": 76,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "prompt injection coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mosonlab/anneal",
+      "url": "https://github.com/mosonlab/anneal",
+      "date": "2026-08-19",
+      "signal": 195,
+      "signal_name": "stars",
+      "summary": "You write the specs. It clears the board: coding agent chains plan, review, implement, verify and merge unattended on your own machine, on the GPT and Claude subscriptions you already have.",
+      "extra": {
+        "topics": [
+          "agent-orchestration",
+          "ai-agents",
+          "claude-code",
+          "codex",
+          "developer-tools",
+          "local-first",
+          "multi-agent"
+        ],
+        "license": "MIT",
+        "created": "2026-08-19",
+        "pushed": "2026-09-26",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "axocoatl/axocoatl",
+      "url": "https://github.com/axocoatl/axocoatl",
+      "date": "2026-06-04",
+      "signal": 73,
+      "signal_name": "stars",
+      "summary": "Run coding agents unattended. Agents write the code. Axocoatl writes the receipt. Claude Code, Codex or a local model in a sandbox; the host runs your checks, a different model reviews, and every run ends with a CI exit code and a signed receipt.",
+      "extra": {
+        "topics": [
+          "agentic",
+          "agents",
+          "ai",
+          "ci",
+          "claude-code",
+          "code-review",
+          "codex",
+          "coding-agents",
+          "devtools",
+          "landlock",
+          "llm",
+          "local-first",
+          "mcp",
+          "ollama",
+          "podman",
+          "rust",
+          "sandbox",
+          "self-hosted"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-04",
+        "pushed": "2026-10-30",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "lucasfcosta/backpressured",
+      "url": "https://github.com/lucasfcosta/backpressured",
+      "date": "2026-05-29",
+      "signal": 63,
+      "signal_name": "stars",
+      "summary": "Skills for running long unattended AI coding sessions. It will help the agent verify and review its own work using tests, adversarial review, and manual verification through cURL or real browsers. This skill reduces the burden on human review and feedback by making the agent more thorough and self-sufficient.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-29",
+        "pushed": "2026-05-31",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Trivo25/code-airlock",
+      "url": "https://github.com/Trivo25/code-airlock",
+      "date": "2026-07-01",
+      "signal": 22,
+      "signal_name": "stars",
+      "summary": "Run Claude Code (or another coding agent) unattended, inside a disposable microVM, with its work committed to git so you can review everything from your host.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "claude-code",
+          "codex",
+          "coding-agent",
+          "devtools",
+          "docker",
+          "docker-sandboxes",
+          "microvm",
+          "opencode",
+          "sandbox"
+        ],
+        "license": "MIT",
+        "created": "2026-07-01",
+        "pushed": "2026-07-11",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Drix10/agent-flow",
+      "url": "https://github.com/Drix10/agent-flow",
+      "date": "2026-09-26",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Guardrails for AI coding agents: run Claude Code, Codex, Gemini CLI, Cursor or Copilot unattended and come back to a reviewed pull request. Implement, review and QA agents, a guard on protected paths, and a tamper-evident audit log.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "agents-md",
+          "ai-coding",
+          "claude",
+          "claude-ai",
+          "claude-code",
+          "claude-plugin",
+          "claude-skills",
+          "codex",
+          "codex-skill",
+          "context-drift",
+          "cursor",
+          "gemini-cli",
+          "gemini-cli-extension",
+          "guardrails",
+          "pi",
+          "pre-commit",
+          "skill",
+          "skill-md",
+          "skills"
+        ],
+        "license": "MIT",
+        "created": "2026-09-26",
+        "pushed": "2026-11-10",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "jooray/night-agent",
+      "url": "https://github.com/jooray/night-agent",
+      "date": "2026-07-17",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "Run bounded, unattended OpenCode or Claude Code maintenance sessions against a repository, with rotating missions and reset-anchored scheduling.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-07-17",
+        "pushed": "2026-09-29",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "qingqingpi/loop-engineering-skill",
+      "url": "https://github.com/qingqingpi/loop-engineering-skill",
+      "date": "2026-06-21",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "A Claude Code skill for designing, evaluating, diagnosing, and hardening repeated or unattended AI-agent loops — built around verifier fidelity and a GREEN/YELLOW/RED task-fit triage.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-21",
+        "pushed": "2026-06-22",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "elflodge/elflodge",
+      "url": "https://github.com/elflodge/elflodge",
+      "date": "2026-10-24",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Hundreds of agents working unattended. One job API. Run sandboxed agents in parallel on your own machine, without a costly fleet of hosted sandboxes. Send a task or a whole batch; get structured results your code can use.",
+      "extra": {
+        "topics": [
+          "agent-batch",
+          "ai-agents",
+          "automation",
+          "batch-processing",
+          "cli",
+          "data-extraction",
+          "document-extraction",
+          "json-schema",
+          "llm",
+          "parallel-agents",
+          "pi",
+          "sandbox",
+          "self-hosted",
+          "structured-output"
+        ],
+        "license": "MIT",
+        "created": "2026-10-24",
+        "pushed": "2026-11-10",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Cloonar/coding-lab",
+      "url": "https://github.com/Cloonar/coding-lab",
+      "date": "2026-08-05",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Self-hosted, phone-first control panel for coding agents — interactive sessions and unattended issue-to-PR runs on your git repos.",
+      "extra": {
+        "topics": [
+          "claude-code",
+          "codex",
+          "coding-agents",
+          "golang",
+          "nixos",
+          "pwa",
+          "self-hosted",
+          "solidjs"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-08-05",
+        "pushed": "2026-11-10",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "HiQS-Labs/XYZ-forge",
+      "url": "https://github.com/HiQS-Labs/XYZ-forge",
+      "date": "2026-08-15",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "XYZ Forge is a local-first engineering operations system. It coordinates several AI coding agents — Claude Code, Codex, agy (Google's Antigravity CLI), and others — working on the same repositories, and it carries the surrounding machinery an unattended agent run actually needs: specified work, collision-free lanes, verification gates, and receipts",
+      "extra": {
+        "topics": [],
+        "license": "AGPL-3.0",
+        "created": "2026-08-15",
+        "pushed": "2026-11-10",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "fabrodz/milestoner",
+      "url": "https://github.com/fabrodz/milestoner",
+      "date": "2026-08-20",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Run massive plans unattended for hours: an autonomous-run engine for coding agents, driven by a milestone state machine.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-08-20",
+        "pushed": "2026-08-29",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shaahink/conductor",
+      "url": "https://github.com/shaahink/conductor",
+      "date": "2026-07-07",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "An orchestrator that runs coding agents unattended — and never believes them. Event-sourced, independently gate-verified, resumable from any crash.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "automation",
+          "csharp",
+          "dotnet",
+          "event-sourcing",
+          "orchestration"
+        ],
+        "license": "MIT",
+        "created": "2026-07-07",
+        "pushed": "2026-09-18",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "nerdocs/ntasker",
+      "url": "https://github.com/nerdocs/ntasker",
+      "date": "2026-06-25",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Put your coding agent on a kanban board: a local tracker that runs Claude Code, OpenCode or Pi on your tasks, unattended.",
+      "extra": {
+        "topics": [
+          "agents",
+          "automation",
+          "claude",
+          "claude-code",
+          "kanban",
+          "kanban-board",
+          "opencode",
+          "pi-dev",
+          "task-manager",
+          "tasks"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-06-25",
+        "pushed": "2026-11-08",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "toolshedlabs-hash/nightshift",
+      "url": "https://github.com/toolshedlabs-hash/nightshift",
+      "date": "2026-07-23",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Patterns and small tools for running Claude Code and other coding agents safely unattended overnight.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "automation",
+          "autonomous-agents",
+          "claude-code",
+          "coding-agents",
+          "developer-tools"
+        ],
+        "license": "MIT",
+        "created": "2026-07-23",
+        "pushed": "2026-08-03",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "TokonoMix/agents-never-sleep",
+      "url": "https://github.com/TokonoMix/agents-never-sleep",
+      "date": "2026-07-05",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Autonomous execution governance for coding agents: run a ticket backlog to completion unattended. ASK/PARK/HALT autonomy contract, durable per-ticket state machine, deterministic test gates, git-backed reversibility, heartbeat watchdog, morning report. Python stdlib only.",
+      "extra": {
+        "topics": [
+          "agent-autonomy",
+          "agent-safety",
+          "agent-skill",
+          "agent-workflow",
+          "ai-agents",
+          "ai-governance",
+          "autonomous-agents",
+          "backlog-automation",
+          "claude-code",
+          "coding-agents",
+          "developer-tools",
+          "execution-governance",
+          "long-running-agents",
+          "python-stdlib",
+          "reversibility",
+          "state-machine",
+          "test-gates",
+          "unattended-runs",
+          "workflow-automation"
+        ],
+        "license": "MIT",
+        "created": "2026-07-05",
+        "pushed": "2026-10-06",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "aeonfun/aeon",
+      "url": "https://github.com/aeonfun/aeon",
+      "date": "2026-11-10",
+      "signal": 792,
+      "signal_name": "stars",
+      "summary": "The most autonomous AI agent framework: runs unattended on GitHub Actions, self-healing skills, drives Claude Code, Grok, Codex & more. No approval loops. Configure once, forget forever.",
+      "extra": {
+        "topics": [
+          "agent-framework",
+          "agents",
+          "ai",
+          "ai-agents",
+          "anthropic",
+          "automation",
+          "autonomous-agents",
+          "claude",
+          "claude-code",
+          "devops",
+          "github-actions",
+          "harness",
+          "llm",
+          "mcp"
+        ],
+        "license": "MIT",
+        "created": "2026-03-04",
+        "pushed": "2026-11-10",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "stone16/harness-engineering-skills",
+      "url": "https://github.com/stone16/harness-engineering-skills",
+      "date": "2026-09-07",
+      "signal": 33,
+      "signal_name": "stars",
+      "summary": "Run AI coding agents unattended for hours and ship PRs worth merging. Cybernetics-based multi-agent orchestration + cross-LLM peer review for Claude Code, Codex, and Gemini. Engine-enforced gates, fresh agent per checkpoint, cross-vendor review before every PR.",
+      "extra": {
+        "topics": [
+          "agent-framework",
+          "ai-agents",
+          "ai-code-review",
+          "autonomous-agents",
+          "claude",
+          "claude-code",
+          "claude-code-plugin",
+          "code-quality",
+          "code-review",
+          "codex",
+          "cross-llm",
+          "developer-tools",
+          "gemini",
+          "iterative-review",
+          "llm-agents",
+          "multi-agent",
+          "orchestration",
+          "peer-review"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-03-11",
+        "pushed": "2026-09-07",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "snomiao/agent-yes",
+      "url": "https://github.com/snomiao/agent-yes",
+      "date": "2026-11-10",
+      "signal": 32,
+      "signal_name": "stars",
+      "summary": "Run AI coding agents (Claude, Codex, Gemini …) unattended — auto-answer prompts, auto-retry on rate limits, and list/tail/steer every agent locally or from agent-yes.com",
+      "extra": {
+        "topics": [
+          "agentic",
+          "ai-agents",
+          "automation",
+          "claude-code",
+          "cli",
+          "codex",
+          "llm",
+          "tui"
+        ],
+        "license": "MIT",
+        "created": "2025-07-04",
+        "pushed": "2026-11-10",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "gregce/deadreckon",
+      "url": "https://github.com/gregce/deadreckon",
+      "date": "2026-08-21",
+      "signal": 15,
+      "signal_name": "stars",
+      "summary": "Run your coding agent unattended, and trust the result. A supervision harness for the the agent you already use. Isolated sandbox, durable per-turn state, and a watchdog gate the agent can't fool. Output is an auditable artifact.",
+      "extra": {
+        "topics": [
+          "claude-code",
+          "cli",
+          "codex-cli",
+          "harness",
+          "pi",
+          "rust"
+        ],
+        "license": null,
+        "created": "2026-05-13",
+        "pushed": "2026-08-21",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "claude-yolo/claude-yolo",
+      "url": "https://github.com/claude-yolo/claude-yolo",
+      "date": "2026-10-27",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "Run parallel Claude Code agents in tmux with automatic permission approval. Auto-approves Bash, WebFetch, and other tool prompts so agents run unattended. One-liner install for macOS, Linux, WSL and Termux.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "anthropic",
+          "automation",
+          "bash",
+          "claude",
+          "claude-code",
+          "cli",
+          "developer-tools",
+          "parallel-execution",
+          "termux",
+          "termux-claude",
+          "tmux"
+        ],
+        "license": "MIT",
+        "created": "2026-02-15",
+        "pushed": "2026-10-27",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "zdavison/deer",
+      "url": "https://github.com/zdavison/deer",
+      "date": "2026-10-13",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "The simplest unattended coding agent orchestrator.",
+      "extra": {
+        "topics": [
+          "ai",
+          "claude-code"
+        ],
+        "license": "MIT",
+        "created": "2026-02-18",
+        "pushed": "2026-10-13",
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Can LLM Agents Improve Imperfect Earth System Model Parameterizations?",
+      "url": "http://arxiv.org/abs/2611.03543v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Earth system models (ESMs) rely on parameterizations to represent unresolved processes such as convection, cloud microphysics, and turbulence. However, translating advances in physical understanding into stable, validated parameterizations and integrating them into ESMs often takes years. Agentic AI could accelerate this process and enable more systematic exploration of design choices. Using warm-",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "KAPPA: Checking the Proofs in Statistics Papers with Lean 4 and Language Model Agents",
+      "url": "http://arxiv.org/abs/2610.35596v1",
+      "date": "2026-10-26",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Papers in statistical theory rest on long proofs that few readers check line by line. We present KAPPA (Kit of Agents for Proof-checking Papers with a proof Assistant), open-source software that organizes language model agents, run by Claude Code, to translate the proofs of a LaTeX paper into the proof assistant Lean 4 with its library Mathlib and check them there, result by result. Each numbered ",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ATTUNE: Agentic Throughput Tuning for LLM Training",
+      "url": "http://arxiv.org/abs/2610.17528v3",
+      "date": "2026-10-13",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Training a large language model can occupy thousands of GPUs for weeks, and its speed depends on its recipe: how the model is split across GPUs, how memory is traded for compute, and which kernels and communication overlaps it uses. Finding a good recipe is still manual work for experts. Automated tuners search fixed lists of knobs and check only that a job runs, so they miss large gains and can s",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ReLiveGym: Evaluating Long-Lived Agents over Weeks of Replayed Reality",
+      "url": "http://arxiv.org/abs/2610.00710v1",
+      "date": "2026-09-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "As large language model (LLM) agents become widely adopted, they are increasingly deployed for tasks that require persistent monitoring or recurring actions (e.g., market analysis). These agents are expected to operate unattended for days or weeks, act at the right timing, and adapt to the dynamic environment over time. These challenges are not fully captured in the existing long-horizon agent wor",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness",
+      "url": "http://arxiv.org/abs/2609.20519v1",
+      "date": "2026-09-17",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "As coding agents move from supervised code completion to unattended, around-the-clock exploration, their work expands from isolated predictions into long trajectories of reasoning, tool use, and feedback. Token efficiency therefore becomes important for scaling recursive self-improvement. We take an RSI-inspired approach at the harness layer, scaling auto-research loops across increasingly numerou",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Agentic Autoresearch for Cell-Edge Power Control: Radically Redefining the Researcher's Role",
+      "url": "http://arxiv.org/abs/2608.26093v1",
+      "date": "2026-08-26",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Designing machine learning algorithms for wireless resource management is labour-intensive: the architecture, the loss function and the training recipe are all specified by hand. We demonstrate that this design layer can be surrendered to an autonomous agent in its entirety. We adopt the autoresearch protocol, in which an AI coding agent edits a training script, runs a fixed-budget experiment, and",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "TraceML: What Auto-Research Agents Miss in Long-Horizon ML Development",
+      "url": "http://arxiv.org/abs/2608.26086v4",
+      "date": "2026-08-26",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Auto-research agents now run machine-learning development unattended for hours, revising data pipelines, models, and validation from their own feedback, yet on most competitions they still finish below strong human competitors. Outcome-based benchmarks record this gap but not its cause, because they grade the final submission and discard the development process behind it. We introduce TraceML, whi",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Proof-or-Stop: Don't Trust the Agent, Trust the Evidence -- Loop Engineering for Verifiable Evidence-Gated Lifecycle Control",
+      "url": "http://arxiv.org/abs/2607.14890v1",
+      "date": "2026-07-16",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autonomous coding agents increasingly execute multi-step software work, but lifecycle states such as reviewed, tested, DONE, and ready-to-merge remain claims unless supported by current evidence. We present Proof-or-Stop Lifecycle Control, a method that permits lifecycle transitions only when fresh, tracked-source-state-bound, mechanically verifiable evidence satisfies the relevant gate. The metho",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "AutoMegaKernel: A Statically-Checked Agent Harness for Self-Retargeting Megakernel Synthesis",
+      "url": "http://arxiv.org/abs/2606.09682v1",
+      "date": "2026-06-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AutoMegaKernel (AMK) compiles a HuggingFace Llama-family model into a single persistent cooperative CUDA kernel that runs the whole forward pass in one launch, with no per-model hand-written CUDA. The contribution is the system, not raw speed. A frozen schedule-IR validator statically certifies deadlock-freedom and race-freedom via static graph checks (not a mechanized proof), so an unsafe agent-p",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agora: Git as Shared Memory for Collective AutoResearch",
+      "url": "https://huggingface.co/papers/2609.18094",
+      "date": "2026-09-16",
+      "signal": 33,
+      "signal_name": "upvotes",
+      "summary": "Agora is a shared Git-based memory system for autonomous coding agents that records research as an append-only directed acyclic graph, enabling collaborative weight-transfer experiments that improved compression metrics without central planning.",
+      "extra": {
+        "keywords": [
+          "directed acyclic graph",
+          "append-only",
+          "cross-attention",
+          "attention-SSM hybrid",
+          "weight-transfer",
+          "sparse edits",
+          "state-space blocks",
+          "embedding and output head",
+          "diversity-aware selection",
+          "shared memory"
+        ],
+        "github": "https://github.com/yifanzhang-pro/Agora",
+        "github_stars": 86,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Harness-of-Harness: Multi-Day Autonomous Software Development with Continual Improvement",
+      "url": "https://huggingface.co/papers/2609.01481",
+      "date": "2026-09-01",
+      "signal": 20,
+      "signal_name": "upvotes",
+      "summary": "Harness-of-Harness enables autonomous coding agents to iteratively improve software through structured planning-coding-testing loops, yielding substantial performance gains and fully developed applications.",
+      "extra": {
+        "keywords": [
+          "LLM-based coding agents",
+          "Harness-of-Harness",
+          "planning-coding-testing loops",
+          "capability growth",
+          "verifiable increments",
+          "independent evaluation",
+          "versioned project histories",
+          "GameCraft-Bench",
+          "FrontierSWE",
+          "ProgramBench"
+        ],
+        "github": "https://github.com/Flesymeb/HarnessOfHarness",
+        "github_stars": 194,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "TokenEconomizer: Experience-Driven Black-Box Cost Control for Coding Agents",
+      "url": "https://huggingface.co/papers/2610.22732",
+      "date": "2026-10-15",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "TokenEconomizer reduces recurring token costs of coding agents across sequential real-world tasks by pruning irrelevant tools, injecting micro-skills, and interrupting failure loops.",
+      "extra": {
+        "keywords": [
+          "coding agents",
+          "token efficiency",
+          "TokenEconomizer",
+          "micro-skills",
+          "tool pruning",
+          "failure loops",
+          "black-box cost control"
+        ],
+        "github": "https://github.com/microsoft/TokenEconomizer",
+        "github_stars": 5607,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CUA-SWE: When Computer-Use Agents Meet Visual Software Engineering",
+      "url": "https://huggingface.co/papers/2609.32600",
+      "date": "2026-09-26",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "CUA-SWE introduces a benchmark and evaluation framework for software engineering agents that use visual interface feedback and interaction to diagnose, repair, and verify code changes.",
+      "extra": {
+        "keywords": [
+          "CUA-SWE",
+          "computer-use agents",
+          "GUI feedback",
+          "visual feedback",
+          "software engineering",
+          "runtime interaction failure",
+          "source-level execution",
+          "graphical interaction"
+        ],
+        "github": "https://github.com/kingofspace0wzz/cua-swe",
+        "github_stars": 10,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Activity Frames: Deterministic Screen-Activity Compilation for Agent Memory and Replay",
+      "url": "https://huggingface.co/papers/2608.05784",
+      "date": "2026-08-06",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "A deterministic screen-activity compiler builds auditable agent memory from raw capture, sharply reducing context size while improving answer accuracy over LLM summaries, and it measures routine overhead and recurrence to bound agent inference costs.",
+      "extra": {
+        "keywords": [
+          "LLM",
+          "inference",
+          "model tokens"
+        ],
+        "github": "https://github.com/nossa-y/activity-frames",
+        "github_stars": 531,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: DashClaw – policy and approval layer for unattended coding agents",
+      "url": "https://github.com/ucsandman/DashClaw",
+      "date": "2026-09-07",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49598319",
+        "comments": 0,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Relay – a harness for AI coding agents that recover and verify",
+      "url": "https://relayevals.com",
+      "date": "2026-09-29",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49898411",
+        "comments": 1,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: How do you gate an autonomous coding agent's shell access?",
+      "url": "https://news.ycombinator.com/item?id=49556858",
+      "date": "2026-09-03",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49556858",
+        "comments": 3,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Hours unattended: the memory bugs that broke my autonomous coding agent",
+      "url": "https://eltoncherrington.github.io/memctl-shop/essay.html",
+      "date": "2026-08-30",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49499689",
+        "comments": 0,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Layout QA – Visual QA for coding agents",
+      "url": "https://github.com/Layout-App/layout-qa",
+      "date": "2026-06-10",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48477155",
+        "comments": 0,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Maxxwell – The IDE for Optimal Tokenmaxxing",
+      "url": "https://maxxwell.dev/",
+      "date": "2026-09-09",
+      "signal": 11,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49625975",
+        "comments": 8,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "I track LLM API prices daily, found a 33x cost gap in the same model",
+      "url": "https://news.ycombinator.com/item?id=49586810",
+      "date": "2026-09-06",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49586810",
+        "comments": 0,
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+      "url": "https://doi.org/10.48550/arxiv.2609.11873",
+      "date": "2026-09-10",
+      "signal": 34,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI and Consciousness",
+      "url": "https://doi.org/10.1017/9781009694285",
+      "date": "2026-08-07",
+      "signal": 34,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SimFoundry: Modular and Automated Scene Generation for Policy Learning and Evaluation",
+      "url": "https://doi.org/10.48550/arxiv.2606.28276",
+      "date": "2026-06-26",
+      "signal": 34,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agentic Coding in the Wild: Characterizing GitHub Copilot Traces at Production Scale",
+      "url": "https://doi.org/10.48550/arxiv.2608.00101",
+      "date": "2026-07-30",
+      "signal": 20,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Aspects of the psychology of second language vocabulary list learning",
+      "url": "https://doi.org/10.82444/warw.33600691",
+      "date": "2026-09-11",
+      "signal": 19,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Reasoning Segmentation for Images and Videos: A Survey",
+      "url": "https://doi.org/10.1007/s11263-026-02903-2",
+      "date": "2026-06-17",
+      "signal": 17,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "ETA: A New Agentic Paradigm for Embodied Tasks",
+      "url": "https://doi.org/10.48550/arxiv.2608.03924",
+      "date": "2026-08-04",
+      "signal": 16,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "PACE: Anytime-Valid Acceptance Tests for Self-Evolving Agents",
+      "url": "https://doi.org/10.48550/arxiv.2606.08106",
+      "date": "2026-06-06",
+      "signal": 16,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AgentDoG 1.5: A Lightweight and Scalable Alignment Framework for AI Agent Safety and Security",
+      "url": "https://doi.org/10.48550/arxiv.2605.29801",
+      "date": "2026-05-28",
+      "signal": 14,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "FARS: A Fully Automated Research System Deployed at Scale",
+      "url": "https://doi.org/10.48550/arxiv.2606.31651",
+      "date": "2026-06-30",
+      "signal": 12,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Machine-Generated, Machine-Checked Proofs for a Verified Compiler (Experience Report)",
+      "url": "https://doi.org/10.1145/3828700",
+      "date": "2026-08-17",
+      "signal": 11,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "THE OCCUPATION OPERATOR - Substrate Independence, the Partition Theorem, and Why a Virtue Detector Must Stay Out of the Loop",
+      "url": "https://doi.org/10.5281/zenodo.22503411",
+      "date": "2026-09-06",
+      "signal": 10,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "unattended coding agent"
+      }
+    }
+  ]
+}

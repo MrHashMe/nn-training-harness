@@ -1,0 +1,584 @@
+[
+ {
+  "file": "agent-standards",
+  "candidate": "AGENTS.md as the kit's single rules file (format has no version number; site checked 2026-11-11)",
+  "status": "finished",
+  "where": "install.py put_block (AGENTS.md holds the one block when Codex/Cursor installed; Claude-only keeps it in CLAUDE.md); README 'What gets installed'; tests/test_ports.py (one copy of the rules)"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "CLAUDE.md holding one @AGENTS.md import line (Claude Code 2.1.277 or later; docs checked 2026-11-10)",
+  "status": "finished",
+  "where": "install.py install() writes the '@AGENTS.md' import block into CLAUDE.md when other agents are installed; README; tests/test_ports.py"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "Agent Skills SKILL.md with standard-only frontmatter, installed as two identical copies in .claude/skills and .agents/skills (specification has no version number; checked 2026-11-11)",
+  "status": "unfinished",
+  "where": "SKILL.md frontmatter now has only name and description (11 Nov). The copy in .agents/skills is a pointer to the one skill folder, by design, not an identical copy."
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "One guard core with thin per-agent input and output adapters (kit design; no external version)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (main, calls_from, respond: one rule set, per-agent input/answer adapters, refuses unknown shapes); README By agent; tests/test_ports.py guard payload sections"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "Decision mapping rule: ask becomes deny wherever the agent cannot or will not prompt",
+  "status": "finished",
+  "where": "nn_guard.py nobody_to_ask/respond; README 'By agent' table row on steps that need a person; tests/test_ports.py (ask becomes deny for Codex, Cursor, dontAsk, bypass, NN_UNATTENDED)"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "Codex CLI port through .codex/hooks.json (PreToolUse and SessionStart), AGENTS.md and .agents/skills (Codex CLI 0.167.0, 2026-11-06)",
+  "status": "finished",
+  "where": "install.py codex_hooks (PreToolUse, SessionStart), AGENTS.md block, .agents/skills pointer; README table; tests/test_ports.py Codex payloads and install"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "Cursor port through .cursor/hooks.json with failClosed and beforeShellExecution (hooks file version 1; editor docs for 3.5, terminal agent 2026.10.22)",
+  "status": "finished",
+  "where": "install.py cursor_hooks/merge_cursor_hooks (failClosed, beforeShellExecution, beforeReadFile, preToolUse, sessionStart); README; tests/test_ports.py Cursor payloads and install"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "Shell-neutral hook command line (no ${VAR:-default} expansion; the guard finds the project root itself)",
+  "status": "finished",
+  "where": "settings.fragment.json hook commands use python -c with os.environ.get; guard find_root finds root itself; README on upgrade rewriting; tests/test_ports.py runs hook command in real shells, asserts no CLAUDE_PROJECT_DIR:-"
+ },
+ {
+  "file": "agent-standards",
+  "candidate": "Per-agent doctor command with a canary denial check (kit feature, standard library)",
+  "status": "unfinished",
+  "where": "expctl selftest checks wiring and a canary denial per installed agent, but not trust, live start-up, identical skill copies or shadowing."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Exec-form hook commands (command plus args), Claude Code docs at 2.1.322",
+  "status": "unfinished",
+  "where": "Hook entries in settings.fragment.json and install.py are command strings; no exec-form args array used."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "onFailure block on every guard hook, including subagent frontmatter hooks (needs 2.1.295)",
+  "status": "finished",
+  "where": "onFailure: block is on the settings guard hook and, since 2026-11-13 (commit d07606c), on the read-only hook in the frontmatter of both agent files; checked live through --agents with Claude Code 2.1.322 on native Windows; README 'Notes and limits'; tests/test_ports.py"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Minimum Claude Code version check in install.py and expctl selftest",
+  "status": "unfinished",
+  "where": "No claude --version parsing or floor check in install.py or expctl selftest; README only names the version tested."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Guard-liveness canary at the start of every unattended run",
+  "status": "unfinished",
+  "where": "Loop proves the guard ran via NN_GUARD_BEACON after each session; no canary or hook-event check before real work."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Harness-owned outer loop: one claude -p process per iteration, started by standard-library Python",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (one agent process per iteration, limits, keep rule in harness code); references/loop.md; README; tests/test_loop.py"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "dontAsk permission mode with an explicit allowlist passed by the launcher",
+  "status": "finished",
+  "where": "nnloop.py agent_argv (--permission-mode dontAsk, --tools/--allowedTools list); references/loop.md 'Agents' table; tests/test_loop.py (explicit tool list, no shell)"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "--permission-prompts none (needs 2.1.259)",
+  "status": "unfinished",
+  "where": "--permission-prompts none appears only as advice in references/operations.md section 5; nnloop agent_argv does not pass it."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Launcher isolation flags: --settings, --setting-sources, --strict-mcp-config",
+  "status": "finished",
+  "where": "nnloop.py agent_argv (--settings, --setting-sources project, --strict-mcp-config); references/loop.md; tests/test_loop.py lines 226-234"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "--max-budget-usd as a second-layer spend cap",
+  "status": "finished",
+  "where": "nnloop.py agent_argv (--max-budget-usd from remaining --max-usd); loop.md, operations.md section 3; tests/test_loop.py line 231"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "--max-turns as a second-layer step cap",
+  "status": "unfinished",
+  "where": "--max-turns only recommended in references/operations.md; nnloop agent_argv does not pass it."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Loop accounting from the JSON result (subtype, is_error, stop_reason, terminal_reason, api_error_status, total_cost_usd, modelUsage, permission_denials)",
+  "status": "unfinished",
+  "where": "parse_claude reads is_error, subtype error_max_turns, stop_reason, cost, usage; terminal_reason, api_error_status, modelUsage, permission_denials not classified."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Read-only subagent rule enforced in the main settings guard by agent_type",
+  "status": "finished",
+  "where": "nn_guard.py main (agent_type in READONLY_AGENTS applies check_readonly in the settings-level hook); nn_readonly.py docstring; README; tests/test_ports.py read-only subagent denials"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "CLAUDE_CODE_DISABLE_FILE_MENTIONS=1 plus Read deny rules for sealed files (needs 2.1.299)",
+  "status": "unfinished",
+  "where": "CLAUDE_CODE_DISABLE_FILE_MENTIONS not found anywhere in the kit."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Critical rules in the first 5,000 tokens of SKILL.md, plus status re-injection on SessionStart compact",
+  "status": "unfinished",
+  "where": "Status re-injection on compact exists, but SKILL.md (18 KB) has no first-5,000-token ordering or check; ask/stop rules sit in section 7."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Keep model aliases (opus, sonnet) in agent files",
+  "status": "finished",
+  "where": ".claude/agents/experiment-reviewer.md (model: opus) and run-analyst.md (model: sonnet); README What gets installed"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Extension presence check (loaded plugins and mods) in selftest and launcher",
+  "status": "unfinished",
+  "where": "No check of loaded plugins or mods in selftest or nnloop."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Shared AGENTS.md imported from the CLAUDE.md block",
+  "status": "finished",
+  "where": "install.py install() (@AGENTS.md import in CLAUDE.md alongside AGENTS.md block); README; tests/test_ports.py (one copy of rules)"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "--session-id per iteration recorded in the journal",
+  "status": "unfinished",
+  "where": "nnloop agent_argv uses --no-session-persistence; no --session-id chosen or recorded per iteration."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Status line command without the bash-only default expansion",
+  "status": "finished",
+  "where": "settings.fragment.json statusLine uses python -c with os.environ.get (no ${VAR:-default}); tests/test_ports.py asserts no CLAUDE_PROJECT_DIR:- in hooks"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Detached training launch by the harness (keep), instead of Claude Code background commands",
+  "status": "finished",
+  "where": "expctl.py cmd_launch/_supervise (detached harness launch); references/operations.md section 5 ('Runs belong to the controller'); SKILL.md section 1; tests/test_kit.py"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "No web tools in the training loop; domain-scoped fetch only in the scouting step",
+  "status": "unfinished",
+  "where": "Worker has no web tools, but the scout session gets unrestricted WebSearch and WebFetch (nnloop TOOLS); no domain scoping."
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "MCP servers opt-in instead of opt-out in install.py",
+  "status": "finished",
+  "where": "install.py --mcp (off by default; existing servers left alone, noted); README optional modules; tests/test_ports.py ('--mcp adds', 'no MCP unless asked')"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Installer migration of existing hook entries on upgrade",
+  "status": "finished",
+  "where": "install.py swap_kit_hook/merge_hooks (old kit hook entry replaced, reported); README Upgrading; tests/test_ports.py upgrade over 23 October layout"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Codex PreToolUse command hook (Codex CLI 0.167.0)",
+  "status": "finished",
+  "where": "install.py codex_hooks; nn_guard.py --agent codex (exit 2, stderr reason); README; tests/test_ports.py Codex payloads"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Map every guard ask to deny on Codex",
+  "status": "finished",
+  "where": "nn_guard.py nobody_to_ask ('Codex hooks cannot ask') -> deny exit 2; README By agent; tests/test_ports.py ('what would be asked is refused')"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Codex SessionStart hook for live run status",
+  "status": "finished",
+  "where": "install.py codex_hooks SessionStart -> nn_session_status.py; selftest registration check; README; tests/test_ports.py session hook and selftest wiring (no live Codex run)"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Unattended baseline: codex exec --sandbox workspace-write with approval policy never and network off",
+  "status": "finished",
+  "where": "nnloop.py agent_argv (codex exec --json --ephemeral -s workspace-write); references/loop.md Agents table; tests/test_loop.py"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Agent Skill at .agents/skills/nn-training (SKILL.md with references and scripts)",
+  "status": "unfinished",
+  "where": "install.py writes only a pointer SKILL.md in .agents/skills/nn-training; references and scripts are not installed there."
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Marked instruction block in the root AGENTS.md",
+  "status": "finished",
+  "where": "install.py put_block into AGENTS.md; README; tests/test_ports.py ('one copy of the rules')"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Codex custom agents (.codex/agents/*.toml) for the reviewer and the analyst",
+  "status": "finished",
+  "where": "install.py port_agents (.codex/agents/*.toml); README; tests/test_ports.py (TOML name/developer_instructions)"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "codex exec --json event stream for supervision and token accounting",
+  "status": "finished",
+  "where": "nnloop.py parse_codex (turn.completed usage), agent_argv codex --json; loop.md; tests/test_loop.py (Codex parse cases)"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "External budget supervisor around codex exec (time, runs, tokens)",
+  "status": "finished",
+  "where": "nnloop.py limits (runs, hours, gpu-hours, tokens) and refusal of unmeasurable limits; README Loop limits; loop.md; tests/test_loop.py"
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "MCP servers declared in the project .codex/config.toml",
+  "status": "unfinished",
+  "where": "README says Codex MCP in ~/.codex/config.toml is left alone; installer does not write project .codex/config.toml."
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "MCP per-tool approval mode (tools.<tool>.approval_mode = prompt)",
+  "status": "unfinished",
+  "where": "No MCP per-tool approval_mode setting or mention in the kit."
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Minimum Codex version and version preflight",
+  "status": "unfinished",
+  "where": "No codex --version preflight in install.py, selftest or nnloop; README only states version tested."
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Isolated container or VM for full-access unattended runs",
+  "status": "unfinished",
+  "where": "danger-full-access and container/VM marker not documented; README says no image ships; --in-container exists only for Cursor."
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "Codex layout: kit files under .codex and .agents, run state under runs",
+  "status": "unfinished",
+  "where": "Kit files (guard, config, skill) live in .claude/, not the Codex read-only .codex/.agents folders; only hooks.json, agents and pointer are there."
+ },
+ {
+  "file": "platform-codex",
+  "candidate": "hooks.json rather than [hooks] tables in config.toml",
+  "status": "finished",
+  "where": "install.py writes .codex/hooks.json (no config.toml hook tables); README table; tests/test_ports.py"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Native guard hooks in .cursor/hooks.json (hooks schema version 1; docs describe editor 3.27 and CLI v2026.10.22)",
+  "status": "finished",
+  "where": "install.py cursor_hooks (.cursor/hooks.json version 1: beforeShellExecution, beforeReadFile, preToolUse); README; tests/test_ports.py Cursor payloads and install"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Answer deny wherever the guard would answer ask (Cursor port rule)",
+  "status": "finished",
+  "where": "nn_guard.py nobody_to_ask cursor branch; respond (Cursor form with user_message/agent_message); README; tests/test_ports.py ('beforeShellExecution turns an ask into a deny')"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Deny by exit code 2 with failClosed: true on every guard hook, plus flushed JSON and a short pause before exit",
+  "status": "unfinished",
+  "where": "Exit 2, JSON and failClosed done; guard does not flush and wait about 150 ms on allow."
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "One guard core with a thin per-agent payload adapter that refuses unknown shapes",
+  "status": "finished",
+  "where": "nn_guard.py main (payload shape/cursor_version detection, Unreadable refusal); tests/test_ports.py ('input it cannot read'); README"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Cursor subagent files with readonly: true (.cursor/agents/<name>.md)",
+  "status": "finished",
+  "where": "install.py port_agents writes .cursor/agents/*.md with readonly: true; README; tests/test_ports.py"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "sessionStart hook returning additional_context",
+  "status": "finished",
+  "where": "install.py cursor_hooks sessionStart; nn_session_status.py (additional_context); README; tests/test_ports.py ('session hook: Cursor form')"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Root AGENTS.md instruction block (marked, idempotent)",
+  "status": "finished",
+  "where": "install.py put_block into AGENTS.md (marked, idempotent); README; tests/test_ports.py (install twice changes nothing)"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Project MCP config .cursor/mcp.json, written only when an optional MCP module is enabled",
+  "status": "finished",
+  "where": "install.py install() writes .cursor/mcp.json only with --mcp (mcp.json template); README; tests/test_ports.py"
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Terminal-agent permission file <project>/.cursor/cli.json (permissions.allow and permissions.deny)",
+  "status": "unfinished",
+  "where": "install.py writes .cursor/cli.json with four deny rules only; no allow list, not translated from the kit's Claude Code rules."
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Install-time self-test that captures real hook payloads (doctor command)",
+  "status": "unfinished",
+  "where": "No doctor command capturing real hook payloads; expctl selftest only pipes built sample payloads."
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Minimum-version gate using cursor_version from the hook payload",
+  "status": "unfinished",
+  "where": "Guard reads cursor_version only to detect Cursor; no minimum-version gate."
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Start the terminal agent as cursor-agent, from PowerShell or cmd on Windows",
+  "status": "unfinished",
+  "where": "nnloop.py calls cursor-agent or agent, but no kit document mentions the alias or PowerShell/cmd start on Windows."
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Sign-in handling for unattended runs: reuse the user's existing login, never store a key",
+  "status": "unfinished",
+  "where": "nnloop recognises a signed-out agent only after a failed session (AUTH regex); no status check before starting."
+ },
+ {
+  "file": "platform-cursor",
+  "candidate": "Hook command written with the interpreter the installer resolved (no python3, no shell syntax)",
+  "status": "finished",
+  "where": "install.py cursor_hooks uses exe_text(py) .claude/hooks/nn_guard.py with plain args; README; tests/test_ports.py (Cursor hook command runs in shells)"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Claude Code `/doctor prompt-audit` (documented at Claude Code v2.1.322)",
+  "status": "unfinished",
+  "where": "/doctor prompt-audit not mentioned in any kit document."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "One canonical rules block in AGENTS.md, imported into CLAUDE.md with `@AGENTS.md`",
+  "status": "finished",
+  "where": "install.py install() (AGENTS.md block, CLAUDE.md '@AGENTS.md' import for multi-agent installs); README; tests/test_ports.py"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Scoped approval rules: exact action, reason, go-ahead path, unattended branch",
+  "status": "finished",
+  "where": "instructions-block.md bullets 3, 9, 10 (exact actions, go-ahead path, unattended branch); nn_guard.py reasons enforce them; tests/test_ports.py upgrade checks block text"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "One copy of each rule, with pointers from the other files",
+  "status": "unfinished",
+  "where": "The ask-before list sits in both instructions-block.md and SKILL.md section 7; phases are not only in SKILL.md."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Explicit `effort` in subagent frontmatter (reviewer `high`, analyst `medium`)",
+  "status": "finished",
+  "where": ".claude/agents/experiment-reviewer.md (effort: high), run-analyst.md (effort: medium); README What gets installed"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Slim kickoff prompt: no `ultrathink`, no repeated rules, phase reports written to the journal",
+  "status": "finished",
+  "where": "KICKOFF_PROMPT.md (slimmed 11 Nov: no ultrathink, no autonomy block, phase reports go to the journal; the priorities and deliverables lists are kept on purpose)"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Harness-side completion check with a cap of two or three automatic continuations",
+  "status": "unfinished",
+  "where": "nnloop has no completion check or capped automatic continuations; an iteration with no change is recorded as no_change."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Treat a model refusal as a clean stop with saved state",
+  "status": "finished",
+  "where": "nnloop.py parse_claude/Stop on stop_reason refusal (state and ledger written); references/loop.md 'It stops instead of working around'; tests/test_loop.py 'a refusal is reported as one'"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Model policy: latest Opus by default for main agent and loop worker, Fable opt-in",
+  "status": "unfinished",
+  "where": "references/loop.md line 52 says choose a mid-tier model and moderate effort; no Opus-at-high default or Fable opt-in text in README."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Reviewer subagent on `opus` at `high` in a fresh context",
+  "status": "finished",
+  "where": ".claude/agents/experiment-reviewer.md (model: opus, effort: high, tools Read/Grep/Glob/Bash, read-only hook); README; tests/test_ports.py read-only enforcement"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Calibrated reviewer brief with defined verdict meanings",
+  "status": "finished",
+  "where": ".claude/agents/experiment-reviewer.md (calibrated opening; the three verdicts are defined under Output format)"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Dated-advice convention: technique advice only in references stamped with date, source and version",
+  "status": "unfinished",
+  "where": "References carry Checked/Refresh lines (tests/test_kit.py), but SKILL.md section 4 still holds optimiser and schedule advice."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "SKILL.md ordered and trimmed to fit the 5,000-token re-attach cap",
+  "status": "unfinished",
+  "where": "SKILL.md keeps proceed/ask/stop rules in section 7 and config keys in section 8; no 5,000-token ordering or check."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Post-compaction status re-injection (existing SessionStart hook) plus an agent-neutral re-read rule",
+  "status": "finished",
+  "where": "nn_session_status.py (compact source, re-read journal line); settings.fragment.json matcher includes compact; README; tests/test_kit.py 'session hook injects status after compaction'"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Agent-neutral SKILL.md with one mechanics reference per agent and per platform",
+  "status": "unfinished",
+  "where": "SKILL.md names Claude Code mechanics (Monitor); no per-agent mechanics reference files."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Installer writes the chosen interpreter into prompt texts and agent hook commands; agent hooks get `onFailure: block`",
+  "status": "finished",
+  "where": "install.py writes the chosen interpreter into the block, SKILL.md and the agent files; the agent-file hooks carry onFailure: block since 2026-11-13 (commit d07606c); tests/test_ports.py"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Cursor subagent files in `.cursor/agents/` with `readonly: true`",
+  "status": "finished",
+  "where": "install.py port_agents (.cursor/agents/*.md, readonly: true, no model key so inherits); README; tests/test_ports.py"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Prompt lint in the kit's own tests (stdlib)",
+  "status": "unfinished",
+  "where": "tests/test_kit.py checks only Checked/Refresh headers and SKILL.md pointers; no description-length or body-line lint."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Evaluation-first prompt changes: at least three scenarios and a no-kit baseline",
+  "status": "unfinished",
+  "where": "benchmarks/pilot.py compares new, old, no kit on one task; no rule or fixed scenario set gating prompt edits."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "No written-reasoning fields in kit prompts, output formats or journal templates",
+  "status": "finished",
+  "where": "no kit prompt or output format asks for a reasoning transcript; templates/JOURNAL.md reworded 11 Nov. No lint enforces it."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Analyst and reviewer read files with the agent's own bounded read and search tools, not POSIX shell tools",
+  "status": "finished",
+  "where": ".claude/agents/run-analyst.md (Read with offset and limit, Grep with a limit; shell tools only as the fallback)"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Fresh agent session per loop iteration, with state carried in files",
+  "status": "finished",
+  "where": "nnloop.py (new headless session per iteration, state in files); references/loop.md, operations.md section 5; tests/test_loop.py"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Read-only rule for the reviewer and the analyst enforced in the settings-level guard, keyed on agent type",
+  "status": "finished",
+  "where": "nn_guard.py main (agent_type in READONLY_AGENTS -> check_readonly); README; tests/test_ports.py ('by a read-only subagent is denied by the project guard')"
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Cost-first delegation wording, kept in each agent's own file",
+  "status": "unfinished",
+  "where": "Agent files do not state delegation cost first; SKILL.md and the block carry standing 'give to run-analyst' lines."
+ },
+ {
+  "file": "prompting-guidance",
+  "candidate": "Research scout on the latest Opus or Fable model at `high`, never `low`",
+  "status": "unfinished",
+  "where": "nnloop scout uses the same --model/--effort as workers; no scout-specific Opus/Fable at high setting."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "AGENTS.md as the canonical instruction file with a one-line @AGENTS.md import in CLAUDE.md (AGENTS.md format undated; Claude Code 2.1.277+)",
+  "status": "finished",
+  "where": "install.py install() (AGENTS.md block + '@AGENTS.md' in CLAUDE.md); README; tests/test_ports.py"
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Agent Skills spec conformance plus a byte-identical skill copy in .agents/skills (specification page undated, no version shown)",
+  "status": "unfinished",
+  "where": "SKILL.md frontmatter now has only name and description (11 Nov). The copy in .agents/skills is a pointer to the one skill folder, by design, not byte-identical."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "One guard policy core with thin per-agent hook adapters (Claude Code 2.1.322; Codex hooks docs undated; Cursor hooks.json version 1)",
+  "status": "finished",
+  "where": "nn_guard.py (single core, --agent adapters); install.py hooks per agent; README; tests/test_ports.py"
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Guard-liveness canary in selftest and before each unattended loop (own proposal derived from the hook docs; no version)",
+  "status": "unfinished",
+  "where": "No canary command with nonce in selftest or loop; selftest runs the guard script directly, not through an agent."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Skill conflict and duplicate-copy check in installer and selftest (from arXiv 2610.11647 v2)",
+  "status": "unfinished",
+  "where": "No skill name/description overlap or duplicate-copy check in install.py or selftest."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Facts-only keep and stop gate in the loop driver (pattern in Canny and Andon; evidence from LoopArena, arXiv 2608.28281 v2)",
+  "status": "finished",
+  "where": "nnloop.py (harness-side evaluator run, keep rule, limits, hash-chained ledger); references/loop.md; README; tests/test_loop.py"
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Rule ledger with origin, enforcing check and review-by date, plus rule replay (arXiv 2610.32578 v1; Andon defect ledger)",
+  "status": "unfinished",
+  "where": "No rule ledger with origin, enforcing check and review-by date, and no rule replay."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Coaching deny messages that name the allowed next step (Claude Code 2.1.268 behaviour; habit-hooks claim)",
+  "status": "unfinished",
+  "where": "Several guard reasons name a safe step (expctl stop, remote module), but many asks and denies do not."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Install manifest with a SHA-256 per kit file (lockfile idea from vercel-labs/skills)",
+  "status": "unfinished",
+  "where": "install.py manifest with SHA-256 per file used by upgrade and uninstall (tested); expctl selftest does not compare against it."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Paired with-kit and without-kit measurement on short-run tasks (method used by SkillsBench, arXiv 2602.12670 v4, and by the JetBrains RTK test)",
+  "status": "finished",
+  "where": "benchmarks/pilot.py (arms new, old, none; --repeats; harness scoring); README Testing the kit"
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Minimum agent version gate in selftest and loop preflight (for example Claude Code 2.1.319 or later for unattended mode)",
+  "status": "unfinished",
+  "where": "No minimum agent version table or gate in selftest or nnloop preflight."
+ }
+]

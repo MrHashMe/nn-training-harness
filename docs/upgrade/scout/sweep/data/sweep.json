@@ -1,0 +1,3948 @@
+{
+  "meta": {
+    "topic": "training data quality",
+    "phrases": [
+      "training data quality",
+      "synthetic data generation LLM",
+      "dataset deduplication"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 20:04 UTC",
+    "count": 206
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Hebbian-Robotics/hflow",
+      "url": "https://github.com/Hebbian-Robotics/hflow",
+      "date": "2026-08-18",
+      "signal": 308,
+      "signal_name": "stars",
+      "summary": "SDK for robotics teams to verify the quality of their data used for AI model training.",
+      "extra": {
+        "topics": [
+          "airflow",
+          "data-engineering",
+          "data-pipeline",
+          "data-quality",
+          "dataset-curation",
+          "duckdb",
+          "foxglove",
+          "lerobot",
+          "mcap",
+          "multimodal",
+          "parquet",
+          "physical-ai",
+          "python",
+          "rerun",
+          "robot-learning",
+          "robotics",
+          "robotics-data"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-18",
+        "pushed": "2026-11-06",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "RenaGao/jev-dataops",
+      "url": "https://github.com/RenaGao/jev-dataops",
+      "date": "2026-09-21",
+      "signal": 69,
+      "signal_name": "stars",
+      "summary": "An open-source JEV-powered workbench for streaming data selection, quality evaluation, automatic LoRA training and held-out model evaluation.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-09-21",
+        "pushed": "2026-10-08",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bytedance/axion1_0",
+      "url": "https://github.com/bytedance/axion1_0",
+      "date": "2026-11-02",
+      "signal": 68,
+      "signal_name": "stars",
+      "summary": "Frontier-level agent capabilities with nothing more than high-quality data and a simple training recipe: 2 SFT + RL, no mid-training/DPO/OPD. Full recipe released.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "agentic-ai",
+          "agentic-workflow",
+          "agents",
+          "ai",
+          "ai-agents",
+          "llm",
+          "multi-agent"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-11-02",
+        "pushed": "2026-11-06",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ayutaz/LeapSVC",
+      "url": "https://github.com/ayutaz/LeapSVC",
+      "date": "2026-08-29",
+      "signal": 24,
+      "signal_name": "stars",
+      "summary": "Singing voice conversion built on LeapSinger's harmonic excitation and rectified flow: content + F0 + loudness -> mel -> NHVSing. Quality is read as a gap from the vocoder ceiling (Japanese, incl. unseen speakers). No weights distributed - training-data licensing.",
+      "extra": {
+        "topics": [
+          "contentvec",
+          "japanese",
+          "neural-vocoder",
+          "pytorch",
+          "rectified-flow",
+          "rmvpe",
+          "singing-voice-conversion",
+          "singing-voice-synthesis",
+          "svc",
+          "voice-conversion"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-08-29",
+        "pushed": "2026-10-01",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dharmendraisro/nisar-polarimetric-training",
+      "url": "https://github.com/dharmendraisro/nisar-polarimetric-training",
+      "date": "2026-09-14",
+      "signal": 15,
+      "signal_name": "stars",
+      "summary": "Open-source hands-on training toolkit for NISAR L2 GCOV data, covering spatial subsetting, quality control, visualization, full-pol and compact-pol polarimetric analysis, decomposition, and QGIS workflows.",
+      "extra": {
+        "topics": [
+          "earth-observation",
+          "geospatial",
+          "jupyter-notebook",
+          "nisar",
+          "polarimetry",
+          "remote-sensing",
+          "sar",
+          "synthetic-aperture-radar"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-14",
+        "pushed": "2026-09-15",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Hebbian-Robotics/pareto",
+      "url": "https://github.com/Hebbian-Robotics/pareto",
+      "date": "2026-07-21",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "High quality data curation for training AI models for robotics",
+      "extra": {
+        "topics": [
+          "computer-vision",
+          "data-curation",
+          "dataset-management",
+          "embeddings",
+          "imitation-learning",
+          "lancedb",
+          "lerobot",
+          "machine-learning",
+          "robot-learning",
+          "robotics",
+          "rust",
+          "semantic-search",
+          "siglip",
+          "vector-search"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-21",
+        "pushed": "2026-07-27",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "LensFamily/Lens",
+      "url": "https://github.com/LensFamily/Lens",
+      "date": "2026-09-29",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "Lens is a 3.8B-parameter text-to-image diffusion model that achieves quality competitive with and in several cases surpassing models like FLUX and SD3, while requiring significantly less training compute. Key ideas include maximizing data information density per batch and accelerating convergence.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-09-29",
+        "pushed": "2026-09-29",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Rinne414/vid2dataset",
+      "url": "https://github.com/Rinne414/vid2dataset",
+      "date": "2026-05-21",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Smart video-to-image extractor for LoRA training sets. Scene-aware sampling, auto-quality, SSIM diversity, bucket-aligned resize. No coding required.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-21",
+        "pushed": "2026-10-26",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Augety7777/Dexora-VLA",
+      "url": "https://github.com/Augety7777/Dexora-VLA",
+      "date": "2026-05-16",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Dexora: Open-source VLA for High-DoF Bimanual Dexterity (ICRA 2026). Dual-arm, dual-hand, 36-DoF diffusion-transformer policy with discriminator-guided data-quality-aware post-training.",
+      "extra": {
+        "topics": [
+          "airbot",
+          "bimanual-manipulation",
+          "dexterous-manipulation",
+          "diffusion-transformer",
+          "icra2026",
+          "imitation-learning",
+          "mujoco",
+          "robot-learning",
+          "vision-language-action",
+          "vla",
+          "xhand"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-05-16",
+        "pushed": "2026-05-17",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dungnotnull/ai-dataset-quality-audit-agent-skill",
+      "url": "https://github.com/dungnotnull/ai-dataset-quality-audit-agent-skill",
+      "date": "2026-06-22",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "📊 AI Training Dataset Quality Audit | Production-grade Codex skill for pre-training dataset auditing (balance, bias, leakage, ethical fitness). Binds scores to named frameworks (NIST, Gebru's Datasheets) and uses a crawl4ai pipeline.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-22",
+        "pushed": "2026-06-22",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "afloy011-spec/lora-dataset-prep",
+      "url": "https://github.com/afloy011-spec/lora-dataset-prep",
+      "date": "2026-06-10",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Prepare image datasets for LoRA training (Ostris AI Toolkit / Z-Image Turbo): quality checks, captioning (templates / Claude Vision / Florence-2), 20+ validation rules. Agent Skill for Claude Code & Cursor + standalone CLI.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-toolkit",
+          "captioning",
+          "claude-code",
+          "cursor",
+          "dataset-preparation",
+          "lora",
+          "stable-diffusion"
+        ],
+        "license": "MIT",
+        "created": "2026-06-10",
+        "pushed": "2026-07-02",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Demerdashh/bigcola-bottles-quality-control",
+      "url": "https://github.com/Demerdashh/bigcola-bottles-quality-control",
+      "date": "2026-05-23",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "End-to-end YOLO26n quality-control pipeline for Big Cola bottles -- manual data collection, annotation, Albumentations augmentation, baseline vs. augmented training comparison, and real-time video inference on a simulated industrial conveyor belt.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-23",
+        "pushed": "2026-11-03",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "voidful/awesome-agent-dataset",
+      "url": "https://github.com/voidful/awesome-agent-dataset",
+      "date": "2026-06-15",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "📚 Curated catalog of agent-training datasets + a toolkit that normalizes, deduplicates, and quality-tiers them into one schema. Produces 🤗 voidful/agent-sft.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agent-traces",
+          "awesome-list",
+          "dataset",
+          "fine-tuning",
+          "function-calling",
+          "huggingface",
+          "llm",
+          "swe-agent",
+          "tool-use"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-06-15",
+        "pushed": "2026-06-16",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "NoGamble/CodeForge-Agent",
+      "url": "https://github.com/NoGamble/CodeForge-Agent",
+      "date": "2026-07-26",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "An Agentic Data Curation Pipeline built with LangChain for filtering, deduplicating, and extracting high-quality Python pre-training data for LLMs.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-07-26",
+        "pushed": "2026-08-12",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Matrix-Research-Ai/epub2dataset",
+      "url": "https://github.com/Matrix-Research-Ai/epub2dataset",
+      "date": "2026-06-19",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Convert EPUB ebooks into high-quality LLM training datasets — Instruction, Completion, Chat styles with 8-dim quality scoring and MinHash dedup",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-19",
+        "pushed": "2026-06-19",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "CHATS-lab/verbalized-sampling",
+      "url": "https://github.com/CHATS-lab/verbalized-sampling",
+      "date": "2026-11-08",
+      "signal": 824,
+      "signal_name": "stars",
+      "summary": "Verbalized Sampling, a training-free prompting strategy to mitigate mode collapse in LLMs by requesting responses with probabilities. Achieves 2-3x diversity improvement while maintaining quality. Model-agnostic framework with CLI/API for creative writing, synthetic data generation, and dialogue simulation.",
+      "extra": {
+        "topics": [
+          "claude",
+          "creative-writing",
+          "dialogue-simulation",
+          "diversity",
+          "gemini",
+          "gpt",
+          "large-language-models",
+          "llm",
+          "mode-collapse",
+          "prompt-engineering",
+          "python",
+          "qwen",
+          "sampling",
+          "synthetic-data"
+        ],
+        "license": "NOASSERTION",
+        "created": "2025-05-20",
+        "pushed": "2026-11-08",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "shawn0728/OpenSearch-VL",
+      "url": "https://github.com/shawn0728/OpenSearch-VL",
+      "date": "2026-10-20",
+      "signal": 308,
+      "signal_name": "stars",
+      "summary": "🔍 OpenSearch-VL provides a fully open recipe for training strong multimodal deep search agents through high-quality data curation, diverse visual/search tools, and fatal-aware agentic reinforcement learning.",
+      "extra": {
+        "topics": [
+          "deep-research-agent",
+          "multimodal",
+          "opensource",
+          "search-agent",
+          "think-with-image",
+          "vlm-agent"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-05-03",
+        "pushed": "2026-10-20",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "OpenDCAI/Data-Preparation-Bench",
+      "url": "https://github.com/OpenDCAI/Data-Preparation-Bench",
+      "date": "2026-11-02",
+      "signal": 241,
+      "signal_name": "stars",
+      "summary": "A unified, downstream-grounded benchmark for LLM-driven training data construction, selection, and quality evaluation.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-03-26",
+        "pushed": "2026-11-02",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "SJTU-DMTai/awesome-ml-data-quality-papers",
+      "url": "https://github.com/SJTU-DMTai/awesome-ml-data-quality-papers",
+      "date": "2026-06-13",
+      "signal": 132,
+      "signal_name": "stars",
+      "summary": "Papers about training data quality management for ML models.",
+      "extra": {
+        "topics": [
+          "ai4db",
+          "data-centric-ai",
+          "data-debugging",
+          "data-management",
+          "data-profiling",
+          "data-quality",
+          "data-valuation",
+          "db4ai",
+          "machine-learning"
+        ],
+        "license": null,
+        "created": "2024-03-05",
+        "pushed": "2026-06-13",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "kay-ou/SimTradeData",
+      "url": "https://github.com/kay-ou/SimTradeData",
+      "date": "2026-11-04",
+      "signal": 96,
+      "signal_name": "stars",
+      "summary": "SimTradeData is a utility library supporting SimTradeDesk, SimTradeLab and simtradeML with reliable, high-quality simulated trading data for model training, backtesting, and performance evaluation.",
+      "extra": {
+        "topics": [
+          "backtesting",
+          "data-engineering",
+          "financial-data",
+          "python3"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2025-07-26",
+        "pushed": "2026-11-04",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Azure-Samples/function-calling-data-synthesizer",
+      "url": "https://github.com/Azure-Samples/function-calling-data-synthesizer",
+      "date": "2026-11-05",
+      "signal": 35,
+      "signal_name": "stars",
+      "summary": "Automated pipeline for generating, verifying, and preparing high-quality function calling datasets for model fine-tuning. Reduces manual annotation through multi-stage validation and conversion to training formats. Built for Azure ML with permissive license models (Phi3.5 MoE, Phi4 etc).",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2025-03-10",
+        "pushed": "2026-11-05",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Algoritmica-ai/deeploans",
+      "url": "https://github.com/Algoritmica-ai/deeploans",
+      "date": "2026-09-26",
+      "signal": 18,
+      "signal_name": "stars",
+      "summary": "Deeploans is an open-source framework for processing loan-level data, offering tools for data quality, standardisation, and analytics. It provides connectors for Looker and PowerBI users, as well as cloud-native scripts for model training tailored to structured finance markets",
+      "extra": {
+        "topics": [
+          "ai",
+          "automation",
+          "fintech",
+          "loans",
+          "machine-learning",
+          "opensource",
+          "securitization",
+          "structured-finance"
+        ],
+        "license": "Apache-2.0",
+        "created": "2024-11-08",
+        "pushed": "2026-09-26",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "irfanfadhullah/awesome-indonesian-llm-dataset",
+      "url": "https://github.com/irfanfadhullah/awesome-indonesian-llm-dataset",
+      "date": "2026-11-03",
+      "signal": 17,
+      "signal_name": "stars",
+      "summary": "A curated collection of high-quality Indonesian datasets for training Large Language Models (LLMs), Vision-Language Models (VLMs), and multimodal AI systems. This repository serves as a comprehensive resource for researchers and practitioners working on Indonesian natural language processing and AI.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2025-07-25",
+        "pushed": "2026-11-03",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "RanWeisberg/YOLOv8-Crack-Detection",
+      "url": "https://github.com/RanWeisberg/YOLOv8-Crack-Detection",
+      "date": "2026-07-12",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Code and data for evaluating the impact of training data quality on YOLOv8n's performance in detecting cracks in concrete structures.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2024-07-07",
+        "pushed": "2026-07-12",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "aws-samples/amazon-sagemaker-pipeline-deploy-manage-100x-models-python-cdk",
+      "url": "https://github.com/aws-samples/amazon-sagemaker-pipeline-deploy-manage-100x-models-python-cdk",
+      "date": "2026-07-28",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "This GitHub repository showcases the implementation of a comprehensive end-to-end MLOps pipeline using Amazon SageMaker pipelines to deploy and manage 100x machine learning models. The pipeline covers data pre-processing, model training/re-training, hyperparameter tuning, data quality check,model quality check, model registry, and model deployment.",
+      "extra": {
+        "topics": [
+          "aws",
+          "machine-learning",
+          "ml-ops",
+          "mlops",
+          "pipeline",
+          "sagemaker",
+          "sagemaker-deployment",
+          "sagemaker-endpoint"
+        ],
+        "license": "MIT-0",
+        "created": "2024-01-18",
+        "pushed": "2026-07-28",
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SWAM: Scaling World Action Models with Cross-Modal Alignment",
+      "url": "http://arxiv.org/abs/2611.12870v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "World action models jointly predict video and actions conditioned on language. Existing studies focus primarily on architectures and training mechanisms, typically treating language-video alignment acquired through video pretraining as an established foundation. However, introducing action learning may impair this alignment. Principled guidance on data and supervision design for maintaining langua",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Scaling Taxonomy-Free Image Labeling with Generative AI: A Multimodal",
+      "url": "http://arxiv.org/abs/2611.12725v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Providing real-time multimodal insights into images is challenging because it requires low latency, high description accuracy, and scalable solutions that are both cost-effective and efficient. For example, given a new image of an outfit, we would like to generate insights that the image depicts \"earth tones\" and \"linen pants\" and allow users to explore similar ideas along these themes. Traditiona",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Library of Hands: Fix the Hands, Not the World Model",
+      "url": "http://arxiv.org/abs/2611.12678v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "A world model predicts how a scene changes after an action, and a planner uses it to search for actions that reach a goal. If the camera moves or the controller changes, the same command moves the robot differently: when its commands are turned by 90 degrees, a frozen planner with the LeWM world model that succeeds in 77.5% of episodes succeeds in only 7.8%. Current fixes retrain the model, need t",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "FAROS: Forecast-Aware Risk-Informed Online Reinforcement Learning for Proactive O-RAN Slicing",
+      "url": "http://arxiv.org/abs/2611.12638v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Proactive Open Radio Access Network (O-RAN) slicing requires decisions before an approaching quality-of-service (QoS) loss becomes difficult to reverse. We present FAROS, a Forecast-Aware Risk-Informed O-RAN Slicing framework that combines an eight-step QoS forecast, training-only PCMCI+-supported temporal risk, Multi-Agent Proximal Policy Optimization (MAPPO) under centralized training and decent",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "WanderBench: Can World Models Explore Dynamic Worlds from Video?",
+      "url": "http://arxiv.org/abs/2611.12557v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Video world models conditioned on an input video make it possible to explore real, recorded dynamic scenes, enabling re-shooting of footage, free-viewpoint replay, and real-to-sim environments for embodied agents. Such uses require the generated rollout to stay faithful to the recorded world, yet existing benchmarks start from a single image or a text prompt, and video-conditioned generation is ev",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "K-prop: Deep Online Learning by Backpropagating Temporal Kernels",
+      "url": "http://arxiv.org/abs/2611.12530v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Self-recurrence represents an important component for temporal processing in neural networks, both artificial and biological, where it appears naturally in the form of leaky integration. However, due to the complex temporal dependencies of the gradient, an efficient and effective method of online training is still lacking. Here we propose K-prop, a novel online learning method for leaky neural net",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "LongSCOP: Semantically Consistent Long Video Outpainting",
+      "url": "http://arxiv.org/abs/2611.12445v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Video out-painting is an important problem, yet existing research focuses primarily on short clips, leaving long video out-painting largely underexplored. Extending video out-painting to long videos poses substantial challenges. A natural solution is iterative out-painting, i.e., generating videos chunk by chunk, but this introduces two major issues: generation instability or even failure caused b",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "PhysOPSD: Code as Privilege for Physically Plausible Video Generation",
+      "url": "http://arxiv.org/abs/2611.12411v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "While modern video generative models achieve remarkable visual fidelity, they remain noticeably brittle when generating physically plausible dynamics and complex interactions. Targeted post-training is crucial, yet supervised fine-tuning suffers from offline state mismatch, and reinforcement learning is hindered by sparse, ill-defined physical reward functions. On-Policy (Self-)Distillation (OPSD)",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Reconstructing hourly traffic on every street of a capital from a sparse counting network: a graph neural network applied to Paris",
+      "url": "http://arxiv.org/abs/2611.12379v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Micro-scale air quality models require hourly traffic data on every road segment, whereas permanent counters cover only a small part of the network. A graph neural network (GNN) was developed to reconstruct hourly traffic flows on the 32,163 road segments of Paris intra-muros from the 1,573 segments equipped with a counter (4.9%). The model adapts the Graph Neural Network for Urban Interpolation (",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Fragility Of Synthetic Populations Over Time: An Evaluation Of Forecasting Strategies For Agent-Based Models",
+      "url": "http://arxiv.org/abs/2611.12344v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agent-based simulation models are widely used to assess the future mobility projects. However, their effectiveness hinges on the accuracy of synthetic populations, which are often generated using data from a single reference year. This study explores the temporal validity of these populations by evaluating their performance over multi-year datasets in a simulation-like environment. We focus on mul",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MNN-Pocket-0.3B Technical Report",
+      "url": "http://arxiv.org/abs/2611.12311v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "This technical report presents MNN-Pocket-0.3B, a compact 300M-parameter dense language model designed for efficient on-device deployment and supporting context lengths of up to 32K tokens. With an INT4 deployment footprint of only 173 MB and decoding throughput of up to 466 tokens/s on iPad Pro M5 (Metal), it can be seamlessly integrated into applications on edge devices such as smartphones and s",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ForgeSystem: An Architecture for Demand-Specific Artefact Production with AI Agents",
+      "url": "http://arxiv.org/abs/2611.12288v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "General-purpose software serves many different demands, but this flexibility costs performance and efficiency on any specific demand. Software tailored to a specific demand avoids these losses, yet developing it requires substantial time and effort from human experts. AI agents offer an alternative: they can design, implement and test artefacts tailored to individual demands. We call this producti",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Learning Evidence-Grounded Reasoning for Context-Aware Time Series Forecasting",
+      "url": "http://arxiv.org/abs/2611.12285v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "LLM-driven time series forecasting has become increasingly promising by leveraging contextual features to generate future values directly or refine forecast priors. However, incorporating contextual features alone does not ensure that models can identify which features matter for forecasting and understand what they suggest about future dynamics. We argue that the fundamental challenge is how to e",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Let the Fixer Decide: Training a Code Localizer from the Fixer's Likelihood",
+      "url": "http://arxiv.org/abs/2611.12164v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Code localizers are usually trained to predict the files a reference patch edits, but the code a fixer needs to read is not the same as the code it changes. We propose Fixer-Guided Localization (FGL): the localizer proposes several localizations, a frozen fixer scores each by how likely it makes a verified patch, and the localizer is trained on these scores with weighted supervised fine-tuning, wi",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Calibrating Document-Local Boundaries for Contextual Chunk Retrieval",
+      "url": "http://arxiv.org/abs/2611.12097v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Late Chunking encodes an entire document before pooling at chunk boundaries, preserving document context in local retrieval units. Chunk-level post-training improves context-dependent retrieval, but shared context can make semantically similar same-document negatives difficult to distinguish. We study the local decision boundary between a gold chunk and its hardest sibling. Starting from InSeNT, w",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "DataPrep-Bench: Benchmarking LLMs as Training Data Preparators",
+      "url": "https://huggingface.co/papers/2607.20465",
+      "date": "2026-05-19",
+      "signal": 53,
+      "signal_name": "upvotes",
+      "summary": "DataPrep-Bench unifies evaluation of LLM-driven data construction and quality assessment via downstream training utility across multiple domains, introducing a skill-guided construction agent and a distribution-based quality metric.",
+      "extra": {
+        "keywords": [
+          "DataPrep-Bench",
+          "data construction",
+          "data quality evaluation",
+          "downstream-grounded protocol",
+          "Data-Construction-Skill",
+          "Distributional Alignment Score",
+          "MMD",
+          "cross-model correlation"
+        ],
+        "github": "https://github.com/OpenDCAI/Data-Preparation-Bench",
+        "github_stars": 241,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "RayOrch: Programming and Executing Lineage-Controlled Multi-Grain Dataflows for Foundation-Model Data Preparation",
+      "url": "https://huggingface.co/papers/2609.18703",
+      "date": "2026-09-16",
+      "signal": 49,
+      "signal_name": "upvotes",
+      "summary": "RayOrch is a distributed execution engine that preserves parent-child relationships during scalable data processing, enabling efficient GPU batching and faster pipeline execution.",
+      "extra": {
+        "keywords": [
+          "RayOrch",
+          "parent-child relations",
+          "ordered variable cardinality expansions",
+          "gathers",
+          "Per Call FIFO Ready Queues",
+          "typed parent-scoped failures",
+          "MinerU",
+          "Docling"
+        ],
+        "github": "https://github.com/OpenDCAI/RayOrch",
+        "github_stars": 19,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Autodata: An agentic data scientist to create high quality synthetic data",
+      "url": "https://huggingface.co/papers/2606.25996",
+      "date": "2026-06-24",
+      "signal": 21,
+      "signal_name": "upvotes",
+      "summary": "Autodata enables AI agents to function as data scientists who create high-quality training data through meta-optimization, demonstrating improved performance across multiple task domains.",
+      "extra": {
+        "keywords": [
+          "data scientist agent",
+          "meta-optimization",
+          "agentic self-instruct",
+          "synthetic dataset creation",
+          "inference compute",
+          "model training"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders",
+      "url": "https://huggingface.co/papers/2605.27354",
+      "date": "2026-05-26",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "SAERL uses Sparse Autoencoder-derived signals from model internals to enhance LLM reinforcement learning through diversity control, difficulty-aware curriculum learning, and quality-based data filtering.",
+      "extra": {
+        "keywords": [
+          "Sparse Autoencoder",
+          "mechanistic interpretability",
+          "reinforcement learning",
+          "data engineering",
+          "SAE-space clustering",
+          "difficulty proxy",
+          "quality probe",
+          "GRPO",
+          "Qwen2.5-Math-1.5B"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "UltraX: Refining Pre-Training Data at Scale with Adaptive Programmatic Editing",
+      "url": "https://huggingface.co/papers/2607.08646",
+      "date": "2026-07-09",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "UltraX is a function-calling framework that refines large-scale pre-training data through structured program supervision, improving quality, efficiency, and reliability.",
+      "extra": {
+        "keywords": [
+          "function-calling refinement",
+          "program-supervision generation",
+          "dataset-adaptive prompt optimization",
+          "Line Alignment Mapping",
+          "Dynamic Context Replacement",
+          "sliding-window prediction",
+          "global operation aggregation",
+          "ratio-controlled sampling"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Moving Alphabet: A Controlled Study of Training Data for Text-to-Video Generation",
+      "url": "https://huggingface.co/papers/2607.18789",
+      "date": "2026-07-21",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Controlled experiments using a procedural video testbed reveal that balanced content distribution and high-quality captions are essential for text-to-video model generalization and efficiency, with limited recovery possible from poor pre-training data.",
+      "extra": {
+        "keywords": [
+          "text-to-video generation",
+          "Moving Alphabet",
+          "procedural testbed",
+          "data distribution",
+          "caption quality",
+          "classifier-free guidance",
+          "fine-tuning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ReMova: Fine-tuning LLMs for English to Belarusian translation",
+      "url": "https://huggingface.co/papers/2609.16427",
+      "date": "2026-09-14",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A Belarusian-specific data-cleaning pipeline improves English-Belarusian machine translation by addressing orthographic variation and noise, with LLM-based models benefiting most from filtering.",
+      "extra": {
+        "keywords": [
+          "data-cleaning pipeline",
+          "fine-tuning",
+          "machine translation",
+          "orthographies",
+          "encoder-decoder",
+          "LLM-based models"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Counterfactual Gate-Support Decomposition: Separating Selection from Redistribution in Training-Data Filtering",
+      "url": "https://huggingface.co/papers/2610.19343",
+      "date": "2026-10-14",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Counterfactual Gate-Support Decomposition isolates selection and redistribution effects of data-quality gates, revealing that within-support selection drives gains while redistribution remains unresolved, and it explicitly flags when designs are non-constructible.",
+      "extra": {
+        "keywords": [
+          "Counterfactual Gate-Support Decomposition",
+          "within-support selection",
+          "between-support redistribution",
+          "finite-pool realizability",
+          "support-extinction",
+          "token-assembly conditions"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Adapting English Quality Classifiers for Multilingual LLM Pretraining Data Selection",
+      "url": "https://huggingface.co/papers/2610.11585",
+      "date": "2026-10-08",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "A multilingual adaptation of an English quality classifier via small multi-layer perceptrons on encoder embeddings extends high-quality data filtering to over 100 languages while preserving benchmark performance.",
+      "extra": {
+        "keywords": [
+          "large language model pretraining",
+          "model-based filtering",
+          "multilingual adaptation",
+          "multi-layer perceptron",
+          "Transformer encoder-only model",
+          "cross-lingual generalization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Not All Invariants Are Equal: Curating Training Data to Accelerate Program Verification with SLMs",
+      "url": "https://huggingface.co/papers/2603.15510",
+      "date": "2026-06-23",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Wonda curates high-quality loop invariants via AST normalization and semantic rewriting to fine-tune small language models, substantially improving invariant correctness and verification speed.",
+      "extra": {
+        "keywords": [
+          "inductive loop invariants",
+          "Large Language Models",
+          "fine-tuning",
+          "AST-based normalization",
+          "semantic rewriting",
+          "Small Language Models",
+          "Qwen3",
+          "Llama-3.1",
+          "Mistral",
+          "InvBench"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Internal Data Repetition Destroys Language Models",
+      "url": "https://huggingface.co/papers/2606.24998",
+      "date": "2026-06-23",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Repetition in language model training causes systematic performance degradation that scales with model size and compute budget, with optimal repetition patterns emerging from a statistical tradeoff between memorization and generalization.",
+      "extra": {
+        "keywords": [
+          "language models",
+          "repetition",
+          "scaling laws",
+          "compute-equivalent gain",
+          "compute-equivalent loss",
+          "eval loss",
+          "FLOPs budget",
+          "verbatim duplicates",
+          "memorization",
+          "generalization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "DataEvolver: Automatic Data Preparation for Large Language Models through Multi-Level Self-Evolving",
+      "url": "https://huggingface.co/papers/2606.07001",
+      "date": "2026-06-10",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "DataEvolver is a self-evolving system that automatically builds data-preparation pipelines to improve training data quality and boost downstream language model performance.",
+      "extra": {
+        "keywords": [
+          "large language models",
+          "self-evolving data preparation",
+          "operator set",
+          "logical plan",
+          "executable code",
+          "feedback loop",
+          "distribution gap",
+          "iterative co-evolution"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Bittensor Agent Arenas as a Trajectory Primitive: Distilling a Shopping Agent from ShoppingBench Subnet Traces",
+      "url": "https://huggingface.co/papers/2606.10064",
+      "date": "2026-06-08",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Small-model agentic post-training effectiveness is limited by trajectory data quality rather than algorithmic approaches, with a proposed incentive-aligned agent arena generating superior training data for improved performance.",
+      "extra": {
+        "keywords": [
+          "agentic post-training",
+          "trajectory substrate",
+          "RLVR",
+          "group-relative RL",
+          "rejection-sampled re-SFT",
+          "multi-turn traces",
+          "per-trajectory supervision",
+          "frontier-synthesised data",
+          "unfiltered production logs",
+          "incentive-aligned agent arena",
+          "ORO Subnet 15",
+          "ShoppingBench",
+          "LLM reasoning judge",
+          "leak-cluster-guarded problem suite",
+          "structural-quality filter",
+          "Qwen3-4B",
+          "SFT-then-GRPO",
+          "ASR",
+          "pass@8",
+          "pass@1",
+          "Dr. GRPO",
+          "reward",
+          "supervised stack"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: An LLM that's better at writing",
+      "url": "https://dft.rosmine.ai/",
+      "date": "2026-05-18",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48183396",
+        "comments": 0,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: What silent data issues have you hit when training physical AI models?",
+      "url": "https://news.ycombinator.com/item?id=49967773",
+      "date": "2026-10-05",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49967773",
+        "comments": 0,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Dataset for AI training and fine tuning",
+      "url": "https://neurvance.com/",
+      "date": "2026-05-18",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48180331",
+        "comments": 0,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Swift-Qwen3.8-27B, -58.3% thinking, x1.95 speed, accuracy of xhigh",
+      "url": "https://huggingface.co/ukisai/Swift-Qwen3.8-27b",
+      "date": "2026-09-16",
+      "signal": 33,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49727511",
+        "comments": 17,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: A Layer for robotics dataset quality",
+      "url": "https://www.calibrarobotics.com/",
+      "date": "2026-08-26",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49448788",
+        "comments": 5,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Stera: Open-Source Infra That Turns iPhones into Spatial Data for World Models",
+      "url": "https://news.ycombinator.com/item?id=48160091",
+      "date": "2026-05-16",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48160091",
+        "comments": 1,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: A tool to share my data?",
+      "url": "https://news.ycombinator.com/item?id=49545792",
+      "date": "2026-09-03",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49545792",
+        "comments": 0,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Juakali: a datalayer to build artificial general engineer",
+      "url": "https://4dlab.xyz/juakali/",
+      "date": "2026-06-20",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48605970",
+        "comments": 0,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Kairos – Open-source risk and fraud decisioning platform",
+      "url": "https://github.com/finic-ai/kairos",
+      "date": "2026-11-03",
+      "signal": 107,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50358314",
+        "comments": 37,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: I built a task system to handle the drudgery so I could focus on tasks",
+      "url": "https://3anddoneapp.com/try",
+      "date": "2026-10-19",
+      "signal": 61,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50151980",
+        "comments": 56,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Robotic Adaptation Suffers from Data Collection Bottleneck",
+      "url": "https://news.ycombinator.com/item?id=49061030",
+      "date": "2026-07-26",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49061030",
+        "comments": 0,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Launch HN: Rudus (YC P26) – AI for concrete contractors",
+      "url": "https://news.ycombinator.com/item?id=48374528",
+      "date": "2026-06-02",
+      "signal": 41,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48374528",
+        "comments": 14,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Optimize and serve models with Fable quality at half the cost",
+      "url": "https://github.com/experientiallabs/world-model-optimizer",
+      "date": "2026-07-26",
+      "signal": 71,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49063454",
+        "comments": 30,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: A decent text-to-image model trained for ~$20K (Apache 2.0 Weights)",
+      "url": "https://www.linum.ai/field-notes/pjit-21k",
+      "date": "2026-11-04",
+      "signal": 286,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50368208",
+        "comments": 30,
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Materials Science Forum",
+      "url": "https://doi.org/10.4028/www.scientific.net/msf",
+      "date": "2026-11-06",
+      "signal": 2277,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "TimeLLM: Time Series Forecasting by Reprogramming Large Language Models",
+      "url": "https://doi.org/10.1201/9781003616719-7",
+      "date": "2026-05-18",
+      "signal": 1048,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An open vision-language model for diverse medical applications",
+      "url": "https://doi.org/10.1038/s41591-026-04626-w",
+      "date": "2026-10-01",
+      "signal": 984,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Gemma 4 Technical Report",
+      "url": "https://doi.org/10.48550/arxiv.2607.02770",
+      "date": "2026-07-02",
+      "signal": 768,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A Century of Stock Market Liquidity and Trading Costs",
+      "url": "https://doi.org/10.1111/fima.70074",
+      "date": "2026-10-27",
+      "signal": 482,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Human-Centered Explainable AI (XAI)",
+      "url": "https://doi.org/10.1017/9781108872225.011",
+      "date": "2026-09-03",
+      "signal": 462,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Causal World Modeling for Robot Control",
+      "url": "https://doi.org/10.15607/rss.2026.xxii.016",
+      "date": "2026-07-13",
+      "signal": 430,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "π*₀.₆: a VLA That Learns From Experience",
+      "url": "https://doi.org/10.15607/rss.2026.xxii.087",
+      "date": "2026-07-13",
+      "signal": 408,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Can exercise affect immune function to increase susceptibility to infection?",
+      "url": "https://doi.org/10.22029/eir.2020.1730",
+      "date": "2026-07-15",
+      "signal": 387,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Neural Radiance Fields in 3D Vision: A Comprehensive Review",
+      "url": "https://doi.org/10.26599/cvm.2026.9450535",
+      "date": "2026-05-15",
+      "signal": 333,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "BeyondMimic: From motion tracking to versatile humanoid control via guided diffusion",
+      "url": "https://doi.org/10.1126/scirobotics.adx8924",
+      "date": "2026-08-26",
+      "signal": 304,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Machine psychology for language models",
+      "url": "https://doi.org/10.1126/sciadv.aec1912",
+      "date": "2026-10-28",
+      "signal": 299,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Mean-Field Limit of Non-exchangeable Multi-agent Systems Over Hypergraphs with Unbounded Rank",
+      "url": "https://doi.org/10.1007/s00332-026-10338-9",
+      "date": "2026-10-23",
+      "signal": 288,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Exploring Large Language Model‐Based Intelligent Agents: Definitions, Methods, and Prospects",
+      "url": "https://doi.org/10.1002/widm.70111",
+      "date": "2026-07-24",
+      "signal": 286,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training data quality"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Lexsi-Labs/CuratorKIT",
+      "url": "https://github.com/Lexsi-Labs/CuratorKIT",
+      "date": "2026-06-16",
+      "signal": 36,
+      "signal_name": "stars",
+      "summary": "CuratorKIT : Data curation and synthetic data generation for LLM post-training.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-06-16",
+        "pushed": "2026-11-10",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Humaam-04-06/CastNeuralAI",
+      "url": "https://github.com/Humaam-04-06/CastNeuralAI",
+      "date": "2026-06-14",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "No-Code LLM Fine-Tuning & Application Factory. Cast raw text or PDFs into standalone, 4-bit QLoRA quantized models (GGUF/Docker) with customizable, fully-replicated UI skins (ChatGPT, Gemini, Claude, Grok). Features BYOK controls, automated synthetic data generation, and local sandbox mocking.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-14",
+        "pushed": "2026-06-14",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dattasid/TS-SynthDesigner",
+      "url": "https://github.com/dattasid/TS-SynthDesigner",
+      "date": "2026-10-06",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Typed synthetic data generation for TypeScript: schema-first trees, DAG dependency tracking, typechecked LLM calls.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-10-06",
+        "pushed": "2026-10-12",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "BerrF35/imagegen",
+      "url": "https://github.com/BerrF35/imagegen",
+      "date": "2026-08-19",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "accepts image sets and gives out modified versions of the same set of images without repetition, can be used in synthetic data generation for llm training",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-19",
+        "pushed": "2026-08-19",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "necla-ml/DiscussLLM",
+      "url": "https://github.com/necla-ml/DiscussLLM",
+      "date": "2026-05-14",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Training, evaluation and synthetic data generation code for \"DiscussLLM: Teaching Large Language Models When to Speak\"",
+      "extra": {
+        "topics": [],
+        "license": "BSD-3-Clause",
+        "created": "2026-05-14",
+        "pushed": "2026-05-14",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Imkumar80/llm-data-lab",
+      "url": "https://github.com/Imkumar80/llm-data-lab",
+      "date": "2026-09-15",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A research lab for creating high-quality datasets for language models, with a focus on data curation, synthetic data generation, instruction tuning, and evaluation.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-09-15",
+        "pushed": "2026-11-01",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ApartsinProjects/SynSmith",
+      "url": "https://github.com/ApartsinProjects/SynSmith",
+      "date": "2026-05-15",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Multi-Objective Prompt Debugging for Realistic, Diverse, and Attribute-Controlled Synthetic Data Generation",
+      "extra": {
+        "topics": [
+          "active-learning",
+          "data-augmentation",
+          "llm",
+          "prompt-engineering",
+          "prompt-optimization",
+          "research",
+          "synthetic-data"
+        ],
+        "license": "MIT",
+        "created": "2026-05-15",
+        "pushed": "2026-06-04",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "zinebboutaleb/Healthcare-neuro-symbolic-GraphRAG",
+      "url": "https://github.com/zinebboutaleb/Healthcare-neuro-symbolic-GraphRAG",
+      "date": "2026-10-07",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A neuro-symbolic GraphRAG prototype for multi-hop healthcare question answering, combining knowledge graphs, vector retrieval, symbolic reasoning, and LLM-based generation over synthetic data.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-10-07",
+        "pushed": "2026-10-07",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ccholys/Chatty-data-generation",
+      "url": "https://github.com/ccholys/Chatty-data-generation",
+      "date": "2026-06-17",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Synthetic data generation + talk-to-data",
+      "extra": {
+        "topics": [
+          "docker",
+          "gemini",
+          "gen-ai",
+          "genai",
+          "generative-ai",
+          "langfuse",
+          "llm",
+          "postgresql",
+          "streamlit",
+          "synthetic-data",
+          "synthetic-data-generation",
+          "synthetic-dataset-generation",
+          "talk-to-data",
+          "vertex-ai"
+        ],
+        "license": null,
+        "created": "2026-06-17",
+        "pushed": "2026-06-30",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "tkarim45/synthetic-data-pipeline",
+      "url": "https://github.com/tkarim45/synthetic-data-pipeline",
+      "date": "2026-06-26",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Synthetic data generation + quality-filter pipeline: generate labeled data, filter (quality/label-consistency/dedup), measure downstream accuracy lift on a real test set. Filtered 5x smaller, beats raw.",
+      "extra": {
+        "topics": [
+          "anthropic",
+          "claude",
+          "data-centric-ai",
+          "data-quality",
+          "deduplication",
+          "llm",
+          "machine-learning",
+          "python",
+          "scikit-learn",
+          "synthetic-data"
+        ],
+        "license": "MIT",
+        "created": "2026-06-26",
+        "pushed": "2026-07-25",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "HarshNaik0212/syno-ai-tool",
+      "url": "https://github.com/HarshNaik0212/syno-ai-tool",
+      "date": "2026-06-14",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Production-grade AI platform for synthetic data generation and LLM fine-tuning",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-14",
+        "pushed": "2026-06-14",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "BertilBraun/LLM-Light",
+      "url": "https://github.com/BertilBraun/LLM-Light",
+      "date": "2026-06-23",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Artifact-based PyTorch LLM training system for synthetic data generation, GPT/MoE experiments, distributed training, evaluation, and reproducible exports.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-23",
+        "pushed": "2026-07-22",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hsb943/agentic-learning-llm-platform",
+      "url": "https://github.com/hsb943/agentic-learning-llm-platform",
+      "date": "2026-05-31",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Built an agentic learning platform using synthetic data generation, LLM fine-tuning, LangGraph, and hybrid OpenAI/local inference.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-05-31",
+        "pushed": "2026-05-31",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "sourangshupal/datagen-syn",
+      "url": "https://github.com/sourangshupal/datagen-syn",
+      "date": "2026-06-02",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "🧬 Production-grade synthetic data generation pipeline for LLM fine-tuning (SFT + DPO) — Instructor · Outlines · DSPy",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-02",
+        "pushed": "2026-06-02",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ybakhan/llm-finetuning-uml-antipatterns",
+      "url": "https://github.com/ybakhan/llm-finetuning-uml-antipatterns",
+      "date": "2026-05-27",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Fine-tuning a compact LLM to detect structural antipatterns in UML use case diagrams, from synthetic data generation to evaluation.",
+      "extra": {
+        "topics": [
+          "fine-tuning",
+          "huggingface",
+          "llm",
+          "lora",
+          "machine-learning",
+          "peft",
+          "plantuml",
+          "python",
+          "uml",
+          "unsloth"
+        ],
+        "license": "MIT",
+        "created": "2026-05-27",
+        "pushed": "2026-06-28",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "InternScience/GraphGen",
+      "url": "https://github.com/InternScience/GraphGen",
+      "date": "2026-11-08",
+      "signal": 1233,
+      "signal_name": "stars",
+      "summary": "GraphGen: Enhancing Supervised Fine-Tuning for LLMs with Knowledge-Driven Synthetic Data Generation",
+      "extra": {
+        "topics": [
+          "ai4science",
+          "data-generation",
+          "data-synthesis",
+          "graphgen",
+          "knowledge-graph",
+          "llama-factory",
+          "llm",
+          "llm-training",
+          "pretrain",
+          "pretraining",
+          "qa",
+          "question-answering",
+          "qwen",
+          "sft",
+          "sft-data",
+          "xtuner"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-01-08",
+        "pushed": "2026-11-08",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "syda-ai/syda",
+      "url": "https://github.com/syda-ai/syda",
+      "date": "2026-08-09",
+      "signal": 178,
+      "signal_name": "stars",
+      "summary": "AI-powered synthetic data generation — structured tables, unstructured documents, multi-provider LLM support, referential integrity, and code-gen mode for millions of rows",
+      "extra": {
+        "topics": [
+          "anthropic",
+          "codegen",
+          "data-generation",
+          "gemini",
+          "grok",
+          "llm",
+          "openai",
+          "pydantic-ai",
+          "python",
+          "referential-integrity",
+          "synthetic-data",
+          "unstructured-data"
+        ],
+        "license": "MIT",
+        "created": "2025-05-11",
+        "pushed": "2026-08-09",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Red-Hat-AI-Innovation-Team/sdg_hub",
+      "url": "https://github.com/Red-Hat-AI-Innovation-Team/sdg_hub",
+      "date": "2026-11-09",
+      "signal": 170,
+      "signal_name": "stars",
+      "summary": "Synthetic Data Generation Toolkit for LLMs",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "model-customization",
+          "synthetic-dataset-generation"
+        ],
+        "license": "Apache-2.0",
+        "created": "2024-11-12",
+        "pushed": "2026-11-09",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "patrickfleith/datafast",
+      "url": "https://github.com/patrickfleith/datafast",
+      "date": "2026-11-08",
+      "signal": 59,
+      "signal_name": "stars",
+      "summary": "Synthetic Text Dataset Generation for LLM projects",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-01-16",
+        "pushed": "2026-11-08",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ThomasRochefortB/open-agentinstruct",
+      "url": "https://github.com/ThomasRochefortB/open-agentinstruct",
+      "date": "2026-11-09",
+      "signal": 29,
+      "signal_name": "stars",
+      "summary": "An open-source recreation of the AgentInstruct agentic workflow for synthetic data generation",
+      "extra": {
+        "topics": [
+          "finetuning",
+          "llm",
+          "synthetic-data"
+        ],
+        "license": "MIT",
+        "created": "2024-09-19",
+        "pushed": "2026-11-09",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "atfortes/LLMSymbolicReasoningBench",
+      "url": "https://github.com/atfortes/LLMSymbolicReasoningBench",
+      "date": "2026-08-13",
+      "signal": 23,
+      "signal_name": "stars",
+      "summary": "Synthetic data generation for evaluating LLM symbolic and logic reasoning",
+      "extra": {
+        "topics": [
+          "chain-of-thought",
+          "chatgpt",
+          "chatgpt-o1",
+          "data-engineering",
+          "dataset",
+          "dataset-generation",
+          "deepseek-r1",
+          "gpt-4",
+          "language-model",
+          "large-language-models",
+          "machine-learning",
+          "natural-language-processing",
+          "random-generation",
+          "reasoning",
+          "strawberry",
+          "symbolic",
+          "symbolic-reasoning"
+        ],
+        "license": null,
+        "created": "2023-02-03",
+        "pushed": "2026-08-13",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ahmad-alismail/LLM_based_Synthetic_Data_Generation",
+      "url": "https://github.com/ahmad-alismail/LLM_based_Synthetic_Data_Generation",
+      "date": "2026-11-04",
+      "signal": 18,
+      "signal_name": "stars",
+      "summary": "A curated and continuously updated collection of papers, tools, and datasets on synthetic data generation using LLMs and agentic workflows.",
+      "extra": {
+        "topics": [
+          "agentic-workflow",
+          "llms",
+          "synthetic-data",
+          "synthetic-dataset-generation"
+        ],
+        "license": null,
+        "created": "2025-01-31",
+        "pushed": "2026-11-04",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Ahmad8864/autosynth",
+      "url": "https://github.com/Ahmad8864/autosynth",
+      "date": "2026-07-14",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Agentic synthetic-data generation framework inspired by Meta FAIR's Autodata / Agentic Self-Instruct.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "agents",
+          "ai",
+          "data-generation",
+          "dataset-generation",
+          "evaluation",
+          "fine-tuning",
+          "large-language-models",
+          "litellm",
+          "llm",
+          "llm-as-judge",
+          "llm-evaluation",
+          "machine-learning",
+          "post-training",
+          "python",
+          "self-instruct",
+          "synthetic-data",
+          "synthetic-data-generation",
+          "training-data"
+        ],
+        "license": "MIT",
+        "created": "2026-05-13",
+        "pushed": "2026-07-14",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Cashcoin123/Cashcoin123",
+      "url": "https://github.com/Cashcoin123/Cashcoin123",
+      "date": "2026-10-05",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "# Application card: GitHub Copilot Chat Learn how to use GitHub Copilot Chat responsibly by understanding its purposes, capabilities, and limitations. ## What is an Application Card? <!-- Do not modify this text.--> GitHub’s application and platform cards are intended to help you understand how our AI technology works, the choices application owners can make that influence application performance ",
+      "extra": {
+        "topics": [
+          "config",
+          "github-config"
+        ],
+        "license": null,
+        "created": "2022-02-23",
+        "pushed": "2026-10-05",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ljubomirj/ChEMBLdb-query",
+      "url": "https://github.com/ljubomirj/ChEMBLdb-query",
+      "date": "2026-08-17",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "LLM-assisted SQL querying of ChEMBL with a judge-loop for self-improvement, synthetic data generation, and bidirectional query↔semantic-plan translation.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-01-15",
+        "pushed": "2026-08-17",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Kkathyf/RDFace",
+      "url": "https://github.com/Kkathyf/RDFace",
+      "date": "2026-07-26",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "This repository provides a modular benchmark for facial image analysis in the context of rare disease diagnosis, specifically tailored for use with the RDFace dataset. It supports data preprocessing, classification (few-shot and supervised), synthetic image generation, and LLM-based report generation.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2025-05-13",
+        "pushed": "2026-07-26",
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "2D Gum-Net: Unsupervised Dense Elastic Image Registration via Symmetric Correlation and Spectral Pooling",
+      "url": "http://arxiv.org/abs/2611.12805v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Dense non-rigid registration, the recovery of a pixel-wise deformation field that warps one image into geometric agreement with another, is fundamental across medical imaging, structural biology, and correspondence estimation, yet learning-based approaches face a severe bottleneck: ground-truth deformation fields are notoriously difficult to obtain for real data. We present 2D Gum-Net, an end-to-e",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A local language model layered with rule-based and neural detectors for clinical text de-identification: an open-source toolkit and evaluation",
+      "url": "http://arxiv.org/abs/2611.12709v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Objectives: To measure whether a locally hosted large language model (LLM), stacked with deterministic and clinical named-entity recognition (NER) detectors, finds more protected health information (PHI) than open tools, and at what precision. Materials and Methods: DeidSharp, an open-source .NET toolkit, combines the findings of pluggable detectors (patterns, a clinical NER model, a local 26B mix",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "EditJudge-Bench: Auditing VLM Image-Edit Judges with Synthetic Ground Truth",
+      "url": "http://arxiv.org/abs/2611.12524v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Vision-language models (VLMs) are increasingly used as automated judges for image-editing benchmarks, yet their reliability is poorly understood. Auditing these judges is difficult because real edited images lack controlled ground truth and entangle the requested changes with model artefacts, unintended side effects, and ambiguous degrees of success. In this paper, we introduce EditJudge-Bench, a ",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Can the Confidence and Decisions of System 1 Models Be Trusted? An Explainability and Perturbation Audit of Jev-Style Decision Models",
+      "url": "http://arxiv.org/abs/2611.12521v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "\"System 1\" decision models (pioneered by TypeSafe AI's Jev) replace autoregressive text generation with a single forward pass returning typed probability distributions over declared schemas (Choice, Score, Noul). While deployed for low-latency routing and automated triage, their statistical calibration and post-hoc explainability remain uncharacterized. We introduce an open, deterministic audit be",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "KPG193-ext: A Synthetic Korean Power Grid Test System for Stability Analysis",
+      "url": "http://arxiv.org/abs/2611.12439v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Growing shares of inverter-based generation and constrained transmission expansion increase the need to assess stability across operating conditions. Production-cost models provide chronological commitment and dispatch, but stability analysis requires corresponding electrical detail and device dynamics. This paper introduces KPG193-ext, an extension of the synthetic Korean power-grid test system K",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Zeeman-Doppler imaging of early-type stars. Testing Stokes parameter inversions with theoretical magnetohydrodynamic models",
+      "url": "http://arxiv.org/abs/2611.12390v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Zeeman-Doppler imaging (ZDI) is widely used to reconstruct magnetic fields in early-type stars from time-series spectropolarimetric observations, yet its accuracy has not been systematically validated against physically self-consistent, complex magnetic field models. We aim to assess the reliability and limitations of modern ZDI techniques applied to fossil fields of early-type stars. We generated",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Evidence or Marginal? What Moment-Vector Propagation Computes in Polynomial Density Neurons",
+      "url": "http://arxiv.org/abs/2611.12339v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "When a neuron's input is lost, or known through a belief $q$, what should it output? For a neuron storing a joint polynomial density $N$ with input density $D$, two formulas compete. $p_\\mathrm{CD}=E_q[N]/E_q[D]$ costs one matrix-vector product; Hierarchical Correlation Reconstruction introduces it as a constant-denominator approximation to $p_\\mathrm{EU}=E_q[N/D]$. For a density model both are ex",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "An assessment of the Weak Field Approximation",
+      "url": "http://arxiv.org/abs/2611.12138v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The Weak Field Approximation (WFA) is widely used to infer magnetic fields from solar spectropolarimetric observations. However, its validity and sensitivity to atmospheric conditions are not fully understood. We investigate the reliability and limitations of the WFA using Generalized Response Functions (GRFs), which quantify the sensitivity of the inferred magnetic field to atmospheric perturbati",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RAPA: Ray-Aware Physics Augmentation for Robust Camera-LiDAR Calibration",
+      "url": "http://arxiv.org/abs/2611.12129v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Camera-LiDAR calibration is essential for reliable perception in robotic and autonomous systems. Most target-based calibration methods rely on checkerboard observations, but accurate checkerboard feature extraction from LiDAR point clouds remains challenging due to measurement sparsity. Existing approaches either require manual annotation of 3D corners or depend on geometric feature extraction met",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SAM-VTP: Video Memory and Measured Geometry for Continuous Traversability Segmentation",
+      "url": "http://arxiv.org/abs/2611.12099v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Traversability prediction is a core component of autonomous navigation, yet most vision-based methods operate frame-wise and produce temporally inconsistent predictions. We present SAM-VTP (Video Traversability Prediction), which fine-tunes SAM2's video memory pathway for dense, prompt-free traversability segmentation, conditioning each frame on a persistent memory of prior observations. Rather th",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Four-Step Text-Bearing Image Generation via Distillation with Local Response Regularization and Teacher-Guided Training",
+      "url": "http://arxiv.org/abs/2611.12042v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Generating text-bearing images requires coherent scenes and accurate characters. Large text-to-image models improve both capabilities through repeated denoising, at substantial sampling cost. Few-step distillation reduces this cost but requires the student to organize scenes and refine glyphs within a short trajectory. We present a four-step distillation framework combining local response regulari",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Enhancing Multi-Step Chemical Mechanism Prediction with Graph-Guided Preference Data",
+      "url": "http://arxiv.org/abs/2611.12013v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Predicting multi-step chemical reaction mechanisms requires identifying plausible intermediates and correctly ordering the elementary reaction steps. Existing computational methods focus on single-step elementary reaction prediction, limiting their ability to generalize to unseen reaction spaces. We introduce a graph-guided framework for multi-step chemical mechanism prediction that leverages a ch",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A Mathematical Multiscale Framework for Nonlinear Modeling of the Heliosphere",
+      "url": "http://arxiv.org/abs/2611.11999v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The inner heliosphere is a highly nonlinear continuous medium where macroscopic ideal magnetohydrodynamics is inextricably coupled with microscopic, fully developed stochastic turbulence. State-of-the-art global 3D numerical solvers, while proficient at capturing the large-scale propagation of extreme space physics phenomena such as coronal mass ejections and corotating interaction regions, are co",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Characterizing Underrepresentation when Generalizing Causal Survival Estimates",
+      "url": "http://arxiv.org/abs/2611.11923v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Randomized trial findings are routinely generalized to broader target populations to inform decisions in medicine and public policy. When the trial sample is misaligned with the target population, generalized effect estimates can yield suboptimal decisions. We characterize the target subgroups that are underrepresented in the trial cohort in time-to-event settings. Here, underrepresentation arises",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Environment-free Synthetic Data Generation for API-Calling Agents",
+      "url": "https://huggingface.co/papers/2607.16900",
+      "date": "2026-07-18",
+      "signal": 20,
+      "signal_name": "upvotes",
+      "summary": "Using LLMs as digital world models to simulate API interactions enables scalable, environment-free synthetic trajectory generation for training API-calling agents.",
+      "extra": {
+        "keywords": [
+          "API-calling agents",
+          "synthetic data generation",
+          "digital world models",
+          "LLM simulator",
+          "teacher agent",
+          "LLM judge",
+          "AppWorld",
+          "OfficeBench"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LLMs Get Smarter from Targeted Synthetic Multilingual Data",
+      "url": "https://huggingface.co/papers/2608.15964",
+      "date": "2026-08-16",
+      "signal": 7,
+      "signal_name": "upvotes",
+      "summary": "HOTFIXR is a data generation framework that targets multilingual reasoning weaknesses to improve cross-lingual performance without sacrificing overall capability.",
+      "extra": {
+        "keywords": [
+          "language-specific competency",
+          "cross-lingual reasoning",
+          "multilingual synthetic training data",
+          "catastrophic forgetting",
+          "out-of-distribution"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Calibration as a First-Class Criterion in LLM Evaluation",
+      "url": "https://huggingface.co/papers/2609.26489",
+      "date": "2026-09-22",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "Calibration of language model confidence should be paired with standard performance metrics across NLP subfields to ensure trustworthy evaluation and safe deployment.",
+      "extra": {
+        "keywords": [
+          "calibration",
+          "confidence scores",
+          "LLM-as-a-judge",
+          "synthetic data generation",
+          "active learning",
+          "open-ended generation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Evaluating LLM-Generated Preference Distributions",
+      "url": "https://huggingface.co/papers/2610.01000",
+      "date": "2026-10-01",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Large language models show self-consistent but divergent preference distributions across domains and scales, with model choice influencing outcomes more than prompt wording.",
+      "extra": {
+        "keywords": [
+          "Large Language Models",
+          "self-coherence",
+          "temperature changes",
+          "greedy decoding",
+          "open-weight models"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "MiST: Mid-Training LLMs for Cybersecurity",
+      "url": "https://huggingface.co/papers/2609.18496",
+      "date": "2026-09-16",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "MiST is a mid-trained cybersecurity language model suite that uses synthetic data from a curated seed corpus to substantially improve benchmark accuracy over general baselines.",
+      "extra": {
+        "keywords": [
+          "mid-training",
+          "supervised fine-tuning",
+          "synthetic data generation",
+          "reinforcement learning",
+          "domain adaptation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CuratorKIT : Data Curation and Synthetic Data Generation for LLM Post-Training",
+      "url": "https://huggingface.co/papers/2606.21631",
+      "date": "2026-06-19",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "CuratorKIT is an open-source library that unifies data ingestion, cleaning, synthetic generation, quality filtering, and export into a single auditable pipeline for large language model post-training.",
+      "extra": {
+        "keywords": [
+          "LLM-powered generation",
+          "provenance-exact hallucination verification",
+          "structured adaptive recovery",
+          "LiteLLM",
+          "TRL",
+          "Unsloth",
+          "AlignTune",
+          "append-only provenance chain"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "The Significance of Style Diversity in Annotation-Free Synthetic Data Generation",
+      "url": "https://huggingface.co/papers/2606.20400",
+      "date": "2026-06-18",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "A data synthesis framework generates diverse dialogue utterances using intent definitions and style attributes, achieving near-human performance through LLM-based filtering and post-hoc stylization techniques.",
+      "extra": {
+        "keywords": [
+          "synthetic dialogue generation",
+          "intent classification",
+          "LLM-as-a-judge filtering",
+          "post-hoc stylization",
+          "style attributes",
+          "topic attributes",
+          "linguistic styles",
+          "data diversity"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Make LLM Learn to Synthesize from Streaming Experiences through Feedback",
+      "url": "https://huggingface.co/papers/2605.29940",
+      "date": "2026-05-28",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "StreamSynth introduces sequential synthesis tasks where accumulated experience improves future generation, and SynLearner enables models to learn reusable patterns across evolving tasks.",
+      "extra": {
+        "keywords": [
+          "StreamSynth",
+          "SynLearner",
+          "synthetic data generation",
+          "cross-task transferability",
+          "synthesis experience",
+          "set-level diversity"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Generating Pretraining Tokens from Organic Data for Data-Bound Scaling",
+      "url": "https://huggingface.co/papers/2605.17849",
+      "date": "2026-05-18",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Synthetic data generation framework SynPro enhances LLM training efficiency by rephrasing and reformatting organic data through reinforcement learning optimization, achieving better token utilization than traditional methods.",
+      "extra": {
+        "keywords": [
+          "synthetic data generation",
+          "reinforcement learning",
+          "quality rewards",
+          "faithfulness rewards",
+          "data influence rewards",
+          "model-aware synthesis",
+          "distribution collapse",
+          "token utilization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: CUA-S1 – A System One Model for Computer Use",
+      "url": "https://github.com/trycua/cua",
+      "date": "2026-09-19",
+      "signal": 95,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49767564",
+        "comments": 10,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Extract (YC P25) – Fast, accurate document parsing",
+      "url": "https://extract.page",
+      "date": "2026-06-03",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48384498",
+        "comments": 0,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Memento – Self-hosted agentic search and LLM wiki over your email",
+      "url": "https://news.ycombinator.com/item?id=48557937",
+      "date": "2026-06-16",
+      "signal": 12,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48557937",
+        "comments": 11,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: Can trivial LLM calls be compiled into conventional data pipelines?",
+      "url": "https://news.ycombinator.com/item?id=49199957",
+      "date": "2026-08-06",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49199957",
+        "comments": 0,
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A multi-agent system for automating scientific discovery",
+      "url": "https://doi.org/10.1038/s41586-026-10652-y",
+      "date": "2026-05-19",
+      "signal": 322,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Cosmos 3: Omnimodal World Models for Physical AI",
+      "url": "https://doi.org/10.48550/arxiv.2606.02800",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Large Models for Time Series and Spatio-Temporal Data: A Survey and Outlook",
+      "url": "https://doi.org/10.1145/3821637",
+      "date": "2026-06-23",
+      "signal": 235,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models",
+      "url": "https://doi.org/10.1145/3845797",
+      "date": "2026-09-15",
+      "signal": 213,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "StreamVLN: Streaming Vision-and-Language Navigation via SlowFast Context Modeling",
+      "url": "https://doi.org/10.1109/icra57385.2026.11696190",
+      "date": "2026-06-01",
+      "signal": 163,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Aristotle: IMO-level Automated Theorem Proving",
+      "url": "https://doi.org/10.70777/si.v3i3.18745",
+      "date": "2026-09-25",
+      "signal": 151,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Self-Harness: Harnesses That Improve Themselves",
+      "url": "https://doi.org/10.48550/arxiv.2606.09498",
+      "date": "2026-06-08",
+      "signal": 130,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Transforming Science with Large Language Models: A Survey on AI-assisted Scientific Discovery, Experimentation, Content Generation, and Evaluation",
+      "url": "https://doi.org/10.1145/3845596",
+      "date": "2026-09-05",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Concise thoughts: Impact of output length on LLM reasoning and cost",
+      "url": "https://doi.org/10.1016/j.ins.2026.123939",
+      "date": "2026-07-24",
+      "signal": 128,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "synthetic data generation LLM"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Zyphra/puffer",
+      "url": "https://github.com/Zyphra/puffer",
+      "date": "2026-07-22",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "CPU-based incremental MinHash-LSH deduplication with invertible dataset withdrawal",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-07-22",
+        "pushed": "2026-10-01",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Vamshavardhan50/crawlingo",
+      "url": "https://github.com/Vamshavardhan50/crawlingo",
+      "date": "2026-06-19",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "Generate validated datasets from web pages with a Rust engine, Python and Node.js SDKs, exact deduplication, and resumable JSONL/CSV exports.",
+      "extra": {
+        "topics": [
+          "csv",
+          "data-extraction",
+          "dataset-generation",
+          "etl",
+          "jsonl",
+          "nodejs",
+          "python",
+          "rust",
+          "web-scraping"
+        ],
+        "license": "MIT",
+        "created": "2026-06-19",
+        "pushed": "2026-11-08",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dipeshbabu/pari",
+      "url": "https://github.com/dipeshbabu/pari",
+      "date": "2026-08-25",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "Similarity indexing and deduplication for large datasets, with Rust, Python, and CLI interfaces.",
+      "extra": {
+        "topics": [
+          "data-quality",
+          "datasets",
+          "deduplication",
+          "locality-sensitive-hashing",
+          "lsh",
+          "minhash",
+          "python",
+          "rust",
+          "similarity-search",
+          "training-data"
+        ],
+        "license": "MIT",
+        "created": "2026-08-25",
+        "pushed": "2026-11-09",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shivpratapsinghpanwar/data-doctor",
+      "url": "https://github.com/shivpratapsinghpanwar/data-doctor",
+      "date": "2026-09-01",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Diagnose vision datasets before they lie to you: near-duplicates, train/val leakage and COCO annotation defects, verified on pixels. pip install vision-data-doctor",
+      "extra": {
+        "topics": [
+          "cli",
+          "coco",
+          "computer-vision",
+          "data-leakage",
+          "data-quality",
+          "dataset",
+          "deduplication",
+          "mlops"
+        ],
+        "license": "MIT",
+        "created": "2026-09-01",
+        "pushed": "2026-09-18",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "harshadulshan/duplicate-finder",
+      "url": "https://github.com/harshadulshan/duplicate-finder",
+      "date": "2026-11-01",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Find, explain and merge duplicate records (customers, patients, products) with no training data. Tested on 12 benchmark datasets.",
+      "extra": {
+        "topics": [
+          "data-cleaning",
+          "data-quality",
+          "deduplication",
+          "entity-resolution",
+          "fellegi-sunter",
+          "master-data-management",
+          "python",
+          "record-linkage",
+          "streamlit"
+        ],
+        "license": "MIT",
+        "created": "2026-11-01",
+        "pushed": "2026-11-02",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SAMBIT-318/customer-churn-data-quality",
+      "url": "https://github.com/SAMBIT-318/customer-churn-data-quality",
+      "date": "2026-09-04",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "End-to-end data quality audit and exploratory analysis on a customer churn dataset. Features automated deduplication, anomaly reconciliation, defensible cleaning assertions, and retention pattern analysis.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-04",
+        "pushed": "2026-09-04",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MinhTriTM/vision-cleanse",
+      "url": "https://github.com/MinhTriTM/vision-cleanse",
+      "date": "2026-10-29",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Clean near-duplicates and train/val/test leakage from computer vision datasets",
+      "extra": {
+        "topics": [
+          "computer-vision",
+          "data-leakage",
+          "dataset-cleaning",
+          "deduplication",
+          "dhash",
+          "phash",
+          "python"
+        ],
+        "license": "MIT",
+        "created": "2026-10-29",
+        "pushed": "2026-11-03",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "vedantnimbarte/Arc-Data-Factory",
+      "url": "https://github.com/vedantnimbarte/Arc-Data-Factory",
+      "date": "2026-06-02",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Production-grade platform for collecting, cleaning, deduplicating, classifying, scoring, tokenizing, and sharding AI training datasets for ARC models (300M → 1B → 10B+ roadmap)",
+      "extra": {
+        "topics": [
+          "data-pipeline",
+          "datasets",
+          "deduplication",
+          "fastapi",
+          "llm-training",
+          "machine-learning",
+          "python",
+          "tokenization"
+        ],
+        "license": "MIT",
+        "created": "2026-06-02",
+        "pushed": "2026-09-13",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Pranay-Kumar-02/textora-engine",
+      "url": "https://github.com/Pranay-Kumar-02/textora-engine",
+      "date": "2026-09-09",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A video intelligence platform for turning raw media into structured, searchable, and reproducible data for AI, analytics, and knowledge systems.",
+      "extra": {
+        "topics": [
+          "audio-processing",
+          "cli",
+          "data-pipeline",
+          "data-validation",
+          "dataset",
+          "deduplication",
+          "python",
+          "speech-to-text",
+          "transcription",
+          "video-to-text"
+        ],
+        "license": "MIT",
+        "created": "2026-09-09",
+        "pushed": "2026-09-30",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ud-2/AFER-RELEASES",
+      "url": "https://github.com/ud-2/AFER-RELEASES",
+      "date": "2026-08-26",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "High-performance record linkage engine built in Rust for deterministic entity resolution and cross-dataset matching, designed to identify corresponding records across datasets despite common variations such as spelling differences, formatting inconsistencies, and noisy input data.",
+      "extra": {
+        "topics": [
+          "afer",
+          "data-matching",
+          "data-processing",
+          "data-quality",
+          "deduplication",
+          "entity-resolution",
+          "fuzzy-matching",
+          "high-performance",
+          "offline-first",
+          "privacy-first",
+          "record-linkage",
+          "rust"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-08-26",
+        "pushed": "2026-08-26",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mykhailoklimnyk/ua-stolen-phones-data-quality",
+      "url": "https://github.com/mykhailoklimnyk/ua-stolen-phones-data-quality",
+      "date": "2026-08-01",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Normalized, deduplicated, and quality-enhanced Ukrainian stolen and lost phone registration dataset. Parquet snapshots with schema stabilization, encoding fixes, and validation reports.",
+      "extra": {
+        "topics": [
+          "cc-by-4",
+          "data-gov-ua",
+          "data-quality",
+          "dataset",
+          "deduplication",
+          "duckdb",
+          "normalization",
+          "open-data",
+          "stolen-phone",
+          "ukraine"
+        ],
+        "license": "CC-BY-4.0",
+        "created": "2026-08-01",
+        "pushed": "2026-11-10",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Aarav-2006/Enterprise-Email-Contact-Intelligence-System",
+      "url": "https://github.com/Aarav-2006/Enterprise-Email-Contact-Intelligence-System",
+      "date": "2026-06-01",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Developed a scalable Gmail contact intelligence pipeline to process 100,000+ business emails using the Gmail API. Implemented OAuth authentication,resumable checkpointing,contact deduplication, metadata extraction,and parsingof From/To/Cc headers to generatestructured datasets ofcontacts and interaction timestamps for CRM and relationship analysis.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-01",
+        "pushed": "2026-06-01",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "agentanywhere/shuddhi",
+      "url": "https://github.com/agentanywhere/shuddhi",
+      "date": "2026-08-22",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Prove what your model was trained on. Open-source data factory for LLM training corpora: provenance gating, dedup, PII redaction, contamination checks — sealed with a reproducible build manifest. Emits the EU AI Act Article 53(1)(d) training-content summary.",
+      "extra": {
+        "topics": [
+          "ai-compliance",
+          "ai-governance",
+          "apache-2-0",
+          "attestation",
+          "corpus",
+          "data-engineering",
+          "data-provenance",
+          "data-quality",
+          "dataset",
+          "deduplication",
+          "eu-ai-act",
+          "indic-nlp",
+          "llm",
+          "llmops",
+          "minhash",
+          "mlops",
+          "pii-redaction",
+          "reproducibility",
+          "training-data"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-22",
+        "pushed": "2026-11-09",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mcrl/SEDD",
+      "url": "https://github.com/mcrl/SEDD",
+      "date": "2026-05-17",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Scalable and Efficient Dataset Deduplication with GPUs",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-05-17",
+        "pushed": "2026-06-01",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MD-Mushfiqur123/dataset-collector",
+      "url": "https://github.com/MD-Mushfiqur123/dataset-collector",
+      "date": "2026-10-16",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Swiss Minimalist Distributed Scientific Dataset Distillation Forge with 1-Paste Auto-Split, 83% Deduplication Gatekeeper & Auto-Pusher",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-16",
+        "pushed": "2026-10-25",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "beowolx/rensa",
+      "url": "https://github.com/beowolx/rensa",
+      "date": "2026-10-30",
+      "signal": 317,
+      "signal_name": "stars",
+      "summary": "High-performance MinHash implementation in Rust with Python bindings for efficient similarity estimation and deduplication of large datasets",
+      "extra": {
+        "topics": [
+          "minhash",
+          "minhash-similarity"
+        ],
+        "license": "MIT",
+        "created": "2024-01-21",
+        "pushed": "2026-10-30",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ultralytics/flickr_scraper",
+      "url": "https://github.com/ultralytics/flickr_scraper",
+      "date": "2026-10-06",
+      "signal": 303,
+      "signal_name": "stars",
+      "summary": "Python Flickr image scraper for building keyword-based computer vision datasets with pagination and deduplication.",
+      "extra": {
+        "topics": [
+          "computer-vision",
+          "dataset-creation",
+          "flickr",
+          "flickr-api",
+          "image-downloader",
+          "image-scraper",
+          "pagination",
+          "python",
+          "scraper",
+          "ultralytics"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2020-02-21",
+        "pushed": "2026-10-06",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "jsmonhq/xnew",
+      "url": "https://github.com/jsmonhq/xnew",
+      "date": "2026-05-23",
+      "signal": 30,
+      "signal_name": "stars",
+      "summary": "xnew is a fast, low-memory CLI that appends only unique lines to files. Built in Go for large datasets, it streams input efficiently and scales cleanly from thousands to hundreds of millions of lines.",
+      "extra": {
+        "topics": [
+          "bugbounty",
+          "cli",
+          "cybersecurity",
+          "data-analysis",
+          "data-processing",
+          "deduplication",
+          "go",
+          "golang",
+          "infosec",
+          "performance",
+          "security-tools"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-04-16",
+        "pushed": "2026-05-23",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Bhanunamikaze/AI-Dataset-Generator",
+      "url": "https://github.com/Bhanunamikaze/AI-Dataset-Generator",
+      "date": "2026-08-08",
+      "signal": 22,
+      "signal_name": "stars",
+      "summary": "Tool-native dataset generation skill for Codex, Claude Code, and Antigravity with SFT/DPO pipelines, verification, deduplication, and flexible export.",
+      "extra": {
+        "topics": [
+          "agentic",
+          "antigravity",
+          "antigravity-skills",
+          "claude-code",
+          "claude-skill",
+          "claude-skills",
+          "codex",
+          "codex-skill",
+          "codex-skills",
+          "csv",
+          "dataset",
+          "dataset-generation",
+          "dpo",
+          "fine-tuning",
+          "jsonl",
+          "llm",
+          "sft"
+        ],
+        "license": "MIT",
+        "created": "2026-03-24",
+        "pushed": "2026-08-08",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "STEXS-Technologies/shardline",
+      "url": "https://github.com/STEXS-Technologies/shardline",
+      "date": "2026-11-03",
+      "signal": 20,
+      "signal_name": "stars",
+      "summary": "Self-hosted, content-addressed storage infrastructure for AI models, datasets, containers, and build artifacts, with deduplication, integrity verification, and resilient data operations.",
+      "extra": {
+        "topics": [
+          "bazel-remote-cache",
+          "cas",
+          "container-registry",
+          "content-addressable-storage",
+          "data-integrity",
+          "deduplication",
+          "distributed-storage",
+          "fault-tolerance",
+          "git-lfs",
+          "huggingface",
+          "kubernetes",
+          "model-registry",
+          "object-storage",
+          "oci",
+          "oci-registry",
+          "rust",
+          "s3",
+          "self-hosted",
+          "storage-engine",
+          "xet"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-04-19",
+        "pushed": "2026-11-03",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "bcankara/BibexPy",
+      "url": "https://github.com/bcankara/BibexPy",
+      "date": "2026-11-06",
+      "signal": 18,
+      "signal_name": "stars",
+      "summary": "BibexPy is a Python-based software designed to streamline bibliometric data integration, deduplication, metadata enrichment, and format conversion. It simplifies the preparation of high-quality datasets for advanced analyses by automating traditionally manual and error-prone tasks.",
+      "extra": {
+        "topics": [
+          "academic-research",
+          "api-integration",
+          "bibliometrics",
+          "biblioshiny",
+          "citation-analysis",
+          "crossref",
+          "data-analysis",
+          "data-merger",
+          "datacite",
+          "europepmc",
+          "metadata-enrichment",
+          "openalex",
+          "python",
+          "research-tools",
+          "scientific-databases",
+          "scopus",
+          "scopus-api",
+          "semantic-scholar",
+          "vosviewer",
+          "web-of-science"
+        ],
+        "license": null,
+        "created": "2024-12-29",
+        "pushed": "2026-11-06",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "worldbank/FuzzyAI",
+      "url": "https://github.com/worldbank/FuzzyAI",
+      "date": "2026-10-29",
+      "signal": 11,
+      "signal_name": "stars",
+      "summary": "A Python library for entity deduplication and cross‑dataset matching using fuzzy similarity for candidate generation, with optional rule‑based and LLM‑based validation and consolidation to resolve ambiguous matches",
+      "extra": {
+        "topics": [
+          "duplicate-detection",
+          "matching-engine"
+        ],
+        "license": "MIT",
+        "created": "2026-03-25",
+        "pushed": "2026-10-29",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Yog-Sotho/Brainbrew",
+      "url": "https://github.com/Yog-Sotho/Brainbrew",
+      "date": "2026-11-04",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "No-code synthetic training data from your documents: drop in PDFs/TXT → click Generate → get grounded Q&A datasets. LLM judge · MinHash dedup · benchmark decontamination · PII scrubbing · Alpaca/ShareGPT/ChatML/OpenAI export · any OpenAI-compatible model (OpenAI, vLLM, Ollama, llama.cpp) · one-click LoRA · HF Hub publish · Streamlit UI + CLI",
+      "extra": {
+        "topics": [
+          "ai",
+          "artificial-intelligence",
+          "dataset",
+          "dataset-generation",
+          "deduplication",
+          "distillation",
+          "huggingface",
+          "instruction-tuning",
+          "llm",
+          "lora",
+          "machine-learning",
+          "streamlit",
+          "synthetic-data",
+          "training-data",
+          "vllm"
+        ],
+        "license": "MIT",
+        "created": "2026-03-10",
+        "pushed": "2026-11-04",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "adops-tool/App-Finder-100k",
+      "url": "https://github.com/adops-tool/App-Finder-100k",
+      "date": "2026-11-07",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "🔍 Streamlit tool for discovering low-to-mid install Android apps on Google Play. Multi-locale search, SQLite deduplication, novelty scoring, parallel metadata fetch with caching. Built for market research workflows targeting 10k-100k install segments. Export clean CSV datasets in one click.",
+      "extra": {
+        "topics": [
+          "android",
+          "android-apps",
+          "app-analytics",
+          "app-discovery",
+          "app-finder",
+          "app-research",
+          "data-analysis",
+          "data-mining",
+          "discovery-tool",
+          "google-play",
+          "google-play-scraper",
+          "market-intelligence",
+          "market-research",
+          "mobile-apps",
+          "play-store",
+          "python",
+          "research-tool",
+          "sqlite",
+          "streamlit",
+          "web-scraping"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-02-05",
+        "pushed": "2026-11-07",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ptonso/cv-suite",
+      "url": "https://github.com/ptonso/cv-suite",
+      "date": "2026-11-06",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Computer vision CLI for dataset work: convert annotations, auto-label, caption, classify, OCR, generate images and clean datasets.",
+      "extra": {
+        "topics": [
+          "annotation-converter",
+          "auto-labeling",
+          "cli",
+          "clip",
+          "coco",
+          "computer-vision",
+          "data-annotation",
+          "dataset-tools",
+          "deduplication",
+          "diffusion",
+          "grounding-dino",
+          "image-generation",
+          "labelme",
+          "ocr",
+          "python",
+          "sam",
+          "vision-language-model",
+          "yolo",
+          "zero-shot"
+        ],
+        "license": "MIT",
+        "created": "2026-03-11",
+        "pushed": "2026-11-06",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "mykhailoklimnyk/ua-vehicle-registry-data",
+      "url": "https://github.com/mykhailoklimnyk/ua-vehicle-registry-data",
+      "date": "2026-10-03",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Normalized, deduplicated, and quality-enhanced Ukrainian vehicle registration dataset (data.gov.ua, CC BY 4.0). Parquet snapshots with schema stabilization, encoding fixes, and validation reports.",
+      "extra": {
+        "topics": [
+          "cc-by-4",
+          "data-gov-ua",
+          "data-quality",
+          "dataset",
+          "deduplication",
+          "duckdb",
+          "normalization",
+          "open-data",
+          "parquet",
+          "ukraine",
+          "vehicle-registry"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-03-01",
+        "pushed": "2026-10-03",
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "BioBind: Binding Biometric Deduplication to Zero-Knowledge Authentication",
+      "url": "http://arxiv.org/abs/2611.12636v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Biometric identity systems for decentralized applications need credentials that resist repeated enrollment and support private, publicly verifiable authentication. Capture and large-scale private deduplication run off chain while smart contracts authorize issuance and use; these stages span distinct trust domains, and a correct verdict covers only the checked inputs and gallery snapshot. Without b",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "TS-GEAR: Taobao Shangou GEnerative Ad Retrieval",
+      "url": "http://arxiv.org/abs/2611.12180v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "On-demand delivery platforms such as DoorDash and Uber Eats impose a constraint absent in traditional e-commerce: merchants beyond the user's delivery range are invalid candidates rather than merely low-ranked. Generative retrieval has recently shown strong potential in large-scale retrieval systems. Adapting it to this setting, however, poses three challenges. First, existing semantic IDs encode ",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SMO: Compiling Natural Language Skills into Graphs of Reusable State-Move-Outcome Bricks",
+      "url": "http://arxiv.org/abs/2611.12041v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language model agents increasingly rely on reusable natural-language skills, yet growing skill collections remain accumulations of isolated text artifacts that are difficult to compare, deduplicate, and compose. We argue that the reusable content of a skill lies not in its surface wording but in its procedural transitions: which operation to execute under a given state and which observable o",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Short-term associations between wild-bird and mammalian high pathogenic avian influenza detection in the United States",
+      "url": "http://arxiv.org/abs/2611.12005v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "High pathogenic avian influenza (HPAI) detections in mammals have raised concern about repeated wildlife spillover and the targeting of mammalian surveillance. We evaluated whether wild-bird detection records contained short-term explanatory and predictive information about mammalian detections in the United States. Public surveillance records from April 2022 to July 2026 comprised 18,523 wild-bir",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ShiftCache: Fast and Exact Indel Effect Prediction by Reusing Shifted Reference Encodings",
+      "url": "http://arxiv.org/abs/2611.11976v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Sequence-to-function models such as AlphaGenome and Borzoi read up to a megabase of DNA and score a genetic variant by comparing their predictions for the reference and alternate sequences. Insertions and deletions (indels) are costly to score, because an indel usually shifts the unchanged DNA after it onto a different pooling grid, which prevents direct reuse of the reference's encoder activation",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "CRUSTPairs: A Cross-Language Dataset of Paired C and Rust Solutions",
+      "url": "http://arxiv.org/abs/2611.11711v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "C-to-Rust migration is an active agenda, but no dataset pairs the two languages at the level of whole solutions to a shared problem. We present CRUSTPairs, 1857 C/Rust implementation pairs drawn from competitive programming archives, normalised, deduplicated, and stratified into difficulty tiers by zero-shot cross-language embedding similarity, with perrecord provenance and licensing. Cross-langua",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MoTo: Mixture of Tokenizers Towards Fair Multilingual Language Modeling",
+      "url": "http://arxiv.org/abs/2611.11027v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language models rely on a single tokenizer that is chosen at training time and fixed thereafter. Most tokenizers are trained on English-dominant corpora, making them under-serve morphologically rich and non-Latin-script languages, where they can produce fragmented representations, longer sequence lengths, and reduced information density during training. We propose Mixture of Tokenizers MoTo,",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Dataset Collections: Challenges of Large-Scale Data Aggregation in 3D Medical Image Datasets",
+      "url": "http://arxiv.org/abs/2611.10144v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The development of deep learning-based medical AI depends on high-quality annotated data. Yet, dataset creation remains constrained by the need for expert radiologist annotations, limiting curated datasets to relatively small cohorts. To overcome this limitation, recent efforts increasingly aggregate disparate public datasets into large-scale dataset collections. However, combining datasets at sca",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Asymptotic Analysis of Data Deduplication Under a Constant Edit Model",
+      "url": "http://arxiv.org/abs/2611.09842v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Data deduplication has become increasingly important in large-scale storage systems, driven by the rapid growth of digital data. By identifying and removing repeats in the data stream, deduplication saves storage space more efficiently than traditional compression methods. In this paper, we study the performance of variable-length deduplication and multi-chunk deduplication algorithms from an info",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Dataset Collection and Fine-Tuning of NLLB for German--English Translation",
+      "url": "http://arxiv.org/abs/2611.07797v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "This paper describes the curation of a high-quality parallel corpus from OPUS Books and the fine-tuning of Meta's NLLB-200 models for German--English translation. We detail a dataset extraction pipeline that filters 45k raw OPUS sentence pairs to 25k high-quality examples through encoding validation, length filtering, language identification, deduplication, and quality scoring. We present a reprod",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MEMOIR: A Training-Free Memory Lifecycle for Long-Horizon LLM Agents",
+      "url": "http://arxiv.org/abs/2611.07631v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Long-horizon LLM agents require memory systems that preserve useful information across sessions and retrieve it when needed. Existing systems treat these as separate problems: memories are written prospectively with static importance scores that are never revised after use. This creates two coupled failure modes: consolidation can silently destroy evidence that future queries require, while retrie",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RouTex: Multi-reference 3D Texture Generation by Reprogramming Rotary Position Encoding",
+      "url": "http://arxiv.org/abs/2611.06070v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "While single-image 3D texture generation has advanced significantly, conditioning texture synthesis on multi-view reference images remains largely under-explored, despite its necessity for resolving surface ambiguity in unobserved regions. In this paper, we propose RouTex, a novel multi-reference 3D texture generation framework based on in-context Diffusion Transformers (DiT). Our key insight is t",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "3D Banff Glomerulitis Scoring for Kidney Transplant Pathology: Feasibility Study for Volumetric Quantification",
+      "url": "http://arxiv.org/abs/2611.05925v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Quantifying glomerular inflammation in kidney-transplant biopsies is traditionally performed on single whole-slide sections using the Banff \"most-severe section\" rule, despite the inherently three-dimensional nature of lesion distribution. This 2D based assessment might lead to instability when inflammation varies across slices. This paper reports a feasibility study examining the technical feasib",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Octopus: One Brain, Many Branches for Latent-KV Multi-Agent Reinforcement Learning",
+      "url": "http://arxiv.org/abs/2611.06956v2",
+      "date": "2026-11-03",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Deep search and long-horizon reasoning unfold as branching trajectories that pursue parallel sub-queries, abandon dead-end detours, and cross-check sibling findings. Yet modern serving engines, harnesses, and RL trainers execute episodes as flat, append-only sequences: stretching a context window leaves failed detours that dilute attention, in-place edits break KV caching and recurrent states, and",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RESTberus: Trace-Aware Benchmarking of Automated REST API Testing Tools Across Microservice Dependencies",
+      "url": "http://arxiv.org/abs/2611.04769v1",
+      "date": "2026-11-03",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Existing REST API testing benchmarks focus on isolated services, overlooking failures arising from interactions with downstream dependencies. In microservice systems, response bodies and entry-point operations alone cannot reliably distinguish failures, compromising tool comparisons. We present RESTberus, a Kubernetes-based benchmarking platform for black-box REST API testing tools on deployed mic",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "DISC: Domain-Integrated Similarity Cost for Time-Series Dataset",
+      "url": "https://huggingface.co/papers/2610.31288",
+      "date": "2026-10-22",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "DISC is a learnable framework that calibrates and combines time-series dataset similarity metrics to better predict downstream forecasting transfer performance.",
+      "extra": {
+        "keywords": [
+          "time-series datasets",
+          "foundation models",
+          "dataset comparison",
+          "transfer learning",
+          "out-of-distribution",
+          "similarity metrics",
+          "Domain-Integrated Similarity Cost",
+          "DISC",
+          "learnable aggregation",
+          "calibration transfer"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "TSDS-Toolbox: A Toolbox for Measuring Time-Series Dataset Similarity",
+      "url": "https://huggingface.co/papers/2608.08119",
+      "date": "2026-08-08",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "A unified toolbox enables reproducible comparison and extension of time-series dataset similarity methods for forecasting, classification, and generation tasks.",
+      "extra": {
+        "keywords": [
+          "time-series dataset similarity",
+          "foundation models",
+          "fine-tuning",
+          "dataset-level similarity",
+          "series-level similarity",
+          "time-series dataset reducers"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Identity-Duplication Auditing in National-Scale Neuroimaging Repositories",
+      "url": "https://huggingface.co/papers/2610.09614",
+      "date": "2026-10-07",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "HAPPEN is a human-in-the-loop pipeline that audits identity duplication in large brain MRI repositories by combining fingerprinting and contrastive retrieval, recovering duplicate subjects across dataset boundaries without requiring model retraining.",
+      "extra": {
+        "keywords": [
+          "SHA-256 fingerprinting",
+          "supervised contrastive retrieval",
+          "identity duplication",
+          "T1-weighted brain MRI",
+          "human-in-the-loop pipeline"
+        ],
+        "github": "https://github.com/MASILab/HAPPEN",
+        "github_stars": 0,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "GVD: Governed Versioning and Deduplication for Document Repositories",
+      "url": "https://huggingface.co/papers/2609.17696",
+      "date": "2026-09-15",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "GVD unifies cross-document version linking and rule-level conflict resolution under an auditable update policy, achieving high consistency without large language models.",
+      "extra": {
+        "keywords": [
+          "GVD",
+          "version families",
+          "bidirectional rule alignment",
+          "Counterfactual Span Probing",
+          "rule-level consistency",
+          "version lineage",
+          "audit trail"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Scalable Frequency- and Length-Aware Subdocument Deduplication for Large Language Model Pretraining",
+      "url": "https://huggingface.co/papers/2608.03089",
+      "date": "2026-08-04",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A scalable subdocument deduplication framework separates duplicate detection from adaptive retention to improve pretraining data quality.",
+      "extra": {
+        "keywords": [
+          "subdocument deduplication",
+          "suffix-array-based methods",
+          "normalized exact hashing",
+          "distributed aggregation",
+          "frequency-aware retention policy",
+          "copy budget",
+          "FineWeb-Edu"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Open-Set Vessel Re-Identification from Underwater Ship-Radiated Noise with a Raw-Waveform Selective-Kernel Acoustic Neural Network (SKANN) and a Cross-Passage Evaluation Protocol",
+      "url": "https://huggingface.co/papers/2609.07399",
+      "date": "2026-09-07",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Open-set cross-passage vessel re-identification using raw-waveform encoders and tonal comparators supports analyst triage rather than definitive identification, with transit deduplication and dataset limitations strongly affecting measured performance.",
+      "extra": {
+        "keywords": [
+          "open-set recognition",
+          "cross-passage vessel re-identification",
+          "raw-waveform encoder",
+          "selective-kernel attention",
+          "angular-margin objective",
+          "narrowband lines",
+          "SKANN",
+          "transit deduplication",
+          "cross-network fine-tuning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Large Language Model-Assisted Cleaning of Report-Derived Labels in a Large-Scale Chest CT Dataset",
+      "url": "https://huggingface.co/papers/2606.22382",
+      "date": "2026-06-21",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Large language model-assisted cleaning of CT-RATE labels identified clinically meaningful label-report discordance, and multi-LLM majority voting yielded the best agreement with radiologist annotations.",
+      "extra": {
+        "keywords": [
+          "large language model (LLM)",
+          "GPT-5.4",
+          "structured JSON output",
+          "LLM-derived labels",
+          "multi-LLM majority-vote labels",
+          "label-macro-averaged F1 score",
+          "LLM-assisted label cleaning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "KSE-Web: An Analysis of Hybrid Retrieval and LLM-Assisted Query Expansion for Low-Resource Khmer Semantic Search",
+      "url": "https://huggingface.co/papers/2608.21365",
+      "date": "2026-06-17",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "For Khmer semantic search, hybrid BM25 and dense retrieval achieve strong results, while LLM-assisted query expansion shows limited gains due to topic drift and model size effects.",
+      "extra": {
+        "keywords": [
+          "hybrid retrieval",
+          "dense retrieval",
+          "BM25",
+          "LLM-assisted query expansion",
+          "Qwen2.5",
+          "multilingual embedding",
+          "nDCG",
+          "recall",
+          "low-resource language retrieval"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An encyclopedia of human enhancer–gene regulatory interactions",
+      "url": "https://doi.org/10.1038/s41586-026-10781-4",
+      "date": "2026-07-15",
+      "signal": 161,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Efficient training of large language models on distributed infrastructures: a survey",
+      "url": "https://doi.org/10.1007/s44336-026-00038-z",
+      "date": "2026-06-01",
+      "signal": 84,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The MiniMax-M2 Series: Mini Activations Unleashing Max Real-World Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2605.26494",
+      "date": "2026-05-26",
+      "signal": 82,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "What is the Role of Small Models in the LLM Era: A Survey",
+      "url": "https://doi.org/10.1162/coli.a.652",
+      "date": "2026-09-18",
+      "signal": 78,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Privacy Leakage on DNNs: A Survey of Model Inversion Attacks and Defenses",
+      "url": "https://doi.org/10.1007/s11263-026-03049-x",
+      "date": "2026-10-01",
+      "signal": 75,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "TransAgent: Enhancing LLM-Based Code Translation via Fine-Grained Execution Alignment",
+      "url": "https://doi.org/10.1145/3797099",
+      "date": "2026-06-30",
+      "signal": 66,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Towards Vision‐Language Geo‐Foundation Models: A Survey",
+      "url": "https://doi.org/10.1111/phor.70066",
+      "date": "2026-09-28",
+      "signal": 51,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "ARVO: Atlas of Reproducible Vulnerabilities for Open-Source Software",
+      "url": "https://doi.org/10.1109/eurosp68448.2026.00060",
+      "date": "2026-07-01",
+      "signal": 51,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Nemotron 3 Ultra: Open, Efficient Mixture-of-Experts Hybrid Mamba-Transformer Model for Agentic Reasoning",
+      "url": "https://doi.org/10.48550/arxiv.2606.15007",
+      "date": "2026-06-12",
+      "signal": 51,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops",
+      "url": "https://doi.org/10.48550/arxiv.2607.07663",
+      "date": "2026-07-08",
+      "signal": 50,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Large language models are powerful electronic health record encoders",
+      "url": "https://doi.org/10.1038/s41746-026-02915-9",
+      "date": "2026-07-06",
+      "signal": 46,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Genome-scale perturb-seq in primary human CD4+ T cells maps context-specific regulators of T cell programs and human immune traits",
+      "url": "https://doi.org/10.1016/j.cell.2026.08.002",
+      "date": "2026-08-28",
+      "signal": 45,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "dataset deduplication"
+      }
+    }
+  ]
+}

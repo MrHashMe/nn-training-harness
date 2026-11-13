@@ -1,0 +1,87 @@
+[
+ {
+  "file": "llm-training",
+  "candidate": "Model licence and gating preflight (kit-native practice, no version)",
+  "section": "Base model and licence"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Hugging Face Transformers 5.22.2 (6 Nov 2026)",
+  "section": "Stack and environment"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "TRL 1.17.1 (30 Oct 2026)",
+  "section": "Stack and environment"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "PEFT 0.21.2 (1 Oct 2026)",
+  "section": "Stack and environment"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "One framework per environment with a recorded lock",
+  "section": "Stack and environment"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Telemetry-off environment record for language-model stacks",
+  "section": "Stack and environment"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Prompting and in-context baseline before fine-tuning",
+  "section": "Baseline first and the regime ladder"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Dated regime ladder for language models (reference table)",
+  "section": "Baseline first and the regime ladder"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Measured worst-case-batch memory step",
+  "section": "Memory fit"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "bitsandbytes 0.50.2 (27 Aug 2026)",
+  "section": "LoRA and QLoRA"
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "PEFT v0.21.2 method-comparison suite and results Space as the dated evidence source for adapter variants",
+  "section": "LoRA and QLoRA"
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Trainable-parameter and adapter-target assertion at run start",
+  "section": "LoRA and QLoRA"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "RL post-training health checklist (reference text)",
+  "section": "RL post-training"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Export-then-evaluate rule (kit-native practice)",
+  "section": "Export, quantisation and the reload contract"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Chat-template comparison before serving or export",
+  "section": "Export, quantisation and the reload contract"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Untrusted model code and weight-format rule (kit-native practice)",
+  "section": "Security when loading"
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Quarantine of agent-instruction files inside third-party code",
+  "section": "Security when loading"
+ }
+]

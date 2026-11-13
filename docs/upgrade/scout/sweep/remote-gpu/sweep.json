@@ -1,0 +1,2119 @@
+{
+  "meta": {
+    "topic": "GPU cloud training orchestration",
+    "phrases": [
+      "GPU cloud training orchestration",
+      "spot instance training checkpoint",
+      "serverless GPU training"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 20:01 UTC",
+    "count": 106
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "edwardtay/awesome-ai-infrastructure",
+      "url": "https://github.com/edwardtay/awesome-ai-infrastructure",
+      "date": "2026-06-10",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A curated list of AI infrastructure: GPU clouds and inference servers, cluster orchestration, distributed training and compute, workflow engines, serverless and observability.",
+      "extra": {
+        "topics": [
+          "ai-infrastructure",
+          "awesome",
+          "awesome-list",
+          "cloud-computing",
+          "compute",
+          "distributed-computing",
+          "distributed-systems",
+          "gpu",
+          "kubernetes",
+          "llm-inference",
+          "mlops",
+          "serverless"
+        ],
+        "license": "CC0-1.0",
+        "created": "2026-06-10",
+        "pushed": "2026-10-26",
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "snoussimakrem/AI-Software-Engineer-Cloud-Trained-Locally-Running-Coding-Agent",
+      "url": "https://github.com/snoussimakrem/AI-Software-Engineer-Cloud-Trained-Locally-Running-Coding-Agent",
+      "date": "2026-08-17",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "A control-center architecture where the local machine handles orchestration, monitoring, and storage management, while all LLM inference and training VRAM usage happens on free cloud GPU platforms (Kaggle/Colab).",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-17",
+        "pushed": "2026-08-18",
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mehtadevenn/mehtadevenn",
+      "url": "https://github.com/mehtadevenn/mehtadevenn",
+      "date": "2026-06-16",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "A production-grade, cloud-native orchestration framework for managing distributed ML training workloads across heterogeneous GPU clusters abstracting compute provisioning, experiment tracking, model versioning, and deployment pipelines into a single unified developer experience.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-16",
+        "pushed": "2026-11-10",
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "dstackai/dstack",
+      "url": "https://github.com/dstackai/dstack",
+      "date": "2026-11-10",
+      "signal": 2310,
+      "signal_name": "stars",
+      "summary": "A unified orchestration layer for heterogeneous AI compute. It standardizes how to manage compute and run training and inference on GPU clouds, Kubernetes, VMs, or bare-metal clusters.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "agentic-orchestration",
+          "amd",
+          "cloud",
+          "containers",
+          "docker",
+          "fine-tuning",
+          "gpu",
+          "inference",
+          "k8s",
+          "kubernetes",
+          "llms",
+          "machine-learning",
+          "nvidia",
+          "orchestration",
+          "python",
+          "slurm",
+          "training"
+        ],
+        "license": "MPL-2.0",
+        "created": "2022-01-04",
+        "pushed": "2026-11-10",
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "AI-Hypercomputer/xpk",
+      "url": "https://github.com/AI-Hypercomputer/xpk",
+      "date": "2026-11-04",
+      "signal": 196,
+      "signal_name": "stars",
+      "summary": "xpk (Accelerated Processing Kit, pronounced x-p-k,) is a software tool to help Cloud developers to orchestrate training jobs on accelerators such as TPUs and GPUs on GKE.",
+      "extra": {
+        "topics": [
+          "gcloud",
+          "gke",
+          "tpu"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-06-12",
+        "pushed": "2026-11-04",
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "exalsius/exalsius-cli",
+      "url": "https://github.com/exalsius/exalsius-cli",
+      "date": "2026-06-09",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Command-line tool for orchestrating distributed AI training, managing ephemeral multi-cloud clusters ('colonies'), and scanning GPU prices across cloud providers. Part of the exalsius stack.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-03-12",
+        "pushed": "2026-06-09",
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Event-Driven ML Pipeline Orchestration for Manufacturing: An AWS Industry Experience",
+      "url": "http://arxiv.org/abs/2610.06890v1",
+      "date": "2026-09-24",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We present an industry experience report on three years of operating an event-driven cloud infrastructure for continuous machine learning training in automotive manufacturing. Our system orchestrates GPU-accelerated training of product-specialized model pairs, a physics prediction model and a reinforcement-learning control policy, across multiple plants, coordinating long-running GPU workloads tri",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SLAI T-Rex: Full-Parameter Post-training of the DeepSeek-V4 Family on Ascend SuperPOD",
+      "url": "https://huggingface.co/papers/2607.20145",
+      "date": "2026-07-22",
+      "signal": 64,
+      "signal_name": "upvotes",
+      "summary": "Researchers optimized trillion-parameter MoE post-training on Ascend NPUs to achieve high efficiency, then built specialized reasoning models for operations research via curated pre-training and supervised fine-tuning.",
+      "extra": {
+        "keywords": [
+          "MoE",
+          "Model FLOPs Utilization",
+          "MFU",
+          "Ascend NPU",
+          "SuperPOD",
+          "DeepSeek-V4",
+          "hierarchical optimization",
+          "cross-attention",
+          "CPT",
+          "SFT",
+          "operations research",
+          "Pass@1"
+        ],
+        "github": "https://github.com/SLAI-AITP/SLAI-T-Rex",
+        "github_stars": 43,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Training Agents to Evolve with Their Harness: TaoLive Digital Avatar Agent Technical Report",
+      "url": "https://huggingface.co/papers/2608.15763",
+      "date": "2026-08-22",
+      "signal": 53,
+      "signal_name": "upvotes",
+      "summary": "Harness-Aware Training enables compact models to adapt to evolving digital-avatar harness configurations with low latency and high accuracy.",
+      "extra": {
+        "keywords": [
+          "Harness-Aware Training",
+          "Harness-State Augmentation",
+          "HSA-SFT",
+          "General On-Policy Distillation",
+          "HSA-RL",
+          "Skill identifiers",
+          "tool schemas",
+          "prompt structures",
+          "Hook functions",
+          "reinforcement learning",
+          "IFEval"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "RayOrch: Programming and Executing Lineage-Controlled Multi-Grain Dataflows for Foundation-Model Data Preparation",
+      "url": "https://huggingface.co/papers/2609.18703",
+      "date": "2026-09-16",
+      "signal": 49,
+      "signal_name": "upvotes",
+      "summary": "RayOrch is a distributed execution engine that preserves parent-child relationships during scalable data processing, enabling efficient GPU batching and faster pipeline execution.",
+      "extra": {
+        "keywords": [
+          "RayOrch",
+          "parent-child relations",
+          "ordered variable cardinality expansions",
+          "gathers",
+          "Per Call FIFO Ready Queues",
+          "typed parent-scoped failures",
+          "MinerU",
+          "Docling"
+        ],
+        "github": "https://github.com/OpenDCAI/RayOrch",
+        "github_stars": 19,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "TurboServe: Serving Streaming Video Generation Efficiently and Economically",
+      "url": "https://huggingface.co/papers/2606.19271",
+      "date": "2026-06-17",
+      "signal": 33,
+      "signal_name": "upvotes",
+      "summary": "TurboServe is a specialized serving system for streaming video generation that addresses session state management and dynamic resource allocation challenges through integrated scheduling, autoscaling, and migration mechanisms.",
+      "extra": {
+        "keywords": [
+          "streaming video generation",
+          "session state preservation",
+          "online scheduling",
+          "GPU provisioning",
+          "closed-loop scheduling",
+          "migration-aware placement",
+          "load-driven autoscaling",
+          "coalesced chunk processing",
+          "GPU-CPU offloading",
+          "NCCL-based GPU-GPU migration"
+        ],
+        "github": "https://github.com/shengshu-ai/TurboServe",
+        "github_stars": 241,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "JoyNexus: Service-Oriented Multi-Tenant Post-Training for VLA Models",
+      "url": "https://huggingface.co/papers/2607.16074",
+      "date": "2026-07-17",
+      "signal": 6,
+      "signal_name": "upvotes",
+      "summary": "JoyNexus is a multi-tenant service that enables shared-resource training, inference, and evaluation for vision-language-action models through decoupled APIs, isolated tenant slots, and group batching to improve GPU utilization.",
+      "extra": {
+        "keywords": [
+          "Vision-Language-Action models",
+          "supervised fine-tuning",
+          "reinforcement learning",
+          "multi-tenant",
+          "group batching",
+          "shared backbone",
+          "Training Queue",
+          "Inference Queue"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "KernelZero: Co-Evolving Proposer and Coder for Continuously Improved GPU Kernel Generation",
+      "url": "https://huggingface.co/papers/2609.33074",
+      "date": "2026-09-27",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "KernelZero is a co-evolution framework that alternately improves GPU kernel proposal and coding via capability-aligned module generation and correctness-aware reinforcement learning, achieving high pass rates on CUDA and Triton benchmarks.",
+      "extra": {
+        "keywords": [
+          "GPU kernels",
+          "Torch modules",
+          "CUDA",
+          "Triton",
+          "frontier-driven module generation",
+          "Correctness-Aware Group Relative Policy Optimization",
+          "CA-GRPO",
+          "co-evolution framework"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Scaling Repeated-Data Pretraining: Batch Size, Regularization, and GPU-Time Tradeoffs",
+      "url": "https://huggingface.co/papers/2610.15965",
+      "date": "2026-10-11",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "Repeated-data pretraining reveals that smaller batches with implicit regularization and adjusted recipes improve validation loss, while time and GPU budgets require balancing batch size against parallelism rather than maximizing utilization.",
+      "extra": {
+        "keywords": [
+          "pretraining",
+          "validation loss",
+          "batch size",
+          "gradient noise",
+          "implicit regularization",
+          "weight tying",
+          "embedding weight decay",
+          "data parallelism",
+          "GPU utilization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "PackServe: SLO-Aware Request Scheduling for Agentic LLM Serving at Scale",
+      "url": "https://huggingface.co/papers/2609.33224",
+      "date": "2026-09-27",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "PackServe improves agentic LLM serving efficiency by predicting interference-aware latency to pack requests onto fewer GPUs while preserving key-value cache reuse and meeting token-level latency targets.",
+      "extra": {
+        "keywords": [
+          "request scheduling",
+          "agentic LLM",
+          "key-value cache (KVC)",
+          "latency SLOs",
+          "prefill/decode interference",
+          "white-box latency prediction",
+          "request packing",
+          "TPOT"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "NanoForecast v0.5: Competitive Time Series Forecasting Through Training Pipeline Optimization",
+      "url": "https://huggingface.co/papers/2609.31669",
+      "date": "2026-09-15",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "NanoForecast v0.5 is a small 6.5M-parameter time-series forecaster that achieves competitive accuracy with much larger models after fixing training pipeline errors, without altering its architecture.",
+      "extra": {
+        "keywords": [
+          "NanoForecast",
+          "Mean Absolute Scaled Error",
+          "MASE",
+          "PatchTST",
+          "ETT datasets",
+          "loss-scope handling",
+          "tensor shape alignment",
+          "augmentation coverage",
+          "pretrained checkpoints"
+        ],
+        "github": "https://github.com/eulogik/NanoForecast",
+        "github_stars": 7,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "MusaCoder: Native GPU Kernel Generation with Full-Stack Training on Moore Threads GPU",
+      "url": "https://huggingface.co/papers/2606.04847",
+      "date": "2026-06-03",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "MusaCoder is a full-stack training framework that generates efficient GPU kernels using reinforcement learning with execution feedback, achieving state-of-the-art performance on CUDA and MUSA backends.",
+      "extra": {
+        "keywords": [
+          "Large Language Models",
+          "reinforcement learning",
+          "execution-feedback",
+          "kernel generation",
+          "CUDA",
+          "MUSA",
+          "MooreEval",
+          "PrimeEcho",
+          "Buffered Dynamic Retry",
+          "MirrorPop",
+          "KernelBench"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "GPU-Initiated Communication: Dissecting Down to the Bone",
+      "url": "https://huggingface.co/papers/2610.01380",
+      "date": "2026-10-01",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "This study analyzes GPU-initiated RDMA communication at the GPU-NIC boundary, measuring minimal transport paths and library overheads across NVIDIA platforms to reveal latency, throughput, and resource trade-offs.",
+      "extra": {
+        "keywords": [
+          "GPU-initiated communication",
+          "RDMA",
+          "NVSHMEM",
+          "NCCL GIN",
+          "DeepEP",
+          "Mixture-of-Experts",
+          "MoE",
+          "GPU-NIC boundary",
+          "doorbell batching",
+          "queue parallelism",
+          "InfiniBand"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Where Should Agents Live? Energy-Memory Characterization of Agentic AI for the Edge-Cloud Continuum",
+      "url": "https://huggingface.co/papers/2609.18283",
+      "date": "2026-09-16",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Agentic-eCAL extends energy lifecycle metrics to multi-agent AI workflows, showing that inter-agent communication costs are dominated by inference overhead rather than data transport.",
+      "extra": {
+        "keywords": [
+          "agentic AI",
+          "large language models",
+          "multi-agent workflows",
+          "energy cost of AI lifecycle",
+          "eCAL",
+          "two-rate single-call energy model",
+          "prefill",
+          "decode",
+          "OSI data transport",
+          "GPU benchmark",
+          "orchestration topologies",
+          "edge-cloud continuum"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CUDA-Harness: Harnessing Agentic CUDA Kernel Generation and Optimization from Natural Language",
+      "url": "https://huggingface.co/papers/2609.00058",
+      "date": "2026-08-30",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "CUDA-Harness enables agentic CUDA kernel generation from natural language via structured generation, synthesis-based verification, and adaptive evolution to improve correctness and performance.",
+      "extra": {
+        "keywords": [
+          "CUDA-Harness",
+          "Intermediate-Structured Generation",
+          "Synthesis-Based Verification",
+          "Feedback-Adaptive Evolution",
+          "Text2CUDA",
+          "Torch2CUDA",
+          "reward hacking"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "GPUAlert: A Zero-Instrumentation Process-Boundary Monitor for Diagnosing GPU Training-Job Failures",
+      "url": "https://huggingface.co/papers/2607.01409",
+      "date": "2026-07-01",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "GPUAlert is a command-line monitoring tool that provides structured notifications for training job failures with classified causes, durable logs, and output artifacts, achieving high accuracy in failure classification while maintaining minimal overhead and robust error handling.",
+      "extra": {
+        "keywords": [
+          "GPU training jobs",
+          "failure classification",
+          "structured notification",
+          "durable logs",
+          "output artifacts",
+          "reliability primitives",
+          "pre-launch log guarantee",
+          "notifier isolation",
+          "non-silent artifact budget",
+          "ordered-rule classifier",
+          "unordered keyword matching",
+          "exit-code inspection",
+          "wrapper overhead",
+          "SMTP relay"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Libra: Efficient Resource Management for Agentic RL Post-Training",
+      "url": "https://huggingface.co/papers/2606.03077",
+      "date": "2026-06-10",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Libra improves resource management for agentic reinforcement learning by dynamically balancing GPU allocation and scheduling rollout tasks via causal feedback, boosting throughput and convergence.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "large language models",
+          "agentic RL",
+          "rollout",
+          "training",
+          "cross-stage imbalance",
+          "elastic hybrid pool",
+          "global resource planner",
+          "C-MLFQ",
+          "causality-driven multi-level feedback queue",
+          "heterogeneous rollout buckets"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Launch HN: Expanse (YC P26) – Unlock Wasted GPU Capacity",
+      "url": "https://news.ycombinator.com/item?id=48356312",
+      "date": "2026-06-01",
+      "signal": 103,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48356312",
+        "comments": 27,
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Retrieval-augmented generation for natural language processing: a survey",
+      "url": "https://doi.org/10.1007/s10462-026-11605-7",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Cosmos 3: Omnimodal World Models for Physical AI",
+      "url": "https://doi.org/10.48550/arxiv.2606.02800",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Parameter-Efficient Fine-Tuning for Pre-Trained Vision Models: A Survey and Benchmark",
+      "url": "https://doi.org/10.1007/s11263-026-02864-6",
+      "date": "2026-06-01",
+      "signal": 188,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI and Quantum Computing for Fusion: ML Surrogates, Real-Time Control, and a Resource-Honest Quantum Frontier",
+      "url": "https://doi.org/10.5281/zenodo.22645701",
+      "date": "2026-09-07",
+      "signal": 138,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Electricity demand and grid impacts of AI data centers: Challenges and prospects",
+      "url": "https://doi.org/10.1016/j.ynexs.2026.100162",
+      "date": "2026-08-17",
+      "signal": 124,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Efficient training of large language models on distributed infrastructures: a survey",
+      "url": "https://doi.org/10.1007/s44336-026-00038-z",
+      "date": "2026-06-01",
+      "signal": 84,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DextrAH-RGB: Visuomotor Policies to Grasp Anything with Dexterous Hands",
+      "url": "https://doi.org/10.1109/icra57385.2026.11695813",
+      "date": "2026-06-01",
+      "signal": 77,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Infinite Worlds with Versatile Interactions",
+      "url": "https://doi.org/10.48550/arxiv.2607.07534",
+      "date": "2026-07-08",
+      "signal": 76,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "RS-Agent: automating remote sensing tasks through intelligent agent",
+      "url": "https://doi.org/10.1007/s11432-026-5026-5",
+      "date": "2026-07-27",
+      "signal": 75,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Generative AI for Autonomous Driving: Frontiers and Opportunities",
+      "url": "https://doi.org/10.1145/3838726",
+      "date": "2026-08-07",
+      "signal": 68,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agents' Last Exam",
+      "url": "https://doi.org/10.48550/arxiv.2606.05405",
+      "date": "2026-06-03",
+      "signal": 62,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Bridging language and action: A survey of language-conditioned robot manipulation",
+      "url": "https://doi.org/10.1177/02783649261468360",
+      "date": "2026-07-29",
+      "signal": 56,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "KernelEvolve: Scaling Agentic Kernel Coding for Heterogeneous AI Accelerators at Meta",
+      "url": "https://doi.org/10.1109/isca66397.2026.00063",
+      "date": "2026-06-01",
+      "signal": 55,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Denario Project: Deep Knowledge Artificial Intelligence Agents for Scientific Discovery",
+      "url": "https://doi.org/10.1103/kk55-gc95",
+      "date": "2026-10-01",
+      "signal": 44,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "GPU cloud training orchestration"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hyper-cluster-ops/spot-instance-gpu-training-budget",
+      "url": "https://github.com/hyper-cluster-ops/spot-instance-gpu-training-budget",
+      "date": "2026-10-28",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Spot Instance GPU Training Budget Estimator & Checkpoint Resilience Guide",
+      "extra": {
+        "topics": [
+          "cloud-pricing",
+          "cost-calculator",
+          "deep-learning",
+          "gpu-cloud",
+          "h100",
+          "llm-inference",
+          "serverless-gpu"
+        ],
+        "license": null,
+        "created": "2026-10-28",
+        "pushed": "2026-11-08",
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SegTME-UNI2: A Foundation Model-Based Framework for Generalisable Multiclass Cell Segmentation and LLM-Driven Tumour Microenvironment Characterisation in Histopathology",
+      "url": "http://arxiv.org/abs/2606.17702v3",
+      "date": "2026-06-16",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Characterising the TME from routine H&E-stained histology images requires simultaneous cell segmentation, biological feature extraction, and interpretable clinical reporting. We present SegTME-UNI2, a unified framework addressing all three requirements end-to-end: a segmentation backbone that converts raw H\\&E patches into per-nucleus class labels, a structured feature-extraction pipeline that tur",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "LiveR: Fine-Grained Elasticity via Live Reconfiguration for Model Training",
+      "url": "http://arxiv.org/abs/2605.22014v1",
+      "date": "2026-05-21",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "To reduce user costs and maximize cluster utilization, large model training increasingly leverages volatile but inexpensive GPU capacity, such as spot instances and reclaimable resources in shared clusters. Yet, capitalizing on these economic benefits requires jobs to adapt within the short warning windows that many such environments provide. Existing elastic training systems still treat reconfigu",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ChronoReplay: One Answer Interface Is Not Enough for Streaming Spatial Intelligence",
+      "url": "https://huggingface.co/papers/2610.34283",
+      "date": "2026-10-25",
+      "signal": 39,
+      "signal_name": "upvotes",
+      "summary": "ChronoReplay mitigates interface lock-in in spatial vision-language models by replaying heterogeneous spatial supervision chronologically, improving cross-task transfer and enabling efficient inference-time evidence selection.",
+      "extra": {
+        "keywords": [
+          "spatial VLM",
+          "interface lock-in",
+          "ChronoReplay",
+          "joint SFT",
+          "adaptive frame selection",
+          "OVO-S-Bench",
+          "OST-Bench",
+          "UCS-Bench"
+        ],
+        "github": "https://github.com/yihaohu0118/ChronoReplay",
+        "github_stars": 61,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "InstructSAM: Segment Any Instance with Any Instructions",
+      "url": "https://huggingface.co/papers/2605.26102",
+      "date": "2026-05-25",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "InstructSAM presents a unified framework for multi-instance segmentation using instruction-driven queries that bridge vision-language models and SAM3 through learnable instance queries and hybrid attention mechanisms.",
+      "extra": {
+        "keywords": [
+          "multi-instance segmentation",
+          "instruction-driven instance segmentation",
+          "set-structured query prediction",
+          "vision-language model",
+          "SAM3",
+          "explicit reasoning-to-instance query interface",
+          "learnable instance queries",
+          "hybrid-attention mechanism",
+          "instance-aware slots",
+          "single forward pass",
+          "LLM-conditioned queries",
+          "instruction-based instance segmentation",
+          "Inst2Seg",
+          "phrase-level referring segmentation"
+        ],
+        "github": "https://github.com/DCDmllm/InstructSAM",
+        "github_stars": 107,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Flattening Every Memory Peak in Long-Context Mixture-of-Experts Training",
+      "url": "https://huggingface.co/papers/2609.14306",
+      "date": "2026-09-13",
+      "signal": 14,
+      "signal_name": "upvotes",
+      "summary": "Four scheduling techniques bound peak memory across expert dispatch, vocabulary projection, gradient checkpointing, and optimizer states to enable large-scale mixture-of-experts training at million-token contexts.",
+      "extra": {
+        "keywords": [
+          "Mixture-of-Experts",
+          "expert parallelism",
+          "gradient checkpointing",
+          "optimizer offload",
+          "vocabulary projection",
+          "pipeline parallelism",
+          "log-sum-exp",
+          "AdamW"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "InstanceControl: Controllable Complex Image Generation without Instance Labeling",
+      "url": "https://huggingface.co/papers/2606.31924",
+      "date": "2026-06-30",
+      "signal": 10,
+      "signal_name": "upvotes",
+      "summary": "InstanceControl enables multi-instance image generation by using vision-language models to establish instance-level correspondences between text prompts and visual conditions, while employing adaptive mask refinement for improved accuracy.",
+      "extra": {
+        "keywords": [
+          "ControlNet",
+          "Vision-Language Model",
+          "instance-level correspondences",
+          "instance masks",
+          "adaptive mask refinement",
+          "multi-instance scenes",
+          "visual conditions",
+          "text prompts"
+        ],
+        "github": "https://github.com/liuxiaoyu1104/InstanceControl",
+        "github_stars": 22,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "QueenVIS: Rethinking Image-Only Training for Video Instance Segmentation via Query Enrichment",
+      "url": "https://huggingface.co/papers/2607.24598",
+      "date": "2026-07-27",
+      "signal": 9,
+      "signal_name": "upvotes",
+      "summary": "QueenVIS improves image-only video instance segmentation by enhancing object query stability through auxiliary training losses and a training-free query propagation mechanism, achieving competitive results without video-level supervision.",
+      "extra": {
+        "keywords": [
+          "video instance segmentation",
+          "Mask2Former",
+          "object queries",
+          "feature-prediction loss",
+          "center-prediction loss",
+          "query propagation",
+          "memory bank",
+          "image-only training"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Keyword Harnesses Fail Open: A Cheap Diagnostic Ladder for Tool-Use Claims in Small Language Models",
+      "url": "https://huggingface.co/papers/2610.02142",
+      "date": "2026-10-01",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "A diagnostic ladder reveals false tool-use positives in small language models and shows targeted supervised fine-tuning can repair missing tool-call priors with minimal compute.",
+      "extra": {
+        "keywords": [
+          "tool-use metrics",
+          "supervised fine-tuning",
+          "first-token probe",
+          "embedding drift",
+          "decoder",
+          "tokenizer",
+          "special tokens",
+          "factorial analyses"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "TRACE: An Evidence-Grounded Benchmark for Safety Evaluation of Large Reasoning Models",
+      "url": "https://huggingface.co/papers/2608.24232",
+      "date": "2026-08-25",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "TRACE is a benchmark evaluating guardrail models on reasoning traces, prompts, and responses with evidence annotations, revealing greater difficulty in reasoning-trace safety detection.",
+      "extra": {
+        "keywords": [
+          "Large Reasoning Models",
+          "reasoning traces",
+          "guardrail models",
+          "evidence-grounded safety evaluation",
+          "TRACE benchmark",
+          "attack strategies",
+          "supporting evidence extraction"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Mapping CVEs to MITRE ATT&CK Techniques: A Curated Gold-Set Classifier and the Limits of LLM-Assisted Label Expansion",
+      "url": "https://huggingface.co/papers/2607.25572",
+      "date": "2026-07-28",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "A multi-label classifier maps vulnerability descriptions to MITRE ATT&CK techniques, showing that expert-curated labels improve performance while LLM-assisted labeling introduces evaluation artifacts without reliable gains.",
+      "extra": {
+        "keywords": [
+          "multi-label classifier",
+          "zero-shot embedding-similarity",
+          "LLM-assisted labeling",
+          "macro-F1",
+          "validation-split checkpoint selection",
+          "recall@5"
+        ],
+        "github": "https://github.com/vulnerability-lookup/cve-attack-mapping-paper",
+        "github_stars": 5,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "One Click per Cell Type Suffices: Training-free Group Interaction for Cell Instance Segmentation",
+      "url": "https://huggingface.co/papers/2605.29429",
+      "date": "2026-05-28",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Group Prompting enables efficient cell instance segmentation by leveraging per-type prompting through a training-free framework that uses multi-scale encoder features and recursive prompt expansion.",
+      "extra": {
+        "keywords": [
+          "cell instance segmentation",
+          "interactive foundation models",
+          "per-instance prompting",
+          "per-type prompting",
+          "Segment Anything Model",
+          "frozen image encoder",
+          "non-parametric gating",
+          "multi-scale encoder features",
+          "Chain-of-Prompts",
+          "recursive prompt expansion"
+        ],
+        "github": "https://github.com/shjo-april/Chain-of-Prompts",
+        "github_stars": 10,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Trajectory Soup: Pushing the Compute-Scaling Frontier of LLM Mid-training via Diverse Trajectories",
+      "url": "https://huggingface.co/papers/2609.37169",
+      "date": "2026-09-29",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Trajectory Soup distributes mid-training compute across independent branches and merges selected checkpoints to improve downstream performance beyond serial training limits.",
+      "extra": {
+        "keywords": [
+          "mid-training",
+          "large language models",
+          "trajectory soup",
+          "intra-trajectory averaging",
+          "inter-trajectory averaging",
+          "checkpoint selection",
+          "parameter space",
+          "compute scaling"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LSREP: A Longitudinal State-Replay Protocol for Evaluating Conversational Memory, with ICE v2 as an Audited Local-First Architecture",
+      "url": "https://huggingface.co/papers/2609.16730",
+      "date": "2026-09-15",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "LSREP evaluates persistent conversational memory through replay and fidelity audits, revealing that ICE v2 trades quality for reduced context use and suffers severe multi-session failures compared to vector-RAG.",
+      "extra": {
+        "keywords": [
+          "LSREP",
+          "Longitudinal State-Replay Evaluation Protocol",
+          "ICE v2",
+          "retrieval fusion",
+          "dynamic context budgets",
+          "vector-RAG",
+          "LongMemEval",
+          "fidelity audit",
+          "procedural retrieval",
+          "graph utility"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "WALDO: One-Shot Exemplar-Conditioned Object Detection in Cluttered Scenes",
+      "url": "https://huggingface.co/papers/2608.28216",
+      "date": "2026-08-28",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "WALDO is a lightweight detection head that uses frozen world-model features to localize objects from a single reference image and description while detecting absence, though it does not reliably distinguish individual instance identity.",
+      "extra": {
+        "keywords": [
+          "WALDO",
+          "V-JEPA",
+          "world-model pretraining",
+          "exemplar-conditioned detection",
+          "cross-attention",
+          "absence detection",
+          "Grounding DINO",
+          "DINOv3"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "IoU-PD: IoU-Aware Privileged Distillation for Visual Grounding with Multimodal Large Language Models",
+      "url": "https://huggingface.co/papers/2607.15732",
+      "date": "2026-08-14",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "IoU-PD improves visual grounding in multimodal language models by using ground-truth boxes as privileged training guidance with geometry-aware distillation, without extra inference cost.",
+      "extra": {
+        "keywords": [
+          "multimodal large language models",
+          "autoregressive coordinate generation",
+          "IoU-aware privileged distillation",
+          "privileged distillation loss",
+          "geometric overlap",
+          "supervised fine-tuning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Pixel-Level Pavement Distress Assessment Using Instance Segmentation",
+      "url": "https://huggingface.co/papers/2605.26095",
+      "date": "2026-05-25",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A vision-based pavement distress analysis system using Mask R-CNN instance segmentation demonstrates superior performance for crack detection and quantification compared to object detection approaches, achieving high precision and recall metrics on a custom field-collected dataset.",
+      "extra": {
+        "keywords": [
+          "Mask R-CNN",
+          "instance segmentation",
+          "Detectron2",
+          "ResNet-101 FPN",
+          "YOLO",
+          "CSPDarknet53",
+          "polygon labels",
+          "bounding-box matching protocol",
+          "F1 score",
+          "crack-area fraction"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Exploiting Longitudinal Context in Clinician-Verified Interactive Lesion Tracking",
+      "url": "https://huggingface.co/papers/2605.23118",
+      "date": "2026-05-22",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A verified tracking approach combines clinical registration verification with longitudinal context modeling to improve pancreatic cancer lesion segmentation, achieving superior performance in both automated and interactive settings.",
+      "extra": {
+        "keywords": [
+          "end-to-end trackers",
+          "decoupled registration-segmentation pipelines",
+          "latent temporal difference weighting",
+          "longitudinal context",
+          "synthetic pretraining",
+          "Dice points",
+          "autoPET IV challenge",
+          "PanTrack",
+          "longitudinal pancreatic cancer benchmark",
+          "out-of-distribution generalization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SkillOpt: Executive Strategy for Self-Evolving Agent Skills",
+      "url": "https://doi.org/10.48550/arxiv.2605.23904",
+      "date": "2026-05-22",
+      "signal": 232,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agentic Software Engineering: Foundational Pillars and a Research Roadmap",
+      "url": "https://doi.org/10.1145/3861334",
+      "date": "2026-11-05",
+      "signal": 87,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A complete diploid human genome benchmark for personalized genomics",
+      "url": "https://doi.org/10.1016/j.cell.2026.06.016",
+      "date": "2026-08-01",
+      "signal": 74,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The more you automate, the less you see: Hidden pitfalls of autonomous AI scientists",
+      "url": "https://doi.org/10.1073/pnas.2610214123",
+      "date": "2026-10-05",
+      "signal": 52,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Evaluating the robustness and readiness of large frontier models in health AI applications",
+      "url": "https://doi.org/10.1038/s41591-026-04501-8",
+      "date": "2026-06-26",
+      "signal": 48,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Reward-SQL: Boosting Text-to-SQL via Stepwise Execution-Aware Reasoning and Process-Supervised Rewards",
+      "url": "https://doi.org/10.1145/3802105",
+      "date": "2026-05-18",
+      "signal": 36,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Self-Improvements in Modern Agentic Systems: A Survey",
+      "url": "https://doi.org/10.48550/arxiv.2607.13104",
+      "date": "2026-07-14",
+      "signal": 32,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SWE-Marathon: Can Agents Autonomously Complete Ultra-Long-Horizon Software Work?",
+      "url": "https://doi.org/10.48550/arxiv.2606.07682",
+      "date": "2026-06-05",
+      "signal": 31,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "MotionTrans: Human VR Data Enable Motion-Level Learning for Robotic Manipulation Policies",
+      "url": "https://doi.org/10.1109/icra57385.2026.11697199",
+      "date": "2026-06-01",
+      "signal": 31,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Systematization of Knowledge: Security and Safety in the Model Context Protocol Ecosystem",
+      "url": "https://doi.org/10.1007/978-3-032-32726-0_29",
+      "date": "2026-08-13",
+      "signal": 28,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators",
+      "url": "https://doi.org/10.48550/arxiv.2606.26294",
+      "date": "2026-06-24",
+      "signal": 28,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agentic Software Issue Resolution with Large Language Models: A Survey",
+      "url": "https://doi.org/10.1145/3849702",
+      "date": "2026-10-03",
+      "signal": 27,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "GaP: A Graph-as-Policy Multi-Agent Self-Learning Harness For Variational Automation Tasks",
+      "url": "https://doi.org/10.48550/arxiv.2607.05369",
+      "date": "2026-07-06",
+      "signal": 26,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "spot instance training checkpoint"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "TheFloatingString/transformer-speedrun",
+      "url": "https://github.com/TheFloatingString/transformer-speedrun",
+      "date": "2026-05-25",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Pre-training GPT-2 models on serverless GPUs on Modal",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-05-25",
+        "pushed": "2026-05-25",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "jyswee/computegpu-cli",
+      "url": "https://github.com/jyswee/computegpu-cli",
+      "date": "2026-06-09",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Rent cloud GPUs from your terminal. Deploy in 30 seconds. npm i -g computegpu",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "cli",
+          "cloud",
+          "compute",
+          "deep-learning",
+          "gpu",
+          "gpu-cloud",
+          "gpu-rental",
+          "h100",
+          "inference",
+          "llm",
+          "mcp",
+          "ml",
+          "ollama",
+          "per-second-billing",
+          "rtx4090",
+          "serverless",
+          "training"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-06-09",
+        "pushed": "2026-06-09",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "api-evangelist/modal-com",
+      "url": "https://github.com/api-evangelist/modal-com",
+      "date": "2026-05-25",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Modal — independent third-party profile of a public API surface, by API Evangelist. Modal is a serverless cloud platform for AI and data workloads. Modal lets developers write ordinary Python and run it on remote GPUs and CPUs with sub-second cold starts, instant autoscaling, and declarative container images.",
+      "extra": {
+        "topics": [
+          "ai-infrastructure",
+          "apis-json",
+          "batch-processing",
+          "cloud-compute",
+          "go",
+          "gpu",
+          "inference",
+          "python",
+          "sandboxes",
+          "serverless",
+          "training",
+          "typescript"
+        ],
+        "license": null,
+        "created": "2026-05-25",
+        "pushed": "2026-09-18",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "skyphusion-labs/vivijure-backend",
+      "url": "https://github.com/skyphusion-labs/vivijure-backend",
+      "date": "2026-06-08",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "RunPod GPU render engine for Vivijure: SDXL keyframes, Wan image-to-video, LoRA training, ffmpeg assembly. Pairs with vivijure-cf or vivijure-local.",
+      "extra": {
+        "topics": [
+          "agpl",
+          "ai-filmmaking",
+          "ai-video",
+          "docker",
+          "ffmpeg",
+          "generative-ai",
+          "gpu",
+          "image-to-video",
+          "keyframes",
+          "python",
+          "runpod",
+          "sdxl",
+          "serverless",
+          "stable-diffusion",
+          "video-generation",
+          "vivijure",
+          "wan"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-06-08",
+        "pushed": "2026-11-10",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "runcomfy-com/runcomfy-mcp",
+      "url": "https://github.com/runcomfy-com/runcomfy-mcp",
+      "date": "2026-07-14",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Remote MCP for RunComfy: ComfyUI deployments, hosted models, LoRA training. 31 tools.",
+      "extra": {
+        "topics": [
+          "ai",
+          "comfyui",
+          "gpu",
+          "image-generation",
+          "mcp",
+          "mcp-server",
+          "model-context-protocol",
+          "runcomfy",
+          "serverless",
+          "video-generation"
+        ],
+        "license": "MIT",
+        "created": "2026-07-14",
+        "pushed": "2026-11-03",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "jiayi-wu-3150/databricks-gpu-training-playbook",
+      "url": "https://github.com/jiayi-wu-3150/databricks-gpu-training-playbook",
+      "date": "2026-10-28",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Capability demo (not a benchmark): the full GPU lifecycle - fine-tune, eval, UC registration, batch inference, serving - running end to end on both Databricks AI Runtime serverless GPU and classic GPU, on synthetic data. The two runtimes are sized differently on purpose, so the timings are not comparable.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-28",
+        "pushed": "2026-10-28",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Amarel-Taylor-Scott/ai-gpu-cloud-directory",
+      "url": "https://github.com/Amarel-Taylor-Scott/ai-gpu-cloud-directory",
+      "date": "2026-06-22",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Curated directory of GPU & AI cloud providers — marketplaces, serverless GPU, managed training, inference APIs, hyperscalers — with a stdlib CLI.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-22",
+        "pushed": "2026-06-22",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "skyphusion-labs/vivijure-wan-train",
+      "url": "https://github.com/skyphusion-labs/vivijure-wan-train",
+      "date": "2026-07-23",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Wan 2.2 A14B character LoRA training satellite for Vivijure (RunPod serverless).",
+      "extra": {
+        "topics": [
+          "agpl",
+          "ai-film",
+          "character-lora",
+          "gpu",
+          "lora",
+          "python",
+          "runpod",
+          "serverless",
+          "vivijure",
+          "vivijure-module",
+          "wan"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-07-23",
+        "pushed": "2026-11-10",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shriyashekatkar25-byte/keep-it-warm",
+      "url": "https://github.com/shriyashekatkar25-byte/keep-it-warm",
+      "date": "2026-10-22",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "How many GPUs should a serverless training runtime keep warm? Box-Muller + Cholesky Monte Carlo sizes the pool. APM Lab, Stats 102C Ch5.",
+      "extra": {
+        "topics": [
+          "ai-platform",
+          "apm-lab",
+          "composition",
+          "cost-and-capacity",
+          "monte-carlo"
+        ],
+        "license": null,
+        "created": "2026-10-22",
+        "pushed": "2026-10-22",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "vini2309/OpenClaw-RL-Tutorial",
+      "url": "https://github.com/vini2309/OpenClaw-RL-Tutorial",
+      "date": "2026-06-18",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "A practical OpenClaw-RL setup for training Qwen with GRPO on RunPod GPUs, including a Next.js dashboard, Pod deployment scripts, Serverless inference configuration, and Megatron compatibility patches.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-18",
+        "pushed": "2026-06-18",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dwin-gharibi/runpod-zero-shot",
+      "url": "https://github.com/dwin-gharibi/runpod-zero-shot",
+      "date": "2026-05-24",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Serverless GPU/CPU zero-shot text classification on RunPod. Hand the worker any text and an arbitrary list of candidate labels, get back ranked probabilities in milliseconds — no fine-tuning, no training data, no label schema baked into the model. Powered by NLI-style encoders such as BART-MNLI, DeBERTa-v3-MNLI, and multilingual checkpoints...",
+      "extra": {
+        "topics": [
+          "runpod",
+          "runpod-hub",
+          "runpod-serverless",
+          "runpod-template",
+          "runpod-worker",
+          "serverless",
+          "serverless-architectures",
+          "text-classification"
+        ],
+        "license": null,
+        "created": "2026-05-24",
+        "pushed": "2026-05-24",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shivamgoel234/DataHarvest",
+      "url": "https://github.com/shivamgoel234/DataHarvest",
+      "date": "2026-07-19",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "🌍 Physical data marketplace where AI labs post bounties & everyday people earn money capturing real-world training data. iPhone app records video + LiDAR + IMU + ARKit 6DoF poses. Serverless GPU pipeline (ChatGPT, YOLO, MediaPipe, SAM) auto-scores submissions. Built with Next.js 16, Supabase, Modal & Swift.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-19",
+        "pushed": "2026-07-24",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "arielcohen4/flex_ai_training",
+      "url": "https://github.com/arielcohen4/flex_ai_training",
+      "date": "2026-05-23",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Serverless LLM fine-tuning engine. Powers getflex.ai — SFT, DPO & LoRA on Modal GPUs.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2024-07-10",
+        "pushed": "2026-05-23",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "hojjad3/Image-Captioning",
+      "url": "https://github.com/hojjad3/Image-Captioning",
+      "date": "2026-07-08",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "A SFT pipeline for Image Captioning. Combines ViT and GPT-2 using LoRA adapters for lightweight training, deployed on Modal serverless GPUs.",
+      "extra": {
+        "topics": [
+          "huggingface",
+          "image-captioning",
+          "modal",
+          "pytorch"
+        ],
+        "license": null,
+        "created": "2025-12-24",
+        "pushed": "2026-07-08",
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Closed-Loop Physics-Based Manipulation Evaluation at a Commodity Price: What 4.4 L4 GPU hours at $3.50 Buys You",
+      "url": "http://arxiv.org/abs/2611.07441v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Running evaluations of contact-rich robotic manipulation at statistical scale has largely been possible only at well-resourced labs, highlighting the need for affordable and efficient options for broader audiences. We present a reproducible evaluation harness wrapper based on a previous study at 200-rollout scale on serverless commodity GPUs, at a cost of approximately $3.50 USD and 38 minutes of ",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "LLM Fine-Tuning Workloads: Characterization, Challenges, and Opportunities for Serverless AI",
+      "url": "http://arxiv.org/abs/2610.40983v1",
+      "date": "2026-10-29",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Serverless execution of Large Language Models (LLMs) is becoming important, reflecting their wide societal use. An increasingly present stage in LLM pipelines is fine-tuning, which specializes trained models and improves inference performance. Serverless operation of LLM fine-tuning workloads shifts operational concerns from the user to the provider. For these new workloads, providers face importa",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ConCise: Training-Free Conclusion-Chain State Compression for Cost-Efficient Multi-Step RAG Services",
+      "url": "http://arxiv.org/abs/2606.28361v1",
+      "date": "2026-06-13",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Multi-step retrieval-augmented generation (RAG) has been widely deployed as LLM-powered web services for complex question answering, where iterative retrieval-reasoning rounds deliver strong multi-hop accuracy. However, this paradigm causes historical documents and reasoning traces to accumulate across rounds, inflating cumulative input tokens approximately as $O(N^2)$ with progressively increasin",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation",
+      "url": "https://huggingface.co/papers/2605.18739",
+      "date": "2026-05-18",
+      "signal": 115,
+      "signal_name": "upvotes",
+      "summary": "LongLive-2.0 presents an NVFP4-based parallel infrastructure for long video generation that addresses training and inference bottlenecks through sequence-parallel autoregressive training and diffusion model tuning.",
+      "extra": {
+        "keywords": [
+          "NVFP4",
+          "sequence-parallel autoregressive training",
+          "Balanced SP",
+          "teacher-forcing layout",
+          "VAE encoding",
+          "diffusion model",
+          "auto-regressive diffusion model",
+          "LoRA weights",
+          "W4A4",
+          "KV cache quantization",
+          "asynchronous streaming VAE decoding",
+          "Blackwell GPUs",
+          "inter-GPU communication"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "QwenGyre: An Elastic Reinforcement Learning Framework for Training xLong-Horizon Agents",
+      "url": "https://huggingface.co/papers/2609.33848",
+      "date": "2026-09-27",
+      "signal": 44,
+      "signal_name": "upvotes",
+      "summary": "QwenGyre is an end-to-end framework that enables efficient online reinforcement learning for extreme-long horizon LLM agent tasks by dynamically reallocating GPUs and deduplicating redundant branching trajectories.",
+      "extra": {
+        "keywords": [
+          "online reinforcement learning",
+          "trajectory deduplication",
+          "GPU reallocation",
+          "branching histories",
+          "extreme-long horizon",
+          "LLM agents"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Rethinking Shrinkage Bias in LLM FP4 Pretraining: Geometric Origin, Systemic Impact, and UFP4 Recipe",
+      "url": "https://huggingface.co/papers/2606.20381",
+      "date": "2026-06-18",
+      "signal": 9,
+      "signal_name": "upvotes",
+      "summary": "Uniform 4-bit training with RHT-based quantization outperforms E2M1-based methods by eliminating shrinkage bias and improving training stability across large language model architectures.",
+      "extra": {
+        "keywords": [
+          "FP4 training",
+          "Shrinkage Bias",
+          "Random Hadamard Transform",
+          "uniform grids",
+          "E1M2",
+          "INT4",
+          "E2M1",
+          "GEMMs",
+          "quantization quality",
+          "training instability",
+          "scaling-law analysis",
+          "ablation studies"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Avatar-Forever: Decoupled Parallel Training for High-Quality Real-Time Infinite Avatars",
+      "url": "https://huggingface.co/papers/2608.12107",
+      "date": "2026-08-12",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "Avatar-Forever uses parallel training branches and chunk-wise caching to enable efficient, robust, real-time infinite interactive avatar generation.",
+      "extra": {
+        "keywords": [
+          "distillation",
+          "autoregressive errors",
+          "Recovery-oriented Rollout Training",
+          "long-horizon adapter",
+          "ForeverCache",
+          "chunk-wise feature caching",
+          "video foundation model",
+          "audio-driven avatar generation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Pre-Compiled Pipeline Shards for Distributed LLM Inference on Intel AI PC Fleets",
+      "url": "https://huggingface.co/papers/2608.19147",
+      "date": "2026-08-19",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Multiple AI PCs collaborate via pipeline-parallel layer sharding and speculative decoding to serve large language models faster than single-node inference.",
+      "extra": {
+        "keywords": [
+          "pipeline parallelism",
+          "OpenVINO",
+          "speculative decoding",
+          "micro-batching",
+          "IndirectKVCache fusion",
+          "Llama 3.1",
+          "INT4"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Architecting for Hardware Diversity: Meta's End-to-End Co-Design for High-Performance AI Training on AMD GPUs",
+      "url": "https://huggingface.co/papers/2610.22230",
+      "date": "2026-10-15",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Optimizing AMD accelerators for large-scale recommendation model training via hardware-model co-design, analytical performance modeling, and agentic porting workflows achieves up to 1.5x throughput gains over direct CUDA ports.",
+      "extra": {
+        "keywords": [
+          "heterogeneous fleet",
+          "NVIDIA GPUs",
+          "AMD GPUs",
+          "MTIA accelerators",
+          "vendor lock-in",
+          "performance portability",
+          "AMD Instinct MI350X",
+          "NVIDIA B200",
+          "recommendation model training",
+          "hardware-model co-design",
+          "HBM capacity",
+          "analytical performance model",
+          "kernel selection",
+          "agentic workflows",
+          "CUDA ecosystem",
+          "microarchitecture-aware kernel optimizations",
+          "custom shim generation",
+          "end-to-end training throughput",
+          "PyTorch",
+          "Triton",
+          "ROCm"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Velda – Run jobs with serverless GPUs, without container images",
+      "url": "https://velda.io",
+      "date": "2026-05-14",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48140339",
+        "comments": 2,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: OSS Web Based AI Video Studio (Vivijure)",
+      "url": "https://news.ycombinator.com/item?id=48891809",
+      "date": "2026-07-13",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48891809",
+        "comments": 1,
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI-coupled HPC Workflow Applications, Middleware and Performance",
+      "url": "https://doi.org/10.1145/3844499",
+      "date": "2026-09-09",
+      "signal": 40,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI-enhanced adaptive virtual screening of large libraries for ligand discovery",
+      "url": "https://doi.org/10.1038/s41587-026-03217-x",
+      "date": "2026-09-01",
+      "signal": 31,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SurGE: A Benchmark and Evaluation Framework for Scientific Survey Generation",
+      "url": "https://doi.org/10.1145/3805712.3808598",
+      "date": "2026-07-10",
+      "signal": 28,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Empowering Scientific Workflows with Federated Agents",
+      "url": "https://doi.org/10.1109/ipdps65963.2026.00114",
+      "date": "2026-05-25",
+      "signal": 28,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "TiRex-2: Generalizing TiRex to Multivariate Data and Streaming",
+      "url": "https://doi.org/10.48550/arxiv.2607.01204",
+      "date": "2026-07-01",
+      "signal": 23,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DeltaBox: Scaling Stateful AI Agents with Millisecond-Level Sandbox Checkpoint/Rollback",
+      "url": "https://doi.org/10.48550/arxiv.2605.22781",
+      "date": "2026-05-21",
+      "signal": 22,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agentic Coding in the Wild: Characterizing GitHub Copilot Traces at Production Scale",
+      "url": "https://doi.org/10.48550/arxiv.2608.00101",
+      "date": "2026-07-30",
+      "signal": 20,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Semantic Caching for Low-Cost LLM Serving: From Offline Learning to Online Adaptation",
+      "url": "https://doi.org/10.1109/infocom59046.2026.11571467",
+      "date": "2026-05-18",
+      "signal": 19,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "CacheWise: Understanding Workloads and Optimizing KVCache Management for Efficiently Serving LLM Coding Agents",
+      "url": "https://doi.org/10.48550/arxiv.2606.16824",
+      "date": "2026-06-15",
+      "signal": 16,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Orchard: An Open-Source Agentic Modeling Framework",
+      "url": "https://doi.org/10.48550/arxiv.2605.15040",
+      "date": "2026-05-14",
+      "signal": 15,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Specter: Fast MoE Inference via Quantization-Enabled Multi-Step Speculative Offloading",
+      "url": "https://doi.org/10.1145/3845814.3850026",
+      "date": "2026-11-04",
+      "signal": 10,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "serverless GPU training"
+      }
+    }
+  ]
+}

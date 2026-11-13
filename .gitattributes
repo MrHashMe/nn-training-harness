@@ -1,0 +1,4 @@
+# The kit's files use LF on every platform (system git on Windows has core.autocrlf=true).
+* text=auto eol=lf
+# Kept byte-for-byte as received (CRLF).
+docs/original-prompt.txt -text

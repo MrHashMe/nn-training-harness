@@ -1,0 +1,117 @@
+[
+ {
+  "file": "evaluation",
+  "candidate": "Harness-computed keep, revert or inconclusive decision (new expctl subcommand, standard library)",
+  "section": "1. Deciding keep or revert"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Exact sign-flip permutation test plus paired t-test with a critical-value table (standard library)",
+  "section": "1. Deciding keep or revert"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "A/A calibration of the decision rule",
+  "section": "1. Deciding keep or revert"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Fresh-seed confirmation phase enforced by the harness",
+  "section": "1. Deciding keep or revert"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Wilson interval and small-sample interval rules",
+  "section": "1. Deciding keep or revert"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Holm correction and expected-maximum inflation in the loop report",
+  "section": "1. Deciding keep or revert"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Ladder-style improvement threshold (Blum and Hardt 2015)",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Fixed decision budget and keep budget per protocol version",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Hidden shadow validation split scored only by the harness",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Hidden Consistent Evaluation: harness-scored search split plus separate selection split (protocol from AIRA_2, arXiv 2603.26499 v2)",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "No gold labels and no per-item validation results in evaluator output the agent can read",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Announced held-out set, label-free feedback, run-state isolation and state-channel audit (rules from arXiv 2607.18064 v2)",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Evaluator locking with trusted metric recomputation (technique from RewardHackingAgents, arXiv 2603.11337 v1)",
+  "section": "2. Reusing a validation set (adds to validity.md section 5)"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Evaluation-settings manifest",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Repeat-evaluation and batch-size invariance check in the sanity gate",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Re-baseline on every evaluation-harness, task or dataset-loader upgrade",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "lm-evaluation-harness 0.4.13",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Perplexity comparability rule",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "sacreBLEU 2.6.0 with its configuration signature",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "ROUGE reporting rule",
+  "section": "3. Harnesses, settings, generated text"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Exact and near-duplicate split-overlap check (standard library)",
+  "section": "4. Contamination"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Temporal split and cutoff disclosure rule",
+  "section": "4. Contamination"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Isolation rules for optional evaluation modules",
+  "section": "5. Optional evaluation modules"
+ }
+]

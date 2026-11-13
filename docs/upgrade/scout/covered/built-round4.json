@@ -1,0 +1,26 @@
+[
+ {
+  "file": "round4",
+  "candidate": "A question before a recursive command over the project root when sealed files lie on disk below it (kit-native; the gap that README 'Notes and limits' kept until round 4)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py: each command read with its own tool, filters and folder, sealed files looked up on disk below the folder it sweeps; README 'Notes and limits'; the guard table of tests/test_kit.py. Commits e7a69dc, d02137e, 8e69154, and the review's fixes c72c576 to df54cdd"
+ },
+ {
+  "file": "round4",
+  "candidate": "install.py --worktrees: the guard for sessions started in the repository's other checkouts (kit-native)",
+  "status": "finished",
+  "where": "install.py --worktrees and --uninstall; README 'Upgrading and removing' and 'Notes and limits'; tests/test_ports.py. Commits 8329718 and 689cd54. Checked live on native Windows (Claude Code 2.1.322); Linux, macOS and the desktop app rest on the vendor's documentation"
+ },
+ {
+  "file": "round4",
+  "candidate": "expctl selftest warns about checkouts of the repository that register no guard hook (kit-native)",
+  "status": "finished",
+  "where": "expctl.py selftest; tests/test_ports.py. Commit 3dcc780"
+ },
+ {
+  "file": "round4",
+  "candidate": "Guard changes that the two independent reviews of 13 November led to: exclusions, each tool's own filters, character classes, folder changes, a move of the sealed folder, ripgrep's own ignore and configuration files, an answer before the hook's time is up (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; README 'Notes and limits'; the guard table and section of tests/test_kit.py. Commits c72c576, 624b6c5, e710e83, 45d7794, 65293d8, f7f5b6e, 0884c70, 34000d5, df54cdd. The fixes to the second look's findings were verified by probes and tests, not reviewed again"
+ }
+]

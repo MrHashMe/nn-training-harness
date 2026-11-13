@@ -1,0 +1,50 @@
+{
+  "_help": "nn-training harness config. Field reference: .claude/skills/nn-training/SKILL.md (section 'Harness config'). Edits to this file require approval (it is a guardrail).",
+  "version": 1,
+  "runs_dir": "runs",
+  "journal": "experiments/JOURNAL.md",
+  "metric": {
+    "name": null,
+    "direction": null,
+    "select": "best"
+  },
+  "heartbeat_stale_seconds": 900,
+  "min_free_disk_gb": 20,
+  "kill_after_s": 120,
+  "snapshot": {
+    "mode": "copy",
+    "max_file_mb": 50
+  },
+  "sealed_paths": [],
+  "sealed_tokens": [],
+  "frozen_paths": [],
+  "final_eval_commands": [],
+  "external_jobs": [],
+  "harness_paths": [
+    ".claude/hooks/**",
+    ".claude/settings.json",
+    ".claude/settings.local.json",
+    ".claude/nn-training.json",
+    ".claude/skills/nn-training/**",
+    ".claude/agents/**",
+    ".mcp.json",
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".codex/**",
+    ".cursor/**",
+    ".agents/skills/nn-training/**",
+    ".claude/state/remote-ledger.jsonl",
+    ".claude/state/final-eval/**"
+  ],
+  "optuna": {
+    "storage": null,
+    "studies": []
+  },
+  "limits": {
+    "top_k": 5,
+    "failures": 5,
+    "active": 10,
+    "recent": 5,
+    "alerts": 12
+  }
+}

@@ -1,0 +1,21 @@
+{
+ "metric": {"name": "dev/loss", "direction": "minimize"},
+ "min_free_disk_gb": 2,
+ "sealed_paths": ["data/loopval.txt", "data/test.txt"],
+ "frozen_paths": ["evaluate.py", "controls.py", "data/**"],
+ "final_eval_commands": ["{python} evaluate.py --data data/test.txt --run-dir"],
+ "loop": {
+  "task": "Lower the held-out loss of the character-level language model that train.py trains on data/train.txt. A run trains for 30 seconds (--time-budget 30, fixed) and must save model.ts the way train.py does now: a TorchScript module that maps token ids of shape [64, 128] to logits of shape [64, 128, 65], which the frozen evaluate.py scores. Everything inside train.py may change: model, optimiser, schedule, precision, data sampling.",
+  "train_command": ["{python}", "train.py", "--seed", "{seed}", "--time-budget", "30"],
+  "eval_command": ["{python}", "evaluate.py", "--data", "data/loopval.txt", "--run-dir", "{run_dir}"],
+  "direction": "minimize",
+  "seeds": [1, 2, 3],
+  "run_budget_s": 90,
+  "editable_paths": ["train.py"],
+  "min_margin": 0.005,
+  "controls": [
+   {"name": "constant", "train_command": ["{python}", "controls.py", "constant"], "floor": 4.1743},
+   {"name": "shuffled", "train_command": ["{python}", "controls.py", "shuffled", "--seed", "{seed}", "--time-budget", "30"], "floor": 3.2997}
+  ]
+ }
+}

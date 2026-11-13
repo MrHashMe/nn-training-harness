@@ -1,0 +1,32 @@
+[
+ {
+  "file": "optimization-performance",
+  "candidate": "Tuned AdamW or NAdamW baseline (torch.optim.AdamW, PyTorch 2.15.0)",
+  "section": "Adopted practices"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Linear LR decay to zero for fixed budgets",
+  "section": "Adopted practices"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Short linear LR warmup",
+  "section": "Adopted practices"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "AdamW timescale rule for batch and budget changes",
+  "section": "Adopted practices"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Equal-budget optimizer comparison protocol with an update-size-matched control",
+  "section": "Adopted practices"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "AlgoPerf rolling leaderboard as a scouting source",
+  "section": "Adopted practices"
+ }
+]

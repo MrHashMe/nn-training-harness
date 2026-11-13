@@ -1,0 +1,107 @@
+CLAUDE CODE — NEURAL NETWORK TRAINING BRIEF
+Version 2 — General neural-network training and fine-tuning
+Updated: 20 October 2026
+
+Improve this existing neural-network project so that you can run, monitor, compare, and explain training experiments reliably. Infer the appropriate workflow from the actual project, whether training from scratch, full fine-tuning, parameter-efficient fine-tuning, distillation, or another training regime. Inspect the repository and implement the work; preserve a functioning framework, environment, and experiment tracker when they already meet the requirements. Explain decisions in beginner-friendly language. This is an operating procedure, not a requirement to install every named tool.
+
+1. Establish the task and runtime
+
+Read the project requirements, existing instructions, model, dataset pipeline, training script, evaluation code, dependency files, and current experiment history. Identify the task, training regime, dataset, primary metric and direction, permitted data/pretraining, and resource constraints. Determine whether the objective is better model quality, lower training cost, shorter runtime, lower memory use, or an explicit tradeoff. State the comparison basis, such as equal data exposure, training steps, wall time, or cost.
+
+Record total and trainable parameter counts after initialization, but enforce a model-size cap only when the actual project requirements specify one. Check applicable memory, latency, data-use, and deployment constraints. Reject invalid configurations before expensive training. Do not infer constraints from unrelated projects or conversations.
+
+Inspect ongoing jobs before starting work: identify their run directories, processes, devices, code/config snapshots, checkpoints, and progress. Preserve their resource ownership. Monitor existing training and prepare changes for subsequent runs without terminating, duplicating, restarting, or mutating an active job unless the user has authorized that action. Use an isolated snapshot or branch for changes that could affect running code.
+
+Detect the actual OS, shell, Python executable, environment manager, available device, GPU, installed framework, CUDA/MPS support, and relevant package versions. Distinguish native Windows, WSL/Linux, and macOS. Preserve a working installation. For necessary changes, use official documentation for the installed or selected compatible stable version and pin the tested environment. Never upgrade dependencies during an active study.
+
+Use the project's existing time, compute, spending, concurrency, and deadline limits, including resources already committed to ongoing work. Estimate trial cost from trustworthy logs or a bounded pilot on available authorized resources. Include baseline work, retries, initialization, compilation, evaluation, checkpointing, and verification in campaign accounting. Do not invent a full-sweep budget. If a material budget remains unspecified, finish inspection, implementation preparation, monitoring, and permitted smoke checks; present a concrete finite campaign estimate and ask for the missing budget once before committing substantial new compute. Honor existing authorization without asking again. Starting paid cloud resources requires authorization that covers them.
+
+2. Implement a small, coherent stack
+
+Keep the current model framework and established training topology when suitable. Preserve PyTorch, TensorFlow/Keras, Lightning, or another functioning framework. Preserve a justified existing optimizer; use AdamW as a candidate baseline when a new baseline is needed and the task supports it. Choose distributed training or fine-tuning components from the model's actual requirements, not from a generic list.
+
+Use Optuna as the default hyperparameter-search option when repeated trials are justified and no suitable controller already exists. Inspect installed versions and their current official documentation before selecting APIs. Seeded TPE is a starting policy, not a universal winner. Cheap runs can support more complete trials; expensive training calls for a narrow justified search, staged pilots, and selective full runs. Categorical choices, widths, depths, optimizers, and conditional architecture options may be included when valid. Use appropriate logarithmic ranges for positive scale parameters and include zero-valued alternatives explicitly when relevant. Explain why a sweep is worthwhile before launching one.
+
+Use one primary experiment tracker. Keep a suitable existing MLflow, W&B, TensorBoard, or comparable setup. If none exists, consider Trackio locally for metrics, alerts, artifacts, and structured CLI/Python queries. Check that its capabilities and storage mode meet this project's scale and requirements. Let the chosen search controller own trial ranking; do not run competing sweep controllers. Add MCP only when it improves access beyond the existing CLI/Python interface.
+
+Use the existing environment manager; for a new setup, prefer uv with a committed lockfile. Store resolved per-run configurations and a dataset/split manifest. Add torchinfo, TorchMetrics, or other dependencies only when they solve an actual inspection or metric-computation need.
+
+3. Make the experiment valid before tuning
+
+Create or verify the task-appropriate training, validation, and final evaluation protocol. Respect grouped, patient/user-level, chronological, or environment/task separation when required. Fit learned preprocessing on training data only. Keep final test data and evaluation outcomes outside all hyperparameter and architecture feedback. Check duplicates, contamination, target alignment, and label quality where relevant.
+
+Fix the metric implementation, metric direction, checkpoint-selection rule, permitted data, preprocessing protocol, and comparison budget before the search. Follow the project's cross-validation or benchmark protocol when one exists. If evaluation code is defective, repair and version it explicitly, then re-establish comparable results rather than silently changing the scoring rule.
+
+Record each run's code revision, resolved configuration, dataset fingerprint, split identity, environment, seed, parameter counts, and artifact paths. Include a source snapshot hash that covers uncommitted and relevant untracked code; a commit ID alone is insufficient for a dirty working tree. Use an immutable code/config snapshot per running experiment. Preserve existing user changes and instructions.
+
+Run a forward/backward/optimizer-step smoke check, verify finite loss and gradients, and check that a small training subset can be fit when appropriate for the task. Verify evaluation mode, metric accumulation/reset, target shapes, and normalization. Save one real checkpoint, reload it, and verify a meaningful prediction/evaluation round trip.
+
+Reuse a trustworthy existing baseline when its provenance and evaluation protocol match. Otherwise establish the strongest baseline the available budget permits and label partial results accurately. Do not require an expensive full retraining merely to reproduce an adequate baseline. Inspect representative learning curves before introducing pruning. Compare candidates at equivalent, declared evaluation budgets; do not compare a partial run with a completed run as if their budgets matched. A failing run must remain a failure with a recorded reason; never replace a missing or invalid score with a plausible result.
+
+4. Run bounded search experiments
+
+Keep one experiment controller and explicit resource ownership. Start with one concurrent trial unless existing scheduling and measured resource headroom justify more. One trial may legitimately require multiple training workers or GPUs; preserve that topology. For sequential local Optuna studies, SQLite can be sufficient. For concurrent or distributed studies, choose supported journal/database storage and explicit resource scheduling. Account for CPU, RAM, GPU memory, storage, and communication needs; do not assume storage settings allocate GPUs.
+
+For inexpensive runs, use NopPruner initially. For expensive runs, consider MedianPruner after a pilot, with enough completed startup trials, enough comparable intermediate observations, and a grace period that covers early noise and learning-rate warmup. Choose these settings from observed curves. Do not automatically prune after one or two epochs.
+
+Use Hyperband/ASHA only when intermediate performance is informative and the trial budget supports its allocation scheme. Account for TPE startup in each Hyperband bracket.
+
+Report intermediate validation metrics at comparable resource steps. For time-limited comparisons, declare which initialization, data loading, validation, compilation, and checkpoint costs count toward each trial; also record total end-to-end elapsed time. The returned trial score and saved checkpoint must follow the same declared selection rule. Prefer a scalar primary objective plus the project's actual hard constraints unless an explicit quality/cost/resource tradeoff requires a Pareto front. Check whether the installed search APIs support pruning for the chosen objective type; do not apply Optuna's ordinary report/should_prune path to native multi-objective studies.
+
+Give each study a documented objective contract. If code changes alter the objective, dataset, metric, split, or evaluation/training budget, create a new study identity instead of silently mixing incomparable results through load_if_exists=True. Parameterized choices already defined within the same contract may vary across trials.
+
+Enforce both total trial and wall-clock budgets across restarts. Optuna's timeout is not a reliable hard deadline for an arbitrary active training process, and repeated optimize(n_trials=...) calls can add further trials. Check deadlines inside the training loop and checkpoint at a safe boundary. Distinguish timeout, pruning, failure, and successful completion.
+
+5. Give yourself useful evidence during training
+
+Provide a bounded machine-readable summary command, adapting to the repository's structure. It should report:
+- Current run, process status/heartbeat, epoch/step, elapsed time, and remaining budget.
+- Trial counts by state, including failure reasons.
+- At most five best eligible completed trials, with configuration and checkpoint links.
+- Recent training/validation metrics and relevant alerts.
+- Total/trainable parameters and measured runtime/memory where available.
+- Dataset/split/code identifiers.
+
+Handle a missing study, zero completed trials, all failures/pruned trials, non-finite metrics, and missing checkpoints without crashing or inventing a best result.
+
+Use this summary as the normal interface. Inspect targeted logs, selected metric windows, learning-curve plots, and representative validation errors when they can resolve a specific question. For image tasks, include correctly labeled sample/error grids; for classification, include appropriate per-class metrics or confusion matrices. Alerts describe observations, not automatic diagnoses.
+
+Keep training in an appropriate background process with durable logs and a known run identity. Monitoring must not launch duplicate training jobs or overwrite a running experiment's code.
+
+6. Make training resumable
+
+Save both the best checkpoint under the selection rule and the latest recoverable checkpoint when useful. Include model, optimizer, scheduler, mixed-precision scaler where applicable, epoch/step, configuration, random-number state, and required data/sampler state for the promised resume boundary.
+
+Link each checkpoint to its study/trial and tracker run. Resuming an Optuna study or a Trackio run is not sufficient to resume model training. State any limits on exact reproducibility, especially across platforms, dependency changes, parallel execution, and mid-epoch resumption.
+
+For pretrained-model adaptation, also preserve the base-model revision, tokenizer or processor, data/chat formatting, adapter configuration, quantization settings, and checkpoint compatibility where applicable. Verify saving, loading, and evaluating the intended model or adapter combination.
+
+7. Use a measured outer research loop
+
+Borrow the useful autoresearch pattern: hypothesis, scoped code change, pilot, bounded tuning, comparison, and retain/revert decision. Use a limit appropriate to this project rather than blindly copying an LLM recipe or a five-minute benchmark.
+
+Write one falsifiable hypothesis for each modeling change. Compare changes under the same evaluation protocol and comparable budgets. Keep the evaluator and task rules outside automated score-driven editing. An optional independent reviewer subagent may inspect methodology and conclusions; the main controller owns training and edits.
+
+Use numerical search to investigate settings rather than having an LLM guess every trial. Allow evidence-backed baselines, enqueued configurations, and revised search ranges. Before expensive nested searches, estimate the whole campaign cost.
+
+Plan uncertainty assessment to fit the workload and budget. When repeated training is practical, rerun promising configurations across predetermined seeds or appropriate splits and report individual results and variability. For expensive jobs, use affordable task-appropriate uncertainty checks and clearly disclose the limits of unreplicated training. Additional test examples or bootstrap intervals do not substitute for assessing variation across training runs. Do not choose the luckiest seed as evidence of superiority.
+
+For a single final model, predeclare its training seed and checkpoint/training-duration rule independently of final test results. After the model and selection procedure are fixed, evaluate according to the project's final protocol. Do not use those results for another tuning cycle.
+
+8. Add complexity only when measured evidence supports it
+
+Profile a representative window before changing performance settings. Compare total experiment time and quality for CPU/GPU, data loading, AMP, or torch.compile when relevant; include initialization and compilation costs. Parameter count alone does not determine runtime.
+
+Add Ray Tune when resource scheduling, distributed execution, or PBT is a real requirement; it can use OptunaSearch. Add Optuna/Trackio MCP only if the existing CLI/Python interface is insufficient. Consider Muon, Ax/BoTorch, SMAC, DEHB, or other methods as controlled alternatives when the task justifies them.
+
+Use Hugging Face PEFT/TRL, LoRA/QLoRA, Accelerate, DeepSpeed/FSDP, or cloud trainers when the actual model, training stage, resource needs, and project requirements justify them. Their relevance must be evaluated rather than assumed. An agent-harness framework such as Harness² is optional research infrastructure, not a prerequisite for training.
+
+9. Deliver concrete results
+
+Implement the necessary integration, add concise project-specific rules to CLAUDE.md without replacing existing instructions, and place the detailed experiment procedure in an appropriate linked document or project skill.
+
+Provide exact commands for environment setup, a single training run, tuning, status, dashboard, checkpoint resumption, and final evaluation. Verify the commands you actually execute.
+
+Finish with the detected project/task, baseline provenance, completed improvements, parameter counts, selection metric and uncertainty, runtime/resource cost, best checkpoint, final test result when available under the protocol, and unresolved limitations. For an ongoing long run, report verified progress, process identity, checkpoint location, and exact monitoring/resume commands instead of implying completion. Explain why each retained change earned its place. Separate measured results from hypotheses and proposed future experiments.
+
+Proceed with repository and live-run inspection first, reuse valid evidence, implement the appropriate integration, and carry out the authorized work within the established budget. Ask only when a missing fact materially prevents correct execution or a new resource commitment lacks authorization; continue all unaffected work.

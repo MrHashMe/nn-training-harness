@@ -1,0 +1,57 @@
+{
+ "_help": "SHA-256 (line endings normalised) of the files that kit versions without an install manifest wrote, so that an upgrade can tell an untouched file from one edited after install. Source: the kit as built on 23 October 2026.",
+ ".claude/agents/experiment-reviewer.md": [
+  "82c4fb9afb0587f07d90c7dbb9bdfc6f06db5d469e3213a14a7e63fe75b113fe"
+ ],
+ ".claude/agents/run-analyst.md": [
+  "f62f76cdee61792cd43617f8f99207c32d31ebe392d3e8e50d3599551132d7c8"
+ ],
+ ".claude/hooks/nn_guard.py": [
+  "bd4086aedb00f37c5642912a93560ca059cbbb615a74af7a0070b3ad2d1639d8"
+ ],
+ ".claude/hooks/nn_readonly.py": [
+  "5c12db4ba19e713259fa1c9b4f0989bdf81da5fe214c63645cbe7d2e1c2205ab"
+ ],
+ ".claude/hooks/nn_session_status.py": [
+  "c497d502293df73a8411a69b5ce4cf1ac28a449267ed08363f3c37ce558faddb"
+ ],
+ ".claude/hooks/nn_statusline.py": [
+  "cb6f187ffcaa753a3c3985a1ed1ccfa824022184779ae8dc13636af512b98d02"
+ ],
+ ".claude/skills/nn-training/SKILL.md": [
+  "3320df9c0fe07f4d4cf2ee85765a8554957b277e58c631d3e501f1df5aa16ad6"
+ ],
+ ".claude/skills/nn-training/references/finetuning.md": [
+  "db0081fa899bd3d478253c2ac59d99c7416b4ff8447e80096818b7f199a08eab"
+ ],
+ ".claude/skills/nn-training/references/hpo.md": [
+  "91a071a857e03fe009369b0e38af91630bae1faf607227f9f4068655090fda85"
+ ],
+ ".claude/skills/nn-training/references/performance.md": [
+  "3c5b565beea192348fcd9586fd1d224cdcda0fea884feb2975cc337264169058"
+ ],
+ ".claude/skills/nn-training/references/resume.md": [
+  "0c68a8e4521702e6547b877428b40b6ae9c3c3561081c9e8ef7c445ce4061c86"
+ ],
+ ".claude/skills/nn-training/references/stack.md": [
+  "ec8b4217c83936531a8997fc17a9ca7f44344cdc23cb723fb74781404d273430"
+ ],
+ ".claude/skills/nn-training/references/uncertainty.md": [
+  "e72607de11662e4fb3aa762276ce27949a4dd84a719ab5eb4a8b841c987df28c"
+ ],
+ ".claude/skills/nn-training/references/validity.md": [
+  "2339208be283aa03770cceeb079151c5e66129b1059eff98d7bef0ac993db00e"
+ ],
+ ".claude/skills/nn-training/scripts/expctl.py": [
+  "e7801bacb6db13b3151d6034282b1dfc3a5f5210b1da8d2cf784a30b0a442055"
+ ],
+ ".claude/skills/nn-training/scripts/runlog.py": [
+  "bd056be21b4e1b76b9cf93e07334e8503bce9d19d26a4919b6dbae3bb76c4f6b"
+ ],
+ ".claude/skills/nn-training/templates/JOURNAL.md": [
+  "99ac7fa8136dc7e3aa5e2e975c18acf84dae994c183dd823d13cdefb19244329"
+ ],
+ "block:CLAUDE.md": [
+  "f08caa41a0f77d290a78d2b2557dbf7b3f24b0bbbca99cf4cf8eeee91ad0a28e"
+ ]
+}

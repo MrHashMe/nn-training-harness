@@ -1,0 +1,4271 @@
+{
+  "meta": {
+    "topic": "hyperparameter optimization",
+    "phrases": [
+      "hyperparameter optimization",
+      "experiment tracking",
+      "training reproducibility"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 20:03 UTC",
+    "count": 213
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Optim-Agent/optim-agent",
+      "url": "https://github.com/Optim-Agent/optim-agent",
+      "date": "2026-07-07",
+      "signal": 799,
+      "signal_name": "stars",
+      "summary": "LLM agents as your hyperparameter optimizer.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-agents",
+          "automl",
+          "claude-code",
+          "codex-cli",
+          "developer-tools",
+          "hyperparameter-optimization",
+          "machine-learning",
+          "optimization",
+          "skill"
+        ],
+        "license": "MIT",
+        "created": "2026-07-07",
+        "pushed": "2026-08-14",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "RobertTLange/autotune",
+      "url": "https://github.com/RobertTLange/autotune",
+      "date": "2026-06-26",
+      "signal": 20,
+      "signal_name": "stars",
+      "summary": "Agent-assisted hyperparameter optimization 📈",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-26",
+        "pushed": "2026-08-02",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "OpenMOSS/AgentHPOBench",
+      "url": "https://github.com/OpenMOSS/AgentHPOBench",
+      "date": "2026-07-27",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "A benchmark for evaluating LLM agents as sequential hyperparameter optimizers across 30 executable machine learning tasks",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "hyperparameter-optimization",
+          "llm-agents",
+          "llm-evaluation",
+          "machine-learning"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-27",
+        "pushed": "2026-08-06",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bytemonkk/I-Failed-With-BioMistral",
+      "url": "https://github.com/bytemonkk/I-Failed-With-BioMistral",
+      "date": "2026-06-11",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "BioMistral did not achieve competitive performance under the current experimental setup. This illustration summarizes the investigation, highlighting potential factors such as CUDA/code efficiency, dataset compatibility, hyperparameter optimization, and implementation-specific challenges that require further exploration.",
+      "extra": {
+        "topics": [
+          "biomistral",
+          "failed-attempt",
+          "medical",
+          "transformer",
+          "unsloth"
+        ],
+        "license": null,
+        "created": "2026-06-11",
+        "pushed": "2026-06-25",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shahidazam2020-oss/A-real-world-problem-and-propose-a-solution-using-data-visualization-and-machine-learning",
+      "url": "https://github.com/shahidazam2020-oss/A-real-world-problem-and-propose-a-solution-using-data-visualization-and-machine-learning",
+      "date": "2026-07-01",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "A comparative machine learning framework for heart attack risk prediction using data preprocessing, feature engineering, class imbalance handling, SMOTE, hyperparameter optimization, and 5-fold cross-validation. Includes Logistic Regression, Random Forest, Gradient Boosting, LightGBM, Decision Tree, and MLP models with comprehensive evaluation.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-01",
+        "pushed": "2026-11-06",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AYazdan21/traffic-od-estimator-vrp",
+      "url": "https://github.com/AYazdan21/traffic-od-estimator-vrp",
+      "date": "2026-06-27",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Full pipeline for traffic demand estimation (OD matrix) and fleet routing (CVRP). Covers convex optimization, hyperparameter tuning via cross-validation, and error propagation analysis.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-27",
+        "pushed": "2026-06-27",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Moazzam9/fair-hpo-tabular-benchmark",
+      "url": "https://github.com/Moazzam9/fair-hpo-tabular-benchmark",
+      "date": "2026-08-21",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Reproducible benchmark of conventional and metaheuristic hyperparameter optimization methods for tabular classification under controlled evaluation budgets.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-08-21",
+        "pushed": "2026-08-25",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dungnotnull/optimize-ABSA-model-deep-learning-for-social-dataset",
+      "url": "https://github.com/dungnotnull/optimize-ABSA-model-deep-learning-for-social-dataset",
+      "date": "2026-05-24",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "🚀 Deep Learning-based Aspect-Based Sentiment Analysis (ABSA) optimized for student feedback datasets at UEH. Features hyperparameter tuning, model optimization, and deployment-ready pipelines.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-05-24",
+        "pushed": "2026-09-08",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "VishalDeep1377/Advance_DeepLearning",
+      "url": "https://github.com/VishalDeep1377/Advance_DeepLearning",
+      "date": "2026-09-05",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "1. Neural Networks and Deep Learning Improving Deep Neural Networks: 2. Hyperparameter Tuning, Regularization and Optimization 3. Structuring Machine Learning Projects 4. Convolutional Neural Networks 5. Sequence Models",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-05",
+        "pushed": "2026-09-05",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "LucaTvl/Hyperparameters-Optimization",
+      "url": "https://github.com/LucaTvl/Hyperparameters-Optimization",
+      "date": "2026-06-21",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-21",
+        "pushed": "2026-10-27",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "solegalli/master-hyperparameter-optimization-for-tabular-learning",
+      "url": "https://github.com/solegalli/master-hyperparameter-optimization-for-tabular-learning",
+      "date": "2026-08-25",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Code repository for the course \"Master Hyperparameter Optimization for Tabular Data\".",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-08-25",
+        "pushed": "2026-09-02",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "LUH-AI/Efficient-Risk-Averse-BO",
+      "url": "https://github.com/LUH-AI/Efficient-Risk-Averse-BO",
+      "date": "2026-07-07",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Efficient risk-averse hyperparameter optimization for automated reinforcement learning (AutoRL)",
+      "extra": {
+        "topics": [],
+        "license": "BSD-3-Clause",
+        "created": "2026-07-07",
+        "pushed": "2026-07-30",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Tiime-Software/IMABO",
+      "url": "https://github.com/Tiime-Software/IMABO",
+      "date": "2026-06-12",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "IMABO: an infinitely many-armed bandit with an oracle, for hyperparameter optimization at inference time.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-12",
+        "pushed": "2026-09-02",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "vineetdev/optuna-tuned-hinglish-asr",
+      "url": "https://github.com/vineetdev/optuna-tuned-hinglish-asr",
+      "date": "2026-06-19",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "An Automatic Speech Recognition (ASR) system for Hinglish (Hindi-English code-switched) audio, optimized using Optuna for advanced hyperparameter tuning.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-19",
+        "pushed": "2026-06-30",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "lillyroot/ML3_Validation_school21",
+      "url": "https://github.com/lillyroot/ML3_Validation_school21",
+      "date": "2026-07-17",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "A deep dive into validation schemes (K-Fold, TimeSeriesSplit), feature selection techniques (Lasso, Permutation Importance, SHAP), and hyperparameter optimization methods (GridSearch, Optuna). Includes from-scratch implementations of data splitting algorithms.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-17",
+        "pushed": "2026-07-17",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "optuna/optuna",
+      "url": "https://github.com/optuna/optuna",
+      "date": "2026-11-09",
+      "signal": 15030,
+      "signal_name": "stars",
+      "summary": "A hyperparameter optimization framework",
+      "extra": {
+        "topics": [
+          "distributed",
+          "hyperparameter-optimization",
+          "machine-learning",
+          "parallel",
+          "python"
+        ],
+        "license": "MIT",
+        "created": "2018-02-21",
+        "pushed": "2026-11-09",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "hyperopt/hyperopt",
+      "url": "https://github.com/hyperopt/hyperopt",
+      "date": "2026-11-09",
+      "signal": 7598,
+      "signal_name": "stars",
+      "summary": "Distributed Asynchronous Hyperparameter Optimization in Python",
+      "extra": {
+        "topics": [
+          "hacktoberfest"
+        ],
+        "license": "NOASSERTION",
+        "created": "2011-09-06",
+        "pushed": "2026-11-09",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "amanchadha/coursera-deep-learning-specialization",
+      "url": "https://github.com/amanchadha/coursera-deep-learning-specialization",
+      "date": "2026-06-10",
+      "signal": 4419,
+      "signal_name": "stars",
+      "summary": "Notes, programming assignments and quizzes from all courses within the Coursera Deep Learning specialization offered by deeplearning.ai: (i) Neural Networks and Deep Learning; (ii) Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization; (iii) Structuring Machine Learning Projects; (iv) Convolutional Neural Networks; (v) Sequence Models",
+      "extra": {
+        "topics": [
+          "andrew-ng",
+          "andrew-ng-course",
+          "cnns",
+          "convolutional-neural-network",
+          "convolutional-neural-networks",
+          "coursera",
+          "coursera-assignment",
+          "coursera-machine-learning",
+          "coursera-specialization",
+          "deep-learning",
+          "hyperparameter-optimization",
+          "hyperparameter-tuning",
+          "neural-machine-translation",
+          "neural-network",
+          "neural-networks",
+          "neural-style-transfer",
+          "recurrent-neural-network",
+          "recurrent-neural-networks",
+          "regularization",
+          "rnns"
+        ],
+        "license": null,
+        "created": "2020-06-24",
+        "pushed": "2026-06-10",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "DLR-RM/rl-baselines3-zoo",
+      "url": "https://github.com/DLR-RM/rl-baselines3-zoo",
+      "date": "2026-10-27",
+      "signal": 2911,
+      "signal_name": "stars",
+      "summary": "A training framework for Stable Baselines3 reinforcement learning agents, with hyperparameter optimization and pre-trained agents included.",
+      "extra": {
+        "topics": [
+          "deep-reinforcement-learning",
+          "gym",
+          "hyperparameter-optimization",
+          "hyperparameter-search",
+          "hyperparameter-tuning",
+          "lab",
+          "openai",
+          "optimization",
+          "pybullet",
+          "pybullet-environments",
+          "pytorch",
+          "reinforcement-learning",
+          "rl",
+          "robotics",
+          "sde",
+          "stable-baselines",
+          "tuning-hyperparameters"
+        ],
+        "license": "MIT",
+        "created": "2020-05-05",
+        "pushed": "2026-10-27",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "google/vizier",
+      "url": "https://github.com/google/vizier",
+      "date": "2026-10-20",
+      "signal": 1681,
+      "signal_name": "stars",
+      "summary": "Python-based research interface for blackbox and hyperparameter optimization, based on the internal Google Vizier Service.",
+      "extra": {
+        "topics": [
+          "algorithm",
+          "bayesian-optimization",
+          "blackbox-optimization",
+          "deep-learning",
+          "distributed-computing",
+          "distributed-systems",
+          "evolutionary-algorithms",
+          "google",
+          "grpc",
+          "hyperparameter-optimization",
+          "hyperparameter-tuning",
+          "machine-learning",
+          "open-source",
+          "optimization",
+          "tuning",
+          "tuning-parameters",
+          "vizier"
+        ],
+        "license": "Apache-2.0",
+        "created": "2022-02-16",
+        "pushed": "2026-10-20",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "automl/SMAC3",
+      "url": "https://github.com/automl/SMAC3",
+      "date": "2026-11-09",
+      "signal": 1272,
+      "signal_name": "stars",
+      "summary": "SMAC3: A Versatile Bayesian Optimization Package for Hyperparameter Optimization",
+      "extra": {
+        "topics": [
+          "algorithm-configuration",
+          "automated-machine-learning",
+          "automl",
+          "bayesian-optimisation",
+          "bayesian-optimization",
+          "configuration",
+          "gaussian-process",
+          "hyperparameter-optimization",
+          "hyperparameter-search",
+          "hyperparameter-tuning",
+          "random-forest"
+        ],
+        "license": "NOASSERTION",
+        "created": "2016-08-17",
+        "pushed": "2026-11-09",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "AgileRL/AgileRL",
+      "url": "https://github.com/AgileRL/AgileRL",
+      "date": "2026-11-10",
+      "signal": 966,
+      "signal_name": "stars",
+      "summary": "The complete post-training stack for LLMs, plus RL for any problem. SFT, DPO and multi-turn agentic RL, with evolutionary hyperparameter optimization built in.",
+      "extra": {
+        "topics": [
+          "agents",
+          "agilerl",
+          "artificial-intelligence",
+          "deep-learning",
+          "deep-reinforcement-learning",
+          "distributed",
+          "hpo",
+          "hyperparameter-optimization",
+          "llm",
+          "machine-learning",
+          "multi-agent",
+          "open-weight",
+          "post-training",
+          "preference",
+          "reasoning",
+          "reinforcement-learning",
+          "rft",
+          "sft",
+          "training"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-03-01",
+        "pushed": "2026-11-10",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "syne-tune/syne-tune",
+      "url": "https://github.com/syne-tune/syne-tune",
+      "date": "2026-11-06",
+      "signal": 427,
+      "signal_name": "stars",
+      "summary": "Large scale and asynchronous Hyperparameter and Architecture Optimization at your fingertips.",
+      "extra": {
+        "topics": [
+          "bayesian-optimization",
+          "hyperparameter-optimization",
+          "hyperparameter-tuning",
+          "machine-learning",
+          "multi-objective-optimization",
+          "neural-architecture-search"
+        ],
+        "license": "Apache-2.0",
+        "created": "2021-10-15",
+        "pushed": "2026-11-06",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "rodrigo-arenas/Sklearn-genetic-opt",
+      "url": "https://github.com/rodrigo-arenas/Sklearn-genetic-opt",
+      "date": "2026-11-04",
+      "signal": 392,
+      "signal_name": "stars",
+      "summary": "Hyperparameter optimization and feature selection for scikit-learn using evolutionary algorithms. A modern alternative to GridSearchCV and RandomizedSearchCV.",
+      "extra": {
+        "topics": [
+          "artificial-intelligence",
+          "automl",
+          "cross-validation",
+          "evolutionary-algorithms",
+          "feature-engineering",
+          "feature-selection",
+          "grid-search",
+          "hyperparameter-optimization",
+          "machine-learning",
+          "mlops",
+          "model-optimization",
+          "model-selection",
+          "python",
+          "scikit-learn",
+          "sklearn"
+        ],
+        "license": "MIT",
+        "created": "2020-01-18",
+        "pushed": "2026-11-04",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "automl/ConfigSpace",
+      "url": "https://github.com/automl/ConfigSpace",
+      "date": "2026-11-05",
+      "signal": 226,
+      "signal_name": "stars",
+      "summary": "Domain specific language for configuration spaces in Python. Useful for hyperparameter optimization and algorithm configuration.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2016-04-01",
+        "pushed": "2026-11-05",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "baggepinnen/Hyperopt.jl",
+      "url": "https://github.com/baggepinnen/Hyperopt.jl",
+      "date": "2026-10-19",
+      "signal": 205,
+      "signal_name": "stars",
+      "summary": "Hyperparameter optimization in Julia.",
+      "extra": {
+        "topics": [
+          "bayesian-optimization",
+          "bohb",
+          "global-optimization",
+          "hyperband",
+          "hyperparameter-optimization",
+          "optimization",
+          "parameter-tuning",
+          "random-sampling"
+        ],
+        "license": "NOASSERTION",
+        "created": "2018-08-04",
+        "pushed": "2026-10-19",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "solegalli/hyperparameter-optimization",
+      "url": "https://github.com/solegalli/hyperparameter-optimization",
+      "date": "2026-09-02",
+      "signal": 149,
+      "signal_name": "stars",
+      "summary": "Code repository for the online course Hyperparameter Optimization for Machine Learning",
+      "extra": {
+        "topics": [
+          "data-science",
+          "hyperopt",
+          "hyperparameter-optimization",
+          "machine-learning",
+          "optuna",
+          "python",
+          "scikit-optimize"
+        ],
+        "license": "NOASSERTION",
+        "created": "2021-01-27",
+        "pushed": "2026-09-02",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "JuliaAI/MLJTuning.jl",
+      "url": "https://github.com/JuliaAI/MLJTuning.jl",
+      "date": "2026-10-23",
+      "signal": 71,
+      "signal_name": "stars",
+      "summary": "Hyperparameter optimization algorithms for use in the MLJ machine learning framework",
+      "extra": {
+        "topics": [
+          "grid-search",
+          "hyperparameter-optimization",
+          "julia",
+          "machine-learning",
+          "mlj",
+          "random-search"
+        ],
+        "license": "MIT",
+        "created": "2020-01-14",
+        "pushed": "2026-10-23",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "polyaxon/hypertune",
+      "url": "https://github.com/polyaxon/hypertune",
+      "date": "2026-11-09",
+      "signal": 63,
+      "signal_name": "stars",
+      "summary": "A library for performing hyperparameter optimization",
+      "extra": {
+        "topics": [
+          "data-science",
+          "deep-learning",
+          "hyperparameter-optimization",
+          "hyperparameter-tuning",
+          "machine-learning",
+          "mlops",
+          "numpy",
+          "scikit-learn",
+          "workflow"
+        ],
+        "license": "Apache-2.0",
+        "created": "2018-12-10",
+        "pushed": "2026-11-09",
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Large Language Models as a Universal Searcher for Open-World Automated Machine Learning",
+      "url": "http://arxiv.org/abs/2611.12791v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Developing effective machine learning models requires complex manual tuning, while current Automated Machine Learning (AutoML) frameworks remain domain-specific and isolate model architecture, training hyperparameter, and data ratio optimization. Here, we bridge this gap by proposing a universal, large language model (LLM)-based AutoML framework that jointly optimizes these configurations for the ",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Out-of-the-Box Tabular Foundation Models for Bayesian Optimization in Materials Discovery",
+      "url": "http://arxiv.org/abs/2611.12491v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Bayesian optimization is widely used in active learning loops for materials science. Gaussian processes serve as the de-facto surrogate model family, but require task-dependent kernel choices and can lack the modeling capacity for complex relationships. Tabular foundation models (TFMs) have recently emerged as the state-of-the-art for predictive tasks on structured data, without requiring bespoke ",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Pairwise distortion distribution for compression and quantization",
+      "url": "http://arxiv.org/abs/2611.11967v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Choosing the latent dimension is a critical challenge in data compression, where conventional hyperparameter optimization is costly and ad hoc. Intrinsic dimension provides a good alternative, which connects information-theoretic notions such as Renyi information dimension (RID) to rate-distortion dimension and random codebook compression. In this work, we introduce the pairwise distortion distrib",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Heavy tails in Gaussian-process surrogates: process-level profiling degeneracy versus observation-level identifiability",
+      "url": "http://arxiv.org/abs/2611.11188v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "In this article, we study heavy-tailed alternatives to Gaussian-process surrogates, namely Student-$t$ processes, $α$-stable processes and Gaussian processes with heavy-tailed noise. These are Gaussian scale mixtures, and the position of the mixing variable decides whether the tails can be learned from a single realization. For process-level mixtures with a free amplitude, the profile likelihood o",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "BiMuon: A Geometry-Aware Stochastic Bilevel Optimization Approach",
+      "url": "http://arxiv.org/abs/2611.10188v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Stochastic bilevel optimization provides a general framework for many machine learning applications, such as hyperparameter learning, data reweighting, language model alignment, and actor-critic reinforcement learning. However, most existing bilevel optimization methods treat matrix-valued gradients as flattened vectors and perform optimization in the resulting vectorized space, ignoring the matri",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Video Stitching from Multiple Moving Cameras",
+      "url": "http://arxiv.org/abs/2611.09570v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We address geometric video alignment for the same scene captured by multiple freely moving cameras. Existing methods, which are based on image stitching or video stabilization, are typically limited to two cameras or must assume the restrictive setting of a fixed linear ordering of the cameras. We propose MViS, a lightweight test-time optimization framework for joint multi-view alignment with temp",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "e-means: outperforming k-means (in one-tenth the epochs)",
+      "url": "http://arxiv.org/abs/2611.09501v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Lloyd's k-means algorithm is a long-running standard for clustering, with applications in data analysis, retrieval, quantization and data curation. In this paper, we introduce an exponential moving average optimization procedure for k-means with mini-batch updates, powered by modern deep learning machinery and new insights. We also establish scaling laws on how decay rate and batch size impact fin",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Knowledge Distillation from Neural Networks to Differentiable Logic Networks",
+      "url": "http://arxiv.org/abs/2611.09024v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Differentiable logic networks (DLNs) are interpretable, edge-friendly classifiers that learn both their logic operators and their connections through gradient descent, achieving accuracy competitive with multi-layer perceptrons at orders-of-magnitude lower inference cost. Their accuracy, however, is bounded by the problems of vanishing gradients, scalability, and lack of an ecosystem, leaving a ga",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Not All Latents Are Equal: Importance-Weighted Latent Graph Generation",
+      "url": "http://arxiv.org/abs/2611.08788v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Graph generation has shown tremendous effectiveness in modeling complex scientific tasks ranging from molecule generation to optimized circuit design. Most recent advancements have developed models that learn to denoise noisy graphs using either discrete diffusion or flow matching. However, discrete graph diffusion scales quadratically with the number of nodes, making it difficult to use such mode",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Simple Meta-Learning for HPO and CASH Using Performance Representations",
+      "url": "http://arxiv.org/abs/2611.07659v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Bayesian optimization for Hyperparameter Optimization (HPO) and Combined Algorithm Selection and Hyperparameter Optimization (CASH) often relies on explicit hyperparameter encodings as surrogate inputs. In high-dimensional search spaces, however, such representations can make it difficult for standard surrogates to learn useful performance models. We instead study an alternative meta-learning repr",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Adversarial Multiplicity: Cherry-Picked Models and the Limits of Disclosure",
+      "url": "http://arxiv.org/abs/2611.07378v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Predictive multiplicity -- where similarly accurate models disagree on individual predictions -- can be leveraged to optimize secondary metrics (e.g., fairness) without loss in predictive performance. However, exploiting multiplicity opens the opportunity for motivated parties (or coding agents gaming their objectives) to steer predictions toward their own ends, such as in litigation or consumer d",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Evolutionary Adaptive Neighborhood Learning: A Genetic Algorithm for Instance-Dependent k Optimization in Nearest Neighbor Classification",
+      "url": "http://arxiv.org/abs/2611.07257v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The number of neighbours k is the central hyperparameter of the k-nearest neighbour (k-NN) classifier and is usually selected globally through cross-validation or evolutionary search. However, the bias-variance trade-off is inherently local: dense and noise-free regions may favour small neighbourhoods, whereas sparse or noisy regions may require larger ones. Since global-k optimization is one-dime",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Meta-Frieren: Beyond Single Level Online Learning",
+      "url": "http://arxiv.org/abs/2611.07169v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We study a two-stage online optimization problem: at each round, a meta-learner first selects an agent-environment pair, then the chosen agent interacts with the environment, and receives a reward. We introduce Meta-Frieren, a general framework for maximizing cumulative reward in this setting. Our analysis yields a simple UCB-style criterion for meta-level selection and recovers prior guarantees a",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "PatchCon: Patch-aware Weighted Supervised Contrastive Learning for Vulnerability Detection",
+      "url": "http://arxiv.org/abs/2611.06583v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Automated vulnerability detection is critical for securing modern software systems, yet existing learning-based approaches often treat functions as independent samples and underuse the supervision provided by vulnerability-fixing patches. In this paper, we propose PatchCon, a CodeBERT-based patch-aware contrastive learning model for function-level vulnerability detection. PatchCon jointly optimize",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Reassessing Dataset Quality and Fine-Tuning Practices for Vulnerability Detection on PrimeVul dataset",
+      "url": "http://arxiv.org/abs/2611.06373v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Recent studies report promising results from supervised fine-tuning of pre-trained code language models for automated vulnerability detection on benchmarks such as PrimeVul. In this paper, we present a large-scale empirical evaluation of both model performance and dataset quality in this setting. We systematically fine-tune three widely used encoder models (CodeBERT, GraphCodeBERT, and UniXCoder) ",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "A Closer Look at Agentic BBO: Benchmarking LLM Agents for Black-Box Optimization",
+      "url": "https://huggingface.co/papers/2610.12183",
+      "date": "2026-10-08",
+      "signal": 6,
+      "signal_name": "upvotes",
+      "summary": "AgenticBBO-Bench evaluates LLM-driven black-box optimization across diverse domains, revealing that agentic methods outperform direct LLM and numerical baselines while highlighting the roles of optimization tools, task semantics, and model selection.",
+      "extra": {
+        "keywords": [
+          "black-box optimization",
+          "LLM agents",
+          "AgenticBBO-Bench",
+          "hyperparameter optimization",
+          "database tuning",
+          "chip design",
+          "molecular design",
+          "optimization tools",
+          "Pareto frontier"
+        ],
+        "github": "https://github.com/lamda-bbo/agentic-bbo",
+        "github_stars": 5,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Learning to Grade Efficiently: A Bandit-Driven Prompt-Selection Framework for Low-Cost LLM Essay Scoring",
+      "url": "https://huggingface.co/papers/2608.23814",
+      "date": "2026-08-24",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A multi-armed bandit framework adaptively selects cost-efficient prompting strategies for automated essay scoring, reducing LLM calls while maintaining accuracy.",
+      "extra": {
+        "keywords": [
+          "multi-armed bandit",
+          "MAB controller",
+          "adaptive prompt selection",
+          "automated essay scoring",
+          "cost-aware optimization",
+          "online learning",
+          "grading recipes",
+          "cost-reliability learning curves"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "BOOM: Benchmarking Out-Of-distribution Molecular Property Predictions of Machine Learning Models",
+      "url": "https://huggingface.co/papers/2505.01912",
+      "date": "2026-09-15",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "BOOM introduces a chemically-informed benchmark for out-of-distribution molecular property prediction, revealing that current deep learning models lack robust generalization and highlighting key factors affecting OOD performance.",
+      "extra": {
+        "keywords": [
+          "out-of-distribution prediction",
+          "molecular property prediction",
+          "deep learning",
+          "chemical foundation models",
+          "inductive bias",
+          "pre-training",
+          "molecular representation",
+          "ablation experiments"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Investigating Hyperparameter Optimization and Transferability for ES-HyperNEAT: A TPE Approach",
+      "url": "https://huggingface.co/papers/2609.00449",
+      "date": "2026-08-31",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Tree-structured Parzen Estimator optimization of ES-HyperNEAT hyperparameters improves MNIST accuracy and reveals transferable settings to more complex tasks.",
+      "extra": {
+        "keywords": [
+          "NEAT",
+          "ES-HyperNEAT",
+          "Tree-structured Parzen Estimator",
+          "hyperparameter optimization",
+          "neuroevolution",
+          "MNIST",
+          "transferability"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "BOCoDe: Engineering-Centered Benchmarking for Bayesian Optimization",
+      "url": "https://huggingface.co/papers/2608.15073",
+      "date": "2026-08-15",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "BOCoDe introduces a large open-source benchmark of engineering design and synthetic black-box optimization problems to evaluate Bayesian optimization methods under realistic high-dimensional, constrained, and multi-objective settings.",
+      "extra": {
+        "keywords": [
+          "Bayesian optimization",
+          "black-box optimization",
+          "surrogate-based optimization",
+          "engineering design",
+          "multi-objective optimization",
+          "constrained optimization",
+          "mixed-variable optimization",
+          "tabular foundation model",
+          "evolutionary algorithms"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Leveraging AutoML for Sustainable Deep Learning: A Multi-Objective HPO Approach on Deep Shift Neural Networks",
+      "url": "https://huggingface.co/papers/2606.23208",
+      "date": "2026-06-22",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "AutoML techniques combined with multi-fidelity hyperparameter optimization and multi-objective optimization enable improved Deep Shift Neural Network designs that simultaneously enhance performance and reduce energy consumption in low-resource environments.",
+      "extra": {
+        "keywords": [
+          "Deep Shift Neural Networks",
+          "AutoML",
+          "multi-fidelity hyperparameter optimization",
+          "multi-objective optimization",
+          "quantized networks",
+          "Pareto optimal trade-offs",
+          "energy consumption",
+          "model performance",
+          "low-resource environments"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Modeling Doppler Shifts in Radial-Velocity Data with Deep Learning toward Earth-mass Exoplanet Detection",
+      "url": "https://huggingface.co/papers/2606.18464",
+      "date": "2026-06-16",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Deep learning models using physics-motivated spectral representations improve Earth-mass planet detection in radial-velocity data through robust training and uncertainty quantification.",
+      "extra": {
+        "keywords": [
+          "artificial neural networks",
+          "radial-velocity measurements",
+          "stellar activity",
+          "spectral representations",
+          "flux",
+          "line-formation temperature",
+          "velocity gradients",
+          "genetic algorithm",
+          "hyperparameter optimization",
+          "Monte Carlo dropout",
+          "cross-validation",
+          "periodogram",
+          "Doppler shifts"
+        ],
+        "github": "https://github.com/igomezv/doppleriann",
+        "github_stars": 2,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Importance-Aware Scheduling for High-Dimensional Hyperparameter Optimization",
+      "url": "https://huggingface.co/papers/2606.10068",
+      "date": "2026-06-08",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "GIF is a hyperparameter optimization method that improves sample efficiency in high-dimensional spaces by using importance-aware scheduling and proportional trial allocation.",
+      "extra": {
+        "keywords": [
+          "hyperparameter optimization",
+          "high-dimensional spaces",
+          "anisotropic analytic functions",
+          "Bayesmark",
+          "NAS-Bench-301",
+          "TPE",
+          "BOHB",
+          "Random Search",
+          "Sequential Grouping"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "BBOmix: A Tabular Benchmark for Hyperparameter Optimization of Unsupervised Biological Representation Learning",
+      "url": "https://huggingface.co/papers/2606.05139",
+      "date": "2026-06-03",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "BBOmix presents an open-source benchmark for unsupervised representation learning in biology, evaluating autoencoder architectures across multiple omics modalities to establish baselines for hyperparameter optimization.",
+      "extra": {
+        "keywords": [
+          "Autoencoders",
+          "dimensionality reduction",
+          "representation learning",
+          "high-throughput sequencing",
+          "unsupervised learning",
+          "hyperparameter optimization",
+          "reconstruction loss",
+          "downstream task performance",
+          "single-fidelity",
+          "multi-fidelity",
+          "transfer learning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agentic Design of Compositional Descriptors via Autoresearch for Materials Science Applications",
+      "url": "https://huggingface.co/papers/2605.14671",
+      "date": "2026-05-14",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Autoresearch framework Automat uses large language models to automatically design chemically interpretable descriptors for materials property prediction, outperforming traditional methods while revealing limitations in current approaches.",
+      "extra": {
+        "keywords": [
+          "autoresearch",
+          "AI agent",
+          "large language model",
+          "composition-only descriptors",
+          "random forest workflow",
+          "chemical formulas",
+          "descriptor strategies",
+          "band gaps",
+          "Curie temperatures",
+          "feature engineering",
+          "greedy feature expansion",
+          "descriptor pruning",
+          "search strategies"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Can LLMs Beat Classical Hyperparameter Optimization Algorithms?",
+      "url": "https://arxiv.org/abs/2603.24647",
+      "date": "2026-06-09",
+      "signal": 120,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48462062",
+        "comments": 20,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Bandits in Prod: Hyperparameter Optimization at Inference Time",
+      "url": "https://arxiv.org/abs/2609.01335",
+      "date": "2026-09-03",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49552163",
+        "comments": 0,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Launch HN: Expanse (YC P26) – Unlock Wasted GPU Capacity",
+      "url": "https://news.ycombinator.com/item?id=48356312",
+      "date": "2026-06-01",
+      "signal": 103,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48356312",
+        "comments": 27,
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "TimeLLM: Time Series Forecasting by Reprogramming Large Language Models",
+      "url": "https://doi.org/10.1201/9781003616719-7",
+      "date": "2026-05-18",
+      "signal": 1048,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Neural Radiance Fields in 3D Vision: A Comprehensive Review",
+      "url": "https://doi.org/10.26599/cvm.2026.9450535",
+      "date": "2026-05-15",
+      "signal": 333,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "BeyondMimic: From motion tracking to versatile humanoid control via guided diffusion",
+      "url": "https://doi.org/10.1126/scirobotics.adx8924",
+      "date": "2026-08-26",
+      "signal": 304,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Retrieval-augmented generation for natural language processing: a survey",
+      "url": "https://doi.org/10.1007/s10462-026-11605-7",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Cosmos 3: Omnimodal World Models for Physical AI",
+      "url": "https://doi.org/10.48550/arxiv.2606.02800",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "MolmoAct: Action Reasoning Models that can Reason in Space",
+      "url": "https://doi.org/10.1109/icra57385.2026.11696546",
+      "date": "2026-06-01",
+      "signal": 236,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Large Models for Time Series and Spatio-Temporal Data: A Survey and Outlook",
+      "url": "https://doi.org/10.1145/3821637",
+      "date": "2026-06-23",
+      "signal": 235,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SONIC: Supersizing motion tracking for natural humanoid whole-body control",
+      "url": "https://doi.org/10.1126/scirobotics.aed4592",
+      "date": "2026-08-12",
+      "signal": 234,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models",
+      "url": "https://doi.org/10.1145/3845797",
+      "date": "2026-09-15",
+      "signal": 213,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "$$\\Delta $$-DiT: Accelerating Diffusion Transformers without Training via Denoising Property Alignment",
+      "url": "https://doi.org/10.1007/s11263-026-02871-7",
+      "date": "2026-05-19",
+      "signal": 194,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Ultralytics YOLO26: Unified Real-Time End-to-End Vision Models",
+      "url": "https://doi.org/10.48550/arxiv.2606.03748",
+      "date": "2026-06-02",
+      "signal": 189,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Parameter-Efficient Fine-Tuning for Pre-Trained Vision Models: A Survey and Benchmark",
+      "url": "https://doi.org/10.1007/s11263-026-02864-6",
+      "date": "2026-06-01",
+      "signal": 188,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "ExBody2: Advanced Expressive Humanoid Whole-Body Control",
+      "url": "https://doi.org/10.1109/icra57385.2026.11696204",
+      "date": "2026-06-01",
+      "signal": 186,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Image Processing On Line",
+      "url": "https://doi.org/10.5201/ipol",
+      "date": "2026-10-26",
+      "signal": 167,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "hyperparameter optimization"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "aliasgharebrahimi/MNISTVision",
+      "url": "https://github.com/aliasgharebrahimi/MNISTVision",
+      "date": "2026-08-14",
+      "signal": 92,
+      "signal_name": "stars",
+      "summary": "An optimized handwritten digit recognition model delivering exceptional accuracy, high-speed performance, and compatibility with low-end hardware, supported by comprehensive documentation, experiment tracking, data-driven decision-making, effective troubleshooting, and a modular project structure.",
+      "extra": {
+        "topics": [
+          "ai",
+          "computer-vision",
+          "deep-learning",
+          "open-source",
+          "optimizer",
+          "precision",
+          "python",
+          "pytorch",
+          "research",
+          "speed"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-14",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "amydeng2000/health-self-investigation-skill",
+      "url": "https://github.com/amydeng2000/health-self-investigation-skill",
+      "date": "2026-06-09",
+      "signal": 89,
+      "signal_name": "stars",
+      "summary": "A Codex and Claude Code skill for investigating ambiguous, non-emergency health symptoms through intake, tracking, testing, analysis, and careful experiment planning.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-09",
+        "pushed": "2026-06-09",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hoangmaiwaxyz2772-max/OpenGazeLink",
+      "url": "https://github.com/hoangmaiwaxyz2772-max/OpenGazeLink",
+      "date": "2026-07-29",
+      "signal": 21,
+      "signal_name": "stars",
+      "summary": "Low-latency Android-to-Windows gaze tracking for gaze-driven rendering experiments.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-07-29",
+        "pushed": "2026-09-20",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SwanHubX/SwanLab-Skill",
+      "url": "https://github.com/SwanHubX/SwanLab-Skill",
+      "date": "2026-06-25",
+      "signal": 18,
+      "signal_name": "stars",
+      "summary": "Skills to guide Claude Code, Codex, and other coding agents on using the SwanLab AI training experiment tracking platform.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-25",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "cneuralnetwork/oplogs",
+      "url": "https://github.com/cneuralnetwork/oplogs",
+      "date": "2026-08-15",
+      "signal": 17,
+      "signal_name": "stars",
+      "summary": "Local-first, open-source experiment tracking for machine learning and agents",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-08-15",
+        "pushed": "2026-08-16",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "alexpilotto/uxon-ai",
+      "url": "https://github.com/alexpilotto/uxon-ai",
+      "date": "2026-07-16",
+      "signal": 11,
+      "signal_name": "stars",
+      "summary": "MCP server and Claude skills for PPC landing pages, A/B experiments, and first-party conversion tracking. Build Google Ads and Meta pages, run cross-domain experiments, and pull CRO reports via the UXON API.",
+      "extra": {
+        "topics": [
+          "ab-testing",
+          "ai-agents",
+          "anthropic",
+          "claude",
+          "claude-code",
+          "claude-skills",
+          "conversion-tracking",
+          "cro-api",
+          "experimentation-api",
+          "first-party-attribution",
+          "google-ads",
+          "landing-page-api",
+          "marketing-automation",
+          "mcp",
+          "mcp-server",
+          "meta-ads",
+          "model-context-protocol",
+          "paid-search",
+          "post-click-optimization",
+          "ppc"
+        ],
+        "license": "MIT",
+        "created": "2026-07-16",
+        "pushed": "2026-07-31",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "umynameislove/projmem",
+      "url": "https://github.com/umynameislove/projmem",
+      "date": "2026-05-14",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "Local-first, privacy-preserving experiment memory for ML research — tracks runs/failures and recommends what to avoid, metadata-only.",
+      "extra": {
+        "topics": [
+          "cli",
+          "experiment-tracking",
+          "local-first",
+          "machine-learning",
+          "mlops",
+          "privacy-first",
+          "python",
+          "reproducibility"
+        ],
+        "license": "MIT",
+        "created": "2026-05-14",
+        "pushed": "2026-08-05",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "NovelAI/kymo",
+      "url": "https://github.com/NovelAI/kymo",
+      "date": "2026-09-25",
+      "signal": 9,
+      "signal_name": "stars",
+      "summary": "Experiment tracker for machine learning",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-09-25",
+        "pushed": "2026-11-09",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MarkD1Zzz/workflow-tracker",
+      "url": "https://github.com/MarkD1Zzz/workflow-tracker",
+      "date": "2026-06-14",
+      "signal": 9,
+      "signal_name": "stars",
+      "summary": "Automatic experiment & workflow tracker for ML/AI projects",
+      "extra": {
+        "topics": [
+          "claude-code",
+          "claude-code-skill",
+          "experiment-tracker",
+          "ml-experiment",
+          "workflow"
+        ],
+        "license": "MIT",
+        "created": "2026-06-14",
+        "pushed": "2026-06-16",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "tajchert/paczkofast",
+      "url": "https://github.com/tajchert/paczkofast",
+      "date": "2026-07-05",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "Paczkofast is simple and fast unofficial app for tracking & picking InPost packages. This is experiment not affiliated with the company.",
+      "extra": {
+        "topics": [
+          "inpost"
+        ],
+        "license": null,
+        "created": "2026-07-05",
+        "pushed": "2026-07-09",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "awslabs/uaef",
+      "url": "https://github.com/awslabs/uaef",
+      "date": "2026-09-15",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "Universal Agent Evaluation Framework (UAEF) is a framework-agnostic evaluation system for AI agents. Invoke any agent and score it on multiple metrics spanning tool calling, response quality, safety, performance, and reasoning. Track experiments against baselines, catch regressions automatically, and get LLM-generated insights.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agentcore",
+          "agentic-ai",
+          "agents",
+          "aws",
+          "deepeval",
+          "eval",
+          "evals",
+          "evaluation",
+          "evaluation-framework",
+          "evaluation-metrics",
+          "evaluator",
+          "experiment-tracking",
+          "generative-ai",
+          "langgraph",
+          "llm-as-a-judge",
+          "llm-evaluation",
+          "ragas",
+          "ragas-evaluation",
+          "responsible-ai"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-15",
+        "pushed": "2026-11-03",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "snagiba-commits/speech-figure",
+      "url": "https://github.com/snagiba-commits/speech-figure",
+      "date": "2026-10-09",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "Real-time speech-to-visual experiment combining local Whisper transcription, computer vision, hand tracking and generative typography.",
+      "extra": {
+        "topics": [
+          "computer-vision",
+          "creative-coding",
+          "interactive-art",
+          "speech-recognition",
+          "whisper"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-10-09",
+        "pushed": "2026-10-09",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "IvanVenkov712/StratEcho",
+      "url": "https://github.com/IvanVenkov712/StratEcho",
+      "date": "2026-08-14",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Python backtesting framework for testing trading strategies with realistic execution, portfolio tracking, performance metrics, charts, and extensible architecture for quantitative finance experiments.",
+      "extra": {
+        "topics": [
+          "backtesting",
+          "fintech",
+          "portfolio-management",
+          "python",
+          "quantitative-finance",
+          "trading-strategies",
+          "trading-strategy-simulation"
+        ],
+        "license": "MIT",
+        "created": "2026-08-14",
+        "pushed": "2026-11-03",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "kaltwrk/experiment-001",
+      "url": "https://github.com/kaltwrk/experiment-001",
+      "date": "2026-05-30",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Face tracking experiment",
+      "extra": {
+        "topics": [
+          "mediapipe",
+          "mediapipe-face",
+          "mediapipe-face-detection",
+          "mediapipe-facemesh",
+          "svelte",
+          "svelte5",
+          "threejs"
+        ],
+        "license": "MIT",
+        "created": "2026-05-30",
+        "pushed": "2026-09-04",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Esha-Mirza/skitrack",
+      "url": "https://github.com/Esha-Mirza/skitrack",
+      "date": "2026-08-01",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "A lightweight, developer-friendly ML experiment tracking library that automatically records model runs, parameters, metrics, training time, and dataset information using local storage. It provides a CLI and web-based dashboard for organizing, analyzing, and managing experiments without requiring external tracking services or cloud infrastructure.",
+      "extra": {
+        "topics": [
+          "data-science",
+          "developer-tools",
+          "flask",
+          "machine-learning",
+          "machine-learning-tools",
+          "ml-experiment-tracking",
+          "mlops",
+          "python",
+          "scikit-learn"
+        ],
+        "license": "MIT",
+        "created": "2026-08-01",
+        "pushed": "2026-08-23",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "PostHog/posthog",
+      "url": "https://github.com/PostHog/posthog",
+      "date": "2026-11-10",
+      "signal": 40733,
+      "signal_name": "stars",
+      "summary": ":hedgehog: PostHog is the leading platform for building self-driving products. Our developer tools – AI observability, analytics, session replay, flags, experiments, error tracking, logs, and more – capture all the context agents need to diagnose problems, uncover opportunities, and ship fixes. Steer it all from Slack, web, desktop, or the MCP.",
+      "extra": {
+        "topics": [
+          "ab-testing",
+          "ai-analytics",
+          "analytics",
+          "cdp",
+          "data-warehouse",
+          "experiments",
+          "feature-flags",
+          "javascript",
+          "product-analytics",
+          "python",
+          "react",
+          "session-replay",
+          "surveys",
+          "typescript",
+          "web-analytics"
+        ],
+        "license": "NOASSERTION",
+        "created": "2020-01-23",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "aimhubio/aim",
+      "url": "https://github.com/aimhubio/aim",
+      "date": "2026-11-07",
+      "signal": 6296,
+      "signal_name": "stars",
+      "summary": "Aim 💫 — An easy-to-use & supercharged open-source experiment tracker.",
+      "extra": {
+        "topics": [
+          "ai",
+          "data-science",
+          "data-visualization",
+          "experiment-tracking",
+          "machine-learning",
+          "metadata",
+          "metadata-tracking",
+          "ml",
+          "mlflow",
+          "mlops",
+          "prompt-engineering",
+          "python",
+          "pytorch",
+          "tensorboard",
+          "tensorflow",
+          "visualization"
+        ],
+        "license": "Apache-2.0",
+        "created": "2019-05-31",
+        "pushed": "2026-11-07",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "truera/trulens",
+      "url": "https://github.com/truera/trulens",
+      "date": "2026-11-10",
+      "signal": 3637,
+      "signal_name": "stars",
+      "summary": "Evaluation and Tracking for LLM Experiments and AI Agents",
+      "extra": {
+        "topics": [
+          "agent-evaluation",
+          "agentops",
+          "ai-agents",
+          "ai-monitoring",
+          "ai-observability",
+          "evals",
+          "explainable-ml",
+          "llm-eval",
+          "llm-evaluation",
+          "llmops",
+          "llms",
+          "machine-learning",
+          "neural-networks"
+        ],
+        "license": "MIT",
+        "created": "2020-11-02",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "gradio-app/trackio",
+      "url": "https://github.com/gradio-app/trackio",
+      "date": "2026-11-10",
+      "signal": 1772,
+      "signal_name": "stars",
+      "summary": "A lightweight, local-first, and free experiment tracking library from Hugging Face 🤗",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2025-05-08",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "kedro-org/kedro-viz",
+      "url": "https://github.com/kedro-org/kedro-viz",
+      "date": "2026-11-09",
+      "signal": 765,
+      "signal_name": "stars",
+      "summary": "Visualise your Kedro data and machine-learning pipelines and track your experiments.",
+      "extra": {
+        "topics": [
+          "data-visualization",
+          "experiment-tracking",
+          "hacktoberfest",
+          "kedro",
+          "kedro-plugin",
+          "python",
+          "react"
+        ],
+        "license": "Apache-2.0",
+        "created": "2019-05-09",
+        "pushed": "2026-11-09",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ptnghia-j/ChordMiniApp",
+      "url": "https://github.com/ptnghia-j/ChordMiniApp",
+      "date": "2026-07-30",
+      "signal": 434,
+      "signal_name": "stars",
+      "summary": "Music Analysis, Chord Recognition, Beat Tracking, Guitar Diagrams, Piano Visualizer, Lyrics Transcription Application, context-aware LLM inference for analysis from uploaded audio and YouTube video",
+      "extra": {
+        "topics": [
+          "ace",
+          "acr",
+          "beat-tracking",
+          "chord-progressions",
+          "chord-recognition",
+          "experiment",
+          "hacktoberfest",
+          "llm-tools",
+          "mir",
+          "music",
+          "pitch-shift",
+          "webapp"
+        ],
+        "license": "MIT",
+        "created": "2025-04-28",
+        "pushed": "2026-07-30",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "luml-ai/luml",
+      "url": "https://github.com/luml-ai/luml",
+      "date": "2026-11-10",
+      "signal": 274,
+      "signal_name": "stars",
+      "summary": "AI lifecycle platform where engineers and agents track experiments, train models, and ship to production.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2024-11-16",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "treeverse/vscode-dvc",
+      "url": "https://github.com/treeverse/vscode-dvc",
+      "date": "2026-11-10",
+      "signal": 220,
+      "signal_name": "stars",
+      "summary": "Machine learning experiment tracking and data versioning with DVC extension for VS Code",
+      "extra": {
+        "topics": [
+          "data",
+          "data-science",
+          "dvc",
+          "machine-learning",
+          "python",
+          "visual-studio-code",
+          "vscode",
+          "vscode-extension"
+        ],
+        "license": "Apache-2.0",
+        "created": "2020-09-28",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "dsm5e/aso-tracker",
+      "url": "https://github.com/dsm5e/aso-tracker",
+      "date": "2026-10-02",
+      "signal": 150,
+      "signal_name": "stars",
+      "summary": "Self-hosted open-source App Store toolkit for indie iOS devs — keyword tracking, AI screenshot generation, PPO experiments, and UGC video pipeline.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-04-22",
+        "pushed": "2026-10-02",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "acts-project/acts",
+      "url": "https://github.com/acts-project/acts",
+      "date": "2026-11-10",
+      "signal": 134,
+      "signal_name": "stars",
+      "summary": "Experiment-independent toolkit for (charged) particle track reconstruction in (high energy) physics experiments implemented in modern C++",
+      "extra": {
+        "topics": [
+          "particle-track-reconstruction",
+          "physics-experiment",
+          "reconstruction",
+          "simulation"
+        ],
+        "license": "MPL-2.0",
+        "created": "2019-03-13",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "cloudrift-ai/emmy",
+      "url": "https://github.com/cloudrift-ai/emmy",
+      "date": "2026-11-10",
+      "signal": 123,
+      "signal_name": "stars",
+      "summary": "Optimized GPU compiler for LLM inference. Choose from a list of optimized recipes or optimize your own model via kernel fusion, autotuning, and advanced scheduling. Run benchmarks across different GPU types and configurations, track results and share experiments with the community.",
+      "extra": {
+        "topics": [
+          "compilers",
+          "gpu-computing",
+          "inference",
+          "llm-inference",
+          "llmops"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-08-02",
+        "pushed": "2026-11-10",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "JuliaAI/MLFlowClient.jl",
+      "url": "https://github.com/JuliaAI/MLFlowClient.jl",
+      "date": "2026-07-13",
+      "signal": 59,
+      "signal_name": "stars",
+      "summary": "Track experiments, log metrics, manage models — MLflow from Julia.",
+      "extra": {
+        "topics": [
+          "data-science",
+          "deep-learning",
+          "julia",
+          "machine-learning",
+          "machine-learning-lifecycle",
+          "machine-learning-operations",
+          "machine-learning-ops",
+          "ml-lifecycle",
+          "mlflow",
+          "mlj",
+          "mlops",
+          "statistics"
+        ],
+        "license": "MIT",
+        "created": "2021-11-14",
+        "pushed": "2026-07-13",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "JimmyXtesla/BILN",
+      "url": "https://github.com/JimmyXtesla/BILN",
+      "date": "2026-08-09",
+      "signal": 57,
+      "signal_name": "stars",
+      "summary": "The Bioinformatician’s Interactive Lab Notebook (BILN) is a smart, dynamic system for tracking experiments, datasets, and workflows. Designed for bioinformaticians, it ensures reproducibility, structured logging, and AI-readiness. Export logs, collaborate seamlessly, and let BILN become your interactive companion in computational biology.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2025-08-23",
+        "pushed": "2026-08-09",
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Usage of GPUs for ALICE Reconstruction in the ALICE Online Compute farm and in the Grid",
+      "url": "http://arxiv.org/abs/2611.12340v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "ALICE, the dedicated heavy-ion experiment at the LHC, records Pb-Pb collisions at an interaction rate of up to 50 kHz. It was the first LHC experiment to leverage GPUs for online data processing during LHC Runs 1 and 2, and its Run 3 online event reconstruction is now almost fully based on GPUs. In order to use its online processing server farm also for offline processing in an efficient way while",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Towards Reliable Cloud VR over Wi-Fi 7: Leveraging MLO and TXOP Sharing",
+      "url": "http://arxiv.org/abs/2611.12231v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Cloud~\\ac{VR} imposes stringent latency and reliability requirements due to the closed-loop interaction between \\ac{DL} video streaming and \\ac{UL} tracking updates. Although Wi-Fi~7 introduces \\ac{MLO} to improve throughput and reduce latency, its adoption for latency-critical applications like Cloud~\\ac{VR} is not straightforward. This paper investigates Cloud~\\ac{VR} streaming over Wi-Fi~7 thro",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Multi-Target Tracking via Mean Field Feedback Control",
+      "url": "http://arxiv.org/abs/2611.12230v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Cooperative tracking of multiple moving targets requires a swarm to continually adjust its deployment. Existing methods often rely on repeated agent-target reassignment or updates to position-dependent partitions, which can complicate coordination as swarms grow. This motivates us to seek an approach with a lighter coordination burden. Specifically, we formulate multi-target tracking as a time-var",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "BARS: Beat-Adaptive Rap Synthesis via Flow Matching",
+      "url": "http://arxiv.org/abs/2611.12061v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We present BARS (Beat-Adaptive Rap Synthesis), a non-autoregressive rapping voice generation model based on Flow Matching, conditioned on a beat track (instrumental backing), lyrics, and a short reference voice for zero-shot timbre control. Unlike prior autoregressive rap synthesis, where rap pace and output duration are strictly determined by the beat, BARS enables independent control over the ra",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Reliability-Adaptive Multimodal Relative Pose Tracking for Underwater Leader-Follower Robots",
+      "url": "http://arxiv.org/abs/2611.11940v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Underwater leader-follower formation control requires continuous relative-pose estimation despite degraded sensing conditions and limited onboard computation. This paper presents a reliability-adaptive multimodal perception framework for six-degree-of-freedom relative-pose tracking between two moving underwater robots. The framework integrates complementary visual, acoustic-ranging, and hydrodynam",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "CRAFT-GBM: Selecting Best Features for Gradient-Boosted Machine Learning",
+      "url": "http://arxiv.org/abs/2611.11914v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Feature subsampling is used to accelerate gradient-boosted trees, yet standard approaches fix the feature count in advance and largely ignore the split-gain evidence accumulated during training. We introduce CRAFT-GBM (Confidence-Ranked Adaptive Feature Tracking), a native LightGBM extension that uses this evidence to adapt which---and, by default, how many---features are searched each boosting ro",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Disagreement-Aware Distribution Matching Distillation for Few-Step Diffusion Models",
+      "url": "http://arxiv.org/abs/2611.11898v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Distribution Matching Distillation~(DMD) enables strong few-step diffusion generation by matching the student distribution to a pretrained teacher. Existing improvements to DMD often augment its supervision or modify its optimization machinery. We ask a complementary question: \\emph{can DMD diagnose its own updates using signals already produced during training?} DMD inherently computes the discre",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Severity-Controlled Prediction Sets for Medication Recommendation",
+      "url": "http://arxiv.org/abs/2611.11847v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Medication recommendation is a multi-label prediction task. However, existing prediction-set evaluation and calibration methods rely mainly on exact-overlap metrics and therefore treat all missed medications as equally severe, overlooking how closely the prediction set matches them within the medication hierarchy. To address this, we introduce Conformal Severity Control (CSC), a post-hoc framework",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SurgTAP-3D: A Large-Scale Cross-Surgery Video Dataset with Contact-Aware 3D Motion Tracking",
+      "url": "http://arxiv.org/abs/2611.11697v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Understanding 3D scene dynamics in minimally invasive surgery (MIS) is a fundamental step toward physically intelligent and autonomous surgical systems. However, existing public datasets offer limited scalability and diversity in real-world clinical scenarios. Moreover, annotations typically focus on either tissue or instruments alone, overlooking tool-tissue interactions. This gap limits applicat",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "InfraRSI: Harnessing Recursive Self-Improvement for Training Infrastructure",
+      "url": "http://arxiv.org/abs/2611.11558v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "While Recursive Self-Improvement (RSI) accelerates isolated algorithm and kernel synthesis, distributed LLM training depends on tightly coupled launch settings, operator kernels, and communication schedules, where single edits often hit out-of-memory (OOM) boundaries, compiler conflicts, measurement jitter, or silent numerical drift. We present InfraRSI, the agentic harness that turns open-ended h",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Control-Aware Command Generation for Asynchronous Control and Action Inference with Vision-Based Policies towards Fast Execution",
+      "url": "http://arxiv.org/abs/2611.11089v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Vision-based control policies, including vision-language-action models, have enabled robots to perform increasingly complex tasks. However, their execution speed is often limited by the high computational cost of action inference. In this work, we investigate what can be achieved at the control level without modifying the underlying policy learning process. We introduce an asynchronous inference a",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Learning Actionable Information Landscapes for Multimodal Active Sensing in Hawkmoths",
+      "url": "http://arxiv.org/abs/2611.11011v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Animals integrate information across sensory modalities to guide exploration, suggesting that they maintain internal estimates of where actions are expected to reduce uncertainty. However, how such action-conditioned information maps are learned from multimodal sensory experience remains unclear, as previous studies have been largely confined to unimodal sensing frameworks. We introduce a multimod",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Keeping LLM Agents on Procedure: Executable Finite-State Control for Long-Horizon Instruction Fidelity",
+      "url": "http://arxiv.org/abs/2611.10884v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Much of the automation handed to language-model agents is procedural: each step needs little intelligence, but a long unattended run must follow a skill or SOP stated once at the start. We show that agents drift from such procedures over long runs, and that restating the instructions or resuming a stopped agent only moves the drift to another shortcut. We study an executable finite-state machine (",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Passivity-Guaranteed Variable Impedance and Compliance Control via Online Parameter Optimization",
+      "url": "http://arxiv.org/abs/2611.10778v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Variable impedance control enhances the interaction capability of robot manipulators by adapting impedance parameters online. However, time-varying impedance parameters may inject energy into the system and violate passivity, particularly when tasks demand rapid stiffness changes. Existing methods address this by increasing damping or limiting the stiffness profile, which often degrades the dynami",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Lagrangian Brain: A Constraint Mechanics of Mind and Machine",
+      "url": "http://arxiv.org/abs/2611.10737v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "A brain is in one state at a time, yet most of what decides its next state is absent from it: the patterns its world never produces, the statistics of a lifetime, a goal that lies ahead. In mechanics a wire acts on a bead only through a force that appears when the bead presses on it, and Lagrange computed such forces with one multiplier for each constraint. We propose that a brain follows the same",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Progress Reward Modeling for Robotic Learning: A Comprehensive Survey",
+      "url": "https://huggingface.co/papers/2607.21655",
+      "date": "2026-07-22",
+      "signal": 78,
+      "signal_name": "upvotes",
+      "summary": "A survey unifies progress reward modeling for robotic learning by analyzing model interfaces, internal construction methods, and evaluation benchmarks.",
+      "extra": {
+        "keywords": [
+          "progress reward modeling",
+          "robotic learning",
+          "progress rewards",
+          "progress estimation",
+          "reward generation",
+          "progress supervision"
+        ],
+        "github": "https://github.com/sterzhang/Awesome-Progress-Models",
+        "github_stars": 90,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Apodex Discovery: Reality Benchmarks and Environments for Evaluating and Building Discoverative Artificial Intelligence",
+      "url": "https://huggingface.co/papers/2608.11341",
+      "date": "2026-08-11",
+      "signal": 73,
+      "signal_name": "upvotes",
+      "summary": "Apodex Discovery introduces a framework for verifiable, extended AI investigations using a heavy-duty solver and structured evaluation across real-world scientific tasks.",
+      "extra": {
+        "keywords": [
+          "Apodex Discovery",
+          "heavy-duty solver",
+          "foundation model",
+          "harness",
+          "control policies",
+          "stateful verification",
+          "problem-scouting",
+          "environment-task-episode abstraction",
+          "HDS6",
+          "AAV capsid design",
+          "drug repurposing",
+          "TRACES"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "More Memory, Better Videos? A Controlled Study of Visual Memory in Long-Video Generation",
+      "url": "https://huggingface.co/papers/2610.35001",
+      "date": "2026-10-26",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "Visual memory improves historical consistency but can reduce current-story accuracy by reinforcing outdated appearances, showing that retrieval relevance alone does not prove memory utility.",
+      "extra": {
+        "keywords": [
+          "visual memory",
+          "retrieval policies",
+          "entity recall",
+          "appearance-stripping analysis",
+          "long-gap recall",
+          "VMem-Bench"
+        ],
+        "github": "https://github.com/Suchenl/VMem-Bench",
+        "github_stars": 9,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LIMMT: Less is More for Motion Tracking",
+      "url": "https://huggingface.co/papers/2606.06953",
+      "date": "2026-06-05",
+      "signal": 14,
+      "signal_name": "upvotes",
+      "summary": "Training with high-quality motion data improves tracking policy optimization trajectories, with minimal data subsets outperforming full datasets in physics-based humanoid motion tracking.",
+      "extra": {
+        "keywords": [
+          "motion tracking",
+          "physics-based humanoid motion tracking",
+          "data-centric study",
+          "motion data quality",
+          "physics feasibility",
+          "diversity",
+          "complexity",
+          "AMASS",
+          "data cleaning",
+          "mocap data"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "WhatWorkedBench: Benchmarking Experimental Understanding in AI Agents",
+      "url": "https://huggingface.co/papers/2609.27490",
+      "date": "2026-09-23",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "WhatWorkedBench evaluates AI agents' ability to predict experimental outcomes by measuring how component changes affect scores across diverse tasks, showing that Gaussian process modeling and code equivalence encoding improve effect recovery.",
+      "extra": {
+        "keywords": [
+          "response surface",
+          "pair-effect ridge",
+          "Gaussian process",
+          "effect recovery",
+          "code equivalences",
+          "adaptive experimental design",
+          "numerical inference"
+        ],
+        "github": "https://github.com/EthanNing/WhatWorkedBench",
+        "github_stars": 3,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Track2View: 4D-Consistent Camera-Controlled Video Generation via Paired 3D Point Tracks",
+      "url": "https://huggingface.co/papers/2606.15534",
+      "date": "2026-06-14",
+      "signal": 11,
+      "signal_name": "upvotes",
+      "summary": "Track2View generates novel camera viewpoints from videos by using 3D point tracks to establish explicit spatiotemporal correspondences, achieving superior visual quality and camera accuracy compared to existing methods.",
+      "extra": {
+        "keywords": [
+          "video diffusion transformer",
+          "3D point tracks",
+          "spatiotemporal correspondences",
+          "dual-view track conditioner",
+          "geometric operations",
+          "temporal aggregation",
+          "3D point tracker",
+          "camera trajectory",
+          "visual quality",
+          "camera accuracy"
+        ],
+        "github": "https://github.com/mvrl/Track2View",
+        "github_stars": 11,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Predictive Credit: Measuring What Scientific Explanations Add to Experimental Forecasts",
+      "url": "https://huggingface.co/papers/2610.00314",
+      "date": "2026-09-29",
+      "signal": 8,
+      "signal_name": "upvotes",
+      "summary": "The study evaluates predictive credit of research-agent explanations across forecasting benchmarks, finding unconfirmed gains for matched descriptions and donor contexts despite reduced model drift under specific configurations.",
+      "extra": {
+        "keywords": [
+          "predictive credit",
+          "paired forecasts",
+          "intervention",
+          "forecaster",
+          "outcome",
+          "ROC AUC",
+          "interval-score",
+          "point-equivalence",
+          "repeatability",
+          "DeepSeek V4 Pro",
+          "DeepSeek V4 Flash",
+          "MAE",
+          "predictive gain",
+          "alignment",
+          "known-signal uptake"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agentic Auto-Research is Fuzz Testing",
+      "url": "https://huggingface.co/papers/2608.09855",
+      "date": "2026-08-10",
+      "signal": 7,
+      "signal_name": "upvotes",
+      "summary": "Auto-research requires dense progress signals and feedback-directed search rather than pure generation and ranking to improve discovery efficiency while protecting final validation from adaptive reuse.",
+      "extra": {
+        "keywords": [
+          "greybox fuzzer",
+          "coverage",
+          "epistemic progress",
+          "feedback-directed search",
+          "adaptive reuse",
+          "false discoveries",
+          "feedback architecture"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Externalizing Research Synthesis and Validation in AI Scientists through a Research Harness",
+      "url": "https://huggingface.co/papers/2606.18874",
+      "date": "2026-06-17",
+      "signal": 6,
+      "signal_name": "upvotes",
+      "summary": "Xcientist enables transparent and accountable AI-driven scientific research by creating persistent artifacts that track the complete research process from problem formulation to mechanism validation and revision.",
+      "extra": {
+        "keywords": [
+          "research harness",
+          "research synthesis",
+          "experimental validation",
+          "inspectable processes",
+          "contract-governed processes",
+          "literature evidence",
+          "idea states",
+          "implementation plans",
+          "ablation records",
+          "repair traces",
+          "claim drift",
+          "training-free memory systems",
+          "graph-structured traffic forecasting",
+          "multi-scale physics-informed neural networks",
+          "traceable trajectories",
+          "scientific accountability"
+        ],
+        "github": "https://github.com/OpenDFM/Xcientist",
+        "github_stars": 71,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "TRACE: Temporal Audit and Condition-aware Evaluation of Streaming Video Understanding",
+      "url": "https://huggingface.co/papers/2609.30670",
+      "date": "2026-09-25",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "TRACE introduces a condition-aware benchmark and evaluation framework that reveals hidden differences in streaming video understanding by tracking evidence timing, history processing, and response behavior across models.",
+      "extra": {
+        "keywords": [
+          "streaming video understanding",
+          "TRACE",
+          "condition-aware evaluation",
+          "temporal audit",
+          "causal Core--Adapter protocol",
+          "response-selection behavior",
+          "false alarms",
+          "missed target windows"
+        ],
+        "github": "https://github.com/om-ai-lab/trace-bench",
+        "github_stars": 10,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Modeling Authentic Research Trajectories: A Graph View of Research Ideation",
+      "url": "https://huggingface.co/papers/2610.27337",
+      "date": "2026-10-19",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "The paper proposes the Research Progress Graph to explicitly model how research ideas evolve through evidence-backed reasoning, arguing that future LLM agents should predict evolving states rather than static ideas.",
+      "extra": {
+        "keywords": [
+          "LLM-based research agents",
+          "Research Progress Graph",
+          "cognitive transitions",
+          "research states",
+          "ideation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Fast and Precise Learned Charged-Particle Trajectory Regression at the Large Hadron Collider",
+      "url": "https://huggingface.co/papers/2609.32479",
+      "date": "2026-09-26",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A bidirectional gated linear recurrent encoder achieves full-precision particle trajectory regression on detector data with faster GPU inference than classical methods.",
+      "extra": {
+        "keywords": [
+          "bidirectional gated linear recurrent encoder",
+          "sequence modeling",
+          "Kalman filters",
+          "linearized least-squares fits",
+          "trajectory parameter regression",
+          "track fitting",
+          "GPU inference",
+          "end-to-end learned track fit"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Beyond the Survey: A Systematic Empirical Study of Detection and Association in Visual MOT",
+      "url": "https://huggingface.co/papers/2609.22291",
+      "date": "2026-09-14",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Experimental analysis of multi-object tracking reveals that detection quality dominates tracking performance over association strategies, with modern detectors and re-identification models outperforming joint approaches and transformer-based methods offering robustness at high computational cost.",
+      "extra": {
+        "keywords": [
+          "multi-object tracking",
+          "tracking-by-detection",
+          "end-to-end deep learning",
+          "object detection",
+          "feature extraction",
+          "data association",
+          "re-identification models",
+          "joint detection and embedding",
+          "transformer-based end-to-end methods"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Artifact-centered Claim-aware Observability for Autonomous Scientific Agents",
+      "url": "https://huggingface.co/papers/2608.18312",
+      "date": "2026-08-18",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Autonomous scientific agents require claim-aware artifact lineage to audit distributed failures across claims, evidence, and multi-agent plans, proposed as a portable observability profile linking individuals, operators, fitness records, and lineage to existing telemetry and provenance standards.",
+      "extra": {
+        "keywords": [
+          "autonomous scientific agents",
+          "claim-aware artifact lineage",
+          "observability profile",
+          "fitness records",
+          "lineage",
+          "PROV-O",
+          "RO-Crate",
+          "OpenTelemetry"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Excess Separability: Nuisance-Controlled Residual-Stream Probing for Benchmark Contamination Detection",
+      "url": "https://huggingface.co/papers/2608.12652",
+      "date": "2026-08-16",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Linear-probe detection of benchmark contamination via internal activations suffers from high variance in bias correction, yielding unreliable results and no confirmed contamination across audited checkpoints.",
+      "extra": {
+        "keywords": [
+          "linear probe",
+          "internal activations",
+          "membership inference",
+          "canary strings",
+          "depth profile",
+          "label-permutation null",
+          "transformers",
+          "benchmark contamination"
+        ],
+        "github": "https://github.com/mabushi-lab/residual-stream-contamination-probing",
+        "github_stars": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Mltrackr – ML experiment tracking in 2 lines, no server, no account",
+      "url": "https://github.com/NaiaLorente/datalog",
+      "date": "2026-06-30",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48731529",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "No More Results_final_v3.csv: Tracking Research ML Experiments with MLflow",
+      "url": "https://gquetel.fr/misc/mlflow-ml-research/",
+      "date": "2026-10-06",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49981822",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: An unmetered LLM API–$6/month, no token tracking, no limits",
+      "url": "https://yolo-auto.com/",
+      "date": "2026-07-06",
+      "signal": 12,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48799719",
+        "comments": 13,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Reproducible experiments without committing every tweak",
+      "url": "https://github.com/DLR-Institute-of-Future-Fuels/rair",
+      "date": "2026-06-04",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48397791",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Tracking a real golf ball in mixed reality at 90 FPS using Quest 3 GPU",
+      "url": "https://puttdojo.com/devlog/tracking-a-real-golf-ball.html",
+      "date": "2026-06-23",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48643740",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Claude's innerworkings: turn 170 costs 2.1x turn 20, over 14,640 turns",
+      "url": "https://news.ycombinator.com/item?id=49552931",
+      "date": "2026-09-03",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49552931",
+        "comments": 2,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Ridge - Connect coding agents to local, SSH, Docker, and S3 resources",
+      "url": "https://github.com/vasinov/ridge-core",
+      "date": "2026-09-10",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49647368",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: I made an image watermarking tool. What are the issues open-sourcing it?",
+      "url": "https://news.ycombinator.com/item?id=48438005",
+      "date": "2026-06-07",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48438005",
+        "comments": 2,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: NiceShot AI – The analytics layer competitive games forgot to add",
+      "url": "https://github.com/karimm-ai/NiceShot_AI",
+      "date": "2026-08-11",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49253675",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Site/app blocker and usage tracker specifically for Linux",
+      "url": "https://glockerapp.com/",
+      "date": "2026-11-05",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50381119",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Minimal LLM Post-Training Experiments on an 8GB GPU (SFT, DPO, GRPO)",
+      "url": "https://github.com/pochenai/nano-llm-posttraining",
+      "date": "2026-08-01",
+      "signal": 21,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49133851",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Practical Lessons from Reinforcement Learning Post Training Experiments [pdf]",
+      "url": "https://zenodo.org/records/21115798",
+      "date": "2026-07-09",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48840720",
+        "comments": 0,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "I tried to connect every GPU on the planet together (kinda)",
+      "url": "https://news.ycombinator.com/item?id=50394231",
+      "date": "2026-11-06",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50394231",
+        "comments": 3,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Benchmarks of continual learning model trained for a month on a laptop",
+      "url": "https://news.ycombinator.com/item?id=50219762",
+      "date": "2026-10-24",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50219762",
+        "comments": 1,
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An open vision-language model for diverse medical applications",
+      "url": "https://doi.org/10.1038/s41591-026-04626-w",
+      "date": "2026-10-01",
+      "signal": 984,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Causal World Modeling for Robot Control",
+      "url": "https://doi.org/10.15607/rss.2026.xxii.016",
+      "date": "2026-07-13",
+      "signal": 430,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Can exercise affect immune function to increase susceptibility to infection?",
+      "url": "https://doi.org/10.22029/eir.2020.1730",
+      "date": "2026-07-15",
+      "signal": 387,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Exploring Large Language Model‐Based Intelligent Agents: Definitions, Methods, and Prospects",
+      "url": "https://doi.org/10.1002/widm.70111",
+      "date": "2026-07-24",
+      "signal": 286,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SkillOpt: Executive Strategy for Self-Evolving Agent Skills",
+      "url": "https://doi.org/10.48550/arxiv.2605.23904",
+      "date": "2026-05-22",
+      "signal": 232,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Sa2VA: Marrying SAM2 With MLLM for Dense Grounded Understanding of Images and Videos",
+      "url": "https://doi.org/10.1109/tpami.2026.3720379",
+      "date": "2026-08-04",
+      "signal": 206,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Senna: Bridging Large Vision-Language Models and End-to-End Autonomous Driving",
+      "url": "https://doi.org/10.1007/s11263-026-03002-y",
+      "date": "2026-08-25",
+      "signal": 195,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Retargeting Matters: General Motion Retargeting for Humanoid Motion Tracking",
+      "url": "https://doi.org/10.1109/icra57385.2026.11697263",
+      "date": "2026-06-01",
+      "signal": 194,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "experiment tracking"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Dbp-dev12/vla-preflight",
+      "url": "https://github.com/Dbp-dev12/vla-preflight",
+      "date": "2026-09-26",
+      "signal": 111,
+      "signal_name": "stars",
+      "summary": "Local VLA workbench: data diagnostics, reproducible preparation and reference training.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-09-26",
+        "pushed": "2026-09-26",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "stephrobert/dsoxlab",
+      "url": "https://github.com/stephrobert/dsoxlab",
+      "date": "2026-07-15",
+      "signal": 109,
+      "signal_name": "stars",
+      "summary": "Turn declarative exercises into reproducible, runnable and verifiable lab environments",
+      "extra": {
+        "topics": [
+          "ansible",
+          "cli",
+          "devops",
+          "devsecops",
+          "education",
+          "labs",
+          "python",
+          "rhcsa",
+          "terraform",
+          "training"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-15",
+        "pushed": "2026-11-10",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "kumizeod/AgentForeman",
+      "url": "https://github.com/kumizeod/AgentForeman",
+      "date": "2026-10-19",
+      "signal": 51,
+      "signal_name": "stars",
+      "summary": "Overnight experiment orchestration for Codex: autonomous planning, coding, training and independent verification, with durable quota waiting, crash recovery and reproducible results.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agent-manager",
+          "claude-code",
+          "codex",
+          "gemini-cli",
+          "opencode"
+        ],
+        "license": "MIT",
+        "created": "2026-10-19",
+        "pushed": "2026-11-04",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "JayYu686/TinyLLM-System",
+      "url": "https://github.com/JayYu686/TinyLLM-System",
+      "date": "2026-07-13",
+      "signal": 50,
+      "signal_name": "stars",
+      "summary": "Reproducible LLM post-training, evaluation and serving system with PyTorch FSDP2, Qwen3, exact resume and model promotion gates.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-07-13",
+        "pushed": "2026-09-02",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AhmadJeddi/Plant-Disease-Classification",
+      "url": "https://github.com/AhmadJeddi/Plant-Disease-Classification",
+      "date": "2026-07-27",
+      "signal": 48,
+      "signal_name": "stars",
+      "summary": "A ResNet50-DCBAM deep learning framework for plant disease classification using the PlantVillage dataset with reproducible training and evaluation pipelines.",
+      "extra": {
+        "topics": [
+          "attention-mechanism",
+          "cbam",
+          "cnn",
+          "computer-vision",
+          "dcbam",
+          "deep-learning",
+          "image-classification",
+          "plant-disease-classification",
+          "plantvillage",
+          "precision-agriculture",
+          "pytorch",
+          "resnet50",
+          "transfer-learning"
+        ],
+        "license": "MIT",
+        "created": "2026-07-27",
+        "pushed": "2026-10-19",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "3DAgentWorld/Advanced3DGS",
+      "url": "https://github.com/3DAgentWorld/Advanced3DGS",
+      "date": "2026-06-10",
+      "signal": 28,
+      "signal_name": "stars",
+      "summary": "This is the official code repository for \"Advances in Rasterization Rendering Algorithms for 3D Gaussian Splatting: A Comprehensive Survey\". A unified framework for reproducing, benchmarking, and comparing state-of-the-art (SOTA) 3DGS methods under a common training, rendering, and evaluation pipeline.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-10",
+        "pushed": "2026-07-21",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "VeRITAS-wuren/OpenCSR",
+      "url": "https://github.com/VeRITAS-wuren/OpenCSR",
+      "date": "2026-08-12",
+      "signal": 26,
+      "signal_name": "stars",
+      "summary": "An explainable and reproducible post-training system for tool-using customer service agents with SFT, GRPO, verl and vLLM.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-12",
+        "pushed": "2026-08-12",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "plugyawn/opengenie",
+      "url": "https://github.com/plugyawn/opengenie",
+      "date": "2026-06-03",
+      "signal": 26,
+      "signal_name": "stars",
+      "summary": "An open attempt at reproducing a simplified version of Google's Genie World Model API on a single H100.",
+      "extra": {
+        "topics": [
+          "diffusers",
+          "diffusion-forcing",
+          "diffusion-transformer",
+          "dit",
+          "game",
+          "genie",
+          "google-genie",
+          "kernels",
+          "models",
+          "physics",
+          "training",
+          "transformer",
+          "world",
+          "world-model",
+          "world-models"
+        ],
+        "license": null,
+        "created": "2026-06-03",
+        "pushed": "2026-06-05",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "cobanov/flyjump",
+      "url": "https://github.com/cobanov/flyjump",
+      "date": "2026-09-12",
+      "signal": 22,
+      "signal_name": "stars",
+      "summary": "Fly Dino: original Chromium Dino controlled by a measured MaleCNS circuit and a genuinely trained neural readout. Live activity, browser training and reproducible benchmarks.",
+      "extra": {
+        "topics": [
+          "chromium-dino",
+          "connectomics",
+          "neuroevolution",
+          "reinforcement-learning"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-09-12",
+        "pushed": "2026-11-06",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "PoSTMEDIA-AI/splatx-metal",
+      "url": "https://github.com/PoSTMEDIA-AI/splatx-metal",
+      "date": "2026-08-04",
+      "signal": 19,
+      "signal_name": "stars",
+      "summary": "3D Gaussian Splatting training on Apple Silicon. Metal kernels that numerically reproduce gsplat — no Python, no CUDA.",
+      "extra": {
+        "topics": [
+          "3d-gaussian-splatting",
+          "3d-reconstruction",
+          "apple-silicon",
+          "cpp",
+          "gaussian-splatting",
+          "gsplat",
+          "macos",
+          "metal",
+          "radiance-fields",
+          "swift"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-04",
+        "pushed": "2026-08-26",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "am423/hermes-bench-tool-call",
+      "url": "https://github.com/am423/hermes-bench-tool-call",
+      "date": "2026-06-02",
+      "signal": 17,
+      "signal_name": "stars",
+      "summary": "Hermes Agent benchmark v0.1 — evaluate local models on the actual tool-calling patterns Hermes users hit. Reproducible, trace-capturing, training-data ready.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-02",
+        "pushed": "2026-06-24",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "EFundAI/label-horizon-paradox",
+      "url": "https://github.com/EFundAI/label-horizon-paradox",
+      "date": "2026-08-07",
+      "signal": 17,
+      "signal_name": "stars",
+      "summary": "[ICML'26] An open-source demo of the bi-level optimization (BLO) method from \"The Label Horizon Paradox\". Reproduces the core method (BLO + brute-force baseline + backtest) on public Alpha158 factors and A-share data, showing that the optimal training label horizon can deviate from the inference target.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-08-07",
+        "pushed": "2026-08-26",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AQ-MedAI/Ascend-Training-Recipes",
+      "url": "https://github.com/AQ-MedAI/Ascend-Training-Recipes",
+      "date": "2026-10-09",
+      "signal": 16,
+      "signal_name": "stars",
+      "summary": "Reproducible post-training recipes for Open LLMs, e.g., DeepSeek-V4, DeepSeek-V4.1, and Kimi-K2.6, on Ascend NPUs.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-10-09",
+        "pushed": "2026-10-29",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Burakkylmz/ml-labs",
+      "url": "https://github.com/Burakkylmz/ml-labs",
+      "date": "2026-11-03",
+      "signal": 14,
+      "signal_name": "stars",
+      "summary": "A hands-on Machine Learning laboratory built with Python, Scikit-learn, Pandas, NumPy, JupyterLab, Docker, and uv. Features reproducible, step-by-step labs covering data analysis, statistics, EDA, preprocessing, model training, evaluation, and forecasting.",
+      "extra": {
+        "topics": [
+          "data-preprocessing",
+          "data-science",
+          "docker",
+          "exploratory-data-analysis",
+          "feature-engineering",
+          "hands-on-labs",
+          "jupyterlab",
+          "machine-learning",
+          "model-evaluation",
+          "numpy",
+          "pandas",
+          "python",
+          "scikit-learn",
+          "time-series-forecasting",
+          "uv"
+        ],
+        "license": null,
+        "created": "2026-11-03",
+        "pushed": "2026-11-10",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mojolearn/mojolearn",
+      "url": "https://github.com/mojolearn/mojolearn",
+      "date": "2026-08-20",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "GPU machine learning in Mojo that supports bitwise identical inference and training on Apple Metal, NVIDIA CUDA and AMD HIP.",
+      "extra": {
+        "topics": [
+          "ai",
+          "artificial-intelligence",
+          "attention",
+          "bitwise-identical",
+          "cuda",
+          "decision-trees",
+          "deep-learning",
+          "gbdt",
+          "gpu",
+          "gradient-boosting",
+          "machine-learning",
+          "mamba",
+          "metal",
+          "mojo",
+          "neural-networks",
+          "reproducibility",
+          "rocm",
+          "samba",
+          "state-space-models",
+          "transformer"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-20",
+        "pushed": "2026-11-10",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "yoshitomo-matsubara/torchdistill",
+      "url": "https://github.com/yoshitomo-matsubara/torchdistill",
+      "date": "2026-11-01",
+      "signal": 1636,
+      "signal_name": "stars",
+      "summary": "A coding-free framework built on PyTorch for reproducible deep learning studies. PyTorch Ecosystem. 🏆28 knowledge distillation methods presented at TPAMI, CVPR, ICLR, ECCV, NeurIPS, ICCV, AAAI, etc are implemented so far. 🎁 Trained models, training logs and configurations are available for ensuring the reproducibiliy and benchmark.",
+      "extra": {
+        "topics": [
+          "amazon-sagemaker-lab",
+          "causal-language-modeling",
+          "cifar10",
+          "cifar100",
+          "coco",
+          "colab-notebook",
+          "glue",
+          "google-colab",
+          "image-classification",
+          "imagenet",
+          "knowledge-distillation",
+          "natural-language-processing",
+          "nlp",
+          "object-detection",
+          "pascal-voc",
+          "pytorch",
+          "pytorch-ecosystem",
+          "semantic-segmentation",
+          "text-classification",
+          "transformer"
+        ],
+        "license": "MIT",
+        "created": "2019-12-18",
+        "pushed": "2026-11-01",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "stepfun-ai/SteptronOss",
+      "url": "https://github.com/stepfun-ai/SteptronOss",
+      "date": "2026-09-04",
+      "signal": 589,
+      "signal_name": "stars",
+      "summary": "A lightweight, AI-native training framework for large language models. Designed for fast iteration, reproducible experiments, and modular configuration across SFT, RLVR, and evaluation workflows.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-12-18",
+        "pushed": "2026-09-04",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "YuvrajSingh-mist/Paper-Replications-and-Experiments",
+      "url": "https://github.com/YuvrajSingh-mist/Paper-Replications-and-Experiments",
+      "date": "2026-11-04",
+      "signal": 430,
+      "signal_name": "stars",
+      "summary": "From-scratch PyTorch replications of classic and SOTA AI/ML papers: transformers, attention, GANs, diffusion, CLIP, LoRA, MoE, plus SFT/GRPO post-training experiments.",
+      "extra": {
+        "topics": [
+          "attention-mechanism",
+          "computer-vision",
+          "deep-learning",
+          "diffusion-models",
+          "fine-tuning",
+          "from-scratch",
+          "gans",
+          "grpo",
+          "jupyter-notebook",
+          "llm",
+          "machine-learning",
+          "model-implementation",
+          "neural-networks",
+          "nlp",
+          "paper-implementations",
+          "paper-replication",
+          "post-training",
+          "pytorch",
+          "reproducibility",
+          "transformers"
+        ],
+        "license": "Apache-2.0",
+        "created": "2024-06-14",
+        "pushed": "2026-11-04",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "AI-Hypercomputer/gpu-recipes",
+      "url": "https://github.com/AI-Hypercomputer/gpu-recipes",
+      "date": "2026-10-26",
+      "signal": 148,
+      "signal_name": "stars",
+      "summary": "Recipes for reproducing training and serving benchmarks for large machine learning models using GPUs on Google Cloud.",
+      "extra": {
+        "topics": [
+          "benchmarks",
+          "distributed-training",
+          "google-cloud-platform",
+          "gpu",
+          "serving"
+        ],
+        "license": "Apache-2.0",
+        "created": "2024-09-17",
+        "pushed": "2026-10-26",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "PINNeAPPle-Labs/PINNeAPPle",
+      "url": "https://github.com/PINNeAPPle-Labs/PINNeAPPle",
+      "date": "2026-11-10",
+      "signal": 117,
+      "signal_name": "stars",
+      "summary": "Pinneaple is an open-source Physics AI toolkit for Physics-Informed Neural Networks (PINNs), scientific ML, geometry processing, solvers, and reproducible training pipelines.",
+      "extra": {
+        "topics": [
+          "cfd",
+          "hacktoberfest",
+          "physics-informed-neural-networks",
+          "pinn",
+          "scientific-machine-learning"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-01-23",
+        "pushed": "2026-11-10",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Modalities/modalities",
+      "url": "https://github.com/Modalities/modalities",
+      "date": "2026-10-12",
+      "signal": 112,
+      "signal_name": "stars",
+      "summary": "Modalities, a PyTorch-native framework for distributed and reproducible foundation model training.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2024-01-11",
+        "pushed": "2026-10-12",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "krafton-ai/Raon-OpenTTS",
+      "url": "https://github.com/krafton-ai/Raon-OpenTTS",
+      "date": "2026-05-21",
+      "signal": 104,
+      "signal_name": "stars",
+      "summary": "Open-source text-to-speech model from KRAFTON trained exclusively on public speech data, with curated datasets and reproducible training support.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-04-01",
+        "pushed": "2026-05-21",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "xlang-ai/CUA-Gym-Hub",
+      "url": "https://github.com/xlang-ai/CUA-Gym-Hub",
+      "date": "2026-09-03",
+      "signal": 84,
+      "signal_name": "stars",
+      "summary": "CUA-Gym-Hub: mock web apps as reproducible RL training environments for computer-use agents",
+      "extra": {
+        "topics": [
+          "agent",
+          "browser-automation",
+          "computer-use-agent",
+          "llm",
+          "mock-web-app",
+          "react",
+          "reinforcement-learning",
+          "rlvr",
+          "training-data",
+          "vite"
+        ],
+        "license": "NOASSERTION",
+        "created": "2025-12-01",
+        "pushed": "2026-09-03",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "yangqi0/petitgpt",
+      "url": "https://github.com/yangqi0/petitgpt",
+      "date": "2026-10-11",
+      "signal": 74,
+      "signal_name": "stars",
+      "summary": "A 124.6M LLM trained from scratch on 13B tokens on a single RTX 4090 — tokenizer, pretraining, post-training, evaluation, and reproducible inference.",
+      "extra": {
+        "topics": [
+          "distillation",
+          "from-scratch",
+          "generative-ai",
+          "instruction-tuning",
+          "language-model",
+          "llm",
+          "model-evaluation",
+          "post-training",
+          "pretraining",
+          "pytorch",
+          "reproducibility",
+          "single-gpu",
+          "small-language-model"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-02-04",
+        "pushed": "2026-10-11",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "The-School-of-AI/LLM",
+      "url": "https://github.com/The-School-of-AI/LLM",
+      "date": "2026-10-23",
+      "signal": 71,
+      "signal_name": "stars",
+      "summary": "LightningLM 0.1V — Reference training pipeline for the LightningLM family. 2B dense seed → 5B MoE → 9B MoE → 120B sparse MoE through TurboQuant-PreTraining on a single eight-GPU node. Companion code for *Reversible Foundations*.",
+      "extra": {
+        "topics": [
+          "brahmic-tokenizer",
+          "language-models",
+          "lightninglm",
+          "mixture-of-experts",
+          "pretraining",
+          "pytorch",
+          "quantized-training",
+          "reproducibility",
+          "reversible-models",
+          "sparse-moe"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-01-27",
+        "pushed": "2026-10-23",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "summved/log-generator",
+      "url": "https://github.com/summved/log-generator",
+      "date": "2026-11-04",
+      "signal": 58,
+      "signal_name": "stars",
+      "summary": "This tool will be invaluable for: SIEM Testing - Generate realistic multi-source logs Security Training - Reproducible scenarios for education Development - Consistent test data for log processing systems Research - Controlled log generation for cybersecurity studies",
+      "extra": {
+        "topics": [
+          "cybersecurity-tools",
+          "log-generator",
+          "machine-learning",
+          "mitre-attack",
+          "nodejs",
+          "security-testing-tool",
+          "siem",
+          "siem-testing",
+          "threat-simulation",
+          "wazuh-splunk-soc"
+        ],
+        "license": "NOASSERTION",
+        "created": "2025-09-04",
+        "pushed": "2026-11-04",
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What the Loss Curve Misses: FP4 Pretraining Slows the Acquisition of Rare Facts",
+      "url": "http://arxiv.org/abs/2611.12832v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Low-precision pretraining is usually judged by validation loss. We ask whether matching loss also means learning rare facts as efficiently. We train transformers from scratch with emulated 4-bit matrix multiplications on synthetic biographies with controlled exposure counts, on their own and mixed into web text. NVFP4 needs 1.32$\\times$ and 1.52$\\times$ as many exposures as BF16 to match its recal",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Simulating Vein Compressibility for Ultrasound-Guided Femoral Access: Speed, Accuracy, and Phantom Validation",
+      "url": "http://arxiv.org/abs/2611.12818v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "In ultrasound-guided femoral access, probe pressure deforms the tissue and changes the vascular anatomy a robot observes. A simulator must reproduce these mechanics fast enough for robotic interaction, yet the computational effort needed for a clinically meaningful signal like vein collapse before artery is unclear. We test the feasibility of a physics-based simulation in NVIDIA's Isaac Sim for He",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What Breaks Scribble-Supervised Segmentation? An Audit-Informed Benchmark for Scribble Annotation Robustness",
+      "url": "http://arxiv.org/abs/2611.12674v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Scribble-supervised segmentation is typically evaluated with a fixed annotation set, leaving robustness to distinct semantic and geometric imperfections poorly understood. Motivated by an audit of 12,031 manual PASCAL Visual Object Classes (VOC) 2012 scribbles and prior work, we introduce six controlled perturbation operators. Class corruption, spatial offset, and directional perturbation directly",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A forensic evaluation framework for egocentric foundation models: an EFM3D case study for crime scene reconstruction",
+      "url": "http://arxiv.org/abs/2611.12259v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Foundation models increasingly combine geometry, semantics, and spatial context for three-dimensional scene understanding, but their suitability for forensic crime scene reconstruction remains unclear. This study presents a structured forensic evaluation framework for egocentric foundation models and demonstrates it using the Egocentric Foundation Model for 3D (EFM3D). Four simulated indoor crime ",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RAIL: Representation-Aligned Imitation Learning for Student-Compatible Teacher Policies",
+      "url": "http://arxiv.org/abs/2611.12251v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement learning (RL) from raw sensory inputs such as images or onboard sensors can be challenging due to high-dimensional observations and sparse rewards. A common strategy is to train a teacher policy with access to privileged state information and then distill it into a student policy that acts from raw inputs alone. However, when the teacher relies on information unavailable to the stude",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Speculative Self-Distillation enables Efficient Knowledge Internalization",
+      "url": "http://arxiv.org/abs/2611.12016v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Many real-world applications require language models to internalize knowledge that was absent from pretraining, to incorporate continually updated facts, or to learn new domain skills. Self-distillation has emerged as a natural approach for this task. A model conditioned on the source material acts as the teacher, and an unconditioned student is trained to reproduce the teacher's behavior closed-b",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading",
+      "url": "http://arxiv.org/abs/2611.11894v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Generalist robot policies often fail at one step of a task they can otherwise perform. We ask whether such a failure can be repaired by editing the policy's weights directly, without gradients, training data, or a change to the instruction. Told to put the cube then the banana in the bowl, a zero-shot $π_{0.5}$ vision-language-action policy in RoboLab releases the cube before it reaches the bowl. ",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Developing a Street View Imagery Processing Pipeline for Building-Level Vacant House Assessment",
+      "url": "http://arxiv.org/abs/2611.11893v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Street view imagery (SVI) is widely used to audit urban environments remotely. Automated assessments usually assume that each image shows the target building clearly. In practice, an image may lack task-relevant evidence or show a neighboring house. If this goes unchecked, a model's score cannot show whether it judged the correct building. We present a reproducible SVI processing pipeline that mak",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Reproducible quantum clustering for single-cell transcriptome atlases",
+      "url": "http://arxiv.org/abs/2611.11745v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Current single-cell clustering pipelines discard most genes and can yield inconsistent clusters across random seeds. We introduce KQE-2, a training-free hybrid quantum-classical framework for reproducible whole-transcriptome clustering. KQE-2 maps cells into entanglement-free quantum states, enabling exact feature evaluation on classical hardware and direct checks on a quantum processor. Theoretic",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Accelerated Reinforcement Learning for Soft Robotics: Hours Instead of Years",
+      "url": "http://arxiv.org/abs/2611.11718v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement learning (RL) requires large amounts of interaction data or a reliable simulator, both hard to obtain for nonlinear soft robotic hardware. Recent work shows that a time-scale separation inherent to soft robot dynamics justifies their reduction to low-dimensional invariant manifolds, known as adiabatic spectral submanifolds (aSSMs). We demonstrate that an aSSM-reduced model, a simple ",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Compute Regeneration through Re-Productization: Reorganizing Retired Edge AI Silicon into a Delivered Multilingual Service Robot",
+      "url": "http://arxiv.org/abs/2611.11698v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Useful edge hardware can lose product support while retaining substantial computation. We treat this as systems design: compute regeneration here means re-productization, retaining the compute module while redesigning the surrounding product organization. Our case is GEdgeBot, a multilingual service robot built around a retired 32 GB Jetson AGX Xavier. A source-grounded inventory shows the box alo",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Brain-Aligned Latent Actions: Imposing Premotor Cortex Geometry on a Robot's Action Vocabulary",
+      "url": "http://arxiv.org/abs/2611.11674v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Robot policies increasingly act through a small vocabulary of discrete latent actions learned from unlabeled video, yet training leaves open which motion receives which code. We find this choice highly unstable: two independently trained runs of Moto's latent motion tokenizer assign the same robot clips to nearly unrelated codes (adjusted Rand index 0.001), and evaluating one tokenizer in bf16 ins",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Building heterogeneous multistep workflows in automated microscopy: reward design and knowledge transfer for autonomous structure property discovery",
+      "url": "http://arxiv.org/abs/2611.11609v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autonomous microscopy can turn fast acquisition into scientific progress when it decides not only where to measure, but also what information to acquire, at what scan rate, and when to recalibrate the instrument. We develop a budget constrained framework for such multistep structure-property workflows. It combines explicit scientific rewards, action costs, instrument observation models, transfer o",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "HydroTuring: A physics probe benchmark testing mass, energy, and momentum conservation in hydrologic models",
+      "url": "http://arxiv.org/abs/2611.11563v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Hydrologic models, including deep learning systems now deployed for operational flood forecasting, are evaluated primarily by how closely their simulated hydrographs match observed streamflow. However, high hydrograph skill does not guarantee physical consistency: in a synthetic calibration experiment, a conceptual model that loses 15% of its water input to an unreported sink still reaches a Nash-",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Small Data Generative AI for Culturally Specific Artistic Creation: A Case Study on the Sonic Space of sarir",
+      "url": "http://arxiv.org/abs/2611.11374v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large-scale generative AI (GenAI) models have become increasingly integrated into contemporary creative practice, yet they often reproduce cultural biases and fail to meaningfully engage with non-Western artistic traditions. In response, this paper explores a small-data approach that foregrounds artist-curated and culturally informed dataset creation and model training. Through a case study on sar",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "VideoChat3: Fully Open Video MLLM for Efficient and Generalist Video Understanding",
+      "url": "https://huggingface.co/papers/2607.14935",
+      "date": "2026-07-16",
+      "signal": 110,
+      "signal_name": "upvotes",
+      "summary": "VideoChat3 is an open, efficient generalist video-language model that uses an inflated 3D vision transformer and adaptive frame resolution for efficient spatiotemporal modeling, alongside curated synthetic datasets, to achieve broad video understanding with only 4B parameters.",
+      "extra": {
+        "keywords": [
+          "Inflated 3D Vision Transformer",
+          "I3D-ViT",
+          "Adaptive Frame Resolution",
+          "Streaming Video Perception",
+          "video-centric MLLM",
+          "spatiotemporal representation"
+        ],
+        "github": "https://github.com/MCG-NJU/VideoChat3",
+        "github_stars": 361,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ReproBridge: Building Reproducibility into ML Research Artifacts",
+      "url": "https://huggingface.co/papers/2611.08452",
+      "date": "2026-11-05",
+      "signal": 28,
+      "signal_name": "upvotes",
+      "summary": "Reproducing machine learning experiments requires reconstructing procedures from information scattered across papers, released code, and supporting artifacts. For coding agents, reproduction success can therefore depend on their ability to fill in missing details, rather than on the released artifacts alone. We ask whether preserving recovered procedures and decisions improves subsequent independe",
+      "extra": {
+        "keywords": [],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "The FID Lottery: Quantifying Hidden Randomness in Generative-Model Evaluation",
+      "url": "https://huggingface.co/papers/2606.20536",
+      "date": "2026-06-18",
+      "signal": 10,
+      "signal_name": "upvotes",
+      "summary": "Analysis of FID variance across different training and sampling seeds reveals significant reproducibility issues in image generation evaluation, with retraining causing larger fluctuations than resampling, and recommends updated evaluation protocols with error bars and optimal guidance tuning.",
+      "extra": {
+        "keywords": [
+          "Frechet Inception Distance",
+          "FID",
+          "training seeds",
+          "generation seeds",
+          "classifier-free-guidance",
+          "flow-matching loss",
+          "inception feature space",
+          "coefficient of variation",
+          "reproducibility",
+          "image generation evaluation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "DenseOn with the LateOn: Fully Open Dense and Late-Interaction Models for Multilingual, Long-Context, and Code Search",
+      "url": "https://huggingface.co/papers/2607.27178",
+      "date": "2026-07-29",
+      "signal": 9,
+      "signal_name": "upvotes",
+      "summary": "Open training recipes for dense and late-interaction retrieval models show that translate-train improves multilingual performance differently across architectures, with token-level matching enabling broader generalization.",
+      "extra": {
+        "keywords": [
+          "contrastive pre-training",
+          "hard negatives",
+          "dense retrieval",
+          "late-interaction",
+          "ColBERT",
+          "nDCG@10",
+          "BEIR",
+          "translate-train",
+          "mmBERT-base",
+          "token-level matching"
+        ],
+        "github": "https://github.com/lightonai/mdenseon-mlateon",
+        "github_stars": 15,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Instella-MoE Technical Report",
+      "url": "https://huggingface.co/papers/2609.00791",
+      "date": "2026-09-01",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "Instella-MoE is an open Mixture-of-Experts language model trained on AMD GPUs using sparse activation, Gated Multi-head Latent Attention, and multi-stage post-training to achieve strong benchmark performance with full reproducibility.",
+      "extra": {
+        "keywords": [
+          "Mixture-of-Experts",
+          "MoE",
+          "Gated Multi-head Latent Attention",
+          "FarSkip-Collective connectivity",
+          "supervised fine-tuning",
+          "direct preference optimization",
+          "reinforcement learning",
+          "Multi-Teacher On-Policy Distillation",
+          "long-context extension"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Diminishing Returns of Data in Sparse Autoencoders: Functional Behavior does not Guarantee Feature Reproducibility",
+      "url": "https://huggingface.co/papers/2610.20680",
+      "date": "2026-10-14",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "Sparse autoencoders can be trained with far fewer activation tokens when data budgets align with evaluation goals, though feature-level reproducibility demands larger scales.",
+      "extra": {
+        "keywords": [
+          "Sparse autoencoders",
+          "BatchTopK",
+          "AutoInterp",
+          "feature reproducibility",
+          "statistical consistency",
+          "identifiability",
+          "activation tokens"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Dating the Model: Hidden Dates in System Prompts Affect LLM Evaluation",
+      "url": "https://huggingface.co/papers/2609.36931",
+      "date": "2026-09-29",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "Hidden date injection into system prompts causes significant, reproducible performance fluctuations across LLMs and tasks, exceeding other non-determinism sources and altering model rankings.",
+      "extra": {
+        "keywords": [
+          "LLM",
+          "system prompts",
+          "chain-of-thought",
+          "few-shot prompting",
+          "multiple-choice QA",
+          "math reasoning",
+          "code generation",
+          "machine translation",
+          "non-determinism",
+          "reproducibility"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "An Open-Source Training Dataset for Foundation Models for Black-box Optimization",
+      "url": "https://huggingface.co/papers/2605.23417",
+      "date": "2026-05-22",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A large-scale open-source dataset for black-box optimization enables the training of foundation models that can imitate optimization methods across diverse problem classes.",
+      "extra": {
+        "keywords": [
+          "black-box optimization",
+          "foundation models",
+          "optimization trajectories",
+          "hyperparameter tuning",
+          "pre-training",
+          "scaling behavior",
+          "compute"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Parallelized Hierarchical Connectome: A Spatiotemporal Recurrent Framework for Spiking State-Space Models",
+      "url": "https://huggingface.co/papers/2604.01295",
+      "date": "2026-05-20",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "The Parallelized Hierarchical Connectome framework extends temporal-only State-Space Models into spatiotemporal recurrent networks by introducing hierarchical neuron and synapse layers with spatial recurrence, enabling integration of biological priors and efficient deployment across diverse hardware platforms.",
+      "extra": {
+        "keywords": [
+          "State-Space Models",
+          "spatiotemporal recurrent networks",
+          "diagonal SSM core",
+          "Neuron Layer",
+          "Synapse Layer",
+          "Multi-Transmission Loop",
+          "hierarchical regions",
+          "adaptive LIF",
+          "synaptic delay",
+          "STP",
+          "Dale's Law",
+          "E/I-asymmetric topology",
+          "STDP",
+          "spiking SSM",
+          "ANN-to-SNN conversion",
+          "sequential recurrent spiking neural network",
+          "parallel-scan training",
+          "cross-backend reproducibility"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Fully Open Meditron: An Auditable Pipeline for Clinical LLMs",
+      "url": "https://huggingface.co/papers/2605.16215",
+      "date": "2026-05-15",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Researchers developed the first fully open pipeline for building large language model-based clinical decision support systems, demonstrating superior performance while maintaining transparency and reproducibility through clinician-verified training data and end-to-end validation.",
+      "extra": {
+        "keywords": [
+          "clinical decision support systems",
+          "large language models",
+          "open-weight models",
+          "fully open models",
+          "training corpus",
+          "data construction",
+          "training framework",
+          "evaluation protocol",
+          "medical QA datasets",
+          "synthetic extensions",
+          "clinical practice guidelines",
+          "decontamination",
+          "gold-label resampling",
+          "LLM-as-a-judge protocol",
+          "HealthBench"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "A Random Matrix Theory Perspective on the Consistency of Diffusion Models",
+      "url": "https://huggingface.co/papers/2602.02908",
+      "date": "2026-07-04",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "A random matrix theory framework explains why diffusion models trained on different data splits yield similar outputs by linking finite-data effects to spectral properties of the learned denoiser.",
+      "extra": {
+        "keywords": [
+          "random matrix theory",
+          "diffusion models",
+          "denoiser",
+          "sampling map",
+          "self-consistent renormalization",
+          "anisotropy",
+          "inhomogeneity",
+          "deterministic equivalence",
+          "fractional matrix powers",
+          "UNet",
+          "DiT"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "NebulaExp-8B: An Empirical Post-Training Pipeline via Full-Scale Ablation Research",
+      "url": "https://huggingface.co/papers/2606.26671",
+      "date": "2026-06-25",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "A transparent post-training framework for large language models that enhances instruction following and reasoning capabilities through systematic data processing and reinforcement learning techniques.",
+      "extra": {
+        "keywords": [
+          "post-training alignment",
+          "large language models",
+          "supervised fine-tuning",
+          "reinforcement learning",
+          "GRPO",
+          "IFEval",
+          "OPD",
+          "MOPD",
+          "SFT",
+          "RL",
+          "data processing",
+          "filtering rules",
+          "training recipes",
+          "model optimization",
+          "instruction adherence",
+          "mathematical reasoning",
+          "code generation",
+          "general knowledge"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Ground Then Rank: Revisiting Knowledge-Based VQA with Training-Free Entity Identification",
+      "url": "https://huggingface.co/papers/2606.23881",
+      "date": "2026-06-22",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Knowledge-Based Visual Question Answering (KB-VQA) requires grounding visual queries to external knowledge beyond directly observable content in images. While recent multi modal large language models (MLLMs) show strong perceptual abilities, they struggle on KB-VQA tasks requiring groundings from both fine-grained entity and evidence levels. Most existing multi-modal retrieval augmented generation",
+      "extra": {
+        "keywords": [],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "DALE-CT: Depth-Aware Foundation Models for Computed Tomography",
+      "url": "https://huggingface.co/papers/2606.07775",
+      "date": "2026-06-05",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "A 2D self-supervised vision encoder trained with depth-aware auxiliary supervision achieves near state-of-the-art multi-abnormality detection on CT volumes without 3D or text supervision.",
+      "extra": {
+        "keywords": [
+          "self-supervised learning",
+          "LeJEPA",
+          "Latent-Euclidean Joint-Embedding Predictive Architecture",
+          "DINOv2",
+          "CT-RATE",
+          "DALE-CT",
+          "depth-aware pre-training",
+          "dense auxiliary supervision",
+          "Multiple Instance Learning",
+          "Macro AUROC",
+          "vision-language models"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Generalization or Memorization? Brittleness Testing for Chess-Trained Language Models",
+      "url": "https://huggingface.co/papers/2605.17565",
+      "date": "2026-05-17",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "A 25M-parameter language model trained on chess positions and moves outperforms larger models on puzzle benchmarks while demonstrating that claimed chess understanding is primarily due to pattern matching, with a verifier-in-the-loop framework significantly improving performance.",
+      "extra": {
+        "keywords": [
+          "language models",
+          "chess data",
+          "benchmark scores",
+          "pattern-matching",
+          "LLM-Modulo",
+          "verifier-in-the-loop",
+          "RedPajama",
+          "mate-in-N puzzles",
+          "chess-specific web corpora"
+        ],
+        "github": "https://github.com/ethanjtang/GAMBIT",
+        "github_stars": 1,
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The Open Materials 2024 (OMat24) inorganic materials dataset and models",
+      "url": "https://doi.org/10.1038/s43588-026-00996-w",
+      "date": "2026-06-02",
+      "signal": 482,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Machine psychology for language models",
+      "url": "https://doi.org/10.1126/sciadv.aec1912",
+      "date": "2026-10-28",
+      "signal": 299,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Mean-Field Limit of Non-exchangeable Multi-agent Systems Over Hypergraphs with Unbounded Rank",
+      "url": "https://doi.org/10.1007/s00332-026-10338-9",
+      "date": "2026-10-23",
+      "signal": 288,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Asia Pacific Journal of Human Resources",
+      "url": "https://doi.org/10.1111/(issn)1744-7941",
+      "date": "2026-06-08",
+      "signal": 230,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "training reproducibility"
+      }
+    }
+  ]
+}

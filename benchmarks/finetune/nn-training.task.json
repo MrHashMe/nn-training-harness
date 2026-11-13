@@ -1,0 +1,18 @@
+{
+ "metric": {"name": "dev/exact", "direction": "maximize"},
+ "min_free_disk_gb": 2,
+ "sealed_paths": ["data/loopval.txt", "data/test.txt"],
+ "frozen_paths": ["evaluate.py", "fetch_model.py", "data/**", "model/**"],
+ "final_eval_commands": ["{python} evaluate.py --data data/test.txt --run-dir"],
+ "loop": {
+  "task": "Raise the share of held-out messages to a bank's support whose intent the fine-tuned language model names exactly. train.py fine-tunes the small chat model in model/ on data/train.txt. A run trains for 30 seconds (--time-budget 30, fixed) and must save a PEFT LoRA adapter for that base model into adapter/ of its run directory the way train.py does now (adapter_config.json and adapter_model.safetensors); the frozen evaluate.py loads it onto the base model and scores the answers the model generates. Everything inside train.py may change: rank and target modules of the adapter, optimiser, schedule, precision, batching, how the training texts are built from data/train.txt. The base model, the prompt in evaluate.py and the data may not.",
+  "train_command": ["{python}", "train.py", "--seed", "{seed}", "--time-budget", "30"],
+  "eval_command": ["{python}", "evaluate.py", "--data", "data/loopval.txt", "--run-dir", "{run_dir}"],
+  "direction": "maximize",
+  "seeds": [1, 2, 3],
+  "run_budget_s": 120,
+  "editable_paths": ["train.py"],
+  "link_paths": ["model"],
+  "min_margin": 0.005
+ }
+}

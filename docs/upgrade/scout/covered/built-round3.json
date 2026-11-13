@@ -1,0 +1,20 @@
+[
+ {
+  "file": "second-look",
+  "candidate": "Numeric settings searched by the harness inside the loop, code changes left to the agent (hybrid; standard-library random search or successive halving, Optuna when installed)",
+  "status": "finished",
+  "where": "nnloop.py search_space(), draws(), setting(), Campaign.trials(), own() and search(): opt-in by loop.search_trials; up to K versions of a change on one seed outside the seed panels, their values written only into plain files of the worktree, the best one committed and decided by the keep rule; references/loop.md 'A search by the harness', references/hpo.md section 8; tests/test_loop.py (campaign h). Effect measured on 2026-11-13 on both benchmark tasks with the stand-in agent, three pairs of campaigns per task at 18 runs: fine-tuning task, confirmed gain 0.42 with the search against 0.31 by hand (mean difference 0.11; 0.015 standard error by run-to-run spread, 0.068 by the spread across pairs); character model, nothing kept in either arm. Off by default, by the rule fixed before the measurement (a gain on both tasks). Not measured with a real agent"
+ },
+ {
+  "file": "second-look",
+  "candidate": "Language-model fine-tuning track: a runnable LoRA starter script wired to runlog and the frozen evaluator, and a second benchmark task built on it",
+  "status": "finished",
+  "where": "benchmarks/finetune/ (train.py, the frozen evaluate.py, fetch_model.py, nn-training.task.json, data/, README.md): a LoRA adapter for SmolLM2-135M-Instruct on Banking77, 30 seconds a run, scored by exact match of the generated intent; new_project.py and pilot.py take it with --task finetune; references/finetuning.md 'Stack and environment'; tests/test_benchmarks.py section 4. Run on native Windows only; the three-arm comparison was not run"
+ },
+ {
+  "file": "second-look",
+  "candidate": "Branch on stall: greedy until nothing is kept for k iterations, then restart from an earlier kept commit with a cleared history (adaptive agent of FML-bench, arXiv 2605.17373)",
+  "status": "finished",
+  "where": "nnloop.py Campaign.restart(), lineage(), the keep branch of iteration() and the end of run(): opt-in by loop.restart_after; after that many iterations without a keep the next worktree starts from the commit before the last keep, the commit that is left stays the result until a keep beats it on the seed panel, and the campaign ends on and confirms its best commit; references/loop.md 'A restart when the campaign stalls'; tests/test_loop.py (campaign r). Tested with the stand-in agent only; effect on results not measured"
+ }
+]

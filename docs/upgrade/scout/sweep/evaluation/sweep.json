@@ -1,0 +1,4084 @@
+{
+  "meta": {
+    "topic": "LLM evaluation harness",
+    "phrases": [
+      "LLM evaluation harness",
+      "benchmark contamination",
+      "LLM judge reliability"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 20:02 UTC",
+    "count": 209
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "deer-flow/llm-space",
+      "url": "https://github.com/deer-flow/llm-space",
+      "date": "2026-06-28",
+      "signal": 2114,
+      "signal_name": "stars",
+      "summary": "A desktop app to prototype agent ideas, inspect every harness step, replay failures, and evaluate performance, all in one place. Local-first, cloud-ready for managed agents.",
+      "extra": {
+        "topics": [
+          "agent",
+          "deer-flow",
+          "develop",
+          "electrobun",
+          "harness",
+          "llm",
+          "llm-tools",
+          "managed-agents"
+        ],
+        "license": "MIT",
+        "created": "2026-06-28",
+        "pushed": "2026-11-09",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "CodeSoul-co/Hypha",
+      "url": "https://github.com/CodeSoul-co/Hypha",
+      "date": "2026-07-01",
+      "signal": 452,
+      "signal_name": "stars",
+      "summary": "Harness-oriented agent system framework for production-grade LLM agent applications",
+      "extra": {
+        "topics": [
+          "agent-framework",
+          "agent-harness",
+          "agent-memory",
+          "agent-runtime",
+          "ai-agents",
+          "cache",
+          "evaluation",
+          "event-sourcing",
+          "finite-state-machine",
+          "human-in-the-loop",
+          "llm",
+          "local-first",
+          "mcp",
+          "model-context-protocol",
+          "policy-engine",
+          "react-agent",
+          "replay",
+          "tool-use",
+          "typescript",
+          "workflow-engine"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-01",
+        "pushed": "2026-09-04",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "zgcagi/Harness-RSI",
+      "url": "https://github.com/zgcagi/Harness-RSI",
+      "date": "2026-10-01",
+      "signal": 443,
+      "signal_name": "stars",
+      "summary": "Harness self-evolution: update targets, theory, evaluation, and reported evidence. Bilingual reading list and project website.",
+      "extra": {
+        "topics": [
+          "agent-evaluation",
+          "agent-harness",
+          "agent-memory",
+          "agent-skills",
+          "awesome",
+          "awesome-list",
+          "llm",
+          "llm-agents",
+          "paper-list",
+          "prompt-optimization",
+          "recursive-self-improvement",
+          "self-evolving-agents",
+          "survey"
+        ],
+        "license": "CC-BY-4.0",
+        "created": "2026-10-01",
+        "pushed": "2026-11-01",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "wangmiaozero/pi-harness",
+      "url": "https://github.com/wangmiaozero/pi-harness",
+      "date": "2026-08-20",
+      "signal": 375,
+      "signal_name": "stars",
+      "summary": "The operational superset of Pi Coding Agent — everything Pi, plus observability, governance, recovery, evaluation and multi-agent orchestration. Pi Coding Agent 的运维超集——完整继承 Pi 的核心能力，并进一步扩展可观测性、治理、故障恢复、评估和多 Agent 编排。",
+      "extra": {
+        "topics": [
+          "agent-harness",
+          "agent-observability",
+          "agent-orchestration",
+          "ai-agent",
+          "coding-agent",
+          "desktop-app",
+          "developer-tools",
+          "electron",
+          "llm",
+          "mcp",
+          "multi-agent",
+          "pi",
+          "pi-agent",
+          "pi-coding-agent",
+          "pi-harness",
+          "skills",
+          "typescript",
+          "vue3"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-08-20",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "xiaobright/modeltest",
+      "url": "https://github.com/xiaobright/modeltest",
+      "date": "2026-08-05",
+      "signal": 259,
+      "signal_name": "stars",
+      "summary": "Personal LLM engineering-maintenance evaluation harness (V4.1b, frozen). Not a public benchmark.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-05",
+        "pushed": "2026-09-20",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "sandbaseai/deepseek-harness-handbook",
+      "url": "https://github.com/sandbaseai/deepseek-harness-handbook",
+      "date": "2026-08-14",
+      "signal": 245,
+      "signal_name": "stars",
+      "summary": "Agent-first DeepSeek Harness handbook: 173 source-backed runtime, plugin, MCP, sandbox, evaluation, troubleshooting, multilingual, and 74-resource Awesome ecosystem guides.",
+      "extra": {
+        "topics": [
+          "agent-runtime",
+          "agentic-ai",
+          "ai-agents",
+          "awesome-list",
+          "deepseek",
+          "deepseek-harness",
+          "developer-tools",
+          "llm",
+          "mcp",
+          "sandbox"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-14",
+        "pushed": "2026-08-31",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "agentscope-ai/PawBench",
+      "url": "https://github.com/agentscope-ai/PawBench",
+      "date": "2026-05-15",
+      "signal": 127,
+      "signal_name": "stars",
+      "summary": "A benchmark for evaluating LLM × harness performance.",
+      "extra": {
+        "topics": [
+          "agent",
+          "benchmark",
+          "harness",
+          "hermes",
+          "llm",
+          "openclaw",
+          "qwenpaw"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-05-15",
+        "pushed": "2026-08-03",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Qin-sor/agent-context-lab",
+      "url": "https://github.com/Qin-sor/agent-context-lab",
+      "date": "2026-07-22",
+      "signal": 41,
+      "signal_name": "stars",
+      "summary": "A minimal coding-agent harness built to measure what context management actually costs: constraint survival after compaction (8%→83%), default-FAIL verification against false completions, and KV-cache prefix design (21%→90%). Stdlib-only, real deepseek-chat runs",
+      "extra": {
+        "topics": [
+          "ablation-study",
+          "agent-harness",
+          "coding-angent",
+          "context-engineering",
+          "context-management",
+          "deepseek",
+          "evaluation",
+          "kv-cache",
+          "llm",
+          "llm-agents",
+          "prompt-caching",
+          "python"
+        ],
+        "license": null,
+        "created": "2026-07-22",
+        "pushed": "2026-10-28",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "alexshpunt/explicit-edit-benchmark",
+      "url": "https://github.com/alexshpunt/explicit-edit-benchmark",
+      "date": "2026-09-11",
+      "signal": 39,
+      "signal_name": "stars",
+      "summary": "Benchmark coding agents and agent harnesses on 226 deterministic file-editing tasks with byte-exact verification and a public leaderboard.",
+      "extra": {
+        "topics": [
+          "agent-harness",
+          "ai-agents",
+          "benchmark",
+          "code-editing",
+          "coding-agent-benchmark",
+          "coding-agents",
+          "developer-tools",
+          "evaluation",
+          "llm",
+          "llm-benchmark",
+          "software-engineering"
+        ],
+        "license": "MIT",
+        "created": "2026-09-11",
+        "pushed": "2026-11-09",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "OolongMint/agent-beyond-hype",
+      "url": "https://github.com/OolongMint/agent-beyond-hype",
+      "date": "2026-10-25",
+      "signal": 31,
+      "signal_name": "stars",
+      "summary": "Less hype. Better harnesses. Measurable outcomes. AI Agent 思考与实践：上下文、工具、评估与超越拟人的设计。",
+      "extra": {
+        "topics": [
+          "agentic-workflows",
+          "ai-agents",
+          "chinese",
+          "context-engineering",
+          "evaluation",
+          "harness-engineering",
+          "llm",
+          "prompt-engineering"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-10-25",
+        "pushed": "2026-10-25",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "OpenRouterTeam/benchmark-harness",
+      "url": "https://github.com/OpenRouterTeam/benchmark-harness",
+      "date": "2026-07-30",
+      "signal": 25,
+      "signal_name": "stars",
+      "summary": "OpenRouter TypeScript harness for reproducible LLM benchmarks and evaluations.",
+      "extra": {
+        "topics": [
+          "benchmarks",
+          "bun",
+          "evaluation",
+          "llm",
+          "openrouter",
+          "typescript"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-30",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AEON-7/Aeon-Bench-Pod",
+      "url": "https://github.com/AEON-7/Aeon-Bench-Pod",
+      "date": "2026-07-04",
+      "signal": 25,
+      "signal_name": "stars",
+      "summary": "Run the AEON Bench suite on your own hardware: verified HuggingFace pull → serve → benchmark (text · agentic ×3 harnesses · vision · audio · arena · perf) → ed25519-signed attested submit.",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "dgx-spark",
+          "evaluation",
+          "llm",
+          "nvfp4",
+          "speculative-decoding",
+          "vllm"
+        ],
+        "license": "MIT",
+        "created": "2026-07-04",
+        "pushed": "2026-10-06",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Teraverse-AI/atoll",
+      "url": "https://github.com/Teraverse-AI/atoll",
+      "date": "2026-11-03",
+      "signal": 25,
+      "signal_name": "stars",
+      "summary": "Agentic Task Ontology for LLM — a lightweight, Archipelago-compatible harness for running and evaluating AI agents.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-11-03",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "zjunet/PTCG-Bench",
+      "url": "https://github.com/zjunet/PTCG-Bench",
+      "date": "2026-05-28",
+      "signal": 24,
+      "signal_name": "stars",
+      "summary": "PTCG-Bench: Can LLM Agents Master Pokémon Trading Card Game? (EMNLP 2026 Findings)",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "evaluation",
+          "harness",
+          "llm-agents",
+          "pokemon",
+          "ptcg",
+          "self-evolving-agents"
+        ],
+        "license": "MIT",
+        "created": "2026-05-28",
+        "pushed": "2026-08-17",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "zjunlp/HarnessGrad",
+      "url": "https://github.com/zjunlp/HarnessGrad",
+      "date": "2026-10-08",
+      "signal": 24,
+      "signal_name": "stars",
+      "summary": "A platform for running and comparing harness self-improvement methods.",
+      "extra": {
+        "topics": [
+          "agent",
+          "benchmark",
+          "evaluation",
+          "harness",
+          "llm",
+          "research",
+          "self-improvement"
+        ],
+        "license": "MIT",
+        "created": "2026-10-08",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ZHangZHengEric/Sage",
+      "url": "https://github.com/ZHangZHengEric/Sage",
+      "date": "2026-11-10",
+      "signal": 1214,
+      "signal_name": "stars",
+      "summary": "An RSI Agent Harness for running, evaluating, and evolving agents—with tools, skills, MCP, stateful execution, and multi-agent workflows.",
+      "extra": {
+        "topics": [
+          "agents",
+          "ai",
+          "flutter",
+          "llm",
+          "manus",
+          "mcp",
+          "multi-agent",
+          "python",
+          "rsi",
+          "self-evolving-agents",
+          "workflow"
+        ],
+        "license": "MIT",
+        "created": "2025-05-25",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "claw-eval/claw-eval",
+      "url": "https://github.com/claw-eval/claw-eval",
+      "date": "2026-11-10",
+      "signal": 922,
+      "signal_name": "stars",
+      "summary": "Claw-Eval is an evaluation harness for evaluating LLM as agents. All tasks verified by humans.",
+      "extra": {
+        "topics": [
+          "agent",
+          "harness",
+          "llm",
+          "openclaw"
+        ],
+        "license": "MIT",
+        "created": "2026-03-11",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "suyoumo/ClawProBench",
+      "url": "https://github.com/suyoumo/ClawProBench",
+      "date": "2026-08-25",
+      "signal": 830,
+      "signal_name": "stars",
+      "summary": "ClawProBench is a live-first benchmark harness for evaluating LLM agents in the OpenClaw runtime with deterministic grading and repeated-trial reliability.",
+      "extra": {
+        "topics": [
+          "agent",
+          "benchmark",
+          "evaluation",
+          "harness",
+          "leaderboard",
+          "llm",
+          "openclaw"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-03-02",
+        "pushed": "2026-08-25",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Gloriaameng/Awesome-Agent-Harness",
+      "url": "https://github.com/Gloriaameng/Awesome-Agent-Harness",
+      "date": "2026-11-09",
+      "signal": 379,
+      "signal_name": "stars",
+      "summary": "The first survey dedicated to LLM agent harnesses — 168 references, 34 evidence-coded systems, and 30 evaluation entries.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agent-framework",
+          "agent-harness",
+          "awesome-list",
+          "harness",
+          "harness-engineering",
+          "llm"
+        ],
+        "license": "CC-BY-4.0",
+        "created": "2026-04-03",
+        "pushed": "2026-11-09",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "responsibleai/ASSERT",
+      "url": "https://github.com/responsibleai/ASSERT",
+      "date": "2026-10-31",
+      "signal": 361,
+      "signal_name": "stars",
+      "summary": "Requirement-driven evaluation harness for AI agents and LLM applications. Generate behavior-specific test cases, run them against any target (hosted models, callable wrappers, OTel-traced agents), and inspect local-first artifacts.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-04-30",
+        "pushed": "2026-10-31",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "open-compass/AgentCompass",
+      "url": "https://github.com/open-compass/AgentCompass",
+      "date": "2026-11-10",
+      "signal": 191,
+      "signal_name": "stars",
+      "summary": "[EMNLP 2026] AgentCompass is an extensible open-source evaluation infrastructure for systematically assessing LLM/VLM agent capabilities.",
+      "extra": {
+        "topics": [
+          "agent",
+          "benchmark-framework",
+          "claude-code",
+          "codex",
+          "evaluation-framework",
+          "harness"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-09-04",
+        "pushed": "2026-11-10",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "logic-star-ai/swt-bench",
+      "url": "https://github.com/logic-star-ai/swt-bench",
+      "date": "2026-11-04",
+      "signal": 92,
+      "signal_name": "stars",
+      "summary": "[NeurIPS 2024] Evaluation harness for SWT-Bench, a benchmark for evaluating LLM repository-level test-generation",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "evaluation-framework",
+          "llm",
+          "unit-testing"
+        ],
+        "license": "MIT",
+        "created": "2024-07-15",
+        "pushed": "2026-11-04",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "HealthRex/PhysicianBench",
+      "url": "https://github.com/HealthRex/PhysicianBench",
+      "date": "2026-08-13",
+      "signal": 70,
+      "signal_name": "stars",
+      "summary": "The benchmark tasks and evaluation harness for \"PhysicianBench: Evaluating LLM Agents in Real-World EHR Environments\".",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "ehr",
+          "healthcare-ai",
+          "llm-agent",
+          "medical-ai"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-04-28",
+        "pushed": "2026-08-13",
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "WorkflowArena: Benchmarking Executable Workflow Orchestration in LLM-Based Multi-Agent Systems",
+      "url": "http://arxiv.org/abs/2611.12856v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language model agents are increasingly deployed as multi-agent systems rather than as a standalone model operating within a single context. Recent agent harnesses allow the model to instantiate worker agents and to author the executable workflow that coordinates them, shifting the design of system structure from developers to the model at run time. The quality of this organization therefore ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SciMARS: Multi-Agent Recursive Self-Improvement for Closed-Loop Scientific Discovery",
+      "url": "http://arxiv.org/abs/2611.12552v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We propose SciMARS, a framework for recursive task-local adaptation of multi-agent harnesses in closed-loop scientific discovery. Multi-agent systems coordinate analysis, experimental design, and verification as scientific evidence evolves. However, two problems limit their effectiveness: (i) without shared memory, agents lose observations and repeat work; (ii) fixed role procedures, handoffs, and",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Can Frontier Auto Researchers Reconstruct Human Research Decisions in AI?",
+      "url": "http://arxiv.org/abs/2611.12429v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Scientific research has long been driven by substantial human effort, from reviewing prior work and identifying research gaps to designing specific solutions. Recent advances in harness-based agent systems have given rise to increasingly capable Auto Researchers, which can autonomously carry out these tasks and, increasingly, entire end-to-end research workflows. Yet despite their rapidly growing ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Say Shibboleth: Fingerprinting the LLMs and Harnesses Behind Agentic Attacks",
+      "url": "http://arxiv.org/abs/2611.12386v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We study the fingerprinting of agentic cyberattacks. Our objective is to reliably infer information about the attacker's configuration, such as LLM version and harness, from telemetry. To achieve this, we introduce a technique we call shibboleth traps: modular honeypot services designed to elicit discriminative behaviors from agentic attackers. The traps make informative interactions a condition f",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Do Time-Series Foundation Models Forecast Index-Futures Returns? A Preregistered Evaluation of Models, Metrics, and Input Representations",
+      "url": "http://arxiv.org/abs/2611.12141v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We ask whether the apparent forecasting skill of frozen time-series foundation models (TSFMs) on intraday index-futures returns is incremental skill. In a pre-registered evaluation on E-mini Nasdaq-100 (NQ) and E-mini S&P 500 (ES) futures, a common panel of five zero-shot models (Chronos-Bolt, Chronos-2, TimesFM 2.5, Moirai 2.0 and TiRex), plus separate experiments with Kronos, is compared with a ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "EmoHarness: Boosting Multimodal Emotion Understanding with Meta-Harness Evolving",
+      "url": "http://arxiv.org/abs/2611.11994v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Small multimodal models can misjudge emotion when words, voice, and visual cues conflict. We present EmoHarness, which runs such a model, the frozen student, inside a harness: the prompts, settings, and verification code around its calls. A human-written starting harness, the scaffold, numbers the student's visual observations, transcript, and prosody descriptions as citable evidence and has the s",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Harness Matters: Measuring and Dissecting Security Resilience in Web Agents",
+      "url": "http://arxiv.org/abs/2611.11971v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Web agents extend LLMs from text generation to real-world web interaction by relying on execution harnesses that interpret user goals, perceive webpages, plan actions, and ground model decisions into browser operations. While prior work has recognized that agent security depends on more than the backend model alone, how harness design quantitatively shapes web-agent security remains insufficiently",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "LiveAsset: Learning Intent Assets from Corrective Interactions for Agent Runtime Control",
+      "url": "http://arxiv.org/abs/2611.11560v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language model (LLM) agents acting across web applications and online services often need multi-turn corrections to align their work with users' underspecified goals and preferences. In practice, users may identify problems in the current outcome without specifying the desired result, so learning user intentions requires interpreting each correction against the agent's preceding and revised ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "JoMoHa: Joint Model--Harness Optimization with Reinforcement Learning",
+      "url": "http://arxiv.org/abs/2611.11499v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The performance of language agents depends jointly on model weights and the harness. Optimizing either alone can be constrained by the other component, limiting overall performance gains. Our analysis of naive alternating training reveals progressive incompatibility between the model and harness, which increasingly interferes with task execution and may also undermine model training, leading to pe",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Spatial Harness: Grounding Spatial Reasoning in Executable World States with Physics Engines",
+      "url": "http://arxiv.org/abs/2611.11344v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Spatial reasoning requires understanding how objects and observers are arranged in a scene and how their relations change with viewpoint or movement. Vision-language models (VLMs) typically perform both steps through model-internal reasoning, forming an implicit scene interpretation from partial views and imagining the consequences of spatial transformations. A misread scene can lead to a wrong an",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Agent Self-Improvement with Frozen Weights: The Added Value and Limits of Failure Traces",
+      "url": "http://arxiv.org/abs/2611.11342v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We evaluate whether an AI agent's harness, the notes around its model, can learn from the agent's failure traces beyond a matched search that never sees them. It can, but less than it looks. We tested an open 9-billion-parameter model with fixed weights; a larger teacher model wrote its notes. On generated customer-service decisions, where both note writers were told the target rules, notes based ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "DeepFinance: Can AI Diligence a $100MM Deal?",
+      "url": "http://arxiv.org/abs/2611.10926v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Existing evaluations of AI models on high-finance work focus on retrieving answers from financial documents and producing numerically correct outputs. Real private equity (PE) and investment banking (IB) work also depends on choosing between conflicting sources, making sound assumptions, and keeping every step auditable. We introduce DeepFinance, an ultra long-horizon benchmark of 21 end-to-end PE",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "DFT-Agent Bench: Scaffold Effects and Execution Provenance in Autonomous DFT",
+      "url": "http://arxiv.org/abs/2611.10629v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language models are increasingly deployed as autonomous agents for first-principles materials simulation. We report empirical findings from DFT-Agent Bench, a benchmark of 200+ Quantum ESPRESSO tasks spanning relaxation, electronic structure, equation-of-state, and elastic-tensor pipelines over multiple material tiers. Each task carries a QE-derived ground truth with public-reference cross-c",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "InfoOrgBench: Can Agents Turn Scattered Information into Coherent Hierarchies?",
+      "url": "http://arxiv.org/abs/2611.10600v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "When agents organize records into folders, they may correctly group the excerpts of a design proposal yet place the proposal under the wrong owning group. Existing agent benchmarks do not directly measure such higher-level errors. We introduce InfoOrgBench, a benchmark of 150 tasks in which agents organize scattered records from meeting recaps, issue threads and design proposals into hierarchies. ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Who Remembers What? Multi-Granularity Memory Extraction for Multi-User, Multi-Agent Interaction",
+      "url": "http://arxiv.org/abs/2611.10439v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Self-evolving agents improve their own skills, memory, and harness code from experience without retraining the base LLM, and group-evolving agents go further by sharing these lessons across agents. Yet most such systems overlook that sharing across users and heterogeneous agents requires deciding who can benefit from each lesson and what information must remain private. We present MixUA, a memory ",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+      "url": "https://huggingface.co/papers/2609.24972",
+      "date": "2026-09-21",
+      "signal": 163,
+      "signal_name": "upvotes",
+      "summary": "Regularized recursive self-improvement of agent harnesses improves out-of-distribution performance by constraining edit proposals and selections to favor reusable mechanisms over benchmark-specific memorization.",
+      "extra": {
+        "keywords": [
+          "recursive self-improvement",
+          "agent harness",
+          "regularization",
+          "proposer",
+          "selector",
+          "critic",
+          "pruner",
+          "out-of-distribution",
+          "policy tokens"
+        ],
+        "github": "https://github.com/google-research/rrsi",
+        "github_stars": 1746,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "DarwinX: Evolving Agent Harnesses Through Natural Selection",
+      "url": "https://huggingface.co/papers/2608.07545",
+      "date": "2026-07-31",
+      "signal": 95,
+      "signal_name": "upvotes",
+      "summary": "DarwinX evolves agent harnesses via population selection with frozen models, improving verified performance across benchmarks without benchmark-specific patches.",
+      "extra": {
+        "keywords": [
+          "LLM agent",
+          "harness",
+          "self-improvement",
+          "population selection",
+          "preserve-and-extend contract",
+          "archive",
+          "recombination",
+          "verifier",
+          "DarwinX"
+        ],
+        "github": "https://github.com/SalesforceAIResearch/Beagle",
+        "github_stars": 105,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Harness^2: Recursive Agent Harnessing for an Open World",
+      "url": "https://huggingface.co/papers/2610.14224",
+      "date": "2026-10-09",
+      "signal": 67,
+      "signal_name": "upvotes",
+      "summary": "Harness² improves agent execution harnesses through recursive task-level refinement and continual harness-level learning, boosting performance across benchmarks without ground-truth verifiers.",
+      "extra": {
+        "keywords": [
+          "recursive self-improvement",
+          "LLM agents",
+          "execution harnesses",
+          "Harness²",
+          "Propose-Probe-Compose",
+          "task-level recursion",
+          "harnessing-level recursion",
+          "continual improvement harness"
+        ],
+        "github": "https://github.com/google-research/harness2",
+        "github_stars": 23369,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoSaddler: Automatic Harness Optimization with Durable Updates from Agent Execution Traces",
+      "url": "https://huggingface.co/papers/2608.23041",
+      "date": "2026-08-24",
+      "signal": 67,
+      "signal_name": "upvotes",
+      "summary": "AutoSaddler automatically improves LLM agent harnesses via offline failure-driven optimization, boosting performance on long-horizon benchmarks.",
+      "extra": {
+        "keywords": [
+          "LLM agents",
+          "harness optimization",
+          "failure-trace diagnosis",
+          "structured patch generation",
+          "validation-based update selection",
+          "deep debugging",
+          "targeted modifications",
+          "generalization-aware selection"
+        ],
+        "github": "https://github.com/microsoft/AutoSaddler",
+        "github_stars": 250,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "HarnessEval-W: Agentifying the Evaluation of Visual Worlds",
+      "url": "https://huggingface.co/papers/2608.16859",
+      "date": "2026-08-17",
+      "signal": 67,
+      "signal_name": "upvotes",
+      "summary": "HarnessEval-W uses hierarchical sub-agents to decompose world-model evaluations into verifiable reasoning chains that justify scores with transparent evidence.",
+      "extra": {
+        "keywords": [
+          "HarnessEval-W",
+          "agentified evaluation pipeline",
+          "harness paradigm",
+          "world model benchmarking",
+          "sub-agents",
+          "evidence tree",
+          "reasoning chain"
+        ],
+        "github": "https://github.com/MirroS-Lab/HarnessEval-W",
+        "github_stars": 311,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Training Agents to Evolve with Their Harness: TaoLive Digital Avatar Agent Technical Report",
+      "url": "https://huggingface.co/papers/2608.15763",
+      "date": "2026-08-22",
+      "signal": 53,
+      "signal_name": "upvotes",
+      "summary": "Harness-Aware Training enables compact models to adapt to evolving digital-avatar harness configurations with low latency and high accuracy.",
+      "extra": {
+        "keywords": [
+          "Harness-Aware Training",
+          "Harness-State Augmentation",
+          "HSA-SFT",
+          "General On-Policy Distillation",
+          "HSA-RL",
+          "Skill identifiers",
+          "tool schemas",
+          "prompt structures",
+          "Hook functions",
+          "reinforcement learning",
+          "IFEval"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ActiveSaddler: Automated Curriculum Learning for Agent Harness Optimization",
+      "url": "https://huggingface.co/papers/2610.00906",
+      "date": "2026-10-01",
+      "signal": 52,
+      "signal_name": "upvotes",
+      "summary": "ActiveSaddler treats harness optimization as adaptive curriculum learning by modeling training scenarios as a non-stationary bandit that dynamically targets evolving failure patterns, improving agent performance over fixed curricula.",
+      "extra": {
+        "keywords": [
+          "automated curriculum learning",
+          "non-stationary bandit",
+          "failure-pattern arms",
+          "harness optimization",
+          "LLM agents"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Auditing Agent Harness Safety",
+      "url": "https://huggingface.co/papers/2605.14271",
+      "date": "2026-05-14",
+      "signal": 52,
+      "signal_name": "upvotes",
+      "summary": "LLM agents executing within execution harnesses can produce correct outputs while violating safety constraints during execution, necessitating trajectory-level auditing to ensure proper resource access and information flow across multi-agent systems.",
+      "extra": {
+        "keywords": [
+          "execution harnesses",
+          "tool dispatching",
+          "resource allocation",
+          "multi-agent systems",
+          "safety benchmarks",
+          "trajectory auditing",
+          "boundary compliance",
+          "information-flow constraints",
+          "HarnessAudit",
+          "HarnessAudit-Bench"
+        ],
+        "github": "https://github.com/eric-ai-lab/HarnessAudit",
+        "github_stars": 58,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Continual Learning Exam: Benchmarking Long-Horizon RSI and Experiential Learning in LLM Agents",
+      "url": "https://huggingface.co/papers/2610.33956",
+      "date": "2026-10-25",
+      "signal": 35,
+      "signal_name": "upvotes",
+      "summary": "A new benchmark evaluates whether LLM agents improve through repeated professional tasks with feedback, revealing limited sustained learning in current frontier models.",
+      "extra": {
+        "keywords": [
+          "continual learning",
+          "LLM agents",
+          "Continual Learning Exam",
+          "diagnostic feedback",
+          "harness-model configurations",
+          "frontier LLMs"
+        ],
+        "github": "https://github.com/haoyu-zhao/Continual-Learning-Exam",
+        "github_stars": 13,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Trial by Trace: Benchmarking AI Agent Harnesses for Reliability and Failure Attribution",
+      "url": "https://huggingface.co/papers/2610.32285",
+      "date": "2026-10-23",
+      "signal": 34,
+      "signal_name": "upvotes",
+      "summary": "TraceTrial-Bench evaluates agent harness reliability across seven components using mechanism-oriented tasks, trajectory tracing, and failure attribution to compare harness designs and diagnose failures.",
+      "extra": {
+        "keywords": [
+          "agent harnesses",
+          "TraceTrial-Bench",
+          "trajectory tracing",
+          "two-layer evaluation framework",
+          "Multi-source Evidence Acquisition",
+          "Failure Attribution",
+          "mechanism chains"
+        ],
+        "github": "https://github.com/TraceLite-AI/TraceTrial-Bench",
+        "github_stars": 25,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "HarnessPro: Recursive Harness Self-Improvement with Pareto Optimization for Performance-Cost Trade-offs",
+      "url": "https://huggingface.co/papers/2610.26770",
+      "date": "2026-10-19",
+      "signal": 32,
+      "signal_name": "upvotes",
+      "summary": "HarnessPro evolves AI agent harnesses without labels to boost task success and lower execution costs, yielding lightweight, balanced, and high-performance variants via trajectory diagnosis and weighted selection.",
+      "extra": {
+        "keywords": [
+          "recursive self-improvement",
+          "harness evolution",
+          "LLM-generated tests",
+          "execution trajectories",
+          "normalized weighted squared-distance selection",
+          "cost-focused harness",
+          "performance-focused harness"
+        ],
+        "github": "https://github.com/pzs19/HarnessPro",
+        "github_stars": 158,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Foundations of Proactive Agents: Principles, Technical Layers, and Proactivity-Gym",
+      "url": "https://huggingface.co/papers/2609.37267",
+      "date": "2026-09-29",
+      "signal": 29,
+      "signal_name": "upvotes",
+      "summary": "Proactive LLM agents should be designed and evaluated through joint optimization of task capability, temporal compute allocation, and sustained user trust across multi-interaction scenarios.",
+      "extra": {
+        "keywords": [
+          "proactive LLM agents",
+          "3T principles",
+          "Task Capability",
+          "Temporal Allocation",
+          "Trust",
+          "anticipation horizon",
+          "activation trigger",
+          "PROACTIVITY-GYM",
+          "persona-conditioned simulated users",
+          "LLM judges"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "JevAgentHarness: Benchmarking, Deploying and Training Decision Models That Share Control with LLMs",
+      "url": "https://huggingface.co/papers/2610.21412",
+      "date": "2026-10-15",
+      "signal": 22,
+      "signal_name": "upvotes",
+      "summary": "A harness that delegates agent tool choices to small decision models via fitted confidence thresholds reduces cost and latency while preserving task success, supported by a new benchmark and a 4B model trained on agent error states.",
+      "extra": {
+        "keywords": [
+          "large language model agents",
+          "decision models",
+          "Jev",
+          "AgentDecisionBench",
+          "DecisionGym",
+          "confidence threshold",
+          "JevAgentHarness",
+          "AgentDecision-4B"
+        ],
+        "github": "https://github.com/JevAgentHarness/JevAgentHarness",
+        "github_stars": 82,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Evolving to Match Capabilities: Improving Harness Self-Evolution via Skill Adaptation",
+      "url": "https://huggingface.co/papers/2610.33024",
+      "date": "2026-10-10",
+      "signal": 21,
+      "signal_name": "upvotes",
+      "summary": "Harness self-evolution improves LLM agents via skill adaptation guided by a meta-skill that reformulates guidance to match executor capabilities, boosting weak models without parameter updates.",
+      "extra": {
+        "keywords": [
+          "harness self-evolution",
+          "LLM agents",
+          "skill adaptation",
+          "meta-skill",
+          "tool execution",
+          "context management",
+          "instruction following",
+          "verification",
+          "self-evolution loop"
+        ],
+        "github": "https://github.com/zhihaoyang30/skill-adaptation-code",
+        "github_stars": 7,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Harness Updating Is Not Harness Benefit: Disentangling Evolution Capabilities in Self-Evolving LLM Agents",
+      "url": "https://huggingface.co/papers/2605.30621",
+      "date": "2026-05-28",
+      "signal": 21,
+      "signal_name": "upvotes",
+      "summary": "Research reveals that harness self-evolution capabilities in LLM agents show unexpected patterns: harness-updating effectiveness is consistent across model capabilities, while harness-benefit follows a non-monotonic trend with mid-tier models performing best.",
+      "extra": {
+        "keywords": [
+          "LLM agents",
+          "harness self-evolution",
+          "task-solving",
+          "model parameters",
+          "base capability",
+          "harness-updating",
+          "harness-benefit",
+          "execution evidence",
+          "model training",
+          "agent training"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Why My Open-Source Project Hasn't Done Better",
+      "url": "https://news.ycombinator.com/item?id=49046999",
+      "date": "2026-07-25",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49046999",
+        "comments": 1,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Caliper – pass@k reliability testing for Claude Code and Codex skills",
+      "url": "https://github.com/edonadei/caliper",
+      "date": "2026-06-28",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48709606",
+        "comments": 3,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Lathoa, a math app for kids where the AI is wrong on purpose",
+      "url": "https://lathoa.ai/en",
+      "date": "2026-09-30",
+      "signal": 54,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49909648",
+        "comments": 51,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: OnPanda – Steer LLMs and agents at the token level",
+      "url": "https://onpanda.diyer22.com/",
+      "date": "2026-09-18",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49759013",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Freeze the Model, Train the Harness",
+      "url": "https://github.com/workofart/harness-training",
+      "date": "2026-07-21",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48994752",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: Harness for Learning – Thoughts?",
+      "url": "https://news.ycombinator.com/item?id=49715809",
+      "date": "2026-09-15",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49715809",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: WorldBuild Bench repo: testing LLM world coherence with 3D games",
+      "url": "https://github.com/sebnado/worldbuild-bench",
+      "date": "2026-07-21",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48994848",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: CriteriaBot – A Universal Customizable Classifier",
+      "url": "https://criteriabot.io/",
+      "date": "2026-06-15",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48542119",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "HarnessOpt-Bench: Evaluating LLMs at Harness Optimization",
+      "url": "https://arxiv.org/abs/2608.06301",
+      "date": "2026-08-07",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49213543",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Nexa-gauge – LLM evaluation framework with per-node scoring controls",
+      "url": "https://harnexa.dev/nexa-gauge/docs/introduction",
+      "date": "2026-05-30",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48339968",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ask HN: What eval harness holds up in practice, and what is still missing?",
+      "url": "https://news.ycombinator.com/item?id=49430207",
+      "date": "2026-08-25",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49430207",
+        "comments": 1,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "SOTA on the hardest AI memory benchmark (BEAM, 10M tokens), with a smaller model",
+      "url": "https://news.ycombinator.com/item?id=49085375",
+      "date": "2026-07-28",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49085375",
+        "comments": 3,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: EvenKeel – a free financial planning chatbot",
+      "url": "https://evenkeel.c6e.me/",
+      "date": "2026-07-09",
+      "signal": 6,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48846108",
+        "comments": 0,
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "TimeLLM: Time Series Forecasting by Reprogramming Large Language Models",
+      "url": "https://doi.org/10.1201/9781003616719-7",
+      "date": "2026-05-18",
+      "signal": 1048,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Exploring Large Language Model‐Based Intelligent Agents: Definitions, Methods, and Prospects",
+      "url": "https://doi.org/10.1002/widm.70111",
+      "date": "2026-07-24",
+      "signal": 286,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Cosmos 3: Omnimodal World Models for Physical AI",
+      "url": "https://doi.org/10.48550/arxiv.2606.02800",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Large Models for Time Series and Spatio-Temporal Data: A Survey and Outlook",
+      "url": "https://doi.org/10.1145/3821637",
+      "date": "2026-06-23",
+      "signal": 235,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SkillOpt: Executive Strategy for Self-Evolving Agent Skills",
+      "url": "https://doi.org/10.48550/arxiv.2605.23904",
+      "date": "2026-05-22",
+      "signal": 232,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models",
+      "url": "https://doi.org/10.1145/3845797",
+      "date": "2026-09-15",
+      "signal": 213,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Parameter-Efficient Fine-Tuning for Pre-Trained Vision Models: A Survey and Benchmark",
+      "url": "https://doi.org/10.1007/s11263-026-02864-6",
+      "date": "2026-06-01",
+      "signal": 188,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Aristotle: IMO-level Automated Theorem Proving",
+      "url": "https://doi.org/10.70777/si.v3i3.18745",
+      "date": "2026-09-25",
+      "signal": 151,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "HuntGPT: Integrating Machine Learning-Based Anomaly Detection and Explainable AI with Large Language Models (LLMs)",
+      "url": "https://doi.org/10.3390/telecom7030073",
+      "date": "2026-06-08",
+      "signal": 143,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Harnessing Multiple Large Language Models: A Survey on LLM Ensemble",
+      "url": "https://doi.org/10.24963/ijcai.2026/867",
+      "date": "2026-09-01",
+      "signal": 132,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression",
+      "url": "https://doi.org/10.48550/arxiv.2609.19969",
+      "date": "2026-09-17",
+      "signal": 130,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Self-Harness: Harnesses That Improve Themselves",
+      "url": "https://doi.org/10.48550/arxiv.2606.09498",
+      "date": "2026-06-08",
+      "signal": 130,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Transforming Science with Large Language Models: A Survey on AI-assisted Scientific Discovery, Experimentation, Content Generation, and Evaluation",
+      "url": "https://doi.org/10.1145/3845596",
+      "date": "2026-09-05",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Harmful Fine-tuning Attacks and Defenses for Large Language Models: A Survey",
+      "url": "https://doi.org/10.1145/3817114",
+      "date": "2026-05-22",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM evaluation harness"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "novigens/token-efficiency-benchmark",
+      "url": "https://github.com/novigens/token-efficiency-benchmark",
+      "date": "2026-07-03",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "Measures dollars per correct outcome on LLMs. Contamination-resistant: benchmark questions are generated fresh at runtime.",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "evaluation-metrics",
+          "inference-cost",
+          "llm",
+          "token-efficiency"
+        ],
+        "license": "MIT",
+        "created": "2026-07-03",
+        "pushed": "2026-07-20",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "yhavinga/eval-exam-2026",
+      "url": "https://github.com/yhavinga/eval-exam-2026",
+      "date": "2026-05-25",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "LLM benchmark on Dutch VWO physics exam 2026 - zero contamination, multimodal evaluation",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-05-25",
+        "pushed": "2026-06-24",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Jangulo7/contamination-disclosure-paper",
+      "url": "https://github.com/Jangulo7/contamination-disclosure-paper",
+      "date": "2026-08-12",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Contamination Disclosure — five types of benchmark contamination and four fields to report with any score.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-08-12",
+        "pushed": "2026-11-05",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "David-Hedgefund/synthfin-trading-bench",
+      "url": "https://github.com/David-Hedgefund/synthfin-trading-bench",
+      "date": "2026-07-20",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "A contamination-free sequential trading benchmark for LLM agents, on fully-synthetic markets.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-07-20",
+        "pushed": "2026-07-21",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "kevinoshaughnessy/subversionbench",
+      "url": "https://github.com/kevinoshaughnessy/subversionbench",
+      "date": "2026-07-28",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Agentic evaluation of misalignment, scheming and evaluation awareness in LLM agents. Scenario text encoded at rest to resist training-data contamination.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "ai-alignment",
+          "ai-safety",
+          "benchmark",
+          "evaluation-awareness",
+          "llm",
+          "llm-evaluation",
+          "model-evaluation",
+          "python",
+          "scheming"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-07-28",
+        "pushed": "2026-11-10",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bird/DSv4-Flash-spark",
+      "url": "https://github.com/bird/DSv4-Flash-spark",
+      "date": "2026-07-03",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "DeepSeek-V4-Flash + DSpark speculative decoding on a pair of NVIDIA DGX Sparks (vLLM TP=2 over RoCE) — tuned recipe, overlays that halve multi-turn TTFT, contamination-guarded benchmarks, ops runbook",
+      "extra": {
+        "topics": [
+          "deepseek",
+          "dgx-spark",
+          "dspark",
+          "llm-inference",
+          "llm-serving",
+          "nvidia-gb10",
+          "speculative-decoding",
+          "vllm"
+        ],
+        "license": "MIT",
+        "created": "2026-07-03",
+        "pushed": "2026-07-03",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "FreakyAdy/EvalGuard",
+      "url": "https://github.com/FreakyAdy/EvalGuard",
+      "date": "2026-09-04",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "EvalGuard wraps existing evaluation harnesses (SWE-bench, Terminal-Bench, OpenEnv) without altering benchmark test suites or agent implementations. It audits sandbox boundaries, detects reward hacking via AST static tamper detection and dynamic mutation probes, verifies benchmark test case soundness, and catches pre-training contamination.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-09-04",
+        "pushed": "2026-10-19",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "danielemilushev-hub/taskmatch-ai",
+      "url": "https://github.com/danielemilushev-hub/taskmatch-ai",
+      "date": "2026-07-28",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Task-driven, contamination-proof benchmarking for local LLMs (LM Studio, Ollama, llama.cpp) - seeded problem generation, deterministic grading, no LLM judge",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "evaluation",
+          "fastapi",
+          "llama-cpp",
+          "llm",
+          "llm-evaluation",
+          "lm-studio",
+          "local-llm",
+          "ollama",
+          "vllm"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-07-28",
+        "pushed": "2026-08-30",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "carlyer/hy3-math-forensics",
+      "url": "https://github.com/carlyer/hy3-math-forensics",
+      "date": "2026-08-28",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Math reasoning forensics for Tencent Hy3: step-level process evaluation, error localization & classification, lucky-answer (CBU) detection and contamination probing on a 418-problem stratified benchmark",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-28",
+        "pushed": "2026-09-11",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Veedubin/AttackLM",
+      "url": "https://github.com/Veedubin/AttackLM",
+      "date": "2026-06-10",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Train and benchmark MITRE ATT&CK-grounded security LLMs that teach defense without handing over working exploits. QLoRA fine-tuning + a capability benchmark (Inspect AI) with contamination-aware scoring and a teach-don't-arm posture judge. Per-record-attributed corpus, privacy-audit harness, terminal GUI.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-06-10",
+        "pushed": "2026-09-23",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "NidhishO7/AgentSeal-Benchmark-Forensics",
+      "url": "https://github.com/NidhishO7/AgentSeal-Benchmark-Forensics",
+      "date": "2026-06-30",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Open-source corpus availability and contamination auditor for AI coding benchmarks",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-30",
+        "pushed": "2026-07-02",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "LiveMacroEval/LiveMacroEval",
+      "url": "https://github.com/LiveMacroEval/LiveMacroEval",
+      "date": "2026-08-26",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A live, contamination-resistant benchmark for evaluating LLM agents on U.S. macroeconomic nowcasting.",
+      "extra": {
+        "topics": [
+          "agent",
+          "contamination-free",
+          "economics",
+          "finance",
+          "llm-agents",
+          "llm-evaluation",
+          "nowcasting"
+        ],
+        "license": "MIT",
+        "created": "2026-08-26",
+        "pushed": "2026-09-28",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "tonydzi/persona-portability-benchmark",
+      "url": "https://github.com/tonydzi/persona-portability-benchmark",
+      "date": "2026-08-13",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "One persona, one frozen memory, N models: how much of an agent's character survives a model swap? Harness + blind multi-lens judge panel + cross-vendor rank control + contamination probe. Results included: 7 models, spread 4.80 -> 2.20.",
+      "extra": {
+        "topics": [
+          "agent-evaluation",
+          "agent-skills",
+          "ai-agents",
+          "benchmark",
+          "claude-code",
+          "claude-skills",
+          "context-engineering",
+          "eval-harness",
+          "llm",
+          "llm-as-a-judge",
+          "llm-evaluation",
+          "model-comparison",
+          "persona",
+          "prompt-engineering"
+        ],
+        "license": "MIT",
+        "created": "2026-08-13",
+        "pushed": "2026-11-10",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "EspritBoheme/rag-contamination-codegen",
+      "url": "https://github.com/EspritBoheme/rag-contamination-codegen",
+      "date": "2026-05-28",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "rag-contamination-codegen — Characterizes when RAG degrades distilled small models on code generation, with full pipeline, ablation benchmarks, and defensive prompting mitigation.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-28",
+        "pushed": "2026-05-29",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "killy-netsphere/Netsphere-Eval",
+      "url": "https://github.com/killy-netsphere/Netsphere-Eval",
+      "date": "2026-07-23",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Judge-free, contamination-aware LLM benchmark harness — open instrument, withheld exam. MIT.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-07-23",
+        "pushed": "2026-07-31",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "LiveBench/LiveBench",
+      "url": "https://github.com/LiveBench/LiveBench",
+      "date": "2026-10-18",
+      "signal": 1354,
+      "signal_name": "stars",
+      "summary": "LiveBench: A Challenging, Contamination-Free LLM Benchmark",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2024-06-12",
+        "pushed": "2026-10-18",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "SeekingDream/Static-to-Dynamic-LLMEval",
+      "url": "https://github.com/SeekingDream/Static-to-Dynamic-LLMEval",
+      "date": "2026-09-28",
+      "signal": 492,
+      "signal_name": "stars",
+      "summary": "The official GitHub repository of the paper \"Recent advances in large language model benchmarks against data contamination: From static to dynamic evaluation\"",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "dynamic-evaluation",
+          "evaluation",
+          "large-language-model",
+          "llm",
+          "llms",
+          "testing"
+        ],
+        "license": null,
+        "created": "2025-02-21",
+        "pushed": "2026-09-28",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "forecastingresearch/forecastbench",
+      "url": "https://github.com/forecastingresearch/forecastbench",
+      "date": "2026-11-09",
+      "signal": 94,
+      "signal_name": "stars",
+      "summary": "Forecastbench is a dynamic, contamination-free benchmark of LLM forecasting accuracy with human comparison groups, serving as a valuable proxy for general intelligence.",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "forecastbench",
+          "forecasting",
+          "llm-benchmarking"
+        ],
+        "license": "MIT",
+        "created": "2024-03-15",
+        "pushed": "2026-11-09",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "diohabara/pychd",
+      "url": "https://github.com/diohabara/pychd",
+      "date": "2026-05-27",
+      "signal": 55,
+      "signal_name": "stars",
+      "summary": "Python .pyc decompiler (3.0–3.14) with a contamination-aware benchmark harness. Rule-only pass + one Codex call per module; evaluated on fuzz-synthetic (LLM-naïve) and *-obf (anonymised) corpora to put a number on the memorisation share. Three independent PyPI packages: pychd, pychd-pyfuzz, pychd-pyobf.",
+      "extra": {
+        "topics": [
+          "ast",
+          "benchmark",
+          "bytecode",
+          "chatgpt-api",
+          "codex",
+          "cpython",
+          "data-contamination",
+          "decompiler",
+          "fuzzing",
+          "llm",
+          "obfuscation",
+          "pyc",
+          "python",
+          "reverse-engineering"
+        ],
+        "license": "MIT",
+        "created": "2023-04-19",
+        "pushed": "2026-05-27",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "kMegapnbedt/Bench-B",
+      "url": "https://github.com/kMegapnbedt/Bench-B",
+      "date": "2026-11-09",
+      "signal": 50,
+      "signal_name": "stars",
+      "summary": "Benchmark contamination forensics: exact n-gram containment scanning in pure Python plus a C++17 MinHash engine (bloomdex) for corpus-scale leakage checks.",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "cli",
+          "contamination",
+          "cpp",
+          "data-leakage",
+          "dataset",
+          "developer-tools",
+          "evaluation",
+          "forensics",
+          "jaccard",
+          "minhash",
+          "nlp",
+          "python"
+        ],
+        "license": "MIT",
+        "created": "2026-04-13",
+        "pushed": "2026-11-09",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ARiSE-Lab/live-kbench",
+      "url": "https://github.com/ARiSE-Lab/live-kbench",
+      "date": "2026-09-14",
+      "signal": 9,
+      "signal_name": "stars",
+      "summary": "Contamination-free Linux kernel crash benchmarks for all",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-05-07",
+        "pushed": "2026-09-14",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "zizimarxgeoleh/BenchBloom",
+      "url": "https://github.com/zizimarxgeoleh/BenchBloom",
+      "date": "2026-10-11",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "BenchBloom - a forensic herbarium for benchmark contamination: exact n-gram/Jaccard and containment scans in pure Python, plus a C++17 MinHash engine for finding benchmark items leaked into training corpora.",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "cli",
+          "containment",
+          "contamination",
+          "cpp",
+          "data-science",
+          "deduplication",
+          "evaluation",
+          "jaccard",
+          "leakage",
+          "machine-learning",
+          "minhash",
+          "ngram",
+          "python",
+          "text-processing"
+        ],
+        "license": "MIT",
+        "created": "2016-12-27",
+        "pushed": "2026-10-11",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Muvon/octobench",
+      "url": "https://github.com/Muvon/octobench",
+      "date": "2026-11-10",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Benchmark harness that compares coding agents — not just models — on real, contamination-resistant tasks: 80 fail-to-pass cases from merged OSS PRs, long-run sequences, SWE-bench-Live, and 25+ domain benchmarks. We benchmark our own agent, octomind, under the same rules.",
+      "extra": {
+        "topics": [
+          "agent-evaluation",
+          "agentic",
+          "agents",
+          "ai",
+          "ai-workflow",
+          "anthropic",
+          "automation",
+          "benchmark",
+          "claude-code",
+          "codex",
+          "evaluation",
+          "llm",
+          "llm-evaluation",
+          "openai",
+          "opencode",
+          "swe-bench"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-02-14",
+        "pushed": "2026-11-10",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "imjbassi/brain-tumor-mri-classification",
+      "url": "https://github.com/imjbassi/brain-tumor-mri-classification",
+      "date": "2026-09-17",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Reproducible audit of brain-tumor MRI classification benchmarks, identifying patient-level leakage, duplicate contamination, and performance under patient-disjoint evaluation.",
+      "extra": {
+        "topics": [
+          "brain-tumor",
+          "image-classification",
+          "medical-imaging",
+          "pytorch",
+          "resnet"
+        ],
+        "license": "NOASSERTION",
+        "created": "2025-07-17",
+        "pushed": "2026-09-17",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Jangulo7/geno_agent",
+      "url": "https://github.com/Jangulo7/geno_agent",
+      "date": "2026-08-31",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Benchmark contamination and clustered inference in rare-disease gene prioritisation — a 1,047-case benchmark with per-item leakage flags, model-free floors, and fully re-derivable results.",
+      "extra": {
+        "topics": [
+          "benchmark-contamination",
+          "bioinformatics",
+          "evaluation",
+          "llm-evaluation",
+          "rag",
+          "reproducibility"
+        ],
+        "license": "AGPL-3.0",
+        "created": "2026-05-09",
+        "pushed": "2026-08-31",
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Vendi Anomaly Scores for Efficient and Accurate Anomaly Detection",
+      "url": "http://arxiv.org/abs/2611.12871v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Anomaly detection (AD) is a critical for trustworthy machine learning and scientific discovery. Existing methods typically define anomalies through local density, isolation heuristics, or distance from a fitted distribution, making them sensitive to neighborhood scale, partitioning choices, or restrictive distributional assumptions. In this work, we introduce a new paradigm by formulating anomaly ",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Forward modeling linear variable filter data: High resolution PAH and Paschen-$α$ maps from SPHEREx",
+      "url": "http://arxiv.org/abs/2611.12846v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Polycyclic aromatic hydrocarbon (PAH) emission is a powerful tool for the study of the interstellar medium (ISM) in both Galactic and extragalactic contexts. It can reveal ionization state, radiation field, metallicity, composition, and ISM structure as sculpted by processes like turbulence and stellar feedback. Here we use NASA's SPHEREx to produce clean, high-resolution PAH maps at spectral reso",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "NS 1987A: A Potential Probe of Crustal Superfluidity with Future X-ray Observations",
+      "url": "http://arxiv.org/abs/2611.12811v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Several indirect observations imply that the central compact object in the supernova SN 1987A is likely to be the youngest neutron star identified to date, NS 1987A. We investigate how a future detection of its thermal X-ray emission could constrain neutron-star interiors, using cooling models and a generic high-resolution, large-area X-ray observatory with \\textit{Lynx}-like capabilities as a sen",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Data-Adaptive Subset-Size Selection for Minimum Covariance Determinant Estimation",
+      "url": "http://arxiv.org/abs/2611.12266v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Subset size determines the balance between robustness and efficiency in minimum covariance determinant estimation. Conventional choices fix this balance before the extent and structure of contamination are known. Reweighting does not remove the influence of the initial subset size. We propose a data-adaptive rule based on ordered squared Mahalanobis distances. It selects the first window maximum, ",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Minimum cumulative power divergence estimation with applications to copulas",
+      "url": "http://arxiv.org/abs/2611.12203v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Parametric inference based on distribution functions is useful when a model is naturally specified through its cumulative distribution function or when a tractable density is unavailable. We study minimum cumulative power divergence estimation, obtained by comparing a parametric distribution function with its empirical counterpart. For a fixed positive tuning parameter and a fixed finite integrati",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "DPGS-SLAM: Diffusion-Prior and Provenance-Aware Monocular Gaussian Splatting SLAM for Dynamic Visual Sensing",
+      "url": "http://arxiv.org/abs/2611.12038v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "This paper presents DPGS-SLAM (Diffusion-Prior and Provenance-Aware Monocular Gaussian Splatting SLAM) for dense mapping in environments containing dynamic objects. Dynamic observations can contaminate camera tracking and scene reconstruction in visual SLAM (simultaneous localization and mapping). Although 3DGS (3D Gaussian splatting) enables efficient dense mapping, existing 3DGS-SLAM systems may",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Rapid high-purity loading of barium ion via relayed selectivity from naturally abundant source",
+      "url": "http://arxiv.org/abs/2611.11990v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Trapped ions is one of the promising platforms for realizing quantum information processing and quantum simulation. Selective and rapid loading of a specific isotope lays the critical foundation for such purpose particularly when scaling up the system size. Here we demonstrate a new method for rapid isotope-selective loading of $^{137}\\mathrm{Ba}^{+}$ or $^{135}\\mathrm{Ba}^{+}$, two types of promi",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Proactive Dimension-Adaptive Denoising for Graph Collaborative Filtering via Representation Coherence",
+      "url": "http://arxiv.org/abs/2611.11801v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Implicit feedback in recommender systems contains noisy interactions (e.g., accidental clicks, impulse purchases) that propagate through user-item graphs and contaminate learned representations. Existing explicit denoising methods uniformly rely on training loss to estimate interaction reliability. However, loss is a fundamentally passive signal: it detects noise only after it has caused predictio",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Robust Gaussian process regression: posterior contraction",
+      "url": "http://arxiv.org/abs/2611.11582v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Gaussian processes form a popular and flexible class of prior distributions with principled uncertainty quantification, but the Gaussian likelihood on which the corresponding posterior relies makes them highly sensitive to outliers and contaminated observations. We study Gaussian process regression when among the $n$ observations, $m$ of these are possibly contaminated. A generic framework to obta",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "When Normality Shifts: Multi-Level WavLM Modeling for Open-World Audio Deepfake Detection",
+      "url": "http://arxiv.org/abs/2611.11465v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Audio deepfake detectors trained with known synthesis attacks can learn generator-specific shortcuts that fail as synthesis systems and acoustic conditions evolve. We investigate an attack-free alternative: a normality model trained exclusively on bona fide speech, which scores synthetic audio by its deviation from authentic representations. We propose MLN-WavLM, a method that applies shrinkage-Ma",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SWHForest: A Structural Curation and Search Layer for Large-Scale Code Corpora",
+      "url": "http://arxiv.org/abs/2611.11439v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Pre-training code language models relies on massive code corpora usually streamed over the internet. However, researchers rarely need a multi-terabyte archive in its entirety; instead, their workflow centers on curated subsets: selecting well-documented files, filtering out repetitive boilerplate, auditing for benchmark contamination, or retrieving specific code patterns. Yet, because modern corpo",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Joint Poisson Reconstruction for Prompt-Gamma-Enabled 68Ga/18F Dual-Isotope Quantitative PET Imaging",
+      "url": "http://arxiv.org/abs/2611.11233v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Objective:To enable simultaneous quantitative 68Ga/18F PET imaging despite low prompt-gamma triple-coincidence counts and random-triple contamination. Methods: We developed an expectation-maximization reconstruction method (PNR-EM) that jointly estimates pure-emitter, non-pure-emitter, and random-triple components using a Poisson model of prompt double, prompt triple, and delayed triple measuremen",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A Unified Framework for Robust Blinded Sample Size Re-estimation Based on Nuisance Parameters",
+      "url": "http://arxiv.org/abs/2611.10957v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Blinded sample size re-estimation aims to mitigate uncertainty in nuisance parameters at the design stage while preserving the integrity of the trial. It allows the required sample size to be updated without revealing treatment assignments and thereby reduces the risk of an inappropriate sample size. Although numerous procedures have been proposed for different outcome types, a unified framework i",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A Tool for Anonymized Clinical Knowledge Retrieval and Speaker Interaction Analysis of Healthcare Tele-mentoring Sessions",
+      "url": "http://arxiv.org/abs/2611.10922v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We present a tool for anonymized retrieval of clinical knowledge and analysis of multi-speaker interactions in tele-mentoring sessions of Project ECHO (Extension for Community Healthcare Outcomes). Our tool's novel design includes: (a) a compound metadata filter that enforces strict speaker- and session-level isolation during retrieval, preventing cross-session context contamination; (b) MedGemma-",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Self-contained Data Cleaning for Unsupervised Anomaly Detection",
+      "url": "http://arxiv.org/abs/2611.10856v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Training datasets for unsupervised anomaly detection are often assumed to be anomaly-free, but in practice, they frequently contain malicious or anomalous contamination. This contamination severely degrades the dependability and security of downstream detection models. While some contamination-robust methods exist, they rarely generalize across different model architectures and typically rely on a",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Multi-LCB: Extending LiveCodeBench to Multiple Programming Languages",
+      "url": "https://huggingface.co/papers/2606.20517",
+      "date": "2026-06-18",
+      "signal": 60,
+      "signal_name": "upvotes",
+      "summary": "Multi-LCB addresses the limitation of LiveCodeBench by providing a multi-language benchmark for evaluating LLMs across twelve programming languages while maintaining contamination controls and evaluation protocols.",
+      "extra": {
+        "keywords": [
+          "large language models",
+          "code-generation tasks",
+          "competitive programming problems",
+          "contamination-aware evaluation",
+          "cross-language code generation",
+          "multilingual performance",
+          "Python overfitting",
+          "language-specific contamination"
+        ],
+        "github": "https://github.com/Multi-LCB/Multi-LCB",
+        "github_stars": 29,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Tencent WorkBuddy Bench: A Multi-Domain Coding-Agent Benchmark with Contamination-Resistant Task Construction",
+      "url": "https://huggingface.co/papers/2607.20911",
+      "date": "2026-07-23",
+      "signal": 22,
+      "signal_name": "upvotes",
+      "summary": "We introduce Tencent WorkBuddy Bench, a multi-domain evaluation suite for coding agents; this report documents its construction methodology, scoring protocol, and a cross-model leaderboard. At its core is a unified evaluation framework for constructing and running distribution-informed coding-agent tasks across four work domains - Code, Web, Office, and Security. Rather than adapting public issue ",
+      "extra": {
+        "keywords": [],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Pythagoras-Prover: Advancing Efficient Formal Proving via Augmented Lean Formalisation",
+      "url": "https://huggingface.co/papers/2606.12594",
+      "date": "2026-06-10",
+      "signal": 18,
+      "signal_name": "upvotes",
+      "summary": "Pythagoras-Prover introduces compute-efficient Lean theorem provers using curriculum training and augmented formalization techniques to overcome limitations of scarce verified data and expensive proof search.",
+      "extra": {
+        "keywords": [
+          "Lean theorem provers",
+          "supervised fine-tuning",
+          "proof reasoning",
+          "curriculum learning",
+          "self-distillation",
+          "formal verification",
+          "proof search",
+          "token context budget",
+          "proof refinement",
+          "autoregressive models",
+          "diffusion-based prover"
+        ],
+        "github": "https://github.com/Pythagoras-LM/Pythagoras-Prover",
+        "github_stars": 7,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Novel Claim or Déjà Vu? Rethinking \"Contamination-Free'' Dynamic Evaluation for Multimodal Automated Fact-Checking",
+      "url": "https://huggingface.co/papers/2607.23514",
+      "date": "2026-07-26",
+      "signal": 12,
+      "signal_name": "upvotes",
+      "summary": "Dynamic benchmarks reduce but do not eliminate contamination risks in multimodal automated fact-checking, as post-cut-off claims can still be verified via pre-cut-off knowledge, significantly inflating performance metrics.",
+      "extra": {
+        "keywords": [
+          "multimodal automated fact-checking",
+          "contamination",
+          "dynamic benchmarks",
+          "static benchmarks",
+          "LLM knowledge cut-off",
+          "Macro-F1"
+        ],
+        "github": "https://github.com/TrustworthyComp/Rethink-MAFC-Eval",
+        "github_stars": 14,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "No Hidden Prompts Needed! You Can Game AI Peer Review with Presentation-Only Revisions",
+      "url": "https://huggingface.co/papers/2606.13044",
+      "date": "2026-06-11",
+      "signal": 10,
+      "signal_name": "upvotes",
+      "summary": "AI reviewers are vulnerable to presentation-level manipulation that exploits their tendency to be impressed by highlighted strengths rather than convinced by resolved weaknesses, creating a new optimization surface for adversarial repackaging attacks.",
+      "extra": {
+        "keywords": [
+          "adversarial repackaging",
+          "AI-reviewer feedback",
+          "presentation-level content",
+          "scientific evidence",
+          "attack success rate",
+          "mean score gain",
+          "surface edits",
+          "analytical discussion expansion",
+          "related-work repositioning",
+          "paper presentation",
+          "optimization surface"
+        ],
+        "github": "https://github.com/xyimatvoid/ARGAR",
+        "github_stars": 12,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Policy Is Not Capability: Some Safety Benchmarks Measure Which Definition of \"Unsafe\" You Trained On",
+      "url": "https://huggingface.co/papers/2610.25060",
+      "date": "2026-10-18",
+      "signal": 7,
+      "signal_name": "upvotes",
+      "summary": "Guardrail benchmark scores primarily reflect labeling policy rather than detection ability, with minor parameter changes shifting results across full ranges and training contamination undermining reported safety metrics.",
+      "extra": {
+        "keywords": [
+          "guardrail classifier",
+          "policy labels",
+          "benchmark contamination",
+          "over-refusal",
+          "HarmBench",
+          "OR-Bench",
+          "soft labels",
+          "teacher provenance",
+          "validation accuracy"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Models That Know How Evaluations Are Designed Score Safer",
+      "url": "https://huggingface.co/papers/2605.28591",
+      "date": "2026-05-27",
+      "signal": 6,
+      "signal_name": "upvotes",
+      "summary": "Fine-tuning models on synthetic documents describing evaluation traits improves safety benchmark performance by enabling implicit recognition of evaluation-like contexts, independent of memorization or explicit awareness.",
+      "extra": {
+        "keywords": [
+          "evaluation meta-knowledge",
+          "fine-tuning",
+          "synthetic documents",
+          "safety benchmarks",
+          "benchmark exposure",
+          "memorization",
+          "verbalized evaluation awareness",
+          "parametric knowledge",
+          "structural traits",
+          "evaluation practices"
+        ],
+        "github": "https://github.com/compass-group-tue/arxiv2026_evaluation_meta_knowledge",
+        "github_stars": 3,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "The Illusion of Reasoning: Exposing Evasive Data Contamination in LLMs via Zero-CoT Truncation",
+      "url": "https://huggingface.co/papers/2605.21856",
+      "date": "2026-05-21",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "A black-box detection method called Zero-CoT Probe is introduced to identify data contamination in large language models by truncating reasoning processes and comparing performance on original and perturbed datasets.",
+      "extra": {
+        "keywords": [
+          "Chain-of-Thought",
+          "black-box detection",
+          "data contamination",
+          "memorization",
+          "zero-CoT Probe",
+          "Contamination Confidence",
+          "isomorphically perturbed reference dataset"
+        ],
+        "github": "https://github.com/Yifan-Lan/zero-cot-probe",
+        "github_stars": 1,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ZooWork-ShopRanker: An Open, Preference-Aligned E-Commerce Reranker",
+      "url": "https://huggingface.co/papers/2609.31002",
+      "date": "2026-09-25",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "ZooWork-ShopRanker is a family of e-commerce rerankers aligned to judge-labeled shopping preferences via LLM preference oracles and distillation, evaluated on a new private-traffic benchmark.",
+      "extra": {
+        "keywords": [
+          "rerankers",
+          "preference oracle",
+          "reasoning LLMs",
+          "position-debiased judgments",
+          "agreement tiers",
+          "distillation teacher",
+          "ShopRank-Bench",
+          "contamination-limited benchmark",
+          "MTEB benchmarks"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Zero Gap Is Not Restoration: Stratified Per-Question Probability Evaluation and Step-wise Mitigation of Benchmark Contamination",
+      "url": "https://huggingface.co/papers/2608.07341",
+      "date": "2026-08-07",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "Proposed SA-PPG metric and RailCap decoding intervention more accurately assess and reduce benchmark contamination in pretrained models.",
+      "extra": {
+        "keywords": [
+          "contamination mitigation evaluation",
+          "G-AP",
+          "SA-PPG",
+          "per-question probability gaps",
+          "RailCap",
+          "greedy trajectory",
+          "runner-up token capping"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "EvoBrowseComp: Benchmarking Search Agents on Evolving Knowledge",
+      "url": "https://huggingface.co/papers/2606.13120",
+      "date": "2026-06-11",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "EvoBrowseComp is an evolving benchmark with 800 contamination-free questions synthesized through a three-agent framework that ensures temporal freshness and prevents parametric memorization in search agent evaluation.",
+      "extra": {
+        "keywords": [
+          "search agents",
+          "large language models",
+          "browsecomp",
+          "contamination-free",
+          "live-web traversal",
+          "QA synthesis agent",
+          "information filtering agent",
+          "high-level guidance agent",
+          "reasoning graphs",
+          "automated synthesis",
+          "temporal freshness",
+          "parametric memorization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "The Next Challenge for Agentic Cybersecurity: A Realistic, Contamination-Free Reverse Engineering Benchmark",
+      "url": "https://huggingface.co/papers/2608.11469",
+      "date": "2026-08-11",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "SRE-Bench introduces a realistic, contamination-free reverse-engineering benchmark showing that current AI agents still struggle with binary analysis despite strong source-code security skills.",
+      "extra": {
+        "keywords": [
+          "SRE-Bench",
+          "reverse engineering",
+          "anti-analysis primitives",
+          "binary analysis",
+          "contamination-free benchmark",
+          "LLM agents"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Cultivar: A Contrastive and Locale-Oriented Translation Benchmark for Investigating Contamination and Localisation Robustness",
+      "url": "https://huggingface.co/papers/2608.09766",
+      "date": "2026-08-10",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Researchers propose source-contrastive evaluation via a localized benchmark to detect data contamination and assess localization robustness in multilingual translation models.",
+      "extra": {
+        "keywords": [
+          "source-contrastive evaluation",
+          "FLORES",
+          "locale-specific translation evaluation",
+          "data contamination",
+          "localization robustness",
+          "MT-specialised models"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "FIFA World Cup 2026 as a Contamination-Free Benchmark for LLM Forecasting Agents: Four Models, a Bookmaker, and 104 Matches",
+      "url": "https://huggingface.co/papers/2607.17765",
+      "date": "2026-07-20",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "A contamination-free benchmark evaluates frontier language models as autonomous betting agents on future World Cup matches, revealing divergent decision-making and calibration despite similar predictive accuracy.",
+      "extra": {
+        "keywords": [
+          "large language models",
+          "autonomous forecasting agents",
+          "contamination-free benchmark",
+          "1X2 betting",
+          "Brier score",
+          "betting market baseline",
+          "calibration",
+          "decision quality",
+          "self-knowledge"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "When Self-Evolution Backfires: Pre-Commit Gating against Skill Contamination in LLM Agents",
+      "url": "https://huggingface.co/papers/2608.05810",
+      "date": "2026-09-17",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Self-evolving agents suffer irreversible performance degradation from contaminated skills, which is addressed by a progressive verification framework that filters skills before admission to maintain monotonic improvement.",
+      "extra": {
+        "keywords": [
+          "self-evolving agents",
+          "skill distillation",
+          "capability-contamination",
+          "cross-round contamination",
+          "Verifier-as-Gatekeeper",
+          "structural validity",
+          "behavioral harmlessness",
+          "semantic consistency",
+          "marginal-gain subset selection",
+          "Terminal-Bench 2"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "DeepSWE: A contamination-free benchmark for long-horizon coding agents",
+      "url": "https://deepswe.datacurve.ai/blog",
+      "date": "2026-05-26",
+      "signal": 67,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48284939",
+        "comments": 20,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Ramp SWE-Bench a private contamination-free benchmark from production work",
+      "url": "https://labs.ramp.com/swebench",
+      "date": "2026-06-12",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48507641",
+        "comments": 0,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "A challenging, contamination-free LLM benchmark",
+      "url": "https://livebench.ai/",
+      "date": "2026-09-29",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49893058",
+        "comments": 0,
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An open vision-language model for diverse medical applications",
+      "url": "https://doi.org/10.1038/s41591-026-04626-w",
+      "date": "2026-10-01",
+      "signal": 984,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Gemma 4 Technical Report",
+      "url": "https://doi.org/10.48550/arxiv.2607.02770",
+      "date": "2026-07-02",
+      "signal": 768,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The Open Materials 2024 (OMat24) inorganic materials dataset and models",
+      "url": "https://doi.org/10.1038/s43588-026-00996-w",
+      "date": "2026-06-02",
+      "signal": 482,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Machine psychology for language models",
+      "url": "https://doi.org/10.1126/sciadv.aec1912",
+      "date": "2026-10-28",
+      "signal": 299,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Measurement of reactor neutrino oscillation with the first JUNO data",
+      "url": "https://doi.org/10.1038/s41586-026-10538-z",
+      "date": "2026-06-10",
+      "signal": 182,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An encyclopedia of human enhancer–gene regulatory interactions",
+      "url": "https://doi.org/10.1038/s41586-026-10781-4",
+      "date": "2026-07-15",
+      "signal": 161,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Mathematical discovery and exploration can be done at scale",
+      "url": "https://doi.org/10.1073/pnas.2536158123",
+      "date": "2026-09-30",
+      "signal": 156,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI4Research: a survey of artificial intelligence for scientific research",
+      "url": "https://doi.org/10.1007/s11432-025-5000-y",
+      "date": "2026-09-28",
+      "signal": 110,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Code as Agent Harness",
+      "url": "https://doi.org/10.48550/arxiv.2605.18747",
+      "date": "2026-05-18",
+      "signal": 99,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Exploring Code Analysis: Zero-Shot Insights on Syntax and Semantics with LLMs",
+      "url": "https://doi.org/10.1145/3818607",
+      "date": "2026-05-26",
+      "signal": 92,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Agentic Software Engineering: Foundational Pillars and a Research Roadmap",
+      "url": "https://doi.org/10.1145/3861334",
+      "date": "2026-11-05",
+      "signal": 87,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation",
+      "url": "https://doi.org/10.48550/arxiv.2607.05147",
+      "date": "2026-07-06",
+      "signal": 83,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DeepSWE: Measuring Frontier Coding Agents on Original, Long-Horizon Engineering Tasks",
+      "url": "https://doi.org/10.48550/arxiv.2607.07946",
+      "date": "2026-07-08",
+      "signal": 81,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "ENPIRE: Agentic Robot Policy Self-Improvement in the Real World",
+      "url": "https://doi.org/10.48550/arxiv.2606.19980",
+      "date": "2026-06-18",
+      "signal": 81,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "benchmark contamination"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "YanpengQi7/ai-reliability-copilot",
+      "url": "https://github.com/YanpengQi7/ai-reliability-copilot",
+      "date": "2026-05-25",
+      "signal": 81,
+      "signal_name": "stars",
+      "summary": "Turn a production incident into a structured 9-section LLM response (severity, root cause, mitigation, postmortem). Ships with a 5-scenario regression suite + LLM-as-judge eval pipeline.",
+      "extra": {
+        "topics": [
+          "ai-sdk",
+          "deepseek",
+          "incident-response",
+          "llm",
+          "llm-evaluation",
+          "mcp",
+          "nextjs",
+          "pgvector",
+          "postgres",
+          "prompt-engineering",
+          "rag",
+          "sre",
+          "supabase",
+          "typescript",
+          "vercel"
+        ],
+        "license": null,
+        "created": "2026-05-25",
+        "pushed": "2026-10-18",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AshwinUgale/tracelint",
+      "url": "https://github.com/AshwinUgale/tracelint",
+      "date": "2026-08-01",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "A deterministic linter for agent runs — reads the execution trace and flags structural bugs (ignored errors, schema violations, loops) with evidence. No LLM judge.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agent-evaluation",
+          "ai-agents",
+          "function-calling",
+          "linter",
+          "llm",
+          "llmops",
+          "observability",
+          "opentelemetry",
+          "python",
+          "reliability",
+          "static-analysis",
+          "tool-calling",
+          "traces"
+        ],
+        "license": "MIT",
+        "created": "2026-08-01",
+        "pushed": "2026-10-21",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hemanth1999k/mistrial",
+      "url": "https://github.com/hemanth1999k/mistrial",
+      "date": "2026-10-26",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "Is your LLM judge flaky? Re-run any evaluator across runs, judge models and rubric wordings, and get a reliability card.",
+      "extra": {
+        "topics": [
+          "cli",
+          "evals",
+          "evaluation",
+          "github-action",
+          "langsmith",
+          "llm",
+          "llm-as-a-judge",
+          "openevals",
+          "python",
+          "reliability"
+        ],
+        "license": "MIT",
+        "created": "2026-10-26",
+        "pushed": "2026-10-27",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "khanak0509/AdversaBench",
+      "url": "https://github.com/khanak0509/AdversaBench",
+      "date": "2026-06-05",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Automated LLM red-teaming benchmark with multi-judge consensus scoring and inter-judge reliability analysis across 45 adversarial seeds.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-05",
+        "pushed": "2026-06-29",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Effram360/judgecal",
+      "url": "https://github.com/Effram360/judgecal",
+      "date": "2026-06-11",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Statistically rigorous, batch-first reliability auditing for LLM judges & reward models — clustered-bootstrap CIs, McNemar, BH-FDR, power/MDE, planted-bias validation. No API key required.",
+      "extra": {
+        "topics": [
+          "ai-safety",
+          "bias-detection",
+          "evaluation",
+          "inspect-ai",
+          "llm",
+          "llm-as-judge",
+          "llm-evaluation",
+          "machine-learning",
+          "mlops",
+          "python",
+          "reliability",
+          "reward-models",
+          "statistics"
+        ],
+        "license": "MIT",
+        "created": "2026-06-11",
+        "pushed": "2026-07-07",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bamdadd/taintline",
+      "url": "https://github.com/bamdadd/taintline",
+      "date": "2026-07-13",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Deterministic, local-first taint & reliability CI gate over OpenTelemetry GenAI spans. No LLM judge in the check path.",
+      "extra": {
+        "topics": [
+          "agent-safety",
+          "ci",
+          "llm",
+          "observability",
+          "open-source",
+          "opentelemetry",
+          "prompt-injection",
+          "taint-analysis"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-07-13",
+        "pushed": "2026-08-05",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "egnaro9/model-drift",
+      "url": "https://github.com/egnaro9/model-drift",
+      "date": "2026-07-18",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Is My Model Drifting? A public LLM regression tracker: a frozen, hash-fingerprinted suite run daily against 17 models across 5 labs, scoring accuracy, latency, verbosity, reliability and refusal rate. Deterministic grading, no LLM judge.",
+      "extra": {
+        "topics": [
+          "benchmarking",
+          "continuous-evaluation",
+          "llm-evaluation",
+          "llm-observability",
+          "model-monitoring",
+          "regression-testing"
+        ],
+        "license": "MIT",
+        "created": "2026-07-18",
+        "pushed": "2026-11-10",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "teionarr/agentic-search-arena",
+      "url": "https://github.com/teionarr/agentic-search-arena",
+      "date": "2026-07-06",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "🔍 Agentic Search Provider Picker — rank Tavily, Exa, Brave, Perplexity & 8 more on YOUR queries. Blinded pairwise judge with measured reliability, 95% CIs, $/correct answer, freshness, latency. 0 golden answers needed.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "benchmarking",
+          "developer-tools",
+          "evaluation",
+          "llm",
+          "llm-as-judge",
+          "rag",
+          "search-api"
+        ],
+        "license": "MIT",
+        "created": "2026-07-06",
+        "pushed": "2026-10-20",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "TheColliery/CoalBoard",
+      "url": "https://github.com/TheColliery/CoalBoard",
+      "date": "2026-06-18",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Diverse-lens consensus & debate board for error-not-allowed work — blind epistemic lenses debate in parallel, a judge synthesizes on verified inputs, you sign off. Generate · audit/review · opinion (\"ask CB\" on uncertain decisions). Bounded cost + zero-breakage; improves correctness, claims no reliability number. Cross-agent, zero-dep, offline.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-agents",
+          "ai-coding",
+          "claude",
+          "claude-code",
+          "code-review",
+          "consensus",
+          "developer-tools",
+          "llm",
+          "multi-agent",
+          "subagents"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-18",
+        "pushed": "2026-11-09",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "DaBestCode/JudgeGauge",
+      "url": "https://github.com/DaBestCode/JudgeGauge",
+      "date": "2026-09-08",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Fail-closed calibration gates for LLM-as-judge pipelines",
+      "extra": {
+        "topics": [
+          "github-actions",
+          "llm",
+          "llm-evaluation",
+          "python",
+          "reliability"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-08",
+        "pushed": "2026-09-08",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Swaroopkulkarni7/llm-judge-reliability",
+      "url": "https://github.com/Swaroopkulkarni7/llm-judge-reliability",
+      "date": "2026-11-10",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "A small, reproducible experiment on when LLM judges can be trusted — and on the specific, boring failure that silently turns one into a rubber stamp.",
+      "extra": {
+        "topics": [
+          "ai-evaluation",
+          "anthropic",
+          "llm-as-judge",
+          "llm-evaluations",
+          "python"
+        ],
+        "license": null,
+        "created": "2026-11-10",
+        "pushed": "2026-11-10",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "rajajayarubantt/LLM-as-a-Judge-Reliability-Study",
+      "url": "https://github.com/rajajayarubantt/LLM-as-a-Judge-Reliability-Study",
+      "date": "2026-07-19",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "How reliable are LLMs as judges? This project empirically measures agreement with human preference labels, quantifies susceptibility to six bias types, and tests whether stronger models or prompting techniques reduce that bias — all in a single reproducible pipeline.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-07-19",
+        "pushed": "2026-07-19",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "vaibhavalakshmiravideshik/llm-as-a-judge-entity-alignment",
+      "url": "https://github.com/vaibhavalakshmiravideshik/llm-as-a-judge-entity-alignment",
+      "date": "2026-05-17",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Code for: On the Reliability of LLM Judges in Entity Alignment Evaluation (EMNLP 2026)",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-17",
+        "pushed": "2026-05-17",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hankimis/llm-judge-bench",
+      "url": "https://github.com/hankimis/llm-judge-bench",
+      "date": "2026-05-30",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "When the Judge Is Wrong: an LLM-as-judge reliability benchmark scored against ground truth (truth-accuracy + verbosity/position/self-preference bias). One command, 5 frontier judges.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-30",
+        "pushed": "2026-05-30",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hemanjalireddy/ultimate-judge",
+      "url": "https://github.com/hemanjalireddy/ultimate-judge",
+      "date": "2026-10-19",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "A framework for investigating bias and reliability in LLM-as-a-Judge systems.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-19",
+        "pushed": "2026-10-19",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "chunxiaoxx/nautilus-compass",
+      "url": "https://github.com/chunxiaoxx/nautilus-compass",
+      "date": "2026-11-10",
+      "signal": 1258,
+      "signal_name": "stars",
+      "summary": "Open memory & reliability layer for AI agents + independent judging/verification (NACRE judge, caliber-bench meta-benchmark, preregistered criteria) — by Nautilus Platform",
+      "extra": {
+        "topics": [
+          "a2a",
+          "agent-memory",
+          "agentic-ai",
+          "benchmark",
+          "claude-code",
+          "cross-agent",
+          "evaluation",
+          "llm",
+          "llm-as-judge",
+          "local-first",
+          "long-term-memory",
+          "mcp",
+          "memory-layer",
+          "nautilus",
+          "rag",
+          "verification"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-04-27",
+        "pushed": "2026-11-10",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "jfrog/agent-belt",
+      "url": "https://github.com/jfrog/agent-belt",
+      "date": "2026-10-07",
+      "signal": 19,
+      "signal_name": "stars",
+      "summary": "Reproducible evaluation for AI coding agents. Multi-turn scenarios against Claude Code, Codex, Copilot, Cursor, Gemini CLI, Goose, OpenCode, or any custom agent you plug in; verify behavior with rule checks, workspace diffs, multi-judge LLM consensus; pin reliability with pass^k variance across trials. Git worktrees, optional Docker sandbox.",
+      "extra": {
+        "topics": [
+          "agents",
+          "ai",
+          "ai-agents",
+          "benchmark",
+          "claude-code",
+          "cli",
+          "codex",
+          "coding-agents",
+          "cursor",
+          "evaluation-framework",
+          "gemini-cli",
+          "github-copilot",
+          "goose",
+          "jfrog",
+          "llm",
+          "llm-evaluation",
+          "opencode",
+          "testing"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-05-04",
+        "pushed": "2026-10-07",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "colingfly/sparse-eval",
+      "url": "https://github.com/colingfly/sparse-eval",
+      "date": "2026-11-08",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Reliability evaluation for AI agents, APIs, and pipelines. LLM-judged scoring, schema validation, latency profiling, failure mining, and root cause analysis",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-03-13",
+        "pushed": "2026-11-08",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "dongzhang84/physlit",
+      "url": "https://github.com/dongzhang84/physlit",
+      "date": "2026-08-22",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Diagnostic of physics literacy in frontier LLMs. Evaluates induction, formulation, and prediction inside unfamiliar physics frameworks via dual-judge inter-rater reliability with human-audit resolution.",
+      "extra": {
+        "topics": [
+          "ai-safety",
+          "evaluation-methodology",
+          "llm-as-judge",
+          "llm-evaluation",
+          "physics",
+          "pre-registration",
+          "reproducibility"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-05-04",
+        "pushed": "2026-08-22",
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "EditJudge-Bench: Auditing VLM Image-Edit Judges with Synthetic Ground Truth",
+      "url": "http://arxiv.org/abs/2611.12524v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Vision-language models (VLMs) are increasingly used as automated judges for image-editing benchmarks, yet their reliability is poorly understood. Auditing these judges is difficult because real edited images lack controlled ground truth and entangle the requested changes with model artefacts, unintended side effects, and ambiguous degrees of success. In this paper, we introduce EditJudge-Bench, a ",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Decomposing Earth Embeddings with Sparse Autoencoders",
+      "url": "http://arxiv.org/abs/2611.11398v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Earth observation foundation models produce global metre-resolution embeddings that underpin work across agriculture, ecology, hydrology, and beyond. Yet these embeddings are opaque: each dimension entangles unrelated physical concepts, which makes them difficult to interpret and their robustness hard to assess. Here, we propose sparse autoencoders (SAEs) as a principled way to decompose Earth emb",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "TurnFlow: Benchmarking User-State Reasoning in Multi-Turn LLM Agents via Scene-Guided User Simulation",
+      "url": "http://arxiv.org/abs/2611.10412v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large Language Models (LLMs) are increasingly deployed through conversational interfaces, yet strong single-turn performance does not imply reliability in multi-turn settings. Multi-turn assistance requires a model to maintain an evolving representation of user requirements and to reason over it before complying with later requests. Failures can therefore be subtle: models may fail to recognize a ",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ScreenProof: Where Is This Screen Wrong? Finding UI Faults Without a Reference",
+      "url": "http://arxiv.org/abs/2611.10234v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "A phone screen can be wrong in ways that need no reference: a label that runs off the screen, letters that touch, a line that breaks one character before its end, one button with sharp corners among round ones. We ask whether a model can box every such fault on a screenshot, given no target design and no reference image. Such a critic could serve as a cheap first pass over generated pages before a",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Scenario Orchestration for Closed-loop Policy Evaluation of Autonomous Driving",
+      "url": "http://arxiv.org/abs/2611.09888v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Scenario-based simulation is central to evaluating autonomous-driving policies, but a scenario scripted before execution (i.e., with predetermined, fixed actor routes and speeds) may not preserve its intended interaction once the tested ego policy responds in closed loop. Scripted scenarios cannot adapt to unanticipated ego behavior, while learned traffic actors may remain reactive without reliabl",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Khmer PFGen-Bench: Building a Judge-Free Benchmark for Open-Ended Generation in a Low-Resource Language",
+      "url": "http://arxiv.org/abs/2611.09222v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Benchmarks for open-ended generation often rely on large language model (LLM) judges, whose reliability in low-resource languages is uncertain. We introduce Khmer PFGen-Bench, to our knowledge the first judge-free benchmark for multi-sentence answers to questions composed directly in Khmer, a low-resource language. Khmer PFGen-Bench adapts the scorer of PFGen-Bench, a benchmark for Japanese that s",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Copies Are Not Confirmations: How News Duplication Fools LLM Judges and Continual Learners",
+      "url": "http://arxiv.org/abs/2611.09203v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Many news reports of a claim are copies of one source: wire stories, content shared within a media group, syndicated features and press releases. We ask whether LLM judges and continual learners treat such copies as independent confirmations. In 200,000 English CC-News articles, a MinHash detector links 18.9% to a near-copy from another outlet (precision 0.97 once boilerplate is removed); it links",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MongoBench: Do LLMs Know What a MongoDB Query Will Do?",
+      "url": "http://arxiv.org/abs/2611.09065v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "LLM agents increasingly operate databases on their own: they generate queries and run them against live data. Two checks are commonly used to judge such an agent - whether it produces a valid query, and whether it reaches the right final answer - but neither tells us whether the agent knows what its query will actually do before it runs. We argue that this consequence prediction ability must be ev",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Decodability Is Not Validity: Evaluating Nuisance Sensitivity in Language Model Concept Probes",
+      "url": "http://arxiv.org/abs/2611.07805v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Two concept probes can be equally accurate at predicting a concept from a language model's hidden states while their scores contain different mixtures of the target concept and a correlated nuisance attribute. In four target--nuisance settings (two aspect sentiments in CEBaB; occupation and gender in BiasBios; Amazon review sentiment with negation, and with first-person framing), two LLMs, and a p",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What the Middleman Delivers: Answer Behavior, Tool Permissions, and Billed Usage in LLM API Relays",
+      "url": "http://arxiv.org/abs/2611.07650v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Third-party application programming interface (API) relays offer access to large language models (LLMs), often at lower prices. Users depend on these services for model quality, instruction compliance, and accurate billing. However, existing studies leave unclear whether relays meet these expectations together. We test 20 relays offering GPT-6 Astra and Claude Opus 5. First, we compare answers to ",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "JailBound: FOL-Guided Jailbreak Evaluation for Exploring LLM Behavioral Boundaries",
+      "url": "http://arxiv.org/abs/2611.07530v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "As large language models (LLMs) are increasingly deployed as general-purpose conversational assistants, they must handle diverse user requests while reliably refusing harmful ones. Jailbreak attacks craft adversarial instructions or conversational contexts to elicit unsafe responses despite these safeguards. However, existing jailbreak benchmarks often rely on manually designed or collected prompt",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ReviewMap: Mapping Evaluative Acts and Automation Boundaries in Peer-Review Comments",
+      "url": "http://arxiv.org/abs/2611.07489v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Peer-review comments check what a paper does and judge why it matters, but no existing scheme distinguishes these two evaluative acts. We argue that making these acts explicit and measuring how reliably LLMs identify them is a prerequisite for responsible LLM-assisted review analysis: humans need to inspect review judgments and their grounds. This defines a more honest mission for NLP in peer revi",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Where Search Agents Go Off the Rails: Graph-Grounded Step-Level Verification",
+      "url": "http://arxiv.org/abs/2611.06662v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Search-augmented reasoning systems can reach correct answers while making errors in intermediate steps. Reliable auditing must check whether evidence $D$ covers the question $Q$, reasoning $T$ addresses $Q$, and $T$ is grounded in $D$. We introduce GraphRail, which represents requirements, evidence, and reasoning as structured claims and compares them without a generative judge or gold answer. Acr",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Perceived Trust and Transparency in AI-Altered vs. Human-Written LinkedIn Posts",
+      "url": "http://arxiv.org/abs/2611.06660v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "People increasingly draft a social media post themselves and then let an AI model refine it (AI-altered), a common but understudied middle case between fully human-written and fully AI-generated content. We ask whether this changes how trustworthy and transparent readers perceive the post to be, and whether they can even tell. We first analyze real ChatGPT conversations (WildChat) to find how peop",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Beyond Risk Cues: A Mechanism-Level Benchmark and Verifiable Debate for Scam Video Detection on the Web",
+      "url": "http://arxiv.org/abs/2611.06110v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Online scam videos pose significant threats to individuals and society. Existing studies primarily focus on binary classification, offering limited insights into how scams work and the reasoning behind detection decisions. Moreover, they often overlook the challenge of distinguishing scam videos from superficially similar non-scam content, such as advertisements, and the robustness of detection mo",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "JEV-as-a-Judge: Accept When Confident, Escalate When Unsure",
+      "url": "https://huggingface.co/papers/2609.26550",
+      "date": "2026-09-22",
+      "signal": 34,
+      "signal_name": "upvotes",
+      "summary": "A decision-only judge offers a low-cost first evaluation pass that closely matches stronger judges on common tasks, with a frozen cascade preserving nearly all accuracy by escalating only uncertain cases.",
+      "extra": {
+        "keywords": [
+          "LLM-as-a-judge",
+          "decision-only judge",
+          "generative judges",
+          "reward-model judges",
+          "evidence-grounded factuality",
+          "frozen cascade",
+          "confidence reliability"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AgentJudgeBench: A Multi-Difficulty Benchmark for Evaluating LLM Judges on Agentic Tool-Calling",
+      "url": "https://huggingface.co/papers/2608.26623",
+      "date": "2026-08-27",
+      "signal": 20,
+      "signal_name": "upvotes",
+      "summary": "AgentJudgeBench reveals that LLM judges face structural reliability limits on dependency-driven agentic tool-calling workflows, with alignment degrading by difficulty and ground-truth exposure yielding mixed effects.",
+      "extra": {
+        "keywords": [
+          "LLM-as-a-judge",
+          "agentic tool-calling",
+          "workflow DAGs",
+          "AgentJudgeBench",
+          "chain-of-thought reasoning",
+          "structured evaluation rubrics",
+          "over-anchoring"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "RankJudge: A Multi-Turn LLM-as-a-Judge Synthetic Benchmark Generator",
+      "url": "https://huggingface.co/papers/2605.21748",
+      "date": "2026-05-20",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "A benchmark generator called RankJudge evaluates large language model judges on multi-turn conversations by creating flawed conversation pairs and using statistical models for ranking and difficulty assessment.",
+      "extra": {
+        "keywords": [
+          "LLM-as-a-judge",
+          "multi-turn conversations",
+          "benchmark generator",
+          "Bradley-Terry model",
+          "rank judgment",
+          "conversation pairs",
+          "difficulty ratings",
+          "statistical modeling"
+        ],
+        "github": "https://github.com/layer6ai-labs/RankJudge",
+        "github_stars": 9,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "IndicBankBench: Evaluating Safety and Reliability of Language Model Assistants in Indian Retail Banking",
+      "url": "https://huggingface.co/papers/2609.29167",
+      "date": "2026-09-24",
+      "signal": 8,
+      "signal_name": "upvotes",
+      "summary": "IndicBankBench evaluates Indian banking assistants across 799 cases with multi-stage checks, revealing that strict reliability is substantially lower than at-least-once success.",
+      "extra": {
+        "keywords": [
+          "IndicBankBench",
+          "tool use",
+          "safety checks",
+          "LLM judge",
+          "strict pass^3",
+          "banking assistants"
+        ],
+        "github": "https://github.com/npci/IndicBankBench",
+        "github_stars": 13,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Codifying the Judge: Scalable Evaluation via Program Distillation",
+      "url": "https://huggingface.co/papers/2607.22561",
+      "date": "2026-05-29",
+      "signal": 7,
+      "signal_name": "upvotes",
+      "summary": "Program distillation replaces LLM judges with transparent, efficient programmatic evaluators that match performance while reducing cost and latency.",
+      "extra": {
+        "keywords": [
+          "LLM-as-a-judge",
+          "program distillation",
+          "programmatic judges",
+          "PAJAMA",
+          "reward model",
+          "RewardBench"
+        ],
+        "github": "https://github.com/SprocketLab/PAJAMA",
+        "github_stars": 11,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "EduPanel: A Three-Agent LLM Judge for Teaching Videos -- Reliability, Complementarity, and Human Trust Calibration",
+      "url": "https://huggingface.co/papers/2607.18529",
+      "date": "2026-07-20",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "EduPanel is a rubric-based, learner-conditioned LLM judge that evaluates teaching video quality through specialized agents, achieving expert-level reliability while assisting rather than replacing human evaluators.",
+      "extra": {
+        "keywords": [
+          "rubric-grounded evaluation",
+          "learner-conditioned LLM judge",
+          "multimodal evidence",
+          "specialized agents",
+          "interpretable assessments",
+          "expert studies",
+          "architecture ablations",
+          "learner-persona analyses",
+          "MAE",
+          "AUC"
+        ],
+        "github": "https://github.com/snooow1029/edupanel",
+        "github_stars": 2,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Mitigating Perceptual Judgment Bias in Multimodal LLM-as-a-Judge via Perceptual Perturbation and Reward Modeling",
+      "url": "https://huggingface.co/papers/2606.02578",
+      "date": "2026-06-01",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "Researchers identify a perceptual judgment bias in multimodal large language models where visual evidence is overlooked for textual plausibility, and propose a training framework using a perturbed dataset and reward modeling to improve perceptual fidelity and evaluation consistency.",
+      "extra": {
+        "keywords": [
+          "multimodal large language models",
+          "perceptual judgment bias",
+          "visual perturbations",
+          "counterfactual responses",
+          "structured GRPO-based reward",
+          "batch-ranking objective",
+          "perceptual fidelity",
+          "ranking coherence",
+          "human evaluation alignment"
+        ],
+        "github": "https://github.com/kaist-cvml/perception-judge",
+        "github_stars": 5,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "MÖVE: A Holistic LLM Benchmark for the German Public Sector",
+      "url": "https://huggingface.co/papers/2606.13111",
+      "date": "2026-06-11",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "A comprehensive benchmark for evaluating large language models in German public sector applications, assessing both performance and governance criteria across multiple German-language datasets.",
+      "extra": {
+        "keywords": [
+          "large language models",
+          "benchmark",
+          "public sector",
+          "German language",
+          "multi-metric evaluation",
+          "LLM-as-a-judge",
+          "embedding-based methods",
+          "NLP metrics",
+          "model selection",
+          "governance criteria",
+          "hallucination tendencies",
+          "energy consumption",
+          "constitutional values",
+          "political parties",
+          "dataset construction",
+          "statistical precision",
+          "prompt formulation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Binarization Flattens the Score Space",
+      "url": "https://huggingface.co/papers/2609.35797",
+      "date": "2026-09-17",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Using graded rather than binary LLM judge scores reveals hidden policy changes and reduces ambiguity, though some improvements remain indistinguishable from sycophancy without external validation.",
+      "extra": {
+        "keywords": [
+          "LLM judges",
+          "pass/fail binarization",
+          "joint-Gaussian model",
+          "affine stretch ambiguity",
+          "criterionwise stretches",
+          "sycophancy",
+          "graded rewards"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Jagged Judges: Epistemic Stability Under Silence, Pressure, and Persistence",
+      "url": "https://huggingface.co/papers/2608.12645",
+      "date": "2026-08-12",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "The Wiggle Framework evaluates LLM judge stability across mechanical consistency, single-turn conviction, and multi-turn persistence, revealing high verdict-flipping rates under challenge and identifying jury majority strength as a predictive signal.",
+      "extra": {
+        "keywords": [
+          "Wiggle Framework",
+          "epistemic stability",
+          "LLM judges",
+          "Mechanical Consistency",
+          "Single-turn Conviction",
+          "Multi-turn Persistence",
+          "adversarial LLM persuader",
+          "jury majority strength"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LLM Judges Verify Presence, Not Absence: Omission Blindness in AI Clinical Notes and What Recovers It",
+      "url": "https://huggingface.co/papers/2608.31016",
+      "date": "2026-08-31",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A structured fact-listing approach enables LLM judges to detect omitted clinical information more reliably than direct comparison, though restated facts remain challenging.",
+      "extra": {
+        "keywords": [
+          "LLM judge",
+          "omission detection",
+          "clinical notes",
+          "GEPA prompt optimization",
+          "per-fact pipeline",
+          "benchmark"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Historical Backtesting for Scientific Question Discovery: A Protocol and Astronomy Pilot",
+      "url": "https://huggingface.co/papers/2608.16795",
+      "date": "2026-08-17",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Historical backtesting evaluates scientific question generators by comparing frozen past questions against future literature, revealing that evidence-based generation outperforms LLM prompting and that judge agreement metrics overstate reliability.",
+      "extra": {
+        "keywords": [
+          "historical backtesting",
+          "LLM-as-judge",
+          "evidence-structure-first generation",
+          "memorized relevance",
+          "outcome taxonomy",
+          "kappa agreement",
+          "contamination-free evaluation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Compaction as Epistemic Failure: How Agentic LLM Tools Fabricate Confirmed Results from Killed Processes",
+      "url": "https://huggingface.co/papers/2607.13071",
+      "date": "2026-07-11",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Agentic coding tools can propagate false results across sessions by treating partial terminal output from failed commands as verified outcomes in compaction summaries.",
+      "extra": {
+        "keywords": [
+          "agentic LLM coding tools",
+          "session compaction summaries",
+          "exit code 143",
+          "observation and persistence conflation",
+          "LLM self-evaluation failures",
+          "LLM-as-judge",
+          "agentic session continuity"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Can LLM-as-a-Judge Reliably Verify Rubrics in Agentic Scenarios?",
+      "url": "https://huggingface.co/papers/2606.29920",
+      "date": "2026-06-29",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "LLM-as-a-Judge reliability for rubric scoring in agentic scenarios is systematically evaluated through a new benchmark, revealing significant noise even in advanced models and identifying effective strategies for improving verification accuracy.",
+      "extra": {
+        "keywords": [
+          "LLM-as-a-Judge",
+          "rubric scoring",
+          "agentic scenarios",
+          "meta-evaluation",
+          "RuVerBench",
+          "model-generated output",
+          "human-annotated label",
+          "prompt design",
+          "batching",
+          "majority voting"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Metric Match: A Subset Selection Approach to Evaluating LLM Judge Reliability",
+      "url": "https://huggingface.co/papers/2606.15029",
+      "date": "2026-06-12",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "A method called Metric Match is developed to estimate the reliability of LLM judges using limited human annotations by selecting representative sample subsets that match population reliability metrics, demonstrating superior performance over random selection in terms of estimation accuracy and reduced annotation costs.",
+      "extra": {
+        "keywords": [
+          "LLM judges",
+          "reliability estimation",
+          "correlation metrics",
+          "synthetic labels",
+          "sample selection",
+          "cost model",
+          "medical case study"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Debategle – ranked 1v1 debates judged by an LLM",
+      "url": "https://debategle.com/",
+      "date": "2026-06-30",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48732235",
+        "comments": 0,
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Usable XAI: 10 Strategies Towards Exploiting Explainability in the LLM Era",
+      "url": "https://doi.org/10.1145/3816150",
+      "date": "2026-05-26",
+      "signal": 126,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "RAG vs. GraphRAG: A Systematic Evaluation and Key Insights",
+      "url": "https://doi.org/10.1145/3770855.3817575",
+      "date": "2026-08-07",
+      "signal": 124,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Towards Trustworthy Retrieval Augmented Generation for Large Language Models: A Survey",
+      "url": "https://doi.org/10.1145/3837074",
+      "date": "2026-08-06",
+      "signal": 108,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks",
+      "url": "https://doi.org/10.1145/3837856",
+      "date": "2026-08-03",
+      "signal": 104,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Social Skill Training With Large Language Models",
+      "url": "https://doi.org/10.1109/mis.2026.3726701",
+      "date": "2026-09-01",
+      "signal": 93,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM judge reliability"
+      }
+    }
+  ]
+}

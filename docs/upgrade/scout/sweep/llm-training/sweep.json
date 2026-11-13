@@ -1,0 +1,5099 @@
+{
+  "meta": {
+    "topic": "LLM fine-tuning",
+    "phrases": [
+      "LLM fine-tuning",
+      "parameter-efficient fine-tuning",
+      "LLM post-training reinforcement learning",
+      "neural network optimizer"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 19:58 UTC",
+    "count": 247
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "whitecircle/halo",
+      "url": "https://github.com/whitecircle/halo",
+      "date": "2026-08-26",
+      "signal": 854,
+      "signal_name": "stars",
+      "summary": "Halo is an open-source framework built by White Circle for training large language and multimodal models",
+      "extra": {
+        "topics": [
+          "agent",
+          "async-rl",
+          "distributed-training",
+          "fine-tuning",
+          "grpo",
+          "large-language-models",
+          "llm",
+          "lora",
+          "model-parallelism",
+          "moe",
+          "multimodal",
+          "peft",
+          "post-training",
+          "pytorch",
+          "qlora",
+          "quantization",
+          "reinforcement-learning",
+          "rlhf",
+          "transformers",
+          "vllm"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-08-26",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "DaoyuanLi2816/can-i-finetune-this",
+      "url": "https://github.com/DaoyuanLi2816/can-i-finetune-this",
+      "date": "2026-05-16",
+      "signal": 795,
+      "signal_name": "stars",
+      "summary": "Single-GPU LLM fine-tuning preflight: memory estimates, runnable LoRA/QLoRA recipes, and local measurements.",
+      "extra": {
+        "topics": [
+          "bitsandbytes",
+          "fine-tuning",
+          "gpu",
+          "hugging-face",
+          "llm",
+          "lora",
+          "memory-estimation",
+          "peft",
+          "pytorch",
+          "qlora",
+          "transformers",
+          "vram"
+        ],
+        "license": "MIT",
+        "created": "2026-05-16",
+        "pushed": "2026-10-08",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "calmrocks/ai-engineer-notebooks",
+      "url": "https://github.com/calmrocks/ai-engineer-notebooks",
+      "date": "2026-08-11",
+      "signal": 743,
+      "signal_name": "stars",
+      "summary": "Hands-on, framework-free Colab notebooks for the AI Engineer / Forward Deployed Engineer (FDE) skill set — model APIs, structured output, tool calling, RAG, evals-as-the-spine, agents (loop from scratch, tool design, guardrails, MCP, Skills), fine-tuning vs LoRA, prompt-injection/security, LLMOps, and customer craft. Runs on the free Groq API.",
+      "extra": {
+        "topics": [
+          "agents",
+          "ai-engineer",
+          "ai-engineering",
+          "colab",
+          "evals",
+          "fine-tuning",
+          "forward-deployed-engineer",
+          "generative-ai",
+          "groq",
+          "jupyter-notebook",
+          "llm",
+          "llm-as-judge",
+          "llmops",
+          "lora",
+          "mcp",
+          "notebooks",
+          "prompt-engineering",
+          "rag"
+        ],
+        "license": "MIT",
+        "created": "2026-08-11",
+        "pushed": "2026-11-07",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "amitshekhariitbhu/ai-engineering-course",
+      "url": "https://github.com/amitshekhariitbhu/ai-engineering-course",
+      "date": "2026-09-23",
+      "signal": 699,
+      "signal_name": "stars",
+      "summary": "AI Engineering Course - A free and complete AI Engineering Course to learn AI Engineering step by step - from Machine Learning, Neural Networks, and Transformers to LLMs, Fine-Tuning, RAG, AI Agents, LLM Inference, Evaluation, AI Safety, and AI System Design.",
+      "extra": {
+        "topics": [
+          "ai-course",
+          "ai-engineering",
+          "ai-engineering-course",
+          "ai-engineering-curriculum",
+          "large-language-models"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-23",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "modelscope/ms-cookbook",
+      "url": "https://github.com/modelscope/ms-cookbook",
+      "date": "2026-09-11",
+      "signal": 522,
+      "signal_name": "stars",
+      "summary": "魔搭紫皮书｜ModelScope Cookbook：面向开发者的开源模型应用实战指南，覆盖模型选型、推理、微调、评测、RAG、Agent 与 AIGC，从跑通第一个模型到构建实际应用。",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "cookbook",
+          "diffusion-models",
+          "fine-tuning",
+          "generative-ai",
+          "llm",
+          "mcp",
+          "model-evaluation",
+          "modelscope",
+          "rag"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-11",
+        "pushed": "2026-11-04",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "datamllab/OpenEBFM",
+      "url": "https://github.com/datamllab/OpenEBFM",
+      "date": "2026-09-21",
+      "signal": 326,
+      "signal_name": "stars",
+      "summary": "Open-source code for training and scaling up energy-based foundation models.",
+      "extra": {
+        "topics": [
+          "ai",
+          "climbmix",
+          "dclm",
+          "energy-based-generation",
+          "energy-based-language-models",
+          "energy-based-models",
+          "fine-tuning",
+          "fineweb",
+          "foundation-models",
+          "language-models",
+          "large-language-model",
+          "llm",
+          "post-training",
+          "pre-training",
+          "pretraining-model",
+          "reinforcement-learning",
+          "rl",
+          "scaling-law",
+          "scaling-laws",
+          "sft"
+        ],
+        "license": "MIT",
+        "created": "2026-09-21",
+        "pushed": "2026-11-03",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "zorost/AI-Engineering-Lab",
+      "url": "https://github.com/zorost/AI-Engineering-Lab",
+      "date": "2026-08-17",
+      "signal": 318,
+      "signal_name": "stars",
+      "summary": "A free, self-paced 24-week AI engineering course: Python, machine learning, LLMs, RAG, fine-tuning, agents and MCP, Azure and Vertex and Bedrock, and Databricks. 43 runnable notebooks, one continuous case study. MIT licensed, no signup. By Zorost Intelligence AI Lab.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "ai-engineering",
+          "course",
+          "curriculum",
+          "databricks",
+          "deep-learning",
+          "fine-tuning",
+          "generative-ai",
+          "learning-resources",
+          "llm",
+          "machine-learning",
+          "mcp",
+          "mlops",
+          "prompt-engineering",
+          "pyspark",
+          "python",
+          "rag",
+          "roadmap",
+          "vector-search",
+          "zorost"
+        ],
+        "license": "MIT",
+        "created": "2026-08-17",
+        "pushed": "2026-08-17",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Goekdeniz-Guelmez/MLX-LoRA-Studio",
+      "url": "https://github.com/Goekdeniz-Guelmez/MLX-LoRA-Studio",
+      "date": "2026-06-11",
+      "signal": 289,
+      "signal_name": "stars",
+      "summary": "A native Mac App for LLM fine-tuning on Apple Silicon — fully on-device, fully open source.",
+      "extra": {
+        "topics": [
+          "deep-learning",
+          "llm-training",
+          "llms",
+          "machine-learning",
+          "mlx",
+          "mlx-lm",
+          "mlx-lm-lora",
+          "nlp",
+          "preference-learning",
+          "reinforcement-learning",
+          "rl",
+          "rlhf",
+          "sft"
+        ],
+        "license": "MIT",
+        "created": "2026-06-11",
+        "pushed": "2026-10-27",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "autonomous-ai/autonomous-grid",
+      "url": "https://github.com/autonomous-ai/autonomous-grid",
+      "date": "2026-06-17",
+      "signal": 276,
+      "signal_name": "stars",
+      "summary": "Your AI intranet: network the computers you already own for inference and training.",
+      "extra": {
+        "topics": [
+          "ai",
+          "distributed",
+          "fine-tuning",
+          "grpo",
+          "homelab",
+          "inference",
+          "llm",
+          "local-ai",
+          "local-llm",
+          "lora",
+          "mlx",
+          "openai-compatible",
+          "orchestration",
+          "python",
+          "reinforcement-learning",
+          "self-hosted",
+          "training",
+          "vllm"
+        ],
+        "license": "MIT",
+        "created": "2026-06-17",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Fazmin/AILearningGuide",
+      "url": "https://github.com/Fazmin/AILearningGuide",
+      "date": "2026-10-05",
+      "signal": 252,
+      "signal_name": "stars",
+      "summary": "Interactive desktop app with 58 labs covering ML fundamentals, transformers, RAG, agents, fine-tuning and quantization and more.",
+      "extra": {
+        "topics": [
+          "ai",
+          "ai-education",
+          "deep-learning",
+          "educational",
+          "educational-resources",
+          "educational-tool",
+          "generative-ai",
+          "interactive-learning",
+          "learning",
+          "llm",
+          "machine-learning",
+          "offline-first",
+          "onnx",
+          "transformers"
+        ],
+        "license": "MIT",
+        "created": "2026-10-05",
+        "pushed": "2026-10-31",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Enping-Hu/minimind-deep-dive",
+      "url": "https://github.com/Enping-Hu/minimind-deep-dive",
+      "date": "2026-06-19",
+      "signal": 217,
+      "signal_name": "stars",
+      "summary": "从 MiniMind 源码读起,再延伸到现代大模型技术体系的中文学习笔记。主线逐行精读预训练 / SFT / DPO / PPO / GRPO 与训练机制;附录 17 篇进阶卷覆盖量化、投机解码、RLHF 全景、模型代际史等 MiniMind 没涉及、但进阶绕不开的主题。",
+      "extra": {
+        "topics": [
+          "deep-learning",
+          "dpo",
+          "fine-tuning",
+          "from-scratch",
+          "grpo",
+          "large-language-models",
+          "llm",
+          "llm-training",
+          "minimind",
+          "moe",
+          "nlp",
+          "ppo",
+          "pretraining",
+          "pytorch",
+          "rlhf",
+          "rope",
+          "study-notes",
+          "transformer"
+        ],
+        "license": "CC-BY-4.0",
+        "created": "2026-06-19",
+        "pushed": "2026-10-21",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Juneo-Lab/decision-forge",
+      "url": "https://github.com/Juneo-Lab/decision-forge",
+      "date": "2026-10-30",
+      "signal": 209,
+      "signal_name": "stars",
+      "summary": "Compile organizational policy into verifiable decision training data.",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "data-provenance",
+          "decision-data",
+          "fine-tuning",
+          "llm",
+          "policy-as-code",
+          "python",
+          "synthetic-data",
+          "training-data"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-10-30",
+        "pushed": "2026-11-08",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "justxor/deepseek-local-guide-ru",
+      "url": "https://github.com/justxor/deepseek-local-guide-ru",
+      "date": "2026-10-17",
+      "signal": 187,
+      "signal_name": "stars",
+      "summary": "🐋 Полный гайд на русском: как установить и запустить DeepSeek локально (V4, R1) на ПК, Mac и сервере — Ollama, llama.cpp, LM Studio, vLLM, Open WebUI, API, RAG, агенты, fine-tuning, лучшие фишки",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "deepseek",
+          "deepseek-r1",
+          "deepseek-v4",
+          "gguf",
+          "guide",
+          "llama-cpp",
+          "llm",
+          "llm-inference",
+          "lm-studio",
+          "local-llm",
+          "ollama",
+          "open-webui",
+          "quantization",
+          "rag",
+          "russian",
+          "self-hosted",
+          "sglang",
+          "tutorial",
+          "vllm"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-10-17",
+        "pushed": "2026-10-17",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Saivineeth147/lora-speedrun",
+      "url": "https://github.com/Saivineeth147/lora-speedrun",
+      "date": "2026-07-18",
+      "signal": 151,
+      "signal_name": "stars",
+      "summary": "Speedrunning LoRA fine-tuning: frozen task, frozen hardware, public wall-clock leaderboard. modded-nanogpt for fine-tuning.",
+      "extra": {
+        "topics": [
+          "benchmark",
+          "fine-tuning",
+          "leaderboard",
+          "llm",
+          "lora",
+          "peft",
+          "qlora",
+          "speedrun"
+        ],
+        "license": "MIT",
+        "created": "2026-07-18",
+        "pushed": "2026-09-12",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "llmsresearch/llm-flashcards",
+      "url": "https://github.com/llmsresearch/llm-flashcards",
+      "date": "2026-05-30",
+      "signal": 146,
+      "signal_name": "stars",
+      "summary": "211 free visual cards about large language models, from tokenization to deployment. Full collection: 376 cards.",
+      "extra": {
+        "topics": [
+          "agents",
+          "ai",
+          "anki",
+          "attention",
+          "deep-learning",
+          "fine-tuning",
+          "flashcards",
+          "gpt",
+          "interview-preparation",
+          "large-language-models",
+          "llm",
+          "llm-resources",
+          "machine-learning",
+          "nlp",
+          "prompt-engineering",
+          "rag",
+          "rlhf",
+          "study-notes",
+          "transformers"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-05-30",
+        "pushed": "2026-09-16",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "unslothai/unsloth",
+      "url": "https://github.com/unslothai/unsloth",
+      "date": "2026-11-10",
+      "signal": 79291,
+      "signal_name": "stars",
+      "summary": "Local UI to run and train LLMs and diffusion models. Supports GGUF, MLX, Qwen3.8, DeepSeek-V4.1, MiniMax-H3, Gemma 4, FLUX and more.",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "chatgpt",
+          "deepseek",
+          "fine-tuning",
+          "gemma",
+          "image-generation",
+          "llama",
+          "llm",
+          "llms",
+          "openai",
+          "python",
+          "qwen",
+          "reinforcement-learning",
+          "self-hosted",
+          "stable-diffusion",
+          "text-to-speech",
+          "tts",
+          "ui",
+          "unsloth"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-11-29",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "hiyouga/LlamaFactory",
+      "url": "https://github.com/hiyouga/LlamaFactory",
+      "date": "2026-11-10",
+      "signal": 75980,
+      "signal_name": "stars",
+      "summary": "Unified Efficient Fine-Tuning of 100+ LLMs & VLMs (ACL 2024)",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "deepseek",
+          "fine-tuning",
+          "gemma",
+          "gpt",
+          "instruction-tuning",
+          "large-language-models",
+          "llama",
+          "llama3",
+          "llm",
+          "lora",
+          "moe",
+          "nlp",
+          "peft",
+          "qlora",
+          "quantization",
+          "qwen",
+          "rlhf",
+          "transformers"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-05-28",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "run-llama/llama_index",
+      "url": "https://github.com/run-llama/llama_index",
+      "date": "2026-11-10",
+      "signal": 52868,
+      "signal_name": "stars",
+      "summary": "LlamaIndex is the document processing platform for AI",
+      "extra": {
+        "topics": [
+          "agents",
+          "application",
+          "data",
+          "fine-tuning",
+          "framework",
+          "llamaindex",
+          "llm",
+          "multi-agents",
+          "rag",
+          "vector-database"
+        ],
+        "license": "MIT",
+        "created": "2022-11-02",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "dipakkr/awesome-ai-engineering",
+      "url": "https://github.com/dipakkr/awesome-ai-engineering",
+      "date": "2026-10-21",
+      "signal": 22550,
+      "signal_name": "stars",
+      "summary": "🚀 A curated collection of AI engineering resources, roadmaps, tools, and projects covering LLMs, RAG, AI Agents, MCP, fine-tuning, evaluations, and production AI systems.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-agents",
+          "ai-engineering",
+          "ai-projects",
+          "ai-resources",
+          "ai-tools",
+          "artificial-intelligence",
+          "awesome-lists",
+          "deep-learning",
+          "fine-tuning",
+          "generative-ai",
+          "large-language-models",
+          "learning-resources",
+          "llm",
+          "llmops",
+          "machine-learning",
+          "mcp",
+          "prompt-engineering",
+          "rag"
+        ],
+        "license": "MIT",
+        "created": "2018-09-17",
+        "pushed": "2026-10-21",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "huggingface/peft",
+      "url": "https://github.com/huggingface/peft",
+      "date": "2026-11-10",
+      "signal": 21881,
+      "signal_name": "stars",
+      "summary": "🤗 PEFT: State-of-the-art Parameter-Efficient Fine-Tuning.",
+      "extra": {
+        "topics": [
+          "adapter",
+          "diffusion",
+          "fine-tuning",
+          "llm",
+          "lora",
+          "parameter-efficient-learning",
+          "peft",
+          "python",
+          "pytorch",
+          "transformers"
+        ],
+        "license": "Apache-2.0",
+        "created": "2022-11-25",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "kvcache-ai/ktransformers",
+      "url": "https://github.com/kvcache-ai/ktransformers",
+      "date": "2026-11-10",
+      "signal": 19661,
+      "signal_name": "stars",
+      "summary": "A Flexible Framework for Experiencing Heterogeneous LLM Inference/Fine-tune Optimizations",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2024-07-26",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "meta-llama/llama-cookbook",
+      "url": "https://github.com/meta-llama/llama-cookbook",
+      "date": "2026-05-19",
+      "signal": 18587,
+      "signal_name": "stars",
+      "summary": "Welcome to the Llama Cookbook! This is your go to guide for Building with Llama: Getting started with Inference, Fine-Tuning, RAG. We also show you how to solve end to end problems using Llama model family and using them on various provider services",
+      "extra": {
+        "topics": [
+          "ai",
+          "finetuning",
+          "langchain",
+          "llama",
+          "llama2",
+          "llm",
+          "machine-learning",
+          "python",
+          "pytorch",
+          "vllm"
+        ],
+        "license": "MIT",
+        "created": "2023-07-17",
+        "pushed": "2026-05-19",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "axolotl-ai-cloud/axolotl",
+      "url": "https://github.com/axolotl-ai-cloud/axolotl",
+      "date": "2026-11-10",
+      "signal": 12682,
+      "signal_name": "stars",
+      "summary": "Go ahead and axolotl questions",
+      "extra": {
+        "topics": [
+          "fine-tuning",
+          "llm"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-04-14",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "bentoml/OpenLLM",
+      "url": "https://github.com/bentoml/OpenLLM",
+      "date": "2026-11-09",
+      "signal": 12591,
+      "signal_name": "stars",
+      "summary": "Run any open-source LLMs, such as DeepSeek and Llama, as OpenAI compatible API endpoint in the cloud.",
+      "extra": {
+        "topics": [
+          "bentoml",
+          "fine-tuning",
+          "llama",
+          "llama2",
+          "llama3-1",
+          "llama3-2",
+          "llama3-2-vision",
+          "llm",
+          "llm-inference",
+          "llm-ops",
+          "llm-serving",
+          "llmops",
+          "mistral",
+          "mlops",
+          "model-inference",
+          "open-source-llm",
+          "openllm",
+          "vicuna"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-04-19",
+        "pushed": "2026-11-09",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ludwig-ai/ludwig",
+      "url": "https://github.com/ludwig-ai/ludwig",
+      "date": "2026-11-09",
+      "signal": 11792,
+      "signal_name": "stars",
+      "summary": "Low-code framework for building custom LLMs, neural networks, and other AI models",
+      "extra": {
+        "topics": [
+          "computer-vision",
+          "data-centric",
+          "data-science",
+          "deep",
+          "deep-learning",
+          "deeplearning",
+          "fine-tuning",
+          "learning",
+          "llama",
+          "llama2",
+          "llm",
+          "llm-training",
+          "machine-learning",
+          "machinelearning",
+          "mistral",
+          "ml",
+          "natural-language",
+          "natural-language-processing",
+          "neural-network",
+          "pytorch"
+        ],
+        "license": "Apache-2.0",
+        "created": "2018-12-27",
+        "pushed": "2026-11-09",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "MakazhanAlpamys/Soup",
+      "url": "https://github.com/MakazhanAlpamys/Soup",
+      "date": "2026-11-10",
+      "signal": 10442,
+      "signal_name": "stars",
+      "summary": "Fine-tune LLMs from one YAML. Layer streaming trains an 8B model on a 4 GB laptop GPU.",
+      "extra": {
+        "topics": [
+          "cli",
+          "consumer-gpu",
+          "dpo",
+          "fine-tuning",
+          "gguf",
+          "huggingface",
+          "llm",
+          "llmops",
+          "local-ai",
+          "local-llm",
+          "lora",
+          "low-vram",
+          "machine-learning",
+          "ollama",
+          "peft",
+          "python",
+          "pytorch",
+          "qlora",
+          "sft",
+          "transformers"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-02-20",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "oumi-ai/oumi",
+      "url": "https://github.com/oumi-ai/oumi",
+      "date": "2026-11-10",
+      "signal": 9431,
+      "signal_name": "stars",
+      "summary": "Easily fine-tune (SFT/RL), evaluate, and deploy Qwen, Gemma, or any open agentic LLM/VLM!",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "dpo",
+          "fine-tuning",
+          "gemma",
+          "gpt-oss",
+          "grpo",
+          "inference",
+          "llama",
+          "llm",
+          "llm-as-a-judge",
+          "llm-evaluation",
+          "llms",
+          "lora",
+          "pytorch",
+          "qwen",
+          "reinforcement-learning",
+          "sft",
+          "synthetic-data",
+          "tool-calling",
+          "vlm"
+        ],
+        "license": "Apache-2.0",
+        "created": "2024-05-07",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Neywa-Labs/mlx-vlm",
+      "url": "https://github.com/Neywa-Labs/mlx-vlm",
+      "date": "2026-11-10",
+      "signal": 5832,
+      "signal_name": "stars",
+      "summary": "MLX-VLM is a package for inference and fine-tuning of Vision Language Models (VLMs) on your Mac using MLX.",
+      "extra": {
+        "topics": [
+          "apple-silicon",
+          "florence2",
+          "idefics",
+          "llava",
+          "llm",
+          "local-ai",
+          "mlx",
+          "molmo",
+          "paligemma",
+          "pixtral",
+          "vision-framework",
+          "vision-language-model",
+          "vision-transformer"
+        ],
+        "license": "MIT",
+        "created": "2024-04-16",
+        "pushed": "2026-11-10",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "h2oai/h2o-llmstudio",
+      "url": "https://github.com/h2oai/h2o-llmstudio",
+      "date": "2026-11-09",
+      "signal": 5194,
+      "signal_name": "stars",
+      "summary": "H2O LLM Studio - a framework and no-code GUI for fine-tuning LLMs. Documentation: https://docs.h2o.ai/h2o-llmstudio/",
+      "extra": {
+        "topics": [
+          "ai",
+          "chatbot",
+          "chatgpt",
+          "fedramp",
+          "fine-tuning",
+          "finetuning",
+          "generative",
+          "generative-ai",
+          "gpt",
+          "llama",
+          "llama2",
+          "llm",
+          "llm-training"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-04-17",
+        "pushed": "2026-11-09",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "predibase/lorax",
+      "url": "https://github.com/predibase/lorax",
+      "date": "2026-05-28",
+      "signal": 3835,
+      "signal_name": "stars",
+      "summary": "Multi-LoRA inference server that scales to 1000s of fine-tuned LLMs",
+      "extra": {
+        "topics": [
+          "fine-tuning",
+          "gpt",
+          "llama",
+          "llm",
+          "llm-inference",
+          "llm-serving",
+          "llmops",
+          "lora",
+          "model-serving",
+          "pytorch",
+          "transformers"
+        ],
+        "license": "Apache-2.0",
+        "created": "2023-10-20",
+        "pushed": "2026-05-28",
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Is Persona Generalization Predictable?",
+      "url": "http://arxiv.org/abs/2611.12864v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Persona generalization occurs when fine-tuning a language model in one domain induces behavioral changes in others -- for example, the broadly unsafe behavior observed in emergent misalignment. We discover a surprising \"on-the-line\" phenomenon in persona generalization: in-domain and out-of-domain persona rates across various fine-tuning hyperparameters follow an approximately probit-linear relati",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MaxIM: Maximally Informative Incremental Summarization via Reinforcement Learning",
+      "url": "http://arxiv.org/abs/2611.12825v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI systems must often maintain bounded memory of unbounded interaction histories. However, optimizing the memory representation, and its updates, for downstream task utility is difficult for standard reinforcement learning (RL) due to severe credit assignment bottlenecks induced by sparse, delayed rewards. We introduce MaxIM (Maximally Informative Incremental Memory), a framework that formulates i",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Large Language Models as a Universal Searcher for Open-World Automated Machine Learning",
+      "url": "http://arxiv.org/abs/2611.12791v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Developing effective machine learning models requires complex manual tuning, while current Automated Machine Learning (AutoML) frameworks remain domain-specific and isolate model architecture, training hyperparameter, and data ratio optimization. Here, we bridge this gap by proposing a universal, large language model (LLM)-based AutoML framework that jointly optimizes these configurations for the ",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Finite temperature and pressure structural relaxations including zero-point motion and anharmonicity",
+      "url": "http://arxiv.org/abs/2611.12736v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "At finite temperature and pressure, the equilibrium structure of a crystal minimizes the Gibbs free energy rather than the static Born-Oppenheimer energy. We present WARP (Wyckoff-constrained Anharmonic Relaxations at Pressure and temperature), a symmetry-constrained, variable-cell relaxation based on the stochastic temperature-dependent effective potential method, including anharmonicity and zero",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "NIFT-SQL: Customer-Supervised Table Scoring for Enterprise Text-to-SQL Retrieval",
+      "url": "http://arxiv.org/abs/2611.12731v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Enterprise text-to-SQL starts with finding the tables a question needs, which is hard when a schema spans several databases and hundreds of cryptic tables. We ask whether models trained separately on each customer's example questions, reading only table names, column names, and declared keys, improve table retrieval. NIFT-SQL (Necessity-Informed Fusion for Text-to-SQL) fuses hybrid search over a r",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "VLA Adaptation with Real and Simulated Data: A Case Study on Robotic Chess",
+      "url": "http://arxiv.org/abs/2611.12676v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Vision-language-action (VLA) models are trained as general-purpose foundation models for robot learning, and require fine-tuning for each downstream task and robot. This raises practical questions such as how much data and training updates are needed, how checkpoints should be selected, and whether simulation can be leveraged to alleviate the cost of real data collection. We study these questions ",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "When Does Sliced Inference Pay Off? Resolution, Tiling and Dense Fusion for Small Object Detection",
+      "url": "http://arxiv.org/abs/2611.12657v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Sliced inference such as SAHI is the standard remedy for small objects in high-resolution imagery, but its gains are usually measured against low-resolution baselines. We revisit sliced inference with scale as the explicit variable and ask when tiling actually pays off. We compare seven dense detectors from four families on VisDrone and DOTA, under pre-specified hypotheses, calibration-only tuning",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Adapting Small Language Models to Romanized Nepali: Tokenizer Fertility, Reference Likelihood, and Generation Metrics",
+      "url": "http://arxiv.org/abs/2611.12628v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Romanized Nepali, Nepali written in Latin script, is common in digital communication but has no standard spelling and few resources, and it is unclear how reliably small open language models can be adapted to it. We adapt three 2-3B base models from different families, Llama-3.2-3B, Qwen2.5-3B, and Gemma-2-2B, with QLoRA on 9,000 instruction examples produced by deterministic transliteration of Ne",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Learning inexact alternating minimization for convex problems with quadratic coupling",
+      "url": "http://arxiv.org/abs/2611.12544v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Alternating minimization is a standard tool for optimization problems with two coupled variable blocks. Its cost is dominated by the inner subproblem solvers, which rarely have a closed-form solution. In this paper, we propose to learn an inexact alternating scheme in which neural networks approximate the subproblem solution at each iteration. For convex problems with quadratic couplings between t",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "EditJudge-Bench: Auditing VLM Image-Edit Judges with Synthetic Ground Truth",
+      "url": "http://arxiv.org/abs/2611.12524v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Vision-language models (VLMs) are increasingly used as automated judges for image-editing benchmarks, yet their reliability is poorly understood. Auditing these judges is difficult because real edited images lack controlled ground truth and entangle the requested changes with model artefacts, unintended side effects, and ambiguous degrees of success. In this paper, we introduce EditJudge-Bench, a ",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Textraction: Unified Text-Guided Speaker Extraction and Enhancement for Single- and Multi-Channel Audio",
+      "url": "http://arxiv.org/abs/2611.12493v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We present Textraction, a text-guided speaker extraction framework that enables the selective extraction of desired speakers or noise sources from an audio mixture using only natural-language descriptions. The proposed method operates within a single unified model that supports both single-channel and multi-channel inputs and it allows conditioning on either semantic textual descriptions of the ta",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "When Handshakes Go Dark: An Adaptive Semantic-Sequential Fusion Framework for Encrypted Traffic Classification",
+      "url": "http://arxiv.org/abs/2611.12442v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Encrypted traffic classification is essential for network security monitoring and traffic management. Self-supervised pre-training can learn reusable representations from large-scale unlabeled traffic, but TLS 1.3, QUIC, and privacy mechanisms such as Encrypted Client Hello (ECH) increasingly conceal application, handshake, and service-identifying information. Observable upper-layer bytes are ther",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Neural Multipath Fields for 6G FR3 Digital Twins: Latent Adaptation from Sparse Data",
+      "url": "http://arxiv.org/abs/2611.12425v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Wireless digital twins are essential for environment-aware 6G communications, motivating the investigation of frequency range 3 (FR3), an emerging mid-band regime offering a promising balance between bandwidth and propagation characteristics. Neural Radio Frequency (RF) fields provide continuous surrogates for site-specific radio propagation, but adapting a scene-specific field to a new environmen",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "PhysOPSD: Code as Privilege for Physically Plausible Video Generation",
+      "url": "http://arxiv.org/abs/2611.12411v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "While modern video generative models achieve remarkable visual fidelity, they remain noticeably brittle when generating physically plausible dynamics and complex interactions. Targeted post-training is crucial, yet supervised fine-tuning suffers from offline state mismatch, and reinforcement learning is hindered by sparse, ill-defined physical reward functions. On-Policy (Self-)Distillation (OPSD)",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MNN-Pocket-0.3B Technical Report",
+      "url": "http://arxiv.org/abs/2611.12311v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "This technical report presents MNN-Pocket-0.3B, a compact 300M-parameter dense language model designed for efficient on-device deployment and supporting context lengths of up to 32K tokens. With an INT4 deployment footprint of only 173 MB and decoding throughput of up to 466 tokens/s on iPad Pro M5 (Metal), it can be seamlessly integrated into applications on edge devices such as smartphones and s",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agentic ESOpt: Fine-Tuning Long-Horizon LLM Agents with Minimal GPU Requirements",
+      "url": "https://huggingface.co/papers/2608.17310",
+      "date": "2026-08-18",
+      "signal": 69,
+      "signal_name": "upvotes",
+      "summary": "Agentic ESOpt uses evolution strategies for scalable full-parameter fine-tuning of long-horizon LLM agents via trajectory-level reward-weighted updates and parameter-context co-evolution.",
+      "extra": {
+        "keywords": [
+          "evolution strategies",
+          "reinforcement learning",
+          "long-horizon agentic reasoning",
+          "credit assignment",
+          "full-parameter optimization",
+          "Agentic ESOpt",
+          "parameter-context co-evolution",
+          "reward-weighted update",
+          "cosine decay schedule",
+          "WebArena-Lite"
+        ],
+        "github": "https://github.com/zz1358m/Agentic-ESOpt",
+        "github_stars": 84,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SoFT: Soft Targets for Generalizable LLM Fine-Tuning",
+      "url": "https://huggingface.co/papers/2609.32493",
+      "date": "2026-09-26",
+      "signal": 21,
+      "signal_name": "upvotes",
+      "summary": "Soft-target fine-tuning balances learning from multi-teacher demonstrations with preserving base model capabilities via adaptive regularization and domain-specific gradient budgets.",
+      "extra": {
+        "keywords": [
+          "supervised fine-tuning",
+          "soft-target fine-tuning",
+          "KL divergence",
+          "gradient budgets",
+          "multi-teacher distillation",
+          "out-of-distribution generalization"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Cognitive Episodes in LLM Reasoning Traces Enable Interpretable Human Item Difficulty Prediction",
+      "url": "https://huggingface.co/papers/2606.28186",
+      "date": "2026-06-26",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "Epi2Diff framework transforms LRM reasoning traces into cognitive episodes to predict human item difficulty more accurately than existing methods.",
+      "extra": {
+        "keywords": [
+          "Large Reasoning Models",
+          "reasoning traces",
+          "cognitive episodes",
+          "episode sequences",
+          "difficulty prediction",
+          "semantic item representations",
+          "reasoning scale",
+          "effort allocation",
+          "state transitions",
+          "episode-dynamic features"
+        ],
+        "github": "https://github.com/c-steve-wang/Epi2Diff",
+        "github_stars": 2,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SlideDP: Scaling Host-Resident LLM Fine-Tuning Across Multiple GPUs",
+      "url": "https://huggingface.co/papers/2609.34162",
+      "date": "2026-09-28",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "SlideDP improves full-parameter LLM fine-tuning on shared-host multi-GPU systems by reducing host-resource contention and pipeline overhead, achieving higher throughput than existing offloading methods and approaching GPU-resident performance.",
+      "extra": {
+        "keywords": [
+          "layer streaming",
+          "full-parameter fine-tuning",
+          "data-parallel",
+          "SlideDP",
+          "host-resident",
+          "pipeline",
+          "gradient aggregation",
+          "FSDP2",
+          "ZeRO-Offload"
+        ],
+        "github": "https://github.com/RegiaYoung/SlideDP",
+        "github_stars": 20,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Omega-S: A Functional Resilience Index for LLM Fine-Tuning",
+      "url": "https://huggingface.co/papers/2608.03887",
+      "date": "2026-08-04",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "Omega-S is a lightweight, data-free regularization penalty for low-rank fine-tuning that improves retention of original model capabilities by penalizing variance in weight-matrix node degrees.",
+      "extra": {
+        "keywords": [
+          "LoRA",
+          "Fisher matrix",
+          "EWC",
+          "weight decay",
+          "Tr(A^3)",
+          "node degrees",
+          "low-rank fine-tuning",
+          "retention ratio",
+          "HumanEval",
+          "Llama-3-8B"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Rethinking LLM Fine-Tuning via Weight Space Reparameterization: Preserving Safety during Downstream Adaptation",
+      "url": "https://huggingface.co/papers/2610.26443",
+      "date": "2026-10-20",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "WSR-Tune reparameterizes weight matrices to concentrate safety information into frozen directions, reducing interference and improving the trade-off between downstream adaptation and safety retention in large language models.",
+      "extra": {
+        "keywords": [
+          "large language models",
+          "LLMs",
+          "fine-tuning",
+          "safety behavior",
+          "safety-relevant neurons",
+          "update directions",
+          "parameter space",
+          "weight space reparameterization",
+          "safety-conditioned basis",
+          "weight matrices",
+          "safety-critical directions",
+          "frozen directions",
+          "complementary directions",
+          "downstream adaptation",
+          "disentangle safety and task information",
+          "interference between objectives",
+          "safety retention"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Fine-Tuning a 3B-Parameter LLM on a Smartphone: Characterizing Sustained Training",
+      "url": "https://huggingface.co/papers/2610.06325",
+      "date": "2026-10-05",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "On-device fine-tuning of multi-billion-parameter LLMs is feasible on modern phones, yielding personalization comparable to server-trained adapters, though sustained training requires runtime and OS optimizations to maintain efficiency.",
+      "extra": {
+        "keywords": [
+          "LLM fine-tuning",
+          "adapters",
+          "on-device training",
+          "MLX",
+          "backward pass",
+          "thermal throttling",
+          "energy consumption",
+          "mobile inference"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Strategy Accumulation and Guided Execution for Automated LLM Fine-Tuning",
+      "url": "https://huggingface.co/papers/2609.22257",
+      "date": "2026-09-06",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "SAGE accumulates automated fine-tuning strategies across tasks via a structured experience repository to guide new searches, significantly improving performance over stateless methods.",
+      "extra": {
+        "keywords": [
+          "Monte Carlo Tree Search",
+          "multi-agent pipeline",
+          "Distillation Agent",
+          "experience repository",
+          "cross-task insights",
+          "automated fine-tuning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "OraclePhys: A Systematic Framework for LLM Fine-Tuning on Structural Mechanics",
+      "url": "https://huggingface.co/papers/2608.17162",
+      "date": "2026-08-17",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Fine-tuning teaches only what the label’s answer form specifies, with ranking objectives building forward models, scalar objectives partial ones, and GRPO merely routing, while an 8B model reaches specialist-level structural response prediction.",
+      "extra": {
+        "keywords": [
+          "fine-tuning",
+          "OraclePhys-Bench",
+          "finite-element oracle",
+          "counterfactual edit",
+          "OraclePhys-30K",
+          "ranking objective",
+          "forward model",
+          "scalar objective",
+          "boolean",
+          "vector-scalar",
+          "GRPO",
+          "advantage-weighted scores",
+          "held-out physics",
+          "routing",
+          "LLM",
+          "8B",
+          "zero-shot",
+          "32-shot"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "HermesHFL: Incentive-Compatible Hierarchical Federated Unlearning for Dynamic LLM Fine-Tuning",
+      "url": "https://huggingface.co/papers/2607.11528",
+      "date": "2026-08-05",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "HermesHFL enables selective unlearning and dynamic participation in hierarchical federated LLM fine-tuning via LoRA and neural-guided evolutionary optimization.",
+      "extra": {
+        "keywords": [
+          "hierarchical federated unlearning",
+          "large language model",
+          "parameter-efficient fine-tuning",
+          "LoRA",
+          "bilevel evolutionary optimization",
+          "CMA-ES",
+          "CHC",
+          "neural surrogate"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ZO-Act: Efficient Zeroth-Order Fine-Tuning via One-Shot Activation-Informed Low-Rank Subspaces",
+      "url": "https://huggingface.co/papers/2607.01125",
+      "date": "2026-07-01",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "ZO-Act improves zeroth-order fine-tuning of large language models by restricting weight perturbations to low-rank activation-derived subspaces, reducing estimator variance and supporting quantized models.",
+      "extra": {
+        "keywords": [
+          "zeroth-order optimization",
+          "ZO-Act",
+          "activation-informed",
+          "low-rank subspace",
+          "coefficient matrices",
+          "momentum-based optimizers",
+          "quantized LLM fine-tuning",
+          "finite-difference error"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AsFT: Anchoring Safety During LLM Fine-Tuning Within Narrow Safety Basin",
+      "url": "https://huggingface.co/papers/2506.08473",
+      "date": "2026-06-10",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "AsFT preserves large language model safety during fine-tuning by restricting weight updates to the alignment direction, reducing harmful outputs while improving task performance.",
+      "extra": {
+        "keywords": [
+          "large language models",
+          "fine-tuning",
+          "alignment direction",
+          "orthogonal perturbations",
+          "narrow safety basin",
+          "AsFT",
+          "weight updates"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "PowerFlow: Unlocking the Dual Nature of LLMs via Principled Distribution Matching",
+      "url": "https://huggingface.co/papers/2603.18363",
+      "date": "2026-05-25",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "PowerFlow reformulates unsupervised LLM fine-tuning as distribution matching via GFlowNet sampling to control reasoning and creativity through length-aware trajectory balance.",
+      "extra": {
+        "keywords": [
+          "Unsupervised Reinforcement Learning from Internal Feedback",
+          "RLIF",
+          "GFlowNet",
+          "Trajectory-Balance objective",
+          "length-aware",
+          "α-power distributions",
+          "autoregressive generation",
+          "distribution matching",
+          "GRPO"
+        ],
+        "github": "https://github.com/Chenruishuo/PowerFlow",
+        "github_stars": 5,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Representation Without Reward: A JEPA Audit for LLM Fine-Tuning",
+      "url": "https://huggingface.co/papers/2605.15394",
+      "date": "2026-05-14",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Joint-embedding predictive architectures were evaluated for coupling hidden-state geometry to decoded task accuracy in language-model fine-tuning, finding weak coupling and no robust improvement across regularization and predictor-target asymmetry methods.",
+      "extra": {
+        "keywords": [
+          "joint-embedding predictive architectures",
+          "JEPAs",
+          "LoRA",
+          "hidden-state geometry",
+          "cross-entropy",
+          "Fisher-metric Jacobi residuals",
+          "trajectory-shape regularisation",
+          "decoder-visible JEPA",
+          "full fine-tuning"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Jackrong LLM Fine-Tuning Guide",
+      "url": "https://github.com/R6410418/Jackrong-llm-finetuning-guide",
+      "date": "2026-07-07",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48812171",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Offline context-aware dictation without screenshots, LLMs or fine-tuning",
+      "url": "https://morethanamachine.com/posts/handy-context/",
+      "date": "2026-11-08",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50417052",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Best LLM Fine-Tuning Services: What to Look for in 2026",
+      "url": "https://www.rebiha.com/best-llm-fine-tuning-services",
+      "date": "2026-10-20",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50168792",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "LLM Fine-Tuning and Model Iteration Loop: Improve AI Apps in Production",
+      "url": "https://www.youtube.com/watch?v=Um7sjLEhaQM",
+      "date": "2026-07-02",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48760539",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "The LLM Fine-Tuning Guide",
+      "url": "https://www.promptinjection.net/p/the-ultimate-llm-ai-fine-tuning-guide-tutorial",
+      "date": "2026-05-17",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48169614",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "I built an LLM debugger for fine-tuning failures",
+      "url": "https://github.com/gradian-ai/gradian",
+      "date": "2026-08-04",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49168696",
+        "comments": 3,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "The Guide to Fine-Tuning LLMs",
+      "url": "https://arxiv.org/abs/2408.13296",
+      "date": "2026-06-16",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48563900",
+        "comments": 1,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Fine-tuning LLMs on 30M academic papers from ScholarAPI",
+      "url": "https://scholarapi.net/case_study/ai_training",
+      "date": "2026-06-08",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48446928",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Fine-tuning an LLM to write docs like it's 1995",
+      "url": "https://passo.uno/fine-tuning-docs-llm/",
+      "date": "2026-06-05",
+      "signal": 196,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48408442",
+        "comments": 67,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Fixing LLM Writing with Distribution Fine Tuning",
+      "url": "https://rosmine.ai/2026/05/18/fixing-llm-writing-with-distribution-fine-tuning/",
+      "date": "2026-05-18",
+      "signal": 7,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48184786",
+        "comments": 1,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Does a vibe leak? Fine-tuning an LLM on an attitude it never states",
+      "url": "https://github.com/leo-dcfa/ai-latent-bias-transfer",
+      "date": "2026-06-15",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48546587",
+        "comments": 0,
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "TimeLLM: Time Series Forecasting by Reprogramming Large Language Models",
+      "url": "https://doi.org/10.1201/9781003616719-7",
+      "date": "2026-05-18",
+      "signal": 1048,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Accelerating scientific discovery with Co-Scientist",
+      "url": "https://doi.org/10.1038/s41586-026-10644-y",
+      "date": "2026-05-19",
+      "signal": 988,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An open vision-language model for diverse medical applications",
+      "url": "https://doi.org/10.1038/s41591-026-04626-w",
+      "date": "2026-10-01",
+      "signal": 984,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Gemma 4 Technical Report",
+      "url": "https://doi.org/10.48550/arxiv.2607.02770",
+      "date": "2026-07-02",
+      "signal": 768,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Can ChatGPT forecast stock price movements? Return predictability and large language models",
+      "url": "https://doi.org/10.1016/j.jfineco.2026.104335",
+      "date": "2026-07-24",
+      "signal": 729,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Causal World Modeling for Robot Control",
+      "url": "https://doi.org/10.15607/rss.2026.xxii.016",
+      "date": "2026-07-13",
+      "signal": 430,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "π*₀.₆: a VLA That Learns From Experience",
+      "url": "https://doi.org/10.15607/rss.2026.xxii.087",
+      "date": "2026-07-13",
+      "signal": 408,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Neural Radiance Fields in 3D Vision: A Comprehensive Review",
+      "url": "https://doi.org/10.26599/cvm.2026.9450535",
+      "date": "2026-05-15",
+      "signal": 333,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A multi-agent system for automating scientific discovery",
+      "url": "https://doi.org/10.1038/s41586-026-10652-y",
+      "date": "2026-05-19",
+      "signal": 322,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Machine psychology for language models",
+      "url": "https://doi.org/10.1126/sciadv.aec1912",
+      "date": "2026-10-28",
+      "signal": 299,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Exploring Large Language Model‐Based Intelligent Agents: Definitions, Methods, and Prospects",
+      "url": "https://doi.org/10.1002/widm.70111",
+      "date": "2026-07-24",
+      "signal": 286,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Retrieval-augmented generation for natural language processing: a survey",
+      "url": "https://doi.org/10.1007/s10462-026-11605-7",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Cosmos 3: Omnimodal World Models for Physical AI",
+      "url": "https://doi.org/10.48550/arxiv.2606.02800",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "MolmoAct: Action Reasoning Models that can Reason in Space",
+      "url": "https://doi.org/10.1109/icra57385.2026.11696546",
+      "date": "2026-06-01",
+      "signal": 236,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mamdaliof/YoDINO-DINO-is-all-YOLO-needs",
+      "url": "https://github.com/mamdaliof/YoDINO-DINO-is-all-YOLO-needs",
+      "date": "2026-06-21",
+      "signal": 11,
+      "signal_name": "stars",
+      "summary": "General-purpose computer vision framework merging YOLO detection, DINO foundation models, and Parameter-Efficient Fine-Tuning (PEFT).",
+      "extra": {
+        "topics": [
+          "computer-vision",
+          "dino",
+          "object",
+          "peft",
+          "vit",
+          "vpt",
+          "yolo"
+        ],
+        "license": null,
+        "created": "2026-06-21",
+        "pushed": "2026-06-28",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AdilShamim8/Customer-Support-Chatbot-102",
+      "url": "https://github.com/AdilShamim8/Customer-Support-Chatbot-102",
+      "date": "2026-05-27",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "A fully production-ready AI customer support system built on Retrieval-Augmented Generation (RAG), advanced prompt engineering, hybrid search, reranking, and parameter-efficient fine-tuning.",
+      "extra": {
+        "topics": [
+          "chatbot",
+          "chatbot-application",
+          "chatbots",
+          "fine-tuning",
+          "llm",
+          "llms",
+          "rag",
+          "rag-chatbot",
+          "rag-pipeline"
+        ],
+        "license": "MIT",
+        "created": "2026-05-27",
+        "pushed": "2026-10-15",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bytemonkk/Parameter-Efficient-Adaptation-of-DINOv2",
+      "url": "https://github.com/bytemonkk/Parameter-Efficient-Adaptation-of-DINOv2",
+      "date": "2026-06-03",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Parameter-Efficient Adaptation of DINOv2 for Remote Sensing Semantic Segmentation. Explores decoder architecture benchmarking, linear probing, full fine-tuning, and LoRA-based adaptation for land-cover segmentation on the LOVEDA dataset.",
+      "extra": {
+        "topics": [
+          "dinov2",
+          "fine-tuning",
+          "remote-sensing",
+          "segementation",
+          "transformers"
+        ],
+        "license": null,
+        "created": "2026-06-03",
+        "pushed": "2026-07-29",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AI-XPM-group/CFR-SAM",
+      "url": "https://github.com/AI-XPM-group/CFR-SAM",
+      "date": "2026-06-01",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "A parameter-efficient fine-tuning framework for adapting SAM to nuclei instance segmentation and classification.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-01",
+        "pushed": "2026-10-19",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "generaldi/NaRA",
+      "url": "https://github.com/generaldi/NaRA",
+      "date": "2026-05-18",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "Official implementation of NARA, a parameter-efficient fine-tuning (PEFT) method for diffusion-based language models (dLLMs).",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-18",
+        "pushed": "2026-06-17",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SKTeamLab/esm-msr",
+      "url": "https://github.com/SKTeamLab/esm-msr",
+      "date": "2026-05-24",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Predicting and visualizing (multi-)mutant protein stability via parameter efficient fine-tuning of ESM3",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-24",
+        "pushed": "2026-11-10",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "fhryzal/indo-llm-finetune",
+      "url": "https://github.com/fhryzal/indo-llm-finetune",
+      "date": "2026-06-03",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Parameter-efficient fine-tuning of open-source LLMs for Indonesian language understanding (QA, instruction-following) on AMD ROCm",
+      "extra": {
+        "topics": [
+          "amd",
+          "bahasa-indonesia",
+          "fine-tuning",
+          "huggingface",
+          "indonesian",
+          "instruction-tuning",
+          "llm",
+          "lora",
+          "peft",
+          "qlora",
+          "rocm",
+          "transformers"
+        ],
+        "license": "MIT",
+        "created": "2026-06-03",
+        "pushed": "2026-06-03",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Highsun/LLMCloud",
+      "url": "https://github.com/Highsun/LLMCloud",
+      "date": "2026-10-14",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A Cloud-Based Platform for Parameter-Efficient Large Language Model Fine-Tuning",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-14",
+        "pushed": "2026-11-06",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Vecesta-co/lora-finetune-eval-hub",
+      "url": "https://github.com/Vecesta-co/lora-finetune-eval-hub",
+      "date": "2026-10-29",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "LoRA parameter-efficient fine-tuning and evaluation engine built from first principles by Vecesta.co",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-10-29",
+        "pushed": "2026-10-29",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MoeinFirouzi/bloom-prompt-tuning",
+      "url": "https://github.com/MoeinFirouzi/bloom-prompt-tuning",
+      "date": "2026-07-10",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "An end-to-end implementation of Prompt Tuning on BLOOM-560M using Hugging Face Transformers and PEFT for parameter-efficient fine-tuning.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-07-10",
+        "pushed": "2026-07-10",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MoeinFirouzi/gemma2-qlora-classification-imdb",
+      "url": "https://github.com/MoeinFirouzi/gemma2-qlora-classification-imdb",
+      "date": "2026-07-05",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Fine-tuning Gemma2-2B for IMDB sentiment classification using LoRA and 4-bit quantization (QLoRA). This project demonstrates efficient parameter-efficient fine-tuning (PEFT) with Hugging Face Transformers, covering data preprocessing, model quantization, training, evaluation, and inference for binary sentiment analysis.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-07-05",
+        "pushed": "2026-07-05",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "maruf-apm/FoodWarm",
+      "url": "https://github.com/maruf-apm/FoodWarm",
+      "date": "2026-07-24",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Parameter-Efficient Fine-Tuning (PEFT) of Vision Transformer (ViT-B/16) on the Food-101 dataset using LoRA & PyTorch Lightning. Optimized for low-memory footprint and fast web API inference",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-24",
+        "pushed": "2026-07-25",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "aabestn/parameter-efficient-llm-finetuning",
+      "url": "https://github.com/aabestn/parameter-efficient-llm-finetuning",
+      "date": "2026-08-20",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Fine tuning Project",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-20",
+        "pushed": "2026-08-20",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ibrahimtareen619/LoRA_Parameter_Efficient_Fine_Tuning",
+      "url": "https://github.com/ibrahimtareen619/LoRA_Parameter_Efficient_Fine_Tuning",
+      "date": "2026-08-06",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-06",
+        "pushed": "2026-08-06",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bmcfarlin/qwen-fine-tuning",
+      "url": "https://github.com/bmcfarlin/qwen-fine-tuning",
+      "date": "2026-06-22",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Parameter-Efficient Fine-Tuning (LoRA) for industry specific AI",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-22",
+        "pushed": "2026-06-22",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "microsoft/mttl",
+      "url": "https://github.com/microsoft/mttl",
+      "date": "2026-10-27",
+      "signal": 116,
+      "signal_name": "stars",
+      "summary": "Building modular LMs with parameter-efficient fine-tuning.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2022-07-11",
+        "pushed": "2026-10-27",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "THUDM/Awesome-Parameter-Efficient-Fine-Tuning-for-Foundation-Models",
+      "url": "https://github.com/THUDM/Awesome-Parameter-Efficient-Fine-Tuning-for-Foundation-Models",
+      "date": "2026-11-08",
+      "signal": 114,
+      "signal_name": "stars",
+      "summary": "Parameter-Efficient Fine-Tuning for Foundation Models",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2025-01-23",
+        "pushed": "2026-11-08",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "revaldianggara/PEFT-SingLoRA",
+      "url": "https://github.com/revaldianggara/PEFT-SingLoRA",
+      "date": "2026-09-27",
+      "signal": 52,
+      "signal_name": "stars",
+      "summary": "PEFT-compatible SingLoRA: single-matrix low-rank adaptation with half the adapter parameters of standard LoRA, drop-in for transformers workflows.",
+      "extra": {
+        "topics": [
+          "adapter",
+          "deep-learning",
+          "fine-tuning",
+          "llm",
+          "lora",
+          "machine-learning",
+          "parameter-efficient",
+          "peft",
+          "pytorch",
+          "singlora",
+          "transformers"
+        ],
+        "license": "BSD-2-Clause",
+        "created": "2022-05-13",
+        "pushed": "2026-09-27",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ShadowLLM/shadow-peft",
+      "url": "https://github.com/ShadowLLM/shadow-peft",
+      "date": "2026-09-11",
+      "signal": 37,
+      "signal_name": "stars",
+      "summary": "Parameter-Efficient Fine-Tuning For Edge-Cloud Collabrative Computing",
+      "extra": {
+        "topics": [
+          "edge-computing",
+          "embodied-intelligence",
+          "llm",
+          "parameter-efficient-fine-tuning",
+          "peft",
+          "post-training"
+        ],
+        "license": "MIT",
+        "created": "2026-03-16",
+        "pushed": "2026-09-11",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "computational-cell-analytics/peft-sam",
+      "url": "https://github.com/computational-cell-analytics/peft-sam",
+      "date": "2026-06-06",
+      "signal": 37,
+      "signal_name": "stars",
+      "summary": "Parameter Efficient Fine-Tuning of Segment Anything Model",
+      "extra": {
+        "topics": [
+          "finetuning",
+          "medical-imaging",
+          "medico-sam",
+          "micro-sam",
+          "microscopy",
+          "peft",
+          "qlora",
+          "sam",
+          "segment-anything",
+          "segmentation"
+        ],
+        "license": "MIT",
+        "created": "2024-08-02",
+        "pushed": "2026-06-06",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "IBM/peft-geofm",
+      "url": "https://github.com/IBM/peft-geofm",
+      "date": "2026-09-18",
+      "signal": 33,
+      "signal_name": "stars",
+      "summary": "Parameter-Efficient Fine-Tuning for Geospatial Foundation Models",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-04-22",
+        "pushed": "2026-09-18",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "braindecode/OpenEEGBench",
+      "url": "https://github.com/braindecode/OpenEEGBench",
+      "date": "2026-07-09",
+      "signal": 27,
+      "signal_name": "stars",
+      "summary": "Benchmarking parameter-efficient fine-tuning of EEG foundation models",
+      "extra": {
+        "topics": [],
+        "license": "BSD-3-Clause",
+        "created": "2026-03-24",
+        "pushed": "2026-07-09",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "odunola499/f5-lora",
+      "url": "https://github.com/odunola499/f5-lora",
+      "date": "2026-09-02",
+      "signal": 20,
+      "signal_name": "stars",
+      "summary": "Parameter-efficient LoRA and full fine-tuning for F5-TTS voice cloning and style transfer.",
+      "extra": {
+        "topics": [
+          "f5-tts",
+          "huggingface",
+          "lora",
+          "pytorch-lightning",
+          "text-to-speech",
+          "voice-cloning"
+        ],
+        "license": null,
+        "created": "2025-10-11",
+        "pushed": "2026-09-02",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "doem97/metalora",
+      "url": "https://github.com/doem97/metalora",
+      "date": "2026-09-12",
+      "signal": 20,
+      "signal_name": "stars",
+      "summary": "[CVPR 2025 Highlight] Meta LoRA / MetaPEFT: Meta-Learning Hyperparameters for Parameter-Efficient Fine-Tuning (LoRA, Adapter, Prompt Tuning) — Automatic hyperparameter optimization via bi-level meta-learning",
+      "extra": {
+        "topics": [
+          "adapter",
+          "cvpr-2025",
+          "cvpr2025",
+          "hyperparameter-optimization",
+          "long-tailed-recognition",
+          "lora",
+          "low-rank-adaptation",
+          "meta-learning",
+          "meta-learning-lora",
+          "meta-lora",
+          "meta-peft",
+          "metalora",
+          "metapeft",
+          "metapeft-cvpr2025",
+          "parameter-efficient-fine-tuning",
+          "peft",
+          "prompt-tuning",
+          "remote-sensing",
+          "vision-transformer",
+          "vit"
+        ],
+        "license": "Apache-2.0",
+        "created": "2025-06-14",
+        "pushed": "2026-09-12",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "MaxwellYaoNi/PACE",
+      "url": "https://github.com/MaxwellYaoNi/PACE",
+      "date": "2026-06-05",
+      "signal": 18,
+      "signal_name": "stars",
+      "summary": "[NeurIPS 2024 Spotlight] Official implementation for \"PACE: Marrying generalization in PArameter-efficient fine-tuning with Consistency rEgularization\"",
+      "extra": {
+        "topics": [
+          "generalization",
+          "large-language-models",
+          "peft",
+          "transformers",
+          "vision-transformer"
+        ],
+        "license": "MIT",
+        "created": "2024-09-15",
+        "pushed": "2026-06-05",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "DevDizzle/lora-finetune-lab",
+      "url": "https://github.com/DevDizzle/lora-finetune-lab",
+      "date": "2026-10-13",
+      "signal": 14,
+      "signal_name": "stars",
+      "summary": "Parameter-efficient fine-tuning of LLMs using QLoRA — 4-bit quantization, PEFT adapters, W&B experiment tracking",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-02-11",
+        "pushed": "2026-10-13",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "cheslyn0712/CoT_is_Not_the_Chain_of_Truth",
+      "url": "https://github.com/cheslyn0712/CoT_is_Not_the_Chain_of_Truth",
+      "date": "2026-10-29",
+      "signal": 11,
+      "signal_name": "stars",
+      "summary": "AI safety and mechanistic interpretability of CoT reasoning. ICML 2026: routing-Jacobian analysis and parameter-efficient critical-head safety fine-tuning.",
+      "extra": {
+        "topics": [
+          "ai-interpretability",
+          "ai-safety",
+          "attention-heads",
+          "chain-of-thought",
+          "harmbench",
+          "icml-2026",
+          "jacobian-analysis",
+          "llm-safety",
+          "mechanistic-interpretability",
+          "misinformation",
+          "reasoning-models"
+        ],
+        "license": null,
+        "created": "2026-01-28",
+        "pushed": "2026-10-29",
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "3R-Adapter: Retrieval, Rewiring, and Refinement for Efficient Adaptation of 3D Reconstruction Model",
+      "url": "http://arxiv.org/abs/2611.11964v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Feed-forward 3D reconstruction models have demonstrated strong generalization under large-scale pre-training, yet they struggle in long-tail scenarios such as low-light reconstruction, joint human-scene reconstruction, and test-time adaptation. We observe relational attention structure collapse, manifested as the failure of cross-view correspondences, as a primary cause of these limitations. While",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RBA: A Read-out Basis Adapter for Parameter-Efficient Interactive OCTA Vessel Segmentation with SEEM",
+      "url": "http://arxiv.org/abs/2611.11906v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Retinal disease monitoring with optical coherence tomography angiography (OCTA) relies on segmentation of vessels and the foveal avascular zone (FAZ). Promptable models such as SEEM (Segment Everything Everywhere All at Once) allow click-based refinement, but without adaptation SEEM segments thin vessels poorly and needs many clicks. Fully fine-tuning its 342 million parameters on a few hundred im",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Full Fine-Tuning is not the Problem: Why Adam Fails and SGD Succeeds in Few-Shot CLIP Adaptation",
+      "url": "http://arxiv.org/abs/2611.11152v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Few-shot CLIP adaptation is often treated as a parameterization problem. Full fine-tuning is assumed to overfit, so parameter-efficient fine-tuning (PEFT) methods are preferred. In this paper, we show that this conclusion conflates parameterization with optimization. Across 11 datasets, 3 CLIP backbones, and 5 shot levels, dense full fine-tuning with plain SGD outperforms representative PEFT metho",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Slim Foundation Models for Latency-Critical Recommendation Serving",
+      "url": "http://arxiv.org/abs/2611.11013v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Click-through rate (CTR) prediction is a core component of recommendation and advertising systems. Large language models (LLMs) offer rich semantic priors that improve prediction quality, particularly in cold-start and long-tail settings. Injecting a full-scale LLM into a CTR pipeline is, however, prohibitively expensive at inference time: existing LLM-enhanced CTR methods avoid this cost by cachi",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Adapting Large Language Models via Multi-Task Learning for Mental Health Problem, Emotion, and Sentiment Detection",
+      "url": "http://arxiv.org/abs/2611.10797v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "This study investigates sequential multi-task learning using Parameter-Efficient Fine-Tuning (PEFT), LoRA, and 4-bit quantization on Llama 3.1 8B Instruct for mental health problem detection, emotion detection, and sentiment analysis. Using 4,243 English social media posts, it compares two task sequences and demonstrates that task ordering significantly affects knowledge transfer and task interfer",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Bayesian Low-Rank Posteriors for Scalable Membership Inference",
+      "url": "http://arxiv.org/abs/2611.10455v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Membership inference attacks (MIAs) aim to determine whether a sample was used during the training of a target model. Strong MIAs rely on reference (or shadow) models to estimate target-conditional score distributions, but training such ensembles is computationally expensive for modern large-scale Vision--Language Models (VLMs). In this work, we propose a scalable alternative that replaces explici",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "FedLoVA: Value-Only Aggregation for Federated LoRA Fine-Tuning of Large Language Models",
+      "url": "http://arxiv.org/abs/2611.10248v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Low-Rank Adaptation (LoRA) is a popular parameter-efficient fine-tuning (PEFT) method for fine-tuning of large language models (LLMs), especially in federated learning, due to its strong performance and communication efficiency. In practice, LoRA is applied to the query and value projections of transformer layers without considering the distinct roles of these components. In this work, we analyze ",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Rethinking How to Leverage Cheap Physics for Data-Efficient Neural Operators",
+      "url": "http://arxiv.org/abs/2611.10217v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Neural operators learn mappings from PDE inputs, such as initial conditions and coefficient fields, to the corresponding solutions. Once trained, they can rapidly predict solutions for new inputs. However, obtaining input-solution pairs for supervised training often requires expensive numerical simulations, whereas PDE inputs and governing equations provide inexpensive physical information. This r",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Breaking the Privacy Promise: Gradient Inversion Attacks on Federated Low-Rank Adapted Vision Transformers",
+      "url": "http://arxiv.org/abs/2611.09652v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Parameter-efficient fine-tuning (PEFT) has been increasingly adopted to fine-tune pretrained models with low computational cost and is therefore also preferred in the federated learning paradigm to reduce computational and communication overhead. In this work, we investigate the sparsely explored problem of the risk of private data leakage in LoRA-adapted Vision Transformers (ViTs), where low-rank",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "DINO-Nucleus: Multi-Level Self-Supervised Features for Nucleus Instance Segmentation",
+      "url": "http://arxiv.org/abs/2611.09133v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Nucleus instance segmentation and counting are essential for quantitative microscopy, enabling reliable analysis of cell populations, tissue organization, and disease-related changes. However, accurately separating touching nuclei remains difficult, and many existing approaches rely on complex models or sensitive post-processing procedures. We present DINO-Nucleus, a parameter-efficient framework ",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Latent RL Priors for Data-Efficient Dexterous Manipulation",
+      "url": "http://arxiv.org/abs/2611.08458v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Learning dexterous manipulation from limited visual demonstrations is challenging because policies must acquire both perceptual grounding and precise control, while reinforcement learning (RL) in simulation can acquire rich control behaviors from large-scale interaction with privileged information. We introduce \\textbf{Latent RL Prior}, a two-stage framework that reuses this control knowledge for ",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Towards Label-Efficient Geospatial Foundation Model Adaptation via Positive-Unlabeled Learning for Building Damage Mapping",
+      "url": "http://arxiv.org/abs/2611.08561v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Geospatial foundation models (GFMs) are reshaping remote sensing by shifting the field from task-specific modeling toward general-purpose geospatial intelligence. Mapping the damage to buildings stands to benefit substantially from this shift, as GFMs pretrained on large-scale Earth observation data provide generalizable geospatial representations that can facilitate effective responses to sudden-",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "OptIMerge: Optimization-Based Merging of Diffusion Models",
+      "url": "http://arxiv.org/abs/2611.07543v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The arithmetic merging of weights from multiple task-specific models fine-tuned from a shared base model, commonly known as model souping, has emerged as a popular strategy for multi-task learning without the computational overhead of joint retraining. However, naive scalar weight averaging frequently leads to severe performance degradation when the constituent models learn structurally divergent ",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "From What Is Used to What Is Missing: Rethinking Dynamic Rank in LoRA",
+      "url": "http://arxiv.org/abs/2611.07349v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Parameter-efficient fine-tuning with LoRA is governed by rank, which controls parameter budget and locally accessible task updates. Existing dynamic-rank methods mainly focus on capacity allocation, leaving unresolved whether the current adaptation space is sufficient for the task. We characterize the first-order information boundary of standard factor gradients, showing that their unobservable su",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Scaling Parameter-Efficient Fine-Tuning for Brain Encoding",
+      "url": "https://huggingface.co/papers/2610.26802",
+      "date": "2026-10-19",
+      "signal": 35,
+      "signal_name": "upvotes",
+      "summary": "Parameter-efficient fine-tuning with low-rank adapters enables efficient adaptation of very large multimodal backbones for brain encoding, improving performance and interpretability while reducing computational cost.",
+      "extra": {
+        "keywords": [
+          "parameter-efficient fine-tuning",
+          "PEFT",
+          "low-rank adapter",
+          "LoRA",
+          "brain encoding",
+          "multimodal backbones",
+          "cross-modal mixing",
+          "multi-LoRA kernel"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "YOLO-PEFT: Parameter-Efficient Fine-Tuning on YOLO Family",
+      "url": "https://huggingface.co/papers/2608.07051",
+      "date": "2026-08-07",
+      "signal": 20,
+      "signal_name": "upvotes",
+      "summary": "YOLO-PEFT formulates adapter placement for real-time detectors as a constraint-planning problem to enable auditable, budgeted parameter-efficient fine-tuning with explicit refusal when constraints are violated.",
+      "extra": {
+        "keywords": [
+          "parameter-efficient fine-tuning",
+          "PEFT",
+          "RS-LoRA",
+          "LoRA",
+          "adapter placement",
+          "constraint-planning",
+          "YOLO-PEFT",
+          "real-time detectors",
+          "operator-validity",
+          "detector-semantic",
+          "graph-interface",
+          "deployment predicates",
+          "Refuse",
+          "Full-SFT",
+          "mAP50-95"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Predicting Mergeability of Parameter-Efficient Fine-Tuning Updates",
+      "url": "https://huggingface.co/papers/2606.19549",
+      "date": "2026-06-17",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "LoRA adapter mergeability can be predicted early in training using MergeProbe, which forecasts retention and guides merging decisions to avoid destructive interference.",
+      "extra": {
+        "keywords": [
+          "low-rank adaptation",
+          "adapters",
+          "mergeability",
+          "pairwise retention",
+          "set-level retention",
+          "MergeProbe",
+          "task routing",
+          "interference-aware merge baselines"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Benchmarking Parameter-Efficient Fine-Tuning of Large Language Models for Low-Resource Tajik Text Generation with the Tajik Web Corpus",
+      "url": "https://huggingface.co/papers/2605.03742",
+      "date": "2026-08-10",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "The study introduces a Tajik web corpus and benchmarks generative LLMs for low-resource Cyrillic text generation, finding that Mistral 7B with QLoRA rank 8 offers the best quality-cost trade-off while full fine-tuning of small models causes catastrophic forgetting.",
+      "extra": {
+        "keywords": [
+          "QLoRA",
+          "LoRA",
+          "full fine-tuning",
+          "parameter-efficient fine-tuning",
+          "PEFT",
+          "perplexity",
+          "catastrophic forgetting",
+          "Mistral 7B",
+          "GPT-2",
+          "encoder-only models",
+          "autoregressive generation",
+          "low-resource language"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Z-PEFT: Zero-shot Backdoor Detection in Parameter-Efficient Fine-Tuning via Canonical Spectral Signatures",
+      "url": "https://huggingface.co/papers/2608.02271",
+      "date": "2026-08-03",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Z-PEFT uses layer-wise spectral measures to detect backdoored PEFT models across unseen attacks and datasets with low computational cost.",
+      "extra": {
+        "keywords": [
+          "Parameter-Efficient Fine-tuning",
+          "PEFT",
+          "weight-space backdoor detection",
+          "meta-classifier",
+          "layer-wise spectral measures",
+          "zero-shot backdoor detection"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Parameter-Efficient Fine-Tuning Methods for Pretrained Language Models",
+      "url": "https://www.computer.org/csdl/journal/tp/2026/06/11364256/2dAZTYlgxVu",
+      "date": "2026-05-20",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48215999",
+        "comments": 0,
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Synergistic Multicomponent Nucleopeptide-Based Hydrogels: Harnessing DNA-Base Pairing and Electrostatic Complementarities",
+      "url": "https://doi.org/10.1021/acsmaterialsau.5c00240",
+      "date": "2026-06-08",
+      "signal": 748,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The Open Materials 2024 (OMat24) inorganic materials dataset and models",
+      "url": "https://doi.org/10.1038/s43588-026-00996-w",
+      "date": "2026-06-02",
+      "signal": 482,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "GWTC-4.0: Population Properties of Merging Compact Binaries",
+      "url": "https://doi.org/10.3847/2041-8213/ae771e",
+      "date": "2026-07-03",
+      "signal": 339,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "BeyondMimic: From motion tracking to versatile humanoid control via guided diffusion",
+      "url": "https://doi.org/10.1126/scirobotics.adx8924",
+      "date": "2026-08-26",
+      "signal": 304,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "parameter-efficient fine-tuning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SergioTermann/awesome-post-training-RL",
+      "url": "https://github.com/SergioTermann/awesome-post-training-RL",
+      "date": "2026-09-11",
+      "signal": 52,
+      "signal_name": "stars",
+      "summary": "A curated list of papers on reinforcement learning post-training for LLMs",
+      "extra": {
+        "topics": [
+          "awesome-list",
+          "dpo",
+          "grpo",
+          "llm",
+          "post-training",
+          "reinforcement-learning",
+          "rlhf"
+        ],
+        "license": "MIT",
+        "created": "2026-09-11",
+        "pushed": "2026-09-13",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "quantumglass/GRPO-series",
+      "url": "https://github.com/quantumglass/GRPO-series",
+      "date": "2026-06-19",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "A single-GPU-friendly reinforcement learning codebase for the GRPO algorithm family.",
+      "extra": {
+        "topics": [
+          "llm",
+          "post-training",
+          "rl",
+          "rl4llm",
+          "rlvr"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-19",
+        "pushed": "2026-07-21",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "JiangYubo4399/JiangYubo4399.github.io",
+      "url": "https://github.com/JiangYubo4399/JiangYubo4399.github.io",
+      "date": "2026-08-27",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Personal website of Yubo Jiang — VLM/LLM post-training, hallucination mitigation, reinforcement learning, and agentic systems.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-27",
+        "pushed": "2026-08-27",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "hoomanesteki/forge-small-llm-grpo-text-to-sql",
+      "url": "https://github.com/hoomanesteki/forge-small-llm-grpo-text-to-sql",
+      "date": "2026-10-25",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Post-training a small open-weight LLM with GRPO reinforcement learning on verifiable text-to-SQL rewards, using free Kaggle GPUs. Reproducible Spider evals, reward-hacking audit, LoRA adapters and a GGUF model you can run locally.",
+      "extra": {
+        "topics": [
+          "grpo",
+          "language-models",
+          "language-models-ai",
+          "llm-fine-tuning",
+          "reinforcement-learning",
+          "rlvr",
+          "text-to-sql",
+          "unsloth"
+        ],
+        "license": "MIT",
+        "created": "2026-10-25",
+        "pushed": "2026-10-25",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "rohanbansal12/rl-llm-learning",
+      "url": "https://github.com/rohanbansal12/rl-llm-learning",
+      "date": "2026-09-10",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Theory-first reinforcement learning lab: policy gradients, actor-critic, PPO, and LLM post-training.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-10",
+        "pushed": "2026-09-10",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "nicolbl95/course-summary-post-training-llms",
+      "url": "https://github.com/nicolbl95/course-summary-post-training-llms",
+      "date": "2026-08-03",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "French course summary on LLM post-training, covering SFT, DPO, reinforcement learning, preference optimization, and model alignment.",
+      "extra": {
+        "topics": [
+          "direct-preference-optimization",
+          "dpo",
+          "large-language-models",
+          "llm",
+          "model-alignment",
+          "post-training",
+          "reinforcement-learning",
+          "rlhf",
+          "sft",
+          "supervised-finetuning"
+        ],
+        "license": null,
+        "created": "2026-08-03",
+        "pushed": "2026-08-03",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "KZXPLYS/KZXPLYS",
+      "url": "https://github.com/KZXPLYS/KZXPLYS",
+      "date": "2026-10-18",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Chixiao Zhang | LLM post-training, constrained reinforcement learning, and ML systems",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-18",
+        "pushed": "2026-10-18",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shabha7092/Reinforcement-Learning-Lab",
+      "url": "https://github.com/shabha7092/Reinforcement-Learning-Lab",
+      "date": "2026-06-18",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "A notebook-based lab for reinforcement learning and LLM post-training algorithms, covering RL fundamentals, REINFORCE, PPO, DPO, GRPO, Dr. GRPO, DAPO, CISPO, TIS, ICE-POP, OPD, and OPSD.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-18",
+        "pushed": "2026-06-18",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "AarnoStormborn/llm-gym",
+      "url": "https://github.com/AarnoStormborn/llm-gym",
+      "date": "2026-09-25",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Hands-on exercises for learning LLM fine-tuning and post-training, from small supervised tasks to preference optimization and reinforcement learning.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-25",
+        "pushed": "2026-10-16",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "WonderfulClaire/academic-homepage",
+      "url": "https://github.com/WonderfulClaire/academic-homepage",
+      "date": "2026-07-22",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Claire — MSc student @ Tsinghua. LLM post-training, reinforcement learning, agents, multimodal learning and speech/audio.",
+      "extra": {
+        "topics": [
+          "academic",
+          "academic-website",
+          "github-pages",
+          "personal-website"
+        ],
+        "license": null,
+        "created": "2026-07-22",
+        "pushed": "2026-09-28",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Vsemmir13/Vsemmir13",
+      "url": "https://github.com/Vsemmir13/Vsemmir13",
+      "date": "2026-09-26",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Egor Leontenkov — Research Engineer track in reinforcement learning, LLM post-training, alignment, and evaluation.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-26",
+        "pushed": "2026-09-26",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Yangxixi2023/rl-explainer",
+      "url": "https://github.com/Yangxixi2023/rl-explainer",
+      "date": "2026-10-20",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Interactive reinforcement learning and LLM post-training explainer: GRPO, PPO, DPO, SFT, Q-learning and SARSA",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-20",
+        "pushed": "2026-10-20",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "qiu-p/GA-ARL",
+      "url": "https://github.com/qiu-p/GA-ARL",
+      "date": "2026-10-30",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "GA-ARL: Gradient-Aware Asynchronous Reinforcement Learning for efficient LLM post-training, built on verl.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-10-30",
+        "pushed": "2026-10-30",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MIRALab-USTC/GA-ARL",
+      "url": "https://github.com/MIRALab-USTC/GA-ARL",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "GA-ARL: Gradient-Aware Asynchronous Reinforcement Learning for efficient LLM post-training, built on verl.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-11-05",
+        "pushed": "2026-11-05",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "lehighriverscalylentinus811/LoongSage",
+      "url": "https://github.com/lehighriverscalylentinus811/LoongSage",
+      "date": "2026-08-29",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Accelerate frontier LLM post-training with a production-grade, agentic reinforcement learning framework validated for scalable, high-efficiency training.",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "apm",
+          "discovery",
+          "evolutionary-algorithms",
+          "evolve",
+          "framework",
+          "iterative-methods",
+          "iterative-refinement",
+          "kubernetes",
+          "llm",
+          "llm-ensemble",
+          "multi-agent",
+          "optimize",
+          "rust",
+          "sage",
+          "sota",
+          "wordpress",
+          "wordpress-theme"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-29",
+        "pushed": "2026-10-13",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "radixark/miles",
+      "url": "https://github.com/radixark/miles",
+      "date": "2026-11-10",
+      "signal": 3290,
+      "signal_name": "stars",
+      "summary": "Miles is an enterprise-facing reinforcement learning framework for LLM and VLM post-training, forked from and co-evolving with slime.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-10-09",
+        "pushed": "2026-11-10",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ZinYY/Online_RLHF",
+      "url": "https://github.com/ZinYY/Online_RLHF",
+      "date": "2026-10-24",
+      "signal": 95,
+      "signal_name": "stars",
+      "summary": "[NeurIPS 2025] A PyTorch implementation of the paper \"Provably Efficient Online RLHF with One-Pass Reward Modeling\". This repository provides a flexible and modular approach to Online Reinforcement Learning from Human Feedback (Online RLHF).",
+      "extra": {
+        "topics": [
+          "large-language-model",
+          "llm",
+          "post-training",
+          "rlhf"
+        ],
+        "license": null,
+        "created": "2025-02-07",
+        "pushed": "2026-10-24",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "tanzelin430/The-Scaling-Law-for-Reinforcement-Learning",
+      "url": "https://github.com/tanzelin430/The-Scaling-Law-for-Reinforcement-Learning",
+      "date": "2026-07-01",
+      "signal": 26,
+      "signal_name": "stars",
+      "summary": "[ACL2026 MainConference]Code Repo for paper \"Scaling Behaviors of LLM Reinforcement Learning Post-Training\"",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-08-03",
+        "pushed": "2026-07-01",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "thealepo/llm-reasoning-jax",
+      "url": "https://github.com/thealepo/llm-reasoning-jax",
+      "date": "2026-07-13",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "Post-Training Alignment and Reinforcement Learning for Reasoning LLMs in JAX.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-11",
+        "pushed": "2026-07-13",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Ryanrc03/Chasing-the-Aha-Moment",
+      "url": "https://github.com/Ryanrc03/Chasing-the-Aha-Moment",
+      "date": "2026-10-29",
+      "signal": 2,
+      "signal_name": "stars",
+      "summary": "A Review and Implementation of Reinforcement Learning in Post-Training of LLMs",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2025-10-21",
+        "pushed": "2026-10-29",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Clearwavelet/Clearwavelet",
+      "url": "https://github.com/Clearwavelet/Clearwavelet",
+      "date": "2026-11-10",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "Tianyu Wang — multimodal LLM post-training, reinforcement learning, and research projects.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2021-10-04",
+        "pushed": "2026-11-10",
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Reframe: Observation-Aligned Multi-Teacher On-Policy Distillation for Agentic Visual Reasoning",
+      "url": "http://arxiv.org/abs/2611.12886v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agentic reinforcement learning (RL) and multi-teacher on-policy distillation (MOPD) offer complementary routes to post-training. For visual agents, however, tool use presents two related challenges. Models may overlook useful tool-returned observations, while poorly grounded actions can limit the evidence available for subsequent distillation. We introduce Reframe, a post-training framework that t",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Agentic-OPD: Recovering Forgotten Agent Capabilities via On-Policy Distillation for Agentic Tasks",
+      "url": "http://arxiv.org/abs/2611.12799v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement learning is now the mainstream paradigm for training LLMs on agentic tasks, yet standard practice keeps only the best-validation checkpoint and discards the rest. We show that this is lossy: in GRPO training of LLM agents, the best-validation checkpoint fails on problems that earlier checkpoints from the same run had already solved, and the union of problems solved across checkpoints",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "VLA-MOPD: On-Policy Distillation for Multi-Task VLA Policy Consolidation",
+      "url": "http://arxiv.org/abs/2611.12286v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Physical intelligence requires embodied agents to ground language in observations and execute actions while retaining useful skills. Vision-language-action (VLA) policies offer a shared interface, but task-specific post-training often produces separate specialists. Consolidation is difficult: mixed-task reinforcement learning provides sparse trajectory-level credit, while offline distillation may ",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Learning Evidence-Grounded Reasoning for Context-Aware Time Series Forecasting",
+      "url": "http://arxiv.org/abs/2611.12285v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "LLM-driven time series forecasting has become increasingly promising by leveraging contextual features to generate future values directly or refine forecast priors. However, incorporating contextual features alone does not ensure that models can identify which features matter for forecasting and understand what they suggest about future dynamics. We argue that the fundamental challenge is how to e",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RAIL: Representation-Aligned Imitation Learning for Student-Compatible Teacher Policies",
+      "url": "http://arxiv.org/abs/2611.12251v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement learning (RL) from raw sensory inputs such as images or onboard sensors can be challenging due to high-dimensional observations and sparse rewards. A common strategy is to train a teacher policy with access to privileged state information and then distill it into a student policy that acts from raw inputs alone. However, when the teacher relies on information unavailable to the stude",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Trajectory Density Ratios under Weak Support: A Survey across the Sciences",
+      "url": "http://arxiv.org/abs/2611.11985v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Many problems across the sciences compare two stochastic processes through the sequences they generate. Reinforcement learning asks what a new policy would return from the trajectories of an old one; molecular simulation asks how much more a ligand binds from samples of the unbound state; climate attribution asks how a heat wave shifted under warming; and language-model post-training asks what a d",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Spectral Rank and Step-Direction Dynamics in Language-Model Post-Training",
+      "url": "http://arxiv.org/abs/2611.11752v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Language-model post-training modifies weights through cumulative updates and successive displacements, yet existing studies report seemingly conflicting spectral properties: nearly full-rank updates and low stable-rank changes. We show these observations are compatible and characterize update directions during training. For singular values following $σ_i \\propto i^{-α}$ with $0 < α\\leq 1/2$, we pr",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Primitives and Paths: Predicting What Post-Training Can Do from What the Base Model Already Has",
+      "url": "http://arxiv.org/abs/2611.11260v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Does reinforcement learning teach language models new capabilities, or merely amplify ones acquired during pre-training? The literature offers evidence for both: pass@$k$ studies suggest RL reweights latent behaviours while some controlled composition studies demonstrate gains beyond simple amplification. We argue that this question has no answer independent of the capability state of the base mod",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "DISCOVER: Online Variance-Guided Data Discovery for Budgeted Multimodal GRPO",
+      "url": "http://arxiv.org/abs/2611.11145v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Recent advances in reinforcement learning have made verifiable rewards a central post-training paradigm for improving multimodal reasoning. However, methods such as GRPO remain data- and compute-inefficient, spending rollout and annotation budget on prompts that provide little learning signal. We propose DISCOVER, an online data-discovery framework for budgeted multimodal GRPO that enables vision-",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "From Game Generation to Game Playing: Fully Automated Ability Training for Vision-Language-Action Models",
+      "url": "http://arxiv.org/abs/2611.11136v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Training vision-language-action (VLA) models to follow gameplay instructions across diverse games is limited by the cost of collecting demonstrations. We introduce a framework that automatically generates game environments and expert demonstrations. An LLM-powered agent uses game-building tools to construct executable environments and tasks targeting specified skills. Programmatic experts then use",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "BRAT: Bounded Residual-Aligned Training for Stable Multi-Pass LLM Post-Training",
+      "url": "http://arxiv.org/abs/2611.10873v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement learning for large language model post-training often reuses each batch of sampled rollouts for several gradient passes to amortize the cost of generation. Under such multi-pass reuse, existing objectives fail in different ways: unclipped updates collapse as the policy drifts away from the sampling policy, adding a negative baseline avoids collapse but reinforces every sampled respon",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Surprising Effectiveness of Deleting Weights in LLM Post-Training",
+      "url": "http://arxiv.org/abs/2611.10866v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "How little of a pretrained large language model (LLM) has to change for it to acquire new capabilities? We find that zeroing fewer than 0.05% of its weights, with no other modification, matches full fine-tuning (FFT) at scale across three LLM post-training regimes: reinforcement learning with verifiable rewards, supervised fine-tuning, and on-policy distillation. Our method, Deletion Tuning, learn",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What Broke & Why: Practical Lessons from Reinforcement Learning Post-Training",
+      "url": "http://arxiv.org/abs/2611.10844v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reinforcement learning with verifiable rewards (RLVR) has become an important way to improve how language models reason, solve problems, and use tools. But getting it to work in practice is not always straightforward. Training can fail because a model receives no useful reward, learns to exploit the reward system, stops exploring, or appears to improve when the evaluation itself is misleading. In ",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Delta Gap: Cellular World Models for Perturbation Response Prediction Are Far Harder Than Global Correlation Implies",
+      "url": "http://arxiv.org/abs/2611.10658v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Cellular world models aim to predict how cells respond to genetic perturbations, analogous to world models in reinforcement learning. Perturbation response models are evaluated almost exclusively by global Pearson correlation between predicted and observed transcriptomes. We show this metric is dominated by thousands of non-responsive genes and severely inflates apparent performance. On the Replog",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Self-Distilled Agentic Reinforcement Learning",
+      "url": "https://huggingface.co/papers/2605.15155",
+      "date": "2026-05-14",
+      "signal": 116,
+      "signal_name": "upvotes",
+      "summary": "SDAR enhances reinforcement learning for multi-turn agent training by integrating self-distillation through a sigmoid gate that selectively strengthens positive token-level guidance while mitigating negative teacher rejections.",
+      "extra": {
+        "keywords": [
+          "Reinforcement learning",
+          "on-policy self-distillation",
+          "token-level guidance",
+          "teacher branch",
+          "privileged context",
+          "multi-turn agents",
+          "skill-conditioned guidance",
+          "auxiliary objective",
+          "sigmoid gate",
+          "positive-gap tokens",
+          "negative teacher rejections",
+          "GRPO",
+          "hybrid RL-OPSD baselines"
+        ],
+        "github": "https://github.com/ZJU-REAL/SDAR",
+        "github_stars": 380,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Sharpening Tax in Post-Training",
+      "url": "https://huggingface.co/papers/2610.01509",
+      "date": "2026-10-01",
+      "signal": 76,
+      "signal_name": "upvotes",
+      "summary": "Reinforcement learning post-training of language models improves single-shot accuracy but reduces solution coverage in agentic tasks, prompting a proposed sharpening tax metric and a temperature-adaptive sampling method to mitigate this trade-off.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "large language models",
+          "pass@1",
+          "pass@K",
+          "solution coverage",
+          "sharpening tax",
+          "posterior-tempered group sampling",
+          "Bayesian sampler",
+          "RL training"
+        ],
+        "github": "https://github.com/changdaeoh/sharpening-tax",
+        "github_stars": 35,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "The Mirage of Optimizing Training Policies: Monotonic Inference Policies as the Real Objective for LLM Reinforcement Learning",
+      "url": "https://huggingface.co/papers/2606.29526",
+      "date": "2026-06-28",
+      "signal": 41,
+      "signal_name": "upvotes",
+      "summary": "Training-inference mismatch in reinforcement learning for large language models leads to instability, which is addressed through a new policy optimization objective and framework that ensures consistent policy improvements between training and inference phases.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "large language models",
+          "training-inference mismatch",
+          "off-policy",
+          "policy optimization",
+          "policy improvement",
+          "inference policy",
+          "training stability",
+          "reasoning performance"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Rufus-Air: An Open LLM Post-Training Recipe",
+      "url": "https://huggingface.co/papers/2609.29421",
+      "date": "2026-09-24",
+      "signal": 35,
+      "signal_name": "upvotes",
+      "summary": "Rufus-Air is an open, reproducible eight-stage post-training pipeline for GLM-4.5-Air-Base that advances capabilities through sequential supervised fine-tuning, reasoning and coding reinforcement learning, agent training, and RLHF using open data and verifiable rewards.",
+      "extra": {
+        "keywords": [
+          "post-training",
+          "supervised fine-tuning (SFT)",
+          "reasoning RL",
+          "coding RL",
+          "instruction-following RL",
+          "reinforcement learning from human feedback (RLHF)",
+          "difficulty filtering",
+          "reward reliability",
+          "agent training"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "LoGRA: Scaling LLM Reinforcement Learning with Low-Rank Gradient Sketches",
+      "url": "https://huggingface.co/papers/2610.06647",
+      "date": "2026-10-05",
+      "signal": 34,
+      "signal_name": "upvotes",
+      "summary": "LoGRA reduces reinforcement learning memory demands for large language models by using low-rank gradient sketches and predicted-KL step control, enabling stable training of large models on limited hardware.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "low-rank gradient sketches",
+          "policy synchronization",
+          "predicted-KL step control",
+          "LoGRA"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Rethinking the Divergence Regularization in LLM RL",
+      "url": "https://huggingface.co/papers/2606.09821",
+      "date": "2026-06-08",
+      "signal": 34,
+      "signal_name": "upvotes",
+      "summary": "DRPO improves LLM reinforcement learning stability by replacing hard masks with smooth regularization that provides continuous gradient corrections beyond trust-region boundaries.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "large language models",
+          "off-policy",
+          "trust-region control",
+          "PPO",
+          "GRPO",
+          "ratio-clipping",
+          "importance ratio",
+          "DPPO",
+          "divergence-based mask",
+          "policy shift",
+          "advantage-weighted quadratic regularizer"
+        ],
+        "github": "https://github.com/Tencent-Hunyuan/UniRL",
+        "github_stars": 1045,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "MOPD: Multi-Teacher On-Policy Distillation for Capability Integration in LLM Post-Training",
+      "url": "https://huggingface.co/papers/2606.30406",
+      "date": "2026-06-29",
+      "signal": 29,
+      "signal_name": "upvotes",
+      "summary": "Multi-teacher On-Policy Distillation (MOPD) enables efficient integration of multiple domain capabilities in large language models through specialized reinforcement learning teachers and on-policy distillation, achieving superior performance over existing methods.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "post-training",
+          "domain RL teachers",
+          "on-policy distillation",
+          "exposure bias",
+          "dense optimization signal",
+          "Qwen3-30B-A3B",
+          "Mix-RL",
+          "Cascade RL",
+          "Off-Policy Finetune",
+          "Param-Merge",
+          "MiMo-V2-Flash"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "PACT: From Credit Assignment to Critic Alignment",
+      "url": "https://huggingface.co/papers/2609.26355",
+      "date": "2026-09-22",
+      "signal": 20,
+      "signal_name": "upvotes",
+      "summary": "Formal regularity conditions uniquely define token-level credit in reinforcement learning for language models, enabling an improved actor-critic method that outperforms existing approaches on reasoning and software engineering benchmarks.",
+      "extra": {
+        "keywords": [
+          "token-level credit",
+          "Completeness",
+          "Prefix Consistency",
+          "Neutrality",
+          "On-Policy Distillation",
+          "REINFORCE Leave-One-Out",
+          "Generalized Advantage Estimation",
+          "Policy Aligned Critic Training",
+          "actor-critic",
+          "importance sampling"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Cliff: Learning Process Rewards from the First Mistake",
+      "url": "https://huggingface.co/papers/2609.02817",
+      "date": "2026-09-02",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "Cliff improves reinforcement learning with verifiable rewards by using an off-the-shelf language model to detect the first reasoning error and shaping token-level advantages accordingly.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning with verifiable rewards",
+          "process reward modeling",
+          "on-policy distillation",
+          "reward shaping",
+          "token-level advantages",
+          "GRPO"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Neglected Free Lunch from Post-training: Progress Advantage for LLM Agents",
+      "url": "https://huggingface.co/papers/2606.26080",
+      "date": "2026-06-24",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "Reinforcement learning post-training enables effective step-level scoring for language models without requiring dedicated reward model training by deriving an implicit advantage function called progress advantage.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "reward models",
+          "agentic settings",
+          "Markov decision process",
+          "progress advantage",
+          "log-probability ratio",
+          "advantage function",
+          "test-time scaling",
+          "uncertainty quantification",
+          "failure attribution"
+        ],
+        "github": "https://github.com/deeplearning-wisc/progress-advantage",
+        "github_stars": 13,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Skill-RM: Unifying Heterogeneous Evaluation Criteria via Agent Skill",
+      "url": "https://huggingface.co/papers/2606.03980",
+      "date": "2026-06-02",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "Skill-RM presents a unified reward modeling framework that treats reward computation as a structured agentic task, enabling dynamic evidence aggregation and consistent evaluation across diverse applications.",
+      "extra": {
+        "keywords": [
+          "reward models",
+          "reinforced fine-tuning",
+          "reinforcement learning",
+          "reward evaluation skill",
+          "heterogeneous criteria",
+          "evidence aggregation",
+          "structured agentic task",
+          "reward modeling"
+        ],
+        "github": "https://github.com/Qwen-Applications/Skill-RM",
+        "github_stars": 26,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders",
+      "url": "https://huggingface.co/papers/2605.27354",
+      "date": "2026-05-26",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "SAERL uses Sparse Autoencoder-derived signals from model internals to enhance LLM reinforcement learning through diversity control, difficulty-aware curriculum learning, and quality-based data filtering.",
+      "extra": {
+        "keywords": [
+          "Sparse Autoencoder",
+          "mechanistic interpretability",
+          "reinforcement learning",
+          "data engineering",
+          "SAE-space clustering",
+          "difficulty proxy",
+          "quality probe",
+          "GRPO",
+          "Qwen2.5-Math-1.5B"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "F-TIS: Harnessing Diverse Models in Collaborative GRPO",
+      "url": "https://huggingface.co/papers/2605.22537",
+      "date": "2026-05-21",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "A novel training approach called Filtered Truncated Importance Sampling (F-TIS) is proposed to enable decentralized reinforcement learning with heterogeneous models while maintaining convergence and improving generalization performance.",
+      "extra": {
+        "keywords": [
+          "GRPO",
+          "reinforcement learning",
+          "auto-regressive models",
+          "off-policy samples",
+          "on-policy samples",
+          "decentralized training",
+          "heterogeneity",
+          "importance sampling",
+          "truncated importance sampling",
+          "policy updates",
+          "model collaboration"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Distilled Reinforcement Learning for LLM Post-training",
+      "url": "https://huggingface.co/papers/2607.17247",
+      "date": "2026-07-19",
+      "signal": 12,
+      "signal_name": "upvotes",
+      "summary": "Distilled Reinforcement Learning integrates teacher supervision into reinforcement learning to selectively transfer new knowledge and outperforms standard methods in cross-family and within-family settings.",
+      "extra": {
+        "keywords": [
+          "large language model post-training",
+          "reinforcement learning",
+          "on-policy distillation",
+          "outcome supervision",
+          "credit assignment",
+          "KL divergence",
+          "within-family distillation",
+          "cross-family distillation",
+          "Distilled Reinforcement Learning",
+          "reverse importance sampling with clipping",
+          "negative sample reset",
+          "sequence-level geometric normalization",
+          "pass@1",
+          "pass@k"
+        ],
+        "github": "https://github.com/597358816/Distilled-RL",
+        "github_stars": 13,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Nereus: Adaptive Parallelism for LLM Post-Training",
+      "url": "https://huggingface.co/papers/2609.34645",
+      "date": "2026-09-28",
+      "signal": 11,
+      "signal_name": "upvotes",
+      "summary": "Nereus is a cost-aware runtime that dynamically adapts reinforcement learning post-training jobs to efficient execution plans by selecting memory-feasible global plans and coordinating distributed state transitions across GPU clusters.",
+      "extra": {
+        "keywords": [
+          "reinforcement learning",
+          "large language models",
+          "RL post-training",
+          "GPU clusters",
+          "execution plan",
+          "Elastic Model Unit",
+          "global transition graph",
+          "TP/PP adaptation",
+          "DP scaling",
+          "PPO throughput"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Beyond Efficiency: A Systematic Survey of Resource-Efficient Large Language Models",
+      "url": "https://doi.org/10.1145/3845797",
+      "date": "2026-09-15",
+      "signal": 213,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Aristotle: IMO-level Automated Theorem Proving",
+      "url": "https://doi.org/10.70777/si.v3i3.18745",
+      "date": "2026-09-25",
+      "signal": 151,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Harnessing Multiple Large Language Models: A Survey on LLM Ensemble",
+      "url": "https://doi.org/10.24963/ijcai.2026/867",
+      "date": "2026-09-01",
+      "signal": 132,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression",
+      "url": "https://doi.org/10.48550/arxiv.2609.19969",
+      "date": "2026-09-17",
+      "signal": 130,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Transforming Science with Large Language Models: A Survey on AI-assisted Scientific Discovery, Experimentation, Content Generation, and Evaluation",
+      "url": "https://doi.org/10.1145/3845596",
+      "date": "2026-09-05",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Harmful Fine-tuning Attacks and Defenses for Large Language Models: A Survey",
+      "url": "https://doi.org/10.1145/3817114",
+      "date": "2026-05-22",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "ASPIRE: Agentic /Skills Discovery for Robotics",
+      "url": "https://doi.org/10.48550/arxiv.2607.00272",
+      "date": "2026-06-30",
+      "signal": 128,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "LLM post-training reinforcement learning"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Optima-CityU/neural-spectral-capacity",
+      "url": "https://github.com/Optima-CityU/neural-spectral-capacity",
+      "date": "2026-09-19",
+      "signal": 126,
+      "signal_name": "stars",
+      "summary": "NSC measures neural architecture capacity directly from network specifications, without data, gradients, or model instantiation. Its additive structure enables exact architecture optimization under resource budgets in seconds on a CPU.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-09-19",
+        "pushed": "2026-09-26",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "roiamiel1/Build-Deep-Learning-From-Scratch",
+      "url": "https://github.com/roiamiel1/Build-Deep-Learning-From-Scratch",
+      "date": "2026-06-21",
+      "signal": 70,
+      "signal_name": "stars",
+      "summary": "A project-based curriculum that teaches PyTorch by rebuilding it from scratch. Start with scalar backpropagation, create a reverse-mode autodiff engine, expand it into tensors, then implement neural networks, optimizers, CNNs, attention, Transformers, ViTs, and a mini PyTorch framework. Every gradient is code you write and understand.",
+      "extra": {
+        "topics": [],
+        "license": "Unlicense",
+        "created": "2026-06-21",
+        "pushed": "2026-07-11",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "EimanTahir027/Neural-Networks-and-Deep-Learning-Fundamentals",
+      "url": "https://github.com/EimanTahir027/Neural-Networks-and-Deep-Learning-Fundamentals",
+      "date": "2026-09-16",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "A structured, hands-on guide to neural networks and deep learning fundamentals, covering forward propagation, activation functions, backpropagation, optimization, TensorFlow, Keras, PyTorch, and CIFAR-10 image classification.",
+      "extra": {
+        "topics": [
+          "activation-function-exploration",
+          "backward-propagation",
+          "cifar10",
+          "deep-learning",
+          "forward-propagation",
+          "gradient-descent",
+          "keras",
+          "keras-neural-networks",
+          "loss-functions",
+          "neural-networks",
+          "optimization",
+          "pytorch",
+          "tensorflow"
+        ],
+        "license": "MIT",
+        "created": "2026-09-16",
+        "pushed": "2026-09-29",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "amirsohail100/Handwritten-Number-Recognition-PyTorch-",
+      "url": "https://github.com/amirsohail100/Handwritten-Number-Recognition-PyTorch-",
+      "date": "2026-07-07",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "A deep learning project utilizing PyTorch to perform handwritten number recognition. It implements both Artificial Neural Network (ANN) and Convolutional Neural Network (CNN) architectures. The ANN model achieves an impressive 96% accuracy, while the optimized CNN model delivers a superior performance with 98% accuracy.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-07",
+        "pushed": "2026-07-07",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "JIMMY081105/Scientific-Machine-Learning-Peking-Module",
+      "url": "https://github.com/JIMMY081105/Scientific-Machine-Learning-Peking-Module",
+      "date": "2026-07-08",
+      "signal": 8,
+      "signal_name": "stars",
+      "summary": "Julia-based scientific machine learning course materials from Peking University: lecture notes, notebooks, homework, and assignments covering numerical solving, optimization, least squares, automatic differentiation, boundary value problems, and neural networks with physics models.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-08",
+        "pushed": "2026-07-23",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "BattledGamerCF/Cadence",
+      "url": "https://github.com/BattledGamerCF/Cadence",
+      "date": "2026-10-15",
+      "signal": 7,
+      "signal_name": "stars",
+      "summary": "A Fabric mod that runs Minecraft on Apple Silicon with a native Metal renderer. One jar replaces the Sodium stack: Iris-format shader packs, far terrain, game-logic and network optimizations, and dynamic lights. It adds Mac-specific features such as Frame Generation, Heat Control, HDR and the Neural Engine, in 16 languages.",
+      "extra": {
+        "topics": [
+          "apple-silicon",
+          "fabric",
+          "metal",
+          "minecraft",
+          "mods"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-10-15",
+        "pushed": "2026-11-10",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "BriggSMccall/neural-lab-project",
+      "url": "https://github.com/BriggSMccall/neural-lab-project",
+      "date": "2026-06-17",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "Neural Lab Project contains experimental deep learning models, neural network architectures, optimization methods, and AI research prototypes.",
+      "extra": {
+        "topics": [
+          "deep-learning",
+          "neural",
+          "neural-networks-from-scratch",
+          "neural-style-transfer"
+        ],
+        "license": "BSL-1.0",
+        "created": "2026-06-17",
+        "pushed": "2026-06-17",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Vedant021004/Tensorflow",
+      "url": "https://github.com/Vedant021004/Tensorflow",
+      "date": "2026-09-09",
+      "signal": 5,
+      "signal_name": "stars",
+      "summary": "A hands-on TensorFlow and Keras learning repository covering neural networks, layers, forward propagation, model training, optimization, and practical deep learning examples",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-09",
+        "pushed": "2026-09-15",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "VishalDeep1377/Advance_DeepLearning",
+      "url": "https://github.com/VishalDeep1377/Advance_DeepLearning",
+      "date": "2026-09-05",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "1. Neural Networks and Deep Learning Improving Deep Neural Networks: 2. Hyperparameter Tuning, Regularization and Optimization 3. Structuring Machine Learning Projects 4. Convolutional Neural Networks 5. Sequence Models",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-05",
+        "pushed": "2026-09-05",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "KEINOS/go-nn",
+      "url": "https://github.com/KEINOS/go-nn",
+      "date": "2026-08-03",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Model-independent neural network primitives for Go, with scalar and tensor autograd, reusable layers, Adam optimization, and optional WGPU acceleration.",
+      "extra": {
+        "topics": [
+          "adam-optimizer",
+          "autograd",
+          "automatic-differentiation",
+          "deep-learning",
+          "go",
+          "golang",
+          "gpu-acceleration",
+          "machine-learning",
+          "neural-network",
+          "tensor",
+          "webgpu",
+          "wgpu"
+        ],
+        "license": "MIT",
+        "created": "2026-08-03",
+        "pushed": "2026-08-04",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "rebwarai/CNN-MNIST-From-Scratch-CPP",
+      "url": "https://github.com/rebwarai/CNN-MNIST-From-Scratch-CPP",
+      "date": "2026-06-15",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "✨️ A Convolutional Neural Network implemented completely from scratch in C++ featuring custom tensors, Conv2D and Dense layers, forward and backward propagation, max pooling, dropout, cross-entropy loss, Adam optimization, and a custom JPEG decoder. No TensorFlow, PyTorch, OpenCV, or neural network libraries.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-15",
+        "pushed": "2026-06-17",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mantisdarling/NeuroSched",
+      "url": "https://github.com/mantisdarling/NeuroSched",
+      "date": "2026-08-10",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "NeuroSched is a freestanding 32-bit x86 operating system kernel that replaces traditional scheduling heuristics with an embedded neural network inference engine to dynamically optimize process wait times at hardware speed.",
+      "extra": {
+        "topics": [
+          "assembly",
+          "bare-metal",
+          "c",
+          "freestanding",
+          "kernel",
+          "mlp",
+          "neural-network",
+          "operating-system",
+          "osdev",
+          "process-s",
+          "qemu",
+          "scheduler",
+          "systems-programming",
+          "x86"
+        ],
+        "license": "MIT",
+        "created": "2026-08-10",
+        "pushed": "2026-11-08",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SubhasishElixor-HQ/DeepLearning-octo-dollop",
+      "url": "https://github.com/SubhasishElixor-HQ/DeepLearning-octo-dollop",
+      "date": "2026-07-12",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "A comprehensive Deep Learning repository covering neural networks, TensorFlow, Keras, CNNs, RNNs, LSTMs, Transformers, model training, evaluation, optimization, real-world projects, and hands-on implementations. Designed to build practical skills through step-by-step learning and production-ready AI solutions.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-12",
+        "pushed": "2026-07-29",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SushantGagneja/ultra-low-latency-ML-inference-on-FPGA",
+      "url": "https://github.com/SushantGagneja/ultra-low-latency-ML-inference-on-FPGA",
+      "date": "2026-05-28",
+      "signal": 4,
+      "signal_name": "stars",
+      "summary": "Ultra-low-latency Ternary Neural Network inference engine for HFT alpha generation, optimized for an ultra-budget 1,120-LUT Renesas FPGA. Features a fully unrolled combinatorial popcount tree achieving 2-cycle deterministic execution without hardware multipliers, paired with an ESP32-S3 hardware-software co-design.",
+      "extra": {
+        "topics": [
+          "binary-neural-networks",
+          "bnn",
+          "bnn-fpga",
+          "digital-design",
+          "edge-ai",
+          "esp32",
+          "esp32-s3",
+          "fpga",
+          "hardware-acceleration",
+          "hft",
+          "high-frequency-trading",
+          "low-latency",
+          "machine-learning-inference",
+          "neural-network-hardware",
+          "quantitative-trading",
+          "rtl",
+          "system-on-chip",
+          "tiny-ml",
+          "verilog"
+        ],
+        "license": null,
+        "created": "2026-05-28",
+        "pushed": "2026-10-27",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SagarCodes03/Neural-Network-From-Scratch",
+      "url": "https://github.com/SagarCodes03/Neural-Network-From-Scratch",
+      "date": "2026-08-01",
+      "signal": 3,
+      "signal_name": "stars",
+      "summary": "Neural network from scratch using NumPy with backpropagation, optimization algorithms, and MNIST benchmarking.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-01",
+        "pushed": "2026-08-18",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Tencent/ncnn",
+      "url": "https://github.com/Tencent/ncnn",
+      "date": "2026-11-10",
+      "signal": 24035,
+      "signal_name": "stars",
+      "summary": "ncnn is a high-performance neural network inference framework optimized for the mobile platform",
+      "extra": {
+        "topics": [
+          "android",
+          "arm-neon",
+          "artificial-intelligence",
+          "caffe",
+          "darknet",
+          "deep-learning",
+          "high-preformance",
+          "inference",
+          "ios",
+          "keras",
+          "mlir",
+          "mxnet",
+          "ncnn",
+          "neural-network",
+          "onnx",
+          "pytorch",
+          "riscv",
+          "simd",
+          "tensorflow",
+          "vulkan"
+        ],
+        "license": "NOASSERTION",
+        "created": "2017-06-30",
+        "pushed": "2026-11-10",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "amanchadha/coursera-deep-learning-specialization",
+      "url": "https://github.com/amanchadha/coursera-deep-learning-specialization",
+      "date": "2026-06-10",
+      "signal": 4419,
+      "signal_name": "stars",
+      "summary": "Notes, programming assignments and quizzes from all courses within the Coursera Deep Learning specialization offered by deeplearning.ai: (i) Neural Networks and Deep Learning; (ii) Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization; (iii) Structuring Machine Learning Projects; (iv) Convolutional Neural Networks; (v) Sequence Models",
+      "extra": {
+        "topics": [
+          "andrew-ng",
+          "andrew-ng-course",
+          "cnns",
+          "convolutional-neural-network",
+          "convolutional-neural-networks",
+          "coursera",
+          "coursera-assignment",
+          "coursera-machine-learning",
+          "coursera-specialization",
+          "deep-learning",
+          "hyperparameter-optimization",
+          "hyperparameter-tuning",
+          "neural-machine-translation",
+          "neural-network",
+          "neural-networks",
+          "neural-style-transfer",
+          "recurrent-neural-network",
+          "recurrent-neural-networks",
+          "regularization",
+          "rnns"
+        ],
+        "license": null,
+        "created": "2020-06-24",
+        "pushed": "2026-06-10",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "KellerJordan/Muon",
+      "url": "https://github.com/KellerJordan/Muon",
+      "date": "2026-05-24",
+      "signal": 2934,
+      "signal_name": "stars",
+      "summary": "Muon is an optimizer for hidden layers in neural networks",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2024-11-09",
+        "pushed": "2026-05-24",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "leggedrobotics/robotic_world_model",
+      "url": "https://github.com/leggedrobotics/robotic_world_model",
+      "date": "2026-10-29",
+      "signal": 703,
+      "signal_name": "stars",
+      "summary": "Repository for our papers: Robotic World Model: A Neural Network Simulator for Robust Policy Optimization in Robotics and Uncertainty-Aware Robotic World Model Makes Offline Model-Based Reinforcement Learning Work on Real Robots",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2025-11-24",
+        "pushed": "2026-10-29",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "joaopauloschuler/neural-api",
+      "url": "https://github.com/joaopauloschuler/neural-api",
+      "date": "2026-11-01",
+      "signal": 467,
+      "signal_name": "stars",
+      "summary": "CAI NEURAL API - Pascal based deep learning neural network API optimized for AVX, AVX2 and AVX512 instruction sets plus OpenCL capable devices including AMD, Intel and NVIDIA.",
+      "extra": {
+        "topics": [
+          "cifar-10",
+          "cifar10",
+          "delphi",
+          "delphi-component",
+          "delphi-library",
+          "fpc",
+          "free-pascal",
+          "freepascal",
+          "lazarus",
+          "lazarus-library",
+          "machine-learning-api",
+          "object-pascal",
+          "pascal",
+          "pascal-ai",
+          "pascal-artificial-intelligence",
+          "pascal-language",
+          "pascal-library",
+          "pascal-neural-network",
+          "pascal-neural-networks",
+          "pascal-programming"
+        ],
+        "license": "LGPL-2.1",
+        "created": "2019-09-23",
+        "pushed": "2026-11-01",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "SonySemiconductorSolutions/mct-model-optimization",
+      "url": "https://github.com/SonySemiconductorSolutions/mct-model-optimization",
+      "date": "2026-11-10",
+      "signal": 450,
+      "signal_name": "stars",
+      "summary": "Model Compression Toolkit (MCT) is an open source project for neural network model optimization under efficient, constrained hardware. This project provides researchers, developers, and engineers advanced quantization and compression tools for deploying state-of-the-art neural networks.",
+      "extra": {
+        "topics": [
+          "deep-learning",
+          "deep-neural-networks",
+          "edge-ai",
+          "machine-learning",
+          "network-compression",
+          "network-quantization",
+          "neural-network",
+          "optimizer",
+          "ptq",
+          "pytorch",
+          "qat",
+          "quantization",
+          "tensorflow"
+        ],
+        "license": "Apache-2.0",
+        "created": "2021-06-21",
+        "pushed": "2026-11-10",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "SimplexLab/TorchJD",
+      "url": "https://github.com/SimplexLab/TorchJD",
+      "date": "2026-11-07",
+      "signal": 406,
+      "signal_name": "stars",
+      "summary": "Library for Jacobian descent with PyTorch. It enables the optimization of neural networks with multiple losses (e.g. multi-task learning).",
+      "extra": {
+        "topics": [
+          "deep-learning",
+          "jacobian-descent",
+          "multi-objective-optimization",
+          "multi-task-learning",
+          "multiobjective-optimization",
+          "multitask-learning",
+          "optimization",
+          "python",
+          "pytorch",
+          "torch"
+        ],
+        "license": "NOASSERTION",
+        "created": "2024-06-01",
+        "pushed": "2026-11-07",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ZantFoundation/Z-Ant",
+      "url": "https://github.com/ZantFoundation/Z-Ant",
+      "date": "2026-07-18",
+      "signal": 389,
+      "signal_name": "stars",
+      "summary": "Zant simplifies the deployment and optimization of neural networks on microprocessors",
+      "extra": {
+        "topics": [
+          "ai",
+          "deeplearning",
+          "edgeai",
+          "embedded",
+          "mcu",
+          "opensource",
+          "tinyml",
+          "zig"
+        ],
+        "license": "Apache-2.0",
+        "created": "2024-09-04",
+        "pushed": "2026-07-18",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "larq/compute-engine",
+      "url": "https://github.com/larq/compute-engine",
+      "date": "2026-10-26",
+      "signal": 258,
+      "signal_name": "stars",
+      "summary": "Highly optimized inference engine for Binarized Neural Networks",
+      "extra": {
+        "topics": [
+          "aarch32",
+          "aarch64",
+          "android",
+          "armv7",
+          "armv8",
+          "binarized-neural-networks",
+          "bnn",
+          "inference",
+          "keras",
+          "larq",
+          "mlir",
+          "raspberry-pi",
+          "simd",
+          "tensorflow",
+          "tflite"
+        ],
+        "license": "Apache-2.0",
+        "created": "2019-08-29",
+        "pushed": "2026-10-26",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "aask1357/fastenhancer",
+      "url": "https://github.com/aask1357/fastenhancer",
+      "date": "2026-10-12",
+      "signal": 162,
+      "signal_name": "stars",
+      "summary": "Speed-optimized streaming neural speech enhancement network",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2025-09-04",
+        "pushed": "2026-10-12",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "FeNNol-tools/FeNNol",
+      "url": "https://github.com/FeNNol-tools/FeNNol",
+      "date": "2026-06-29",
+      "signal": 92,
+      "signal_name": "stars",
+      "summary": "Force-field-enhanced Neural Networks optimized library",
+      "extra": {
+        "topics": [],
+        "license": "LGPL-3.0",
+        "created": "2023-09-12",
+        "pushed": "2026-06-29",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "smilies-polito/Spiker",
+      "url": "https://github.com/smilies-polito/Spiker",
+      "date": "2026-07-20",
+      "signal": 70,
+      "signal_name": "stars",
+      "summary": "Spiker is a Python-based framework for designing and generating efficient FPGA hardware accelerators for spiking neural networks, covering training, optimization, and automatic VHDL generation for edge AI deployment.",
+      "extra": {
+        "topics": [
+          "neuromorphic-computing"
+        ],
+        "license": null,
+        "created": "2023-02-07",
+        "pushed": "2026-07-20",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Dreamerol/NEURAL-NETWORKS",
+      "url": "https://github.com/Dreamerol/NEURAL-NETWORKS",
+      "date": "2026-10-30",
+      "signal": 64,
+      "signal_name": "stars",
+      "summary": "Applied neural networks covering classification, function approximation, backpropagation, optimization, and dynamic system modeling with Python and TensorFlow.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-03-17",
+        "pushed": "2026-10-30",
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "GPU-Accelerated Non-Interactive Encrypted Neural Network Training with Batched Diagonal Packing",
+      "url": "http://arxiv.org/abs/2611.12161v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Training a neural network under homomorphic encryption requires transposes, batch reductions, optimizer updates, and repeated refreshes in addition to forward matrix products. We combine rectangular diagonal packing, feature-major SIMD mini-batch lanes, baby-step giant-step evaluation, and compact optimizer state in an MIT-licensed Rust CKKS implementation. Its CUDA path keeps training and bootstr",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Enhancing Multi-Step Chemical Mechanism Prediction with Graph-Guided Preference Data",
+      "url": "http://arxiv.org/abs/2611.12013v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Predicting multi-step chemical reaction mechanisms requires identifying plausible intermediates and correctly ordering the elementary reaction steps. Existing computational methods focus on single-step elementary reaction prediction, limiting their ability to generalize to unseen reaction spaces. We introduce a graph-guided framework for multi-step chemical mechanism prediction that leverages a ch",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Deep-Learning-Assisted Bayesian Inference for Extreme-Mass-Ratio Inspirals",
+      "url": "http://arxiv.org/abs/2611.11922v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Extreme-mass-ratio inspirals (EMRIs) pose a major challenge to Bayesian parameter inference because of their complex, highly multimodal likelihood surfaces. Locating narrow high-likelihood regions is particularly difficult without knowledge of the true source parameters, which is unavailable in real observations. We develop a deep-learning-assisted Bayesian inference framework that combines neural",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "On the Global Convergence of Stochastic Adam for Physics-Informed Neural Networks",
+      "url": "http://arxiv.org/abs/2611.11905v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The Adam optimizer is widely used to train neural networks with highly nonlinear and nonconvex objective functions. Remarkably, Adam often drives the empirical training loss nearly to zero. This phenomenon has been partially explained by neural tangent kernel (NTK) analyses of gradient descent (GD) and stochastic gradient descent (SGD). However, analyzing Adam presents additional challenges. Its f",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Weight-Space Programming of Policies and Their Verification via Model Checking",
+      "url": "http://arxiv.org/abs/2611.11604v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language models (LLMs) can write the weights of small neural networks directly, without gradient descent. This weight-space programming creates policies for sequential decision-making from a task description alone, but nothing guarantees that a written policy behaves as intended. We combine weight-space programming with probabilistic model checking. Given an environment modeled as a Markov d",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MicroSim: Contrastive Graph Neural Networks for Binary Code Similarity Detection",
+      "url": "http://arxiv.org/abs/2611.11486v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We present MicroSim, a system for binary code similarity detection that represents each function as a graph built from IDA Pro Hex-Rays microcode and compares such graphs with a contrastive Siamese graph neural network (GNN). We evaluate on the TREX cross-optimization benchmark, a corpus of 849,072 function-level microcode graphs spanning optimization levels -O0 through -O3, under a strict class-d",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Optimal execution in a fractional setting with reinforcement learning",
+      "url": "http://arxiv.org/abs/2611.11373v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We consider the problem of optimal liquidation with linear market impact, as in the seminal work of Almgren and Chriss, but with an asset driven by a fractional Brownian motion. For $H \\neq 1/2$, we observe that the deterministic solution given by Almgren and Chriss is no longer optimal. We develop a strategy to exploit the information induced by the correlation between price increments. The strat",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Onsager--Machlup Theory and Transition Pathways for Degenerate Stochastic Systems with Multiplicative Noise",
+      "url": "http://arxiv.org/abs/2611.11270v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Noise-induced transitions between metastable states are central to many nonlinear stochastic dynamical systems, and most probable transition pathways provide an effective means of revealing the underlying transition mechanisms. In this work, we develop an Onsager--Machlup framework for degenerate stochastic dynamical systems driven by multiplicative Gaussian noise. We first derive the Onsager--Mac",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Learning the NMPC with Stability Guarantees",
+      "url": "http://arxiv.org/abs/2611.11163v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Although nonlinear model predictive control (NMPC) is widely used, its online optimization is computationally expensive. Neural network approximations of NMPC can effectively reduce the online computational burden but generally lack stability guarantees. This paper proposes an approximate NMPC framework with guarantees of constraint satisfaction and closed-loop stability. The approximation error i",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Virtual-Flow: Virtual Microphone-based Speech Enhancement via Semi-supervised Flow Matching",
+      "url": "http://arxiv.org/abs/2611.11130v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Neural network-based virtual microphone estimation (neural-VME) synthesizes microphone signals at unobserved spatial locations from a limited set of real microphone (RM) physical recordings. This enables high-resolution arrays that improve spatial processing for downstream tasks such as speech enhancement. However, existing methods rely on supervised training with ground-truth signals captured at ",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Jointly Optimizing Memory, Computing and Offloading for Energy-Efficient DNN Inference",
+      "url": "http://arxiv.org/abs/2611.11106v1",
+      "date": "2026-11-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "In edge intelligence systems, computation offloading and dynamic voltage and frequency scaling (DVFS) are widely used to improve energy efficiency. However, as applications like deep neural network (DNN) inference evolve in complexity, their demands for memory resources have progressively increased, establishing memory as a critical bottleneck that impacts both latency and energy consumption. In t",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Network Contention State Aware Dynamic Optimizer for Accelerator Collective Communication Libraries",
+      "url": "http://arxiv.org/abs/2611.10984v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Collective Communication Libraries (CCL) are critical for large-scale distributed AI/ML training, yet their configurations are determined by static heuristics that do not account for real-time network conditions. Our empirical study shows that these heuristics perform near-optimally in contention-free environments, but degrade substantially under background traffic. To address this, we present a c",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MPSi: Neural Extraction of Site-Specific Multipath Propagation Properties for Massive MIMO",
+      "url": "http://arxiv.org/abs/2611.10954v1",
+      "date": "2026-11-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Accurate extraction of site-specific multipath propagation properties enables a wide range of wireless applications, including initial access, wideband channel reconstruction, and the generation of channel datasets for learning-based and continual-learning systems. Classical parametric channel-sounding algorithms such as RIMAX provide physically interpretable estimates, but their data-dependent mo",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Retrieval-Centric Deep Learning in Growing Nonparametric Neural Networks",
+      "url": "https://huggingface.co/papers/2610.03858",
+      "date": "2026-10-02",
+      "signal": 11,
+      "signal_name": "upvotes",
+      "summary": "Kernelized attention layers with functional gradient-based rules establish a retrieval-centric deep learning paradigm that improves learning efficiency and connects to advanced neural network optimizers.",
+      "extra": {
+        "keywords": [
+          "layer",
+          "key-value representations",
+          "attention mechanism",
+          "growing neural net",
+          "linear attention",
+          "kernelized attention",
+          "radial basis function",
+          "softmax-like kernels",
+          "retrieval-centric deep learning",
+          "MesaNet",
+          "DeltaNet"
+        ],
+        "github": "https://github.com/paradigms-of-intelligence/rcdl",
+        "github_stars": 17,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Learning Functional Subspaces for Neural Network Compression",
+      "url": "https://huggingface.co/papers/2609.40127",
+      "date": "2026-09-30",
+      "signal": 6,
+      "signal_name": "upvotes",
+      "summary": "Learnable Subspace Projections learn orthogonal low-rank subspaces end-to-end via global optimization, improving compressed transformer accuracy and reducing memory and latency.",
+      "extra": {
+        "keywords": [
+          "low-rank weight factorization",
+          "orthogonal projector",
+          "KL divergence",
+          "whitened SVD truncation",
+          "attention",
+          "KV cache",
+          "transformers"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Growing a Neural Network in Breadth, Depth, and Time",
+      "url": "https://huggingface.co/papers/2605.25174",
+      "date": "2026-05-24",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Resource-constrained recurrent convolutional networks optimize computational graphs across breadth, depth, and time dimensions to achieve task accuracy, with emergent behaviors correlating to human reaction times.",
+      "extra": {
+        "keywords": [
+          "recurrent convolutional neural network",
+          "finite subset",
+          "infinite lattice",
+          "backpropagation",
+          "computational graphs",
+          "task errors",
+          "resource constraints",
+          "breadth",
+          "depth",
+          "time",
+          "neural architectures",
+          "brain design",
+          "neural solutions"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Symmetry-Compatible Principle for Optimizer Design: Embeddings, LM Heads, SwiGLU MLPs, and MoE Routers",
+      "url": "https://huggingface.co/papers/2605.18106",
+      "date": "2026-05-18",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Researchers developed symmetry-compatible optimizers that respect the equivariance structures of neural network parameters, improving training stability and performance over traditional coordinate-wise methods like Adam.",
+      "extra": {
+        "keywords": [
+          "symmetry-compatible optimizers",
+          "equivariance",
+          "parameter space",
+          "weight block",
+          "bi-orthogonally equivariant updates",
+          "stochastic spectral descent",
+          "Muon",
+          "Scion",
+          "polar gradient methods",
+          "permutation symmetry",
+          "shared-shift symmetry",
+          "embedding matrices",
+          "LM head matrices",
+          "SwiGLU MLP projections",
+          "MoE router matrices",
+          "one-sided spectral updates",
+          "row-norm updates",
+          "hybrid row-norm/spectral updates",
+          "row-aware updates",
+          "column-aware updates",
+          "centered row-norm updates",
+          "left-spectral updates",
+          "pre-training",
+          "dense MoE",
+          "sparse MoE",
+          "language models",
+          "Qwen3-0.6B",
+          "Gemma 3 1B",
+          "OLMoE-1B-7B",
+          "gpt-oss"
+        ],
+        "github": "https://github.com/timlautk/equivariant_optimizers",
+        "github_stars": 13,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Improving Neural Network Training by Decoupling the Magnitude and Direction of Weight Vectors",
+      "url": "https://huggingface.co/papers/2606.25971",
+      "date": "2026-06-24",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Magnitude-direction decoupling separates weight updates into independent direction and magnitude components, improving training stability and scalability across different optimizers and model architectures.",
+      "extra": {
+        "keywords": [
+          "optimizers",
+          "Adam",
+          "Muon",
+          "weight decay",
+          "warmup",
+          "Mixture-of-Experts",
+          "MoE",
+          "magnitude-direction decoupling",
+          "hypersphere",
+          "learning rate"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "StereoGeo: an end-to-end stereo camera calibration method",
+      "url": "https://huggingface.co/papers/2606.14619",
+      "date": "2026-06-12",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "StereoGeo presents an end-to-end network-based approach for stereo camera calibration that estimates focal lengths, gravity directions, and relative extrinsic transformations using deep neural networks and differentiable optimization.",
+      "extra": {
+        "keywords": [
+          "stereo camera calibration",
+          "end-to-end network",
+          "focal lengths",
+          "gravity directions",
+          "relative extrinsic transformation",
+          "GeoCalib",
+          "deep neural network",
+          "differentiable optimizer"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Adaptive Preconditioners Trigger Loss Spikes in Adam",
+      "url": "https://huggingface.co/papers/2506.04805",
+      "date": "2026-05-25",
+      "signal": 0,
+      "signal_name": "upvotes",
+      "summary": "Loss spikes in Adam training stem from a decoupling between its second-moment preconditioner and instantaneous squared gradients, which destabilizes optimization by pushing preconditioned curvature past a stability threshold.",
+      "extra": {
+        "keywords": [
+          "Adam optimizer",
+          "second moment estimator",
+          "adaptive preconditioner",
+          "decoupling mechanism",
+          "preconditioned Hessian",
+          "stability threshold",
+          "quadratic approximation",
+          "loss spikes",
+          "Transformers"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Crystal ML Library: Autograd, Tensors, Neural Networks, Optimizers",
+      "url": "https://github.com/skuznetsov/cogni-ml",
+      "date": "2026-07-16",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48930154",
+        "comments": 0,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Muon: An optimizer for hidden layers in neural networks (2024)",
+      "url": "https://kellerjordan.github.io/posts/muon/",
+      "date": "2026-10-15",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50109691",
+        "comments": 0,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: MNIST64 – 99.5% accuracy MNIST BNN on a stock Commodore 64",
+      "url": "https://github.com/jarnoh/mnist64",
+      "date": "2026-09-19",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49767689",
+        "comments": 1,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Taming optimization variance in compact neural shading networks",
+      "url": "https://research.nvidia.com/labs/rtr/publication/bitterli2026taming/",
+      "date": "2026-08-03",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49160733",
+        "comments": 0,
+        "phrase": "neural network optimizer"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Human-Centered Explainable AI (XAI)",
+      "url": "https://doi.org/10.1017/9781108872225.011",
+      "date": "2026-09-03",
+      "signal": 462,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "neural network optimizer"
+      }
+    }
+  ]
+}

@@ -1,0 +1,4685 @@
+{
+  "meta": {
+    "topic": "autonomous machine learning research agent",
+    "phrases": [
+      "autonomous machine learning research agent",
+      "autoresearch",
+      "AI scientist agent",
+      "automated ML experimentation agent"
+    ],
+    "since": "2026-05-14",
+    "days": 180,
+    "sources": [
+      "github",
+      "arxiv",
+      "hf",
+      "hn",
+      "openalex"
+    ],
+    "run_at": "2026-11-10 19:56 UTC",
+    "count": 248
+  },
+  "errors": [],
+  "records": [
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "windskyther/AutoScholar",
+      "url": "https://github.com/windskyther/AutoScholar",
+      "date": "2026-09-06",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "An autonomous intelligent agent platform specifically designed for research tasks in artificial intelligence, machine learning, and deep learning.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-06",
+        "pushed": "2026-11-10",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mbzuai-ai4bio/BioXArena-Pro",
+      "url": "https://github.com/mbzuai-ai4bio/BioXArena-Pro",
+      "date": "2026-11-09",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "BioXArena-Pro: a research-grade benchmark for autonomous biomedical machine learning agents (harness, graders, scoring, leaderboard)",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-11-09",
+        "pushed": "2026-11-10",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "NickyCKC/autonomous-machine-learning-research-agent-for-recommender-systems",
+      "url": "https://github.com/NickyCKC/autonomous-machine-learning-research-agent-for-recommender-systems",
+      "date": "2026-08-29",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Autonomous Machine Learning Research Agent for recommender-system experimentation and optimization",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-29",
+        "pushed": "2026-09-06",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "debugdive/ResearchPilot",
+      "url": "https://github.com/debugdive/ResearchPilot",
+      "date": "2026-09-07",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Local LLM-based autonomous machine learning research agent",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-07",
+        "pushed": "2026-09-25",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "batta-vaishnavi/ResearchPilot",
+      "url": "https://github.com/batta-vaishnavi/ResearchPilot",
+      "date": "2026-09-09",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Autonomous AI research agent that transforms research questions into evidence-backed machine learning workflows.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-09",
+        "pushed": "2026-09-09",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "oadultradeepfield/kopibara-rlab-agent",
+      "url": "https://github.com/oadultradeepfield/kopibara-rlab-agent",
+      "date": "2026-08-31",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "TikTok TechJam 2026: Autonomous Machine Learning Research Agent for Recommender Systems",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-08-31",
+        "pushed": "2026-09-01",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "bohan-shao/Daedalus",
+      "url": "https://github.com/bohan-shao/Daedalus",
+      "date": "2026-08-27",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Autonomous Machine Learning Research Agent for Recommender Systems - TikTok TechJam 2026",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-08-27",
+        "pushed": "2026-09-01",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "uma1ma/AI-Blog-Studio",
+      "url": "https://github.com/uma1ma/AI-Blog-Studio",
+      "date": "2026-09-07",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Autonomous multi-agent AI blogging platform for researching, generating, validating, and publishing technical AI and machine learning articles.",
+      "extra": {
+        "topics": [
+          "ai",
+          "ai-agents",
+          "artificial-intelligence",
+          "llm",
+          "machine-learning",
+          "python"
+        ],
+        "license": "MIT",
+        "created": "2026-09-07",
+        "pushed": "2026-09-08",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Tamim544/NeuroFlow-AI",
+      "url": "https://github.com/Tamim544/NeuroFlow-AI",
+      "date": "2026-07-23",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Autonomous Multi-Agent AI Platform for Scientific Research & Machine Learning Discovery built with LangGraph, FastAPI, and Next.js",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-07-23",
+        "pushed": "2026-07-23",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ncrim7/agc-ai-research",
+      "url": "https://github.com/ncrim7/agc-ai-research",
+      "date": "2026-07-21",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Research repository for the Autonomous Greenhouse Challenge (AGC) dataset. Includes dataset documentation, literature review, architecture decisions (ADR), experiment tracking, AI agents, decision support systems, and reproducible machine learning workflows.",
+      "extra": {
+        "topics": [
+          "agriculture",
+          "agritech",
+          "ai",
+          "artificial-intelligence",
+          "autonomous-greenhouse",
+          "dataset",
+          "decision-support",
+          "greenhouse",
+          "llm",
+          "machine-learning",
+          "ml",
+          "python",
+          "rag",
+          "research",
+          "time-series"
+        ],
+        "license": "MIT",
+        "created": "2026-07-21",
+        "pushed": "2026-08-30",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "sunyifei-126/EvolSA",
+      "url": "https://github.com/sunyifei-126/EvolSA",
+      "date": "2026-08-11",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Bounded Recursive Self-Improvement (RSI) for self-improving LLM agents, self-evolving agents, agentic AI, autonomous agents, operator evolution, machine learning research, and AI safety.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-agents",
+          "ai-safety",
+          "artificial-intelligence",
+          "autonomous-agents",
+          "llm",
+          "llm-agents",
+          "machine-learning",
+          "multi-agent-systems",
+          "operator-evolution",
+          "recursive-self-improvement",
+          "rsi",
+          "self-evolving-agents",
+          "self-improvement",
+          "self-improving-agents"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-08-11",
+        "pushed": "2026-11-01",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "davidkjeremiah/ML4Science-Bench",
+      "url": "https://github.com/davidkjeremiah/ML4Science-Bench",
+      "date": "2026-10-26",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "ML4Science-Bench: Benchmarking Autonomous Agents on End-to-End Machine Learning for Science | Research co-authored by David Jeremiah.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-26",
+        "pushed": "2026-10-26",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "atkurirajaramaomkarvikas-del/Multi-Agentic-Blog-Generation",
+      "url": "https://github.com/atkurirajaramaomkarvikas-del/Multi-Agentic-Blog-Generation",
+      "date": "2026-06-10",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Automated AI blogging platform using LangGraph and Groq LLM. Multiple AI agents autonomously research, write and publish technical blog posts on Machine Learning and AI topics.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-10",
+        "pushed": "2026-06-10",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dhruvsharma-0001/PaperMind-Ai",
+      "url": "https://github.com/dhruvsharma-0001/PaperMind-Ai",
+      "date": "2026-08-25",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "PaperMind Ai is an autonomous research intelligence agent designed to make complex academic literature and cutting-edge machine learning papers instantly comprehensible.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-08-25",
+        "pushed": "2026-08-25",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "nexcss/Research_Rader",
+      "url": "https://github.com/nexcss/Research_Rader",
+      "date": "2026-06-25",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "ResearchRadar is a fully autonomous AI-powered research agent built by a 3rd-year AI/ML research student. Its purpose is to continuously discover, validate, store, summarize, and monitor the latest research papers and advancements in the field of Artificial Intelligence and Machine Learning.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-06-25",
+        "pushed": "2026-09-26",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ml4t/skills",
+      "url": "https://github.com/ml4t/skills",
+      "date": "2026-11-10",
+      "signal": 42,
+      "signal_name": "stars",
+      "summary": "Agent skills for Machine Learning for Algorithmic Trading: leakage-safe quant ML, backtesting, validation, and autonomous research workflows.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-agents",
+          "algorithmic-trading",
+          "backtesting",
+          "claude-code",
+          "codex",
+          "coding-agents",
+          "financial-machine-learning",
+          "machine-learning",
+          "ml4t",
+          "quantitative-finance"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-04-01",
+        "pushed": "2026-11-10",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Cashcoin123/Cashcoin123",
+      "url": "https://github.com/Cashcoin123/Cashcoin123",
+      "date": "2026-10-05",
+      "signal": 6,
+      "signal_name": "stars",
+      "summary": "# Application card: GitHub Copilot Chat Learn how to use GitHub Copilot Chat responsibly by understanding its purposes, capabilities, and limitations. ## What is an Application Card? <!-- Do not modify this text.--> GitHub’s application and platform cards are intended to help you understand how our AI technology works, the choices application owners can make that influence application performance ",
+      "extra": {
+        "topics": [
+          "config",
+          "github-config"
+        ],
+        "license": null,
+        "created": "2022-02-23",
+        "pushed": "2026-10-05",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "KIVOX-dev/MJ-CHAT-BOT",
+      "url": "https://github.com/KIVOX-dev/MJ-CHAT-BOT",
+      "date": "2026-09-01",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "MJ AI is an advanced autonomous research and hybrid reasoning platform. It integrates high-speed cloud language models with local machine learning systems, memory index search, and web-scraping agents to provide deep factual analysis and math evaluations.",
+      "extra": {
+        "topics": [
+          "ai",
+          "assistant",
+          "chatbot",
+          "duckduckgo",
+          "flask",
+          "html",
+          "nojejs",
+          "numpy",
+          "pandas",
+          "pytorch",
+          "react",
+          "sympy",
+          "tensorflow"
+        ],
+        "license": "MIT",
+        "created": "2026-05-01",
+        "pushed": "2026-09-01",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "AkashKundu114/AkashKundu114",
+      "url": "https://github.com/AkashKundu114/AkashKundu114",
+      "date": "2026-10-16",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Config and profile README for Akash Kundu — AI Systems, Autonomous Agents & Machine Learning Research Engineer",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-engineer",
+          "akashkundu",
+          "autonomous-agents",
+          "machine-learning",
+          "portfolio",
+          "profile"
+        ],
+        "license": null,
+        "created": "2026-05-12",
+        "pushed": "2026-10-16",
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Hard to Fool: A Bounded LLM Research Loop for Quantitative Finance, and What Two Dozen Campaigns Found",
+      "url": "http://arxiv.org/abs/2611.06607v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Agentic research loops that let a language model propose a change, run a fixed experiment and keep whatever improves the metric work well in machine learning. In trading research the same loop is a machine for producing false discoveries: a backtest that \"improves the metric\" is, by default, overfit, look-ahead, a multiple-comparisons artifact, cost-free, or market drift wearing a strategy. We des",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "From AutoResearch to Continual AutoResearch: Do Agents Learn Across Tasks?",
+      "url": "http://arxiv.org/abs/2611.05108v1",
+      "date": "2026-11-03",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autoresearch has shown that agents can autonomously write code, run experiments, and iteratively improve machine learning solutions. Yet most evaluations start a new agent session from scratch for each new problem, making them costly and leaving unclear whether agents can retain and apply prior insights when adapting to new tasks. We introduce CONTINUAL AUTORESEARCH, an open-ended environment that",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Integrating Machine Learning and Uncertainty Quantification for Real-Time Decision-Making in Digital Twins: A System-Centric Review and Perspective",
+      "url": "http://arxiv.org/abs/2611.04269v1",
+      "date": "2026-11-03",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Digital Twins are evolving from passive virtual representations into closed-loop systems that continuously synchronize with physical assets and drive real-time decisions. Yet predictive modeling, machine learning (ML), uncertainty quantification (UQ), and decision-making have been studied as separate capabilities, leaving limited understanding of their integration and maintenance during online ope",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Evolution of Financial AI: From Statistical Models to Agentic AI",
+      "url": "http://arxiv.org/abs/2610.41228v1",
+      "date": "2026-10-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Artificial intelligence (AI) in finance has evolved from statistical learning and machine learning for structured prediction, through deep learning and foundation models for representation learning, language understanding, and reasoning, to retrieval-augmented generation for knowledge-grounded reasoning and agentic AI for autonomous planning and execution. In this paper, we examine how researchers",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Bridging the Closed-World Gap: Interpretable Anomaly Detection via a Hybrid TSK-FCM Ensemble on the BETH Dataset",
+      "url": "http://arxiv.org/abs/2610.30576v1",
+      "date": "2026-10-22",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "A fundamental paradox plagues the deployment of Machine Learning in cybersecurity: supervised models generalize poorly to novel, Out-of-Distribution (OoD) attacks, whereas unsupervised models often suffer from poor separability, leading to unmanageable false-alarm rates. This challenge is exemplified by the BETH dataset, a kernel-level benchmark in which the training data consists solely of benign",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The End of Consensus Research?",
+      "url": "http://arxiv.org/abs/2610.30114v1",
+      "date": "2026-10-21",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Consensus is a fundamental problem in distributed computing and at the core of state machine replication (SMR). Despite decades of active human research, discovering practical low-latency solutions to the problem is still open, as it requires combining protocol knowledge, correctness reasoning, implementation, and experimental evaluation. We report on how AI helped us discover A-greement, a new co",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Automated Materials Data and Knowledge Extraction using Machine Learning and Large Language Models",
+      "url": "http://arxiv.org/abs/2610.29895v1",
+      "date": "2026-10-21",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Over the past decade, substantial efforts have been devoted to developing machine learning (ML) methods for extracting materials data and, where possible, materials knowledge directly from the scientific literature. This review traces the evolution of these methods from heuristic, rule-based pipelines through natural language processing (NLP) models and transformer-based encoders to, lastly, large",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Securing Agentic Commerce Through Behavior-Aware Fraud Detection and Cybersecurity for Trusted AI-Agent Payment Authorization",
+      "url": "http://arxiv.org/abs/2610.27483v1",
+      "date": "2026-10-20",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The growing use of autonomous artificial intelligence agents in digital commerce creates new security concerns involving agent impersonation, unauthorized payments, compromised agents, and misuse of delegated authority. This research introduces the Autonomous Commerce Agent Guard System (ACAGS), a cybersecurity framework combining supervised machine learning, behavioral analytics, agent-specific a",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Large language model and reinforcement learning based autonomous construction and progress updates",
+      "url": "http://arxiv.org/abs/2610.26899v1",
+      "date": "2026-10-16",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Due to the rapid growth of the global population, traditional construction methods are gradually unable to meet the current housing demand. The advancement of machine learning algorithms has encouraged researchers to explore their applications in the construction industry, leading to more intelligent and efficient building processes. In particular, the rise of large language models in recent years",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MLExpert: Towards a Generalist Agentic Model for Autonomous Machine Learning Engineering",
+      "url": "http://arxiv.org/abs/2610.22344v1",
+      "date": "2026-10-15",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Large language models (LLMs) are expanding from assisting scientific research and engineering to autonomously developing and improving AI systems, advancing AI for AI (AI4AI) as a pathway toward recursive self-improvement (RSI). Workflow-driven machine learning engineering (MLE) systems provide a practical path toward this pursuit through complex orchestration that manages long-horizon experimenta",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "The Agentic Scientist: Orchestrating Coding Agents for Automated Scientific (Co-)Discovery",
+      "url": "http://arxiv.org/abs/2610.18933v1",
+      "date": "2026-10-13",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Modern coding agents are fundamentally reshaping the role of human input for computational research: they write code, launch in silico experiments, analyze their results, and autonomously operate with ever-increasing time horizons. Despite these developments, fully autonomous research agents suffer from a limited ideation radius and myopic hill-climbing search dynamics. To bridge this gap, we intr",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Harnessing Machine Learning for Ultrafast Science in Facility Settings: Opportunities and Challenges",
+      "url": "http://arxiv.org/abs/2610.12146v3",
+      "date": "2026-10-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Ultrafast science is rapidly evolving from a collection of specialized laser experiments into a facility-scale, data-intensive research endeavour. High-repetition-rate femtosecond and attosecond sources, synchronized multidimensional diagnostics, and increasingly nonlinear laser-matter interactions now generate heterogeneous data streams whose volume, speed, and complexity often exceed the capacit",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Explainable Failure Prediction and Prevention in Maritime",
+      "url": "http://arxiv.org/abs/2610.08363v1",
+      "date": "2026-10-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Maritime systems operate in highly dynamic environments where unexpected equipment failures can compromise safety, reliability, and operational efficiency. Recent advances in artificial intelligence (AI), machine learning, digital twins, and predictive maintenance enable proactive failure prediction and prevention. However, ensuring trustworthy and explainable decision-making remains a major chall",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "MMPostTrainBench: Benchmarking Autonomous Research for Multimodal Post-Training",
+      "url": "http://arxiv.org/abs/2610.05398v1",
+      "date": "2026-10-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autonomous research seeks sustained model improvements through iterative experimentation and feedback. LLM agents show promise in automating machine learning and language-model post-training, but their ability to sustain multimodal improvement remains unclear. We introduce MMPostTrainBench, a benchmark spanning eight tasks in image, audio, video, and joint audio-video understanding and image-groun",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Atoms to Processes: The Role of Artificial Intelligence and Machine Learning in Chemical Engineering",
+      "url": "http://arxiv.org/abs/2610.02014v1",
+      "date": "2026-10-01",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The rapid maturation of artificial intelligence (AI) and machine learning (ML) has catalyzed a profound shift in how chemical engineering problems are formulated, analyzed, and solved. Advances in computing, data availability, and learning algorithms have enabled AI/ML methods to impact applications spanning atomic-scale simulations, materials and catalyst discovery, transport and thermodynamics, ",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Repo-To-Skill: Distilling GitHub Repositories Into AI4AI Skills",
+      "url": "https://huggingface.co/papers/2609.02749",
+      "date": "2026-09-02",
+      "signal": 147,
+      "signal_name": "upvotes",
+      "summary": "DisCo is a research agent that distills operational knowledge into reusable skills, significantly improving autonomous ML research performance across benchmarks.",
+      "extra": {
+        "keywords": [
+          "autonomous agents",
+          "machine-learning research",
+          "operational knowledge",
+          "skill distillation",
+          "DisCo",
+          "AREX-Skill Library",
+          "MLE-bench",
+          "PaperBench"
+        ],
+        "github": "https://github.com/VectorSpaceLab/AREX-Skill",
+        "github_stars": 350,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "ResearchClawBench: A Benchmark for End-to-End Autonomous Scientific Research",
+      "url": "https://huggingface.co/papers/2606.07591",
+      "date": "2026-05-28",
+      "signal": 106,
+      "signal_name": "upvotes",
+      "summary": "ResearchClawBench evaluates autonomous scientific research capabilities across 40 tasks from 10 domains using expert-curated criteria and reveals current limitations in re-discovery accuracy among AI agents and LLMs.",
+      "extra": {
+        "keywords": [
+          "autonomous research",
+          "scientific research",
+          "benchmark evaluation",
+          "multimodal rubrics",
+          "re-discovery",
+          "error analysis",
+          "experimental protocol mismatch",
+          "evidence mismatch",
+          "scientific core"
+        ],
+        "github": "https://github.com/InternScience/ResearchClawBench",
+        "github_stars": 277,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Toward Generalist Autonomous Research via Hypothesis-Tree Refinement",
+      "url": "https://huggingface.co/papers/2606.11926",
+      "date": "2026-06-10",
+      "signal": 79,
+      "signal_name": "upvotes",
+      "summary": "An AI framework called Arbor enables autonomous scientific research by combining strategic coordination, isolated hypothesis testing, and a persistent knowledge tree to iteratively improve research outcomes across multiple domains.",
+      "extra": {
+        "keywords": [
+          "autonomous research",
+          "long horizons",
+          "Hypothesis Tree Refinement",
+          "coordinator",
+          "executors",
+          "worktrees",
+          "iterative experimentation",
+          "research artifact",
+          "held-out result",
+          "MLE-Bench Lite"
+        ],
+        "github": "https://github.com/RUC-NLPIR/Arbor",
+        "github_stars": 1146,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Scaling Automatic Research Agents via World Models",
+      "url": "https://huggingface.co/papers/2608.12564",
+      "date": "2026-08-29",
+      "signal": 75,
+      "signal_name": "upvotes",
+      "summary": "World Model RL replaces costly environment execution with a learned world model and applies debiasing and denoising to accelerate post-training of autonomous research agents.",
+      "extra": {
+        "keywords": [
+          "World Model RL",
+          "AutoResearch",
+          "reinforcement learning",
+          "world model",
+          "online debiasing",
+          "inverse-variance denoising",
+          "embodied VLA policies"
+        ],
+        "github": "https://github.com/xiyuanyang45/WMRL",
+        "github_stars": 40,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoResearchClaw: Self-Reinforcing Autonomous Research with Human-AI Collaboration",
+      "url": "https://huggingface.co/papers/2605.20025",
+      "date": "2026-05-19",
+      "signal": 74,
+      "signal_name": "upvotes",
+      "summary": "AutoResearchClaw is a multi-agent autonomous research system that improves scientific discovery through structured debate, self-healing execution, verifiable reporting, human collaboration, and evolutionary learning, outperforming previous systems on a benchmark while maintaining human oversight.",
+      "extra": {
+        "keywords": [
+          "multi-agent autonomous research",
+          "structured multi-agent debate",
+          "self-healing executor",
+          "\\textsc{Pivot}/\\textsc{Refine} decision loop",
+          "verifiable result reporting",
+          "human-in-the-loop collaboration",
+          "cross-run evolution",
+          "ARC-Bench",
+          "AI Scientist v2"
+        ],
+        "github": "https://github.com/aiming-lab/AutoResearchClaw",
+        "github_stars": 14853,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AI for Auto-Research: Roadmap & User Guide",
+      "url": "https://huggingface.co/papers/2605.18661",
+      "date": "2026-05-18",
+      "signal": 69,
+      "signal_name": "upvotes",
+      "summary": "AI systems demonstrate varying reliability across research stages, excelling in structured tasks but struggling with novel ideas and scientific judgment, necessitating human oversight for credible outcomes.",
+      "extra": {
+        "keywords": [
+          "AI-assisted research",
+          "automated systems",
+          "research papers",
+          "long-horizon agents",
+          "scientific integrity",
+          "epistemological phases",
+          "end-to-end analysis",
+          "AI automation",
+          "human-governed collaboration",
+          "benchmark suite",
+          "tool inventory"
+        ],
+        "github": "https://github.com/worldbench/awesome-ai-auto-research",
+        "github_stars": 576,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "OmniScientist: An Omni-Modal Omni-Discipline AI Scientist",
+      "url": "https://huggingface.co/papers/2608.13558",
+      "date": "2026-08-13",
+      "signal": 33,
+      "signal_name": "upvotes",
+      "summary": "OmniScientist is an end-to-end omni-modal AI scientist that performs multidisciplinary research directly from heterogeneous raw evidence using autonomous agents and lifecycle-wide perception, improving evidence-grounded discovery across diverse scientific modalities.",
+      "extra": {
+        "keywords": [
+          "omni-modal AI scientist",
+          "perception layer",
+          "autonomous agents",
+          "deterministic pipeline",
+          "idea checks",
+          "rigour checks",
+          "claim checks",
+          "raw evidence",
+          "lifecycle-wide perception",
+          "multidisciplinary research"
+        ],
+        "github": "https://github.com/Omni-Scientist/OmniScientist",
+        "github_stars": 173,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "JevGPT: Thinking Fast and Slow in Autonomous Research",
+      "url": "https://huggingface.co/papers/2610.18272",
+      "date": "2026-10-13",
+      "signal": 31,
+      "signal_name": "upvotes",
+      "summary": "JevGPT couples rapid evidence assessment with deliberative planning to improve autonomous research coverage and efficiency within limited budgets.",
+      "extra": {
+        "keywords": [
+          "dual-system architecture",
+          "deliberative research planning",
+          "autonomous research agents",
+          "evidence processing",
+          "System One",
+          "System Two"
+        ],
+        "github": "https://github.com/sunyasheng/JevGPT",
+        "github_stars": 23,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "How Do Agents Fail on AutoResearch: End-to-End Diagnostic Evaluation on 100 Real-World Frontier Research Tasks",
+      "url": "https://huggingface.co/papers/2608.14905",
+      "date": "2026-08-14",
+      "signal": 31,
+      "signal_name": "upvotes",
+      "summary": "Autonomous research agents evaluated across the full scientific lifecycle reveal a pervasive lack of metacognitive self-correction, motivating a new benchmark and failure taxonomy.",
+      "extra": {
+        "keywords": [
+          "LLMs",
+          "agentic scaffolds",
+          "AutoResearch",
+          "AutoResearchEval",
+          "ARFT",
+          "metacognitive loop",
+          "agent-as-a-judge"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "EurekAgent: Agent Environment Engineering is All You Need For Autonomous Scientific Discovery",
+      "url": "https://huggingface.co/papers/2606.13662",
+      "date": "2026-06-11",
+      "signal": 31,
+      "signal_name": "upvotes",
+      "summary": "Environment engineering enhances autonomous scientific discovery by designing structured agent environments that optimize behaviors like exploration and collaboration while mitigating issues such as reward hacking and human oversight friction, as demonstrated by the EurekAgent system that achieves state-of-the-art results across multiple domains with low computational costs.",
+      "extra": {
+        "keywords": [
+          "environment engineering",
+          "autonomous scientific discovery",
+          "agent environments",
+          "permissions engineering",
+          "artifact engineering",
+          "budget engineering",
+          "human-in-the-loop engineering",
+          "EurekAgent",
+          "metric-driven discovery",
+          "reward hacking"
+        ],
+        "github": "https://github.com/THU-Team-Eureka/EurekAgent",
+        "github_stars": 88,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Epi: Towards a Persistent, Self-Improving Agent for Autonomous Research",
+      "url": "https://huggingface.co/papers/2610.24944",
+      "date": "2026-10-18",
+      "signal": 22,
+      "signal_name": "upvotes",
+      "summary": "Épi is an autonomous research agent that maintains persistent investigations across sessions, improves through accumulated experience, and achieves record-setting mathematical and algorithmic results with reduced computational cost.",
+      "extra": {
+        "keywords": [
+          "autonomous research agent",
+          "persistent research history",
+          "hierarchical memory",
+          "branching review",
+          "fixed verifier",
+          "numerical bound records",
+          "dual certificates",
+          "Cohn-Elkies linear-programming bound",
+          "computer-assisted proof",
+          "Tuza's conjecture",
+          "Épi-turbo",
+          "FrontierOR"
+        ],
+        "github": "https://github.com/BakeLab/Epi-results",
+        "github_stars": 14,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Autodata: An agentic data scientist to create high quality synthetic data",
+      "url": "https://huggingface.co/papers/2606.25996",
+      "date": "2026-06-24",
+      "signal": 21,
+      "signal_name": "upvotes",
+      "summary": "Autodata enables AI agents to function as data scientists who create high-quality training data through meta-optimization, demonstrating improved performance across multiple task domains.",
+      "extra": {
+        "keywords": [
+          "data scientist agent",
+          "meta-optimization",
+          "agentic self-instruct",
+          "synthetic dataset creation",
+          "inference compute",
+          "model training"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Learning to Evaluate Before Improving: Automatic Rubric Induction for Automatic Research Agents",
+      "url": "https://huggingface.co/papers/2608.31076",
+      "date": "2026-08-31",
+      "signal": 19,
+      "signal_name": "upvotes",
+      "summary": "AutoSciRub improves autonomous scientific agents by generating task-specific executable rubrics that guide experiments, verify criteria, and iteratively refine outputs.",
+      "extra": {
+        "keywords": [
+          "AutoSciRub",
+          "executable rubric",
+          "atomic scientific goals",
+          "rubric-guided verification",
+          "ResearchClawBench",
+          "AstaBench"
+        ],
+        "github": "https://github.com/zjunlp/AutoSciRub",
+        "github_stars": 42,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Building AI Research Teams for Autonomous Discovery of Linear Attention Architectures",
+      "url": "https://huggingface.co/papers/2610.28887",
+      "date": "2026-10-20",
+      "signal": 17,
+      "signal_name": "upvotes",
+      "summary": "Autonomous agents can increasingly propose ideas, modify code, and run experiments, creating an opportunity to accelerate scientific discovery using teams of collaborative AI researchers. To escape local minima in the discovery, we propose to encourage orthogonal exploration by constructing the team using agents with varying expertise. However, realizing this design requires more than diverse back",
+      "extra": {
+        "keywords": [],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "How Much of a Harness Does a Strong Agent Need for Autonomous ML Engineering",
+      "url": "https://machinelearning.apple.com/research/harness-autonomous-ml-engineering",
+      "date": "2026-10-18",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50139872",
+        "comments": 0,
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Accelerating scientific discovery with Co-Scientist",
+      "url": "https://doi.org/10.1038/s41586-026-10644-y",
+      "date": "2026-05-19",
+      "signal": 988,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "π*₀.₆: a VLA That Learns From Experience",
+      "url": "https://doi.org/10.15607/rss.2026.xxii.087",
+      "date": "2026-07-13",
+      "signal": 408,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Kimi K3: Open Frontier Intelligence",
+      "url": "https://doi.org/10.48550/arxiv.2607.24653",
+      "date": "2026-07-27",
+      "signal": 369,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Neural Radiance Fields in 3D Vision: A Comprehensive Review",
+      "url": "https://doi.org/10.26599/cvm.2026.9450535",
+      "date": "2026-05-15",
+      "signal": 333,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "BeyondMimic: From motion tracking to versatile humanoid control via guided diffusion",
+      "url": "https://doi.org/10.1126/scirobotics.adx8924",
+      "date": "2026-08-26",
+      "signal": 304,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Machine psychology for language models",
+      "url": "https://doi.org/10.1126/sciadv.aec1912",
+      "date": "2026-10-28",
+      "signal": 299,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Exploring Large Language Model‐Based Intelligent Agents: Definitions, Methods, and Prospects",
+      "url": "https://doi.org/10.1002/widm.70111",
+      "date": "2026-07-24",
+      "signal": 286,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Retrieval-augmented generation for natural language processing: a survey",
+      "url": "https://doi.org/10.1007/s10462-026-11605-7",
+      "date": "2026-06-01",
+      "signal": 254,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "LLM Post-Training: A Deep Dive Into Reasoning Large Language Models",
+      "url": "https://doi.org/10.1109/tpami.2026.3720414",
+      "date": "2026-08-04",
+      "signal": 223,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Senna: Bridging Large Vision-Language Models and End-to-End Autonomous Driving",
+      "url": "https://doi.org/10.1007/s11263-026-03002-y",
+      "date": "2026-08-25",
+      "signal": 195,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Ultralytics YOLO26: Unified Real-Time End-to-End Vision Models",
+      "url": "https://doi.org/10.48550/arxiv.2606.03748",
+      "date": "2026-06-02",
+      "signal": 189,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A Review of Off-Policy Evaluation in Reinforcement Learning",
+      "url": "https://doi.org/10.1214/25-sts985",
+      "date": "2026-07-31",
+      "signal": 157,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Mathematical discovery and exploration can be done at scale",
+      "url": "https://doi.org/10.1073/pnas.2536158123",
+      "date": "2026-09-30",
+      "signal": 156,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "HuntGPT: Integrating Machine Learning-Based Anomaly Detection and Explainable AI with Large Language Models (LLMs)",
+      "url": "https://doi.org/10.3390/telecom7030073",
+      "date": "2026-06-08",
+      "signal": 143,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI and Quantum Computing for Fusion: ML Surrogates, Real-Time Control, and a Resource-Honest Quantum Frontier",
+      "url": "https://doi.org/10.5281/zenodo.22645701",
+      "date": "2026-09-07",
+      "signal": 138,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autonomous machine learning research agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "EvoMap/AutoResearch",
+      "url": "https://github.com/EvoMap/AutoResearch",
+      "date": "2026-08-15",
+      "signal": 3092,
+      "signal_name": "stars",
+      "summary": "AI/ML research agents from idea to paper-ready evidence. An EvoMap open-source project.",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-08-15",
+        "pushed": "2026-09-16",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dzhng/skills",
+      "url": "https://github.com/dzhng/skills",
+      "date": "2026-07-02",
+      "signal": 1470,
+      "signal_name": "stars",
+      "summary": "Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-agents",
+          "autonomous-agents",
+          "autoresearch",
+          "claude-code",
+          "code-review",
+          "codex",
+          "developer-tools",
+          "software-engineering",
+          "spec-driven-development"
+        ],
+        "license": "MIT",
+        "created": "2026-07-02",
+        "pushed": "2026-11-08",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "RUC-NLPIR/Arbor",
+      "url": "https://github.com/RUC-NLPIR/Arbor",
+      "date": "2026-05-31",
+      "signal": 1147,
+      "signal_name": "stars",
+      "summary": "A generalist autonomous research agent — runs experiments, researches, and iteratively optimizes, autonomously.",
+      "extra": {
+        "topics": [
+          "agents",
+          "autonomous-agents",
+          "autoresearch"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-05-31",
+        "pushed": "2026-11-03",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Prism-Shadow/awesome-rsi",
+      "url": "https://github.com/Prism-Shadow/awesome-rsi",
+      "date": "2026-08-13",
+      "signal": 602,
+      "signal_name": "stars",
+      "summary": "An Open Index of RSI Papers",
+      "extra": {
+        "topics": [
+          "ai",
+          "autoresearch",
+          "claude-code",
+          "codex",
+          "deepseek-harness",
+          "gpt",
+          "llm",
+          "paper",
+          "research",
+          "rsi"
+        ],
+        "license": null,
+        "created": "2026-08-13",
+        "pushed": "2026-11-08",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Gen-Verse/ScienceBuddy",
+      "url": "https://github.com/Gen-Verse/ScienceBuddy",
+      "date": "2026-09-14",
+      "signal": 418,
+      "signal_name": "stars",
+      "summary": "ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents",
+      "extra": {
+        "topics": [
+          "agent-harness",
+          "aiforscience",
+          "autoresearch",
+          "llm-agents",
+          "recursive-self-improvement"
+        ],
+        "license": "MIT",
+        "created": "2026-09-14",
+        "pushed": "2026-09-17",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "mikamikasuki/forest",
+      "url": "https://github.com/mikamikasuki/forest",
+      "date": "2026-09-29",
+      "signal": 354,
+      "signal_name": "stars",
+      "summary": "FOREST is a research agent for long-horizon science, where evidence gets lost, errors compound, and goals drift. It explores ideas, reads literature, forms hypotheses, runs real experiments, analyzes results, revises paths, and builds a full paper—all in an editable graph you can inspect, branch, redirect, with claims and figures linked to evidence",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "ai-scientist",
+          "automated-research",
+          "autoresearch",
+          "llm-agents",
+          "research"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-09-29",
+        "pushed": "2026-11-03",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Fchaubard/autoresearcherUI",
+      "url": "https://github.com/Fchaubard/autoresearcherUI",
+      "date": "2026-05-28",
+      "signal": 281,
+      "signal_name": "stars",
+      "summary": "Autoresearcher + wandb + datadog + overleaf + claude code. All local, all free. Boot a node, git clone, fill the form, let it rip.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-28",
+        "pushed": "2026-10-30",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Tencent-Hunyuan/Hyra-results",
+      "url": "https://github.com/Tencent-Hunyuan/Hyra-results",
+      "date": "2026-07-17",
+      "signal": 240,
+      "signal_name": "stars",
+      "summary": "Research artifacts from Hyra (/ˈhaɪ.rɑː/)",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai-for-science",
+          "ai4science",
+          "autoresearch",
+          "coding",
+          "llm",
+          "recursive-self-improvement"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-07-17",
+        "pushed": "2026-11-09",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "alibaba/atrex-kernel-agent",
+      "url": "https://github.com/alibaba/atrex-kernel-agent",
+      "date": "2026-06-23",
+      "signal": 210,
+      "signal_name": "stars",
+      "summary": "An end-to-end agent project for GPU kernel implementation, analysis, profiling, and iterative optimization. It helps an agent turn PyTorch logic or an existing kernel into a high-performance GPU kernel through a structured, profile-driven workflow.",
+      "extra": {
+        "topics": [
+          "agent",
+          "agentic-workflow",
+          "amd-gpu",
+          "autoresearch",
+          "gpu",
+          "gpu-kernel",
+          "gpu-programming",
+          "kernel-generation",
+          "nvidia-gpu",
+          "self-improving-agent",
+          "skills"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-23",
+        "pushed": "2026-11-10",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "zzp1221/Research-Assistant-Agent",
+      "url": "https://github.com/zzp1221/Research-Assistant-Agent",
+      "date": "2026-10-23",
+      "signal": 185,
+      "signal_name": "stars",
+      "summary": "Multi-agent research execution system: paper reproduction, benchmark evaluation, AutoResearch and claim-evidence graphs",
+      "extra": {
+        "topics": [
+          "auto-research",
+          "golang",
+          "multi-agent",
+          "paper-reproduction",
+          "react",
+          "research-agent"
+        ],
+        "license": "MIT",
+        "created": "2026-10-23",
+        "pushed": "2026-11-10",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "gaasher/Agent-Loop-Skills",
+      "url": "https://github.com/gaasher/Agent-Loop-Skills",
+      "date": "2026-06-15",
+      "signal": 181,
+      "signal_name": "stars",
+      "summary": "Loop until it's better — drop-in agentic loops (autoresearch, scientific writing, data analysis, code/SQL/prompt optimization, red-teaming) as open-standard Agent Skills. Verification-gated; native on Claude Code, portable across Codex, Cursor & other Skills hosts.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "agentic-loops",
+          "agentic-workflows",
+          "ai-agents",
+          "anthropic",
+          "autoresearch",
+          "claude",
+          "claude-code",
+          "data-analysis",
+          "literature-review",
+          "llm-agents",
+          "machine-learning",
+          "ml-autoresearch",
+          "open-source",
+          "prompt-engineering",
+          "red-teaming",
+          "scientific-writing",
+          "skills",
+          "subagents"
+        ],
+        "license": "MIT",
+        "created": "2026-06-15",
+        "pushed": "2026-06-30",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "wanshuiyin/Anti-Autoresearch",
+      "url": "https://github.com/wanshuiyin/Anti-Autoresearch",
+      "date": "2026-06-26",
+      "signal": 180,
+      "signal_name": "stars",
+      "summary": "Don't trust an autoresearch paper at face value. Reviewer-side integrity forensics (self-consistency + fabrication), deterministic verdict. 61 signals: 46 integrity hack-patterns (families A–H, verdict-bearing) + 13 zero-weight AI writing-style impressions (AIS) + 2 advisory. Not an opaque AI-text classifier. The dual of ARIS.",
+      "extra": {
+        "topics": [
+          "ai-generated-content",
+          "ai-research",
+          "ai-scientist",
+          "aris",
+          "autoresearch",
+          "claude",
+          "claude-code",
+          "claude-code-skills",
+          "codex",
+          "forensics",
+          "gpt",
+          "llm",
+          "llm-agents",
+          "machine-learning",
+          "mcp",
+          "ml-research",
+          "openai",
+          "paper-review",
+          "peer-review",
+          "research-integrity"
+        ],
+        "license": "MIT",
+        "created": "2026-06-26",
+        "pushed": "2026-11-06",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "OpenRaiser/PaperFlow",
+      "url": "https://github.com/OpenRaiser/PaperFlow",
+      "date": "2026-05-26",
+      "signal": 179,
+      "signal_name": "stars",
+      "summary": "📚 PaperFlow: Dynamic personalized scientific-paper recommendation, reading, and reporting",
+      "extra": {
+        "topics": [
+          "arxiv",
+          "autoresearch",
+          "daily-digest",
+          "literature-discovery",
+          "llm-agents",
+          "paper-recommendation",
+          "personalized-recommendation",
+          "research-workflow",
+          "scientific-reading"
+        ],
+        "license": "MIT",
+        "created": "2026-05-26",
+        "pushed": "2026-08-22",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "toddwyl/hl-quant",
+      "url": "https://github.com/toddwyl/hl-quant",
+      "date": "2026-06-03",
+      "signal": 159,
+      "signal_name": "stars",
+      "summary": "heuristic learning quant",
+      "extra": {
+        "topics": [
+          "autoresearch",
+          "finance",
+          "python",
+          "quant",
+          "skill"
+        ],
+        "license": "MIT",
+        "created": "2026-06-03",
+        "pushed": "2026-06-22",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SantanderAI/autoguardrails",
+      "url": "https://github.com/SantanderAI/autoguardrails",
+      "date": "2026-06-15",
+      "signal": 129,
+      "signal_name": "stars",
+      "summary": "Alignment-research scaffold (autoresearch-style) for LLM guardrails: search over a single policy.md surface",
+      "extra": {
+        "topics": [
+          "ai",
+          "ai-safety",
+          "alignment",
+          "autoresearch",
+          "benchmark",
+          "content-moderation",
+          "evaluation",
+          "guardrails",
+          "jailbreak",
+          "llm",
+          "llm-safety",
+          "machine-learning",
+          "prompt-injection",
+          "python",
+          "red-teaming",
+          "responsible-ai",
+          "santander",
+          "security"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-06-15",
+        "pushed": "2026-10-01",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "aiming-lab/AutoResearchClaw",
+      "url": "https://github.com/aiming-lab/AutoResearchClaw",
+      "date": "2026-08-19",
+      "signal": 14853,
+      "signal_name": "stars",
+      "summary": "Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get a Paper. 🦞",
+      "extra": {
+        "topics": [
+          "autonomous-research",
+          "citation-verification",
+          "llm-agents",
+          "metaclaw",
+          "multi-agent-debate",
+          "openclaw",
+          "paper-generation",
+          "scientific-discovery",
+          "self-evolving"
+        ],
+        "license": "MIT",
+        "created": "2026-03-15",
+        "pushed": "2026-08-19",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "davebcn87/pi-autoresearch",
+      "url": "https://github.com/davebcn87/pi-autoresearch",
+      "date": "2026-10-07",
+      "signal": 8230,
+      "signal_name": "stars",
+      "summary": "Autonomous experiment loop extension for pi",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-03-11",
+        "pushed": "2026-10-07",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "alchaincyf/darwin-skill",
+      "url": "https://github.com/alchaincyf/darwin-skill",
+      "date": "2026-09-18",
+      "signal": 6875,
+      "signal_name": "stars",
+      "summary": "达尔文.skill —— 一个让你的Skill无限进化的系统：评估→改进→测试→保留或回滚 | Autoresearch-inspired autonomous skill optimization for Claude Code. Evaluate, improve, test, keep or revert.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-agents",
+          "autoresearch",
+          "claude-code",
+          "claude-code-skills",
+          "claude-skills",
+          "codex",
+          "evaluation",
+          "huashu-skills",
+          "llm",
+          "openclaw",
+          "prompt-optimization",
+          "self-improving",
+          "skills"
+        ],
+        "license": "MIT",
+        "created": "2026-04-13",
+        "pushed": "2026-09-18",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "uditgoenka/autoresearch",
+      "url": "https://github.com/uditgoenka/autoresearch",
+      "date": "2026-10-31",
+      "signal": 6826,
+      "signal_name": "stars",
+      "summary": "Claude Autoresearch Skill — Autonomous goal-directed iteration for Claude Code. Inspired by Karpathy's autoresearch. Modify → Verify → Keep/Discard → Repeat forever.",
+      "extra": {
+        "topics": [
+          "ai",
+          "autonomous-agent",
+          "autoresearch",
+          "claude",
+          "claude-code",
+          "iteration",
+          "karpathy",
+          "productivity",
+          "skill"
+        ],
+        "license": "MIT",
+        "created": "2026-03-13",
+        "pushed": "2026-10-31",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "leo-lilinxiao/codex-autoresearch",
+      "url": "https://github.com/leo-lilinxiao/codex-autoresearch",
+      "date": "2026-09-12",
+      "signal": 3177,
+      "signal_name": "stars",
+      "summary": "Codex Autoresearch Skill — A self-directed iterative system for Codex that continuously cycles through: modify, verify, retain or discard, and repeat indefinitely. Inspired by Karpathy’s autoresearch concept.",
+      "extra": {
+        "topics": [
+          "automation",
+          "autonomous-agent",
+          "autoresearch",
+          "codex",
+          "codex-cli",
+          "codex-skill",
+          "developer-tools",
+          "iteration",
+          "openai",
+          "skill"
+        ],
+        "license": "MIT",
+        "created": "2026-03-18",
+        "pushed": "2026-09-12",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "OpenNSWM-Lab/FAROS",
+      "url": "https://github.com/OpenNSWM-Lab/FAROS",
+      "date": "2026-10-21",
+      "signal": 3042,
+      "signal_name": "stars",
+      "summary": "A blueprint-driven AutoResearch runtime for orchestrating AI research workflows from idea generation and experiments to paper writing and peer review.",
+      "extra": {
+        "topics": [
+          "academic-research",
+          "academic-writing",
+          "agentic-workflow",
+          "ai-for-science",
+          "ai-scientist",
+          "ai4science",
+          "automated-research",
+          "autonomous-research",
+          "autoresearch",
+          "llm-agents",
+          "multi-agent",
+          "paper-generation",
+          "paper-writing",
+          "research-agent",
+          "research-automation",
+          "research-orchestration",
+          "research-workflow",
+          "scientific-discovery",
+          "scientific-workflow",
+          "workflow-orchestration"
+        ],
+        "license": "MIT",
+        "created": "2026-05-13",
+        "pushed": "2026-10-21",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "webfuse-com/awesome-autoresearch",
+      "url": "https://github.com/webfuse-com/awesome-autoresearch",
+      "date": "2026-09-21",
+      "signal": 2591,
+      "signal_name": "stars",
+      "summary": "A curated list of autonomous improvement loops, research agents, and autoresearch-style systems inspired by Karpathy's autoresearch.",
+      "extra": {
+        "topics": [
+          "agentic-systems",
+          "ai-agents",
+          "ai-research",
+          "ai-tools",
+          "autonomous-agents",
+          "autoresearch",
+          "awesome-list",
+          "claude-code",
+          "experiment-loops",
+          "karpathy",
+          "karpathy-inspired",
+          "llm-agents",
+          "research-agents",
+          "scientific-discovery",
+          "self-improving-systems"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-03-20",
+        "pushed": "2026-09-21",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "chrisworsey55/atlas-gic",
+      "url": "https://github.com/chrisworsey55/atlas-gic",
+      "date": "2026-09-22",
+      "signal": 2443,
+      "signal_name": "stars",
+      "summary": "ATLAS by General Intelligence Capital — Self-improving AI trading agents using Karpathy-style autoresearch",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-03-11",
+        "pushed": "2026-09-22",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "hyperspaceai/agi",
+      "url": "https://github.com/hyperspaceai/agi",
+      "date": "2026-10-17",
+      "signal": 2075,
+      "signal_name": "stars",
+      "summary": "The first distributed AGI system. Thousands of autonomous AI agents collaboratively train models, share experiments via P2P gossip, and push breakthroughs here. Fully peer-to-peer. Join from your browser or CLI.",
+      "extra": {
+        "topics": [
+          "agi",
+          "ai-agents",
+          "ai-research",
+          "artificial-general-intelligence",
+          "autonomous-agents",
+          "autonomous-agents-",
+          "autoresearch",
+          "collaborative-ai",
+          "decentralized",
+          "distributed-ai",
+          "llm",
+          "p2p"
+        ],
+        "license": "MIT",
+        "created": "2026-03-08",
+        "pushed": "2026-10-17",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "trevin-creator/autoresearch-mlx",
+      "url": "https://github.com/trevin-creator/autoresearch-mlx",
+      "date": "2026-07-02",
+      "signal": 1891,
+      "signal_name": "stars",
+      "summary": "Apple Silicon (MLX) port of Karpathy's autoresearch — autonomous AI research loops on Mac, no PyTorch required.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-03-08",
+        "pushed": "2026-07-02",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "RightNow-AI/autokernel",
+      "url": "https://github.com/RightNow-AI/autokernel",
+      "date": "2026-11-09",
+      "signal": 1620,
+      "signal_name": "stars",
+      "summary": "Autoresearch for GPU kernels. Give it any PyTorch model, go to sleep, wake up to optimized Triton kernels.",
+      "extra": {
+        "topics": [
+          "autoresearch",
+          "cuda",
+          "gpu",
+          "kernel-optimization",
+          "pytorch",
+          "triton"
+        ],
+        "license": "MIT",
+        "created": "2026-03-11",
+        "pushed": "2026-11-09",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "WecoAI/aideml",
+      "url": "https://github.com/WecoAI/aideml",
+      "date": "2026-10-16",
+      "signal": 1619,
+      "signal_name": "stars",
+      "summary": "AIDE: an LLM agent for machine learning engineering - the research Weco grew out of. Referenced in OpenAI MLE-bench.",
+      "extra": {
+        "topics": [
+          "ai",
+          "ai-agents",
+          "automated-machine-learning",
+          "autonomous-agents",
+          "autoresearch",
+          "code-optimization",
+          "data-science",
+          "llm",
+          "machine-learning",
+          "self-improving-ai"
+        ],
+        "license": "MIT",
+        "created": "2024-04-03",
+        "pushed": "2026-10-16",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "evo-hq/evo",
+      "url": "https://github.com/evo-hq/evo",
+      "date": "2026-10-05",
+      "signal": 1500,
+      "signal_name": "stars",
+      "summary": "turns your codebase into an autoresearch loop — discovers what to measure, instruments the benchmark, then runs tree search with parallel subagents.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "autonomous-agents",
+          "autoresearch",
+          "claude-code",
+          "code-optimization",
+          "codex",
+          "evolutionary-algorithms",
+          "llm-agents"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-04-05",
+        "pushed": "2026-10-05",
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Can Frontier Auto Researchers Reconstruct Human Research Decisions in AI?",
+      "url": "http://arxiv.org/abs/2611.12429v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Scientific research has long been driven by substantial human effort, from reviewing prior work and identifying research gaps to designing specific solutions. Recent advances in harness-based agent systems have given rise to increasingly capable Auto Researchers, which can autonomously carry out these tasks and, increasingly, entire end-to-end research workflows. Yet despite their rapidly growing ",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Agent Stack for ML Training Lifecycle: Generation, Validation, and Optimization",
+      "url": "http://arxiv.org/abs/2611.00384v1",
+      "date": "2026-10-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Production model development requires repeated architecture design, platform integration, debugging, training, and evaluation. We present an agent stack deployed at LinkedIn with two independently usable agent loops: AutoTorch for model generation and migration, and AutoResearch for model optimization. AutoTorch generates PyTorch models and training pipelines for TensorFlow migration, XGBoost repl",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "TSFLab: A Self-Improving Agent-Agnostic Workbench for Time Series Forecasting Research",
+      "url": "http://arxiv.org/abs/2610.40901v1",
+      "date": "2026-10-29",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "As publications and products on time series forecasting (TSF) proliferate, researchers face a growing burden of analyzing existing work. First, not all publications release code. For instance, only about 20% of arXiv TSF papers have a code link in the surveyed period. Second, released code also requires manual maintenance. Thus, TSF researchers must constantly adapt or implement existing works. Ho",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Aligning Autoresearch: Co-Improvement between Agents and Humans",
+      "url": "http://arxiv.org/abs/2610.38882v1",
+      "date": "2026-10-28",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autoresearch agents can now attempt long-horizon AI research end-to-end, i.e., self-improvement. However, best results are still obtained by research agents interacting with human researchers, and improving AI's ability to perform this co-research will only reinforce this effect---a process termed co-improvement (Weston and Foerster, 2025). Further, aligning with human expectations is likely a saf",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Heads of Security: Learned Attention Gates Improve Prompt Injection Robustness",
+      "url": "http://arxiv.org/abs/2610.37657v2",
+      "date": "2026-10-27",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We introduce Heads of Security (HoS), a prompt injection defense that enforces instruction-data separation via a small set of learned per-head attention gates. HoS learns how each head should redistribute attention between trusted and untrusted tokens, enabling models to reason over untrusted content without following injected instructions. We evaluate HoS on Llama-3.3-70B-Instruct and GPT-OSS-20B",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Automating quantum circuit optimization with AI agents",
+      "url": "http://arxiv.org/abs/2610.31352v1",
+      "date": "2026-10-22",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Compiling quantum algorithms for real devices involves hard optimization problems that can decide whether an algorithm runs at scale. We present a general method for solving such problems with AI agents, with every result certified. It builds on autoresearch loops, in which agents iteratively improve programs against a fixed evaluator and which have recently improved quantum cryptanalysis circuits",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Mining the Design Space of Multi-Agent Workflows",
+      "url": "http://arxiv.org/abs/2610.31709v1",
+      "date": "2026-10-22",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Designing large language model (LLM) multi-agent systems (MAS) still relies on trial and error and informal \"folk wisdom.\" Manual studies test only a few communication structures or topologies (e.g., sequential, parallel, shared-memory, or debate), while automated optimizers discard search trajectories after selecting a task-specific workflow. We present a two-phase pipeline for mining reproducibl",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Auto-MD-bench: Evaluating Autoresearch Agents for Real-World Medical Tasks",
+      "url": "http://arxiv.org/abs/2610.25069v1",
+      "date": "2026-10-18",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autonomous agents are increasingly capable of developing machine learning (ML) models end to end. In medical practice, however, strong performance on the target metric does not fully characterize how good the models are in real-world use cases. For example, medical ML models should also provide well-calibrated risk estimates and remain robust across patient populations. Yet autonomous model develo",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ResearchFlow-Eval: Tracing the Execution Gap in End-to-End Multi-Claim Autoresearch",
+      "url": "http://arxiv.org/abs/2610.18088v2",
+      "date": "2026-10-13",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autoresearch systems increasingly undertake entire research projects. In practice, scientific research requires systems to pursue multiple interdependent claims through a continuous, multi-stage workflow and revise experiments as evidence accumulates. Existing evaluations of autoresearch systems, however, typically score isolated tasks or final artifacts, leaving these process-level capabilities l",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Language Models as AI Research World Models",
+      "url": "http://arxiv.org/abs/2610.12235v2",
+      "date": "2026-10-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI research agents automate the cycle of proposing, implementing, and evaluating experiments, opening a path toward recursive self-improvement. Yet their ability to propose experiments outpaces their capacity to execute them in real environments, making outcome prediction a key capability for sustained self-improvement under limited experimental budgets. We investigate language models as Research ",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Insights from Autoresearch for Solar Panel Segmentation",
+      "url": "http://arxiv.org/abs/2610.10491v1",
+      "date": "2026-10-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "This paper investigates AutoResearch, a protocol in which a coding language model edits a training program under a one-hour GPU budget and retains a change only if validation IoU improves. The protocol is applied to photovoltaic panel segmentation on a frozen real-image split, with DeepLabV3--ResNet-50 held fixed. Three campaigns of 24 experiments, using Gemma~4 12B, Qwen3-8B all improve their one",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Kernel Autoresearch for Open-Ended Model Discovery",
+      "url": "http://arxiv.org/abs/2610.10394v1",
+      "date": "2026-10-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Kernels encode the inductive bias of a wide range of machine learning models, yet automated kernel design faces a fundamental dilemma. A fixed grammar of base kernels and operators guarantees validity but limits the search to structures expressible by those building blocks. Conversely, unrestricted programs remove this limitation but no longer guarantee validity. In our stress tests, 22-58% of LLM",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Fork-and-Flush: Escaping Idea Basins in Autoresearch Agents",
+      "url": "http://arxiv.org/abs/2610.07447v1",
+      "date": "2026-10-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Autoresearch agents tackle open-ended problems by repeatedly proposing candidate solutions, evaluating them, and using feedback to guide subsequent experiments. We show that independent runs of the same agent on the same task often plateau at substantially different scores, with gaps that persist even after considerable additional compute. Embedding their candidate artifacts by functional similari",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Optimizing the Optimizer: Language Models Discover Faster Molecular Relaxation Algorithms",
+      "url": "http://arxiv.org/abs/2610.06577v2",
+      "date": "2026-10-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Geometry optimization is a major cost in many quantum-chemical workflows: each optimization step requires one force evaluation, and at the density-functional level that evaluation dominates the wall time. Research in this area has produced a broad range of optimization methods, and we ask whether a language model can improve on the best of them through autoresearch. An agent rewrites the optimizer",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Qwen-UI-Agent Technical Report: Toward Next-Generation Real-World Centric Foundation GUI Agents",
+      "url": "https://huggingface.co/papers/2607.28227",
+      "date": "2026-07-30",
+      "signal": 107,
+      "signal_name": "upvotes",
+      "summary": "Qwen-UI-Agent is a foundation GUI agent that integrates mobile, computer, web, and search environments with CLI execution, long-horizon online reinforcement learning, and autonomous data generation to achieve state-of-the-art real-world device performance.",
+      "extra": {
+        "keywords": [
+          "GUI agent",
+          "cross-platform workflow",
+          "CLI execution",
+          "batched actions",
+          "AutoResearch data flywheel",
+          "online RL",
+          "long-horizon trajectories",
+          "proactive service initiation",
+          "stateful workflows",
+          "mobile-use",
+          "computer-use",
+          "browser-use"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agora: Git as Shared Memory for Collective AutoResearch",
+      "url": "https://huggingface.co/papers/2609.18094",
+      "date": "2026-09-16",
+      "signal": 33,
+      "signal_name": "upvotes",
+      "summary": "Agora is a shared Git-based memory system for autonomous coding agents that records research as an append-only directed acyclic graph, enabling collaborative weight-transfer experiments that improved compression metrics without central planning.",
+      "extra": {
+        "keywords": [
+          "directed acyclic graph",
+          "append-only",
+          "cross-attention",
+          "attention-SSM hybrid",
+          "weight-transfer",
+          "sparse edits",
+          "state-space blocks",
+          "embedding and output head",
+          "diversity-aware selection",
+          "shared memory"
+        ],
+        "github": "https://github.com/yifanzhang-pro/Agora",
+        "github_stars": 86,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoResearch AI: Towards AI-Powered Research Automation for Scientific Discovery",
+      "url": "https://huggingface.co/papers/2605.23204",
+      "date": "2026-05-22",
+      "signal": 28,
+      "signal_name": "upvotes",
+      "summary": "AI systems are evolving from task-specific assistants to workflow-level research automators, facing challenges in autonomy, reproducibility, and accountability across scientific domains.",
+      "extra": {
+        "keywords": [
+          "AI-powered scientific workflow automation",
+          "AutoResearch",
+          "Vibe Research",
+          "mixed-initiative co-research frameworks",
+          "benchmarks",
+          "domain deployments",
+          "open-source infrastructures",
+          "evaluation dimensions",
+          "novelty",
+          "validity",
+          "impact",
+          "reliability",
+          "provenance"
+        ],
+        "github": "https://github.com/Mr-Tieguigui/Autoresearch",
+        "github_stars": 5,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoMedBench: Towards Medical AutoResearch with Agentic AI Models",
+      "url": "https://huggingface.co/papers/2606.01961",
+      "date": "2026-06-03",
+      "signal": 26,
+      "signal_name": "upvotes",
+      "summary": "AutoMedBench is a comprehensive benchmark for autonomous medical-AI research that evaluates agent behavior through a five-stage workflow, revealing weaknesses in validation processes and highlighting the importance of reliable pipeline execution.",
+      "extra": {
+        "keywords": [
+          "autonomous agents",
+          "medical-AI research",
+          "workflow-aware benchmark",
+          "five-stage workflow",
+          "Plan",
+          "Setup",
+          "Validate",
+          "Inference",
+          "Submit",
+          "long-horizon tasks",
+          "research tracks",
+          "segmentation",
+          "image enhancement",
+          "visual question answering",
+          "report generation",
+          "lesion detection",
+          "stage-level analysis",
+          "error analysis",
+          "verification",
+          "submission failures",
+          "task-understanding errors"
+        ],
+        "github": "https://github.com/AutoMedBench/AutoMedBench",
+        "github_stars": 66,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoResearch: Insight In, Hallucination Out",
+      "url": "https://huggingface.co/papers/2608.17906",
+      "date": "2026-08-23",
+      "signal": 25,
+      "signal_name": "upvotes",
+      "summary": "AutoResearch is a two-stage autonomous system that grounds research ideas through integrated generation and evidence-based execution to improve experimental reliability and measurable outcomes.",
+      "extra": {
+        "keywords": [
+          "cross-modal retrieval",
+          "systems optimization",
+          "benchmark-driven machine learning",
+          "multi-model generation",
+          "cross-review",
+          "evidence-based review",
+          "audit-confirmed issue events"
+        ],
+        "github": "https://github.com/EvoMap/AutoResearch",
+        "github_stars": 3092,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "GigaWorld-Policy-0.5: A Faster and Stronger WAM Empowered by AutoResearch",
+      "url": "https://huggingface.co/papers/2607.13960",
+      "date": "2026-07-15",
+      "signal": 24,
+      "signal_name": "upvotes",
+      "summary": "GigaWorld-Policy-0.5 improves robot control efficiency by using action-centered world modeling with specialized transformer experts and automated hyperparameter search.",
+      "extra": {
+        "keywords": [
+          "World Action Models",
+          "action-centered formulation",
+          "Action-Conditioned World Modeling",
+          "Mixture-of-Transformers",
+          "visual dynamics modeling",
+          "action generation",
+          "AutoResearch pipeline"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Optimizing the Optimizer: Language Models Discover Faster Molecular Relaxation",
+      "url": "https://huggingface.co/papers/2610.06577",
+      "date": "2026-10-05",
+      "signal": 19,
+      "signal_name": "upvotes",
+      "summary": "AutoSella, an autoresearched optimizer family derived from Sella, reduces force-call counts by up to 60% across molecular benchmarks without using DFT gradients during development.",
+      "extra": {
+        "keywords": [
+          "geometry optimization",
+          "quantum-chemical workflows",
+          "density-functional",
+          "force evaluation",
+          "autoresearch",
+          "admission gates",
+          "Sella",
+          "AutoSella",
+          "r2SCAN-3c",
+          "DFT gradients"
+        ],
+        "github": "https://github.com/vdeshchenya/autosella",
+        "github_stars": 4,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Agentic Discovery of Neural Architectures: AIRA-Compose and AIRA-Design",
+      "url": "https://huggingface.co/papers/2605.15871",
+      "date": "2026-05-15",
+      "signal": 14,
+      "signal_name": "upvotes",
+      "summary": "AI agents autonomously design foundation models exceeding standard Transformers through dual frameworks that optimize both architectural search and mechanistic implementation, achieving superior performance and efficiency.",
+      "extra": {
+        "keywords": [
+          "LLM agents",
+          "foundation models",
+          "AIRA-Compose",
+          "AIRA-Design",
+          "architecture search",
+          "mechanistic implementation",
+          "Transformer-based",
+          "Transformer-Mamba",
+          "pre-trained models",
+          "downstream tasks",
+          "scaling frontiers",
+          "attention mechanisms",
+          "Long Range Arena",
+          "Autoresearch",
+          "bits-per-byte"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SciΠvot: Benchmarking Principal-Investigator Judgment at Pivotal Moments of Scientific AutoResearch Agents",
+      "url": "https://huggingface.co/papers/2610.21082",
+      "date": "2026-10-15",
+      "signal": 12,
+      "signal_name": "upvotes",
+      "summary": "SciΠvot evaluates LLM agents' scientific judgment using 248 human-corrected cases, revealing that frontier models often prefer flawed plans over expert corrections and perform below human levels.",
+      "extra": {
+        "keywords": [
+          "LLM agents",
+          "scientific judgment",
+          "SciΠvot",
+          "reasoning effort",
+          "reconsideration",
+          "frontier models"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoScientists: Self-Organizing Agent Teams for Long-Running Scientific Experimentation",
+      "url": "https://huggingface.co/papers/2605.28655",
+      "date": "2026-05-27",
+      "signal": 9,
+      "signal_name": "upvotes",
+      "summary": "AutoScientists enables decentralized AI agents to autonomously explore scientific research trajectories, improving biomedical machine learning, language model optimization, and protein fitness prediction through collaborative hypothesis generation and shared experimental knowledge.",
+      "extra": {
+        "keywords": [
+          "AI agents",
+          "scientific research",
+          "hypothesis generation",
+          "experimental design",
+          "computational experimentation",
+          "decentralized team",
+          "shared experimental state",
+          "self-organization",
+          "collaborative research",
+          "biomedical machine learning",
+          "language-model training optimization",
+          "protein fitness prediction",
+          "BioML-Bench",
+          "GPT training optimization",
+          "ProteinGym",
+          "Spearman correlation"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoResearch at Production Scale: Failure Modes and a Multi-Agent Framework",
+      "url": "https://huggingface.co/papers/2609.30541",
+      "date": "2026-09-24",
+      "signal": 4,
+      "signal_name": "upvotes",
+      "summary": "Applying an iterative LLM-based AutoResearch paradigm to production recommendation embedding systems revealed structural failure modes and a scaffolding framework that improved recall and coherence over manual tuning.",
+      "extra": {
+        "keywords": [
+          "AutoResearch",
+          "representation-learning",
+          "Recall@6",
+          "autonomous research",
+          "multi-GPU compute",
+          "metric fixation",
+          "agent memory decay"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Auto-research with codex: How I achieved a 232x Faster Kernel",
+      "url": "https://sankalp.bearblog.dev/autoresearch/",
+      "date": "2026-08-15",
+      "signal": 457,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49309549",
+        "comments": 93,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Auto Research: Integer multiplication below n log n",
+      "url": "https://app.getsupers.com/auto-research",
+      "date": "2026-10-11",
+      "signal": 83,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50047664",
+        "comments": 52,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Autoresearch, Claude and Constrained Optimization",
+      "url": "https://www.elliotcsmith.com/autoresearch-claude-and-constrained-optimization/",
+      "date": "2026-07-12",
+      "signal": 33,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48881498",
+        "comments": 5,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Auto-autoresearch: self-improving agents on Karpathy's NanoChat benchmark",
+      "url": "https://rekursiv.ai/blog/autoautoresearch/",
+      "date": "2026-09-15",
+      "signal": 13,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49716123",
+        "comments": 5,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: LibreOffice-rs – I built a pure-Rust LibreOffice using autoresearch",
+      "url": "https://github.com/clark-labs-inc/libreoffice-rs",
+      "date": "2026-05-19",
+      "signal": 10,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48196023",
+        "comments": 1,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "I used autoresearch to improve my AGENTS.md, measured against real tasks",
+      "url": "https://www.stet.sh/blog/how-i-used-codex-to-improve-its-own-agents-md",
+      "date": "2026-05-27",
+      "signal": 8,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48299687",
+        "comments": 7,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: ZeroThesis – Multiplayer Autoresearch with Agents",
+      "url": "https://zerothesis.com",
+      "date": "2026-09-06",
+      "signal": 7,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49589309",
+        "comments": 1,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Openresearch: GLM 5.2 for Autoresearch",
+      "url": "https://openresearch.sh/",
+      "date": "2026-06-23",
+      "signal": 6,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48641347",
+        "comments": 1,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Autoresearch found a 3-year-old bug in our query engine",
+      "url": "https://posthog.com/blog/autoresearch-query-bug",
+      "date": "2026-06-01",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48359141",
+        "comments": 0,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Autoresearch doubled GLM-5.2 throughput. Production traffic broke it",
+      "url": "https://fparisio.substack.com/p/an-ai-agent-cold-tuned-our-glm-52",
+      "date": "2026-07-14",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48903287",
+        "comments": 1,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Karpathy's Autoresearch Beyond ML",
+      "url": "https://mentalfaculty.com/blog/the-loop-that-improves-almost-anything/",
+      "date": "2026-06-08",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48446191",
+        "comments": 0,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Autoretrieval – Autoresearch for RAG Pipelines",
+      "url": "https://github.com/daly2211/autoretrieval",
+      "date": "2026-07-21",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48995907",
+        "comments": 2,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Token efficient Pi through Auto-Research",
+      "url": "https://nvlabs.github.io/SoL-Pi/",
+      "date": "2026-09-13",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49686337",
+        "comments": 0,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "AutoResearchExam: Measuring agents' ability to improve and generalize",
+      "url": "https://benchmarks.bespokelabs.ai/autoresearchexam/",
+      "date": "2026-09-10",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49638674",
+        "comments": 0,
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "ENPIRE: Agentic Robot Policy Self-Improvement in the Real World",
+      "url": "https://doi.org/10.48550/arxiv.2606.19980",
+      "date": "2026-06-18",
+      "signal": 81,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Qwen-AgentWorld: Language World Models for General Agents",
+      "url": "https://doi.org/10.48550/arxiv.2606.24597",
+      "date": "2026-06-23",
+      "signal": 40,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+      "url": "https://doi.org/10.48550/arxiv.2609.24972",
+      "date": "2026-09-21",
+      "signal": 35,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+      "url": "https://doi.org/10.48550/arxiv.2609.11873",
+      "date": "2026-09-10",
+      "signal": 34,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SpecBench: Measuring Reward Hacking in Long-Horizon Coding Agents",
+      "url": "https://doi.org/10.48550/arxiv.2605.21384",
+      "date": "2026-05-20",
+      "signal": 33,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SWE-Marathon: Can Agents Autonomously Complete Ultra-Long-Horizon Software Work?",
+      "url": "https://doi.org/10.48550/arxiv.2606.07682",
+      "date": "2026-06-05",
+      "signal": 31,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "SIA: Self Improving AI with Harness & Weight Updates",
+      "url": "https://doi.org/10.48550/arxiv.2605.27276",
+      "date": "2026-05-26",
+      "signal": 31,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Guava: Distilling Frontier VLMs into a Compact Agent through a Robotic Manipulation Harness",
+      "url": "https://doi.org/10.48550/arxiv.2606.18363",
+      "date": "2026-06-16",
+      "signal": 30,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Recursive self-improvement of AI research agents",
+      "url": "https://doi.org/10.48550/arxiv.2609.26457",
+      "date": "2026-09-22",
+      "signal": 27,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "HarnessBank: Semantic Gene-Bank Search with Gated Verification for Agent-Harness Self-Evolution",
+      "url": "https://doi.org/10.48550/arxiv.2607.13683",
+      "date": "2026-07-15",
+      "signal": 27,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "When Safe Skills Collide: Measuring Compositional Risk in Agent Skill Ecosystems",
+      "url": "https://doi.org/10.48550/arxiv.2606.00448",
+      "date": "2026-05-30",
+      "signal": 24,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+      "url": "https://doi.org/10.48550/arxiv.2608.20318",
+      "date": "2026-08-20",
+      "signal": 22,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "autoresearch"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "SakanaAI/AI-Scientist-v3",
+      "url": "https://github.com/SakanaAI/AI-Scientist-v3",
+      "date": "2026-10-11",
+      "signal": 677,
+      "signal_name": "stars",
+      "summary": "The Agentic Scientist: Orchestrating Coding Agents for Automated Scientific (Co-)Discovery",
+      "extra": {
+        "topics": [],
+        "license": "Apache-2.0",
+        "created": "2026-10-11",
+        "pushed": "2026-10-18",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "renee-jia/scholar-loop",
+      "url": "https://github.com/renee-jia/scholar-loop",
+      "date": "2026-06-15",
+      "signal": 474,
+      "signal_name": "stars",
+      "summary": "An autonomous AI scientist: a multi-agent loop over literature, experiments, self-critique and write-up, with deterministic guards against reward-hacking and hallucination.",
+      "extra": {
+        "topics": [
+          "ai-research",
+          "autonomous-agents",
+          "llm-tools",
+          "multi-agent"
+        ],
+        "license": "MIT",
+        "created": "2026-06-15",
+        "pushed": "2026-11-09",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "K-Dense-AI/scientific-agents",
+      "url": "https://github.com/K-Dense-AI/scientific-agents",
+      "date": "2026-06-03",
+      "signal": 244,
+      "signal_name": "stars",
+      "summary": "Expert-thinking AGENTS.md profiles that teach AI agents to reason like senior scientists and engineers.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "agents-md",
+          "ai-agents",
+          "llm",
+          "prompt-engineering",
+          "science"
+        ],
+        "license": "MIT",
+        "created": "2026-06-03",
+        "pushed": "2026-10-02",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Omni-Scientist/OmniScientist",
+      "url": "https://github.com/Omni-Scientist/OmniScientist",
+      "date": "2026-08-16",
+      "signal": 173,
+      "signal_name": "stars",
+      "summary": "An Omni-Modal, Omni-Discipline AI Scientist",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai-scientist",
+          "llm",
+          "research",
+          "skill"
+        ],
+        "license": "MIT",
+        "created": "2026-08-16",
+        "pushed": "2026-09-26",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "KalarisLabs/research-agent-skills",
+      "url": "https://github.com/KalarisLabs/research-agent-skills",
+      "date": "2026-07-07",
+      "signal": 117,
+      "signal_name": "stars",
+      "summary": "Turn any AI agent into a research co-scientist: 280+ open-source agent skills for literature reviews, hypotheses, experimental design, data analysis, paper writing, citation verification and peer review. Claude Code, Codex, Cursor, Gemini CLI and any Agent Skills harness. npx skills add KalarisLabs/research-agent-skills",
+      "extra": {
+        "topics": [
+          "academic-research",
+          "academic-writing",
+          "agent-skills",
+          "ai-agents",
+          "bioinformatics",
+          "citation-verification",
+          "claude-code",
+          "codex",
+          "computational-chemistry",
+          "literature-review",
+          "machine-learning",
+          "medicine",
+          "open-science",
+          "physics",
+          "research-agent-skills",
+          "research-paper",
+          "research-tools",
+          "scientific-research",
+          "scientific-writing",
+          "systematic-review"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-07-07",
+        "pushed": "2026-11-07",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Tyche-MKR/scientific-agent-skills",
+      "url": "https://github.com/Tyche-MKR/scientific-agent-skills",
+      "date": "2026-08-31",
+      "signal": 85,
+      "signal_name": "stars",
+      "summary": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 190,000+ scientists worldwide. 165 ready-to-use validated skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-08-31",
+        "pushed": "2026-08-31",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "dgilford/ai-science-toolkit",
+      "url": "https://github.com/dgilford/ai-science-toolkit",
+      "date": "2026-05-22",
+      "signal": 82,
+      "signal_name": "stars",
+      "summary": "Skills & reviewer agents for AI-first climate science — built and used by a PhD atmospheric scientist",
+      "extra": {
+        "topics": [
+          "ai-agents",
+          "ai-tools",
+          "atmospheric-science",
+          "claude-code",
+          "climate-science",
+          "llm-tools",
+          "open-science",
+          "research-and-development"
+        ],
+        "license": "MIT",
+        "created": "2026-05-22",
+        "pushed": "2026-11-06",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "MSUHydrogeology/cairn",
+      "url": "https://github.com/MSUHydrogeology/cairn",
+      "date": "2026-05-20",
+      "signal": 37,
+      "signal_name": "stars",
+      "summary": "A working method for scientists developing software with AI coding agents: written proposals, independent review, and a record of decisions kept in git beside the code.",
+      "extra": {
+        "topics": [],
+        "license": "NOASSERTION",
+        "created": "2026-05-20",
+        "pushed": "2026-11-03",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "Future-Proof-DS/interactive-ai-ml-tools",
+      "url": "https://github.com/Future-Proof-DS/interactive-ai-ml-tools",
+      "date": "2026-11-02",
+      "signal": 29,
+      "signal_name": "stars",
+      "summary": "Free interactive tools for data scientists to learn MLOps, ML system design and agentic analytics: a production ML system map, ML project structure, data drift simulator, agentic analytics system map and AI evals.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-agents",
+          "data-drift",
+          "data-science",
+          "interactive-learning",
+          "llm-evaluation",
+          "machine-learning",
+          "ml-system-design",
+          "mlops",
+          "model-monitoring",
+          "text-to-sql"
+        ],
+        "license": null,
+        "created": "2026-11-02",
+        "pushed": "2026-11-02",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "guy915/Open-Co-Scientist",
+      "url": "https://github.com/guy915/Open-Co-Scientist",
+      "date": "2026-10-01",
+      "signal": 14,
+      "signal_name": "stars",
+      "summary": "An open-source recreation of AI Co-Scientist: a multi-agent scientific research harness.",
+      "extra": {
+        "topics": [
+          "ai",
+          "ai-agents",
+          "ai-scientist",
+          "co-scientist",
+          "hypothesis-generation",
+          "llm",
+          "multi-agent",
+          "open-science"
+        ],
+        "license": "Apache-2.0",
+        "created": "2026-10-01",
+        "pushed": "2026-11-08",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "systemind-team/Runtime-AI-Scientist",
+      "url": "https://github.com/systemind-team/Runtime-AI-Scientist",
+      "date": "2026-09-14",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Runtime AI Scientist (formerly RAC AI Scientist): official code for \"Can AI Scientists Coordinate at Runtime?\" (arXiv 2610.00980). Runtime Agent Coordination (RAC) for multi-agent AI scientists such as ARK, Agent Laboratory, and EvoScientist, evaluated on ResearchClawBench.",
+      "extra": {
+        "topics": [
+          "agent-coordination",
+          "agent-laboratory",
+          "ai-agents",
+          "ai-for-science",
+          "ai-research",
+          "ai-scientist",
+          "ai-scientists",
+          "automated-research",
+          "autonomous-research",
+          "benchmark",
+          "evoscientist",
+          "llm",
+          "llm-agents",
+          "multi-agent",
+          "multi-agent-systems",
+          "reproducibility",
+          "research-automation",
+          "researchclawbench",
+          "runtime-coordination",
+          "scientific-discovery"
+        ],
+        "license": "MIT",
+        "created": "2026-09-14",
+        "pushed": "2026-10-04",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "raktim-mondol/co-scientist",
+      "url": "https://github.com/raktim-mondol/co-scientist",
+      "date": "2026-05-27",
+      "signal": 12,
+      "signal_name": "stars",
+      "summary": "Multi-agent AI system for automated scientific hypothesis generation, ranking, and experiment design",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-05-27",
+        "pushed": "2026-08-15",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ML4SCI/DeepLense-AI-Scientist",
+      "url": "https://github.com/ML4SCI/DeepLense-AI-Scientist",
+      "date": "2026-06-04",
+      "signal": 10,
+      "signal_name": "stars",
+      "summary": "Multi-agent framework for autonomously orchestrating scientific workflows in gravitational lensing research, built on Pydantic AI",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-06-04",
+        "pushed": "2026-10-26",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "microsoft/CopilotAnalyticsLabs",
+      "url": "https://github.com/microsoft/CopilotAnalyticsLabs",
+      "date": "2026-05-22",
+      "signal": 9,
+      "signal_name": "stars",
+      "summary": "Copilot Analytics Labs is a Do-It-Yourself (DIY) hub embedded within Viva Insights that provides experimental Copilot and Agent analytics resources. It surfaces ready-made templates, sample code, and curated research to help analytics leaders and data scientists measure adoption, usage, impact, and ROI of AI Investments",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-05-22",
+        "pushed": "2026-11-09",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "pengzhangzhi/superpowers-ml",
+      "url": "https://github.com/pengzhangzhi/superpowers-ml",
+      "date": "2026-06-01",
+      "signal": 9,
+      "signal_name": "stars",
+      "summary": "Skills that make your AI agent do ML research like a skeptical scientist, not a hype machine.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "claude-code",
+          "machine-learning",
+          "ml-research"
+        ],
+        "license": "MIT",
+        "created": "2026-06-01",
+        "pushed": "2026-11-09",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "K-Dense-AI/scientific-agent-skills",
+      "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "date": "2026-11-09",
+      "signal": 56727,
+      "signal_name": "stars",
+      "summary": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. 177 ready-to-use validated skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard.",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "ai-scientist",
+          "bioinformatics",
+          "chemoinformatics",
+          "claude",
+          "claude-skills",
+          "claudecode",
+          "clinical-research",
+          "computational-biology",
+          "data-analysis",
+          "drug-discovery",
+          "genomics",
+          "materials-science",
+          "metabolomics",
+          "proteomics",
+          "scientific-computing",
+          "scientific-visualization"
+        ],
+        "license": "MIT",
+        "created": "2025-10-19",
+        "pushed": "2026-11-09",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "polyuiislab/infiAgent",
+      "url": "https://github.com/polyuiislab/infiAgent",
+      "date": "2026-07-11",
+      "signal": 1190,
+      "signal_name": "stars",
+      "summary": "Build your own Cowork, AI Scientist and other SoTA Agents just by editing config files. Support anthropic skills. An infinite-horizon agent framework designed for long-running, complex tasks.",
+      "extra": {
+        "topics": [
+          "agent",
+          "framework",
+          "sdk",
+          "sdk-python"
+        ],
+        "license": "GPL-3.0",
+        "created": "2025-12-24",
+        "pushed": "2026-07-11",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "retentioneering/retentioneering-tools",
+      "url": "https://github.com/retentioneering/retentioneering-tools",
+      "date": "2026-11-08",
+      "signal": 946,
+      "signal_name": "stars",
+      "summary": "Python toolkit, MCP server, and agent skills for reproducible, auditable clickstream and event log analytics. Helps AI agents, data scientists and analysts build, validate, and cross-check product analytics, quantitative UX, customer journeys, graph-based user flows, behavioral segmentation, A/B tests, process mining models, Markov chain simulation",
+      "extra": {
+        "topics": [
+          "agent-skills",
+          "analytics-mcp",
+          "behaviour-analysis",
+          "clickstream",
+          "clickstream-analysis",
+          "customer-journey-analytics",
+          "customer-journey-map",
+          "data-visualization",
+          "graph-visualizer",
+          "machine-learning",
+          "predictive-analytics",
+          "predictive-modeling",
+          "product-analytics",
+          "python",
+          "quant-ux",
+          "segmentation",
+          "user-flow",
+          "user-trajectories",
+          "user-trajectories-analysis",
+          "web-analytics"
+        ],
+        "license": "Apache-2.0",
+        "created": "2019-07-02",
+        "pushed": "2026-11-08",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "ARA-Labs/Agent-Native-Research-Artifact",
+      "url": "https://github.com/ARA-Labs/Agent-Native-Research-Artifact",
+      "date": "2026-10-11",
+      "signal": 709,
+      "signal_name": "stars",
+      "summary": "Research Artifact Protocol for Rigorous and Trustworthy AI Scientists",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-03-27",
+        "pushed": "2026-10-11",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "theneoai/awesome-skills",
+      "url": "https://github.com/theneoai/awesome-skills",
+      "date": "2026-05-15",
+      "signal": 202,
+      "signal_name": "stars",
+      "summary": "🌟1000+ Expert AI Skills | CEO, Doctor, Engineer, Scientist & more | Transform AI into any professional | Powered by https://theneoai.github.io/skill-writer/",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "ai-assistant",
+          "artificial-intelligence",
+          "awesome",
+          "awesome-list",
+          "claude",
+          "cline",
+          "curated-list",
+          "cursor",
+          "developer-tools",
+          "expert-system",
+          "kimi",
+          "llm",
+          "mcp",
+          "openai-codex",
+          "productivity",
+          "prompt-engineering",
+          "skills",
+          "vscode"
+        ],
+        "license": "NOASSERTION",
+        "created": "2026-02-15",
+        "pushed": "2026-05-15",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "bio-xyz/BioAgents",
+      "url": "https://github.com/bio-xyz/BioAgents",
+      "date": "2026-06-15",
+      "signal": 185,
+      "signal_name": "stars",
+      "summary": "BioAgents: An AI scientist framework for autonomous deep research in biological sciences. Multi-agent system combining literature analysis agents with data scientist agents to enable deep research automation through user feedback integration and iterative scientific discovery. Inspired by advances in Edison Kosmos, Sakana AI, K-Dense and others.",
+      "extra": {
+        "topics": [
+          "agentic-ai",
+          "ai-scientist",
+          "desci",
+          "science"
+        ],
+        "license": null,
+        "created": "2025-10-17",
+        "pushed": "2026-06-15",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "InternScience/SGI-Bench",
+      "url": "https://github.com/InternScience/SGI-Bench",
+      "date": "2026-06-02",
+      "signal": 172,
+      "signal_name": "stars",
+      "summary": "Probing Scientific General Intelligence of LLMs with Scientist-Aligned Workflows",
+      "extra": {
+        "topics": [
+          "agent",
+          "ai",
+          "ai-scientist",
+          "ai4science",
+          "automated-science",
+          "benchmark",
+          "code-gen",
+          "code-generation",
+          "deep-research",
+          "evaluation",
+          "idea-generation",
+          "llm",
+          "meta-analysis",
+          "multi-modal",
+          "reasoning",
+          "reinforcement-learning",
+          "sgi",
+          "test-time-scaling",
+          "vllm",
+          "wet-lab-protocols"
+        ],
+        "license": "MIT",
+        "created": "2025-12-03",
+        "pushed": "2026-06-02",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "K-Dense-AI/mimeographs",
+      "url": "https://github.com/K-Dense-AI/mimeographs",
+      "date": "2026-08-18",
+      "signal": 143,
+      "signal_name": "stars",
+      "summary": "Ready-to-use agent skills that clone the thinking of founders, philosophers, and scientists into your agent. Generated with K-Dense-AI/mimeo.",
+      "extra": {
+        "topics": [],
+        "license": "MIT",
+        "created": "2026-04-22",
+        "pushed": "2026-08-18",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "Eldergenix/Plato-Scientific-Research-Autonomous-Agent",
+      "url": "https://github.com/Eldergenix/Plato-Scientific-Research-Autonomous-Agent",
+      "date": "2026-08-05",
+      "signal": 122,
+      "signal_name": "stars",
+      "summary": "Multi-agent AI scientist that turns experimental data into > publication-ready research papers.",
+      "extra": {
+        "topics": [
+          "agent-framework",
+          "agentic-science",
+          "agentic-workflow",
+          "ai-agents",
+          "ai-research",
+          "ai-tools",
+          "science-research"
+        ],
+        "license": "GPL-3.0",
+        "created": "2026-04-29",
+        "pushed": "2026-08-05",
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Sage-Taiyi: A Metacognitive Architecture for Scientific Discovery",
+      "url": "http://arxiv.org/abs/2611.12762v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We introduce Sage-Taiyi, a metacognition-inspired architecture that uses accumulated scientific understanding to guide what to investigate next and how to investigate it. Through explicit monitoring and control, the system revises its understanding of evidence, assumptions, and unresolved questions, then uses these assessments to adapt research targets and select reusable reasoning methods. On Tai",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Blind Variation, Selective Retention: Improving Creative Idea Generation in AI Scientists",
+      "url": "http://arxiv.org/abs/2611.12184v1",
+      "date": "2026-11-09",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Scientific discovery requires ideas that are original, useful, and non-obvious. Yet AI scientists are typically given as much task information as possible during idea generation, which can anchor generation toward familiar approaches. Inspired by the cognitive framework of Blind Variation and Selective Retention (BVSR), we propose a discovery framework that separates these two roles of information",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "LoStBench: Benchmarking Longitudinal Studies Data Integration",
+      "url": "http://arxiv.org/abs/2611.10242v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "A longitudinal study observes the same subjects or variables, repeatedly over an extended period of time, allowing researchers to examine changes, trends, and relationships as they develop. Such studies typically evolve over their life cycles, as improved understanding of the study's domain, or external factors trigger the need for revisions. The resulting heterogeneity among collected data must b",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What Is the Value of AI-Involved Art? Evidence From a Juried In-Person Exhibition",
+      "url": "http://arxiv.org/abs/2611.10150v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "What is the value of AI-involved art, and to whom does it belong? We begin to answer these questions using data from an in-person, juried AI art exhibition. Our study involved artists, lawyers, and computer scientists (N=209) as either creators or evaluators of AI-involved artworks. We found that nearly half of evaluators reported willingness to buy an artwork, with pricing correlating with percei",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "SciCheck: A Framework for Verifying the Integrity of Deep Learning Training",
+      "url": "http://arxiv.org/abs/2611.09889v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Deep learning training is difficult to verify within a scientific workflow: its architecture, hyperparameters, and procedure are rarely fixed until training has been attempted, and two honest runs never produce the same weights, so recomputation cannot serve as a check. We present SciCheck, a framework in which the scientist explores training configurations freely and posts a blueprint to a proven",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Hostages",
+      "url": "http://arxiv.org/abs/2611.09580v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Our house has been taken over. It is not completely destroyed, but many of its essential functions and facilities no longer work as they used to. Essentially, they are out of our control. Artificial intelligence, through its large language models (LLMs), has taken it. And we, the inhabitants of the house, without really noticing what was happening, and surprised by the effectiveness of LLMs, have ",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Learning Whom to Trust About the Unseen: Source Credibility and Reliability Transfer in Language Models",
+      "url": "http://arxiv.org/abs/2611.08855v1",
+      "date": "2026-11-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "A source who has been right before deserves attention, but about what? We ask how far a demonstrated record of reliability travels in language models when the new claim cannot be checked, and whether the answer depends on the kind of claim. Three behavioral studies across six models approach the question from three angles. Study 1 adapts the Einstein-effect paradigm and finds that models, unlike t",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Scientist World: Grow a Research World for AI-Scientists",
+      "url": "http://arxiv.org/abs/2611.08478v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI-Scientists arrived, but a world for them to grow in did not. Human scientists take theirs for granted $-$ centuries of open problems and shared ideas, waiting in the scientific literature. To AI-Scientists, that world is readable but not runnable, so we build Scientist World for them: every research paper becomes an executable environment. Our autonomous pipeline extracts each paper's open-ende",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Value or Attention: Investigating Layer-wise Relevance Propagation for Graph Attention Networks",
+      "url": "http://arxiv.org/abs/2611.08088v1",
+      "date": "2026-11-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Graph Attention Networks (GATs) are increasingly used in domains where scientists need to read a model's reasoning, from medicine to materials science, yet the routing they learn remains opaque to most explainers. Layer-wise Relevance Propagation (LRP) follows the model's computation, but in an attention layer the relevance reaching a node is the sum of two mechanically different quantities: its c",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Euclid Quick Data Release (Q1). Refining the strong lens sample with Space Warps crowd-sourced science",
+      "url": "http://arxiv.org/abs/2611.06667v1",
+      "date": "2026-11-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We demonstrate the efficacy of crowd-sourced refinement of strong gravitational lens candidate samples by citizen scientists. Binary (lens/non-lens) classification by citizen scientists has been conducted previously, and here we extend such categorisation into `definite', `probable', `possible', and `non-lenses'. This grading is a required stage ahead of any strong lens sample publication and is u",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "What Does the Model See? Representation Validity in Multimodal LLM-Based Video Analysis",
+      "url": "http://arxiv.org/abs/2611.05181v1",
+      "date": "2026-11-03",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Multimodal large language models (MLLMs) allow social scientists to analyze video at scale, but researchers must decide which parts of a video to provide as input. We use the term representation validity to examine how text, audio, video, and combined inputs affect measurement and subsequent analysis. We compare input representations across six open-weight MLLMs and three human-annotated video dat",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Labtune: Treating Lab Organization and Information Sharing as Experimental Variables in LLM-Agent Discovery",
+      "url": "http://arxiv.org/abs/2611.03935v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "De-siloing can create groupthink; silos can prevent knowledge sharing and reduce research efficiency. The same tension appears in research systems built with large language model (LLM) agents, yet their organization is usually fixed by design. I propose treating laboratory structure and information sharing as experimental variables. I introduce Labtune, an open framework for bounded research workf",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "El Agente Fármaco: A Scalable AI Scientist for Drug Discovery",
+      "url": "http://arxiv.org/abs/2611.03832v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Computational drug discovery offers a growing range of tools for proposing and evaluating molecules, but combining them and deciding what to do next still requires substantial expert effort. Here, we introduce El Agente Fármaco, an AI scientist that uses modern large language model (LLM) technology to turn discovery goals expressed in everyday language into complex, scalable computational screenin",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "IdeaTaste: Do LLMs Share the Research Taste of Human Researchers?",
+      "url": "http://arxiv.org/abs/2611.03424v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Research taste, the judgment of what to read, which problems to pursue, and which methods to try, increasingly shapes the work of AI scientists, yet it remains far less understood than their ability to execute research. We introduce IdeaTaste, a benchmark that scores an LLM by how closely the research proposals it writes from a literature snapshot frozen at 2025 match the work the same communities",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "From FAIR to AI-FAIR Metadata-First Infrastructure for AI-Enabled Science",
+      "url": "http://arxiv.org/abs/2611.03327v1",
+      "date": "2026-11-02",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Artificial intelligence (AI) technologies and their capabilities have advanced rapidly over the past few years, leading to widespread interest and adoption in the biological and ecological sciences. However, the data infrastructure and computational resources that provide the foundation for AI workflows in ecology and biodiversity science remain fragmented. Moreover, the flow of value remains larg",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Into the Unknown: Benchmarking AI agents on open scientific research problems",
+      "url": "https://huggingface.co/papers/2610.19159",
+      "date": "2026-10-13",
+      "signal": 55,
+      "signal_name": "upvotes",
+      "summary": "Researchers benchmarked AI agents on open scientific problems by having them draft follow-up papers from unpublished directions, finding that none met expert standards and most contained fabricated claims or contradictory evidence.",
+      "extra": {
+        "keywords": [
+          "AI agents",
+          "open scientific problems",
+          "benchmark",
+          "follow-up paper",
+          "rubric",
+          "integrity check",
+          "quantum computing",
+          "plasma physics",
+          "computational chemistry",
+          "materials science",
+          "scientific machine learning"
+        ],
+        "github": "https://github.com/prometheus-eval/into-the-unknown",
+        "github_stars": 31,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Dr. Claw: An AI Scientist Workspace for Vibe Research",
+      "url": "https://huggingface.co/papers/2609.00365",
+      "date": "2026-08-31",
+      "signal": 36,
+      "signal_name": "upvotes",
+      "summary": "Command-line coding agents (e.g., Claude Code, Gemini CLI) can already read and write files and sustain long sessions, yet end-to-end research still fragments across chat tools, IDEs, terminals, and writing environments, and the decisions that make it auditable are rarely preserved. We present Dr. Claw, an open-source workspace that wraps existing coding-agent executors in a controllable and audit",
+      "extra": {
+        "keywords": [],
+        "github": "https://github.com/OpenLAIR/dr-claw",
+        "github_stars": 1199,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AskChem: Claim-Centered Infrastructure for Chemistry Literature Synthesis",
+      "url": "https://huggingface.co/papers/2607.28618",
+      "date": "2026-07-30",
+      "signal": 35,
+      "signal_name": "upvotes",
+      "summary": "Chemistry literature synthesis often requires assembling specific findings scattered across many publications, yet existing literature-search systems primarily return ranked document lists. As a result, scientists and AI agents need to locate relevant information, verify their provenance, and assemble cross-paper answers manually. We present AskChem, a claim-centered infrastructure for cross-paper",
+      "extra": {
+        "keywords": [],
+        "github": "https://github.com/bingyan4science/askchem",
+        "github_stars": 18,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Evolving Agent Interfaces",
+      "url": "https://huggingface.co/papers/2610.28601",
+      "date": "2026-10-20",
+      "signal": 22,
+      "signal_name": "upvotes",
+      "summary": "Agent S4 autonomously evolves computer-use interfaces from task experience, significantly improving open-source agent performance and reducing costs compared to larger proprietary models.",
+      "extra": {
+        "keywords": [
+          "Agent S4",
+          "Evolving Agent Interfaces",
+          "meta-agent",
+          "population-based evolution",
+          "OSWorld V2",
+          "ScienceBoard"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Critique of Agent Model",
+      "url": "https://huggingface.co/papers/2606.23991",
+      "date": "2026-06-22",
+      "signal": 22,
+      "signal_name": "upvotes",
+      "summary": "True artificial agency requires internalized structures for goals, identity, decision-making, self-regulation, and learning, distinguishing autonomous systems from task-specific ones.",
+      "extra": {
+        "keywords": [
+          "Large Language Model",
+          "AI co-scientists",
+          "machine agency",
+          "agent architectures",
+          "goal",
+          "identity",
+          "decision-making",
+          "self-regulation",
+          "learning",
+          "Goal-Identity-Configurator",
+          "world model",
+          "simulative reasoning",
+          "self-directed learning",
+          "auditability",
+          "controllability",
+          "safety"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "SAEScientist-Bench: Can AI Agents Conduct Autonomous SAE Interpretability Research?",
+      "url": "https://huggingface.co/papers/2609.09113",
+      "date": "2026-09-08",
+      "signal": 20,
+      "signal_name": "upvotes",
+      "summary": "The study introduces a benchmark to evaluate AI agents using sparse autoencoders for autonomous mechanistic interpretability and feature discovery, revealing progress but significant gaps versus expert baselines.",
+      "extra": {
+        "keywords": [
+          "Sparse Autoencoders",
+          "SAEs",
+          "mechanistic interpretability",
+          "contrastive probes",
+          "Gemma Scope",
+          "feature discovery",
+          "causal steering",
+          "activation rank",
+          "concept selectivity",
+          "autonomous AI R&D"
+        ],
+        "github": "https://github.com/Trae1ounG/SAEScientist",
+        "github_stars": 21,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Deep Research in Physical Sciences: A Multi-Agent Framework and Comprehensive Benchmark",
+      "url": "https://huggingface.co/papers/2606.18648",
+      "date": "2026-06-17",
+      "signal": 16,
+      "signal_name": "upvotes",
+      "summary": "PhySciBench benchmark reveals limited performance of current LLM agents in physical science research, leading to development of DelveAgent framework that improves accuracy through modular design and physics-grounded mechanisms.",
+      "extra": {
+        "keywords": [
+          "Large Language Model",
+          "scientific reasoning",
+          "physical science research",
+          "benchmark",
+          "agent systems",
+          "multi-agent framework",
+          "adaptive planning loop",
+          "dual-granularity memory",
+          "hierarchical reflection mechanism"
+        ],
+        "github": "https://github.com/yigengjiang/physci-deepresearch",
+        "github_stars": 7,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Notes2Skills: From Lab Notebooks to Certainty-Aware Scientific Agent Skills",
+      "url": "https://huggingface.co/papers/2606.11897",
+      "date": "2026-06-10",
+      "signal": 15,
+      "signal_name": "upvotes",
+      "summary": "Notes2Skills framework converts laboratory notes into verifiable skills for AI agents while maintaining author uncertainty levels, addressing gaps in scientific AI development.",
+      "extra": {
+        "keywords": [
+          "scientific discovery workflows",
+          "lab notes",
+          "scientific reasoning",
+          "author uncertainty",
+          "AI agents",
+          "verifiable skills",
+          "certainty preservation",
+          "scientific AI"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "CausaLab: A Scalable Environment for Interactive Causal Discovery Toward AI Scientists",
+      "url": "https://huggingface.co/papers/2605.26029",
+      "date": "2026-05-28",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "CausaLab evaluates LLM agents on causal discovery by requiring both accurate predictions and faithful recovery of underlying causal mechanisms through synthetic experimental scenarios.",
+      "extra": {
+        "keywords": [
+          "causal discovery",
+          "structural causal model",
+          "observational data",
+          "intervention",
+          "causal graph",
+          "structural equations",
+          "experimental causal reasoning",
+          "predictive success",
+          "causal understanding"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "On the limits and opportunities of AI reviewers: Reviewing the reviews of Nature-family papers with 45 expert scientists",
+      "url": "https://huggingface.co/papers/2605.20668",
+      "date": "2026-05-20",
+      "signal": 13,
+      "signal_name": "upvotes",
+      "summary": "AI reviewers demonstrate superior performance in identifying correct criticisms compared to human reviewers, yet exhibit limitations in subfield knowledge and context management that distinguish them from human peers.",
+      "extra": {
+        "keywords": [
+          "GPT-5.2",
+          "Gemini 3.0 Pro",
+          "Claude Opus 4.5"
+        ],
+        "github": "https://github.com/prometheus-eval/cmu-paper-reviewer",
+        "github_stars": 31,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Virtual biotech company puts thousands of AI scientist agents to work",
+      "url": "https://med.stanford.edu/news/all-news/2026/09/virtual-biotech-company.html",
+      "date": "2026-09-17",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49746721",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "The Rise of the Lone Scientist Under Agentic AI",
+      "url": "https://www.unite.ai/the-rise-of-the-lone-scientist-under-agentic-ai/",
+      "date": "2026-10-28",
+      "signal": 1,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50272870",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Multi Agent Protocol for AI Scientist by Hexo Labs",
+      "url": "https://github.com/hexo-ai/socrates",
+      "date": "2026-06-25",
+      "signal": 5,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48671952",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Co-Scientist: A multi-agent AI partner to accelerate research",
+      "url": "https://deepmind.google/blog/co-scientist-a-multi-agent-ai-partner-to-accelerate-research/",
+      "date": "2026-05-20",
+      "signal": 3,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48209242",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: AI scientist builds an open-source Codex Micro from scratch for $40",
+      "url": "https://iluvatarlabs.com/blog/2026/08/how-we-cloned-openai-codex-micro/",
+      "date": "2026-08-26",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49453466",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Securing GrokBot",
+      "url": "https://news.ycombinator.com/item?id=50380651",
+      "date": "2026-11-05",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=50380651",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Reality of Commercial AI World from a 16 Year Old's Perspective",
+      "url": "https://news.ycombinator.com/item?id=48851812",
+      "date": "2026-07-09",
+      "signal": 4,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=48851812",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Keenable – A different web search API for AI agents",
+      "url": "https://keenable.ai/",
+      "date": "2026-08-25",
+      "signal": 12,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49435555",
+        "comments": 5,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "Show HN: Countify – Collaborative No-code computer vision for labs",
+      "url": "https://www.countifybio.com/",
+      "date": "2026-07-28",
+      "signal": 2,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49084328",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "hn",
+      "kind": "discussion",
+      "title": "A documentary about a scientist who thinks time loops are real",
+      "url": "https://news.ycombinator.com/item?id=49572431",
+      "date": "2026-09-05",
+      "signal": 8,
+      "signal_name": "points",
+      "summary": "",
+      "extra": {
+        "thread": "https://news.ycombinator.com/item?id=49572431",
+        "comments": 0,
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Gemma 4 Technical Report",
+      "url": "https://doi.org/10.48550/arxiv.2607.02770",
+      "date": "2026-07-02",
+      "signal": 768,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Can ChatGPT forecast stock price movements? Return predictability and large language models",
+      "url": "https://doi.org/10.1016/j.jfineco.2026.104335",
+      "date": "2026-07-24",
+      "signal": 729,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Human-Centered Explainable AI (XAI)",
+      "url": "https://doi.org/10.1017/9781108872225.011",
+      "date": "2026-09-03",
+      "signal": 462,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A multi-agent system for automating scientific discovery",
+      "url": "https://doi.org/10.1038/s41586-026-10652-y",
+      "date": "2026-05-19",
+      "signal": 322,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Autonomous biomedical research with an artificial intelligence agent",
+      "url": "https://doi.org/10.1126/science.adz4351",
+      "date": "2026-07-09",
+      "signal": 289,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Self-Harness: Harnesses That Improve Themselves",
+      "url": "https://doi.org/10.48550/arxiv.2606.09498",
+      "date": "2026-06-08",
+      "signal": 130,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Transforming Science with Large Language Models: A Survey on AI-assisted Scientific Discovery, Experimentation, Content Generation, and Evaluation",
+      "url": "https://doi.org/10.1145/3845596",
+      "date": "2026-09-05",
+      "signal": 129,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI4Research: a survey of artificial intelligence for scientific research",
+      "url": "https://doi.org/10.1007/s11432-025-5000-y",
+      "date": "2026-09-28",
+      "signal": 110,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "An AI system to help scientists write expert-level empirical software",
+      "url": "https://doi.org/10.1038/s41586-026-10658-6",
+      "date": "2026-05-19",
+      "signal": 99,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "AI scientist agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "ShazanRafi/autonomous-data-scientist",
+      "url": "https://github.com/ShazanRafi/autonomous-data-scientist",
+      "date": "2026-10-21",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "An agentic AI system that automates tabular data analysis, ML experimentation, model evaluation, explainability, and evidence-backed reporting using Python and LangGraph.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-21",
+        "pushed": "2026-11-10",
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "srivarshapopuri1-arch/multi-agent-ml-experiment-system",
+      "url": "https://github.com/srivarshapopuri1-arch/multi-agent-ml-experiment-system",
+      "date": "2026-09-21",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "Exploring multi-agent workflows for automated ML experimentation, model evaluation, and result validation using LangGraph and MLflow.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-21",
+        "pushed": "2026-09-21",
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "shivaeedeshmukh/AI-Data-Scientist",
+      "url": "https://github.com/shivaeedeshmukh/AI-Data-Scientist",
+      "date": "2026-09-12",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "AI-powered multi-agent ML experimentation platform for automated, explainable, and reproducible data science workflows.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-09-12",
+        "pushed": "2026-09-12",
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-new",
+      "title": "abhijeetchaubey/OmniResearch",
+      "url": "https://github.com/abhijeetchaubey/OmniResearch",
+      "date": "2026-10-04",
+      "signal": 0,
+      "signal_name": "stars",
+      "summary": "OmniResearch is an autonomous multi-agent AI framework that automates the AI/ML research lifecycle—from planning and literature discovery to dataset selection, experimentation, analysis, verification, and research report generation using LangGraph, multimodal RAG, and research memory.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2026-10-04",
+        "pushed": "2026-10-12",
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "github",
+      "kind": "repo-active",
+      "title": "MuhammadNurilHuda/DeciSense",
+      "url": "https://github.com/MuhammadNurilHuda/DeciSense",
+      "date": "2026-05-21",
+      "signal": 1,
+      "signal_name": "stars",
+      "summary": "An agent-driven system that automates end-to-end tabular ML workflows: data analysis, model selection, and controlled experimentation.",
+      "extra": {
+        "topics": [],
+        "license": null,
+        "created": "2025-10-20",
+        "pushed": "2026-05-21",
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Generation, Accumulation, and Utilization of Data in the Automatically Controlled End-Station of a Soft X-ray Beamline",
+      "url": "http://arxiv.org/abs/2610.11476v1",
+      "date": "2026-10-08",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI is rapidly transforming materials exploration, yet reliable AI-assisted research depends on experimental data that retains their context, provenance, and machine-readable structure. High-throughput synchrotron measurements therefore require more than automated data acquisition: data generation, accumulation, and utilization must be connected within a continuous workflow. Here, we present a data",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Progress and Prospect of AI in ARPES Workflow",
+      "url": "http://arxiv.org/abs/2610.10140v1",
+      "date": "2026-10-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Artificial intelligence (AI) is becoming an increasingly useful tool across the experimental sciences, including angle-resolved photoemission spectroscopy (ARPES), which routinely produces large, multidimensional datasets of electronic structure. Recent advances in AI and machine learning (ML) have opened new opportunities across the entire ARPES workflow, from automated sample preparation and rea",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "ONDT: A Modular and Virtualized O-RAN Digital Twin for xApp/rApp Closed-Loop Experimentatio",
+      "url": "http://arxiv.org/abs/2610.07889v1",
+      "date": "2026-10-06",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Open Radio Access Network (O-RAN) architectures extend programmability in next-generation cellular networks through Near-Real-Time and Non-Real-Time RAN Intelligent Controllers (RICs), enabling AI/ML-driven xApps and rApps to optimize network behavior dynamically. However, validating automated closed-loop control algorithms in live environments presents significant operational risks and deployment",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RollPlace: Improving Macro Placement via Monte Carlo Rollout Search",
+      "url": "http://arxiv.org/abs/2610.06316v1",
+      "date": "2026-10-05",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The application of Reinforcement Learning (RL) in Electronic Design Automation (EDA), particularly for chip placement, has attracted considerable attention in recent years. While existing machine learning (ML)-based approaches have achieved notable progress, they predominantly focus on generating optimal layouts in a single attempt, often producing solutions that require subsequent refinement. To ",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "RankEvolve: A Reliable Multi-Agent Auto-Research Harness for Evolving Ranking Models",
+      "url": "http://arxiv.org/abs/2609.39551v1",
+      "date": "2026-09-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Auto-research agents, LLM systems that propose, implement, train, and evaluate model changes across iterations, promise to automate applied ML's experimental loop. Over long horizons, execution accuracy is a binding constraint: a change can silently leak held-out data, omit normalization, disconnect a gradient, or leave a train/eval flag unwired, invalidating expensive runs and compounding error a",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A Rapid Pipeline for Training and Deploying ML Models on WeBe Band",
+      "url": "http://arxiv.org/abs/2609.29084v1",
+      "date": "2026-09-24",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Developing optimized machine-learning algorithms for edge devices with limited computational and memory resources is challenging, time-consuming, and highly dependent on device-specific constraints. In this work, we streamline an edge ML workflow to enable rapid development, optimization, and deployment of machine-learning (ML) models directly on the WeBe Band, a wrist-worn wearable device designe",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Evidence-Grounded Agentic Formulation Development in an Autonomous Laboratory",
+      "url": "http://arxiv.org/abs/2609.19099v1",
+      "date": "2026-09-16",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Self-emulsifying drug delivery systems (SEDDS) can improve the oral bioavailability of poorly soluble drugs, but identifying high-performing formulations remains experimentally intensive. We present Andromeda 2, an agentic system that reasons over structured in-house experimental evidence and invokes computational and experimental tools to design and execute successive formulation batches. Using a",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Overview of the NLPCC 2026 Shared Task 11: Agent-Based Experiment Reproduction from Scientific Papers",
+      "url": "http://arxiv.org/abs/2609.11117v1",
+      "date": "2026-09-10",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Reproducibility is essential to scientific progress, yet the growing volume and complexity of scientific publications make exhaustive manual verification increasingly impractical. Although recent advances in large language model (LLM) agents enable automated experiment reproduction, existing evaluations largely focus on final repositories and are typically limited to machine learning (ML). We intr",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "AI and TCAD for Inverse Design and Defect Discovery: From Simple Machine Learning to LLM",
+      "url": "http://arxiv.org/abs/2609.07046v1",
+      "date": "2026-09-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "AI has revolutionized various engineering domains, but its impact on semiconductor device design and defect discovery is still limited, due to limited data and the curse of dimensionality. In this paper, we will discuss our work on using the Technology Computer-Aided-Design (TCAD) to generate precise data needed for machine learning (ML) to enable simulation-augmented ML. We demonstrate that with ",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Spectroscopy With Intelligent Feature Tracking for automated characterization of excited-state structure in semiconductor quantum dot devices",
+      "url": "http://arxiv.org/abs/2609.05686v1",
+      "date": "2026-09-04",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "The characterization of excited-state structure in semiconductor quantum dot (QD) devices is an important component of tuning them for spin-qubit operation. We present Spectroscopy With Intelligent Feature Tracking (SWIFT), a framework that combines machine-learning (ML)-assisted feature identification with physics-informed geometric processing to extract energy-level splittings from pulsed-gate s",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Process-Technology Co-optimization for 2D-FETs",
+      "url": "http://arxiv.org/abs/2609.00722v1",
+      "date": "2026-09-01",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "We present the first experimental machine learning (ML)-enabled Process-Technology Co-Optimization (PTCO) framework for optimizing 2D transition metal dichalcogenide (TMD) FET fabrication directly from statistically meaningful experimental data rather than pure simulation data. We first introduce a transition voltage metric, VTrans, to quantify the gate voltage required for off-to-on switching and",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "GeoAI-based post-segmentation quality validation of building footprints via spatial feature engineering",
+      "url": "http://arxiv.org/abs/2608.09048v1",
+      "date": "2026-08-10",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Deep learning-based building footprint extraction from high-resolution imagery often produces topologically inconsistent vectors unfit for direct GIS database ingestion. To address this, we present a multidomain GeoAI quality control framework that automates error detection to systematically purify vector footprint databases. Candidate footprints were generated across five UAV survey sites in Bang",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Towards Sustainable Artificial Intelligence: A Comprehensive Review and Comparative Analysis of Deep Learning Models' Carbon Footprint",
+      "url": "http://arxiv.org/abs/2608.09998v1",
+      "date": "2026-08-07",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Artificial Intelligence (AI) and Machine Learning (ML) have become powerful tools for supporting and automating complex human tasks. Despite their benefits, growing attention has been directed toward their environmental implications, primarily due to their high energy demands and associated carbon emissions. This concern is particularly relevant in light of the increasing deployment of large-scale",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "A comparative analysis of automated techniques for security bug report identification",
+      "url": "http://arxiv.org/abs/2607.27893v1",
+      "date": "2026-07-30",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Timely identification of security-related bug reports is essential to minimize the window of vulnerabilities in software systems. Manually screening incoming bug reports to identify security-related issues is time-consuming, error-prone, and non-scalable for large-scale software systems. Thus, a variety of automatic techniques, including traditional machine learning (ML) techniques and large langu",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "arxiv",
+      "kind": "paper",
+      "title": "Explanation-Based Runtime Verification for Trustworthy ML-driven Optical Networks",
+      "url": "http://arxiv.org/abs/2607.20675v1",
+      "date": "2026-07-22",
+      "signal": 0,
+      "signal_name": "-",
+      "summary": "Machine learning (ML) models are increasingly integrated into optical network automation frameworks to support tasks such as failure management, performance monitoring and resource allocation. In these environments, ML-driven predictions may be directly coupled with control-plane actions where incorrect decisions can immediately impact service quality, resource efficiency, and network stability. A",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AutoTrainess: Teaching Language Models to Improve Language Models Autonomously",
+      "url": "https://huggingface.co/papers/2606.31551",
+      "date": "2026-06-30",
+      "signal": 18,
+      "signal_name": "upvotes",
+      "summary": "AutoTrainess enables autonomous language model training by providing structured agent-computer interfaces that guide planning, data preparation, training, evaluation, and logging operations more effectively than traditional command-line approaches.",
+      "extra": {
+        "keywords": [
+          "language models",
+          "autonomous post-training",
+          "agent-computer interfaces",
+          "benchmark-aligned data",
+          "stable training jobs",
+          "experiment state",
+          "PostTrainBench",
+          "CLI environment",
+          "workflow automation"
+        ],
+        "github": "https://github.com/simple-agent-lab/AutoTrainess",
+        "github_stars": 24,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Benchmark Everything Everywhere All at Once",
+      "url": "https://huggingface.co/papers/2606.06462",
+      "date": "2026-06-04",
+      "signal": 5,
+      "signal_name": "upvotes",
+      "summary": "Automated benchmark creation system generates diverse evaluation datasets with minimal human intervention, enabling continuous model assessment across multiple domains.",
+      "extra": {
+        "keywords": [
+          "benchmark construction",
+          "LLMs",
+          "MLLMs",
+          "automated systems",
+          "benchmark generation",
+          "performance evaluation",
+          "domain-specific reasoning",
+          "human evaluation",
+          "LLM-as-a-judge assessment",
+          "consistency checks"
+        ],
+        "github": "https://github.com/Shiyun-x/Benchmark-Agent",
+        "github_stars": 36,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Hierarchical Experimentalist Agents",
+      "url": "https://huggingface.co/papers/2606.29315",
+      "date": "2026-06-28",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "HExA enables large language models to improve through active experimentation and skill learning in novel domains without requiring training or external supervision.",
+      "extra": {
+        "keywords": [
+          "Hierarchical Experimentalist Agents",
+          "active experimentation",
+          "self-improvement framework",
+          "query-relevant experiments",
+          "reusable library of composable skills",
+          "experimental evidence",
+          "Interphyre",
+          "PHYRE 2D procedural physics environment",
+          "tool-calling benchmark",
+          "simulation APIs",
+          "ReAct",
+          "Reflexion"
+        ],
+        "github": "https://github.com/General-Exp-3-Continual-Learning-Agent/HeXA-Hierarchical-Experimentalist-Agents",
+        "github_stars": 4,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "AgentHijack: Benchmarking Computer Use Agent Robustness to Common Environment Corruptions",
+      "url": "https://huggingface.co/papers/2605.25707",
+      "date": "2026-05-25",
+      "signal": 3,
+      "signal_name": "upvotes",
+      "summary": "Computer-use agents powered by multimodal large language models face significant challenges in real-world environments due to dynamic disruptions, necessitating robustness evaluation and improved framework designs.",
+      "extra": {
+        "keywords": [
+          "multimodal large language models",
+          "computer-use agents",
+          "robustness evaluation",
+          "action generator",
+          "grounding capabilities",
+          "onlooker",
+          "environment checking"
+        ],
+        "github": "https://github.com/tmlr-group/AgentHijack",
+        "github_stars": 8,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Learning from Failure: Inference-Time Self-Improvement for Computer-Use Agents",
+      "url": "https://huggingface.co/papers/2606.31270",
+      "date": "2026-06-30",
+      "signal": 2,
+      "signal_name": "upvotes",
+      "summary": "Failure-driven self-improvement approach enhances computer-use agents by leveraging failed trajectories through LLM diagnosis and code patch generation, achieving improved performance with minimal additional costs.",
+      "extra": {
+        "keywords": [
+          "multimodal large language models",
+          "computer-use agents",
+          "synthetic data",
+          "self-improving loop",
+          "successful trajectories",
+          "failed trajectories",
+          "failure modes",
+          "inference-time solutions",
+          "code patches",
+          "OSWorld benchmark",
+          "OpenCUA-72B"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Scaling Discovery Requires Forgetting",
+      "url": "https://huggingface.co/papers/2610.20563",
+      "date": "2026-10-14",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Periodic resetting of agent search histories and restarting from top candidates improves automated discovery by preventing stagnation from accumulated past attempts.",
+      "extra": {
+        "keywords": [
+          "LLM agents",
+          "scored verifiers",
+          "iterative refinement",
+          "parallel agents",
+          "search state",
+          "open-ended discovery"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Fisher-R1: Training LLM Agents for Reliable Hypothesis Testing",
+      "url": "https://huggingface.co/papers/2608.07437",
+      "date": "2026-08-07",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "Researchers introduce P-Bench and Fisher-R1 to evaluate and improve LLM agents' reliability in statistical hypothesis testing, revealing frequent inferential errors and substantial gains via reinforcement learning.",
+      "extra": {
+        "keywords": [
+          "hypothesis testing",
+          "p-value",
+          "statistical reasoning",
+          "reinforcement learning",
+          "LLM agents",
+          "P-Bench",
+          "Fisher-R1"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "hf",
+      "kind": "paper",
+      "title": "Can LLM Agents Infer World Models? Evidence from Agentic Automata Learning",
+      "url": "https://huggingface.co/papers/2606.16576",
+      "date": "2026-06-15",
+      "signal": 1,
+      "signal_name": "upvotes",
+      "summary": "LLM agents demonstrate limited capability in discovering hidden deterministic finite automata through interactive querying, showing weaker performance and efficiency compared to classical automata-learning algorithms.",
+      "extra": {
+        "keywords": [
+          "deterministic finite automaton",
+          "membership queries",
+          "equivalence queries",
+          "tool-calling LLM agents",
+          "oracle",
+          "automata-learning algorithms",
+          "query planning",
+          "evidence integration",
+          "hypothesis construction"
+        ],
+        "github": null,
+        "github_stars": null,
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Code as Agent Harness",
+      "url": "https://doi.org/10.48550/arxiv.2605.18747",
+      "date": "2026-05-18",
+      "signal": 99,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "MedicalAgentsBench for complex medical reasoning: Comparing internalized reasoning models versus externalized agent-based frameworks",
+      "url": "https://doi.org/10.1016/j.patter.2026.101658",
+      "date": "2026-07-08",
+      "signal": 69,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The open-source advantage in large language models (LLMs)",
+      "url": "https://doi.org/10.1007/s43681-026-01190-4",
+      "date": "2026-07-09",
+      "signal": 64,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "KernelEvolve: Scaling Agentic Kernel Coding for Heterogeneous AI Accelerators at Meta",
+      "url": "https://doi.org/10.1109/isca66397.2026.00063",
+      "date": "2026-06-01",
+      "signal": 55,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "The more you automate, the less you see: Hidden pitfalls of autonomous AI scientists",
+      "url": "https://doi.org/10.1073/pnas.2610214123",
+      "date": "2026-10-05",
+      "signal": 52,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Training Machine Learning Models at the Edge: A Survey",
+      "url": "https://doi.org/10.1145/3848509",
+      "date": "2026-09-17",
+      "signal": 42,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "A Survey of AI for Materials Science: Foundation Models, LLM Agents, Datasets, and Tools",
+      "url": "https://doi.org/10.1145/3822503",
+      "date": "2026-06-25",
+      "signal": 41,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "AI-coupled HPC Workflow Applications, Middleware and Performance",
+      "url": "https://doi.org/10.1145/3844499",
+      "date": "2026-09-09",
+      "signal": 40,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    },
+    {
+      "source": "openalex",
+      "kind": "paper",
+      "title": "Multi-omics and artificial intelligence for precision drug discovery and potential clinical applications",
+      "url": "https://doi.org/10.1038/s41392-026-02631-6",
+      "date": "2026-06-02",
+      "signal": 36,
+      "signal_name": "citations",
+      "summary": "",
+      "extra": {
+        "phrase": "automated ML experimentation agent"
+      }
+    }
+  ]
+}

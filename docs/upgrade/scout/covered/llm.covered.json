@@ -1,0 +1,32 @@
+[
+ {
+  "file": "llm-training",
+  "candidate": "Fixed-budget loop with a frozen data and evaluation file (pattern from karpathy/autoresearch, March 2026)",
+  "section": "Pretraining a small model from scratch"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Tokenizer and chat-template preflight (render-and-decode check, kit-native practice)",
+  "section": "Tokenizer and chat-template preflight"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Frozen generation settings in the evaluation contract (kit-native practice)",
+  "section": "Evaluating generated text"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "lm-evaluation-harness 0.4.13 (31 Aug 2026)",
+  "section": "Evaluating generated text"
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Baseline rows (untuned model, trivial predictor, frozen prompt) and a task-metric-decides rule",
+  "section": "Evaluating generated text"
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Versioned evaluator with a known-answer self-test",
+  "section": "Evaluating generated text"
+ }
+]

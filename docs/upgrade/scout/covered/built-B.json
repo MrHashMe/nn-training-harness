@@ -1,0 +1,596 @@
+[
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Autoresearch loop pattern (karpathy/autoresearch @228791fb, 2026-03-26)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (Campaign.iteration); .claude/skills/nn-training/references/loop.md \"One campaign\"; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Harness-run frozen evaluator in its own process, hashed before and after each run",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.train/verify (harness runs eval_command, hashes evaluator and protected_data each run); .claude/skills/nn-training/references/loop.md \"Who decides what\"; tests/test_loop.py"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Fixed seed panel with pre-declared margin and fixed run count for keep decisions",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py margin()/iteration() (seed panel, paired mean vs baseline, margin); .claude/skills/nn-training/references/loop.md config table (seeds, min_margin); tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "A/A noise floor from repeated baselines (MAD-based, idea from pi-autoresearch v1.9.0)",
+  "status": "unfinished",
+  "where": "Noise floor is sample sd of the baseline seed panel scaled by noise_mult, not MAD-based; no separate repeated A/A baselines."
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "One fresh agent process per iteration with harness-owned research state",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py session()/worker_prompt() build the brief from state.json and ledger; .claude/skills/nn-training/references/loop.md \"One campaign\"; tests/test_loop.py"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Validation and test examples unreadable by the agent and by training code",
+  "status": "unfinished",
+  "where": "Sealed test data is hidden from the worktree, but validation data (link_paths/protected_data) is readable by the agent; no unreadable-validation rule."
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Deterministic diff and transcript scan as advisory tripwire",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.scan (sealed paths/tokens, network code, guard denials); .claude/skills/nn-training/references/loop.md status \"invalid\", \"What is enforced\"; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Controller-owned git with one headless worker per iteration (pattern from leo-lilinxiao/codex-autoresearch, pushed 2026-09-12)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py iteration (harness commits on nnloop/NAME, reverts via fresh worktree); .claude/skills/nn-training/references/loop.md \"Who decides what\"; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Controller-assigned result states (promising, keep, discard, inconclusive, invalid, crash)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py iteration statuses keep/inconclusive/discard/invalid/crash/duplicate; .claude/skills/nn-training/references/loop.md status table; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "prime-radiant-inc/superpowers-autoresearch method",
+  "status": "unfinished",
+  "where": "Not found in the kit."
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Bundled char-level LM task (sized like nanoGPT shakespeare_char)",
+  "status": "finished",
+  "where": "benchmarks/charlm, benchmarks/new_project.py, tests/test_benchmarks.py; a real loop run of it is in the report"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "TinyStories GPT-4 clean bpb task (karpathy/tinystories-gpt4-clean)",
+  "status": "unfinished",
+  "where": "Not found in the kit."
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Claude Code headless driver settings (behaviour as of v2.1.302+)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py agent_argv(\"claude\") (-p, stream-json, dontAsk, --tools, --strict-mcp-config, --restricted); .claude/skills/nn-training/references/loop.md \"Agents\" table; tests/test_loop.py lines 226-239"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Codex exec JSONL driver",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py agent_argv/parse_codex (exec --json --ephemeral -s workspace-write); .claude/skills/nn-training/references/loop.md \"Agents\" table; tests/test_loop.py other_agents"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Minimal environment for training and evaluation processes",
+  "status": "unfinished",
+  "where": "run_env only drops variables whose names look like secrets (denylist, nnloop.py SECRET_ENV); no allowlisted environment."
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Harness-owned budget ledger that refuses unmeasurable limits",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py preflight() refuses no limit and unmeasurable usd/tokens/gpu_hours; Campaign.check; .claude/skills/nn-training/references/loop.md \"Commands\"; tests/test_loop.py refusal_tests"
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Hardware pinning and step-based budgets for comparisons",
+  "status": "unfinished",
+  "where": "GPUs recorded per campaign and resume refuses changed GPUs; no per-run device/load record or cross-hardware comparison refusal."
+ },
+ {
+  "file": "loop-autoresearch",
+  "candidate": "Three-arm pilot protocol with hidden re-scoring and violation counts",
+  "status": "unfinished",
+  "where": "benchmarks/pilot.py is built and loads (tests/test_benchmarks.py), but the pilot was not run: no headless Claude Code is signed in on this machine. No violation counts."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Named job object per run via ctypes (Windows kernel32 API, Windows 8+ for nesting)",
+  "status": "unfinished",
+  "where": "Not found: no job object; Windows stop is stop.json only (README by-platform table)."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Stop request file plus supervisor-delivered CTRL_BREAK inside a shared hidden console (CREATE_NO_WINDOW start)",
+  "status": "unfinished",
+  "where": "Not found: no supervisor-delivered CTRL_BREAK; Windows graceful stop is stop.json only."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Process identity as PID plus kernel start time from the standard library on each OS",
+  "status": "unfinished",
+  "where": "proc_start_time uses psutil or /proc only; no GetProcessTimes fallback on Windows without psutil."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Bounded retry around os.replace and tolerant state readers",
+  "status": "finished",
+  "where": "expctl.write_json_atomic and runlog's result write retry a refused replace (tests/test_runlog_units.py); nnremote's mirror retries on its next pass"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Link-free snapshot: copy tracked files, junction for linked directories, hard link or copy for linked files",
+  "status": "finished",
+  "where": "expctl.py _link/_link_tree (symlink, else junction or hard link); README \"By platform\" Source snapshot row; tests/test_kit.py line 180 (samefile)"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Explicit UTF-8 for every text open and UTF-8 mode for child processes",
+  "status": "unfinished",
+  "where": "Text I/O mostly passes utf-8, but PYTHONUTF8 for children and binary hook input not found; no documented practice."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Path-length and file-name hygiene for run folders",
+  "status": "unfinished",
+  "where": "Not found: no path-length or reserved-name checks, no run-ID hygiene rule."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Launch-time self-diagnostic of job membership and kill-on-close",
+  "status": "unfinished",
+  "where": "Not found: no launch-time job-membership or kill-on-close diagnostic."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Minimum-version claim: Python 3.9+ tested, 3.11+ recommended",
+  "status": "unfinished",
+  "where": "README states Python 3.8+ and Windows/WSL tests; no recommended 3.11+ named, macOS untested."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Runtime interpreter-version check in every entry point",
+  "status": "unfinished",
+  "where": "Only install.py checks the version; expctl, runlog, nnloop, nnremote and hooks do not check sys.version_info at entry."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Installer resolves the interpreter by running candidates and records the absolute path machine-locally",
+  "status": "unfinished",
+  "where": "install.py check_python tests one interpreter only; no candidate probing, no absolute path stored in git-ignored machine-local settings."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Claude Code exec-form hooks (command plus args, no shell)",
+  "status": "unfinished",
+  "where": "Hook entries are shell command strings; no exec-form command plus args."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Codex hook entries with commandWindows override",
+  "status": "finished",
+  "where": "install.py codex_hooks (command + commandWindows); tests/test_ports.py lines 302, 331; README Codex columns and line 163"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Cursor hook entries that PowerShell accepts, with failClosed",
+  "status": "finished",
+  "where": "install.py cursor_hooks (failClosed true); tests/test_ports.py line 297 and run_in under PowerShell; README line 76"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Reject Store stubs and broken shims by execution, not by PATH lookup",
+  "status": "finished",
+  "where": "install.py check_python (runs a probe, rejects Store stub with message); tests/test_ports.py lines 242-243; install.py docstring"
+ },
+ {
+  "file": "platforms",
+  "candidate": "PowerShell permission rules and guard coverage alongside Bash",
+  "status": "unfinished",
+  "where": "No PowerShell allow rules generated; guard maps PowerShell tool to Bash and KILL covers Stop-Process, but no PowerShell guard test cases."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Platform self-check command (doctor)",
+  "status": "unfinished",
+  "where": "expctl selftest and env exist, but no doctor report of enforced versus advice, links, path length, job membership; README table is manual."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Apple-silicon notes and a backend field in run records",
+  "status": "unfinished",
+  "where": "No Apple-silicon/MPS notes found; env.json records torch cuda but no backend field or mixed-backend refusal."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Existing POSIX launch with start_new_session and process-group kill",
+  "status": "finished",
+  "where": "expctl.py launch/_supervise (setsid, signal_group); tests/test_kit.py launch and stop checks; README \"By platform\""
+ },
+ {
+  "file": "platforms",
+  "candidate": "Environment identity in run state and refusal of cross-environment liveness decisions",
+  "status": "unfinished",
+  "where": "env.json records host, but no environment identity check; no cross-environment liveness refusal or \"unknown\" state."
+ },
+ {
+  "file": "platforms",
+  "candidate": "Platform test matrix for the kit itself (floor and ceiling interpreter on Windows, Linux, macOS)",
+  "status": "unfinished",
+  "where": "README lists Windows/WSL tests on Python 3.8 and 3.12 only; no per-OS oldest/newest matrix, macOS and bare Linux not run."
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Controller-owned research loop: harness code owns commit, verify, keep or revert and state; the agent only proposes and edits (pattern from Hard to Fool arXiv 2611.06607 v1, codex-autoresearch v0.6.0, RankEvolve arXiv 2609.39551 v1)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (cmd_run, Campaign.iteration); .claude/skills/nn-training/references/loop.md; tests/test_loop.py"
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Hash-chained append-only run ledger with trial counting and duplicate refusal (Hard to Fool arXiv 2611.06607 v1; events log in codex-autoresearch v0.6.0)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.record/ledger_rows (SHA-256 prev chain), diff_sha duplicates; .claude/skills/nn-training/references/loop.md \"Records\"; tests/test_loop.py lines 381, 601"
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Fresh agent session per iteration with all loop state in files (the flush half of Fork-and-Flush arXiv 2610.07447 v1; background mode of codex-autoresearch v0.6.0)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py session()/worker_prompt()/state.json; .claude/skills/nn-training/references/loop.md \"One campaign\"; tests/test_loop.py campaign_a/resume_tests"
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Minimal-harness rules: pull-style budget and hardware query, no injected nudges, short default prompt, no delegation by default (How Much of a Harness, arXiv 2609.40303 v1)",
+  "status": "unfinished",
+  "where": "nnloop status reports usage for humans, but the agent has no pull-style budget/GPU query command."
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Evaluator locking combined with data-access control, patch tracking and file-access logging (RewardHackingAgents arXiv 2603.11337 v1)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.verify/preflight (hashes evaluator, data, harness, pins before every run; frozen_paths check; fresh worktree); .claude/skills/nn-training/references/loop.md \"It stops instead\"; tests/test_loop.py campaign_b"
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Noise-aware keep rule: measured noise floor (median absolute deviation over repeated baseline runs) and a smoke, verify, full seed funnel (pi-autoresearch v1.9.0; renee-jia/scholar-loop)",
+  "status": "unfinished",
+  "where": "Same as row 3: noise measured as sample sd of seed panel (margin = noise_mult*sd*sqrt(2/n)), not median absolute deviation."
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Guard metrics: non-target floors checked on every keep (MMPostTrainBench arXiv 2610.05398 v1; Verify and Guard in uditgoenka/autoresearch v2.3.0; capability-floor gate in SoL-Pi)",
+  "status": "unfinished",
+  "where": "Not found: no guard metrics or non-target floors in the keep rule."
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Number grounding: every number in a journal entry or final report must resolve to a ledger record (VerifiedRegistry in renee-jia/scholar-loop; consistency patterns in wanshuiyin/Anti-Autoresearch v0.5)",
+  "status": "unfinished",
+  "where": "Only experiment-reviewer.md instructs recomputing numbers; no deterministic number-grounding check of reports."
+ },
+ {
+  "file": "sweep-auto-research",
+  "candidate": "Hack taxonomy as a checklist for guards and the reviewer role (Aligning Autoresearch arXiv 2610.38882 v1; PostTrainBench arXiv 2603.08640 v2)",
+  "status": "unfinished",
+  "where": "Not found: no dated hack taxonomy mapped to guards."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Guard rules for trust-handoff and control-plane paths (kit-native, no version)",
+  "status": "unfinished",
+  "where": "harness_paths ask on kit/control files (nn_guard.py check_path_tool); trust-handoff paths (git hooks, conftest, sitecustomize) not covered."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Unattended preflight: isolation and fail-closed settings check (kit-native, no version)",
+  "status": "unfinished",
+  "where": "nnloop.py preflight checks git, committed guard, selftest, frozen evaluator; no isolation or fail-closed check except Cursor --in-container."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Quarantined scouting step with schema-validated output (kit-native, no version)",
+  "status": "unfinished",
+  "where": "Scout runs as a separate session without shell, but output is markdown parsed by regex, not schema-validated."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Control-character and hidden-text sanitiser for output the kit relays (kit-native, no version)",
+  "status": "unfinished",
+  "where": "Not found: no control-character or hidden-Unicode sanitiser for relayed output."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "MCP lockdown for unattended runs (kit-native settings and guard rules, no version)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py agent_argv (--strict-mcp-config, explicit --tools/--allowedTools); .claude/skills/nn-training/references/loop.md \"Agents\"; operations.md section 5; tests/test_loop.py lines 226-231"
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Hash-chained append-only run ledger written by harness code (kit-native, no version)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.record (hash-chained ledger.jsonl: baseline, scout, iterations, keep/revert, stops); .claude/skills/nn-training/references/loop.md \"Records\"; tests/test_loop.py lines 381, 601"
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Pre-declared keep rule: conjunction of absolute gates plus a falsifier per experiment (kit-native, no version)",
+  "status": "unfinished",
+  "where": "Keep rule is a margin over noise only; no user-declared absolute gates or per-run falsifier."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Duplicate-hypothesis refusal before a trial is spent (kit-native, no version)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py iteration (diff_sha in st[\"tried\"] gives status duplicate before any training run); .claude/skills/nn-training/references/loop.md status table; tests/test_loop.py lines 470-473"
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "PROCEED, PARK, HALT contract with typed outcomes and a morning report (kit-native, pattern from agents-never-sleep v1.5.0)",
+  "status": "unfinished",
+  "where": "No typed outcomes, parking of guard asks or ranked morning report; unattended asks are denied (nn_guard.py) and the loop stops."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Stop conditions and a low-yield circuit breaker (kit-native, no version)",
+  "status": "unfinished",
+  "where": "nnloop stops on limits and max_failures; no target-reached or no-progress-over-N circuit breaker."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Harness-owned loop with a fresh agent process per iteration (kit-native, no version)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py cmd_run/Campaign.session (fresh headless process per iteration); .claude/skills/nn-training/references/loop.md; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Evidence-gated state transitions with a gating reviewer (kit-native, pattern from arXiv 2607.14890 v1)",
+  "status": "unfinished",
+  "where": "Keep is decided from harness scores and commit; experiment-reviewer is advisory, no gating reviewer on state transitions."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Credential rules for the remote-GPU module (kit-native rules, no version)",
+  "status": "unfinished",
+  "where": "remote.md: kit stores no token, sends only named env; no agent env allowlist, credential-directory denies or broker design."
+ },
+ {
+  "file": "sweep-unattended-security",
+  "candidate": "Cleanup that does not depend on the caller surviving (kit-native rule for the remote module, pattern from arXiv 2610.39711 v2)",
+  "status": "unfinished",
+  "where": "Provider timeout for hfjobs and teardown exist (remote.md); ssh targets have no remote timer and no startup sweep of tagged leftovers."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Guard liveness self-test and minimum agent version at loop start",
+  "status": "unfinished",
+  "where": "nnloop stops when the guard did not run (beacon) and runs selftest in preflight; no minimum agent version check."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Protected configuration surface in the guard",
+  "status": "unfinished",
+  "where": "harness_paths cover hooks, settings, .mcp.json, kit files, agent dirs; git hooks and git config not covered."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Frozen evaluator with its own interpreter and hash checks",
+  "status": "unfinished",
+  "where": "Evaluator file is hash-verified and lock files hashed; no separate evaluator interpreter or package set."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Kit self-integrity manifest",
+  "status": "unfinished",
+  "where": "Loop hashes kit files against campaign start; installer writes no integrity manifest and loop does not verify one."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Controller environment allow-list",
+  "status": "unfinished",
+  "where": "Same as row 17: only secret-looking names are dropped; no allowlist."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "No full-environment file on the tmux launch path",
+  "status": "unfinished",
+  "where": "expctl.py launch --via tmux writes the full environment to a 0600 file in the run dir, deleted by the supervisor (test_review_fixes.py line 113)."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Standard-library secret scan and redaction in logs, journal and status output",
+  "status": "unfinished",
+  "where": "Not found: no secret scan or redaction in logger, journal or status; only advice in llm.md."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Snapshot exclusion for secret-looking ignored files",
+  "status": "unfinished",
+  "where": "Snapshot skips only caches (NOLINK_IGNORED); .env, key files and token caches are still linked."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Standard-library loop driver (one fresh headless session per iteration)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (stdlib driver: cmd_run, Campaign.run); .claude/skills/nn-training/references/loop.md; tests/test_loop.py"
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "stream-json event parsing into loop state",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py parse_claude/parse_codex/parse_cursor (tokens, cost, result, stop reasons); .claude/skills/nn-training/references/loop.md \"Commands\"; tests/test_loop.py unit_tests"
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Atomic state file, journal as memory, and a stop file",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.save (write_json_atomic state.json), stop.request, journal(); .claude/skills/nn-training/references/loop.md \"Records\", \"It stops instead\"; tests/test_loop.py campaign_a/resume_tests"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Harness-decided keep gate from repeated runs (A/A noise floor plus fixed seed panel)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py baseline()/margin()/iteration() (seed-panel spread, paired mean, margin); .claude/skills/nn-training/references/loop.md config table; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Duplicate-configuration refusal by content hash before a run is spent",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py iteration (SHA-256 of diff, repeats refused before training); .claude/skills/nn-training/references/loop.md status table; tests/test_loop.py lines 470-473"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Harness-owned timer, evaluation call and seed (none of them inside agent-editable files)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.train (run_budget_s cut-off, harness-run eval_command, harness-chosen seeds); .claude/skills/nn-training/references/loop.md config table; tests/test_loop.py campaign_a"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Checks gate before keep (correctness checks run by the harness after every successful run)",
+  "status": "unfinished",
+  "where": "Not found: no protected checks command run after each exit-0 run, no checks_failed state."
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Loop state in files so that a fresh or compacted session resumes deterministically",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py state.json + ledger + journal drive resume and worker_prompt; .claude/skills/nn-training/references/loop.md \"Records\"; tests/test_loop.py resume_tests"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Hard iteration cap and consecutive-failure stop in the loop controller",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.check / max_failures / --max-runs; .claude/skills/nn-training/references/loop.md \"It stops instead\"; tests/test_loop.py lines 285, 344-347"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Outer supervisor process as loop driver (one agent process per iteration)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py cmd_run/Campaign.run; .claude/skills/nn-training/references/loop.md; tests/test_loop.py"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "AGENTS.md as single rules file plus a CLAUDE.md that only contains @AGENTS.md (no symbolic link)",
+  "status": "finished",
+  "where": "install.py put_block (rules in AGENTS.md, CLAUDE.md imports @AGENTS.md); tests/test_ports.py line 261; README"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Enforcement matrix in the docs: per agent and OS, what is enforced and what is advice",
+  "status": "finished",
+  "where": "README.md \"What works where\" (by agent, by platform; enforced/instructions/missing); loop.md \"What is enforced, and where\""
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Unattended Claude Code launcher: never --bare, explicit permission mode, guard-hook canary first",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py agent_argv(\"claude\") (-p, dontAsk, tool list, stream-json; approvals never bypassed); .claude/skills/nn-training/references/loop.md \"Agents\"; tests/test_loop.py lines 226-234"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Detached training runs (not children of the agent shell)",
+  "status": "finished",
+  "where": "expctl.py cmd_launch/_supervise (detached supervisor, setsid or tmux); SKILL.md section 3; tests/test_kit.py launch tests"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Agent-token and cost metering from machine-readable agent output",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py parse_claude (total_cost_usd) / parse_codex (turn.completed usage); .claude/skills/nn-training/references/loop.md \"Commands\"; tests/test_loop.py unit_tests"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Codex unattended invocation: codex exec --sandbox workspace-write --ephemeral --json with overrides, no [profiles.*] table",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py agent_argv(\"codex\") (exec --json --ephemeral -s workspace-write); .claude/skills/nn-training/references/loop.md \"Agents\"; tests/test_loop.py lines 239-240, 563"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Codex custom agents (.codex/agents/*.toml) for reviewer and analyst, documented as advice-only read-only",
+  "status": "finished",
+  "where": "install.py port_agents (.codex/agents/*.toml with name, developer_instructions); tests/test_ports.py lines 309-316; README"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Throughput profiling step before any search under a fixed wall-clock budget",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/performance.md section 1 \"Measure the baseline\" (input stall, throughput, fix bottlenecks first); SKILL.md"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Rule: kept settings are tied to budget and hardware; re-baseline when either changes",
+  "status": "unfinished",
+  "where": "validity.md lists budget units and loop resume refuses changed GPUs/budget; no general rule that budget, GPU or batch change voids baseline and noise floor."
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Rule text: split before any preprocessing; group or entity split when samples are dependent",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/data.md section 2 \"Split and leakage audit\" and validity.md (group or chronological splits, ask for group key)"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Guard rules for publishing and paid-job actions (push_to_hub, hf jobs, hf_jobs tool, tracker delete)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py PUBLISH, PAID_COMPUTE, NN_UNATTENDED deny; tests/test_ports.py lines 96-100; README \"Steps that need a person\""
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Revert rule: the harness reverts in its own branch or worktree, never git reset --hard or git clean on the user tree",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py fresh_worktree/iteration (branch nnloop/NAME, update-ref on keep, discarded commit dropped); .claude/skills/nn-training/references/loop.md; tests/test_loop.py"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "MCP server entries written to .mcp.json at the project root, never into .claude/settings.json",
+  "status": "finished",
+  "where": "install.py --mcp writes .mcp.json; tests/test_ports.py lines 317, 351; README \"MCP servers\" row; stack.md"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "TRL 1.17.1",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row (TRL 1.17.1 pinned, one framework per env); documented, enabling step not run"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "PEFT",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row and finetuning.md (PEFT 0.21.2 pinned); documented, enabling step not run"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Hugging Face datasets",
+  "status": "unfinished",
+  "where": "Hugging Face datasets has no pinned version row; only mentions of datasets 4.0.0 changes in data.md and evaluation.md."
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Hugging Face Transformers",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row (Transformers 5.22.2 pinned); documented, enabling step not run"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "PyTorch",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/stack.md \"Framework\" row (PyTorch 2.15.0, Python 3.11+, cu132); documented, enabling step not run"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "scikit-learn 1.9.1 (splitters and Pipeline as dated advice)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/data.md \"scikit-learn 1.9.1\" bullet (GroupKFold, StratifiedGroupKFold, Pipeline); documented, enabling step not run"
+ }
+]

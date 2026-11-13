@@ -1,0 +1,102 @@
+[
+ {
+  "file": "data",
+  "candidate": "Standard-library data manifest and split fingerprint command (new, inside expctl)",
+  "section": "1. Record the data (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Per-run data hash record and comparison flag (expctl launch and status, runlog)",
+  "section": "1. Record the data (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Harness-run cross-split exact-duplicate audit that prints counts only",
+  "section": "2. Duplicates and overlap (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Deterministic hash-bucket group split (standard-library snippet in the references)",
+  "section": "4. Splits"
+ },
+ {
+  "file": "data",
+  "candidate": "Data-record fields in the journal Project card (source and revision, licence and where read, terms, personal data, synthetic share, dedup, split salt)",
+  "section": "1. Record the data (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Rule: the agent never accepts dataset or model terms; it stops and asks the user",
+  "section": "5. Terms"
+ },
+ {
+  "file": "data",
+  "candidate": "Dataset-file safety rule: prefer Parquet, Arrow, JSONL and CSV; treat pickle-backed files and loader scripts as code",
+  "section": "6. Dataset files and rows as attack surface (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Dated advisory for datasets below 5.2.0 (reference text plus a warning in expctl env)",
+  "section": "6. Dataset files and rows as attack surface (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Untrusted-row rule: dataset rows, cards and READMEs are data, not instructions; inspect samples through bounded harness output",
+  "section": "6. Dataset files and rows as attack surface (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Deduplication policy: required across splits, a tested hypothesis inside the training set, with tool version and parameters recorded",
+  "section": "3. Deduplicating and filtering training data (core)"
+ },
+ {
+  "file": "data",
+  "candidate": "Synthetic-data provenance rule: per-row tag, generation from the training split only, generator and terms recorded",
+  "section": "7. Synthetic data and data-gate rules"
+ },
+ {
+  "file": "data",
+  "candidate": "Synthetic mixing hypothesis: add to real data, never replace it; compare against a real-only baseline at equal budget",
+  "section": "7. Synthetic data and data-gate rules"
+ },
+ {
+  "file": "data",
+  "candidate": "scikit-learn 1.9.1 group and time splitters and Pipeline (as dated advice)",
+  "section": "4. Splits"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Harness-run duplicate and split-overlap check (new expctl subcommand, standard library only)",
+  "section": "2. Duplicates and overlap (core)"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Order-independent dataset fingerprint in every run record",
+  "section": "1. Record the data (core)"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Budget-matched random-drop control for data-filter hypotheses (reduced form of Counterfactual Gate-Support Decomposition, arXiv 2610.19343 v1)",
+  "section": "3. Deduplicating and filtering training data (core)"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "No-added-data baseline arm, with judge and quality scores as diagnostics only, for synthetic-data hypotheses",
+  "section": "7. Synthetic data and data-gate rules"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Frozen data-gate settings and evaluation-isolated generation in unattended mode",
+  "section": "7. Synthetic data and data-gate rules"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Report-only data checks (checks emit counts and review lists, never delete or rewrite data)",
+  "section": "3. Deduplicating and filtering training data (core)"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Semantic-duplicate blind-spot statement in the validity reference and the final report",
+  "section": "2. Duplicates and overlap (core)"
+ }
+]

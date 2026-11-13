@@ -1,0 +1,97 @@
+[
+ {
+  "file": "optimization-performance",
+  "candidate": "bf16 autocast through torch.amp",
+  "section": "3. Usual levers"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "TF32 via torch.backends.fp32_precision or set_float32_matmul_precision",
+  "section": "3. Usual levers"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Fused AdamW (fused=True)",
+  "section": "3. Usual levers"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Activation checkpointing with use_reentrant=False",
+  "section": "3. Usual levers"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Gradient accumulation guidance update",
+  "section": "3. Usual levers"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Maximum-length first batch for variable-length inputs",
+  "section": "3. Usual levers"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Compiled-versus-eager numerics parity check",
+  "section": "4. Adoption rule"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Doctor check: native Windows with PyTorch older than 2.15",
+  "section": "2. Stack and platform"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "System-memory fallback guard on native Windows",
+  "section": "2. Stack and platform"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Windows DataLoader checklist",
+  "section": "2. Stack and platform"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Stack pin update to PyTorch 2.15.0 with cu132",
+  "section": "2. Stack and platform"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "In-process step timing split in the run logger",
+  "section": "1. Measure the baseline"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "nvidia-smi telemetry with graceful degradation",
+  "section": "1. Measure the baseline"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Cooperative stop file polled by the run-side logger",
+  "section": "6. Multi-GPU and distributed (Linux or WSL2 only)"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Launcher-aware launch settings for torchrun",
+  "section": "6. Multi-GPU and distributed (Linux or WSL2 only)"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Post-exit process sweep",
+  "section": "6. Multi-GPU and distributed (Linux or WSL2 only)"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Distributed correctness checklist",
+  "section": "6. Multi-GPU and distributed (Linux or WSL2 only)"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Manifest fields for multi-process runs",
+  "section": "6. Multi-GPU and distributed (Linux or WSL2 only)"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Rank gating that recognises more launchers",
+  "section": "6. Multi-GPU and distributed (Linux or WSL2 only)"
+ }
+]

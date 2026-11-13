@@ -1,0 +1,122 @@
+[
+ {
+  "file": "second-look",
+  "candidate": "Seed escalation for near-misses: a sequential keep rule, up to six seeds, keep at z above 2.4, drop when behind (kit-native)",
+  "status": "finished",
+  "where": "nnloop.py NEAR, STRICTER, Campaign.second() and extra(): one second panel of n seeds for a gain above two thirds of the margin, the best commit trained on the same seeds once, decision on 2n seeds at 1.1 times the multiplier; references/loop.md 'The keep rule'; tests/test_loop.py (campaigns p and q). Commit 9424706"
+ },
+ {
+  "file": "round2",
+  "candidate": "The loop's worker sees a few points of the best run's logged curve and both scores of a first-seed discard (kit-native; second-look B4)",
+  "status": "finished",
+  "where": "nnloop.py curve() and the worker prompt; the gate's discard reason names both scores; references/loop.md; tests/test_loop.py. Commit c6c1593"
+ },
+ {
+  "file": "round2",
+  "candidate": "Stop a campaign when a session that used tools or changed files left no guard record, scouting sessions included (kit-native; second-look C1)",
+  "status": "finished",
+  "where": "nnloop.py unguarded(), called after worker and scouting sessions; references/loop.md (stop list); tests/test_loop.py with tests/fake_agent.py. Commit c6c1593"
+ },
+ {
+  "file": "round2",
+  "candidate": "Guard covers every registered worktree of the repository, wherever it lies (kit-native; the gap in README 'Notes and limits')",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; README 'Notes and limits'; tests/test_loop.py. Commit b7b7652"
+ },
+ {
+  "file": "round2",
+  "candidate": "Third report A6: deny `git show <rev>:<sealed path>` (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; tests/test_loop.py. Commit b7b7652"
+ },
+ {
+  "file": "round2",
+  "candidate": "Third report A4: unattended read tools may read `loop.link_paths` entries through the loop's worktree (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (read tools under NN_UNATTENDED=1 only); tests/test_loop.py. Commit b7b7652"
+ },
+ {
+  "file": "round2",
+  "candidate": "Python 3.8 as the tested minimum (third report A12: audit for 3.8)",
+  "status": "finished",
+  "where": "tests/ under Python 3.8 on native Windows and in WSL; README 'What works where'"
+ },
+ {
+  "file": "census-harnesses",
+  "candidate": "Pre-launch smoke test on a tiny setting",
+  "status": "finished",
+  "where": "SKILL.md gate 1 (a smoke run through `expctl launch` on a tiny budget, shown by `expctl status`); references/hpo.md (a feasibility probe of a few steps before a full trial). A step of the procedure, not enforced by code"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "FAISS 1.16.0 e-means",
+  "status": "finished",
+  "where": "references/data.md section 8 says when and how (`NumpyEmeans`, `faiss-cpu==1.16.0`); references/stack.md 'Add when the condition holds'; the enabling step was run on 12 Nov 2026 in a throwaway environment on native Windows, with a comparison against `faiss.Kmeans`. The kit adds no code"
+ },
+ {
+  "file": "platform-claude-code",
+  "candidate": "Guard-liveness canary at the start of every unattended run",
+  "status": "unfinished",
+  "where": "partly built: after every session of a campaign, the scouting session included, the loop requires the guard's record whenever the session used tools or changed files and stops the campaign otherwise (nnloop.py unguarded(), 12 Nov 2026; tests/test_loop.py); `expctl selftest` in the loop's preflight pipes a payload that must be denied through the hook script. No canary call through a real agent session before the first one: it would cost a session per campaign, and the stop after the first session leaves that session's change untrained."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Guard-liveness canary in selftest and before each unattended loop (own proposal derived from the hook docs; no version)",
+  "status": "unfinished",
+  "where": "partly built: after every session of a campaign, the scouting session included, the loop requires the guard's record whenever the session used tools or changed files and stops the campaign otherwise (nnloop.py unguarded(), 12 Nov 2026; tests/test_loop.py); `expctl selftest` in the loop's preflight pipes a payload that must be denied through the hook script. No canary call through a real agent session before the first one: it would cost a session per campaign, and the stop after the first session leaves that session's change untrained."
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Guard liveness self-test and minimum agent version at loop start",
+  "status": "unfinished",
+  "where": "partly built: the loop stops when any session that used tools or changed files left no guard record (12 Nov 2026) and runs selftest in its preflight. No minimum agent version: what it would add is the single call whose hook failed on a Claude Code older than 2.1.295, which has no setting that makes a failed hook block."
+ },
+ {
+  "file": "sweep-agent-platform",
+  "candidate": "Minimum agent version gate in selftest and loop preflight (for example Claude Code 2.1.319 or later for unattended mode)",
+  "status": "unfinished",
+  "where": "not built in round 2 (12 Nov 2026): a hook that never runs now stops the campaign after its first session; a version gate would add the single call whose hook failed on a Claude Code older than 2.1.295. Next with the doctor rows."
+ },
+ {
+  "file": "round2",
+  "candidate": "Review of round 2: the guard's rules for sealed data behind a link, `git -C`, the configs of all checkouts, a search above another checkout, a project in a subfolder of its repository, git's own files, and other spellings of the final command and of Windows paths (kit-native; findings F1, F2, F4 to F7, F9, F11, F12, F18)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; README 'Notes and limits'; tests/test_loop.py (guard_tests). Commit af6cbeb; searches of a linked data folder: commit 98640c9"
+ },
+ {
+  "file": "round2",
+  "candidate": "Review of round 2 (F8): the single use of the final evaluation counts over every registered checkout of the repository (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py cmd_final_eval; references/validity.md section 5; README 'Notes and limits'; the reviewer's brief; tests/test_kit.py. Commit 7c1306f. Shortcut kept: a worktree that is removed takes its receipt along"
+ },
+ {
+  "file": "round2",
+  "candidate": "Review of round 2 (F3): `expctl selftest` warns when sealed data is tracked in git (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py cmd_selftest; README 'Notes and limits'; tests/test_review_fixes.py. Commit 7c1306f"
+ },
+ {
+  "file": "round2",
+  "candidate": "Review of round 2 (F10): a confirmation fails when the kept commit scores exactly the same on every fresh seed while the starting commit does not (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py confirm(); references/loop.md (the confirmation's results); tests/test_loop.py (confirm_tests). Commit 7c1306f"
+ },
+ {
+  "file": "round2",
+  "candidate": "Review of round 2 (F13, F15, F16): a second panel only when the time limits have room, the worker's view in plain ASCII with rounded numbers, the guard-record check for a scouting session whose agent lists no tool calls (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py second(), reserve(), curve(), scout(); references/loop.md; tests/test_loop.py. Commit 7c1306f"
+ },
+ {
+  "file": "round2",
+  "candidate": "A paid run's booked time holds when the machine's clock is set back during the run (kit-native; found by a failed check in the last full test run of round 2)",
+  "status": "finished",
+  "where": "scripts/nnremote.py used_s(), op_control(), finish(); references/remote.md 'Money'; tests/test_remote.py (units). Commit 9d5c80d"
+ },
+ {
+  "file": "round2",
+  "candidate": "The last pull of a remote run compares content, not sizes and dates, before anything is removed (kit-native; found by a failed check in a full test run of round 2 and by reading the sync rule of huggingface_hub 2.4.0)",
+  "status": "finished",
+  "where": "scripts/nnremote.py digest(), safe(), complete(), Ssh.pull()/again(), HfJobs.start()/pull()/again(), finish(), copy_out(), _pack --sums; references/remote.md 'Teardown', 'Limits', 'Canary'; tests/test_remote.py (units), tests/fake_hf.py. Commit 6e01543"
+ }
+]

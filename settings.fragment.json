@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "ask": [
+      "Bash(git push *)",
+      "mcp__huggingface__hf_jobs",
+      "mcp__huggingface__create_repo",
+      "mcp__huggingface__dynamic_space",
+      "mcp__huggingface__hf_sandbox",
+      "mcp__huggingface__hf_sandbox_exec",
+      "mcp__huggingface__hf_sandbox_fs",
+      "mcp__huggingface__hf_fs_write"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.netrc)",
+      "Read(~/.cache/huggingface/token)"
+    ],
+    "allow": [
+      "Bash(python3 .claude/skills/nn-training/scripts/expctl.py status *)",
+      "Bash(python3 .claude/skills/nn-training/scripts/expctl.py curve *)",
+      "Bash(python3 .claude/skills/nn-training/scripts/expctl.py watch *)",
+      "Bash(python3 .claude/skills/nn-training/scripts/expctl.py hash *)",
+      "Bash(python3 .claude/skills/nn-training/scripts/expctl.py env *)",
+      "Bash(python3 .claude/skills/nn-training/scripts/expctl.py selftest *)",
+      "Bash(python .claude/skills/nn-training/scripts/expctl.py status *)",
+      "Bash(python .claude/skills/nn-training/scripts/expctl.py curve *)",
+      "Bash(python .claude/skills/nn-training/scripts/expctl.py watch *)",
+      "Bash(python .claude/skills/nn-training/scripts/expctl.py hash *)",
+      "Bash(python .claude/skills/nn-training/scripts/expctl.py env *)",
+      "Bash(python .claude/skills/nn-training/scripts/expctl.py selftest *)",
+      "Bash(uv run --frozen python .claude/skills/nn-training/scripts/expctl.py status *)",
+      "Bash(uv run --frozen python .claude/skills/nn-training/scripts/expctl.py curve *)",
+      "Bash(uv run --frozen python .claude/skills/nn-training/scripts/expctl.py watch *)",
+      "Bash(uv run --frozen python .claude/skills/nn-training/scripts/expctl.py hash *)",
+      "Bash(uv run --frozen python .claude/skills/nn-training/scripts/expctl.py env *)",
+      "Bash(uv run --frozen python .claude/skills/nn-training/scripts/expctl.py selftest *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact|fork",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;runpy.run_path(os.path.join(os.environ.get('CLAUDE_PROJECT_DIR','.'),'.claude','hooks','nn_session_status.py'),run_name='__main__')\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,runpy;runpy.run_path(os.path.join(os.environ.get('CLAUDE_PROJECT_DIR','.'),'.claude','hooks','nn_guard.py'),run_name='__main__')\"",
+            "timeout": 20,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 -c \"import os,runpy;runpy.run_path(os.path.join(os.environ.get('CLAUDE_PROJECT_DIR','.'),'.claude','hooks','nn_statusline.py'),run_name='__main__')\"",
+    "padding": 0,
+    "refreshInterval": 15
+  }
+}

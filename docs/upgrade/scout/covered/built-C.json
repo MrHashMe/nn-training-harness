@@ -1,0 +1,362 @@
+[
+ {
+  "file": "evaluation",
+  "candidate": "Frozen decision contract hashed before the loop starts",
+  "status": "unfinished",
+  "where": "Only an Optuna study contract in hpo.md; no single hashed decision-contract file before the loop."
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Append-only hash-chained decision ledger",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py ledger_rows/Campaign.record (prev hash per row); tests/test_loop.py (intact hash chain, broken chain refuses resume); .claude/skills/nn-training/references/loop.md Records."
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Cheap invariant checks on every kept change",
+  "status": "unfinished",
+  "where": "No rerun of a sanity-gate subset before a keep; nnloop only runs expctl selftest at preflight."
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Mechanical scan plus reviewer check of kept diffs for validation-dependent constants",
+  "status": "unfinished",
+  "where": "nnloop scan checks sealed names and network code only; no scan for item ids, literal tables or thresholds; reviewer step is manual advice."
+ },
+ {
+  "file": "evaluation",
+  "candidate": "P(A>B) test with about 29 paired runs for close, high-stakes calls",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/uncertainty.md paired-seed section (about 29 paired runs for close, high-stakes calls; probability of improvement)."
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Portable hashing in the references (expctl hash instead of sha256sum)",
+  "status": "finished",
+  "where": "validity.md section 1 and experiment-reviewer.md give sha256sum with its PowerShell equivalent (Get-FileHash)"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Remove both MCP servers from the default install (flip install.py default; keep existing entries on upgrade)",
+  "status": "finished",
+  "where": "install.py --mcp flag (off by default, upgrade keeps existing entries); tests/test_ports.py (no MCP unless asked; upgrade leaves servers); README.md; .claude/skills/nn-training/references/stack.md Optional kit modules."
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Stdlib research scout: arXiv API plus Hugging Face Papers API",
+  "status": "unfinished",
+  "where": "Not found in the kit: scouting is an agent procedure (scouting.md); no stdlib arXiv or Hugging Face Papers script."
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Per-agent built-in web tools table for the scouting step",
+  "status": "unfinished",
+  "where": "No per-agent web-tools table; scouting.md says only 'web tools you already have'; operations.md covers the Codex web_search setting alone."
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Installer integrity: SHA-256 manifest, verify command, dry run, provenance record of enabled modules",
+  "status": "unfinished",
+  "where": "Dry run and a manifest of installed file hashes exist; no shipped kit manifest check, verify command or record of enabled modules."
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Deny-by-default MCP permission template",
+  "status": "unfinished",
+  "where": "settings.fragment.json asks on Hugging Face mutating tools only; no generic deny-by-default template; Context7 has no rules."
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Explicit, strict MCP configuration for unattended runs",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py agent_argv (--strict-mcp-config, no mcp-config given); tests/test_loop.py (argv check); .claude/skills/nn-training/references/loop.md Agents table, operations.md section 5."
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Minimum agent-client version check",
+  "status": "unfinished",
+  "where": "Not found in the kit: no client version check in install.py; stack.md only states Claude Code 2.1.179+ as advice."
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Dated technique cards for optimizer and scaling advice",
+  "status": "unfinished",
+  "where": "References carry Checked dates and per-tip source and date; no per-tip domain, minimum framework version and status fields as cards."
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Platform matrix in performance.md (native Windows, WSL2, Linux)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/performance.md section 2 Stack and platform (WSL2, native Windows: OOM, attention, compile, DataLoader spawn, NCCL, pinned memory); bullets, not one table; practice, no test needed."
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Plain SSH running the kit's own controller on the remote host (OpenSSH client; Win32-OpenSSH 10.4.0.0p1-Preview, 2026-10-20)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py Ssh class; tests/test_remote.py with tests/fake_ssh.py; .claude/skills/nn-training/references/remote.md (ssh target, run live once 2026-11-11)."
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Money cap by reservation before launch (rate x provider time limit x attempts, fail closed)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py reserve/book/committed (ledger written before start, settled on end); tests/test_remote.py 'spending cap' sections; .claude/skills/nn-training/references/remote.md Money."
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Provider-side stop as an admission rule for rental routes (job timeout, remote autostop or in-instance timer; prepaid balance with auto-recharge off as backstop)",
+  "status": "unfinished",
+  "where": "Hugging Face jobs get a provider --timeout, but a priced ssh target is admitted with no provider-side stop; remote.md only advises a user timer."
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Teardown verified by recorded IDs and labels",
+  "status": "unfinished",
+  "where": "Run label kit_run=ID recorded and teardown removes what the run created; no post-stop listing that verifies nothing remains."
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Stdlib fakes for remote-route tests (fake CLI executables and an http.server fake API)",
+  "status": "finished",
+  "where": "tests/fake_hf.py and tests/fake_ssh.py (down switch, preempt) used by tests/test_remote.py; remote.md mentions the stand-in CLI; no sbatch/REST fakes since those routes are not built."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Mechanical checks outrank LLM approval, with canary and too-good alarms (guardrails from arXiv 2609.02246 v1)",
+  "status": "unfinished",
+  "where": "Harness alone decides keeps in nnloop; no canary items or too-good-score alarm, and reviewer verdict is not part of the keep precedence."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Keep-time fingerprint check: same evaluator hash, data-manifest hash and protocol version for baseline and candidate (pattern from model-drift)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py protected_files/file_sha check each run (evaluator, data, dependency pins; campaign stops on change); tests/test_loop.py 'protected file(s) changed'; .claude/skills/nn-training/references/loop.md; evaluation.md section 3."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Count only durable run records: results from harness-read files with exit status, acceptance defaults to fail (from arXiv 2607.13071 v2 and agent-context-lab)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (harness runs frozen evaluator on saved results, writes loop_eval.json, ignores self-reported number); tests/test_loop.py (cheat test); .claude/skills/nn-training/references/loop.md Who decides."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Keep rule as harness code: seed-paired noise floor plus item-level paired, cluster-aware intervals, minimum detectable effect and trial-count control (from arXiv 2411.00640 v1 and 2503.01747 v3)",
+  "status": "unfinished",
+  "where": "Keep rule is code (mean gain over seed panel vs sd margin); no item-level paired cluster-aware intervals, minimum detectable effect or trial-count control."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Instruction budget rule: short default block of code-enforced prohibitions, growth justified by ablation (arXiv 2602.11988 v3, 2607.27250 v1, 2604.11088 v2)",
+  "status": "unfinished",
+  "where": "instructions-block.md is 16 lines and guard-backed, but no stated budget rule or ablation requirement for growth."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Reviewer hardening: evidence by path, required-evidence list first, no rebuttal round, veto-only in unattended mode (arXiv 2606.13044 v1, 2608.31016 v1, 2608.12645 v2, 2606.29920 v2)",
+  "status": "unfinished",
+  "where": "Reviewer lists evidence and verdict; no required-evidence list first, no no-rebuttal rule, no veto-only role in nnloop."
+ },
+ {
+  "file": "sweep-evaluation",
+  "candidate": "Duplicate-source collapse before counting confirmations in the scouting step (arXiv 2611.09203 v1)",
+  "status": "unfinished",
+  "where": "scouting.md asks for a second source but has no grouping of near-identical sources before counting confirmations."
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Clean-process evaluation with a pinned-hash manifest (pattern from lora-speedrun SECURITY.md, commit 1436658)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (evaluator in its own process, checksums of evaluator, protected data and pins, secrets not passed); tests/test_loop.py (line ~492); .claude/skills/nn-training/references/loop.md What is enforced."
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Repository noise floor from unchanged-baseline repeats (A/A runs) as a precondition of keep-or-revert",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py baseline seed panel gives sd, margin = noise_mult x sd; tests/test_loop.py (margin check); .claude/skills/nn-training/references/uncertainty.md, evaluation.md section 1 A/A calibration."
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Hypothesis-count control: untouched confirmation split or family-wise correction for the unattended loop",
+  "status": "unfinished",
+  "where": "loop.md warns the best score is biased and the sealed test confirms; no hypothesis count shown beside kept results, no correction."
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Provenance fields on every result row, including a dirty-tree flag",
+  "status": "unfinished",
+  "where": "manifest.json records source hash and git dirty flag (expctl.py); evaluator, data-manifest, environment lock hashes and hardware fingerprint are not on each result."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Kit-owned budget ledger with a worst-case cost bound checked before every launch",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py limits (runs, hours, gpu_hours, usd, tokens; refused if unmeasurable) and .claude/skills/nn-training/scripts/nnremote.py reserve; tests/test_loop.py, tests/test_remote.py; loop.md, remote.md."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Remote-side dead-man autostop",
+  "status": "unfinished",
+  "where": "Run gets a deadline and the controller cancels; no watchdog on the rented machine for idle GPU or lost heartbeat; user must add a timer."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Tag-and-reconcile teardown (orphan sweep)",
+  "status": "unfinished",
+  "where": "Label kit_run=ID exists; no reconcile command that lists resources by tag and compares with the ledger."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Periodic atomic checkpoint to off-host storage plus verified resume, as the only preemption contract",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/resume.md sections 3-4 (atomic write, last/best); .claude/skills/nn-training/scripts/nnremote.py mirror sync and retries; tests/test_remote.py preemption section; remote.md Preemption."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Guard coverage for provisioning commands, vendor agent skills and paid MCP tools",
+  "status": "unfinished",
+  "where": "nn_guard.py PAID_COMPUTE asks on provisioning commands (tests/test_ports.py); no rule for skill installers; only Hugging Face MCP tools asked."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Ordered-rule failure classifier, log created before launch, notifier isolation, named skipped artifacts (ideas from GPUAlert 0.1.6)",
+  "status": "unfinished",
+  "where": "expctl.py log_reason has ordered patterns; no fix hints, no notifier isolation, log-before-launch and named skipped artifacts not found."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Pre-launch feasibility gate (preflight)",
+  "status": "unfinished",
+  "where": "nnloop preflight checks config and selftest; no few-step run at largest batch before a paid launch; sanity gate item 7 is manual."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Single-writer launch lock, idempotent launch key and one shared limits file",
+  "status": "unfinished",
+  "where": "Not found in the kit: no launch lock, launch key or shared limits file."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Candidate ledger, selection-invariance selftest and full trace retention",
+  "status": "unfinished",
+  "where": "Loop ledger and transcripts keep every candidate; no selection-invariance selftest (llm.md names the idea only)."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Hidden verifier, tripwires, repeated-call detection and token caps for the unattended loop",
+  "status": "unfinished",
+  "where": "Token cap exists; evaluator is checksummed not hidden; no canary tripwire halting the loop, no repeated-call detection."
+ },
+ {
+  "file": "sweep-remote-gpu",
+  "candidate": "Validation-only checkpoint selection check",
+  "status": "unfinished",
+  "where": "validity.md section 1 states the selection rule; no mechanical check that the final checkpoint was chosen on validation only."
+ },
+ {
+  "file": "sweep-search-tracking",
+  "candidate": "Noise-floor gate from measured training-seed spread (The FID Lottery, arXiv 2606.20536 v1)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py margin() from baseline seed spread; tests/test_loop.py (margin and inside-noise not kept); .claude/skills/nn-training/references/uncertainty.md, SKILL.md Phase 3."
+ },
+ {
+  "file": "sweep-search-tracking",
+  "candidate": "Pre-declared keep rule and guard metrics (Adversarial Multiplicity, arXiv 2611.07378 v1)",
+  "status": "unfinished",
+  "where": "Keep rule lives in the guarded loop config and resume refuses changes; no guard metrics, no hash of the rule recorded before the loop."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Stdlib notifier in the controller (urllib POST to a user-supplied URL)",
+  "status": "unfinished",
+  "where": "Not found in the kit: stack.md and operations.md list ntfy only as a candidate; no stdlib notifier."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Per-run environment capture with hash (uv export or pip freeze)",
+  "status": "unfinished",
+  "where": "env.json records Python, torch and device names; no package list or its SHA-256 per run."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Data fingerprint per run",
+  "status": "unfinished",
+  "where": "validity.md tells the agent to pass the manifest hash in config; no code computes a data fingerprint per run."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Hardware, driver and container digest capture per run",
+  "status": "unfinished",
+  "where": "env.json has torch and GPU names; driver only in expctl env, no CPU/RAM per run, no container image digest."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Stop-request file as the cross-platform graceful stop",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/runlog.py should_stop/_stop_file (stop.json); .claude/skills/nn-training/scripts/expctl.py cmd_stop; tests/test_kit.py graceful stop of a polling run; .claude/skills/nn-training/references/resume.md section 2."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Atomic checkpoint helper with last and best retention in runlog",
+  "status": "unfinished",
+  "where": "runlog.checkpoint only records a path; no save function and no last/best/periodic retention helper; resume.md gives advice."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "In-run disk watchdog",
+  "status": "unfinished",
+  "where": "expctl reports disk_free at launch and status; no in-run or per-checkpoint watchdog; operations.md section 2 says none exists."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "faulthandler hang dump armed by runlog",
+  "status": "unfinished",
+  "where": "Not found in the kit: faulthandler is not armed by runlog."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Ordered log-pattern failure classifier in expctl",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py log_reason/_REASON_PATTERNS (traceback first, then ordered patterns); tests/test_kit.py (crash reason captured); .claude/skills/nn-training/references/operations.md section 2."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Duration-aware divergence rule",
+  "status": "unfinished",
+  "where": "expctl status flags non-finite values and stalls only; no duration-aware loss blow-up rule."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "GPU-hours ledger",
+  "status": "unfinished",
+  "where": "nnloop ledger records gpu_s per campaign; no append-only per-project GPU-hours total (SKILL.md journal is manual)."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Limit enforcement in the loop controller, outside the agent",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py limits checked by the harness between agent sessions; tests/test_loop.py (limit refusals, stops); .claude/skills/nn-training/references/loop.md Commands, README.md."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Claude Code spend adapter: JSON result ledger plus --max-budget-usd (v2.1.322)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py parse_claude/agent_argv (--max-budget-usd, cost and tokens in ledger); tests/test_loop.py lines ~186-234; .claude/skills/nn-training/references/loop.md, operations.md section 3."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Codex spend adapter: turn.completed usage ledger with a dated price table (CLI 0.167.0)",
+  "status": "unfinished",
+  "where": "Codex tokens counted from turn.completed (tested); no dated price table, so no money figure for Codex."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Cursor headless adapter: wall-clock and call-count caps only",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py parse_cursor and Cursor refusal without --in-container; wall-clock and run caps; tests/test_loop.py (Cursor result without usage); .claude/skills/nn-training/references/loop.md."
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Cloud cost ledger: billed time times recorded price",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py finish/book (time used x recorded price into remote-ledger.jsonl); tests/test_remote.py; .claude/skills/nn-training/references/remote.md Money."
+ }
+]

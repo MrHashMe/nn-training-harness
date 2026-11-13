@@ -1,0 +1,32 @@
+[
+ {
+  "file": "search-hpo",
+  "candidate": "Stdlib seeded quasi-random search over run launches (kit-native, no version)",
+  "section": "3. Samplers"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Default-first and capped agent-proposal queue (hybrid rule, kit-native)",
+  "section": "8. Agent proposals and confirmation"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Fresh-seed confirmation and budget split enforced by the harness (kit-native)",
+  "section": "8. Agent proposals and confirmation"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Optuna 5.0.0",
+  "section": "3. Samplers"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Per-arm learning-rate sweep rule for fine-tuning comparisons (dated advice, 2026)",
+  "section": "2. What to tune first"
+ },
+ {
+  "file": "sweep-search-tracking",
+  "candidate": "Optuna 5.0.0",
+  "section": "3. Samplers"
+ }
+]

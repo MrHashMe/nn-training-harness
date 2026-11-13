@@ -1,0 +1,427 @@
+[
+ {
+  "file": "unattended-security",
+  "candidate": "uv lock file with uv sync --locked (uv 0.13.7)",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Stack pin update to PyTorch 2.15.0 with cu132",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Optuna 5.0.0",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "sweep-search-tracking",
+  "candidate": "Optuna 5.0.0",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Optuna 5.0.0",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "lm-evaluation-harness 0.4.13",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "lm-evaluation-harness 0.4.13 (31 Aug 2026)",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "lm-evaluation-harness 0.4.13",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "sacreBLEU 2.6.0 with its configuration signature",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Hugging Face Jobs (huggingface_hub 2.4.0, hf CLI, HTTP API under /api/jobs)",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Context7 MCP (@upstash/context7-mcp 4.6.0, hosted endpoint)",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Hugging Face MCP server v0.4.34 (hosted, logged in)",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Trackio 0.45.0 as tracker when the project has none",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "user-reports",
+  "candidate": "Trackio 0.45.0 as tracker when the project has none",
+  "section": "Recommended combination"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Hugging Face Transformers 5.22.2 (6 Nov 2026)",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "TRL 1.17.1 (30 Oct 2026)",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "PEFT 0.21.2 (1 Oct 2026)",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "bitsandbytes 0.50.2 (27 Aug 2026)",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Release-age cooldown: uv exclude-newer",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "pip hash-checking installs: --require-hashes, --only-binary :all:, --uploaded-prior-to (pip 26.3)",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "AlgoPerf rolling leaderboard as a scouting source",
+  "section": "Add when the condition holds"
+ },
+ {
+  "file": "sweep-search-tracking",
+  "candidate": "Trackio 0.45.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Trackio 0.45.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Hugging Face MCP server, anonymous profile (no ?login)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "huggingface/skills, selected skills (trl-training, huggingface-llm-trainer, huggingface-papers, huggingface-trackio) at HEAD 25910b3",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Anthropic skill-creator (anthropics/skills HEAD 2c5958e)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "openai/plugins plugin-eval",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Trackio MCP server (trackio[mcp])",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "wandb-mcp-server v0.4.4 (official GitHub repository)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "MLflow MCP server (mlflow mcp run, MLflow >= 3.5.1)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Optuna GPSampler with reduced start-up trials (Optuna 5.0.0)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "OptunaHub AutoSampler (optunahub 0.5.0)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Ax 1.3.1 with BoTorch 0.18.1",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "SMAC3 2.4.1",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Syne Tune 0.16.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "NePS 0.17.0 (PriorBand, piBO, ifBO)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Inspect AI 0.3.289 with inspect-evals 0.28.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Unsloth 2026.11.3 (6 Nov 2026)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "Liger Kernel 0.8.5 (21 Oct 2026)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "MLflow 3.18.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "TensorBoard 2.21.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "ntfy (server v2.37.2; hosted ntfy.sh or self-hosted)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Slack and Discord incoming webhooks",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Apprise 2.2.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "torchdata StatefulDataLoader 0.11.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "py-spy 0.4.3",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Zeus 0.16.0",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Runpod Pods through REST v2 (runpodctl 3.1.0, 2026-11-06)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Modal (client 1.6.3, 2026-10-27)",
+  "section": "Candidates to test, not adopted"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "OptunaHub LLAMBO sampler",
+  "section": "Not recommended"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Optuna terminator module (in Optuna 5.0.0)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "optuna-dashboard 0.21.0",
+  "section": "Not recommended"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "optuna-mcp 0.2.0",
+  "section": "Not recommended"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "Ray Tune (Ray 2.60.0)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "search-hpo",
+  "candidate": "W&B Sweeps (hosted)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "alphaXiv hosted MCP",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "arxiv-mcp-server v0.8.2 (community)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "NVIDIA/skills content (HEAD 47d179c)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "wandb/skills (wandb-primary, wandb-eval-tables, weave-instrument, agentlens) at HEAD 10aac21",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Orchestra AI-Research-SKILLs v1.7.2",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "RunPod MCP (@runpod/mcp-server 4.10.1)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "optuna-mcp v0.2.0",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Jupyter MCP server (Datalayer) v2.2.5",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "DuckDB / MotherDuck MCP v1.1.0",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "DeepWiki MCP",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "GPU-monitoring MCP servers",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "npx skills CLI v1.8.0 and skills.sh",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Claude Science (beta)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Layering AI-scientist or MLE-agent frameworks on the coding agent",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "torchtune",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "Ray Tune with OptunaSearch",
+  "section": "Not recommended"
+ },
+ {
+  "file": "ml-agent-ecosystem",
+  "candidate": "snyk-agent-scan 0.6.11 (successor of mcp-scan)",
+  "section": "Security for MCP servers, skills and plugins"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Trackio alerts (trackio.alert, 0.45.0)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "W&B, now sold as CoreWeave Forge (wandb 0.31.0)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Aim 3.29.1",
+  "section": "Not recommended"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "ClearML 2.2.0",
+  "section": "Not recommended"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Comet (comet_ml 3.58.11)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "tracking-recovery-cost",
+  "candidate": "Neptune (hosted service)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "runpod-mcp (@runpod/mcp-server 4.10.1, 2026-11-06) and the vendor's agent plugins",
+  "section": "Not recommended"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Vast.ai (vast-cli 1.11.0, 2026-11-04)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "SkyPilot 0.14.2 (2026-10-28)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "SkyPilot agent skill and plugin (agent/skills/skypilot; plugin v1.0.0 per the 23 October note)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "dstack 0.22.7 (2026-11-04), self-hosted",
+  "section": "Not recommended"
+ },
+ {
+  "file": "remote-gpu",
+  "candidate": "Lambda Cloud API (spec 1.10.0)",
+  "section": "Not recommended"
+ },
+ {
+  "file": "llm-training",
+  "candidate": "torchtune",
+  "section": "Not recommended"
+ }
+]

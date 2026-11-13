@@ -581,6 +581,22 @@ Last updated: 13 November 2026.
     beside a second suite the runs ended first. An existing test changed for it, the only one: those runs
     get 30000 steps instead of 3000, and the test's cleanup stops them as before. No check changed. At the
     fix, side by side again: Windows 866, WSL 874, all pass.
+  - Public since those tests passed. Asked without a login: the page, the API and the raw README answer,
+    GitHub names the licence as MIT, the commits carry only the account's name and no-reply address, the
+    repository of the first upload answers "not found", and a commit id of the old history is not in the
+    public repository.
+  - Seen after it. The front page as a visitor gets it, in the built-in browser: the public mark, the
+    description, the topics, the licence. The rendered README has a target for each of its 29 in-page
+    links, six tables, the banner and the tip box, and no raw Markdown. The browser pane was hidden, so
+    the look below the top comes from captures of the live pages with a headless browser.
+  - A fault those captures showed, fixed and pushed. GitHub draws the diagrams with Mermaid 12.2, whose
+    flowcharts wrap a label at 120 px (200 in version 11, which my local views had used), so lines that
+    the files break by hand were broken a second time. Each of the five flowcharts now sets its own
+    wrapping width in one `init` line; the sequence diagram is unchanged. All six diagrams were drawn
+    locally with GitHub's version and settings. On the live pages the README's diagram (about 1040 px
+    tall, about 1350 before) and four of the guide's five keep the written breaks.
+  - Not seen on the site: the pages in an interactive session, a dark theme, a phone's width, and the
+    guide's last diagram (scenario G), which lies below what a capture reaches.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

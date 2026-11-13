@@ -2048,6 +2048,23 @@ that explains in detail how the kit works.
     of 3000. The test's cleanup stops them as before, so the test takes as long as it did (97 seconds), and
     no check changed. At the fix, again side by side: Windows 866 and WSL 874 checks, all pass; the runs
     stood at a tenth of their length when the check ran.
+  - *Public since those tests passed.* I asked GitHub without a login: the page, the API and the raw README
+    answer, the licence is named as MIT, the commits carry only the account's name and no-reply address,
+    the repository of the first upload answers "not found", and a commit id of the old history is not in
+    the public repository.
+  - *Seen after the switch.* The front page as a visitor gets it, in the built-in browser: the public mark,
+    the description, the topics and the licence. The rendered README has a target for each of its 29
+    in-page links, six tables, the banner and the tip box, and no raw Markdown. The browser pane was
+    hidden, so what I saw below the top comes from captures of the live pages with a headless browser.
+  - *A fault those captures showed, fixed.* GitHub draws the diagrams with Mermaid 12.2. Its flowcharts
+    wrap a label at 120 px, where version 11 (which my local views had used) wraps at 200, so lines that
+    the files break by hand were broken a second time and left single words on lines of their own. Each of
+    the five flowcharts now sets its own wrapping width in one `init` line; the sequence diagram is
+    unchanged. I drew all six diagrams locally with GitHub's version and settings. On the live pages the
+    README's diagram (about 1040 px tall, about 1350 before) and four of the guide's five keep the written
+    breaks.
+  - *Not seen on the site:* the pages in an interactive session, a dark theme, a phone's width, and the
+    guide's last diagram (scenario G), which lies below what a capture reaches.
 - **Not done.** The fine-tuning script ran with one seed, on native Windows only. The status fix is not tried
   on a real remote run. The commands of the guide's scenario A were not run on Linux.
 

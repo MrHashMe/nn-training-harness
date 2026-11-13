@@ -8,7 +8,7 @@ session. "After round 4" below is what that session did next: the guide for the 
 "After the guide" below is the same session's work on the next request: the full tests, the fine-tuning
 script, two fixes, the front page and the upload. Its last part is the publication: the repository is public
 from one new commit, and the commit ids in these records belong to the history before it, which is kept
-locally and not published.
+locally and not published. The entry after the publication is the fifth installer run on the real install.
 
 # Upgrade progress
 
@@ -78,6 +78,10 @@ Last updated: 13 November 2026.
   `refs/archive/development-history` and is never pushed, because its commits carry the user's private
   e-mail address. Commits are made under the repository's own identity, which is now the account's name and
   no-reply address, and with `TZ=UTC`, so that no later commit carries the address or the time zone.
+- 13 Nov, user ("Yes, run it", to the question whether the installer should run on the real install so that
+  it gets the status fix): the fifth installer run ("After the guide"). My reading: the word covers the run
+  and its checks, as with the runs before it. A commit of the two changed files in that repository and a
+  push of this record each wait for a word of their own.
 
 ## Done (commit in brackets)
 - Git repository, repository-local identity, LF pinned. Baseline `5ea9659` = the 23 October kit. Baseline tests on
@@ -518,7 +522,7 @@ Last updated: 13 November 2026.
   path below the run's own folder in this run folder. A checkpoint that is gone still raises the alert.
   Shown with the copy of a completed run whose record was rewritten to a made-up remote path;
   `tests/test_kit.py` has one more check (364). Not tried on a real remote run. The real install has the
-  `expctl.py` of the fourth installer run, without this fix.
+  fix since the fifth installer run of the same day (below).
 - The guide (`b9e1d4c`): a new section, "How it works, step by step", follows a project through seven steps
   (what the installer writes, what a session knows at its start, the guard's three answers, what a launched
   run records, the seven phases, the noise rule with a worked example, the single final evaluation). The
@@ -597,6 +601,23 @@ Last updated: 13 November 2026.
     tall, about 1350 before) and four of the guide's five keep the written breaks.
   - Not seen on the site: the pages in an interactive session, a dark theme, a phone's width, and the
     guide's last diagram (scenario G), which lies below what a capture reaches.
+- The fifth installer run on the real install (13 Nov, on the user's "Yes, run it"), for the fix of
+  `expctl status`. From a clean clone of the public commit `920bddd`; its installed files are those of
+  `03693f1`, where the full tests last ran, and one of them differs from the kit of the fourth run:
+  `expctl.py`, by the seven lines of the fix. The steps of the fourth run. A read-only look first: the
+  install was as the commit after the fourth run had left it (270 files, none changed), and no run was
+  live. Then a rehearsal on a fresh copy of its kit files, a dry run, and the run at 19:24 UTC. Replaced,
+  each with a backup in a new folder under its `.claude/backups/`: `expctl.py` and the manifest; the other
+  31 kit files were up to date. Config, settings, CLAUDE.md, .gitignore, journal and runs are unchanged.
+  `expctl selftest` passes with the two optional checks failing that failed after the fourth run (the
+  missing metric, 9 of 10 other checkouts without the guard). `status` gives the same answer with the old
+  and the new `expctl.py` on that project's records: five runs, four completed, one failed, no alert. The
+  guard loads `expctl`, and its answers to the twelve made-up calls are the same before and after. The 27
+  kit files there are the kit's, five of them apart from the lines that name the interpreter. The fix
+  shows nothing there today: the list of best runs that it repairs is empty in that project, whose config
+  names no metric. Left there: the two files, changed and not committed (that repository's 418 other
+  status entries untouched, nothing staged), the backup folder, and 21 lines in its guard record, 17 of
+  them marked `upgrade-check`.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -631,7 +652,8 @@ Last updated: 13 November 2026.
   one. It has round 2's fixes since the third installer run, and those sixteen files are committed there.
   Its never-read cache folder is sealed since 12 Nov, and that config change is committed there too. It has
   rounds 3 and 4 since the fourth installer run of 13 Nov, and the fifteen files that run changed are
-  committed there.
+  committed there. It has the status fix since the fifth run of the same day; the two files that run
+  changed are not committed there.
 - The guard's kept gap (a plain `grep -r`, `find` or `ls -R` started at the project root was not questioned)
   is closed in round 4, and on the real install since the fourth installer run. What stays is the file
   bound: the guard looks at no more than 20,000 files per folder it walks, and a sealed file beyond them is
@@ -653,8 +675,8 @@ Last updated: 13 November 2026.
   a push which would expose the private e-mail address (Settings, Emails). It is recommended, and only the
   user can turn it on.
 - The fix for checkpoints recorded on another machine (`0450067`) is not tried on a real remote run or on a
-  moved project, only on a rewritten record. The real install does not have it; an installer run would
-  bring it.
+  moved project, only on a rewritten record. The real install has it since the fifth installer run, where
+  it shows nothing yet: that project's list of best runs is empty, because its config names no metric.
 - The fine-tuning practice script ran on native Windows only, with one seed, and the commands of the guide's
   scenario A were not run on Linux.
 
@@ -729,8 +751,10 @@ Last updated: 13 November 2026.
   ("After the guide").
 - Answered on 13 Nov ("Yes, make it public"): the repository is public, from one new commit, with an MIT
   licence and with the records under `docs/upgrade/` ("After the guide").
-- Open, from the same day: whether the installer runs on the real install a fifth time, for the fix of
-  `expctl status` (`0450067`).
+- Answered on 13 Nov ("Yes, run it"): the installer ran on the real install a fifth time, for the fix of
+  `expctl status` ("After the guide").
+- Open, from that run: whether the two files it changed are committed in that repository, as after the
+  runs before it, and whether this record is pushed to the public repository.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the
@@ -799,6 +823,11 @@ Last updated: 13 November 2026.
   a worktree matches the pattern that PROMPT.md gives for the real install. The `real6*` helpers therefore
   take only a folder that has the kit's manifest and no `install.py`; the older `real4*` and `real5*`
   helpers stop with "installs found: 2" while such a worktree exists.
+- The fifth installer run's helpers are in the same folder: `real7.sh STEP` (the steps of `real6.sh`),
+  `real7_status.py BEFORE` (status with the old and the new `expctl.py` on the install's records, counts
+  only) and `real7_commit.py check | commit MSGFILE` for its two files. The results are `real7-*.json` and
+  `real7-*.log`, the copy of the install's kit files from before the run is
+  `real-install-before-20261113-fifth`, and the kit clone that the installer ran from is `kit-920bddd`.
 - A session that ends on an error leaves its last exchange only in its saved transcript, under
   `~/.claude/projects/<this folder's path, with dashes>/<session id>.jsonl`. The first session's is 263 MB:
   read its tail with a script, not whole.

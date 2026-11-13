@@ -10,7 +10,8 @@ follows "Round 3". Its last part, "The fourth installer run on the real install"
 13 November in a later session. That session then wrote the guide ("After round 4") and, on your next
 request, ran the full tests and the fine-tuning script, fixed two faults and uploaded the kit ("After the
 guide"). On your word it then made the repository public, from one new commit: the commit ids in this report
-belong to the history before it, which is not part of the public repository. Decision record:
+belong to the history before it, which is not part of the public repository. On a further word it ran the
+installer on your real install a fifth time (the last entry of "After the guide"). Decision record:
 `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -1976,7 +1977,7 @@ that explains in detail how the kit works.
   folder, and lists the path it found. A checkpoint that is gone raises the alert as before. Shown with the
   copy of a completed run whose record I rewrote to a made-up remote path: before, the alert and no entry;
   after, the entry with the local path and no alert. Not tried on a real remote run. Your real install has
-  the `expctl.py` of the fourth installer run, without this fix; it matters there only if that project's
+  the fix since the fifth installer run of the same day (below); it matters there only if that project's
   folder moves or its runs are looked at from WSL.
 - **The guide explains how the kit works** (`b9e1d4c`). A new section in Part 1, "How it works, step by
   step", follows a project through seven steps: what the installer writes, what a session knows when it
@@ -2065,6 +2066,32 @@ that explains in detail how the kit works.
     breaks.
   - *Not seen on the site:* the pages in an interactive session, a dark theme, a phone's width, and the
     guide's last diagram (scenario G), which lies below what a capture reaches.
+- **The fifth installer run on your real install** ("Yes, run it", 13 November), so that it gets the fix of
+  `expctl status`.
+  - *From what.* A clean clone of the public commit `920bddd`. Its installed files are those of `03693f1`,
+    where the full tests last ran. Against the kit of the fourth run one installed file differs,
+    `expctl.py`, by the seven lines of the fix.
+  - *How.* The steps of the fourth run. A read-only look first: the install was as the commit after the
+    fourth run had left it (270 files listed, none added, removed or changed), and none of its five runs
+    was live. Then a rehearsal on a fresh copy of its kit files, a dry run on the install, and the run at
+    19:24 UTC.
+  - *What it changed.* Two files, each with a backup in a new folder under the install's
+    `.claude/backups/`: `expctl.py` and the kit's manifest. The other 31 kit files were up to date. Config
+    (19 keys), settings, hooks, CLAUDE.md, .gitignore, journal and runs are unchanged.
+  - *Checked after it.* `expctl selftest` passes; the two optional checks that fail are those of the fourth
+    run (no metric configured, 9 of 10 other checkouts without the guard). `status` gives the same answer
+    with the old and the new `expctl.py` on that project's records: five runs, four completed and one
+    failed, no alert. The guard loads `expctl.py`, so I asked it the twelve made-up calls of the fourth run
+    before and after: twelve times the same answer. The 27 kit files there are the kit's, five of them
+    apart from the lines that name the interpreter.
+  - *What it does there today.* Nothing you can see. The fix repairs the list of best runs, and that list
+    is empty in that project, whose config names no metric. It will matter once a metric is configured and
+    the project's folder moves or its runs are looked at from WSL.
+  - *Left there.* The two files are changed and not committed in that repository; its 418 other status
+    entries are untouched and nothing is staged. Git ignores the backup folder and the guard's record,
+    which has 21 more lines, 17 of them marked `upgrade-check`. Committing the two files needs your word,
+    as after the runs before it (section 9, item 12).
+  - *Not done.* The two training scripts and a final evaluation were not run, as before.
 - **Not done.** The fine-tuning script ran with one seed, on native Windows only. The status fix is not tried
   on a real remote run. The commands of the guide's scenario A were not run on Linux.
 
@@ -2993,7 +3020,7 @@ config, journal and runs on upgrade and removal.
   `--again "reason"`, because uses are counted for the project. Typing either command directly is refused there
   now. The receipt starts empty: it does not know of final evaluations run before the upgrade. The kit's files
   there are committed since 12 November, and again after the third and fourth installer runs: local commits,
-  not pushed. Its interpreter is written into them as a
+  not pushed. The two files of the fifth run are not committed. Its interpreter is written into them as a
   full path of this machine, so a checkout on another machine has to run the installer again.
 - **The guard did not cover every other checkout of a repository; round 2 closed that.** This describes the
   guard before round 2, which is the one your real install has. It maps run snapshots and worktrees under
@@ -3047,7 +3074,8 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
 8. **The guard and other checkouts** (section 8): built in round 2, on the go-ahead of your round-2 prompt.
    The real install has it since the third installer run of 12 November, which also brought the guard fixes
    of round 2's review ("Round 2", "What needs your decision", item 1), and rounds 3 and 4 since the fourth
-   run of 13 November ("Round 4", "The fourth installer run on the real install").
+   run of 13 November ("Round 4", "The fourth installer run on the real install"). The fifth run of the
+   same day brought the status fix (item 12).
 9. **What to build next** ("Round 2", "What needs your decision", item 2): the first three items of that order
    are built ("Round 3"). What remains is in "Round 3", "What needs your decision", item 3.
 10. **Round 3's two questions**: whether to measure any of its three items with a real agent, and this machine's
@@ -3060,8 +3088,10 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     delete; and the setting of your GitHub account that refuses a push which would expose your e-mail
     address (Settings, Emails: keep the address private, and block command-line pushes that expose it). I
     recommend it and cannot set it.
-12. **A fifth installer run on the real install**, if you want the fix of `expctl status` there ("After the
-    guide").
+12. **A fifth installer run on the real install**: done on 13 November, on your word ("After the guide",
+    "The fifth installer run on your real install"). Still yours: whether the two files it changed are
+    committed in that repository, as after the runs before it, and whether this record goes to the public
+    repository.
 
 ## 10. Most valuable next steps
 A second look after the live runs (11 November, `scout/draft/second-look.md`) put the build work in this order:

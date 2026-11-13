@@ -753,8 +753,12 @@ Last updated: 13 November 2026.
   licence and with the records under `docs/upgrade/` ("After the guide").
 - Answered on 13 Nov ("Yes, run it"): the installer ran on the real install a fifth time, for the fix of
   `expctl status` ("After the guide").
-- Open, from that run: whether the two files it changed are committed in that repository, as after the
-  runs before it, and whether this record is pushed to the public repository.
+- Answered on 14 Nov ("Yes, commit there"): the two files that run changed are committed in that
+  repository, one local commit of exactly those paths, not pushed, its parent the commit that was newest
+  before (undo with `git reset --soft HEAD~1` there while it is the newest commit). That repository's 418
+  other status entries are untouched and nothing is staged. Where these records say the two files are not
+  committed, this entry replaces it.
+- Open, from that run: whether this record is pushed to the public repository.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

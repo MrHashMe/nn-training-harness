@@ -3089,9 +3089,10 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     address (Settings, Emails: keep the address private, and block command-line pushes that expose it). I
     recommend it and cannot set it.
 12. **A fifth installer run on the real install**: done on 13 November, on your word ("After the guide",
-    "The fifth installer run on your real install"). Still yours: whether the two files it changed are
-    committed in that repository, as after the runs before it, and whether this record goes to the public
-    repository.
+    "The fifth installer run on your real install"). On your "Yes, commit there" of 14 November the two
+    files it changed are committed in that repository: one local commit of exactly those paths, not
+    pushed, its 418 other status entries untouched. Where this report says they are not committed, this
+    item replaces it. Still yours: whether this record goes to the public repository.
 
 ## 10. Most valuable next steps
 A second look after the live runs (11 November, `scout/draft/second-look.md`) put the build work in this order:

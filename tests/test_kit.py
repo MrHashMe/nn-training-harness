@@ -407,9 +407,11 @@ def main():
     check("error" in no_opt["optuna"], "missing optuna reported, not crashing")
 
     # 6. guard hook
-    active = jout(expctl(proj, "launch", "--name", "guarded", "--", PY, "train.py", "--steps", "3000", "--sleep", "0.02"))
-    live = jout(expctl(proj, "launch", "--name", "livetree", "--snapshot", "none", "--", PY, "train.py", "--steps", "3000", "--sleep", "0.02", "--seed", "2"))
-    dup2 = expctl(proj, "launch", "--name", "guarded-again", "--", PY, "train.py", "--steps", "3000", "--sleep", "0.02")
+    # The two live runs must outlast every check down to the session hook (7); the cleanup at the end stops them.
+    # At 3000 steps they ended a few seconds after those checks on an idle machine, and before them on a busy one.
+    active = jout(expctl(proj, "launch", "--name", "guarded", "--", PY, "train.py", "--steps", "30000", "--sleep", "0.02"))
+    live = jout(expctl(proj, "launch", "--name", "livetree", "--snapshot", "none", "--", PY, "train.py", "--steps", "30000", "--sleep", "0.02", "--seed", "2"))
+    dup2 = expctl(proj, "launch", "--name", "guarded-again", "--", PY, "train.py", "--steps", "30000", "--sleep", "0.02")
     check(dup2.returncode == 4, "same command + same source hash refused as duplicate")
     wait_for(lambda: state_of(proj, active["run_id"])[0] == "running", 15)
 

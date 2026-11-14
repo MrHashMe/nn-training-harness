@@ -565,6 +565,9 @@ def install_tests(tmp: Path):
     check((u / "experiments/JOURNAL.md").read_text(encoding="utf-8").endswith("## E1 my entry\n")
           and (u / "myruns/r1/manifest.json").read_text(encoding="utf-8") == '{"run_id": "r1"}'
           and "myruns/" in (u / ".gitignore").read_text(encoding="utf-8"), "upgrade keeps the journal and the run directories")
+    gi = (u / ".gitignore").read_text(encoding="utf-8").splitlines()
+    check(gi.count("# nn-training harness") == 1 and gi[gi.index("# nn-training harness") + 1] == "myruns/",
+          f"a later run adds its path to the kit's block of .gitignore, not under a second header {gi}")
     st = json.loads((u / ".claude/settings.json").read_text(encoding="utf-8"))
     cmds = [h["command"] for g in st["hooks"]["PreToolUse"] for h in g["hooks"]]
     check(sum("nn_guard.py" in c for c in cmds) == 1 and "./my-own-check.sh" in cmds and "CLAUDE_PROJECT_DIR:-" not in json.dumps(st["hooks"])

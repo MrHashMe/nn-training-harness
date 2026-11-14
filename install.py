@@ -474,12 +474,17 @@ def strip_block(plan: Plan, path: Path):
 def ensure_gitignore(plan: Plan, runs_dir: str):
     path = plan.target / ".gitignore"
     text = path.read_text(encoding="utf-8") if path.exists() else ""
-    lines = {ln.strip() for ln in text.splitlines()}
+    raw = text.splitlines()
+    rows = [ln.strip() for ln in raw]
+    lines = set(rows)
     want = [p for p in (".claude/state/", ".claude/backups/", ".claude/worktrees/", runs_dir.rstrip("/") + "/")
             if p not in lines and p.rstrip("/") not in lines and "/" + p not in lines]
     if not want:
         plan.note("same", path)
         return
+    if GITIGNORE_MARK in lines:  # a later run adds to the block that is there, not under a second header
+        at = rows.index(GITIGNORE_MARK) + 1
+        return plan.put(path, "\n".join(raw[:at] + want + raw[at:]) + "\n", kind="append")
     add = ("\n" if text and not text.endswith("\n") else "") + f"{GITIGNORE_MARK}\n" + "\n".join(want) + "\n"
     plan.put(path, text + add, kind="append")
 

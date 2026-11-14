@@ -54,8 +54,8 @@
 <text x="64" y="548" font-size="17" fill="#cbd5e1">useless changes get past its keep rule</text>
 <text x="64" y="572" font-size="17" fill="#94a3b8">(a one-run test lets about 1 in 2 through)</text>
 <text x="464" y="512" font-size="50" font-weight="800" letter-spacing="-1" fill="url(#ink)">4×</text>
-<text x="464" y="548" font-size="17" fill="#cbd5e1">the noise margin: an overnight gain</text>
-<text x="464" y="572" font-size="17" fill="#94a3b8">that held up on fresh seeds</text>
+<text x="464" y="548" font-size="17" fill="#cbd5e1">the noise margin: one overnight campaign's</text>
+<text x="464" y="572" font-size="17" fill="#94a3b8">gain, and it held up on fresh seeds</text>
 <text x="864" y="512" font-size="50" font-weight="800" letter-spacing="-1" fill="url(#ink)">1 command</text>
 <text x="864" y="548" font-size="17" fill="#cbd5e1">to install: plain Python files in your</text>
 <text x="864" y="572" font-size="17" fill="#94a3b8">repo, beside the tools you already use</text>

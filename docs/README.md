@@ -18,6 +18,7 @@
   and how, what is unverified), `PROGRESS.md` (the working record that a new session resumes from), `LEDGER.md`
   (every candidate that was considered, with the decision and its source), `BASELINE.md` (the test results
   before any change), `ROUND2.md` (the brief of the second round), and the research behind the ledger under
-  `scout/`. The commit ids these records name belong to the kit's development history, which is not part of
-  the public repository.
+  `scout/`. Of the commit ids these records name, those from before the first public commit (`6978b6d`)
+  belong to the kit's earlier development history, which is not part of the public repository; the later ones
+  are in it.
 - `assets/` — the banner of the front page, in a light and a dark variant.

@@ -36,7 +36,7 @@ flowchart LR
     subgraph WIN["WHAT YOU GET"]
         safe["<b>Nothing lost</b><br/>live runs, test set, evaluator<br/>and your work protected"]
         trust["<b>Numbers you can believe</b><br/>a gain must beat the noise<br/>and hold on fresh seeds"]
-        night["<b>Better models overnight</b><br/>measured: a gain 4× the<br/>noise margin, held on fresh seeds"]
+        night["<b>Gains that hold overnight</b><br/>one campaign: a gain 4× the<br/>noise margin, held on fresh seeds"]
         gpu["<b>More GPU,<br/>no surprise bill</b>"]
     end
     hf --> tools

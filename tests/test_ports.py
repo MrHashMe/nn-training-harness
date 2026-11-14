@@ -143,6 +143,10 @@ def guard_tests(tmp: Path):
         check(guard(proj, patch(*lines), "--agent", "codex")[0] == 2, f"Codex: a patch touching {label} is refused")
     check(guard(proj, cx(tool_name="apply_patch", tool_input={}), "--agent", "codex")[0] == 2,
           "Codex: a patch call without a patch is refused")
+    reads = "rows = open('data/test/labels.csv')"
+    check(guard(proj, patch("*** Update File: train.py", "@@", "-a", "+" + reads), "--agent", "codex")[0] == 2
+          and guard(proj, patch("*** Update File: train.py", "@@", "-" + reads, "+b"), "--agent", "codex")[0] == 0,
+          "Codex: a patch whose added lines name sealed data is refused (was: passed), one that takes such a line out passes")
 
     print("== guard: Cursor payloads ==")
     code, dec, out, _ = guard(proj, cu(CURSOR_TOOL, cwd=str(proj), tool_input={"command": "npm install", "working_directory": str(proj)}),
@@ -171,6 +175,10 @@ def guard_tests(tmp: Path):
               f"Cursor: preToolUse {label} is denied")
     check(guard(proj, cu(CURSOR_MCP, tool_input=json.dumps({"path": "data/test/labels.csv"})), "--agent", "cursor")[1] == "deny",
           "Cursor: tool input that arrives as a JSON string is parsed (MCP call on sealed data denied)")
+    got = [guard(proj, cu(CURSOR_MCP, tool_name="query", tool_input=json.dumps({"sql": f"SELECT * FROM read_csv('data/{f}')"})),
+                 "--agent", "cursor")[1] for f in ("test/labels.csv", "train.csv")]
+    check(got == ["deny", "allow"], "Cursor: an MCP call whose query names sealed data is refused (was: passed; a hook "
+          f"there cannot ask), a query on other data passes ({got})")
     code, dec, _, _ = guard(proj, dict(cl("kill 2147480000"), cursor_version="3.27.0"))
     check((code, dec) == (2, "deny"), "Cursor running the Claude Code hook entry: an ask is still refused")
 

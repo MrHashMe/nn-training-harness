@@ -69,6 +69,7 @@ TOOL_NAMES = {"bash": "Bash", "monitor": "Bash", "powershell": "Bash", "shell": 
               "apply_patch": "apply_patch"}
 PATH_KEYS = ("file_path", "notebook_path", "path", "target_file", "filePath")
 CONTENT_KEYS = ("content", "contents", "new_string", "old_string", "text", "code", "new_str", "old_str")
+OLD_KEYS = ("old_string", "old_str", "old_source")  # the text an edit replaces: it leaves the file
 PATCH_FILE = re.compile(r"^\*\*\* (Add|Update|Delete) File: (.+?)\s*$|^\*\*\* Move to: (.+?)\s*$", re.M)
 QUOTED = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"")
 WRITE_VERBS = re.compile(
@@ -172,6 +173,7 @@ DECODE_TO_SHELL = re.compile(
 # text that joins paths from string literals: the gap between two of them, and the calls in which a comma joins
 GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*")
 JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
+WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
 # a change of folder: where a command starts (after blanks too), or behind a shell keyword, a wrapper such as `time`
 # or an assignment (X=1 cd data). PowerShell takes -Path:data and a parameter's name cut short
 _CD_WORD = r"(?:cd|pushd|chdir|sl|Set-Location|Push-Location)"
@@ -742,6 +744,21 @@ def joined(c: str, depth=0):
     return [p for p in out if 0 < len(p) < 300 and not re.search(r"\s", p)][:200]
 
 
+def strings(obj, skip=(), depth=0, out=None):
+    """Every string among a call's arguments, however long, except under the keys `skip`."""
+    out = [] if out is None else out
+    if isinstance(obj, str):
+        out.append(obj)
+    elif depth < 6 and isinstance(obj, dict):
+        for k, v in obj.items():
+            if k not in skip:
+                strings(v, skip, depth + 1, out)
+    elif depth < 6 and isinstance(obj, list):
+        for v in obj[:256]:
+            strings(v, skip, depth + 1, out)
+    return out
+
+
 def shell_tokens(c: str):
     """Path-like arguments of a shell command (best effort): values of --opt=value and VAR=value included."""
     toks = lex(c)
@@ -838,11 +855,13 @@ def command_text(v) -> str:
 
 
 def patch_calls(text: str):
-    """File headers of a Codex apply_patch body, each checked as a write (and a delete as an rm)."""
-    calls = []
-    for m in PATCH_FILE.finditer(text):
+    """File headers of a Codex apply_patch body, each checked as a write (and a delete as an rm) of the lines that
+    the patch adds below it."""
+    calls, heads = [], list(PATCH_FILE.finditer(text))
+    for m, nxt in zip(heads, heads[1:] + [None]):
         p = m.group(2) or m.group(3)
-        calls.append(("Write", {"file_path": p}))
+        body = text[m.end():nxt.start() if nxt else len(text)]
+        calls.append(("Write", {"file_path": p, "text": "\n".join(x[1:] for x in body.splitlines() if x[:1] == "+")}))
         if m.group(1) == "Delete":
             calls.append(("Bash", {"command": "rm " + shlex.quote(p)}))
     return calls
@@ -893,11 +912,18 @@ def calls_from(payload):
             raise Unreadable(f"a {name[:40]} call without a file path")
         if tool == "Delete":
             return [c for p in paths for c in (("Write", {"file_path": p}), ("Bash", {"command": "rm " + shlex.quote(p)}))]
-        return [(tool, {"file_path": p}) for p in paths]
+        calls = [(tool, {"file_path": p}) for p in paths]
+        if tool in EDIT_TOOLS:  # what the call would put into the file: every string but the path and the text it replaces
+            calls[0][1]["text"] = "\n".join(strings(ti, PATH_KEYS + OLD_KEYS))
+        return calls
     # any other tool (MCP tools, Task, ...): its arguments are checked as paths it might read, and a command as shell
     calls = [("Other", {"file_path": p}) for p in path_strings(ti)]
     if isinstance(ti.get("command"), str) and ti["command"].strip():
         calls.append(("Bash", {"command": ti["command"]}))
+    # an MCP tool reads files by itself, so a sealed path inside a longer argument (a query, a script) counts too.
+    # Not for the agent's own tools: a task for a subagent may name the sealed folder, and its calls come here as well
+    if re.match(r"mcp(?:__|:)", name, re.I) or payload.get("mcp_server_name") or event == "beforeMCPExecution":
+        calls.append(("Other", {"text": "\n".join(strings(ti))}))
     return calls
 
 
@@ -1040,6 +1066,35 @@ class Ctx:
         return ", ".join(parts) or "none recorded"
 
 
+def names_sealed(ctx: Ctx, text: str, dirs):
+    """(the words, what they are) for the first thing in a text that names sealed data: an unsealing token, or a
+    sealed path, written out or joined from literals, as seen from one of the folders `dirs`. None if nothing does.
+    shortcut: reads the first 400,000 characters and 300 path-like words; raise them if longer files turn up"""
+    sealed = ctx.cfg.get("sealed_paths")
+    came = text[:400_000]
+    text = re.sub(r"\\+", "/", came)
+    for tok in ctx.cfg.get("sealed_tokens") or []:
+        if tok and tok in text:
+            return tok, "the test-unsealing token"
+    for pat, rx in fragments(sealed):
+        m = rx.search(text)
+        if m:
+            return m.group(), f"sealed path pattern '{pat}'"
+    words = dict.fromkeys(WORDS.findall(text) + [q.group()[1:-1] for q in QUOTED.finditer(text)] + joined(came))
+    words = [w for w in words if "/" in w.strip("/") and len(w) < 300][:300]
+    here = ctx.cwd
+    try:
+        for d, w in itertools.product(dict.fromkeys(dirs), words):
+            ctx.cwd = d
+            for rel in [ctx.resolve_token(w)] + (ctx.expand(w) if any(ch in w for ch in "*?[") else []):
+                hit = matches(rel, sealed) if rel and not any(ch in rel for ch in "*?[") else None
+                if hit:
+                    return w, f"sealed path pattern '{hit}'"
+    finally:
+        ctx.cwd = here
+    return None
+
+
 def check_path_tool(ctx: Ctx, tool, ti):
     cfg = ctx.cfg
     paths, search = [], None
@@ -1103,6 +1158,20 @@ def check_path_tool(ctx: Ctx, tool, ti):
                                   f"(pattern '{hit}'), which stays outside all tuning feedback. Narrow it: give a "
                                   f"path that leaves the sealed files out (the source folder, say), or a glob they "
                                   f"do not match (such as '*.py')."))
+    # What a call writes into a file, or hands to an MCP tool, is read as well: code or a query that names the sealed
+    # data would read it later, outside this guard. Not notes, and not the guard's own configuration, which names it
+    file = str(ti.get("file_path") or "")
+    if ti.get("text") and not any(k == DENY for k, _ in results) and not (
+            tool != "Other" and re.search(r"\.(?:md|mdx|rst)$|(?:^|/)\.claude/nn-training\.json$", winpath(file), re.I)):
+        hit = names_sealed(ctx, ti["text"], [ctx.root, ctx.cwd] + ([ctx._abs(file).parent] if file else []))
+        if hit and tool == "Other":
+            results.append((ASK, f"This call's arguments name sealed test data: '{hit[0][:80]}' ({hit[1]}). Approve only "
+                                 f"if the tool cannot read or expose sealed content."))
+        elif hit:
+            results.append((ASK, f"The new text of '{ctx.rel(file)}' names sealed test data: '{hit[0][:80]}' ({hit[1]}). "
+                                 f"Code and configuration that a run reads before the final evaluation must not point at "
+                                 f"the test split. Approve only if nothing would read sealed data through this file "
+                                 f"before `expctl final-eval`."))
     return results
 
 

@@ -760,6 +760,21 @@ def main():
         ("Bash", {"command": "python -c \"for split in ('data', 'test'): print(split)\""}, None),  # a list is no path
         ("Bash", {"command": "bash -c 'python -c \"import os; print(open(os.path.join(\\\"data\\\", \\\"test\\\", \\\"labels.csv\\\")).read())\"'"}, "deny"),
         ("Bash", {"command": "git commit -m 'eval: join(\"data\", \"test\") is sealed'"}, None),  # a message, not code
+        # were None: text that a call writes into a file, or hands to an MCP tool, and that names sealed data
+        ("Write", {"file_path": str(proj / "train.py"), "content": "import csv\nrows = list(csv.reader(open('data/test/labels.csv')))\n"}, "ask"),
+        ("Edit", {"file_path": "train.py", "old_string": "a", "new_string": "p = os.path.join('data', 'test', 'labels.csv')"}, "ask"),
+        ("Edit", {"file_path": "sub/hello.py", "old_string": "a", "new_string": "open('../data/te' + 'st/labels.csv')"}, "ask"),
+        ("MultiEdit", {"file_path": "train.py", "edits": [{"old_string": "a", "new_string": "b"},
+                                                          {"old_string": "c", "new_string": "os.environ['NN_UNSEAL_TEST'] = '1'"}]}, "ask"),
+        ("NotebookEdit", {"notebook_path": "nb.ipynb", "new_source": "pd.read_csv('data/test/labels.csv')"}, "ask"),
+        ("Write", {"file_path": "conf/train.yaml", "content": "eval_file: data\\\\test\\\\labels.csv\n"}, "ask"),
+        ("Edit", {"file_path": "train.py", "old_string": "open('data/test/labels.csv')", "new_string": "open('data/train.csv')"}, None),
+        ("Write", {"file_path": "notes.md", "content": "The test split is data/test/labels.csv; nothing reads it.\n"}, None),
+        ("Write", {"file_path": "train.py", "content": "splits = ['train', 'test']\nacc = correct / total\n"}, None),
+        ("mcp__db__query", {"query": "SELECT *\nFROM read_csv('data/test/labels.csv')"}, "ask"),
+        ("mcp__db__query", {"query": "SELECT * FROM read_csv('data/train.csv')"}, None),
+        # the agent's own tools are not read so: a task for a subagent may name the sealed folder
+        ("Task", {"description": "review", "prompt": "Check that nothing reads data/test/labels.csv.\nReport."}, None),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)

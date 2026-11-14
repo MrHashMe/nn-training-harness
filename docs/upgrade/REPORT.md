@@ -13,8 +13,9 @@ guide"). On your word it then made the repository public, from one new commit: t
 belong to the history before it, which is not part of the public repository. On a further word it ran the
 installer on your real install a fifth time (the last entry of "After the guide"). On 14 November you gave
 me another model's review of the kit and asked for a plan from it and for the plan's execution: its
-section, "Round 5", follows "After the guide". The commit ids of that section follow the public commit and
-are not pushed. Decision record: `docs/upgrade/LEDGER.md`.
+section, "Round 5", follows "After the guide". The commit ids of that section follow the public commit, and
+on your word of the same day ("Yes, push") they are in the public repository. Decision record:
+`docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -151,10 +152,10 @@ are not pushed. Decision record: `docs/upgrade/LEDGER.md`.
     live run three and a half minutes after the launch, and its guard then let a write into the run's
     folder pass; the fixed code kept both. Both faults are fixed, and a third commit takes back a step
     that my own check found in the second fix. Most of all these faults are older than the round, so the
-    public version has them until you have the round pushed. The guard asks more often now, also about
-    some harmless commands. All seven test files pass on both platforms at `827c35c`. No second reviewer
-    saw the fixes, no campaign ran with a real agent, nothing is pushed, and your real install was not
-    touched.
+    public version had them until the round was pushed, which it was on your word of 14 November. The
+    guard asks more often now, also about some harmless commands. All seven test files pass on both
+    platforms at `827c35c`. No second reviewer saw the fixes, no campaign ran with a real agent, and your
+    real install was not touched.
 
 ## Round 2 (12 November 2026)
 
@@ -2142,7 +2143,10 @@ steps), `2071d99` (a control for the fine-tuning task), `5aff688` to `4842b81` (
 independent review), `b48d606` (README, guide and the guard's description of itself), `d857607` and `9d6f876`
 (the two faults the test run found), `827c35c` (a repair of the second of those fixes) and those of the
 records. They follow the public commit `60cc0b0`, so
-a push makes them public history. Nothing is pushed. Nothing was run, read or changed on your real install.
+a push makes them public history. When this section was written nothing was pushed. On your word of the same
+day ("Yes, push") the round is in the public repository: where the section says that nothing is pushed, or
+that a push waits for your word, "What needs your decision", item 1, replaces it. Nothing was run, read or
+changed on your real install.
 
 ### In short
 1. **The review held where it named a concrete fault, less often where it proposed a design.** Its claims
@@ -2282,8 +2286,8 @@ a push makes them public history. Nothing is pushed. Nothing was run, read or ch
     chain for the remote ledger, seeds matched with the baseline's and a `doctor` command are among the 29
     rejected rows, each with its reason. Seven groups of methods that the review names were not opened
     under the usage limit and are Assess rows: nothing about them is verified ("Not done, and why").
-17. **Your real install does not have this round, and nothing is pushed.** Both wait for your word, with
-    six other questions ("What needs your decision").
+17. **Your real install does not have this round.** That waits for your word, with six other questions
+    ("What needs your decision"). The round itself is pushed, on your word of 14 November.
 
 ### The review's claims, rank by rank
 "Held" means that a probe, the simulation or the code showed the fault. The reasons for what did not hold
@@ -2773,9 +2777,13 @@ your real install.
   check of the ledger moved there.
 
 ### What needs your decision
-1. **Pushing.** The round is 73 commits on top of the public commit, in the local repository only.
-   Until they are pushed, the public version has the faults of points 11 and 13. A push to the public
-   repository needs your word.
+1. **Pushing: answered.** When this section was written the round was 73 commits on top of the public
+   commit, in the local repository only, and the public version had the faults of points 11 and 13. On 14
+   November you said "Yes, push". The round's 74 commits, the one with this line among them, are pushed to
+   `main` of the public repository, and nothing else was pushed. Before the push I looked through every
+   added line and every commit message of the round for private details (paths of this machine, addresses,
+   time zones, times of day, the names on the real install's path) and found none; every commit carries
+   the account's no-reply address and a date in UTC.
 2. **Your real install.** It runs the kit of the fifth installer run. A sixth run would bring this round:
    the guard's new questions (an edit there that names the sealed folder would ask), the snapshot's
    handling of wildcard patterns, links and credential-named files, the case rule, and a source hash that
@@ -3803,8 +3811,8 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     files it changed are committed in that repository: one local commit of exactly those paths, not
     pushed, its 418 other status entries untouched. Where this report says they are not committed, this
     item replaces it. On your "Yes, push" this record is in the public repository.
-13. **Round 5's questions** ("Round 5", "What needs your decision"): a push of the round to the public
-    repository, which has most of the faults the round's independent review found until then; a sixth
+13. **Round 5's questions** ("Round 5", "What needs your decision"): the push of the round to the public
+    repository is answered and done (14 November, "Yes, push"). Open: a sixth
     installer run on the real install; the installs, accounts and paid resources that the review's
     proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a container as
     the box); a second pilot or a campaign with a real agent; and what to build next.

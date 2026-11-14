@@ -1231,7 +1231,8 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   between trainer and generator, distillation and preference objectives, adapter options, further
   optimizers, low-precision and kernel items, architectures. The papers behind the new reference text were
   read as abstract pages, and no result was reproduced.
-- Round 5 is not on the real install, which runs the kit of the fifth installer run, and it is not pushed.
+- Round 5 is not on the real install, which runs the kit of the fifth installer run. (It is pushed: see
+  "Questions for the user".)
 - Round 3's three items are not shown to raise results with a real agent. Each ran with the stand-in agent
   of the tests only: no real agent session, no pilot on the fine-tuning task, and that task ran on native
   Windows only. Round 4 ran the trial that the search's ledger row names (campaigns with and without, at an
@@ -1366,7 +1367,12 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
 - Answered on 14 Nov by the request itself (review the other model's recommendations, build a plan from
   them, carry it out): "Round 5" above. The request covers changes in this folder and local commits. It is
   not a word for a push, for an install, or for anything on the real install.
-- Open, from round 5: a push of the round to the public repository (its commits follow the public commit).
+- Answered on 14 Nov ("Yes, push", to the question whether round 5 should be pushed to the public
+  repository): `main` is pushed, 74 commits on top of `60cc0b0`, the one with this entry among them. Only
+  `main` was pushed. Before the push every added line and every commit message of the round was looked
+  through for private details (paths of this machine, addresses, time zones, times of day, the names on the
+  real install's path): none found, and every commit carries the no-reply address and a date in UTC. The
+  word covers this push; a later one needs a new word.
 - Open, from round 5: a sixth installer run on the real install, which would bring it the round. An edit
   there whose text names a sealed path would then ask, and its source hash changes once if that project
   tracks agent files.

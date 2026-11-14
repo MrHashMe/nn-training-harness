@@ -428,7 +428,8 @@ neither kit was shown to beat running the agent with no kit.
   deviations at first and 1.7 after eight seed panels. A gain above two thirds of that margin is measured on a
   second seed panel and decided on all seeds; late in a campaign that can use the runs the confirmation needs,
   which is then reported as not run until `nnloop resume` with a higher limit. In simulation one comparison keeps a change without effect in
-  2.7 % of cases and a real gain of two deviations in about two thirds. The confirmation is a single look and
+  2.1 to 2.3 % of cases and a real gain of two deviations in about 60 % at a campaign's first change and about
+  80 % once several panels are behind the noise estimate. The confirmation is a single look and
   confirms such a gain in about half of the cases. More seeds buy power, at the cost of runs
   (`references/loop.md`, "The keep rule").
 

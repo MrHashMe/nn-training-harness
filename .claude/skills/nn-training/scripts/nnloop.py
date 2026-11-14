@@ -64,6 +64,10 @@ CONFIRMED = ("confirmed", "unclear", "not_reproduced")  # verdicts of a confirma
 # noise_mult. Simulated over whole campaigns, this kept more true gains than one look, with no more changes
 # without effect kept (references/loop.md, "The keep rule").
 NEAR, STRICTER = 2 / 3, 1.1
+# A change whose own scores vary more than OWN times the pooled variance has its mean tested with its own variance:
+# simulated, a change without effect that is three times as noisy as the runs before it is then kept in 7 % of
+# cases, not in 10 to 14 % (references/loop.md, "The keep rule").
+OWN = 3
 # the number in `NAME = <number>`, the form in which a change hands a setting to the harness's search
 NUMBER = r"[-+]?(?:\d[\d_]*(?:\.[\d_]*)?|\.\d[\d_]*)(?:[eE][-+]?\d+)?"
 IDENT = {"GIT_AUTHOR_NAME": "nnloop", "GIT_AUTHOR_EMAIL": "nnloop@localhost",
@@ -984,22 +988,27 @@ class Campaign:
         self.record(type="scout", status="ok", notes=rel, hypotheses=len(st["hypotheses"]), tokens=res["tokens"],
                     usd=res["usd"], guard_calls=len(res["guard"]))
 
-    def pool(self, scores):
-        """Add one full seed panel to the campaign's noise estimate, the pooled variance within panels."""
-        v, z = list(scores), self.st.setdefault("noise", {"ss": 0.0, "df": 0})
-        z["ss"] += statistics.variance(v) * (len(v) - 1)
-        z["df"] += len(v) - 1
+    def pool(self, scores, rest=None):
+        """Add one full seed panel to the campaign's noise estimate, the pooled variance within panels. rest: a
+        second tally that gets the same: the estimate without the panels of the change that is being decided."""
+        v = list(scores)
+        for z in [self.st.setdefault("noise", {"ss": 0.0, "df": 0})] + [rest] * (rest is not None):
+            z["ss"] += statistics.variance(v) * (len(v) - 1)
+            z["df"] += len(v) - 1
 
-    def margin(self, ahead=0, nc=None, nb=None, mult=1.0):
+    def margin(self, ahead=0, nc=None, nb=None, mult=1.0, rest=None, own=0.0):
         """What the mean must gain for a keep: a t-test on the pooled run-to-run deviation, at the false-keep rate
         that noise_mult would give if the deviation were known. ahead: the degrees of freedom the next panel adds
         before its decision, for the margin that is shown beforehand. nc, nb: the runs behind the change's mean (one
         seed panel unless given) and behind the mean it is compared with (the best so far's unless given). mult: a
-        factor on noise_mult."""
+        factor on noise_mult. rest: the noise estimate without the change's own panels, which may raise the variance
+        its gain is tested against and never lower it. own: the variance of the change's scores, which stands for
+        the pooled one in the change's mean where it is more than OWN times as large."""
         L, z, n = self.L, self.st["noise"], len(self.L["seeds"])
         t = t_mult(mult * float(L.get("noise_mult") or 2), z["df"] + ahead)
         nb = nb or len((self.st.get("baseline") or {}).get("scores") or L["seeds"])
-        return max(float(L.get("min_margin") or 0), t * math.sqrt(z["ss"] / z["df"] * (1 / (nc or n) + 1 / nb)))
+        v = max(z["ss"] / z["df"], rest["ss"] / rest["df"] if rest and rest["df"] else 0.0)
+        return max(float(L.get("min_margin") or 0), t * math.sqrt((own if own > OWN * v else v) / (nc or n) + v / nb))
 
     def extra(self):
         """The seeds of the second panel that a near-miss is decided on. They are the same for every change, so the
@@ -1128,10 +1137,11 @@ class Campaign:
             hits.append(f"the guard refused {len(bad)} call(s), the first: {str(bad[0].get('reason'))[:200]}")
         return hits
 
-    def second(self, n, entry, scores, runs):
+    def second(self, n, entry, scores, runs, rest=None):
         """A near-miss is measured on a second seed panel: first the change, then the best so far unless it has
         those runs. -> the iteration's status and reason where this settles it (the limits have no room, or a run of
-        the change failed), otherwise (None, "") with scores and the baseline extended and both panels pooled."""
+        the change failed), otherwise (None, "") with scores and the baseline extended and both panels pooled, the
+        best so far's into `rest` too (the noise without this change's panels)."""
         st, base, extra = self.st, self.st["baseline"], self.extra()
         owed = [s for s in extra if str(s) not in base["scores"]]
         need, used = self.reserve(len(extra) + len(owed)), self.used()
@@ -1156,9 +1166,9 @@ class Campaign:
             base["mean"] = statistics.mean(base["scores"].values())
             if st["kept_commit"] == st["base_commit"]:
                 st["start_mean"] = base["mean"]  # the starting commit itself, now measured on more seeds
-        for panel in ([scores[str(s)] for s in extra], [base["scores"][str(s)] for s in owed]):
+        for panel, tally in (([scores[str(s)] for s in extra], None), ([base["scores"][str(s)] for s in owed], rest)):
             if len(set(panel)) > 1:  # a panel without spread says nothing about noise, as in confirm()
-                self.pool(panel)
+                self.pool(panel, tally)
         return None, ""
 
     def commit(self, paths, msg):
@@ -1318,12 +1328,14 @@ class Campaign:
                                           "seeds: the change seems to take the seed's effect away, and a panel without "
                                           "spread cannot be tested against noise")
             if status is None:
+                rest = dict(st["noise"])  # the noise without this change's panels
                 self.pool(scores.values())  # the change's own runs count in the noise its gain is tested against
                 again = False
                 while status is None:  # at most twice: a near-miss is decided again, on more seeds
                     mean = statistics.mean(scores.values())
                     entry["delta"] = delta = sign * (mean - base["mean"])
-                    entry["margin"] = m = self.margin(nc=len(scores), mult=STRICTER if again else 1.0)
+                    entry["margin"] = m = self.margin(nc=len(scores), mult=STRICTER if again else 1.0, rest=rest,
+                                                      own=statistics.variance(scores.values()))
                     on = f" on {len(scores)} seeds" if again else ""
                     if delta > m:
                         status, why = "keep", on.strip()
@@ -1338,7 +1350,7 @@ class Campaign:
                         # from here on the iterations leave room for the confirmation, if the limits still have it
                         st["hold"] = self.pending() and (bool(st.get("hold")) or not self.short())
                     elif delta > NEAR * m and not again:
-                        status, why = self.second(n, entry, scores, runs)
+                        status, why = self.second(n, entry, scores, runs, rest)
                         again = True
                     elif delta > 0:
                         status, why = "inconclusive", f"better by {delta:.4g}{on}, which is within the noise margin {m:.4g}"
@@ -1460,7 +1472,7 @@ class Campaign:
                                 self.pool(panel)
                         out["start_mean"], out["kept_mean"] = statistics.mean(a), statistics.mean(b)
                         out["delta"] = d = (-1 if L["direction"] == "minimize" else 1) * (out["kept_mean"] - out["start_mean"])
-                        out["margin"] = m = self.margin(nb=n)
+                        out["margin"] = m = self.margin(nb=n, own=statistics.variance(b))
                         out["status"] = "confirmed" if d > m else "unclear" if d > 0 else "not_reproduced"
                         st["margin"] = self.margin(n - 1)
             except Stop as e:

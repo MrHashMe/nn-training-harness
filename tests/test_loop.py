@@ -873,19 +873,24 @@ def second_panel(tmp, proj, exe):
         print("  ledger:", json.dumps(led)[-3000:])
         return
     a, b, z, cf = it[0], it[1], st.get("noise") or {}, st.get("confirm") or {}
+    own = statistics.variance([1.05, 1.07, 1.012, 1.02])  # the change's four scores: more than three times the 0.0002 below
     check(near(a["first"]["delta"], 0.05) and near(a["first"]["margin"], tm(2, 2) * sd) and len(a["scores"]) == len(a["runs"]) == 4
-          and near(a["delta"], 0.028) and near(a["margin"], tm(2.2, 3) * root(0.000432, 3, 0.5))
+          and near(a["delta"], 0.028) and near(a["margin"], tm(2.2, 3) * (own / 4 + 0.0002 / 4) ** 0.5)
           and "better by 0.028 on 4 seeds, which is within the noise margin" in a["why"],
           "a gain above two thirds of the margin is measured on two more seeds and decided on all four, more strictly; "
-          "the ledger keeps the first look")
+          "the ledger keeps the first look. The change's second panel, which varies less than the baseline's, does not "
+          "lower the variance its gain is tested against, and its mean is tested with the variance of its own four "
+          "scores, which is more than three times that one (was: the pooled 0.000144 for both)")
     check([(e["type"], e.get("seed")) for e in led[:5]] == [("baseline", 1), ("baseline", 2), ("selftest", None),
                                                            ("baseline", 3), ("baseline", 4)]
           and [e["type"] for e in led[5:]] == ["iteration"] * 4 + ["confirm", "stop"] and st["counters"]["runs"] == 16,
           "the best so far is trained on the second panel once: the next near-miss reuses those runs")
     check(near(b["first"]["margin"], tm(2, 4) * root(0.000632, 4, 0.75)) and near(b["delta"], 0.03) and b["why"] == "on 4 seeds"
-          and near(b["margin"], tm(2.2, 5) * root(0.000664, 5, 0.5)) and len(b["runs"]) == 4
+          and near(b["margin"], tm(2.2, 5) * root(0.000432, 3, 0.5)) and len(b["runs"]) == 4
           and b["commit"] == st["kept_commit"] == git(proj, "rev-parse", "nnloop/p"),
-          "against a best so far that has four runs the margin is smaller, and a near-miss that holds on four seeds is kept")
+          "against a best so far that has four runs the margin is smaller, and a near-miss that holds on four seeds is "
+          "kept; its own two panels, which vary less than the three before them, do not lower the variance it is "
+          "tested against (was: 0.000664 / 5 with them, now 0.000432 / 3 without)")
     check(near(z.get("ss"), 0.000664) and z.get("df") == 5 and len(st["baseline"]["scores"]) == 4
           and near(st["baseline"]["mean"], 1.04) and near(st["start_mean"], 1.01)
           and near(st["margin"], tm(2, 6) * root(0.000664, 5, 0.75)),
@@ -915,6 +920,15 @@ def second_panel(tmp, proj, exe):
     got = C.second(2, entry, {}, [])
     check(got[0] == "inconclusive" and "left no room for a second seed panel" in got[1] and not trained and "first" not in entry,
           "nor is a second panel started that the time limit would cut short: its runs are counted at their cut-off")
+
+    # the variance a gain is tested against: four degrees of freedom at 0.01 from other panels, two at 0 from the change
+    C.st["baseline"], C.st["noise"], rest, t6 = {"scores": {"1": 1.0, "2": 1.0}}, {"ss": 0.04, "df": 6}, {"ss": 0.04, "df": 4}, tm(2, 6)
+    got = [C.margin(nc=2), C.margin(nc=2, rest=rest), C.margin(nc=2, rest=rest, own=0.029), C.margin(nc=2, rest=rest, own=0.04)]
+    want = [t6 * (0.04 / 6) ** 0.5, t6 * 0.1, t6 * 0.1, t6 * (0.04 / 2 + 0.01 / 2) ** 0.5]
+    check(all(near(g, w) for g, w in zip(got, want)),
+          f"a change's own panels cannot lower the variance its gain is tested against (was: a change whose runs hardly "
+          f"differ lowered its own margin), and a change whose scores vary more than three times the pooled variance "
+          f"has its mean tested with its own (got {got}, want {want})")
 
 
 # ---------------------------------------------------------------- 5-7. limits, hang, stop, other agents

@@ -765,6 +765,14 @@ def provenance(root: Path, cfg):
     return files, is_git, info
 
 
+# File names that usually hold credentials. A snapshot links such a file instead of copying it, and a remote run
+# receives one only when remote.files names it. (added_tokens.json and tokenizer files do not match.)
+SECRETISH = re.compile(
+    r"(?:^|/)(?:\.env(?:\.[^/]*)?|\.netrc|\.npmrc|\.pypirc|id_(?:rsa|dsa|ecdsa|ed25519)[^/]*|[^/]*\.(?:pem|key|p12|pfx)|"
+    r"(?:[^/]*[-_.])?(?:credentials?|secrets?|token)(?:\.(?:json|ya?ml|toml|txt|ini|cfg))?|"
+    r"service[-_]?account[^/]*\.json)$", re.I)
+
+
 def make_snapshot(root: Path, run_dir: Path, files, is_git, cfg):
     """Copy source files into run_dir/src and symlink ignored/large paths (data, venvs, outputs)."""
     runs_rel = cfg["runs_dir"].strip("/")
@@ -782,8 +790,8 @@ def make_snapshot(root: Path, run_dir: Path, files, is_git, cfg):
         try:
             if s.is_symlink():
                 os.symlink(os.readlink(s), d)
-            elif s.stat().st_size > max_bytes:
-                to_link.append(rel)
+            elif s.stat().st_size > max_bytes or SECRETISH.search(rel):
+                to_link.append(rel)  # too large, or named like a credential: the runs folder gets no second copy of it
             else:
                 shutil.copy2(s, d)
                 copied += 1

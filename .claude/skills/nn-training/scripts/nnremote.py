@@ -206,11 +206,8 @@ def reserve(root, st, run_id, target, rate, hours):
 # ---------------------------------------------------------------- what travels
 
 # File names that usually hold credentials. Such a file travels only when remote.files names it, even when git
-# tracks it or has not been told to ignore it. (added_tokens.json and tokenizer files do not match.)
-SECRETISH = re.compile(
-    r"(?:^|/)(?:\.env(?:\.[^/]*)?|\.netrc|\.npmrc|\.pypirc|id_(?:rsa|dsa|ecdsa|ed25519)[^/]*|[^/]*\.(?:pem|key|p12|pfx)|"
-    r"(?:[^/]*[-_.])?(?:credentials?|secrets?|token)(?:\.(?:json|ya?ml|toml|txt|ini|cfg))?|"
-    r"service[-_]?account[^/]*\.json)$", re.I)
+# tracks it or has not been told to ignore it.
+SECRETISH = expctl.SECRETISH
 
 
 def places(root, p, rel):

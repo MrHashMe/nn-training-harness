@@ -173,7 +173,8 @@ imply completion.
 ## 8. Harness config (`.claude/nn-training.json`; editing it needs approval)
 `runs_dir`, `journal`, `metric.{name,direction,select}` (`select`: `best` = selected checkpoint's value, `final` =
 final value), `heartbeat_stale_seconds`, `min_free_disk_gb`, `kill_after_s` (grace before SIGKILL on stop),
-`snapshot.{mode,max_file_mb}` (`copy` runs from an immutable copy with ignored data/venv dirs symlinked; `none` runs
+`snapshot.{mode,max_file_mb}` (`copy` runs from an immutable copy; ignored data/venv dirs, files over
+`max_file_mb` and files named like a credential, such as `.env` or `*.key`, are linked, not copied; `none` runs
 from the working tree), `sealed_paths` (globs), `sealed_tokens` (strings such as an unlock variable),
 `frozen_paths`, `final_eval_commands` (one program call, optionally after `NAME=value` pairs, without shell syntax;
 `expctl final-eval` runs it and appends its own arguments), `external_jobs` (live jobs outside the harness: pid,

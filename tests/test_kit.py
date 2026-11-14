@@ -192,6 +192,7 @@ def main():
     # 3. launch OK run (snapshot copy)
     # 200 steps (10 s): the run must still be alive when the status line and the watch below look at it, and every
     # expctl call costs a few tenths of a second on Windows
+    (proj / ".env").write_text("API_KEY=not-a-real-key\n")  # git has not been told to ignore it: it counts as source
     r = expctl(proj, "launch", "--name", "ok-run", "--seed", "1", "--note", "baseline", "--", PY, "train.py", "--steps", "200", "--seed", "1")
     lo = jout(r)
     check(lo["ok"] and lo["pid"], "launch ok-run returns pid")
@@ -203,6 +204,8 @@ def main():
           and not os.path.samefile(rd / "src/data", proj / "data"),
           "snapshot links ignored data but leaves the sealed test split out")
     check(os.path.samefile(rd / "src/big.bin", proj / "big.bin"), "snapshot links large tracked file")
+    check(os.path.samefile(rd / "src/.env", proj / ".env"),
+          "snapshot links a file named like a credential: the runs folder gets no copy of it (was: copied)")
     check("return float" in (rd / "src/eval/metrics.py").read_text(), "snapshot contains uncommitted changes")
     check((rd / "src.patch").exists(), "uncommitted patch saved")
     # mid-run status

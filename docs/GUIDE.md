@@ -170,7 +170,8 @@ What that command sets in motion:
 2. **Where the run came from.** The command, the seed, the git commit, any uncommitted changes and a hash of the
    source are written to `manifest.json`.
 3. **Its own copy of the code.** By default the run works from a snapshot of the source under `runs/<id>/src`,
-   so an edit made later cannot change a run that is under way. Sealed test data is left out of the snapshot.
+   so an edit made later cannot change a run that is under way. Sealed test data is left out of the snapshot,
+   and a file named like a credential (`.env`, `*.key`) is linked into it, not copied.
 4. **In the background.** The run is started detached, so nobody has to wait for it. For a run of more than
    about an hour on Linux or WSL the agent adds `--via tmux`, so that the run outlives the session.
 5. **A pulse and the numbers.** A few lines of `runlog.py` in your training script write a heartbeat, every

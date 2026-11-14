@@ -1647,20 +1647,22 @@ def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     fmt = argv[argv.index("--agent") + 1] if "--agent" in argv[:-1] else "claude"
     only_readonly = "--readonly" in argv
-    raw = sys.stdin.read()
     payload, agent, root = {}, fmt, Path.cwd()
     try:
         try:
-            payload = json.loads(raw)
-        except ValueError:
+            payload = json.loads(sys.stdin.read())
+        except (ValueError, RecursionError):  # the second: brackets nested a thousand deep
             payload = None
         if not isinstance(payload, dict):
             payload = {}
             raise Unreadable("it is not a JSON object")
         if "cursor_version" in payload:  # also when Cursor runs the hook it imported from .claude/settings.json
             agent = "cursor"
-        root = find_root(payload)
-        calls = calls_from(payload)
+        try:
+            root = find_root(payload)
+            calls = calls_from(payload)
+        except RecursionError:
+            raise Unreadable("its values are nested too deeply") from None
     except Unreadable as e:
         return respond(root, payload, fmt, agent, [], [(DENY, (
             f"this hook input cannot be read ({e}), so the call is refused instead of passing unchecked. Run "
@@ -1707,5 +1709,16 @@ def main(argv=None):
     return respond(root, payload, fmt, agent, calls, results)
 
 
+def run():
+    """The last net. An agent program takes a hook that crashed (exit code 1) for a hook that failed and lets the
+    call go on, so whatever main() did not catch becomes a refusal: exit code 2 with the reason on stderr."""
+    try:
+        return main()
+    except Exception as e:  # noqa: BLE001
+        sys.stderr.write(f"nn-training guard: internal error ({type(e).__name__}: {str(e)[:200]}), so the call is "
+                         f"refused instead of passing unchecked. Run `expctl.py selftest`.\n")
+        return 2
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(run())

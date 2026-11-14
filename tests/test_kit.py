@@ -966,6 +966,23 @@ def main():
           f"nothing, and one named by a relative path counts ({got})")
     r = sh([PY, str(proj / ".claude/hooks/nn_guard.py")], cwd=proj, inp="not json")
     check(r.returncode == 2 and "cannot be read" in r.stderr, "guard refuses malformed input (exit code 2)")
+    # Input that makes Python give up (brackets nested deeper than it follows) was a crash with exit code 1, which an
+    # agent program takes for a hook that failed: the call went on. 100,000 deep stops the JSON reader of every
+    # Python version, 1,500 deep stops the reader of some and the guard's own walk through the values on the others
+    got = []
+    for depth in (100_000, 1_500):
+        r = sh([PY, str(proj / ".claude/hooks/nn_guard.py")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)},
+               inp='{"tool_name":"mcp__fs__read_file","tool_input":{"path":"data/test/labels.csv","x":%s},"cwd":%s,'
+                   '"session_id":"t"}' % ("[" * depth + "]" * depth, json.dumps(str(proj))))
+        got.append((r.returncode, "cannot be read" in r.stderr))
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "def broken(*a):\n    raise RuntimeError('made by the test')\n"
+            "nn_guard.main = broken\n"
+            "sys.exit(nn_guard.run())")
+    r = sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}, inp="{}")
+    check(got == [(2, True), (2, True)] and r.returncode == 2 and "internal error" in r.stderr and not r.stdout.strip(),
+          "guard: input nested too deeply to read is refused like other unreadable input, and an error that nothing "
+          f"inside the guard caught is a refusal (exit code 2), not a crash ({got}, {r.returncode})")
     code = ("import sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
             "def broken(*a):\n    raise RuntimeError('made by the test')\n"
             "nn_guard.check_path_tool = broken\n"

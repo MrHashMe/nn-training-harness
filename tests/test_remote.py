@@ -296,6 +296,9 @@ def unit_tests(tmp):
     check(not (mirror.parent / "up.txt").exists() and not (mirror / "manifest.json").exists()
           and not nnremote.complete(mirror, st),
           "a listed name outside the mirror or over its records is not fetched, and the store is then kept")
+    (mirror.parent / "up.txt").write_text("x")
+    check(not nnremote.complete(mirror, {"files": {"../up.txt": 1}}) and not nnremote.complete(mirror, {"sums": {"../up.txt": sha(b"x")}}),
+          "nor does such a name count as mirrored where a file of that size and content lies outside the mirror (was: it counted)")
 
 
 def refusals(tmp, proj):

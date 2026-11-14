@@ -309,7 +309,8 @@ def complete(d, state):
     for key, same in (("files", lambda p, size: p.stat().st_size == size), ("sums", lambda p, sha: digest(p) == sha)):
         for name, want in (state.get(key) or {}).items():
             p = d.joinpath(*name.split("/"))
-            if name.split("/")[0] not in LOCAL_ONLY and not (p.is_file() and same(p, want)):
+            # a name that extract() would not take is not in the mirror, whatever lies at the place it points to
+            if name.split("/")[0] not in LOCAL_ONLY and not (safe(name) and p.is_file() and same(p, want)):
                 return False
     return True
 

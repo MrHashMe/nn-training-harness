@@ -244,6 +244,53 @@ COMMAND_START = re.compile(r"(?:^|.*[({`])" + _LEAD % _WRAP + r"(?:\S*/)?$", re.
 # it: unquoted it would be two
 QUOTED_COMMAND = re.compile(r"((?:^|[;&|({`])" + _LEAD % (_WRAP + "|xargs") + r")\$?(['\"])([\w./:-]+)\2"
                             r"(?=[\s;&|)]|$)", re.M)
+# Files of notes. The edit tools write their text unread, because documentation may name the test set, so a command
+# line or a file's new text that runs one as code is asked about: see runs_notes()
+NOTES = r"\.(?:md|mdx|rst)"
+NOTES_RUN = ("Runs a file of notes (.md, .mdx, .rst) as code. The edit tools write such files without this guard "
+             "reading their text, so what would run here is unchecked and may read sealed test data. Put the code "
+             "into a code file, or approve only if you know what the notes file runs.")
+NOTE_RX = re.compile(NOTES + r"(?![\w.-])", re.I)
+_W1 = r"[^\s;&|<>()'\"`]"  # a character of a word
+_NOTE = _W1 + "*" + NOTES + r"(?![\w.-])"
+# where a runner takes its script, a wildcard too that may name such a file (peek.*, pee*), but not run_*.py
+_SCRIPT = r"(?:" + _NOTE + r"|(?!" + _W1 + r"*\.\w+(?=[\s;&|<>()]|$))(?=" + _W1 + r"*[*?\[])" + _W1 + "+)"
+_START = r"(?:^|[;&|({`]|\s/[ck]\s)"
+_LEADS = _LEAD % (_WRAP + r"|xargs|builtin|winpty|stdbuf|wsl|(?:uv|conda|poetry|pipenv|pixi)\s+run")
+_GO = _START + _LEADS + r"(?:" + _W1 + "*/)?"
+_PROG = (r"(?:(?:ba|z|da|k|c|tc|fi)?sh|cmd|python[0-9.]*|pypy[0-9.]*|py|node|deno|bun|perl|ruby|php|lua|Rscript|julia|"
+         r"pwsh|powershell)(?:\.exe)?")
+# the word ends there: `source: notes.md` in a configuration file and `cmd = [...]` in a program are no commands
+_RUNNER = r"(?:" + _PROG + r"|source|\.)(?=\s|<|$|[;&|)])"
+# a runner's options and their values, on its line: words without a dot or a slash, and none that was quoted text
+# with blanks in it (the code behind -c or -e, whose next argument is data). -m counts only with a module that runs
+# the file it is given
+_OPTS = (r"(?:[ \t]+(?!-m(?![ \t]*(?:runpy|pdb|cProfile|profile|trace|doctest|coverage)\b))"
+         r"(?:-[^\s;&|<>]*|[^\s;&|<>./=:,\[\]{}()'\"-][^\s;&|<>./]*))*")
+_DASH = r"(?:[ \t]+-[^\s;&|<>]*)*"
+RUNS_NOTES = re.compile(_GO + _RUNNER + _OPTS + r"[ \t]*(?:[ \t]|<)[ \t]*" + _SCRIPT,  # python notes.md, . ./notes.md,
+                        re.I | re.M)                                                    # bash -s < notes.md
+# a pipe into a runner that has no script of its own (cat notes.md | python -, gc notes.md | iex): runs_notes() looks
+# for the file in front of it
+PIPED = re.compile(r"(?<!\|)\|" + _LEADS + r"(?:" + _W1 + r"*/)?(?:" + _RUNNER + _OPTS
+                   + r"|(?:iex|Invoke-Expression)\b)[ \t]*(?=$|[;&|)])", re.I | re.M)
+# text put into a command line where code stands: eval "$(cat notes.md)", iex (gc notes.md -Raw),
+# bash -c "$(cat notes.md)", sh <(sed -n 2,5p notes.md), python $(ls *.md)
+SPLICES_NOTES = re.compile(
+    _GO + r"(?:(?:eval|iex|Invoke-Expression)(?![\w.-])[^;&>\n]*?|" + _RUNNER + _DASH
+    + r"[ \t]*(?:<\(|\"[^\"\n]*?(?:\$\(|`)|'?(?:\$\(|`)|\()[^)`\n]*?)(?<!" + _W1 + ")" + _NOTE, re.I | re.M)
+# the file as the command itself (./notes.md with a first line that names its interpreter)
+NOTES_CMD = re.compile(_START + _LEADS + _W1 + "*/" + _NOTE + r"(?=\s|$|[;&|)])", re.I | re.M)
+# in program text, a call that executes text or a file, on a line that also holds a literal with such a file's name
+EXECS =re.compile(r"(?<![\w.])(?:exec|eval|compile|Function)\s*\(|\b(?:execfile|run_path|SourceFileLoader|"
+                   r"spec_from_file_location|load_source|loadfile)\s*\(")
+_LIT = r"['\"][^'\"\n]*[^'\"\n./\\*]" + NOTES + r"['\"]"  # a literal that ends as a notes file's name does
+NOTE_LIT = re.compile(_LIT, re.I)
+# a loader called on the file itself (require('./notes.md'), source("notes.md"), do 'notes.md'), or a program's
+# argument list that starts with a runner (["python", "-u", "notes.md"])
+LOADS = re.compile(r"(?<![\w.])(?:require|import|load|dofile|do|include|include_once|require_once|source)\s*\(?\s*"
+                   + _LIT + r"|(?:['\"](?:[^'\"\s]*/)?" + _PROG + r"['\"]|\bsys\.executable)\s*,\s*"
+                   r"(?:['\"]-[^'\"\n]*['\"]\s*,\s*)*" + _LIT, re.I)
 # ** (zsh's *** too) as a whole part of a path outside quotes: a shell that reads it so (bash's globstar, zsh, fish)
 # walks the tree. Not a ** that stands alone, which in a line of program text is a power
 _W = r"[^\s;&|<>()'\"]*"
@@ -832,6 +879,29 @@ def readings(cmd: str):
     return [t for t in dict.fromkeys((posix, win)) if t != cmd], any(long)
 
 
+def runs_notes(c: str, cmd: bool, code: bool) -> bool:
+    """Does a text run a file of notes (.md, .mdx, .rst) as code? As a runner's script or standard input, piped into
+    a runner, sourced, or spliced into a command line where code stands. cmd: c is a command line, where the file
+    may be the command itself. code: c is program text (a file's new text, code handed to an interpreter, a
+    here-document), where a call may execute or load the file it names on the same line, and a string may hold a
+    command. There c is the text as it came: check_bash takes the quotes off a word where a command may start.
+    shortcut: the text only, so a notes file that was copied, renamed or cut into another file first passes, as
+    does one with a blank in its name, and one whose text is read on one line and executed on another; that takes
+    a sandbox, which sees what runs"""
+    c = re.sub(r"[/\\]\n", " ", c)  # a line that goes on (check_bash has turned its backslash into a slash)
+    # a quoted word is the word ("notes.md", notes.m""d); quoted text with blanks is no command and no file name
+    words = QUOTED.sub(lambda m: m.group()[1:-1] if re.fullmatch(r"[^\s;&|<>()`]*", m.group()[1:-1]) else " '' ", c)
+    if not (NOTE_RX.search(c) or NOTE_RX.search(words) or re.search(r"[*?\[]", words)):
+        return False
+    if RUNS_NOTES.search(words) or SPLICES_NOTES.search(c) or (cmd and NOTES_CMD.search(c.split("<<")[0])) or any(
+            NOTE_RX.search(words, max(words.rfind(s, 0, m.start()) for s in (";", "\n", "&&", "||")) + 1, m.start())
+            for m in PIPED.finditer(words)):  # the pipe's own command, from where it starts
+        return True
+    return code and (
+        any((EXECS.search(ln) and NOTE_LIT.search(ln)) or LOADS.search(ln) for ln in c.split("\n") if NOTE_RX.search(ln))
+        or any(runs_notes(q.group()[1:-1], False, True) for q in QUOTED.finditer(c) if NOTE_RX.search(q.group())))
+
+
 def decodes_into_line(c: str) -> bool:
     """A decoder (base64 -d ...) inside $( ), <( ) or backticks: its output becomes part of a command line, as the
     text a shell runs (sh -c "$(...)", eval) or as an argument (cat "$(...)")."""
@@ -1370,7 +1440,7 @@ def check_path_tool(ctx: Ctx, tool, ti):
     # data would read it later, outside this guard. Not notes, and not the guard's own configuration, which names it
     file = str(ti.get("file_path") or "")
     if ti.get("text") and not any(k == DENY for k, _ in results) and not (
-            tool != "Other" and re.search(r"\.(?:md|mdx|rst)$|(?:^|/)\.claude/nn-training\.json$", winpath(file), re.I)):
+            tool != "Other" and re.search(NOTES + r"$|(?:^|/)\.claude/nn-training\.json$", winpath(file), re.I)):
         hit = names_sealed(ctx, ti["text"], [ctx.root, ctx.cwd] + ([ctx._abs(file).parent] if file else []))
         if hit and hit[0] is None:
             results.append((ASK, hit[1]))
@@ -1382,6 +1452,8 @@ def check_path_tool(ctx: Ctx, tool, ti):
                                  f"Code and configuration that a run reads before the final evaluation must not point at "
                                  f"the test split. Approve only if nothing would read sealed data through this file "
                                  f"before `expctl final-eval`."))
+        if runs_notes(ti["text"], False, True):
+            results.append((ASK, NOTES_RUN))
     return results
 
 
@@ -1739,6 +1811,8 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
         results.append((ASK, "Decodes text where this guard cannot read the result: handed to a shell or an "
                              "interpreter, put into a command line, or decoded by code given on the command line. "
                              "Run it as plain text, or approve only if you know what it says."))
+    if runs_notes(c, True, False) or ((depth > 0 or "<<" in cmd) and runs_notes(cmd, False, True)):
+        results.append((ASK, NOTES_RUN))
     live = bool(ctx.external_jobs()) or bool(ctx.active())
     if live and DEP_CHANGE.search(c):
         results.append((ASK, f"Dependency change while jobs are live ({ctx.live_desc()}). Changing the environment "

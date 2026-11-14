@@ -59,6 +59,7 @@ hard isolation keep the test split outside the repository, or use the agent's sa
 from __future__ import annotations
 
 import base64
+import errno
 import fnmatch
 import functools
 import glob
@@ -690,8 +691,21 @@ def rg_config() -> bool:
     return bool(UNRESTRICTED.search(text)) or any(not g.strip("\"'").startswith("!") for _, g in RG_GLOB.findall(text))
 
 
+def there(p: Path, how="exists"):
+    """p.exists(), p.is_file() or p.is_dir() for a name taken from a call. They raise where the filesystem cannot
+    hold the name (Linux and macOS: a part of more than 255 bytes, which the program behind -c or a commit message
+    is). That ended the whole check as an internal error: a question for a harmless line, and a question where a
+    refusal was due. Such a word names nothing on disk."""
+    try:
+        return getattr(p, how)()
+    except OSError as e:
+        if e.errno != errno.ENAMETOOLONG:
+            raise
+        return False
+
+
 def walk(top: Path):
-    if top.is_file():
+    if there(top, "is_file"):
         yield top
         return
     for dp, dns, fns in os.walk(top):
@@ -772,7 +786,7 @@ def reaches_sealed(ctx, base, globs=(), typ=None, skips_ignored=False, cwd=None)
             top = None if rgish and not under(sr, b) else s
         else:  # the search starts inside it, or at or above its real place
             top = b if under(b, s) or under(b, sr) else sr if under(sr, b) else None
-        if sr not in shut and top is not None and top.exists():
+        if sr not in shut and top is not None and there(top):
             walks.setdefault((top, root, s, sr), []).append(pat)
     # found: the sealed files that the search's filters let through, by the folder they really lie in, with their pattern
     found, real, plain = {}, {}, not (globs or typ)
@@ -1473,7 +1487,7 @@ def check_path_tool(ctx: Ctx, tool, ti):
     if folder:  # stays unasked: tools are given it all the time, as the folder they work in
         if folder[:7].lower() == "file://":
             folder = unquote(re.sub(r"(?i)^file://(?:localhost)?", "", folder))
-        hit = reaches_sealed(ctx, folder) if ctx._abs(folder).is_dir() and ctx.rel(folder) != "." else None
+        hit = reaches_sealed(ctx, folder) if there(ctx._abs(folder), "is_dir") and ctx.rel(folder) != "." else None
         if hit:
             results.append((ASK, f"This call hands an MCP tool the folder '{ctx.rel(folder)}', which holds sealed test "
                                  f"data (pattern '{hit}'): the tool may list or read every file below it. Give it a "
@@ -1507,7 +1521,7 @@ def words(ctx: Ctx, toks):
         if re.fullmatch(r"python[\d.]*|py", re.sub(r"\.exe$", "", t.rsplit("/", 1)[-1].lower())):
             out.append("python")
         else:
-            out.append("@" + str(ctx.resolve_token(t)) if t[:1] != "-" and ctx._abs(t).is_file() else t)
+            out.append("@" + str(ctx.resolve_token(t)) if t[:1] != "-" and there(ctx._abs(t), "is_file") else t)
     return out
 
 
@@ -1672,7 +1686,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                     to = []
                     for d in curs if x else []:
                         ctx.cwd = d
-                        to += [t for t in [ctx._abs(re.sub(r"[\"']", "", x.group(1)))] if t.is_dir()]
+                        to += [t for t in [ctx._abs(re.sub(r"[\"']", "", x.group(1)))] if there(t, "is_dir")]
                     # it replaces the folder when it surely runs (first, or after ; or a new line) and surely works:
                     # a redirection to a file that cannot be opened keeps cd from running.
                     # Otherwise the folders before it stay possible, and with a target the guard cannot follow
@@ -1776,7 +1790,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                     for d in runs:
                         ctx.cwd = d
                         b = ctx._abs(lead[:lead.rfind("/") + 1] or ".")
-                        if b.is_dir():  # what follows the ** is a filter on the files below that folder
+                        if there(b, "is_dir"):  # what follows the ** is a filter on the files below that folder
                             hit = hit or searched(ctx, str(b), [name, name + "/**"] if name else [], None, False, None)
                 for _ in range(min(sq.count(")"), len(stack))):
                     curs, chain = stack.pop(), None

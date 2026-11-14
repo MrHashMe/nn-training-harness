@@ -921,6 +921,11 @@ def main():
         ("Write", {"file_path": "peek.py", "content": pad_words + join_code}, "ask"),
         ("Write", {"file_path": "peek.py", "content": pad_lits + join_code}, "ask"),
         ("Bash", {"command": "python -c \"" + (pad_lits + join_code).replace("\n", ";") + "\""}, "deny"),
+        # a word longer than a file name can be (Linux and macOS: 255 bytes). Where a final evaluation is configured
+        # the guard looked it up as a file, and the lookup raised there: an internal error, so a question for these
+        # two harmless lines and for the row above, which must be refused
+        ("Bash", {"command": "echo " + "x" * 300}, None),
+        ("Bash", {"command": "git commit -qm '" + "a long message " * 30 + "'"}, None),
         ("Bash", {"command": "cd eval; cd ..; " * 3 + "cd data && cd test && cat labels.csv"}, "deny"),
         ("Bash", {"command": "python -c \"print(open(%s).read())\"" % by_letter}, "deny"),
         ("Write", {"file_path": "peek.py", "content": "p = %s\nprint(open(p).read())\n" % by_letter}, "ask"),

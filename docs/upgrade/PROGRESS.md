@@ -683,7 +683,13 @@ Rank 3, sealed paths in snapshots and in the training box
   nor in the hashes that show a change to them.
 - N `EXP_PROJECT_ROOT` in a run's environment: on purpose (outputs that runs share). Build: the loop's scan
   of a change counts the name as a hit where no box hides the sealed files.
-- H a process namespace for the training box: decided when the box is changed (step 6 below).
+- R, found while building: a link inside the project that leads to a folder with sealed files, or to the
+  project folder itself, brings them into the snapshot under the link's name.
+- H a process namespace for the training box (`--unshare-pid`): RunLog writes its own process number into
+  the heartbeat, and `expctl status` takes that number for the run's when the launched process is gone.
+  Inside a namespace the number is another one, so a dead run could pass for whatever process has that
+  number outside. It needs the number left out or translated for boxed runs, and then the test: a run
+  launched through the box, stopped and killed, with `expctl status` right each time.
 - U a container as the box: needs Docker Desktop (question below).
 
 Rank 4, the keep rule (simulation: `gate_sim.py`, kept outside the repository; one test's nominal rate of
@@ -819,7 +825,29 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   Limits to name there: a path with a variable in it passes (literals only); text that merely contains the
   sealed folder's path, a URL for one, is asked about, as it is in a command; item 5 asks about every edit
   that writes such a mention, also when the file held it before.
-- Next: step 3, snapshots and the training box.
+- Done, step 3, snapshots and the training box: a snapshot keeps sealed files out under wildcard patterns,
+  at any depth and behind links (`5563f6c`); the loop checksums such files and hides them from a run
+  (`319daf2`); a change that reads `EXP_PROJECT_ROOT` is invalid where a run is not confined (`d8cc1e9`).
+  The final state passed `tests/test_loop.py`, `tests/test_kit.py` and `tests/test_review_fixes.py` on
+  Windows and in WSL (with bubblewrap); each of the three states passed the loop's unit and sandbox checks
+  on Windows. New checks: five at the end of the loop's unit tests, two in its sandbox tests.
+- For REPORT.md section 6, snapshots and the loop (no existing test was changed or removed for it):
+  1. A snapshot leaves out files sealed by a pattern that begins with a wildcard or has one in the middle,
+     and descends as deep as they lie. Was: the git-ignored folder was linked whole.
+  2. A link inside the project is judged by the place it leads to. A launch now fails, with the reason,
+     where a git-ignored link leads to the project folder or above it, and where sealed paths lie more
+     than twelve folders deep in a git-ignored folder (only when the configuration seals something).
+  3. The loop checksums the files such patterns seal, so a campaign stops when one of them changes or
+     appears, and its sandbox hides each folder sealed that way as one. `loop.link_paths` and
+     `loop.eval_writable` are refused where a name below them matches such a pattern. The runs folder is
+     left out of that search.
+  4. Where a run is not confined (Windows, macOS, Linux without bubblewrap), a change that adds a line
+     with `EXP_PROJECT_ROOT` makes the iteration invalid; the worker's rules say so.
+  Limits to name there: a tracked link with an absolute target inside the project is copied as it is; a
+  launch looks at every file name below the fixed part of a wildcard pattern, for at most 20 s per folder,
+  after which the folder's children are linked one by one; item 4 reads the change's text, so a variable
+  name built at run time passes.
+- Next: step 4, the keep rule.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

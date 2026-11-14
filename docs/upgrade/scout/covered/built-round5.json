@@ -357,6 +357,6 @@
   "file": "round5",
   "candidate": "A live run stays the same process on Linux when the system clock is set (kit-native)",
   "status": "finished",
-  "where": ".claude/skills/nn-training/scripts/expctl.py proc_key, same_process, load_run; runlog.py; nnremote.py; tests/test_kit.py. Commit 9d6f876. Tested with a recorded start a minute off, not under a real clock step; Windows and macOS unchanged"
+  "where": ".claude/skills/nn-training/scripts/expctl.py proc_key, same_process, load_run; runlog.py; nnremote.py; tests/test_kit.py. Commits 9d6f876, 827c35c (a key that differs leaves it to the start time). In WSL with the clock set back 5.4 s the old controller read its live run as lost, the new one did not"
  }
 ]

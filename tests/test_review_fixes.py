@@ -197,6 +197,9 @@ def main():
         ("uv run without --frozen while live", "uv run python x.py", "ask"),
         ("uv run --frozen while live", "uv run --frozen python x.py", None),
         ("shell write into a live run dir", f"echo x > {live['run_dir']}/notes.txt", "ask"),
+        # was None: the file an output option names is written, whatever the program is called
+        ("output option into a live run dir", f"python score.py --out {live['run_dir']}/score.json", "ask"),
+        ("output option beside a live run dir", f"python score.py --ckpt {live['run_dir']}/last.pt --out score.json", None),
     ]:
         got = guard(proj, "Bash", {"command": cmd})
         check(got == want, f"guard: {label} -> {got} (want {want})")
@@ -213,7 +216,13 @@ def main():
     for cmd, want in [(f"python3 {E} status --brief", None), (f"python3 {E} launch --name x -- python t.py", "deny"),
                       (f"python3 {E} final-eval -- --ckpt runs/x/best.pt", "deny"),
                       ("tail -n 50 runs/x/stdout.log", None), ("echo hi > notes.md", "deny"),
-                      ("python3 -c \"open('x.txt','w').write('1')\"", "deny"), ("git commit -m x", "deny")]:
+                      ("python3 -c \"open('x.txt','w').write('1')\"", "deny"), ("git commit -m x", "deny"),
+                      # were None: programs that write the file they name, and pathlib's one-argument forms
+                      ("touch notes.md", "deny"), ("patch train.py fix.diff", "deny"),
+                      ("python3 -c \"from pathlib import Path; Path('a').replace('b')\"", "deny"),
+                      ("ls *(e:'rm x.txt':)", "deny"),
+                      ("grep -n \"\\.replace(\" train.py", None), ("black --check .", None),
+                      ("pip list | grep -o install", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
 

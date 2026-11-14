@@ -189,9 +189,13 @@ MUTATING = re.compile(
     r"cherry-pick|revert|pull|fetch|apply)\b|"
     r"\b(?:pip3?|uv|conda|mamba|micromamba|pixi|poetry|npm|npx)\s+(?:install|add|remove|sync|update|uninstall|lock)\b|"
     r"\b(?:torchrun|deepspeed|nohup|setsid|tmux|screen|sbatch|srun|docker|podman)\b|\baccelerate\s+launch\b")
-PY_WRITES = re.compile(  # open() counts with a complete write mode ('w', "ab", 'r+'), not with a path that starts with w
+PY_WRITES = re.compile(  # open() counts with a complete write mode ('w', "ab", 'r+'), not with a path that starts with w.
+    # pathlib's .rename(x) and .replace(x) count with their one argument (str.replace(a, b) has two), and like
+    # .touch( not where a quote and a blank follow the bracket, which is a search for the word: grep "\.replace(" src
     r"open\([^)]*['\"](?=[rbtU]*[wax+])[rwaxbtU+]{1,4}['\"]|write_text|write_bytes|shutil\.(?:rmtree|move|copy)|"
-    r"os\.(?:remove|unlink|rename|replace|makedirs|mkdir)|\.to_(?:csv|parquet|json)\(|torch\.save|np\.save|\.savefig\(")
+    r"os\.(?:remove|unlink|rename|replace|makedirs|mkdir|truncate|link|symlink)|"
+    r"\.(?:(?:rename|replace)\((?![^()]*,)|(?:touch|symlink_to|hardlink_to|link_to)\()(?![\"']?(?:\s|$))|"
+    r"\.to_(?:csv|parquet|json)\(|torch\.save|np\.save|\.savefig\(")
 # PowerShell and cmd.exe forms of the write, delete and kill rules. Case is ignored; the short aliases count only
 # where a command starts (line start, after ; & | ( {, or after cmd's /c).
 _AT = r"(?:^|[;&|({`]|\s/[ck]\s)\s*"
@@ -301,7 +305,17 @@ PIPED = re.compile(r"(?<!\|)\|" + _LEADS + r"(?:" + _W1 + r"*/)?(?:" + _RUNNER +
 # bash -c "$(cat notes.md)", sh <(sed -n 2,5p notes.md), python $(ls *.md)
 SPLICES_NOTES = re.compile(
     _GO + r"(?:(?:eval|iex|Invoke-Expression)(?![\w.-])[^;&>\n]*?|" + _RUNNER + _DASH
-    + r"[ \t]*(?:<\(|\"[^\"\n]*?(?:\$\(|`)|'?(?:\$\(|`)|\()[^)`\n]*?)(?<!" + _W1 + ")" + _NOTE, re.I | re.M)
+    + r"[ \t]*(?:[<=]\(|\"[^\"\n]*?(?:\$\(|`)|'?(?:\$\(|`)|\()[^)`\n]*?)(?<!" + _W1 + ")" + _NOTE, re.I | re.M)
+# Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
+# formatters, which rewrite a file unless they are told to check only
+WRITE_CMDS = re.compile(_GO + r"(?:touch|patch|install)(?=\s|$)", re.M)
+FORMATS = re.compile(_GO + r"(?:black|isort|ruff\s+format)(?=\s|$)(?![^;&|\n]*\s--(?:check|diff)\b)", re.M)
+# The word that an output option names is written, whatever the program is called: sort -o FILE, curl -o FILE,
+# wget -O FILE, --output FILE, --out=FILE, -oFILE, PowerShell's -OutFile FILE
+OUT_FLAG = re.compile(r"^(?:-o|--out[\w-]*|-OutFile)$", re.I)
+OUT_JOINED = re.compile(r"^(?:--out[\w-]*=|-OutFile:|-o)(.+)$", re.I)
+# zsh runs the text of the glob qualifier e as a command: ls *(e:'rm -rf runs':), ls *(e:rm\ -rf\ runs:)
+ZSH_E = re.compile(r"\((?:#q)?[^()\s'\"]*?e([^\w\s()'\"\\])(?:(['\"])(.*?)\2|((?:[^\s'\"()\\]|\\.)*\\.(?:[^\s'\"()\\]|\\.)*))")
 # the file as the command itself (./notes.md with a first line that names its interpreter)
 NOTES_CMD = re.compile(_START + _LEADS + _W1 + "*/" + _NOTE + r"(?=\s|$|[;&|)])", re.I | re.M)
 # in program text, a call that executes text or a file, on a line that also holds a literal with such a file's name
@@ -802,15 +816,14 @@ def reaches_sealed(ctx, base, globs=(), typ=None, skips_ignored=False, cwd=None)
     for (top, root, s, sr), pats in walks.items():
         # A folder sealed as a whole (data/test/**) is walked to its end, as long as the hook's time allows: every
         # file in it is sealed, so one that the search's filters let through anywhere in it counts. Where the time
-        # runs out first, the search counts as reading it.
-        # shortcut: any other pattern's walk looks at WALK files, so a filtered search passes when the sealed files
-        # that it would read lie beyond them; index the sealed files once if projects that large turn up
+        # runs out first, the search counts as reading it. A pattern with a wildcard is walked as long, and a walk
+        # that the time cuts short counts as reading what the pattern seals: files that it did not reach may be
+        # among those the search reads. (Until 14 November 2026 such a walk ended after WALK files and the search
+        # passed.) Searching a named folder that holds no sealed file needs no walk.
         whole = [p for p in pats if not re.search(r"[*?\[]", re.sub(r"/\*\*$", "", norm_pattern(p)))]
         for n, f in enumerate(walk(top)):
-            if n >= WALK and not (whole and time.time() < ctx.t0 + WALK_S):
-                if whole:
-                    return whole[0]
-                break
+            if n >= WALK and time.time() >= ctx.t0 + WALK_S:
+                return (whole or pats)[0]
             rel = ctx.canon((f.relative_to(root) if under(f, root) else s.relative_to(root) / f.relative_to(sr)
                              if under(f, sr) and under(s, root) else f).as_posix())
             pat = matches(rel, pats)
@@ -1015,10 +1028,14 @@ def decoded(t: str):
 def inner_code(c: str):
     """Text a command hands to a nested shell or an interpreter as one argument (bash -c '...', python -c "...",
     cmd /c "...", powershell -Command "..."), also where it is attached to its flag (bash -c"...") or encoded
-    (powershell -EncodedCommand <base64>). The caller checks it like a command of its own."""
+    (powershell -EncodedCommand <base64>), and the text of a zsh glob qualifier e. The caller checks it like a
+    command of its own. Not read: a qualifier e whose text is one bare word or a variable, and (+name), which run
+    what the line does not show, as a script does."""
+    out = [m.group(3) if m.group(2) else re.sub(r"\\(.)", r"\1", m.group(4)).rstrip(m.group(1) + "]}>")
+           for m in ZSH_E.finditer(c)]
     if not SHELLS.search(c):
-        return []
-    toks, out = lex(c), []
+        return out
+    toks = lex(c)
     for t, after in zip(toks, toks[1:] + [""]):
         m = ATTACHED.match(t)
         out += [m.group(1)] if m else []
@@ -1639,9 +1656,12 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
             dirs.append(ctx._abs(d))
         cur = dirs[-1] if cd else cur
     dirs = list(dict.fromkeys(dirs))
-    resolved = []
+    resolved, outs, lx = [], [], lex(c)  # lx: the line's words with its options, which toks leaves out
+    outw = [after for t, after in zip(lx, lx[1:]) if OUT_FLAG.match(t)] + \
+           [m.group(1) for m in map(OUT_JOINED.match, lx) if m]
     for d in dirs:
         ctx.cwd = d
+        outs += [(t, ctx.resolve_token(t)) for t in outw if len(t) < 4096]
         for t in toks:
             resolved.append((t, ctx.resolve_token(t)))
             if any(ch in t for ch in "*?["):  # a wildcard: also what it names on disk now
@@ -1859,24 +1879,29 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                                      f"`git diff --cached`, `git show` and `git stash show -p` would then print them. "
                                      f"Add the files you mean by name, or approve only if no sealed file is among "
                                      f"them."))
-    if WRITE_VERBS.search(c_noq) or PS_WRITE.search(c_noq) or (code and PY_WRITES.search(c)):
-        if any(matches(rel, cfg.get("harness_paths")) for _, rel in resolved) or \
-                any(rx.search(c) for _, rx in fragments(cfg.get("harness_paths"))):
+    verb = bool(WRITE_VERBS.search(c_noq) or PS_WRITE.search(c_noq) or WRITE_CMDS.search(c_noq)
+                or FORMATS.search(c_noq) or (code and PY_WRITES.search(c)))
+    if verb or outs:
+        # with a write verb every path of the line may be the one written; without one, only the word that an
+        # output option names is: grep -o def eval/metrics.py reads the file, sort -o eval/metrics.py x writes it
+        named = resolved if verb else outs
+        if any(matches(rel, cfg.get("harness_paths")) for _, rel in named) or \
+                verb and any(rx.search(c) for _, rx in fragments(cfg.get("harness_paths"))):
             results.append((ASK, "Command may modify harness guardrail files (hooks, settings, guard config, skill, "
                                  "agents, CLAUDE.md, .mcp.json). Approve only if intended."))
-        if any(matches(rel, ctx.frozen()) for _, rel in resolved) or \
-                any(rx.search(c) for _, rx in fragments(ctx.frozen())):
+        if any(matches(rel, ctx.frozen()) for _, rel in named) or \
+                verb and any(rx.search(c) for _, rx in fragments(ctx.frozen())):
             results.append((ASK, "Command may modify frozen evaluation/protocol files: that creates a new protocol "
                                  "version and requires re-baselining."))
         if any(rel and re.search(r"(?:^|/)\.git/(?:worktrees/|hooks/|config$|nn-training-final-eval\.jsonl$)", rel, _CASE)
-               for _, rel in resolved):
+               for _, rel in named):
             results.append((ASK, "Command may modify files in git's own folder: its list of worktrees, from which this "
                                  "guard reads the repository's other checkouts, its hooks or its configuration, which "
                                  "make git run programs that this guard does not see, or the record of the final "
                                  "evaluation's uses that every checkout shares. Approve only if intended."))
         for r in ctx.active():
             rd = (r.get("dir") or "").rstrip("/")
-            if rd and any(rel == rd or rel.startswith(rd + "/") for _, rel in resolved):
+            if rd and any(rel == rd or rel.startswith(rd + "/") for _, rel in named):
                 results.append((ASK, f"Command may write into active run {r['run_id']}; its files and snapshot are "
                                      f"evidence and must not change while it runs."))
                 break
@@ -2008,7 +2033,7 @@ def check_readonly(tool, ti):
     for cmd in [ti["command"]] + readings(ti["command"])[0]:  # r\m is rm to a POSIX shell
         c = GIT_GLOBAL.sub("git", cmd)
         texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c)]
-        if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) for t in texts) or PY_WRITES.search(c):
+        if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) or WRITE_CMDS.search(t) for t in texts) or PY_WRITES.search(c):
             why = why or "writes, moves or deletes files"
         elif KILL.search(c) or PS_KILL.search(c):
             why = why or "signals processes"

@@ -1237,6 +1237,45 @@ def main():
         ("Bash", {"command": "cat =(cat data/test/labels.csv)"}, "deny"),
         ("Bash", {"command": "x=$(<data/test/labels.csv)"}, "deny"),
         ("Bash", {"command": "ls data/(train|val); wc -l data/*.csv(.); echo x(1|2)y $((n*(n-1)/2))"}, None),
+        # were None (second review of 14 November 2026): writes that no write verb names. pathlib's forms
+        ("Bash", {"command": "python -c \"from pathlib import Path; Path('x.py').replace('eval/metrics.py')\""}, "ask"),
+        ("Bash", {"command": "python -c \"from pathlib import Path; Path('eval/metrics.py').rename('x.py')\""}, "ask"),
+        ("Bash", {"command": "python -c \"from pathlib import Path; Path('eval/metrics.py').touch()\""}, "ask"),
+        ("Bash", {"command": "python -c \"import os; os.link('x.py', 'eval/metrics.py')\""}, "ask"),
+        # the word that an output option names
+        ("Bash", {"command": "sort -o eval/metrics.py data/train.csv"}, "ask"),
+        ("Bash", {"command": "sort -oeval/metrics.py data/train.csv"}, "ask"),
+        ("Bash", {"command": "curl -o eval/metrics.py http://localhost:1/x"}, "ask"),
+        ("Bash", {"command": "wget -O eval/metrics.py http://localhost:1/x"}, "ask"),
+        ("Bash", {"command": "python gen.py --out eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "python gen.py --output=eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd eval && python ../gen.py --out metrics.py"}, "ask"),
+        ("Bash", {"command": "sort -o .claude/hooks/nn_guard.py data/train.csv"}, "ask"),
+        ("PowerShell", {"command": "Invoke-WebRequest http://localhost:1/x -OutFile eval/metrics.py"}, "ask"),
+        ("PowerShell", {"command": "Invoke-WebRequest http://localhost:1/x -OutFile:eval/metrics.py"}, "ask"),
+        # programs that write the file they name, and formatters
+        ("Bash", {"command": "touch eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "patch eval/metrics.py fix.diff"}, "ask"),
+        ("Bash", {"command": "sudo install -m 644 x.py eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "black eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "ruff format eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "touch .claude/settings.json"}, "ask"),
+        # zsh: =(...) is a file with the command's output, and the glob qualifier e runs its text
+        ("Bash", {"command": "python =(cat notes.md)"}, "ask"),
+        ("Bash", {"command": "source =(sed -n 2,5p notes.md)"}, "ask"),
+        ("Bash", {"command": "ls *(e:'rm -rf runs/r1':)"}, "ask"),
+        ("Bash", {"command": "ls *(e:rm\\ -rf\\ runs/r1:)"}, "ask"),
+        ("Bash", {"command": "ls *(#qe{\"kill -9 4242\"})"}, "ask"),
+        ("Bash", {"command": "ls *(.e:'cp x.py eval/metrics.py':)"}, "ask"),
+        ("Bash", {"command": "ls *(e:'cat data/test/labels.csv':)"}, "deny"),  # was ask
+        # and what stays without a question: reads, checks, and writes of other files
+        ("Bash", {"command": "python -c \"print(open('eval/metrics.py').read().replace('a', 'b'))\""}, None),
+        ("Bash", {"command": "grep -n \"\\.replace(\" eval/metrics.py; grep -o def eval/metrics.py"}, None),
+        ("Bash", {"command": "python train.py --output-dir runs/new --config eval/metrics.py"}, None),
+        ("Bash", {"command": "black --check eval/metrics.py; ruff format --diff eval/metrics.py"}, None),
+        ("Bash", {"command": "pip list | grep install; echo touch eval/metrics.py"}, None),
+        ("Bash", {"command": "touch sub/new.py; install -m 644 x.py sub/y.py"}, None),
+        ("Bash", {"command": "ls *(.om[1]); ls *(e:'echo hello':); sort -o sub/sorted.csv data/train.csv"}, None),
         ("Bash", {"command": "(ls|head); case $x in (a|b) echo y;; esac"}, None),
         ("Bash", {"command": "x=(a b); f() { echo $x; }; f; flags=$((flags|4)); echo $(pwd)/data/train.csv"}, None),
         ("Bash", {"command": "git diff HEAD~2 -- data/train.csv; git show HEAD^ --stat; ls *.py~"}, None),
@@ -1385,6 +1424,30 @@ def main():
     check(got == ["ask", None, "ask"],  # was: [None, None, None], the walk ended at its bound without a word
           f"guard: a filtered search is asked about when a sealed file beyond the walk's first bound passes its "
           f"filter, passes when none does, and is asked about when the time ends before the sealed folder does ({got})")
+    # A seal with a wildcard is walked as long, and a walk that the time cuts short counts as a read
+    cfgp = proj / ".claude/nn-training.json"
+    kept = cfgp.read_text()
+    cfgp.write_text(json.dumps(dict(json.loads(kept), sealed_paths=["data/*/labels.csv"])))
+    got = [bounded("grep -rn --include='*.py' x .", 5), bounded("grep -rn --include='*.py' x .", 0),
+           bounded("grep -rn --include='*.py' x sub", 0), bounded("grep -rn --include='*.csv' x .", 5)]
+    cfgp.write_text(kept)
+    check(got == [None, "ask", None, "ask"],  # was: [None, None, None, None] where the sealed file lay behind the bound
+          f"guard: with a wildcard seal a filtered search passes when the walk ends and no sealed file passes the "
+          f"filter, is asked about when the time ends first, and needs no walk in a folder without sealed files ({got})")
+    if os.name != "nt":  # the project reached through a link, as under /tmp on macOS: the answers of its real path
+        link = proj.parent / "by-link"
+        link.symlink_to(proj, target_is_directory=True)
+        got = []
+        for root, cwd, at in ((link, link, ""), (link, proj, ""), (proj, link, ""), (proj, proj, f"{link}/")):
+            for command in (f"cat {at}data/test/labels.csv", f"echo x > {at}eval/metrics.py"):
+                r = sh([PY, str(root / ".claude/hooks/nn_guard.py")], cwd=cwd, env={"CLAUDE_PROJECT_DIR": str(root)},
+                       inp=json.dumps({"tool_name": "Bash", "tool_input": {"command": command}, "cwd": str(cwd),
+                                       "session_id": "t"}))
+                got.append(json.loads(r.stdout)["hookSpecificOutput"]["permissionDecision"] if r.stdout.strip() else None)
+        link.unlink()
+        check(got == ["deny", "ask"] * 4,
+              f"guard: a project reached through a link gets the answers of its real path, whether the link is in "
+              f"the project folder's name, in the session's folder or in the command ({got})")
     r = sh([PY, "-c", code, str(proj / ".claude/hooks"), "0"], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)},
            inp=json.dumps({"tool_name": "Write", "cwd": str(proj), "session_id": "t", "tool_input": {
                "file_path": "load.py", "content": "a = open('sub/a.txt')\nb = open('sub/b.txt')\n"}}))

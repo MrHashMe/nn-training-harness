@@ -397,6 +397,25 @@ def _win_pid_alive(pid: int) -> bool:
         return False
 
 
+def _win_proc_start(pid):
+    """Creation time of a Windows process as the system records it (epoch seconds), or None."""
+    try:
+        import ctypes
+        from ctypes import wintypes
+
+        k32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        h = k32.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return None
+        t = [wintypes.FILETIME() for _ in range(4)]  # creation, exit, kernel, user
+        ok = k32.GetProcessTimes(h, *[ctypes.byref(x) for x in t])
+        k32.CloseHandle(h)
+        # a FILETIME counts 100 ns from 1601-01-01
+        return ((t[0].dwHighDateTime << 32) | t[0].dwLowDateTime) / 1e7 - 11644473600 if ok else None
+    except Exception:
+        return None
+
+
 def proc_start_time(pid):
     """Process start time (epoch seconds) for PID-reuse detection, or None if unavailable."""
     try:
@@ -405,6 +424,8 @@ def proc_start_time(pid):
         return psutil.Process(int(pid)).create_time()
     except Exception:
         pass
+    if os.name == "nt":  # without psutil a pid that had gone to another process counted as the run's
+        return _win_proc_start(pid)
     try:
         with open(f"/proc/{int(pid)}/stat", "r") as f:
             data = f.read()

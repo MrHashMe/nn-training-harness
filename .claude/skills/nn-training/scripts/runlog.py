@@ -154,6 +154,18 @@ def _proc_start_time(pid):
     except Exception:  # noqa: BLE001
         pass
     try:
+        if os.name == "nt":  # as expctl reads it without psutil: the creation time the system records
+            import ctypes
+            from ctypes import wintypes
+
+            k32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+            h = k32.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+            if not h:
+                return None
+            t = [wintypes.FILETIME() for _ in range(4)]
+            ok = k32.GetProcessTimes(h, *[ctypes.byref(x) for x in t])
+            k32.CloseHandle(h)
+            return ((t[0].dwHighDateTime << 32) | t[0].dwLowDateTime) / 1e7 - 11644473600 if ok else None  # 100 ns from 1601
         with open(f"/proc/{pid}/stat", "r") as f:
             data = f.read()
         ticks = int(data[data.rfind(")") + 2:].split()[19])

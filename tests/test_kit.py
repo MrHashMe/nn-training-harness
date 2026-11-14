@@ -368,6 +368,16 @@ def main():
     check("['completed', 'failed', 'starting', 'lost']" in ended.stdout,
           "a run that ends while expctl looks at it reads as ended, one whose supervisor has yet to write the exit record "
           f"as not ended, and one whose supervisor's pid went to another process as lost ({ended.stdout.strip()} {ended.stderr[-200:]})")
+    # that look needs a start time. Without psutil Windows gave none, so a pid that had gone to another process
+    # counted as the run's own, and a run whose supervisor had yet to write the exit record read as lost
+    code = ("import json, os, sys, time\nsys.modules['psutil'] = None\nsys.path.insert(0, sys.argv[1])\nimport expctl, runlog\n"
+            "me = os.getpid()\na = expctl.proc_start_time(me)\n"
+            "print(json.dumps([a, runlog._proc_start_time(me), expctl.proc_start_time(4294967292), "
+            "expctl.same_process(me, a), expctl.same_process(me, (a or 0) - 60), time.time()]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
+    a, b, gone, same, other, now = json.loads(r.stdout) if r.returncode == 0 else [None] * 6
+    check(a and b and abs(a - b) < 1 and gone is None and same and other is False and (os.name != "nt" or abs(now - a) < 60),
+          f"a process's start time is known without psutil, to expctl and to the run logger alike, and tells a reused pid ({r.stdout.strip()} {r.stderr[-200:]})")
     # expctl's own writes leave no temporary file beside the record when they give up, whether the replace was refused
     # to the end or the write itself failed (a full disk)
     wdir = tmp / "wjson"

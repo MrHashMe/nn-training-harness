@@ -15,8 +15,9 @@ installer on your real install a fifth time (the last entry of "After the guide"
 me another model's review of the kit and asked for a plan from it and for the plan's execution: its
 section, "Round 5", follows "After the guide". The commit ids of that section follow the public commit, and
 on your word of the same day ("Yes, push") they are in the public repository. On a further word of that
-day ("Yes, run it") the installer ran on your real install a sixth time, which brought it the round ("Round
-5", "The sixth installer run on the real install"). Decision record: `docs/upgrade/LEDGER.md`.
+day ("Yes, run it") the installer ran on your real install a sixth time, which brought it the round, and
+on your "Yes, commit there" the seventeen files it changed are committed in that repository ("Round 5",
+"The sixth installer run on the real install"). Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -2840,12 +2841,22 @@ records only.
   this round's snapshot rules do nothing there today. None of the agent files that left the experiment
   source (`AGENTS.md`, `.mcp.json`, `.codex/`, `.cursor/`, `.agents/`) exists at its root, so that change
   does not touch its source hash. I did not compute the hash there before and after.
-- **Left there.** The seventeen files are changed and not committed in that repository; its 418 other
-  status entries are untouched and nothing is staged. Git ignores the backup folder and the guard's record
+- **Left there.** The run left the seventeen files changed and not committed in that repository, its 418
+  other status entries untouched and nothing staged. Git ignores the backup folder and the guard's record
   there. The record has 28 more lines: 4 from the self-test's own probes and 24 from my calls, marked
   `upgrade-check` (3 on the final-evaluation rule, 8 from the twenty calls before the run and 13 from those
-  after it; an allowed call leaves no line). Committing the seventeen files needs your word, as after the
-  runs before it ("What needs your decision", item 2).
+  after it; an allowed call leaves no line).
+- **Committed there, on your word.** On 14 November you said "Yes, commit there". The seventeen files are
+  one local commit in that repository: exactly those paths, by that repository's own identity, its parent
+  the commit that was newest before, not pushed (its branch has no upstream). Right before it the
+  seventeen changed entries under `.claude/` were the paths of the installer's backup folder, and the
+  sixteen kit files had the hashes of the kit's manifest. After it that repository's other status entries
+  number 418 as before, nothing is staged, and of the 289 files I list in the install none changed on
+  disk. The commit's message says what the guard decides differently there, what else the files bring,
+  what was checked and what was not done. For its line that your scripts bind to nothing new, I compared
+  the kits of the fifth and the sixth run: `runlog.py` has the same public names and call signatures, and
+  no `expctl.py` subcommand was removed (`audit-splits` was added). To undo the commit while it is the
+  newest one there: `git reset --soft HEAD~1`.
 - **Not done there.** Its two registered scripts, a launch and a final evaluation were not run, no agent
   session was started, `install.py --worktrees` was not run and its files were not counted, as before.
 - **To know.** The guard there is the new one from the next tool call on, because the hook starts the file
@@ -2861,10 +2872,12 @@ records only.
    added line and every commit message of the round for private details (paths of this machine, addresses,
    time zones, times of day, the names on the real install's path) and found none; every commit carries
    the account's no-reply address and a date in UTC.
-2. **Your real install: the run is answered, the commit is open.** On 14 November you said "Yes, run it",
-   and the installer ran there a sixth time (above). The seventeen files it changed are not committed in
-   that repository: that needs your word, as after each run before it. Open as well, since round 4:
-   `install.py --worktrees`, which would register the guard in that repository's other checkouts.
+2. **Your real install: the run and the commit are answered.** On 14 November you said "Yes, run it", and
+   the installer ran there a sixth time (above). On your "Yes, commit there" of the same day the seventeen
+   files it changed are committed in that repository, in one local commit that is not pushed. Open: a push
+   of the records of that run and of that commit to the public repository, where they are not yet; and,
+   since round 4, `install.py --worktrees`, which would register the guard in that repository's other
+   checkouts.
 3. **Ports for Antigravity and Gemini CLI.** Neither agent is installed here, and installing one is your
    call. I would build each from the vendor's documentation and test it live once it is installed.
 4. **The MCP servers the review proposes.** Each is an install with your permissions; say which, if any.
@@ -3814,9 +3827,9 @@ config, journal and runs on upgrade and removal.
   commands), so both fit `expctl final-eval --which N` (N is 1 or 2). The second one to be used will need
   `--again "reason"`, because uses are counted for the project. Typing either command directly is refused there
   now. The receipt starts empty: it does not know of final evaluations run before the upgrade. The kit's files
-  there are committed since 12 November, and again after the third and fourth installer runs: local commits,
-  not pushed. The two files of the fifth run are not committed. Its interpreter is written into them as a
-  full path of this machine, so a checkout on another machine has to run the installer again.
+  there are committed since 12 November, and again after each installer run since, the third to the sixth:
+  local commits, not pushed. Its interpreter is written into them as a full path of this machine, so a
+  checkout on another machine has to run the installer again.
 - **The guard did not cover every other checkout of a repository; round 2 closed that.** This describes the
   guard before round 2, which is the one your real install has. It maps run snapshots and worktrees under
   `.claude/worktrees/` back to project paths, and from inside such a worktree it covers the outer checkout. A
@@ -3890,9 +3903,10 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     item replaces it. On your "Yes, push" this record is in the public repository.
 13. **Round 5's questions** ("Round 5", "What needs your decision"): the push of the round to the public
     repository is answered and done (14 November, "Yes, push"), and so is the sixth installer run on the
-    real install (14 November, "Yes, run it"; "Round 5", "The sixth installer run on the real install").
-    Open: committing the seventeen files that run changed in that repository, and pushing the record of
-    the run, which is in the local repository only; the installs, accounts and paid resources that the
+    real install (14 November, "Yes, run it"; "Round 5", "The sixth installer run on the real install"),
+    and the commit of the seventeen files that run changed in that repository (14 November, "Yes, commit
+    there": one local commit of exactly those paths, not pushed). Open: pushing the records of the run and
+    of that commit, which are in the local repository only; the installs, accounts and paid resources that the
     review's proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a
     container as the box); a second pilot or a campaign with a real agent; and what to build next.
 

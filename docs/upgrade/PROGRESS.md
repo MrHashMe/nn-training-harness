@@ -10,8 +10,8 @@ script, two fixes, the front page and the upload. Its last part is the publicati
 from one new commit, and the commit ids in these records belong to the history before it, which is kept
 locally and not published. The entry after the publication is the fifth installer run on the real install.
 "Round 5" below is the work on the request of 14 November: another model's review of the kit, checked claim
-by claim, and what was built from it. Its last entry is the sixth installer run on the real install, which
-brought the round there.
+by claim, and what was built from it. Its last entries are the sixth installer run on the real install,
+which brought the round there, and the commit of the files that run changed in that repository.
 
 # Upgrade progress
 
@@ -101,6 +101,10 @@ Last updated: 14 November 2026.
   it gets round 5): the sixth installer run (the last entry of "Round 5"). My reading: the word covers the
   run and its checks, as with the runs before it. A commit of the seventeen changed files in that
   repository and a push of this record each wait for a word of their own.
+- 14 Nov, user ("Yes, commit there", to the question after that run): the seventeen files the run changed
+  are committed in that repository, one local commit of exactly those paths (the last entry of "Round 5").
+  My reading: the word covers that one commit and its checks. A push of the records of the run and of the
+  commit waits for a word of its own.
 
 ## Done (commit in brackets)
 - Git repository, repository-local identity, LF pinned. Baseline `5ea9659` = the 23 October kit. Baseline tests on
@@ -1230,10 +1234,24 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   a `.md` file, a harmless `.py` file). The 27 kit files there are the kit's, five of them apart from the
   lines that name the interpreter. Snapshots are off there, and none of the agent files that left the
   experiment source exists at its root. Left there: the seventeen files, changed and not committed (that
-  repository's 418 other status entries untouched, nothing staged), the backup folder, and 28 lines in its
-  guard record, 24 of them marked `upgrade-check`. Not done there: its scripts, a launch, a final
-  evaluation, an agent session, `--worktrees`, a count of its files, and its source hash before and
-  after. REPORT.md, "Round 5", "The sixth installer run on the real install".
+  repository's 418 other status entries untouched, nothing staged; committed since, the next entry), the
+  backup folder, and 28 lines in its guard record, 24 of them marked `upgrade-check`. Not done there: its
+  scripts, a launch, a final evaluation, an agent session, `--worktrees`, a count of its files, and its
+  source hash before and after. REPORT.md, "Round 5", "The sixth installer run on the real install".
+- The commit of those seventeen files in that repository (14 Nov, on the user's "Yes, commit there"), made
+  as after the runs before it: one local commit of exactly those paths (`git commit -- <paths>` of tracked
+  files, so nothing else is staged or touched and that repository's hooks run), by that repository's own
+  identity, not pushed; its branch has no upstream. Checked right before: the seventeen changed entries
+  under `.claude/` are the paths of the installer's backup folder, and the sixteen kit files have the
+  manifest's hashes. Checked after: the commit's parent is the commit that was newest before, it holds
+  exactly the seventeen paths (1,948 lines added, 352 removed), the status went from 435 entries to the
+  418 others, nothing is staged, the stored message is the message file's text, and none of the 289 files
+  listed in the install changed on disk. The message says what the guard decides differently there, what
+  else the files bring (from the kit's history, not tried there), what was checked and what was not done.
+  For its line that scripts bind to nothing new, `runlog.py`'s public names and call signatures and
+  `expctl.py`'s subcommands were compared between the kits of the fifth and the sixth run (`920bddd`,
+  `2666faf`): 17 names, none added, removed or changed; no subcommand removed, `audit-splits` added. Undo
+  while it is the newest commit there: `git reset --soft HEAD~1`.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1264,10 +1282,10 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   between trainer and generator, distillation and preference objectives, adapter options, further
   optimizers, low-precision and kernel items, architectures. The papers behind the new reference text were
   read as abstract pages, and no result was reproduced.
-- On the real install, which has round 5 since the sixth installer run: the seventeen files that run
-  changed are not committed in that repository, and the record of the run is not pushed ("Questions for
-  the user"). The new guard was asked made-up calls there; no agent session, script, launch or final
-  evaluation ran, and its source hash was not computed before and after.
+- On the real install, which has round 5 since the sixth installer run: the records of the run and of the
+  commit of its seventeen files are not pushed ("Questions for the user"). The new guard was asked made-up
+  calls there; no agent session, script, launch or final evaluation ran, `expctl resume` and
+  `expctl audit-splits` were not run there, and its source hash was not computed before and after.
 - Round 3's three items are not shown to raise results with a real agent. Each ran with the stand-in agent
   of the tests only: no real agent session, no pilot on the fine-tuning task, and that task ran on native
   Windows only. Round 4 ran the trial that the search's ledger row names (campaigns with and without, at an
@@ -1290,8 +1308,8 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   one. It has round 2's fixes since the third installer run, and those sixteen files are committed there.
   Its never-read cache folder is sealed since 12 Nov, and that config change is committed there too. It has
   rounds 3 and 4 since the fourth installer run of 13 Nov, and the fifteen files that run changed are
-  committed there. It has the status fix since the fifth run of the same day; the two files that run
-  changed are not committed there.
+  committed there. It has the status fix since the fifth run of the same day, and round 5 since the sixth
+  run of 14 Nov; the two files and the seventeen files those runs changed are committed there.
 - The guard's kept gap (a plain `grep -r`, `find` or `ls -R` started at the project root was not questioned)
   is closed in round 4, and on the real install since the fourth installer run. What stays is the file
   bound: the guard looks at no more than 20,000 files per folder it walks, and a sealed file beyond them is
@@ -1411,9 +1429,13 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
 - Answered on 14 Nov ("Yes, run it"): the installer ran on the real install a sixth time, which brought it
   round 5 (the last entry of "Round 5"). An edit there whose text names a sealed folder now asks. None of
   the agent files that left the experiment source exists at its root.
-- Open, from that run: committing the seventeen files it changed in that repository (helper:
-  `%TEMP%\nnkit-upgrade\real8_commit.py check | commit MSGFILE`), and pushing the record of the run, which
-  is in the local repository only.
+- Answered on 14 Nov ("Yes, commit there"): the seventeen files that run changed are committed in that
+  repository, one local commit of exactly those paths, not pushed, its parent the commit that was newest
+  before (undo with `git reset --soft HEAD~1` there while it is the newest commit). That repository's
+  other status entries number 418 as before, nothing is staged, and no file listed in the install changed
+  on disk. Where these records say the seventeen files are not committed, this entry replaces it.
+- Open, from that run: pushing the records of the run and of that commit. They are two commits on top of
+  the public `2666faf`, in the local repository only.
 - Open, from round 5, each an install, an account or a paid resource: ports for Antigravity and Gemini CLI
   (neither agent is installed here), the MCP servers the review proposes, cloud drivers beyond `ssh` and
   Hugging Face Jobs, and a container as the box for training and evaluation (Docker Desktop, asked before).
@@ -1498,7 +1520,10 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   `state` and `same` also run `real8_pre.py`, which counts the receipts of final evaluations in that
   repository's checkouts and says when the guard's record was last written), `real8_calls.py` (the twelve
   made-up calls and eight for round 5), `real8_clone.sh`, and `real8_commit.py check | commit MSGFILE` for
-  its seventeen files, which finds the run's backup folder by itself. The results are `real8-*.json` and
+  its seventeen files, which finds the run's backup folder by itself (the message it committed with is
+  `real8-commit-msg.txt`; `real8.sh precommit | postcommit` list the install's files around the commit,
+  and `kit_api.py OLD NEW`, run in a checkout of the kit, compares what scripts bind to between two
+  commits: runlog's public names and signatures, expctl's subcommands). The results are `real8-*.json` and
   `real8-*.log`, the copy of the install's kit files from before the run is
   `real-install-before-20261114-sixth`, and the kit clone that the installer ran from is `kit-2666faf`.
 - A session that ends on an error leaves its last exchange only in its saved transcript, under

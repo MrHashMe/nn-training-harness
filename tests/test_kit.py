@@ -903,6 +903,11 @@ def main():
         ("Bash", {"command": "python -c \"for split in ('data', 'test'): print(split)\""}, None),  # a list is no path
         ("Bash", {"command": "bash -c 'python -c \"import os; print(open(os.path.join(\\\"data\\\", \\\"test\\\", \\\"labels.csv\\\")).read())\"'"}, "deny"),
         ("Bash", {"command": "git commit -m 'eval: join(\"data\", \"test\") is sealed'"}, None),  # a message, not code
+        # were None: Python reads two literals side by side as one. In the line of a shell they are two arguments
+        ("Bash", {"command": "python -c \"print(open('data/te' 'st/labels.csv').read())\""}, "deny"),
+        ("Bash", {"command": "python - <<EOF\nprint(open('data/te'\n           'st/labels.csv').read())\nEOF"}, "deny"),
+        ("Write", {"file_path": "peek.py", "content": "print(open('data/te' 'st/labels.csv').read())\n"}, "ask"),
+        ("Bash", {"command": "echo 'data/' 'test/labels'"}, None),
         # were None: text that a call writes into a file, or hands to an MCP tool, and that names sealed data
         ("Write", {"file_path": str(proj / "train.py"), "content": "import csv\nrows = list(csv.reader(open('data/test/labels.csv')))\n"}, "ask"),
         ("Edit", {"file_path": "train.py", "old_string": "a", "new_string": "p = os.path.join('data', 'test', 'labels.csv')"}, "ask"),

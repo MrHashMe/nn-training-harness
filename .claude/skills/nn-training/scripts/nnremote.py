@@ -208,17 +208,7 @@ def reserve(root, st, run_id, target, rate, hours):
 # File names that usually hold credentials. Such a file travels only when remote.files names it, even when git
 # tracks it or has not been told to ignore it.
 SECRETISH = expctl.SECRETISH
-
-
-def places(root, p, rel):
-    """The names a file is judged by: its own and, where a link or a junction leads elsewhere, that of the place it
-    really lies in (relative to the project when it is inside it). The archive holds what a link leads to, so a
-    link into sealed data, or to a credentials file, would otherwise carry it along under another name."""
-    real, top = Path(os.path.realpath(p)), Path(os.path.realpath(root))
-    try:
-        return {rel, real.relative_to(top).as_posix()}
-    except ValueError:
-        return {rel, real.as_posix()}
+places = expctl.places  # a file's own name and that of its real place: a link must not carry sealed data or a credential along
 
 
 def held_back(root, cfg):
@@ -232,9 +222,9 @@ def bundle(root, cfg, st):
     Never: sealed paths, other git-ignored files (.env among them), the rest of .claude/, and files whose name
     says credentials (SECRETISH) unless remote.files names them."""
     sealed = cfg.get("sealed_paths") or []
-    files, _ = expctl.source_files(root, cfg)
+    files, links = expctl.source_files(root, cfg)[0], expctl.sealed_links(root, sealed)
     out = {f: root / f for f in files if (root / f).is_file() and not any(
-        expctl.path_matches(n, sealed) or SECRETISH.search(n) for n in places(root, root / f, f))}
+        expctl.path_matches(n, sealed) or SECRETISH.search(n) for n in places(root, root / f, f, links))}
     for p in sorted((root / KIT_REL).glob("*.py")):
         out[f"{KIT_REL}/{p.name}"] = p
     raw = expctl.read_json(root / expctl.CONFIG_REL)
@@ -249,7 +239,7 @@ def below(root, cfg, name, run=False):
     """{relative path: file} of a path that remote.files names or, with run, of the earlier run's directory that a
     resume sends along."""
     sealed = cfg.get("sealed_paths") or []
-    top, out = Path(os.path.normpath(root / name)), {}
+    top, out, links = Path(os.path.normpath(root / name)), {}, expctl.sealed_links(root, sealed)
     try:
         rel0 = top.relative_to(root).as_posix()
     except ValueError:
@@ -258,7 +248,7 @@ def below(root, cfg, name, run=False):
         raise Refuse(f'remote.files names "{name}", which does not exist')
     for q in ([top] if top.is_file() else sorted(x for x in top.rglob("*") if x.is_file())):
         rel = rel0 if q == top else f"{rel0}/{q.relative_to(top).as_posix()}"
-        if any(expctl.path_matches(n, sealed) for n in places(root, q, rel)):
+        if any(expctl.path_matches(n, sealed) for n in places(root, q, rel, links)):
             raise Refuse(f"{rel} is sealed, or a link that leads into a sealed path, and is never sent to a remote "
                          f"machine; name narrower paths in remote.files")
         if not (run and q.relative_to(top).parts[0] in ("src", "stdout.log", "pid.json", "supervisor.log", BUNDLE)):

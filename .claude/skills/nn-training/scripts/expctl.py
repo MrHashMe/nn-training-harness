@@ -603,6 +603,9 @@ def run_git(root, *args, timeout=30, text=False):
 
 # ----------------------------------------------------------------------------- path patterns
 
+NOCASE = os.name == "nt" or sys.platform == "darwin"  # filesystems that ignore case: the patterns do too, as the guard's do
+
+
 def _glob_re(pat: str):
     pat = pat.strip().replace("\\", "/")
     if pat.startswith("./"):
@@ -623,23 +626,54 @@ def _glob_re(pat: str):
         else:
             out += re.escape(c)
         i += 1
-    return re.compile("^" + out + "$")
+    return re.compile("^" + out + "$", re.I if NOCASE else 0)
 
 
 def path_matches(rel: str, patterns):
-    """First pattern matching a repo-relative path (a pattern 'a/b' or 'a/b/**' also covers everything below a/b)."""
+    """First pattern matching a repo-relative path (a pattern 'a/b' or 'a/b/**' also covers everything below a/b).
+    Where the filesystem ignores case (NOCASE), data/Test/x.csv is the file that data/test/** names."""
     rel = (rel or "").replace("\\", "/").strip("/")
     if not rel:
         return None
+    low = rel.lower() if NOCASE else rel
     for p in patterns or []:
         p2 = os.path.expanduser(str(p).strip()).replace("\\", "/")
         if p2.startswith("./"):
             p2 = p2[2:]
         base = p2[:-3] if p2.endswith("/**") else p2.rstrip("/")
-        if _glob_re(p2).match(rel) or rel == base or (
-                not any(ch in base for ch in "*?[") and rel.startswith(base + "/")):
+        b = base.lower() if NOCASE else base
+        if _glob_re(p2).match(rel) or low == b or (
+                not any(ch in base for ch in "*?[") and low.startswith(b + "/")):
             return p
     return None
+
+
+def sealed_links(root, patterns):
+    """(real place, name in the project) of each folder on a sealed pattern's way that is, or lies behind, a link to
+    another place (data -> a folder on another drive). What lies at the real place is the sealed data, by whatever
+    name it is reached: the guard's rule (its links())."""
+    out, top = set(), Path(os.path.realpath(root))
+    for p in patterns or []:
+        name = re.split(r"[*?\[]", str(p).strip().replace("\\", "/"))[0].rstrip("/")
+        while name:
+            real = Path(os.path.realpath(top / name))
+            if real != top / name and real.exists():
+                out.add((real, name[2:] if name.startswith("./") else name))
+            name = name.rpartition("/")[0]
+    return sorted(out, key=lambda x: -len(x[0].parts))
+
+
+def places(root, p, rel, links=()):
+    """The names a file is judged by: its own and, where a link or a junction leads elsewhere, that of the place it
+    really lies in (relative to the project when it is inside it), and the name a sealed pattern has for that place
+    (`links`, from sealed_links()). A snapshot and a remote run's archive hold what a link leads to, so a link into
+    sealed data, or to a credentials file, would otherwise carry it along under another name."""
+    real, top = Path(os.path.realpath(p)), Path(os.path.realpath(root))
+    try:
+        names = {rel, real.relative_to(top).as_posix()}
+    except ValueError:
+        names = {rel, real.as_posix()}
+    return names | {(Path(n) / real.relative_to(r)).as_posix() for r, n in links if r == real or r in real.parents}
 
 
 def sealed_inside(rel: str, patterns, target=None) -> bool:
@@ -647,9 +681,11 @@ def sealed_inside(rel: str, patterns, target=None) -> bool:
     or above that directory (**/test/**, data/*/test/x.csv) is answered from the names below `target`, the
     directory on disk; without a target the answer for such a pattern is True."""
     rel, wild = rel.strip("/"), []
+    rel = rel.lower() if NOCASE else rel
     for p in patterns or []:
         p2 = str(p).strip().replace("\\", "/")
         p2 = p2[2:] if p2.startswith("./") else p2
+        p2 = p2.lower() if NOCASE else p2
         head = re.split(r"[*?\[]", p2)[0]
         if head.rstrip("/").startswith(rel + "/"):
             return True
@@ -797,15 +833,21 @@ def make_snapshot(root: Path, run_dir: Path, files, is_git, cfg):
     sealed = cfg.get("sealed_paths") or []
     src = run_dir / "src"
     src.mkdir(parents=True, exist_ok=False)
-    copied, to_link, failures, kept_out = 0, [], [], []
+    copied, to_link, failures, kept_out, here = 0, [], [], [], Path(os.path.realpath(src))
+    links = sealed_links(root, sealed)
     for rel in files:
-        if path_matches(rel, sealed):
+        # by its real place too: a junction or a link to a folder gives the sealed files below it a second name, and
+        # git lists the files below a junction one by one
+        if sealed and any(path_matches(n, sealed) for n in places(root, root / rel, rel, links)):
             kept_out.append(rel)
             continue
         s, d = root / rel, src / rel
         d.parent.mkdir(parents=True, exist_ok=True)
         try:
-            if s.is_symlink():
+            to = Path(os.path.realpath(d.parent / os.readlink(s))) if sealed and s.is_symlink() and s.is_dir() else here
+            if here not in (to, *to.parents):  # a link to a folder that would lead out of the snapshot (an absolute
+                to_link.append(rel)  # one): linked below, as a git-ignored one is, without the sealed paths under it
+            elif s.is_symlink():
                 os.symlink(os.readlink(s), d)
             elif s.stat().st_size > max_bytes or SECRETISH.search(rel):
                 to_link.append(rel)  # too large, or named like a credential: the runs folder gets no second copy of it
@@ -867,8 +909,9 @@ def _link(target: Path, link: Path):
 def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, sealed=(), kept_out=None, real=None):
     """Link target at link; if link is already a real directory (tracked files inside an ignored dir), or
     a sealed path lies below it, create a real directory and link the children instead (sealed ones are left out,
-    so training runs cannot reach the test split even through a broad glob). `real` is the place in the project
-    that a link on the way led to (data/latest -> data/2026-01): the target is judged by that name as well."""
+    so training runs cannot reach the test split even through a broad glob). `real` holds the names in the project
+    of the place that a link on the way led to (data/latest -> data/2026-01, or a second link to the storage that
+    data itself is a link to): the target is judged by those names as well."""
     if _is_link(link):  # never descend through a link: its children are the real files
         return
     if sealed and _is_link(target):
@@ -877,8 +920,9 @@ def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, se
             failures.append(f"link {rel}: it leads to the project folder or above it, so it would bring the sealed "
                             f"paths into the snapshot under another name")
             return
-        real = to.relative_to(top).as_posix() if top in to.parents else None
-    names = [rel] + ([real] if real else [])
+        # names in the project only: a wildcard pattern would seal a link whose storage merely lies below a `test` folder
+        real = tuple(n for n in places(top, to, rel, sealed_links(top, sealed)) - {rel} if not Path(n).anchor)
+    names = [rel, *(real or ())]
     if any(path_matches(n, sealed) for n in names):
         if kept_out is not None:
             kept_out.append(rel)
@@ -904,7 +948,7 @@ def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, se
                 if child.name in NOLINK_IGNORED:
                     continue
                 _link_tree(child, link / child.name, f"{rel}/{child.name}", linked, failures, depth + 1,
-                           sealed=sealed, kept_out=kept_out, real=real and f"{real}/{child.name}")
+                           sealed=sealed, kept_out=kept_out, real=real and tuple(f"{r}/{child.name}" for r in real))
         return
     try:
         link.parent.mkdir(parents=True, exist_ok=True)

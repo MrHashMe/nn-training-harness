@@ -372,6 +372,58 @@ def unit_tests():
         check(len(got[0]) == 1 and "leads to the project folder" in got[0][0] and not os.path.lexists(root / "snap/data/up"),
               f"a link that leads to the project folder itself is not linked, and the snapshot reports it ({got[0]})")
 
+        # the source files themselves: judged by their real place too, and by the filesystem's rule for case
+        E._link(root / "data/a", root / "alias")  # not git-ignored: git lists the files below a junction one by one
+        cfg = dict(E.load_config(root), sealed_paths=["data/a/test/**"])
+
+        def source_snapshot(name, files):
+            info, src = E.make_snapshot(root, root / "runs" / name, files, False, cfg), root / "runs" / name / "src"
+            return info["failures"], [f for f in ("alias/test/secret.csv", "alias/train/x.csv", "other/x.txt")
+                                      if (src / f).exists()], "alias/test/secret.csv" in info["sealed_kept_out"]
+
+        got = source_snapshot("s1", ["alias/test/secret.csv", "alias/train/x.csv", "other/x.txt"])
+        check(got == ([], ["alias/train/x.csv", "other/x.txt"], True),
+              f"a source file that lies in a sealed place under a link's name stays out of the snapshot (was: copied, "
+              f"because only its name under the link was compared with the sealed patterns) ({got})")
+        if os.path.islink(root / "alias"):  # where git lists the link itself, as one entry
+            os.symlink("other", root / "near")
+            got, src = source_snapshot("s2", ["alias", "near", "other/x.txt"]), root / "runs/s2/src"
+            check(got[:2] == ([], ["alias/train/x.csv", "other/x.txt"]) and not os.path.islink(src / "alias")
+                  and os.readlink(src / "near") == "other",
+                  f"a link to a folder that would lead out of the snapshot is linked without the sealed paths below it "
+                  f"(was: made again as it is, so the sealed files were there under its name), and one that stays "
+                  f"inside is made again as it is ({got})")
+            os.unlink(root / "near")
+        else:
+            print("SKIP a source link that leads out of the snapshot: this account cannot make a link to a folder, and git "
+                  "lists the files below a junction one by one")
+        os.unlink(root / "alias") if os.path.islink(root / "alias") else os.rmdir(root / "alias")
+        got = [bool(E.path_matches("Data/A/Test/x.csv", ["data/a/test/**"])), bool(E.path_matches("data/a/test/x.csv", ["DATA/*/TEST/**"])),
+               E.sealed_inside("Data", ["data/a/test/**"]), E.sealed_inside("data", ["DATA/A/TEST/**"])]
+        check(got == [E.NOCASE] * 4 and E.NOCASE == (os.name == "nt" or sys.platform == "darwin"),
+              f"a sealed pattern names a path in other case where the filesystem ignores case, as the guard's rule has "
+              f"it (was: never, so data/Test/ lay in a snapshot beside a sealed data/test/**), and only there ({got})")
+
+        # sealed data whose own folder is a link to storage elsewhere, and a second link to that storage
+        with tempfile.TemporaryDirectory() as d2:
+            store, got = Path(os.path.realpath(d2)), []
+            for f in ("test/secret.csv", "train/x.csv"):
+                put(store / f, "x")
+            E._link(store, root / "ext")
+            cfg, both = dict(cfg, sealed_paths=["ext/test/**"]), ["alias/test/secret.csv", "alias/train/x.csv"]
+            for n, (to, listed) in enumerate(((store, both), (root / "ext", both), (store / "test", ["alias/secret.csv"]))):
+                E._link(to, root / "alias")
+                for name, files in ((f"l{n}", listed), (f"i{n}", [])):  # as git lists its files, and as a git-ignored folder
+                    info, src = E.make_snapshot(root, root / "runs" / name, files, False, cfg), root / "runs" / name / "src"
+                    got.append((info["failures"], [f for f in both + ["alias/secret.csv", "ext/test/secret.csv", "ext/train/x.csv"]
+                                                   if (src / f).exists()]))
+                os.unlink(root / "alias") if os.path.islink(root / "alias") else os.rmdir(root / "alias")
+            os.unlink(root / "ext") if os.path.islink(root / "ext") else os.rmdir(root / "ext")
+        check(got == [([], ["alias/train/x.csv", "ext/train/x.csv"])] * 4 + [([], ["ext/train/x.csv"])] * 2,
+              f"where the sealed folder is itself a link to storage elsewhere, a second link to that storage, to the "
+              f"first link or to the sealed folder brings no sealed file into a snapshot, as source files or as a "
+              f"git-ignored folder (was: copied, or linked whole, because the storage has no name in the project) ({got})")
+
 
 # ---------------------------------------------------------------- the test project
 

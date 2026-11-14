@@ -143,7 +143,8 @@ def recursive_re(posix):
         r"\b(?:grep|egrep|fgrep|cp|scp)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*[rR][a-zA-Z]*|--recursive)(?=[\s;|&)]|$)|"
         r"\bcp\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--archive)(?=[\s;|&)]|$)|"  # cp -a copies the tree as well
         # ls -ltr sorts in reverse and chmod -r takes a permission away: there only -R recurses
-        r"\b(?:ls|dir|chmod|chown)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*R[a-zA-Z]*|--recursive)(?=[\s;|&)]|$)")
+        r"\b(?:ls|dir|chmod|chown)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*R[a-zA-Z]*|--recursive)(?=[\s;|&)]|$)|"
+        r"\bdu\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--all)(?=[\s;|&)]|$)")  # du -a lists every file of the tree
 
 
 RECURSIVE, RECURSIVE_POSIX = recursive_re(False), recursive_re(True)
@@ -291,12 +292,18 @@ NOTE_LIT = re.compile(_LIT, re.I)
 LOADS = re.compile(r"(?<![\w.])(?:require|import|load|dofile|do|include|include_once|require_once|source)\s*\(?\s*"
                    + _LIT + r"|(?:['\"](?:[^'\"\s]*/)?" + _PROG + r"['\"]|\bsys\.executable)\s*,\s*"
                    r"(?:['\"]-[^'\"\n]*['\"]\s*,\s*)*" + _LIT, re.I)
+# In program text that an interpreter runs (python -c "...", python - <<EOF, cat <<EOF | python: not a here-document
+# that a command writes into a file): Python's calls that walk, copy or pack a whole tree (os.walk, Path.rglob,
+# shutil.copytree, shutil.make_archive). Not ast.walk, which walks no folder
+PY_WALK = re.compile(r"(?<!\w)(?:(?<!ast\.)walk|fwalk|rglob|copytree|make_archive)(?=\s*\()")
+# a runner that takes a here-document, or a here-string (group 1), as its code
+HERE_RUN = re.compile(_GO + _PROG + r"(?=[\s<])(?:[^;&|\n<]|<(?!<))*<<(<?)", re.I | re.M)
 # ** (zsh's *** too) as a whole part of a path outside quotes: a shell that reads it so (bash's globstar, zsh, fish)
 # walks the tree. Not a ** that stands alone, which in a line of program text is a power
 _W = r"[^\s;&|<>()'\"]*"
 STARS = re.compile(r"(?<![^\s;&|<>()])(?:" + _W + r"/\*{2,}(?:/" + _W + r")?|\*{2,}/" + _W + r")(?![^\s;&|<>()])")
 # the short options that take a value, by tool. The other letters may stand in front of one in one group (-ig)
-VALUE_OPTS = {"grep": "ABCDdefm", "rg": "ABCdEefgjMmrTt", "ls": "ITw", "tree": "HILPTo"}
+VALUE_OPTS = {"grep": "ABCDdefm", "rg": "ABCdEefgjMmrTt", "ls": "ITw", "tree": "HILPTo", "du": "BdtX"}
 VALUE_OPTS.update(egrep=VALUE_OPTS["grep"], fgrep=VALUE_OPTS["grep"], rgrep=VALUE_OPTS["grep"])
 _RG = r"\s-[^\W" + VALUE_OPTS["rg"] + "]*"
 RG_GLOB = re.compile(r"(?:" + _RG + r"g(?:=|\s*)|--(i)?glob(?:=|\s+))" + _VAL)
@@ -323,7 +330,7 @@ _V = r"(?:\"[^\"]*\"|'[^']*'|[^\s;&|,]+)"
 PS_GLOB = re.compile(r"\s-(?:Filter|Include)\s+(" + _V + r"(?:\s*,\s*" + _V + r")*)", re.I)  # PowerShell's: a list
 # with no folder named, these take the cwd
 GREPS = {"grep", "egrep", "fgrep", "rgrep"}  # rgrep is grep -r
-CWD_SEARCH = GREPS | {"rg", "ag", "find", "tree", "ls", "get-childitem", "gci", "dir", "findstr", "alldirectories"}
+CWD_SEARCH = GREPS | {"rg", "ag", "find", "tree", "ls", "du", "get-childitem", "gci", "dir", "findstr", "alldirectories"}
 PATTERN_FIRST = GREPS | {"rg", "ag"}  # their first argument is the text to look for, not a path
 SEPARATOR = re.compile(r"(&&|\|\||[;|&\n])")  # between the commands of one line
 RG_TYPES = {  # the file endings of ripgrep's types, each no less than `rg --type-list` gives (ripgrep 15.0.0)
@@ -940,6 +947,11 @@ def inner_code(c: str):
         out += [m.group(1)] if m else []
         out += [after] if after and CODE_FLAG.match(t) else []
         out += [decoded(after)] if ENCODED.match(t) and decoded(after) else []
+    # a runner without a script takes its code from standard input (echo "..." | sh, bash <<< "..."): there every
+    # argument of the line that is more than a plain word or path may be that code
+    bare = QUOTED.sub(" '' ", c)
+    if PIPED.search(bare) or any(m.group(1) for m in HERE_RUN.finditer(bare)):
+        out += [t for t in toks if re.search(r"\w", t) and re.search(r"[^\w./:@%+,-]", t)]
     return out
 
 
@@ -1488,13 +1500,19 @@ def runs_final(seg, fin):
     return False
 
 
+def plain(cmd: str) -> str:
+    """A command line in the form the rules of check_bash read: a backslash is a folder separator, find's two ends
+    of a command are one, a command word in quotes is the same command, and .NET's AllDirectories, which mostly
+    comes as a string, stands bare."""
+    raw = FIND_END.sub(r"\1+", cmd.replace("\\", "/"))
+    return re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", QUOTED_COMMAND.sub(r"\1\3", raw))
+
+
 def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     """alt: also check the line as another shell reads it. sh: the text may be a POSIX shell's (the line of a tool
     call, or text handed to a shell), where a brace list stands for names."""
     cfg = ctx.cfg
-    # a command word in quotes is the same command, and .NET's AllDirectories mostly comes as a string
-    raw = FIND_END.sub(r"\1+", cmd.replace("\\", "/"))  # for the guard, find's two ends of a command are one
-    raw = re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", QUOTED_COMMAND.sub(r"\1\3", raw))
+    raw = plain(cmd)
     c = GIT_GLOBAL.sub("git", raw)
     c_noq = QUOTED.sub(" '' ", c)
     results = []
@@ -1587,7 +1605,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                                          f"if it cannot read or expose sealed content."))
                     break
         if not results:
-            recursive = bool(ctx.recursive_re.search(c_noq) or re.search(r"\bgit\s+grep\b", c_noq))
+            # program text that an interpreter runs: a call in it may walk a tree, and so may a ** in one of its strings
+            prog = bool(HERE_RUN.search(c) or PIPED.search(c_noq)) if "<<" in cmd else depth > 0
+            recursive = bool(ctx.recursive_re.search(c_noq) or re.search(r"\bgit\s+grep\b", c_noq)
+                             or (prog and PY_WALK.search(c_noq)))
             # a name that a search leaves out is not swept, unless the line names it as a path as well
             rest = SEARCH_EXCL.sub(" ", c)
             left = {y.group(2).strip("\"'") for y in SEARCH_EXCL.finditer(c)} - set(shell_tokens(rest))
@@ -1599,14 +1620,16 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
             curs, chain, stack, moved = [here], None, [], False  # curs: the folders in which the next command may run
             taken = None
             parts = SEPARATOR.split(QUOTED.sub(lambda q: SEPARATOR.sub(" ", q.group()), raw)) \
-                if (recursive or MOVE.search(c_noq) or STARS.search(c_noq) or GIT_TAKES.search(c_noq)) and not hit else []
+                if (recursive or MOVE.search(c_noq) or STARS.search(c_noq) or GIT_TAKES.search(c_noq)
+                    or (prog and "**" in c)) and not hit else []
             for i in range(0, len(parts), 2):
                 seg, before, after = parts[i].lstrip(), "".join(parts[i - 1:i]), "".join(parts[i + 1:i + 2])
                 sq = QUOTED.sub(" '' ", ENV_C.sub(r"\1", GIT_GLOBAL.sub("git", seg)))
                 stack += [curs] * sq.count("(")  # a subshell: a cd in it ends with it
                 chain = chain if before == "&&" else None  # the folders behind a cd that && joins this command to
                 x = CD.match(seg)
-                found = list(ctx.recursive_re.finditer(sq)) or list(MOVE.finditer(sq))
+                py = list(PY_WALK.finditer(sq)) if prog else []
+                found = list(ctx.recursive_re.finditer(sq)) + py or list(MOVE.finditer(sq))
                 runs = curs if chain is None else chain  # the folders in which this command may run
                 for d in re.findall(r"-C\s+(\S+)", " ".join(g.group(1) for g in GIT_GLOBAL.finditer(seg))) + \
                         [y.group(2) for y in ENV_C.finditer(seg)]:  # git -C dir, env -C dir: this one runs in dir
@@ -1655,7 +1678,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                     tools = tools or {"grep"}
                     # a tool named where a command starts is a command for sure. Only then is the project root itself
                     # checked: the words find and tree also turn up in text that a line writes to a file
-                    first = ps or any(COMMAND_START.match(sq[:m.start()]) and re.match(
+                    first = ps or py or any(COMMAND_START.match(sq[:m.start()]) and re.match(
                         r"(?:\.exe)?(?:\s+[^=\s]|\s*(?:[)}`]|$))", sq[m.start() + len(n):]) for m, n in zip(found, names))
                     tool = next(iter(tools)) if len(tools) == 1 else ""  # several in one command: each one's rules are off
                     globs, cut = file_filters(seg, sq, tools, ps)
@@ -1670,11 +1693,15 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                     args = search_args(lx[k + 1:], PS_PLAIN if ps else PLAIN.get(tool))
                     if tools <= MOVERS:  # PowerShell moves a list: a,b
                         args = [(t, sure) for a, sure in (args if dest else args[:-1]) for t in a.split(",")]
-                    if "alldirectories" in tools:  # a .NET call: its folder is a string in the call, and a relative
-                        # one starts where the shell was started, whatever Set-Location did since
+                    if "alldirectories" in tools or py:  # a call in program text: its folder is a string in the call
                         args = [(q.group(0)[1:-1], True) for q in QUOTED.finditer(seg)
                                 if not re.search(r"[*?\[$]", q.group(0))]
-                        runs = list(dict.fromkeys([here] + runs))
+                        # the lone string of a call, walk('data'), lost its quotes in plain(): it counts where the
+                        # text as it came has them
+                        args += [(w, True) for w in re.findall(r"\(\s*([\w./:-]+)(?=[\s)])", sq)
+                                 if re.search(r"\(\s*(['\"])" + re.escape(w) + r"\1", cmd.replace("\\", "/"))]
+                    if "alldirectories" in tools:  # .NET's relative folder starts where the shell was started,
+                        runs = list(dict.fromkeys([here] + runs))  # whatever Set-Location did since
                     k = next((j for j, a in enumerate(args) if a[1]), len(args))
                     if k < len(args) and tools <= PATTERN_FIRST and not (tool in TEXT_OPT and TEXT_OPT[tool].search(sq)):
                         # the text it looks for is its first argument, unless an option gives the text. Behind what
@@ -1701,7 +1728,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                             if len(got) > 8:  # a wildcard over many folders:
                                 got = [os.path.commonpath(got)]  # the folder that holds them all
                             bases += got
-                    if not named and tools & CWD_SEARCH:
+                    if not named and (py or tools & CWD_SEARCH):
                         bases += [str(d) for d in runs]
                     for b in dict.fromkeys(bases):  # the folders a command names itself are looked at one by one
                         # a tool word that does not start a command: the project root stays unasked, as before.
@@ -1709,7 +1736,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                         if first or rg or ctx.rel(b) != ".":
                             s = searched(ctx, b, globs, typ, rgish, runs[0] if tool == "rg" and len(runs) == 1 else None)
                             moved, hit = moved or bool(s and not hit and tools <= MOVERS), hit or s
-                for y in STARS.finditer(sq):  # cat **/*.csv: a shell that reads ** so walks the tree by itself
+                # cat **/*.csv: a shell that reads ** so walks the tree by itself. In program text the ** stands in a
+                # string: glob('**/*.csv', recursive=True), Path('.').glob('**/*')
+                lits = " ".join(q.group(0)[1:-1] for q in QUOTED.finditer(seg)) if prog else ""
+                for y in STARS.finditer(sq + " " + lits):
                     lead, rest = re.split(r"\*{2,}", y.group(0), 1)
                     lead, name = re.split(r"[*?\[]", lead)[0], rest.strip("/")
                     for d in runs:
@@ -1822,11 +1852,15 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                              f"`uv run --frozen` (or --no-sync) while runs or studies are active."))
     if depth < 2 and not is_final:  # what it hands to a nested shell or interpreter obeys the same rules, in every
         # folder the line moves to: after `cd data`, the code's test/labels.csv is data/test/labels.csv.
-        # Also from the line as it came: there the text still has the backslashes that readings() looks at
-        for s in dict.fromkeys(inner_code(c) + inner_code(GIT_GLOBAL.sub("git", cmd))):
-            for d in dirs:
-                ctx.cwd = d
-                results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)))
+        # First from the line as it came: there the text still has the backslashes that readings() looks at and the
+        # quotes of walk('data'). Then from the line as the rules read it, where that gives another text
+        seen = set()
+        for s in dict.fromkeys(inner_code(GIT_GLOBAL.sub("git", cmd)) + inner_code(c)):
+            if plain(s) not in seen:
+                seen.add(plain(s))
+                for d in dirs:
+                    ctx.cwd = d
+                    results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)))
         ctx.cwd = here
     others, long = readings(cmd) if alt else ([], False)
     if long and sh:  # program text (python -c "...") has braces of its own

@@ -103,7 +103,8 @@ try:
     net = True
 except OSError:
     net = False
-print(json.dumps({"net": net, "sealed": os.path.exists(os.path.join(proj, "data/test/labels.csv")),
+sealed = os.path.join(proj, "data/test/labels.csv")
+print(json.dumps({"net": net, "sealed": os.path.exists(sealed) and os.path.getsize(sealed) > 0,
                   "main": writable(os.path.join(proj, "train.py")), "worktree": writable(os.path.join(wt, "probe.tmp")),
                   "runs": writable(os.path.join(proj, "runs", "probe.tmp"))}))
 '''
@@ -389,6 +390,10 @@ def refusal_tests(tmp, proj, exe):
         ("an evaluator that is not frozen", dict(runs=5, over={"frozen_paths": ["data/**"]}), "eval.py is not covered by frozen_paths"),
         ("an editable evaluator", dict(runs=5, loop={"editable_paths": ["train.py", "eval.py"]}), "editable_paths overlaps protected files: eval.py"),
         ("a linked folder that holds sealed data", dict(runs=5, loop={"link_paths": ["data"]}), "may not name sealed or editable paths"),
+        ("a folder with protected files that the evaluator may write", dict(runs=5, loop={"eval_writable": ["out", "data"]}),
+         "loop.eval_writable entries must be paths inside the project that are not protected"),
+        ("a path outside the project that the evaluator may write", dict(runs=5, loop={"eval_writable": ["../out"]}),
+         "loop.eval_writable entries must be paths inside the project"),
         ("a linked folder that nothing checksums", dict(runs=5, loop={"protected_data": []}), "must be covered by frozen_paths or loop.protected_data: blobs"),
     ]
     for name, kw, want in cases:
@@ -1270,9 +1275,24 @@ def sandbox_tests(tmp, proj):
     got = json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]
     check(got == {"net": False, "sealed": False, "main": False, "worktree": True, "runs": True},
           f"a training run has no network, cannot see the sealed data and can write only its worktree and the runs folder (got {got})")
-    r = tk.sh(C.box_eval + [PY, str(tmp / "probe.py"), str(proj), str(C.wt)], cwd=proj)
-    got = json.loads(r.stdout) if r.stdout.strip().startswith("{") else {}
-    check(got.get("net") is False and got.get("sealed") is True, "the evaluator runs without network")
+    def seen():  # what the evaluator's box lets a program do, when the folder it scores is the runs folder
+        r = tk.sh(C.eval_box(proj / "runs") + [PY, str(tmp / "probe.py"), str(proj), str(C.wt)], cwd=proj)
+        return json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]
+
+    got = seen()
+    check(got == {"net": False, "sealed": True, "main": False, "worktree": False, "runs": True},
+          f"the evaluator has no network, reads the sealed data it scores on and can write only the folder it scores (got {got})")
+    for named in ("data/test/labels.csv", "data/test"):  # as a file and as a folder
+        C.cfg["final_eval_commands"] = [f"{PY} eval.py --final --data={named}"]
+        C.L["eval_writable"] = ["train.py", "no-such-folder"]
+        got = seen()
+        check(got == {"net": False, "sealed": False, "main": True, "worktree": False, "runs": True},
+              f"sealed data that only the final evaluation names ({named}) is hidden from the loop's evaluator, and it "
+              f"can write what loop.eval_writable lists (got {got})")
+    C.L["eval_command"] = C.L["eval_command"] + ["--data", "data/test/labels.csv"]
+    got = seen()
+    check(isinstance(got, dict) and got.get("sealed") is True,
+          f"sealed data that the loop's own evaluator command names stays readable for it (got {got})")
     C.drop_worktree()
     (proj / "runs/probe.tmp").unlink(missing_ok=True)
 

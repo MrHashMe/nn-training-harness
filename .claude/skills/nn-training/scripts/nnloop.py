@@ -690,10 +690,31 @@ class Campaign:
     def fill(self, xs, seed="", run_dir=""):
         return [x.replace("{python}", self.py).replace("{seed}", str(seed)).replace("{run_dir}", str(run_dir)) for x in xs]
 
+    def eval_box(self, run_dir):
+        """The evaluator's box where bubblewrap works: no network, and the project read-only except the folder it
+        scores and loop.eval_writable. Sealed data that only a final evaluation command names is hidden from it."""
+        if not self.box_eval:
+            return []
+
+        def named(texts):  # the project paths that argument lists or command lines name
+            return {re.sub(r"^\./", "", t.strip("\"'").replace("\\", "/")).rstrip("/")
+                    for x in texts for t in re.split(r"[\s=]+", str(x))}
+
+        mine, pre = named(self.L["eval_command"]), self.box_eval + ["--ro-bind", str(self.root), str(self.root)]
+        for t in sorted(named(self.cfg.get("final_eval_commands") or [])):
+            p = self.root / t
+            if (expctl.path_matches(t, self.cfg.get("sealed_paths")) and p.exists()
+                    and not any(e == t or e.startswith(t + "/") or t.startswith(e + "/") for e in mine if e)):
+                pre += ["--tmpfs", str(p)] if p.is_dir() else ["--ro-bind", "/dev/null", str(p)]
+        for w in [run_dir] + [self.root / x for x in self.L.get("eval_writable") or []]:
+            if os.path.exists(w):
+                pre += ["--bind", str(w), str(w)]
+        return pre
+
     def evaluate(self, run_dir):
         """The frozen evaluator on one folder, started by the harness itself; None when it timed out."""
         try:
-            return subprocess.run(self.box_eval + self.fill(self.L["eval_command"], run_dir=run_dir), cwd=str(self.root),
+            return subprocess.run(self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir), cwd=str(self.root),
                                   env=self.run_env, capture_output=True, encoding="utf-8", errors="replace",
                                   timeout=float(self.L.get("eval_timeout_s") or 600), **NOWIN)
         except subprocess.TimeoutExpired:
@@ -1588,6 +1609,11 @@ def preflight(C: Campaign, agent, limits, args):
     bad = [p for p in L.get("link_paths") or [] if not expctl.path_matches(p, fixed)]
     if bad:  # a link reaches the project's own copy, so what it names must be checksummed like the evaluator
         fail(f"loop.link_paths entries must be covered by frozen_paths or loop.protected_data: {', '.join(bad)}")
+    bad = [p for p in L.get("eval_writable") or [] if os.path.isabs(p) or ".." in Path(p).parts
+           or expctl.path_matches(p, C.pats) or expctl.sealed_inside(p, C.pats)]
+    if bad:  # what the evaluator may write must not be what the loop checksums
+        fail(f"loop.eval_writable entries must be paths inside the project that are not protected (frozen, sealed, "
+             f"harness or protected data) and hold nothing protected: {', '.join(bad)}")
     C.exe = args.agent_exe or next((shutil.which(b) for b in AGENTS[agent]["bins"] if shutil.which(b)), None)
     if not C.exe:
         fail(f"the {agent} command-line agent was not found on PATH (pass --agent-exe PATH)")

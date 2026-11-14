@@ -58,6 +58,7 @@ import sys
 import threading
 import time
 from pathlib import Path
+from urllib.parse import unquote
 
 DENY, ASK = "deny", "ask"
 LIMIT = 12  # seconds after which the guard answers "ask" by itself: its hooks give it 15 to 20
@@ -72,6 +73,7 @@ TOOL_NAMES = {"bash": "Bash", "monitor": "Bash", "powershell": "Bash", "shell": 
 PATH_KEYS = ("file_path", "notebook_path", "path", "target_file", "filePath")
 CONTENT_KEYS = ("content", "contents", "new_string", "old_string", "text", "code", "new_str", "old_str")
 OLD_KEYS = ("old_string", "old_str", "old_source")  # the text an edit replaces: it leaves the file
+PLACE_KEY = re.compile(r"path|dir|folder|root|cwd|ur[il]|file|location", re.I)  # an MCP tool's argument that names a place
 PATCH_FILE = re.compile(r"^\*\*\* (Add|Update|Delete) File: (.+?)\s*$|^\*\*\* Move to: (.+?)\s*$", re.M)
 QUOTED = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"")
 WRITE_VERBS = re.compile(
@@ -1163,6 +1165,11 @@ def calls_from(payload):
     # Not for the agent's own tools: a task for a subagent may name the sealed folder, and its calls come here as well
     if re.match(r"mcp(?:__|:)", name, re.I) or payload.get("mcp_server_name") or event == "beforeMCPExecution":
         calls.append(("Other", {"text": "\n".join(strings(ti))}))
+        # and a folder that it is handed it may list or read whole: an argument under a key that names a place, or
+        # one written as a path. Not any word: a query for "data" names no folder
+        places = [p for k, v in ti.items() if PLACE_KEY.search(str(k)) for p in path_strings(v)]
+        places += [p for p in path_strings(ti) if re.search(r"[/\\]", p)]
+        calls += [("Other", {"folder": p}) for p in dict.fromkeys(places)]
     return calls
 
 
@@ -1448,6 +1455,16 @@ def check_path_tool(ctx: Ctx, tool, ti):
                                   f"(pattern '{hit}'), which stays outside all tuning feedback. Narrow it: give a "
                                   f"path that leaves the sealed files out (the source folder, say), or a glob they "
                                   f"do not match (such as '*.py')."))
+    folder = ti.get("folder")  # handed to an MCP tool, which may list or read everything below it. The project root
+    if folder:  # stays unasked: tools are given it all the time, as the folder they work in
+        if folder[:7].lower() == "file://":
+            folder = unquote(re.sub(r"(?i)^file://(?:localhost)?", "", folder))
+        hit = reaches_sealed(ctx, folder) if ctx._abs(folder).is_dir() and ctx.rel(folder) != "." else None
+        if hit:
+            results.append((ASK, f"This call hands an MCP tool the folder '{ctx.rel(folder)}', which holds sealed test "
+                                 f"data (pattern '{hit}'): the tool may list or read every file below it. Give it a "
+                                 f"folder without sealed files (data/train, say), or approve only if the tool cannot "
+                                 f"read or expose sealed content."))
     # What a call writes into a file, or hands to an MCP tool, is read as well: code or a query that names the sealed
     # data would read it later, outside this guard. Not notes, and not the guard's own configuration, which names it
     file = str(ti.get("file_path") or "")

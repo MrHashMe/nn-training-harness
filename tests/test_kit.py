@@ -1055,6 +1055,16 @@ def main():
         ("Write", {"file_path": "train.py", "content": "splits = ['train', 'test']\nacc = correct / total\n"}, None),
         ("mcp__db__query", {"query": "SELECT *\nFROM read_csv('data/test/labels.csv')"}, "ask"),
         ("mcp__db__query", {"query": "SELECT * FROM read_csv('data/train.csv')"}, None),
+        # were None: an MCP tool that is handed a folder may list or read all of it. The project root stays unasked,
+        # and so does a word that is no path
+        ("mcp__fs__search_files", {"path": "data", "pattern": "labels"}, "ask"),
+        ("mcp__fs__read_multiple", {"paths": ["sub", "./data"]}, "ask"),
+        ("mcp__fs__directory_tree", {"directory": (proj / "data").as_uri()}, "ask"),
+        ("mcp__fs__search_files", {"path": "eval", "pattern": "metric"}, None),
+        ("mcp__fs__search_files", {"path": ".", "pattern": "x"}, None),
+        ("mcp__fs__read_file", {"path": "data/train.csv"}, None),
+        ("mcp__docs__query", {"query": "data", "library": "pandas"}, None),
+        ("Task", {"description": "look", "prompt": "Summarise data/train.csv", "path": "data"}, None),
         # the agent's own tools are not read so: a task for a subagent may name the sealed folder
         ("Task", {"description": "review", "prompt": "Check that nothing reads data/test/labels.csv.\nReport."}, None),
         # were None: a shell write to git's hooks or configuration (the edit tools asked already)

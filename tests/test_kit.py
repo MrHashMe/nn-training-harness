@@ -173,6 +173,19 @@ def main():
     h = jout(expctl(proj, "hash"))
     check(len(h["source_hash"]) == 64 and h["git"]["dirty"], "hash reports source hash and dirty tree")
     check(h["files_size_only"] >= 1, "large tracked file hashed by size only")
+    made = [proj / n for n in ("AGENTS.md", ".mcp.json", ".codex/hooks.json", ".cursor/cli.json",
+                               ".agents/skills/x/SKILL.md", "experiments/JOURNAL.md")]
+    for p in made:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text("x\n")
+    h2 = jout(expctl(proj, "hash"))
+    check(h2["source_hash"] == h["source_hash"] and h2["git"]["dirty_examples"] == h["git"]["dirty_examples"],
+          "the files of the agent ports and the journal are not experiment source: they change neither the source hash "
+          f"nor the list of uncommitted changes ({h2['git']['dirty_examples']})")
+    for p in made[:2]:
+        p.unlink()
+    for n in (".codex", ".cursor", ".agents", "experiments"):
+        shutil.rmtree(proj / n)
     e = jout(expctl(proj, "env", "--python", PY))
     check("interpreter" in e and "packages" in e["interpreter"], "env probes interpreter packages")
 

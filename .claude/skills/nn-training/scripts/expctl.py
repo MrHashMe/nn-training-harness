@@ -649,9 +649,12 @@ def optuna_storage_file(cfg):
 
 
 def excluded_from_provenance(rel: str, cfg) -> bool:
-    """Bookkeeping that is not experiment code: never hashed or copied into snapshots."""
+    """Bookkeeping and agent configuration, which are not experiment code: never hashed or copied into snapshots.
+    The files of the other agents' ports count like .claude/ and CLAUDE.md, so an upgrade of the kit does not
+    change a project's source hash."""
     r = rel.strip("/")
-    if r == ".claude" or r.startswith(".claude/") or r in ("CLAUDE.md", "CLAUDE.local.md"):
+    if r.split("/")[0] in (".claude", ".codex", ".cursor", ".agents") or r in (
+            "CLAUDE.md", "CLAUDE.local.md", "AGENTS.md", ".mcp.json"):
         return True
     journal = (cfg.get("journal") or "").strip("/")
     if journal and r == journal:
@@ -730,8 +733,12 @@ def provenance(root: Path, cfg):
             "size_only_examples": size_only[:10], "git": None}
     if is_git:
         head = run_git(root, "rev-parse", "HEAD", text=True)
-        porcelain = run_git(root, "status", "--porcelain", "--untracked-files=normal", text=True) or ""
-        dirty = [ln[3:] for ln in porcelain.splitlines() if ln.strip()]
+        # every untracked file by its own name: a folder that holds nothing but the journal is not a change
+        porcelain = run_git(root, "status", "--porcelain", "--untracked-files=all", text=True) or ""
+        runs = cfg["runs_dir"].strip("/")  # "dirty" is about the files the hash covers: not the journal, not the runs
+        dirty = [ln[3:] for ln in porcelain.splitlines() if ln.strip() and not any(
+            p == runs or p.startswith(runs + "/") or excluded_from_provenance(p, cfg)
+            for p in [ln[3:].split(" -> ")[-1].strip('"').rstrip("/")])]
         info["git"] = {"commit": head.strip() if head else None, "dirty": bool(dirty),
                        "dirty_count": len(dirty), "dirty_examples": dirty[:20]}
     return files, is_git, info

@@ -353,6 +353,27 @@ def refusals(tmp, proj):
         (proj / n).unlink()
     (proj / "keys").rmdir()
     set_remote(proj, tmp)
+    # The archive holds what a link leads to. A link into sealed data (where Windows gives no privilege for links:
+    # a junction, which git lists file by file) or to a credentials file must not carry it along under another name.
+    nnremote.expctl._link(proj / "data/test", proj / "peek")
+    try:
+        os.symlink(proj / ".env", proj / "plain.txt")
+    except OSError:
+        pass  # Windows without the privilege to create links
+    cfg = nnremote.expctl.load_config(proj)
+    got = sorted(n for n in nnremote.bundle(proj, cfg, nnremote.settings(cfg)) if n.startswith(("peek", "plain")))
+    held = nnremote.held_back(proj, cfg)
+    check(not got and ("plain.txt" in held) == (proj / "plain.txt").exists(),
+          f"a link into a sealed folder, or to a credentials file, does not travel under its own name ({got}, held back: {held})")
+    e = refused(["--on", "box"], files=["extra/notes.txt", "peek"])
+    check("sealed" in e, f"and remote.files cannot name a link that leads into a sealed folder ({e[:90]})")
+    for n in ("peek", "plain.txt"):
+        if os.path.lexists(proj / n):
+            try:
+                os.unlink(proj / n)
+            except OSError:
+                os.rmdir(proj / n)  # a junction
+    set_remote(proj, tmp)
 
 
 def ssh_tests(tmp, proj):

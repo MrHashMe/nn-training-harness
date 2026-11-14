@@ -84,7 +84,10 @@ Never sent: sealed paths (naming one in `files` is refused), other git-ignored f
 `.claude/`, the launching environment. Files git has not been told to ignore still stay at home when their name
 looks like a credential (`.env*`, `.netrc`, `*.pem`, `*.key`, `id_rsa*`, `credentials*`, `*secret*`, `*_token.*`,
 `service-account*.json`): the launch output and the manifest list them under `not_sent`, and naming one in `files`
-sends it. This goes by name only; a secret inside an ordinary source file travels with it. Values of the named variables are not written to the run directory, the
+sends it. This goes by name only; a secret inside an ordinary source file travels with it. A link or a junction
+is judged by its own name and by the place it leads to, because the archive holds the content: one that leads
+into a sealed path, or to a file named like a credential, stays at home, and `files` refuses a path with a link
+into a sealed path below it. Values of the named variables are not written to the run directory, the
 ledger, a log or a command line; the manifest records their names (`remote.sent_env`).
 Packed once: the launch writes what it sends into one archive in the run's local directory
 (`.nnremote-bundle.tar.gz`) and records its SHA-256 in the manifest (`remote.bundle_sha256`) beside the source

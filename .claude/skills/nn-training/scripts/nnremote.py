@@ -197,9 +197,20 @@ SECRETISH = re.compile(
     r"service[-_]?account[^/]*\.json)$", re.I)
 
 
+def places(root, p, rel):
+    """The names a file is judged by: its own and, where a link or a junction leads elsewhere, that of the place it
+    really lies in (relative to the project when it is inside it). The archive holds what a link leads to, so a
+    link into sealed data, or to a credentials file, would otherwise carry it along under another name."""
+    real, top = Path(os.path.realpath(p)), Path(os.path.realpath(root))
+    try:
+        return {rel, real.relative_to(top).as_posix()}
+    except ValueError:
+        return {rel, real.as_posix()}
+
+
 def held_back(root, cfg):
-    """Source files that bundle() leaves at home because of their name."""
-    return sorted(f for f in expctl.source_files(root, cfg)[0] if SECRETISH.search(f))
+    """Source files that bundle() leaves at home because of their name, or of the name of what they link to."""
+    return sorted(f for f in expctl.source_files(root, cfg)[0] if any(SECRETISH.search(n) for n in places(root, root / f, f)))
 
 
 def bundle(root, cfg, st):
@@ -209,8 +220,8 @@ def bundle(root, cfg, st):
     says credentials (SECRETISH) unless remote.files names them."""
     sealed = cfg.get("sealed_paths") or []
     files, _ = expctl.source_files(root, cfg)
-    out = {f: root / f for f in files
-           if not expctl.path_matches(f, sealed) and not SECRETISH.search(f) and (root / f).is_file()}
+    out = {f: root / f for f in files if (root / f).is_file() and not any(
+        expctl.path_matches(n, sealed) or SECRETISH.search(n) for n in places(root, root / f, f))}
     for p in sorted((root / KIT_REL).glob("*.py")):
         out[f"{KIT_REL}/{p.name}"] = p
     raw = expctl.read_json(root / expctl.CONFIG_REL)
@@ -234,8 +245,9 @@ def below(root, cfg, name, run=False):
         raise Refuse(f'remote.files names "{name}", which does not exist')
     for q in ([top] if top.is_file() else sorted(x for x in top.rglob("*") if x.is_file())):
         rel = rel0 if q == top else f"{rel0}/{q.relative_to(top).as_posix()}"
-        if expctl.path_matches(rel, sealed):
-            raise Refuse(f"{rel} is sealed and is never sent to a remote machine; name narrower paths in remote.files")
+        if any(expctl.path_matches(n, sealed) for n in places(root, q, rel)):
+            raise Refuse(f"{rel} is sealed, or a link that leads into a sealed path, and is never sent to a remote "
+                         f"machine; name narrower paths in remote.files")
         if not (run and q.relative_to(top).parts[0] in ("src", "stdout.log", "pid.json", "supervisor.log", BUNDLE)):
             out[rel] = q
     return out

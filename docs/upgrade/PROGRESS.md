@@ -896,7 +896,10 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   state; `tests/test_runlog_units.py` and `tests/test_benchmarks.py` passed on both with the first two.
 - For REPORT.md, runlog and the loop:
   1. The two benchmark trainers end at a stop request or at the launch's deadline and still score and save.
-     The fine-tuning trainer's line was not run live.
+     The fine-tuning trainer's line has no test of its own (the tests run without PEFT); it was run once by
+     hand on 14 November, on Windows with the GPU, in a project made by `benchmarks/new_project.py`: launched
+     with a budget of 600 s and asked to stop after eight seconds of training, it ended after 105 steps as
+     `interrupted`, with `dev/exact` logged and the adapter saved, 22 s after the launch.
   2. `RunLog` writes no run files in a process whose `LOCAL_RANK` or `NODE_RANK` is above zero, unless
      `RANK` is set, which decides alone as before.
   3. The loop does not score a training run that something outside it stopped, whatever the run saved, and

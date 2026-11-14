@@ -105,7 +105,7 @@
   "file": "round5",
   "candidate": "The two benchmark trainers ask should_stop() and still score and save (kit-native)",
   "status": "finished",
-  "where": "benchmarks/charlm/train.py, benchmarks/finetune/train.py; tests/test_benchmarks.py (the character model, live). Commit 3ab4ae4. The fine-tuning trainer has the same line and was not run to a stop"
+  "where": "benchmarks/charlm/train.py, benchmarks/finetune/train.py; tests/test_benchmarks.py (the character model, live). Commit 3ab4ae4. The fine-tuning trainer was stopped once by hand on 2026-11-14 (Windows, GPU): it scored and saved"
  },
  {
   "file": "round5",

@@ -1,6 +1,7 @@
 # Pretrained-model adaptation (base model, fine-tuning, PEFT, post-training, distillation, export)
 
-Checked: 2026-11-11 (RL precision candidates, the runnable example and the bitsandbytes note: 2026-11-12)
+Checked: 2026-11-11 (RL precision candidates, the runnable example and the bitsandbytes note: 2026-11-12; the
+objectives after GRPO and the LoRA scale in a rank sweep: 2026-11-14)
 Refresh: compare the release notes of transformers, TRL, PEFT, bitsandbytes, lm-eval with installed versions; redo
 the hub licence read for each model in use; scout (`scouting.md`) before choosing a base model or an adaptation method.
 
@@ -79,6 +80,11 @@ installed version before using an API.
 - Starting values are hypotheses to tune (see the closing section). Variants (DoRA, PiSSA, MiLoRA and others) are not
   defaults: after LR tuning nine variants landed within 1-2% of plain LoRA
   (source: https://arxiv.org/abs/2602.04998, 2026-05-19).
+- Rank sweeps: the default scale of the update is `lora_alpha/r`, so at a fixed alpha a higher rank is also a smaller
+  step (alpha 16: 2.0 at rank 8, 0.5 at rank 32, PEFT 0.21.2), and a rank comparison compares two things. Scale alpha
+  with the rank, retune the LR per rank, or set `use_rslora=True` (scale `lora_alpha/sqrt(r)`: 5.66 and 2.83; off by
+  default). That keeps the sweep fair; the paper's gain at high rank is its author's result.
+  (source: https://arxiv.org/abs/2312.03732, 28 Nov 2023; scales measured here, 2026-11-14)
 - Evidence for adapter variants: the PEFT method-comparison Space (maintainer-run, MetaMathQA to GSM8K; accuracy,
   forgetting, memory, time, pinned versions); cite it with the date read. Risk: one task; a forgetting-metric bug
   was fixed in 0.20.0.
@@ -97,6 +103,30 @@ installed version before using an API.
   `clip_ratio/*`, `sampling_logp_difference` (rollout engine vs trainer). Defaults: `beta=0.0`; `entropy_target=0.2`
   almost never triggers. Read high-reward samples by hand for reward exploitation; keep the frozen evaluator apart from
   the reward function. Report pass@K beside pass@1: post-training often raised pass@1 and lowered coverage.
+- Which objective runs: in TRL 1.17.1 `GRPOConfig.loss_type` defaults to `"dapo"`, and its docstring calls `"grpo"`
+  "not recommended due to length bias", so a run that sets nothing is not the GRPO of the original paper. Write
+  `loss_type`, `scale_rewards`, `importance_sampling_level`, `epsilon`, `epsilon_high` and
+  `mask_truncated_completions` into the run's config, and change one of them per experiment.
+  (source: https://github.com/huggingface/trl/blob/v1.17.1/trl/trainer/grpo_config.py, read 2026-11-14)
+- Objectives after GRPO, by the symptom each answers. All are settings of that config, and every result is its
+  authors' own:
+  - Completions grow longer, wrong ones most: Dr. GRPO divides by a constant instead of the sequence length and drops
+    the division by the reward's deviation. `loss_type="dr_grpo"`, `scale_rewards=False`.
+    (source: https://arxiv.org/abs/2503.20783, v2 6 Oct 2025)
+  - Long reasoning runs where exploration dies early or truncated answers are punished: DAPO raises the upper clip
+    bound alone, averages the loss over the tokens of the batch and masks truncated completions. `loss_type="dapo"`,
+    `epsilon_high=0.28`, `mask_truncated_completions=True`. Its dynamic sampling (groups whose rewards are all
+    equal are drawn again) is not on the trainer's documentation page: `frac_reward_zero_std` reports such groups.
+    (source: https://arxiv.org/abs/2503.14476, v2 20 May 2025)
+  - Noisy token-level ratios, mixture-of-experts models: GSPO takes one importance ratio per sequence and clips whole
+    sequences. `importance_sampling_level="sequence"`. (source: https://arxiv.org/abs/2507.18071, v2 28 Jul 2025)
+  - Clipping silences rare tokens: CISPO clips the importance weight and keeps every token's gradient.
+    `loss_type="cispo"`; `epsilon_high` then bounds the weight and has a default of its own.
+    (source: https://arxiv.org/abs/2506.13585, 16 Jun 2025)
+  - Also values of that option, papers not opened: `"sapo"` (a soft gate in place of the clip), `"luspo"`, `"vespo"`,
+    `"bnpo"`.
+  Read on 2026-11-14: the four abstract pages and the config's docstring, which is where the settings come from.
+  None of the papers' results was reproduced here.
 - Risk: engine/trainer probability mismatch can destabilise training. The 7 Nov 2026 field guide's failure list is known
   only from its abstract; its body was not read (unverified).
   (source: https://raw.githubusercontent.com/huggingface/trl/main/docs/source/grpo_trainer.md, 2026-11-11)
@@ -133,6 +163,13 @@ installed version before using an API.
   second candidate (one preprint, 0.6B to 4B, 25 seed pairs: 18 wins, 6 ties, 1 loss; no code).
   (source: https://arxiv.org/abs/2510.26788, 30 Oct 2025; https://arxiv.org/abs/2610.41073, 29 Oct 2026;
   abstract pages read 2026-11-12)
+- Several reward functions: GRPO normalises their sum, so different mixes can give the same advantage; GDPO
+  normalises each reward on its own first. Authors' results on tool calling, math and coding; no code on the page
+  read; not a TRL setting. (source: https://arxiv.org/abs/2601.05242, 8 Jan 2026; abstract page read 2026-11-14)
+- On-policy self-distillation: one model is the teacher, with the verified solution in its context, and the student
+  without it; the loss is the per-token divergence on the student's own rollouts. The authors claim better token
+  efficiency than RL on math benchmarks; code at github.com/siyan-zhao/OPSD, not run.
+  (source: https://arxiv.org/abs/2601.18734, v3 20 Mar 2026; abstract page read 2026-11-14)
 - Unsloth 2026.11.3, single-GPU LoRA (vendor speed claims) (source: https://github.com/unslothai/unsloth, 2026-11-11)
 - Liger Kernel 0.8.5, TRL flag deprecated (source: https://github.com/huggingface/trl/releases, 2026-11-11)
 - llama.cpp GGUF conversion scripts (source: https://github.com/ggml-org/llama.cpp, 2026-11-11)

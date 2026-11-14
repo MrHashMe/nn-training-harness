@@ -779,7 +779,8 @@ Rank 14 and 15, other agents and MCP servers
 Rank 16 and 18
 - R the ledger counts as finished some adopted rows that name kit code which was never written (see rank
   19). Build: `expctl audit-splits` (duplicates inside a split, overlap between splits, a fingerprint per
-  split; counts only), controls for the fine-tuning task. Decided when read again: the wiring check.
+  split; counts only). Decided in step 7: the wiring check became reference text, and the controls for the
+  fine-tuning task are held (the record of step 7 below has the reason and the test).
 - H parallel trials and other samplers for the search: need campaigns to compare.
 
 Rank 19, small repairs
@@ -955,7 +956,78 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   it does not run when the controller is gone, so a rented machine still needs its own shutdown timer; the
   Hugging Face route is tested against the stand-in only, as before; file links were exercised in WSL only,
   since this Windows account cannot make them (junctions and hard links were).
-- Next: step 7, speed and search.
+- Done, step 7, speed and search, one commit per idea: `expctl env --probe` tries each fast path in a process
+  of its own, and `env` lists dated advisories under `warnings` (`dec8971`); the loop checks a change before
+  it costs a run and gives an early failure one repair turn (`a4dc52e`); `expctl audit-splits` (`e1cf085`);
+  the wiring checks of the sanity gate in `references/validity.md` (`50549c1`); how GPU-hours are counted,
+  in `references/loop.md` (`2386068`). Whole files, all passing: on the tree of `a4dc52e`
+  `tests/test_loop.py` 235 checks on Windows and 240 in WSL, `tests/test_kit.py` 409 and 413; on the tree of
+  `e1cf085` `tests/test_kit.py` 417 and 421, `tests/test_ports.py` 123 and 124, `tests/test_review_fixes.py`
+  38 and 40; `tests/test_kit.py` again on Windows after the two reference commits (417).
+- For REPORT.md, speed and search:
+  1. `expctl env --probe`: CUDA, bf16 autocast, the flash attention kernel, fused AdamW and `torch.compile`
+     are tried in the project's interpreter, one process each with a time limit, so a wheel that ends the
+     interpreter is a line of the report. It is refused beside a live run. `env` carries `warnings`: dated
+     advisories for installed versions (`datasets` below 5.2.0 among them).
+  2. Before a run, the loop compiles every changed Python file in the project's interpreter and compares
+     syntax trees with the campaign's base. A change that does not compile is a `crash` without a run; one
+     that alters only comments or layout is `no_change`.
+  3. The identity of a change is the hash of those syntax trees, so a reformatted repeat of an earlier
+     change is a `duplicate`. The hashes of a campaign started before this no longer match: such a campaign
+     can test once more what it tried before.
+  4. One repair turn: after a compile error, or a failure of the first seed within a quarter of the run
+     budget (at least 30 s), the worker gets one more session with the end of the run's output (nothing of
+     it where a sealed token appears in it). Not for a change that comes with a search. The session counts
+     into the campaign's sessions, tokens and money; the ledger row carries `repaired`, the record is in
+     `iter-NNN/repair/`. The keep rule is unchanged.
+  5. New command `expctl audit-splits [--key FIELD]` and new config key `splits` (name to file or folder).
+     It prints counts and a fingerprint per split, never a row; exit code 1 when two splits share a record;
+     each audit is a row of the hash-chained `.claude/state/final-eval/split-audits.jsonl`.
+  6. New guard rule, for section 6: where the config seals anything, the guard asks before each
+     `expctl audit-splits` (a denial where nobody can be asked), because every count of records shared with
+     a sealed split is a small look at it; a read-only subagent is denied the command. Tests: three rows of
+     the guard's table and the audit's guard check in `tests/test_kit.py`, one row in `tests/test_ports.py`.
+  7. The sanity gate of `references/validity.md` names three wiring checks (optimizer membership, the
+     gradient and not the weights under weight decay, LoRA's A after two steps), each tried here with
+     torch 2.9.1. No `RunLog` method: `RunLog` cannot make a script call a helper, and the gate already
+     asked for a gradient on every trainable parameter.
+  8. `references/loop.md` says how GPU-hours are counted (a run's duration times the GPUs `nvidia-smi`
+     lists) and that the count is too high where a command uses one GPU of several.
+  Changed tests, with the reason: three checks of campaign a in `tests/test_loop.py` (the crash of iteration
+  6, the number of sessions, the counters), because a repair session now follows that early crash; the
+  stand-in agent's plan has no step for it, so it changes nothing and the crash stands, one session, 5,000
+  tokens and 0.5 USD later. New checks: nine in `tests/test_loop.py` (campaign f), five for the audit and
+  three guard rows in `tests/test_kit.py`, one in `tests/test_ports.py`.
+  Limits to name there: the repair turn was tried with the stand-in agent only, not with a live one; the
+  compile check covers Python files, a change to a config file goes to a run as before; the audit finds
+  exact matches after NFKC, casefold and collapsed whitespace, a lower bound; it refuses Parquet, Arrow,
+  HDF5, databases and archives, and counts any other file that is not rows whole; it keeps one digest per
+  record in memory; the guard's question reads the command's text, so a script that calls the command is
+  not asked about, as with the final evaluation; the fingerprint of a sealed split is printed after the
+  approval and identifies records only for a split of very few records drawn from a known pool.
+- Decided without a build in step 7, each with its reason:
+  - (7) N import checks of every installed package: the smoke run of Phase 1 shows a broken import in
+    seconds. N a warning against regularisers in short runs: one campaign's finding in the SOTA report, and
+    the keep rule discards what does not gain. A table of verified wheels per GPU class cannot be made on
+    one machine: the stack reference names the two builds that passed here.
+  - (8) H the stop at a quarter of the budget, as above. Sources read on 2026-11-14, abstracts only: AIDE
+    (arXiv 2502.13138 v1) and ShinkaEvolve (arXiv 2509.19349 v1); the debugging step the review places in
+    AIDE's method is not in the abstract and was not opened.
+  - (9) N a callback for TRL, confirmed in the code: `hf_callback` logs every numeric key of the trainer's
+    logs and evaluations and ends training at `should_stop()`, whatever the trainer's subclass.
+  - (16) Not built: a data manifest file and a data hash per run at launch (a walk of the data at every
+    launch, or a stale manifest that misleads; the fingerprint per split comes from the audit). N
+    near-duplicates in the core: the thresholds are per dataset, and the data reference names the tools.
+    H the single-feature leak audit: it needs a tabular task to try on, and its source was not verified.
+    N a check of timestamp order: project-specific, and the validity reference's item on temporal leakage
+    covers it.
+  - (16) H controls for the fine-tuning task, against the verdict above. A floor at the majority share is
+    wrong for a pretrained model: trained on shuffled labels it still learns the intent names and can beat
+    that share through what it knew before, without any leak. The test it needs: three runs on shuffled
+    labels (the GPU, about two minutes each in the fine-tuning environment) to set a measured ceiling.
+    Not run: usage. N floors computed by the loop where `loop.controls` is missing, for the same reason.
+  - (18) N "GPU seconds are overbilled", as under rank 4; the reference now says how they are counted.
+- Next: step 8, references, installer, ledger.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

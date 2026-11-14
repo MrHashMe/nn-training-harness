@@ -148,6 +148,26 @@ print("enabled", rl.enabled, "exists", rl.dir.exists(), "stop", rl.should_stop()
 r = run_py(code, tmp)
 check("enabled False exists False stop False" in r.stdout, f"non-zero rank writes nothing ({r.stdout.strip()} {r.stderr[-200:]})")
 
+# 7b. which process is the global rank 0: torchrun's RANK decides; without it, Lightning's own launcher gives the rank
+#     on the node and the node's rank (was: neither was read, so each of its ranks wrote the run files)
+code = r"""
+import os, runlog
+NAMES = ("RANK", "SLURM_PROCID", "OMPI_COMM_WORLD_RANK", "PMI_RANK", "LOCAL_RANK", "NODE_RANK")
+out = []
+for env in ({"LOCAL_RANK": "1", "NODE_RANK": "0"}, {"LOCAL_RANK": "0", "NODE_RANK": "1"}, {"LOCAL_RANK": "0", "NODE_RANK": "0"},
+            {"SLURM_PROCID": "0", "LOCAL_RANK": "1"}, {"RANK": "0", "LOCAL_RANK": "0"}, {"RANK": "2", "LOCAL_RANK": "0"},
+            {"RANK": "0", "SLURM_PROCID": "3"}, {"SLURM_PROCID": "2"}, {"RANK": "x"}, {}):
+    for k in NAMES:
+        os.environ.pop(k, None)
+    os.environ.update(env)
+    out.append(int(runlog._default_enabled()))
+print("ranks", out)
+"""
+r = run_py(code, tmp)
+check("ranks [0, 0, 1, 0, 1, 0, 1, 0, 1, 1]" in r.stdout,
+      f"the ranks of Lightning's launcher (LOCAL_RANK, NODE_RANK, no RANK) write nothing except the first of the first "
+      f"node, also inside a Slurm step; RANK decides where it is set ({r.stdout.strip()} {r.stderr[-200:]})")
+
 # 8. numpy-like step values and the primary metric always kept in the heartbeat
 code = r"""
 import json

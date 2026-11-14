@@ -220,14 +220,21 @@ def _install_process_hooks(handle_signals):
 
 
 def _default_enabled():
-    """Only the global rank-0 process writes run files in distributed jobs (torchrun, Slurm, MPI)."""
-    for var in ("RANK", "SLURM_PROCID", "OMPI_COMM_WORLD_RANK", "PMI_RANK"):
-        v = os.environ.get(var)
-        if v not in (None, ""):
-            try:
-                return int(v) == 0
-            except ValueError:
-                return True
+    """Only the global rank-0 process writes run files in distributed jobs (torchrun, Slurm, MPI, and Lightning's own
+    launcher, which gives no RANK: there the rank on the node and the node's rank must both be 0)."""
+    def rank(var):
+        try:
+            return int(os.environ.get(var) or "")
+        except ValueError:
+            return None
+
+    if rank("RANK") is not None:  # torchrun's global rank decides, whatever an enclosing Slurm step left behind
+        return rank("RANK") == 0
+    if rank("LOCAL_RANK") or rank("NODE_RANK"):
+        return False
+    for var in ("SLURM_PROCID", "OMPI_COMM_WORLD_RANK", "PMI_RANK"):
+        if rank(var) is not None:
+            return rank(var) == 0
     return True
 
 

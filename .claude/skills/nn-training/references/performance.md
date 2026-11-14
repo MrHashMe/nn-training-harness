@@ -104,7 +104,10 @@ https://github.com/pytorch/pytorch/issues/198333; https://github.com/pytorch/pyt
   https://raw.githubusercontent.com/pytorch/pytorch/v2.15.0/torch/csrc/DataLoader.cpp, checked 2026-11-11)
 - Only rank 0 writes run files. Lightning Fabric sets `LOCAL_RANK` and `NODE_RANK` but not `RANK`; check `NODE_RANK`
   too, since `LOCAL_RANK` alone is ambiguous on multi-node jobs (source:
-  https://raw.githubusercontent.com/Lightning-AI/pytorch-lightning/2.6.6/src/lightning/fabric/strategies/launchers/subprocess_script.py)
+  https://raw.githubusercontent.com/Lightning-AI/pytorch-lightning/2.6.6/src/lightning/fabric/strategies/launchers/subprocess_script.py).
+  RunLog does so since 14 November 2026: `RANK` decides where it is set; without it a non-zero `LOCAL_RANK` or
+  `NODE_RANK` means another rank, and after those `SLURM_PROCID`, `OMPI_COMM_WORLD_RANK` and `PMI_RANK` are read.
+  A launcher that sets none of them needs `RunLog(enabled=...)` from its own rank.
 
 ## 7. Determinism vs speed
 Deterministic settings (`torch.use_deterministic_algorithms(True)`, `CUBLAS_WORKSPACE_CONFIG=:4096:8`,

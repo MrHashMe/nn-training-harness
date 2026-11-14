@@ -727,12 +727,18 @@ Rank 5, `runlog.py`
 
 Rank 6, the remote runner and provenance
 - R the bundle is built again by the detached controller and by the resume after a preemption, so what runs
-  can differ from what was hashed. Build: the archive is written once at the start and that file is sent.
-- R a link inside the project that leads to a sealed file is followed into the bundle. Build: refuse.
+  can differ from what was hashed. Build: the launch writes the archive once, the controller sends that file,
+  and the automatic resume sends it again.
+- R a link inside the project that leads to a sealed file is followed into the bundle. Build: a link is
+  judged by the place it leads to, so such a one stays at home and `remote.files` refuses it. N a refusal of
+  every link that leads out of the project: shared code and data are linked that way on purpose.
 - R `complete()` accepts a pulled name that leaves the run folder. R two appends to the remote ledger can
-  interleave on Windows. N a hash chain for that ledger.
+  land on one offset on Windows (measured with eight writers of 100 rows each: 748 rows left, 19 torn lines).
+  N a hash chain for that ledger: the file is guarded already, and a chain would not have kept the lost rows.
+  N the two launches at the cap that both lose: neither overspends. N `--hours` for a target without a
+  price: there is nothing to cap.
 - R a rented `ssh` machine keeps costing after the run. Build: an optional command per target, run after the
-  last pull; the reference says what it is for.
+  last pull; the reference says what it is for and what it does not cover.
 - R `expctl`: an untracked secret-like file is copied into the snapshot; `resume` takes the code of today's
   tree without a word; a reused process number passes for the run on Windows without psutil; the receipt of
   a final evaluation leaves with a removed worktree. Build each.
@@ -901,7 +907,55 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   4. An iteration that a limit or a stop interrupted leaves the list of tried changes, and its hypothesis
      counts as untried (was: proposed again it was a `duplicate`, a failed status).
   New checks: both in campaign b; each was seen to fail on the code without its fix.
-- Next: step 6, the remote runner and provenance.
+- Done, step 6, the remote runner and provenance, one commit per idea: the receipt of a final evaluation
+  outlives a removed worktree (`0c4ba73`); the agent ports' files are not experiment source and bookkeeping
+  is not a change (`d6ded34`); a resume refuses a changed source (`58e248a`); the launch packs what is sent,
+  once, and the controller and the automatic resume send that archive (`20859f6`); a pulled name outside
+  the mirror never counts (`89493f4`); a link is judged by where it leads (`e386102`); Windows without
+  psutil reads a process's start time from the system (`6d0ecca`); ledger rows booked at the same moment
+  all survive (`d64a154`); a snapshot links a file named like a credential (`8ff6f8b`); a target's
+  `on_finish` command (`7d9dcc7`). Whole files on the tree of `7d9dcc7`: `tests/test_remote.py` 90 checks on both platforms; on Windows `tests/test_loop.py` 226, `tests/test_review_fixes.py` 38, `tests/test_ports.py` 122, `tests/test_runlog_units.py` 19 and `tests/test_benchmarks.py` 44; in WSL 231, 40, 123, 19 and 44; all pass. `tests/test_kit.py` had one failure there (405 checks pass on Windows, 409 in WSL): `7d9dcc7` was committed with the reference-header check failing, which passed before, because the note on `on_finish` had pushed the Refresh line of `remote.md` out of the first eight lines and only the remote file had been run before the commit. `1141fcd` put the line back, and the kit file passed whole on the next state (409 on Windows, 413 in WSL, three of them new with the probe).
+- For REPORT.md, the remote runner and provenance:
+  1. The receipts of final evaluations lie in git's common folder (`.git/nn-training-final-eval.jsonl`),
+     shared by every worktree of the repository, so removing a worktree no longer takes its uses out of the
+     count. The guard asks before a shell command changes that file (three rows of the guard's table in
+     `tests/test_kit.py`). `expctl selftest` may write there when it brings older receipts into the shared
+     copy.
+  2. `AGENTS.md`, `.mcp.json`, `.codex/`, `.cursor/` and `.agents/` are not experiment source: they leave
+     the source hash, the snapshots and the remote bundles, so the hash of a project that tracks them, or
+     does not ignore them, changes once. The `dirty` list no longer counts the journal, the search's
+     storage file, the runs folder or agent configuration, and names untracked files one by one.
+  3. `expctl resume` and `nnremote resume` refuse when the source has changed since the launch, unless
+     `--allow-code-change` is given; the new manifest carries `resume_of_source_hash`.
+  4. A remote launch packs one archive (`remote.bundle_sha256`; `sent_files` counts its files), refuses when
+     the source changes while it packs, makes the run folder before the reservation and removes it when the
+     launch is refused. The controller sends only that archive. It lies in the mirror until the run ends (a
+     `lost` run keeps it until `attach`), so a live remote run takes up to `max_bundle_mb` of local disk. The
+     automatic resume after a preemption sends it again; where it is gone, the resume goes by the working
+     tree and is refused when that has changed (`remote.not_resumed`). Unpacking uses tar's data filter
+     where the Python has one.
+  5. A link or a junction is judged by its own name and by the place it leads to: one that leads into a
+     sealed path or to a file named like a credential stays at home, and `remote.files` refuses a path with
+     such a link below it. A pulled name that leaves the mirror never counts as mirrored.
+  6. Ledger rows are appended under a byte lock on Windows, the way the guard writes its log (eight writers
+     of 100 rows each: 800 rows, no torn line).
+  7. Without psutil, Windows reads a process's start time from the system, in `expctl` and in `runlog`, so
+     a process number that went to another process no longer passes for the run.
+  8. A snapshot links a file named like a credential (`.env`, `*.key`, `credentials.json`) instead of
+     copying it, tracked or not. On Windows without the right to make links that is a hard link, as for
+     git-ignored files. The snapshot no longer freezes such a file's content.
+  9. New key `on_finish` per ssh target: an argument list, checked at the launch, run on this machine when
+     the last pull is complete and no other run of the project on that target lacks its exit record. The
+     outcome is in `remote.on_finish`.
+  Changed test, with the reason: the check added with `58e248a` that the automatic resume is refused after
+  the source changed was replaced in `20859f6`, because that resume now sends the launch's archive and runs.
+  New checks: in `tests/test_remote.py` for items 3 to 6 and 9, in `tests/test_kit.py` for items 1, 2, 7
+  and 8.
+  Limits to name there: `on_finish` was tried with a stand-in command, and no machine was stopped with it;
+  it does not run when the controller is gone, so a rented machine still needs its own shutdown timer; the
+  Hugging Face route is tested against the stand-in only, as before; file links were exercised in WSL only,
+  since this Windows account cannot make them (junctions and hard links were).
+- Next: step 7, speed and search.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

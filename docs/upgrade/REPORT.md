@@ -17,7 +17,11 @@ section, "Round 5", follows "After the guide". The commit ids of that section fo
 on your word of the same day ("Yes, push") they are in the public repository. On a further word of that
 day ("Yes, run it") the installer ran on your real install a sixth time, which brought it the round, and
 on your "Yes, commit there" the seventeen files it changed are committed in that repository ("Round 5",
-"The sixth installer run on the real install"). Decision record: `docs/upgrade/LEDGER.md`.
+"The sixth installer run on the real install"). On your "Merge and push" these records are in the public
+repository, merged with the front page and the guide that another session of yours rewrote that day. What
+this report says about those two pages describes them before the rewrite, and the table of agents and
+platforms that it places in the README is now in `docs/REFERENCE.md`. Decision record:
+`docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -2872,16 +2876,21 @@ records only.
    added line and every commit message of the round for private details (paths of this machine, addresses,
    time zones, times of day, the names on the real install's path) and found none; every commit carries
    the account's no-reply address and a date in UTC.
-2. **Your real install: the run and the commit are answered.** On 14 November you said "Yes, run it", and
-   the installer ran there a sixth time (above). On your "Yes, commit there" of the same day the seventeen
-   files it changed are committed in that repository, in one local commit that is not pushed. Open: a push
-   of the records of that run and of that commit to the public repository, where they are not yet. The
-   public branch has gone on meanwhile: on 14 November another session of yours pushed two commits
+2. **Your real install: the run, the commit and the push of their records are answered.** On 14 November
+   you said "Yes, run it", and the installer ran there a sixth time (above). On your "Yes, commit there"
+   of the same day the seventeen files it changed are committed in that repository, in one local commit
+   that is not pushed. On your "Merge and push" the records of both are in the public repository. The
+   public branch had gone on meanwhile: another session of yours had pushed two commits that day
    (`dc267aa`, `603c336`) that rewrite the front page and the guide, add `docs/REFERENCE.md` and redraw
-   the banners. What this report says about the front page and the guide ("After round 4", "After the
-   guide") describes them before that rewrite. The records and those two commits share no file, so they
-   merge cleanly, and that merge comes before a push. Open as well, since round 4: `install.py
-   --worktrees`, which would register the guard in that repository's other checkouts.
+   the banners. The records and those two commits shared no file. A merge commit joins them, and `main`
+   went up as a fast-forward of the public branch, nothing forced. Before the push I scanned every added
+   line and commit message since `2666faf`, the other session's among them, for private details and found
+   none. I did not run the full tests again: against the tested `827c35c` only `README.md` and files
+   under `docs/` differ, and no test reads one of them. What this report says about the front page and
+   the guide ("After round 4", "After the guide") describes them before that rewrite, which I merged and
+   did not review. PROMPT.md asks for the table of agents and platforms in the README; since the rewrite
+   it is in `docs/REFERENCE.md` ("What works where"), which the front page links. Open, since round 4:
+   `install.py --worktrees`, which would register the guard in that repository's other checkouts.
 3. **Ports for Antigravity and Gemini CLI.** Neither agent is installed here, and installing one is your
    call. I would build each from the vendor's documentation and test it live once it is installed.
 4. **The MCP servers the review proposes.** Each is an install with your permissions; say which, if any.
@@ -3909,9 +3918,9 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     repository is answered and done (14 November, "Yes, push"), and so is the sixth installer run on the
     real install (14 November, "Yes, run it"; "Round 5", "The sixth installer run on the real install"),
     and the commit of the seventeen files that run changed in that repository (14 November, "Yes, commit
-    there": one local commit of exactly those paths, not pushed). Open: pushing the records of the run and
-    of that commit, which are in the local repository only (first a merge with the two commits that
-    another session pushed to the public branch since); the installs, accounts and paid resources that the
+    there": one local commit of exactly those paths, not pushed), and the push of the records of both (14
+    November, "Merge and push": merged with the two commits that another session had pushed to the public
+    branch, then pushed as a fast-forward). Open: the installs, accounts and paid resources that the
     review's proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a
     container as the box); a second pilot or a campaign with a real agent; and what to build next.
 

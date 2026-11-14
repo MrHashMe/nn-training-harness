@@ -105,6 +105,10 @@ Last updated: 14 November 2026.
   are committed in that repository, one local commit of exactly those paths (the last entry of "Round 5").
   My reading: the word covers that one commit and its checks. A push of the records of the run and of the
   commit waits for a word of its own.
+- 14 Nov, user ("Merge and push", to the question whether to merge the public branch's two new commits
+  and push the record commits): the merge and the push ("Questions for the user"). My reading: the word
+  covers that merge and this one push of `main`, nothing forced. It says nothing about the dates of the
+  other session's two commits, which stay as they are.
 
 ## Done (commit in brackets)
 - Git repository, repository-local identity, LF pinned. Baseline `5ea9659` = the 23 October kit. Baseline tests on
@@ -1282,10 +1286,12 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   between trainer and generator, distillation and preference objectives, adapter options, further
   optimizers, low-precision and kernel items, architectures. The papers behind the new reference text were
   read as abstract pages, and no result was reproduced.
-- On the real install, which has round 5 since the sixth installer run: the records of the run and of the
-  commit of its seventeen files are not pushed ("Questions for the user"). The new guard was asked made-up
+- On the real install, which has round 5 since the sixth installer run: the new guard was asked made-up
   calls there; no agent session, script, launch or final evaluation ran, `expctl resume` and
   `expctl audit-splits` were not run there, and its source hash was not computed before and after.
+- The front page, the guide and the reference page as another session rewrote them on 14 Nov: merged, not
+  reviewed by this work. Checked only: no test reads them, their relative links lead to existing files,
+  and a scan of their added lines for private details found none.
 - Round 3's three items are not shown to raise results with a real agent. Each ran with the stand-in agent
   of the tests only: no real agent session, no pilot on the fine-tuning task, and that task ran on native
   Windows only. Round 4 ran the trial that the search's ledger row names (campaigns with and without, at an
@@ -1434,18 +1440,25 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   before (undo with `git reset --soft HEAD~1` there while it is the newest commit). That repository's
   other status entries number 418 as before, nothing is staged, and no file listed in the install changed
   on disk. Where these records say the seventeen files are not committed, this entry replaces it.
-- Open, from that run: pushing the records of the run and of that commit. They are local commits on top of
-  the public `2666faf`, in the local repository only. The public `main` has gone on without them: on 14
-  Nov another session of the user's pushed two commits on top of `2666faf` (`dc267aa`, `603c336`: the
-  front page and the guide rewritten, a new `docs/REFERENCE.md`, both banners redrawn). What these records
-  and REPORT.md say about the front page and the guide ("After round 4", "After the guide") describes them
-  before that rewrite. The two lines share no file and merge cleanly (tried with `git merge-tree`, which
-  writes to no branch), no installed file is among the seven those commits change, and no test reads one
-  of them. Before a push the lines are joined: fetch, merge `origin/main` into the local branch, scan,
-  push. Not done: it needs the user's word, as every push does.
-- Open, asked in the session of 14 Nov: the dates of those two public commits. The 82 commits before them
-  on the public branch are dated in UTC, these two are not. Changing that rewrites public history, which
-  is the user's call.
+- Answered on 14 Nov ("Merge and push"): the records of that run and of that commit are pushed to the
+  public repository. The public `main` had gone on without them: that day another session of the user's
+  had pushed two commits on top of `2666faf` (`dc267aa`, `603c336`: the front page and the guide
+  rewritten, a new `docs/REFERENCE.md`, both banners redrawn). The two lines shared no file, and no
+  installed file is among the seven those commits change. They are joined by the merge commit `e7d1693`
+  (first parent the record commits, second the public line), and `main` went up as a fast-forward of the
+  public branch: three record commits, the merge and the commit with this entry. Only `main` was pushed,
+  nothing was forced. Before the push every added line and every commit message since `2666faf` was
+  scanned for private details, the other session's among them: none found. The full tests were not run
+  again: against the tested `827c35c` only `README.md` and files under `docs/` differ, and no test reads
+  one of them. The relative links of the rewritten pages lead to files that exist. What these records and
+  REPORT.md say about the front page and the guide ("After round 4", "After the guide") describes them
+  before that rewrite. The word covers this push; a later one needs a new word.
+- Told to the user on 14 Nov, before the push: the two commits of the other session carry dates that are
+  not in UTC, where the 82 public commits before them do. They answered "Merge and push" and asked for no
+  change, so the dates stay. Changing them later would rewrite public history.
+- A conflict with PROMPT.md, pointed out to the user: its "Done when" asks for the table of agents and
+  platforms in the README. Since the rewrite that table is in `docs/REFERENCE.md` ("What works where"),
+  which the front page links. Left as the other session made it.
 - Open, from round 5, each an install, an account or a paid resource: ports for Antigravity and Gemini CLI
   (neither agent is installed here), the MCP servers the review proposes, cloud drivers beyond `ssh` and
   Hugging Face Jobs, and a container as the box for training and evaluation (Docker Desktop, asked before).

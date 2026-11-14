@@ -1297,7 +1297,10 @@ class Campaign:
                     status, why, commit = self.search(n, k, space, entry, runs, commit, idir)
             if status is None:
                 base, sign = st["baseline"], (-1 if L["direction"] == "minimize" else 1)
-                for i, seed in enumerate(L["seeds"]):
+                # the seed that screens a change rotates: one seed on which the best so far was lucky would
+                # otherwise turn away every change of the line
+                at = (n - 1) % len(L["seeds"])
+                for i, seed in enumerate(L["seeds"][at:] + L["seeds"][:at]):
                     s, val, rid = self.train(seed, f"i{n}")
                     runs.append(rid)
                     if s != "ok":
@@ -1306,7 +1309,7 @@ class Campaign:
                     scores[str(seed)] = val
                     if i == 0 and sign * (val - base["scores"][str(seed)]) <= 0:
                         status, why = "discard", (f"on the first seed it scored {val:.5g} against "
-                                                  f"{base['scores'][str(seed)]:.5g} for the best so far")
+                                                  f"{base['scores'][str(seed)]:.5g} for the best so far (seed {seed})")
                         break
             if status is None and len(set(scores.values())) == 1 and st["noise"]["ss"] > 0:
                 # such a panel is one run repeated: its mean is as noisy as a single run, and pooled it would shrink

@@ -639,8 +639,12 @@ def campaign_a(tmp, proj, exe):
           "the scouting notes are saved with their date, and the kept change is traced to hypothesis H1")
     check(near(it[1]["delta"], 0.01, 1e-6) and "within the noise margin" in it[1]["why"] and len(it[1]["runs"]) == 2,
           "a gain inside the noise margin is not kept")
-    check(len(it[2]["runs"]) == 1 and "on the first seed it scored 0.5 against 1.5 for the best so far" in it[2]["why"],
-          "a change that is worse on the first seed costs one run, and the reason carries both scores")
+    check(len(it[2]["runs"]) == 1
+          and "on the first seed it scored 0.5 against 1.5 for the best so far (seed 1)" in it[2]["why"],
+          "a change that is worse on the first seed costs one run, and the reason carries both scores and the seed")
+    check(all(f"-i{i + 1}-s{seed}-" in it[i]["runs"][0] for i, seed in enumerate((1, 2, 1))),
+          "the seed that a change is trained and screened on first rotates from one iteration to the next (was: "
+          "always the panel's first seed)")
     check("the guard refused 1 call" in it[3]["why"] and "frozen" in it[3]["why"] and it[3]["guard_denials"] == 1
           and not it[3].get("commit"), "an attempt to change the evaluator, refused by the guard, invalidates the iteration")
     check("outside editable_paths: eval.py" in it[4]["why"], "a change outside editable_paths invalidates the iteration")

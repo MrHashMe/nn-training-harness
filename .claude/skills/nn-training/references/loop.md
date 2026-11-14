@@ -1,7 +1,7 @@
 # Unattended research loop (`nnloop`)
 
 Checked: 2026-11-11 (Claude Code 2.1.303, Codex CLI 0.167, Cursor CLI docs of that date; keep rule, the
-harness's search of numeric settings and the restart of a stalled campaign: 2026-11-12)
+harness's search of numeric settings and the restart of a stalled campaign: 2026-11-12; the rotating first seed: 2026-11-14)
 Refresh: re-read each agent's headless-mode and permission documentation and run `tests/test_loop.py`; the
 start-up lines of `agent_argv` in `scripts/nnloop.py` are the only agent-specific part.
 
@@ -127,8 +127,10 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 3. Iterations, each in a fresh worktree at the best commit so far (`.claude/worktrees/nnloop-NAME`):
    a fresh agent session gets the task, the score to beat, the history (for a change that failed on the first
    seed: both scores), the notes, the untried hypotheses and, when the training script logs with RunLog, a few
-   points per metric of one run of the best commit (the session cannot read run folders), and makes one change. The harness commits it on branch `nnloop/NAME`, saves the diff, scans it, trains the
-   first seed, discards at once if that seed is not better, otherwise trains the rest and applies the keep rule.
+   points per metric of one run of the best commit (the session cannot read run folders), and makes one change. The harness commits it on branch `nnloop/NAME`, saves the diff, scans it, trains
+   one seed, discards at once if that run is not better than the best so far's run on the same seed, otherwise
+   trains the rest and applies the keep rule. The seed that comes first rotates through the panel from one
+   iteration to the next, so that one seed on which the best so far was lucky does not turn away every change.
    A gain that just misses the margin is measured on a second seed panel before it is decided. Where
    `search_trials` is set and the change leaves numeric settings open, the harness first trains a few versions
    and goes on with the best one ("A search by the harness" below). Where `restart_after` is set, a campaign

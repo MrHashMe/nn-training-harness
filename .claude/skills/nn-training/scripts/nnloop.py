@@ -1910,6 +1910,7 @@ def cmd_run(args, resume):
                 "limits": limits, "conditions": conditions,
                 "counters": {"runs": 0, "elapsed_s": 0.0, "gpu_s": 0.0, "usd": 0.0, "tokens": 0, "sessions": 0},
                 "hashes": {r: file_sha(root / r) for r in protected_files(root, C.pats, C.runs_rel)}}
+    expctl.keep_awake(os.getpid())  # a Mac would otherwise fall asleep during an agent session, between two runs
     return C.run()
 
 

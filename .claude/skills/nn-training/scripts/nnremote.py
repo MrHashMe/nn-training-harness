@@ -752,6 +752,7 @@ def op_control(a):
     expctl.write_json_atomic(d / "pid.json", {"pid": me, "pgid": me, "supervisor_pid": me, "started_at": t0,
                                               "proc_start": expctl.proc_start_time(me),
                                               "proc_key": expctl.proc_key(me), "supervisor_key": expctl.proc_key(me)})
+    expctl.keep_awake(me)  # a sleeping Mac cannot watch the spending cap or tear the machine down
     flag = {"stop": False}
     for name in ("SIGTERM", "SIGINT"):  # `expctl stop` signals this process where the platform has signals
         try:

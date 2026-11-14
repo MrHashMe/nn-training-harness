@@ -1823,6 +1823,20 @@ def cmd_resume(args):
         allow_code_change=args.allow_code_change))
 
 
+def keep_awake(pid):
+    """On a Mac, hold off idle sleep for as long as the process `pid` lives: a sleeping machine pauses a run while its
+    deadline, a campaign's time limit and a rented machine's bill keep counting. The system's own `caffeinate` does it and
+    ends by itself when that process does. None on other systems. A closed lid still puts a Mac to sleep."""
+    exe = shutil.which("caffeinate") if sys.platform == "darwin" else None
+    if not exe:
+        return None
+    try:
+        return subprocess.Popen([exe, "-i", "-w", str(int(pid))], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                                stderr=subprocess.DEVNULL)
+    except OSError:
+        return None
+
+
 def cmd_supervise(args):
     run_dir = Path(args.run_dir)
     if getattr(args, "env_file", None):
@@ -1856,9 +1870,11 @@ def cmd_supervise(args):
         write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": f"could not start: {e}",
                                                   "ended_ts": now(), "ended_at": iso(now())})
         return 1
+    awake = keep_awake(child.pid)
     write_json_atomic(run_dir / "pid.json", {"pid": child.pid, "pgid": child.pid, "supervisor_pid": os.getpid(),
                                              "started_at": t0, "proc_start": proc_start_time(child.pid),
-                                             "proc_key": proc_key(child.pid), "supervisor_key": proc_key(os.getpid())})
+                                             "proc_key": proc_key(child.pid), "supervisor_key": proc_key(os.getpid()),
+                                             **({"keep_awake_pid": awake.pid} if awake else {})})
     state = {"stop_at": None, "why": None, "killed": False}
 
     def on_signal(signum, _frame):
@@ -1895,6 +1911,9 @@ def cmd_supervise(args):
         if state["stop_at"] is not None and not state["killed"] and t > state["stop_at"] + kill_after:
             state["killed"] = True
             signal_group(child.pid, getattr(signal, "SIGKILL", signal.SIGTERM))
+    if awake:  # it ends with the run by itself; this covers a child that left a process behind under its own pid
+        awake.kill()
+        awake.wait()
     t1 = now()
     write_json_atomic(run_dir / "exit.json", {
         "returncode": rc, "signal": (-rc if is_num(rc) and rc < 0 else None),

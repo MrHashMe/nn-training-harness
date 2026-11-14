@@ -103,7 +103,8 @@ def main():
            if RunLog and os.environ.get("EXP_RUN_DIR") else contextlib.nullcontext())
     with log as rl:
         t0, step = time.time(), 0
-        while time.time() - t0 < a.time_budget:
+        # `expctl stop` or the launch's deadline ends the loop early; what follows still scores and saves the model
+        while time.time() - t0 < a.time_budget and not (rl and rl.should_stop()):
             x, y = batch("train", 64)
             loss = F.cross_entropy(model(x).flatten(0, 1), y.flatten())
             opt.zero_grad(set_to_none=True)

@@ -83,7 +83,8 @@ def main():
     with log as rl:
         model.train()
         t0, step = time.time(), 0
-        while time.time() - t0 < a.time_budget:
+        # `expctl stop` or the launch's deadline ends the loop early; what follows still scores and saves the adapter
+        while time.time() - t0 < a.time_budget and not (rl and rl.should_stop()):
             ids, mask, labels = batch()
             loss = model(input_ids=ids, attention_mask=mask, labels=labels).loss
             opt.zero_grad(set_to_none=True)

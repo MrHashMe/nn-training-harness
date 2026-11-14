@@ -209,6 +209,17 @@ else:  # the run works from a copy of the source that has no .claude, and must f
     top = (json.loads(run(ex, "--root", p, "status", "--no-gpu").stdout or "{}").get("top") or [{}])[0]
     check(top.get("run_id") == rid and str(top.get("ckpt")).endswith("model.ts"),
           f"expctl status lists that run as the best one, with the model it saved ({top})")
+    r = run(ex, "--root", p, "launch", "--name", "stopped", "--seed", "1", "--", sys.executable, "train.py", "--seed", "1",
+            "--time-budget", "600", env=dict(os.environ, CUDA_VISIBLE_DEVICES="-1"))
+    rid = (re.findall(r'"run_id": "([^"]+)"', r.stdout) or ["none"])[0]
+    rd, t0 = p / "runs" / rid, time.time()
+    while not (rd / "heartbeat.json").is_file() and time.time() - t0 < 120:  # from then on the trainer can be asked
+        time.sleep(0.5)
+    run(ex, "--root", p, "stop", rid, "--wait", "4m")
+    res = json.loads((rd / "result.json").read_text(encoding="utf-8")) if (rd / "result.json").is_file() else {}
+    check(res.get("state") == "interrupted" and (rd / "model.ts").is_file() and time.time() - t0 < 300,
+          "a stop request ends train.py's loop long before its time budget, and the run still saves its model (was: the "
+          f"trainer never asked and was killed) ({res.get('state')}: {res.get('reason')}, {time.time() - t0:.0f} s)")
 
 t0 = time.time()
 code = pilot.run([sys.executable, "-c", "import json, time; print(json.dumps({'type': 'rate_limit_event', "

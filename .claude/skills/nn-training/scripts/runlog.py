@@ -176,6 +176,18 @@ def _proc_start_time(pid):
         return None
 
 
+def _proc_key(pid):
+    """As expctl.proc_key: on Linux the boot's id and the start in ticks since that boot, which stay when the system
+    clock is set; the start time above moves with it there. None elsewhere."""
+    try:
+        with open(f"/proc/{pid}/stat", "r") as f:
+            data = f.read()
+        with open("/proc/sys/kernel/random/boot_id", "r") as f:
+            return f.read().strip() + ":" + data[data.rfind(")") + 2:].split()[19]
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _project_root(root=None) -> Path:
     return Path(root or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
 
@@ -343,7 +355,8 @@ class RunLog:
             pid = os.getpid()
             _write_json(man, {"schema": "expctl.manifest/v1", "run_id": self.run_id, "name": name,
                               "created_at": _iso(self.t0), "created_ts": self.t0, "pid": pid,
-                              "proc_start": _proc_start_time(pid), "host": socket.gethostname(),
+                              "proc_start": _proc_start_time(pid), "proc_key": _proc_key(pid),
+                              "host": socket.gethostname(),
                               "cmd": list(sys.argv), "cwd": os.getcwd(), "seed": seed, "study": study,
                               "trial": trial, "launched_by": "runlog"}, tries=40)
         if config is not None:

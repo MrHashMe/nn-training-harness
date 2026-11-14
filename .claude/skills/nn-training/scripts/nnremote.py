@@ -750,7 +750,8 @@ def op_control(a):
     rem = man["remote"]
     t0, me = time.time(), os.getpid()
     expctl.write_json_atomic(d / "pid.json", {"pid": me, "pgid": me, "supervisor_pid": me, "started_at": t0,
-                                              "proc_start": expctl.proc_start_time(me)})
+                                              "proc_start": expctl.proc_start_time(me),
+                                              "proc_key": expctl.proc_key(me), "supervisor_key": expctl.proc_key(me)})
     flag = {"stop": False}
     for name in ("SIGTERM", "SIGINT"):  # `expctl stop` signals this process where the platform has signals
         try:
@@ -889,7 +890,8 @@ def op_start(a):
         + ["--work", str(work)]  # absolute: the child runs in another directory than this command
     p = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, env=env,
                          cwd=str(work), close_fds=True, **DETACH)
-    expctl.write_json_atomic(work / ".nnremote.json", {"pid": p.pid, "proc_start": expctl.proc_start_time(p.pid)})
+    expctl.write_json_atomic(work / ".nnremote.json", {"pid": p.pid, "proc_start": expctl.proc_start_time(p.pid),
+                                                       "proc_key": expctl.proc_key(p.pid)})
     print(json.dumps({"ok": True, "pid": p.pid}))
     return 0
 
@@ -916,7 +918,8 @@ def op_pack(a):
                     sums[name] = digest(p)
             except OSError:
                 pass
-        alive = bool(me.get("pid")) and expctl.pid_alive(me["pid"]) and expctl.same_process(me["pid"], me.get("proc_start"))
+        alive = bool(me.get("pid")) and expctl.pid_alive(me["pid"]) \
+            and expctl.same_process(me["pid"], me.get("proc_start"), me.get("proc_key"))
         blob = json.dumps({"now": time.time(), "alive": alive, "files": files, "sums": sums}).encode()
         info = tarfile.TarInfo(STATE)
         info.size = len(blob)
@@ -986,7 +989,8 @@ def cmd_attach(a):
     if (d / "exit.json").exists():
         raise Refuse(f"{d.name} has ended; there is nothing to attach to")
     pj = expctl.read_json(d / "pid.json") or {}
-    if pj.get("pid") and expctl.pid_alive(pj["pid"]) and expctl.same_process(pj["pid"], pj.get("proc_start")):
+    if pj.get("pid") and expctl.pid_alive(pj["pid"]) \
+            and expctl.same_process(pj["pid"], pj.get("proc_start"), pj.get("proc_key")):
         raise Refuse(f"the controller of {d.name} is still running")
     if rem.get("handle"):
         spawn_controller(root, d)

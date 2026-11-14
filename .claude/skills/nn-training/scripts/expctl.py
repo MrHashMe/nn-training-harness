@@ -454,7 +454,24 @@ def proc_start_time(pid):
         return None
 
 
-def same_process(pid, expected_start) -> bool:
+def proc_key(pid):
+    """On Linux, what tells a process from a later one with its number whatever the clock does: the id of the boot
+    and the process's start in ticks since that boot. The start time above is the boot time plus those ticks, and the
+    boot time moves whenever the system clock is set, which a VM's time sync does: once it had been set by five seconds
+    in total, a live run read as lost. None elsewhere: Windows and macOS record a start time that stays."""
+    try:
+        with open(f"/proc/{int(pid)}/stat", "r") as f:
+            data = f.read()
+        with open("/proc/sys/kernel/random/boot_id", "r") as f:
+            return f.read().strip() + ":" + data[data.rfind(")") + 2:].split()[19]
+    except Exception:
+        return None
+
+
+def same_process(pid, expected_start, key=None) -> bool:
+    now_key = proc_key(pid) if key else None
+    if now_key:  # a record written before the key existed, or by a vendored runlog.py without it, goes by the time
+        return now_key == key
     if not is_num(expected_start):
         return True
     actual = proc_start_time(pid)
@@ -1030,7 +1047,8 @@ def load_run(root: Path, d: Path, cfg, t: float):
     study = isinstance(shb, dict) and is_num(shb.get("ts")) and (hb_age is None or t - shb["ts"] < hb_age)
     if study:
         hb_age = t - shb["ts"]
-    alive = bool(pid) and pid_alive(pid) and same_process(pid, pidj.get("proc_start") or man.get("proc_start"))
+    alive = bool(pid) and pid_alive(pid) and same_process(pid, pidj.get("proc_start") or man.get("proc_start"),
+                                                          (pidj if pidj.get("pid") else man).get("proc_key"))
     # (not for the mirror of a remote run: the pid in its heartbeat belongs to another machine)
     if not alive and hb_ok and hb_age is not None and hb_age <= stale and hb.get("pid") and hb.get("pid") != pid \
             and not man.get("remote") and pid_alive(hb["pid"]):
@@ -1039,8 +1057,10 @@ def load_run(root: Path, d: Path, cfg, t: float):
     # The supervisor writes the exit record a moment after the process has gone, so while it is there the run has not
     # ended. Only where its start time shows that the pid is still the supervisor's: a pid is given out again
     sup = pidj.get("supervisor_pid")
-    sup_start = proc_start_time(sup) if not alive and pid_alive(sup) else None
-    ending = sup_start is not None and is_num(pidj.get("started_at")) and abs(sup_start - pidj["started_at"]) < 5
+    sup_key = proc_key(sup) if not alive and pidj.get("supervisor_key") and pid_alive(sup) else None
+    sup_start = proc_start_time(sup) if not alive and not sup_key and pid_alive(sup) else None
+    ending = sup_key == pidj["supervisor_key"] if sup_key else (
+        sup_start is not None and is_num(pidj.get("started_at")) and abs(sup_start - pidj["started_at"]) < 5)
     # The records of the end are read after the looks at the processes: a process that is gone has written all it
     # ever will. Read before them, a run that wrote its result and ended between the two looks read as lost
     res = _dict_or_none(read_json(d / "result.json"), "result", errors)
@@ -1818,7 +1838,8 @@ def cmd_supervise(args):
                                                   "ended_ts": now(), "ended_at": iso(now())})
         return 1
     write_json_atomic(run_dir / "pid.json", {"pid": child.pid, "pgid": child.pid, "supervisor_pid": os.getpid(),
-                                             "started_at": t0, "proc_start": proc_start_time(child.pid)})
+                                             "started_at": t0, "proc_start": proc_start_time(child.pid),
+                                             "proc_key": proc_key(child.pid), "supervisor_key": proc_key(os.getpid())})
     state = {"stop_at": None, "why": None, "killed": False}
 
     def on_signal(signum, _frame):

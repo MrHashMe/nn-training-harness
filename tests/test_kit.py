@@ -472,6 +472,24 @@ def main():
     a, b, gone, same, other, now = json.loads(r.stdout) if r.returncode == 0 else [None] * 6
     check(a and b and abs(a - b) < 1 and gone is None and same and other is False and (os.name != "nt" or abs(now - a) < 60),
           f"a process's start time is known without psutil, to expctl and to the run logger alike, and tells a reused pid ({r.stdout.strip()} {r.stderr[-200:]})")
+    # on Linux that start time is the boot time plus the ticks since boot, and the boot time moves whenever the system
+    # clock is set (a VM's time sync): after five seconds of it a live run read as lost. The records carry the boot's
+    # id and the ticks as well, and those decide where both sides have them; elsewhere, and for a record without
+    # them, the time decides as before
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl, runlog\n"
+            "me, d = os.getpid(), Path(sys.argv[2])\na, k = expctl.proc_start_time(me), expctl.proc_key(me)\nd.mkdir()\n"
+            "(d / 'pid.json').write_text(json.dumps({'pid': me, 'supervisor_pid': me, 'started_at': a - 60,\n"
+            "                                        'proc_start': a - 60, 'proc_key': k, 'supervisor_key': k}))\n"
+            "print(json.dumps([k, runlog._proc_key(me), expctl.proc_key(4294967292), expctl.same_process(me, a - 60, k),\n"
+            "                  expctl.same_process(me, a, 'another-boot:1'), expctl.same_process(me, a - 60),\n"
+            "                  expctl.load_run(d.parent, d, {}, time.time())['state']]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "clockset")], cwd=proj)
+    k, k2, gone, moved, other, old, state = json.loads(r.stdout) if r.returncode == 0 else [0] * 7
+    check(k == k2 and gone is None and (k is not None) == sys.platform.startswith("linux") and old is False
+          and [moved, other, state] == ([True, False, "starting"] if k else [False, True, "lost"])
+          and [bool(pj.get(x)) for x in ("proc_key", "supervisor_key")] == [bool(k)] * 2,
+          "a run whose recorded start time is a minute off, as after the system clock was set, is the same process on Linux, where "
+          f"the launch record's boot id and start tick say so, and a reused pid elsewhere ({r.stdout.strip()} {r.stderr[-200:]})")
     # expctl's own writes leave no temporary file beside the record when they give up, whether the replace was refused
     # to the end or the write itself failed (a full disk)
     wdir = tmp / "wjson"

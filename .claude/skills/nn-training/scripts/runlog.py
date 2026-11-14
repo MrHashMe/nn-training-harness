@@ -484,7 +484,8 @@ class RunLog:
 
     def should_stop(self):
         """True after a stop request (`expctl stop`: stop.json in the run directory, read about once a second, and
-        SIGTERM where the platform has it) or once EXP_DEADLINE has passed. Check it every step."""
+        SIGTERM where the platform has it) or once EXP_DEADLINE has passed. Check it every step. A request holds for
+        the process, like the signal it stands in for: the runs that follow in it (the trials of a search) stop too."""
         t = time.time()
         if _STOP["signal"] is None and t - self._stop_poll >= 1.0:
             self._stop_poll = t

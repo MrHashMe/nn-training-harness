@@ -715,7 +715,11 @@ keeping a change without a gain is 2.3 %)
   recipe across seeds. N "GPU seconds are overbilled": the count is the reservation's upper bound on purpose.
 
 Rank 5, `runlog.py`
-- R a stop request read from one run's folder stops every later run of the same process.
+- N a stop request read from one run's folder stops every later run of the same process: as it should. The
+  file stands in for the signal, which reaches the whole process. `expctl stop` of one trial signals the
+  study's process on Linux; on Windows it waits `kill_after_s` and then ends the process tree, so trials
+  that ran on would be killed without saving, where today they stop at once. `references/hpo.md` tells the
+  objective to end the study at a stop. `should_stop()` now says that a request holds for the process.
 - R ranks of Lightning's own launcher (`LOCAL_RANK`, `NODE_RANK`, no `RANK`) all write the run files, against
   what `references/performance.md` says.
 - R the two benchmark trainers never ask `should_stop()`.
@@ -877,7 +881,27 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   it is still kept above the nominal rate (7 % where it is three times as noisy, 10 to 14 % before); the
   rule costs 7 points of power at a campaign's first change (61 % for a gain of two deviations, 68 %
   before) and about 2 later.
-- Next: step 5, runlog.
+- Done, step 5, runlog, one commit per idea: the ranks of Lightning's own launcher write no run files
+  (`2953f6d`); the two benchmark trainers ask `should_stop()` and still score and save (`3ab4ae4`); a
+  training run of the loop that was stopped from outside is not scored (`fd98c12`); a change whose test was
+  interrupted can be proposed again (`d8ed0da`). The last two are not from the review: they came up when the
+  trainers learned to obey a stop. `tests/test_loop.py` passed whole on Windows and in WSL on the final
+  state; `tests/test_runlog_units.py` and `tests/test_benchmarks.py` passed on both with the first two.
+- For REPORT.md, runlog and the loop:
+  1. The two benchmark trainers end at a stop request or at the launch's deadline and still score and save.
+     The fine-tuning trainer's line was not run live.
+  2. `RunLog` writes no run files in a process whose `LOCAL_RANK` or `NODE_RANK` is above zero, unless
+     `RANK` is set, which decides alone as before.
+  3. The loop does not score a training run that something outside it stopped, whatever the run saved, and
+     does not book its end as the change's failure: the campaign pauses with `stop requested: the training
+     run ...` and exit code 0. Before, Windows scored the truncated run like a full one and Linux booked a
+     crash of the change. The loop asks for the request's file as well, because the Windows supervisor reads
+     it only between polls: a trainer that obeys within two seconds leaves `stopped_for` empty in
+     `exit.json` there. That gap in the supervisor's record stays; the loop no longer relies on it.
+  4. An iteration that a limit or a stop interrupted leaves the list of tried changes, and its hypothesis
+     counts as untried (was: proposed again it was a `duplicate`, a failed status).
+  New checks: both in campaign b; each was seen to fail on the code without its fix.
+- Next: step 6, the remote runner and provenance.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

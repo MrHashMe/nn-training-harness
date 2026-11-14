@@ -1,6 +1,6 @@
 # Validity: protocol, leakage, sanity checks, sealed test, evaluator freeze
 
-Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command: 2026-11-14)
+Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command and the wiring checks of section 4: 2026-11-14)
 Refresh: principles, not versions; re-read when the guard's sealed or frozen mechanics change
 (`tests/test_kit.py` covers them) or when a new contamination or leakage route becomes known.
 
@@ -34,6 +34,9 @@ Goal: every number you report measures what the Project card says it measures.
 
 ## 4. Sanity gate before any tuning (all must pass; record results)
 1. One forward/backward/optimizer step on a real batch: finite loss, finite gradients, non-zero gradient norm for every trainable parameter (catches frozen or unused layers), parameter update actually changes weights.
+   - Every trainable parameter is in an optimizer group: `held = {id(p) for g in opt.param_groups for p in g["params"]}`, then list each parameter with `requires_grad` whose `id` is not in `held`. A module created after the optimizer is not in it.
+   - A gradient of `None` means the parameter is not in the graph of the loss, and the optimizer skips it. A gradient of exactly zero is in the graph and still moves under weight decay, so "the weights changed" proves nothing there: judge by the gradient.
+   - Adapters: with LoRA's standard zero-initialised B, the gradient of A is exactly zero on the first step and non-zero on the second, so judge adapters after two steps. (These three: tried on 2026-11-14 with torch 2.9.1.)
 2. Initial loss matches expectation (e.g. ln(C) for balanced C-class cross-entropy with a fresh head).
 3. Overfit a tiny subset (1–2 batches) to near-zero training loss when the task allows it.
 4. Shuffled-label control (cheap, short): validation performance should fall to chance; if not, suspect leakage.

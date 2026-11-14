@@ -1820,10 +1820,14 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     elif live and UV_RUN_SYNCING.search(c):
         results.append((ASK, f"`uv run` syncs the environment by default and jobs are live ({ctx.live_desc()}); use "
                              f"`uv run --frozen` (or --no-sync) while runs or studies are active."))
-    if depth < 2 and not is_final:  # what it hands to a nested shell or interpreter obeys the same rules
-        # also from the line as it came: there the text still has the backslashes that readings() looks at
+    if depth < 2 and not is_final:  # what it hands to a nested shell or interpreter obeys the same rules, in every
+        # folder the line moves to: after `cd data`, the code's test/labels.csv is data/test/labels.csv.
+        # Also from the line as it came: there the text still has the backslashes that readings() looks at
         for s in dict.fromkeys(inner_code(c) + inner_code(GIT_GLOBAL.sub("git", cmd))):
-            results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)))
+            for d in dirs:
+                ctx.cwd = d
+                results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)))
+        ctx.cwd = here
     others, long = readings(cmd) if alt else ([], False)
     if long and sh:  # program text (python -c "...") has braces of its own
         results.append((ASK, "A word of this command stands for more than 64 names (a brace list such as "

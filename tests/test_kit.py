@@ -993,6 +993,17 @@ def main():
                                                       "open(\"README.md\", \"w\").write(card)\nmodel = eval(cfg.model)(**kw)\n"}, None),
         ("Write", {"file_path": "docs/conf.py", "content": "exec(open('../pkg/version.py').read())\n"
                                                            "source_suffix = ['.rst', '.md']\nexclude_patterns = ['README.md']\n"}, None),
+        # were None: text handed to a nested shell or interpreter was read from the folder the line starts in, so
+        # after a change of folder its relative paths were looked up in the wrong place
+        ("Bash", {"command": "cd data && bash -c \"cat test/labels.csv\""}, "deny"),
+        ("Bash", {"command": "cd data && bash -c 'tar cf ../x.tar test'"}, "deny"),
+        ("Bash", {"command": "cd data && python -c \"print(open('test/labels.csv').read())\""}, "deny"),
+        ("Bash", {"command": "env -C data sh -c 'head -n 3 test/labels.csv'"}, "deny"),
+        ("PowerShell", {"command": "Set-Location data; powershell -Command \"Get-ChildItem test\""}, "deny"),
+        ("Bash", {"command": "cd data && bash -c \"cd test && bash -c 'cat labels.csv'\""}, "deny"),
+        ("Bash", {"command": "cd data && bash -c \"head -n 3 train.csv\""}, None),
+        ("Bash", {"command": "cd eval && python -c \"import os; print(os.listdir('.'))\""}, None),
+        ("Bash", {"command": "cd sub && bash -c 'cat hello.py'"}, None),
         # were None: text that a call writes into a file, or hands to an MCP tool, and that names sealed data
         ("Write", {"file_path": str(proj / "train.py"), "content": "import csv\nrows = list(csv.reader(open('data/test/labels.csv')))\n"}, "ask"),
         ("Edit", {"file_path": "train.py", "old_string": "a", "new_string": "p = os.path.join('data', 'test', 'labels.csv')"}, "ask"),

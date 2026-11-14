@@ -1308,51 +1308,63 @@ so every statement about macOS is code reading or documentation.
 
 ## Round 7 (second review, 14 November): in progress
 
-The user's request of 14 November, sent while round 6's last tests ran: review a second reviewer's report (kept out of
-git at `docs/upgrade/scout/scouts/user-review-1114b.md`), plan the upgrade on its basis and carry the plan out. The
-rule of the round: every claim of the report gets a verdict from the code or from a run before anything is built on it,
-and the list is built from the top, so that the usage limit cuts it from the bottom. The report's scores and its
-"v2.0" design are not a goal. Nothing is pushed.
+Request of 14 November: review a second reviewer's report on the public version (`bc96015`), plan from it and
+carry the plan out. The report is kept out of git at `docs/upgrade/scout/scouts/user-review-1114b.md`. Rule of
+the round: its claims are leads, each is checked against the code before anything is built, and what protects
+real results comes first.
 
-Claims, with the verdict so far (open = not looked at yet):
-- E1 `benchmarks/charlm/evaluate.py` hands the archive's pickle entries to `torch.jit.load` unread; the report says
-  code runs from them. Open: to be run with a crafted archive. Planned whatever the run says: the evaluator reads the
-  pickle entries' opcodes and refuses a name that `torch.jit.save` does not write.
-- G1 guard: a write in Python by `Path.replace`, `Path.rename`, `Path.unlink`, `extractall` is on no list. Confirmed
-  by reading (`WRITE_VERBS`, `PY_WRITES`). To fix, with round 6's Trial row (G2: output options, `touch`, `patch`,
-  `install`).
-- G3 guard: zsh `=(cmd)` and the glob qualifier `(e:'cmd':)`. Open: to be asked of the guard and of zsh 5.9.
-- G4 guard: a search over more than 20,000 files passes when a wildcard seal's files lie beyond them. Confirmed, a
-  commented shortcut. To fix: such a search counts as reading the sealed files once the hook's time is used up.
-- G5 guard: the working folder is not resolved (`/tmp` and `/private/tmp` on a Mac). Open: to be run in WSL through
-  a link to the project.
-- G6 guard: an error of its own asks instead of denying. Open (a decision, probably kept: a person decides).
-- X1 `expctl stop` signals the supervisor's pid without asking whether it is still the supervisor. Confirmed
-  (`supervisor_key` is recorded and not compared). To fix.
-- X2 the start time from `ps` depends on the locale. Wrong for this branch: round 6 asks `ps` in the C locale and UTC.
-- X3 `chained()` appends without a lock. Confirmed. To fix.
-- X4 a link inside a git-ignored folder leads a snapshot to sealed data. Open: to be run; the planned answer is a
-  search for such links in the preflight command, because a walk of every ignored folder at every launch costs too much.
-- R1 two bookings at the same moment both give up. Confirmed (safe, and neither starts). To fix: the earlier row wins.
-- R2 `on_finish` runs on the controller only. Open (a decision).
-- L1 `runlog._STOP` is process-wide. Wrong as a defect: `should_stop()` says so on purpose, a stop request holds for
-  the process like the signal it stands in for.
-- N1 GPU-hours count every GPU the loop sees. Open: deliberate if the reference says so.
-- N2 names beside `.DS_Store` (`._*`, `Thumbs.db`, `desktop.ini`). Open.
-- N3 the screen ends a candidate whose first seed is not better. Open: to be simulated before any change.
-- D1 the banner's and the README's headline against the pilot's result. Open.
-- D2 `docs/REFERENCE.md`: an old date and version, commands and `on_finish` missing. Open.
-- D3 `docs/README.md` on development commits, REPORT.md on commit times. Open.
-- D4 six contradictions between references; six ledger rows marked finished. Open.
+Verdicts, each from a run or from the code named:
+- Evaluator: "`torch.jit.load` runs pickle payloads". **Wrong, by a run**: 36 archives with one pickle entry
+  swapped for a payload, PyTorch 2.9.1, none ran. A test in `tests/test_benchmarks.py` asks the installed
+  PyTorch again (three pickle entries, two protocols), and `benchmarks/charlm/README.md` says so. The evaluator
+  is unchanged. No move to safetensors.
+- Guard: writes by pathlib's forms, by an output option, by `touch`, `patch`, `install` and by formatters.
+  **Confirmed, fixed** in `644b2c9`.
+- Guard: zsh's `=(command)` and the glob qualifier `e`. **Confirmed, fixed** in `644b2c9`.
+- Guard: a filtered search passes where a wildcard seal has more files than the walk's bound. **Confirmed,
+  fixed** in `644b2c9`: the walk goes on while the time allows and counts as a read where the time ends.
+- Guard: "a project under a link (`/tmp` on macOS) is not recognised". **Wrong, by a run in WSL**; a test of it
+  is in `644b2c9`.
+- Guard: an internal error asks instead of refusing. Deliberate; ledger row.
+- `expctl stop` signals the supervisor's pid without checking whose it is. **Confirmed, fixed** in `78b1a17`:
+  the launch record holds `supervisor_start`, and `cmd_stop` compares before it signals.
+- `chained()` appends to the final evaluation's record without a lock. **Confirmed by a run** (six writers lost
+  91 of 240 rows on Windows and broke the chain in WSL), **fixed** in `78b1a17` with a file lock.
+- `nnremote.reserve()`: two bookings at the same moment both give up. **Confirmed, fixed** in `78b1a17`: the
+  earlier row holds.
+- A link below a git-ignored folder can bring sealed data into a snapshot. Confirmed by reading, low; a
+  selftest warning if the budget allows, else a ledger row.
+- Ledger rows, not changes: `on_finish` runs on the controller only (a remote-side stop needs a rented
+  machine); `runlog._STOP` is process-wide on purpose; GPU-hours count every GPU as an upper bound; the
+  `EXP_PROJECT_ROOT` scan off Linux is a safeguard; junk names beside `.DS_Store`; a slack in the screen.
+- Docs: the headline against the pilot (fixed, `e777e0b`); commands missing from REFERENCE.md (fixed,
+  `fd8c18c`); which commit ids are public (fixed); the sentence on commit times (fixed). Fixed with the ledger
+  note: TorchTitan in `references/llm.md` against `performance.md`; the wording on the Hugging Face MCP write
+  tools in `references/stack.md` (the kit asks, the text said deny); five ledger rows marked finished whose
+  enabling step had not run (`covered/built-B.json`).
+- The enabling step of four of those five ran in WSL on 14 November in a uv environment: torch 2.15.0+cpu,
+  transformers 5.22.2, peft 0.21.2, trl 1.17.1, scikit-learn 1.9.1, datasets 5.2.0, accelerate 1.15.0. LoRA
+  on a tiny GPT-2 trains (loss 4.140 to 3.998), `SFTConfig` builds with `use_cpu=True`, the group splits
+  hold. PyTorch's own row stays unfinished: its GPU build crashed here on 11 November.
+- "TorchAO is retired": wrong (its repository had a push on 14 November). "arXiv:2603.24647 is
+  misattributed": not confirmed, the paper holds what the kit cites.
 
-To build after the fixes, in this order: generated guard cases judged by a live shell (F1); hashes of harness and
-frozen files, checked before a result counts (F2: the complete answer to writes that no list sees); `expctl preflight`
-(F3); the macOS box for loop runs from the report's profile, tested only by the workflow's Mac runners (F4). Every
-other proposal of the report (training back ends, search methods, cloud drivers, plugin and swarm, MCP servers, the
-retention gate, the data recipe, per-item pairing) gets a ledger row in the note `round7`.
+The ledger has the note `round7` (29 rows) with `built-round7.json`; row 11 of the note `round6` is Adopt and
+finished. 1,649 rows; 493 Adopt, 346 finished and 147 unfinished.
 
-Usage on 14 November: 89 % of the week's limit for this model was used when the round began, three hours before its
-reset, and paid extra usage is switched on for the account. Work stops short of the limit and goes on after the reset.
+Next, in this order: a hash of the frozen files in each run's manifest, in `expctl hash`, in a status alert and
+in the final evaluation's receipt, and selftest's check of the kit files against the install manifest; generated
+guard cases judged by a live shell; one independent review; the full tests on Windows and in WSL; REPORT.md
+"Round 7".
+
+Not built, ledger rows with reasons: `expctl preflight` (the gates exist as commands), a macOS Seatbelt box
+(cannot be tested without macOS runners), a remote-side stop, and the report's larger design (more back ends,
+cloud drivers, a plugin, a restructure).
+
+Every guard answer that changed is in the message of `644b2c9`; the report lists each with its test.
+Tests so far, default interpreters: `test_kit.py` 693 checks in WSL and 687 on Windows, `test_review_fixes.py`
+49 and 47, `test_remote.py` 91 and 91, `test_benchmarks.py` 51 on Windows, all pass. The full passes have not
+run yet.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1364,9 +1376,11 @@ reset, and paid extra usage is switched on for the account. Work stops short of 
   3.15 on any system. Not built: the Seatbelt box, the `mps` device in the probe, the heartbeat and the two
   benchmark tasks, a device field in run records, mlx-lm. No reviewer without the working context looked at
   the round's guard change.
-- The guard's list of write verbs (found in round 6, older than it): not changed; a Trial row and a question
-  to the user.
-- 144 adopted rows are unfinished (142 before round 6, whose two new ones are built and wait for a run on
+- The guard's list of write verbs (found in round 6, older than it): built in round 7 (`644b2c9`). Still
+  unseen by any list: an archive unpacked over a file, a download named by its URL, `git apply`, a formatter
+  started through another program. The hash of the frozen files is the answer to those.
+- 147 adopted rows are unfinished (144 before round 7: its hash of the frozen files and its generated guard
+  cases are not built yet, and PyTorch's pinned GPU build moved there because it crashed here; 142 before round 6, whose two new ones are built and wait for a run on
   macOS; 134 before round 5, whose check of the ledger moved eight rows there),
   and of the Trial and Assess rows only round 2's three built items were tried (usage limit). ROUND2.md gave
   the go-ahead for all of them; what was built first is what the live campaign and the review pointed at.

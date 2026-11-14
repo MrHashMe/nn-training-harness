@@ -11,6 +11,7 @@ import io
 import json
 import math
 import os
+import pickle
 import re
 import shutil
 import subprocess
@@ -191,6 +192,33 @@ else:
     check(two[0] == 0 and fair is not None and abs(two[1].get("score", 0) - fair) < 1e-9,
           "a file with a second directory is scored as the code that was read: what PyTorch loads is an archive the "
           f"evaluator wrote from the entries it read ({two})")
+
+    # A pickle entry that would run code if Python's pickle loaded it. torch.jit.load reads these entries with a
+    # reader of its own that calls nothing: PyTorch 2.9.1 ran none of 36 such files (tried on 14 November 2026).
+    # This asks the PyTorch that runs the tests, entry by entry
+    class Runs:  # loaded by Python's pickle, it creates the file it names
+        def __init__(self, mark):
+            self.mark = str(mark)
+
+        def __reduce__(self):
+            return eval, ("open(%r, 'w').close()" % self.mark,)
+
+    pickle.loads(pickle.dumps(Runs(tmp / "ran-by-python")))
+    with zipfile.ZipFile(tmp / "model-Fair" / "model.ts") as z:
+        fair_entries = [(i.filename, z.read(i)) for i in z.infolist()]
+    ran, tried = [], 0
+    for k, (name, _) in enumerate(fair_entries):
+        for proto in (2, 4) if name.endswith("pkl") else ():
+            mark, buf, tried = tmp / f"ran-{k}-{proto}", io.BytesIO(), tried + 1
+            with zipfile.ZipFile(buf, "w") as zo:
+                for n, d in fair_entries:
+                    zo.writestr(n, pickle.dumps(Runs(mark), protocol=proto) if n == name else d)
+            code = answer(f"pickle-{k}-{proto}", buf.getvalue())[0]
+            if mark.exists():
+                ran.append(f"{name} (protocol {proto}, exit {code})")
+    check((tmp / "ran-by-python").exists() and tried >= 4 and not ran,
+          "a pickle entry that runs code under Python's pickle runs none under the evaluator: each of the model "
+          f"file's {tried // 2} pickle entries was replaced by one, in two protocols ({ran or 'none ran'})")
 
 # 2. a project with the kit
 p = tmp / "with-kit"

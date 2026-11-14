@@ -561,13 +561,13 @@
   "file": "user-reports",
   "candidate": "TRL 1.17.1",
   "status": "finished",
-  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row (TRL 1.17.1 pinned, one framework per env); documented, enabling step not run"
+  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row (TRL 1.17.1 pinned, one framework per env); enabling step run in WSL2 on 2026-11-14 in a uv environment with the CPU build of torch 2.15.0 and Python 3.12: SFTTrainer and SFTConfig import and a config builds (with use_cpu=True, since the config's default is bf16); no training run through SFTTrainer, nothing on a GPU"
  },
  {
   "file": "user-reports",
   "candidate": "PEFT",
   "status": "finished",
-  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row and finetuning.md (PEFT 0.21.2 pinned); documented, enabling step not run"
+  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row and finetuning.md (PEFT 0.21.2 pinned); enabling step run in WSL2 on 2026-11-14 in a uv environment with the CPU build of torch 2.15.0 and Python 3.12: LoRA on a tiny GPT-2 with transformers 5.22.2, 30 steps, loss 4.140 to 3.998, 1,024 of 29,568 parameters trainable; nothing on a GPU"
  },
  {
   "file": "user-reports",
@@ -579,18 +579,18 @@
   "file": "user-reports",
   "candidate": "Hugging Face Transformers",
   "status": "finished",
-  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row (Transformers 5.22.2 pinned); documented, enabling step not run"
+  "where": ".claude/skills/nn-training/references/stack.md \"Fine-tuning\" row (Transformers 5.22.2 pinned); enabling step run in WSL2 on 2026-11-14 in a uv environment with the CPU build of torch 2.15.0 and Python 3.12: a tiny GPT-2 trained for 30 steps under a PEFT LoRA adapter, loss 4.140 to 3.998; nothing on a GPU"
  },
  {
   "file": "user-reports",
   "candidate": "PyTorch",
-  "status": "finished",
-  "where": ".claude/skills/nn-training/references/stack.md \"Framework\" row (PyTorch 2.15.0, Python 3.11+, cu132); documented, enabling step not run"
+  "status": "unfinished",
+  "where": ".claude/skills/nn-training/references/stack.md \"Framework\" row (PyTorch 2.15.0, Python 3.11+, cu132); the CPU build of 2.15.0 installed and trained in WSL2 on 2026-11-14, but the pinned cu132 build crashed at its first CUDA call on this machine on 2026-11-11 (covered/tried.json), so the pin is not shown to work on a GPU here"
  },
  {
   "file": "user-reports",
   "candidate": "scikit-learn 1.9.1 (splitters and Pipeline as dated advice)",
   "status": "finished",
-  "where": ".claude/skills/nn-training/references/data.md \"scikit-learn 1.9.1\" bullet (GroupKFold, StratifiedGroupKFold, Pipeline); documented, enabling step not run"
+  "where": ".claude/skills/nn-training/references/data.md \"scikit-learn 1.9.1\" bullet (GroupKFold, StratifiedGroupKFold, Pipeline); enabling step run in WSL2 on 2026-11-14 in a uv environment with the CPU build of torch 2.15.0 and Python 3.12: GroupKFold and StratifiedGroupKFold kept every group on one side of each split"
  }
 ]

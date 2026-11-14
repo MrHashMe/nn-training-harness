@@ -18,7 +18,8 @@ margin above the noise floor), not a default to switch on. Versions are from 202
   running the agent with all permissions off; the kit's rules forbid that outside an isolated container. The kit's
   `nnloop` runs this pattern with harness-side scoring (`loop.md`).
   (source: https://github.com/karpathy/autoresearch, 2026-11-11)
-- torchtitan is the PyTorch-native reference for large-scale pretraining (status not re-checked on 2026-11-11).
+- torchtitan v0.4.0 is PyTorch's example code for large-scale pretraining: a pattern to read, not a base to
+  build on (`performance.md`; its status was not re-checked on 2026-11-11).
 
 ## Tokenizer and chat-template preflight
 Before any long run, render three training examples, tokenise them as the trainer does, and read them verbatim. Record:

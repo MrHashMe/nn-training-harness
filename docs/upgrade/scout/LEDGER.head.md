@@ -218,12 +218,50 @@ GitHub's pages on its runners, all read on 14 November.
   file only where the line holds one of its write verbs, so `sort -o`, `curl -o`, `touch` and other programs write
   such a file without a question. The limit is older than this round and has nothing to do with a Mac; it was
   found while the round's report was checked, and it is recorded and put to the user instead of built. The test it
-  needs can be run here: the new questions about harmless lines, counted on the test table.
+  needs can be run here: the new questions about harmless lines, counted on the test table. Round 7 ran it and
+  built the change: the row is Adopt and finished now.
 - What "run" means in this round. The guard's new cases and all seven test files ran on native Windows and in
   WSL. What each shell pattern does was run in zsh 5.9 and bash 5.3.9 in a container. Nothing ran on macOS, so
   every statement about a Mac in these rows is code reading or documentation.
 - Open after round 6: the first run of the workflow, which will show what fails on macOS and on the newest Python;
   after it, on a real Mac, the Seatbelt box and one training run on the Apple GPU.
+
+## Round 7 (14 November 2026): a second review
+
+The user pasted a second reviewer's report on `bc96015` and asked for a plan built on it and for the plan to be
+carried out. The report is a third party's text: each of its claims about the code was checked by reading or by a
+run before anything was changed, and its scores against a design of its own ("v2.0") were not taken as a goal.
+The note `round7` has 29 rows. Research went no further than a change needed: one paper's abstract and HTML, and
+one repository's state, both on 14 November.
+
+- Confirmed and built (`scout/covered/built-round7.json`; 12 Adopt rows of this note and one of `round6`). The
+  guard's question about a write now covers pathlib's rename, replace and touch; the word behind an output option,
+  `touch`, `patch`, `install` and formatters (round 6's Trial row, Adopt and finished now); zsh's `=(command)` and
+  its glob qualifier `e`; and a wildcard seal's walk that the hook's time cuts short ends in a question.
+  `expctl stop` checks the pid it signals, the record of final evaluations is written under a lock, and the earlier
+  of two remote reservations made at the same moment holds. Public statements and two references were corrected.
+- Not confirmed, each by a run or a source: code run through a pickle entry of a model file (36 files, none ran; a
+  test now asks the installed PyTorch), a project reached through a link escaping the guard (run in WSL; a test
+  keeps asking), TorchAO retired, and a paper cited for what it does not say.
+- Adopt, unfinished at this commit (2): the hash of the frozen files with selftest's check of the installed kit
+  files, and generated guard cases judged by a live shell.
+- Corrected in an earlier round's record: five rows of the note `user-reports` said "finished" beside "enabling
+  step not run". The step has now run for four (TRL, PEFT, Transformers, scikit-learn: WSL2, CPU build of torch).
+  PyTorch's row is unfinished, because the pinned cu132 build crashed on this machine's GPU on 11 November.
+- Rejected, reasons in the rows (9): safetensors as the benchmark's model format, a refusal in place of the guard's
+  question after an error of its own, a stop state per RunLog instance, ten training back ends behind one recipe
+  file, a search plane whose gain the review gets by multiplying, `/swarm`, the `nnharness/` layout, the
+  fine-tuning evaluator in bf16, and more `caffeinate` flags.
+- Hold (3): GPU-hours per device, more junk names out of the loop's protected files, `expctl preflight`.
+- Undecided, each with the test it needs (3 Trial, 2 Assess): a stop on the rented machine (money), the Metal
+  wired-memory limit (a Mac), a powered benchmark (agent sessions on the user's subscription), the loop's screen
+  with a slack (a simulation), a data recipe with a control run by the harness (a design first).
+- Proposals that earlier rows decide, unchanged: ports for Antigravity and Gemini CLI, the MCP servers and cloud
+  drivers (round 5: held for the user); a Seatbelt box, mlx-lm and the mps device (round 6: Trial, they need a
+  Mac); a job object per run on Windows and a doctor report (Adopt, unfinished); the workflow for three systems
+  (round 6: built, not run, because a workflow runs when it is pushed).
+- What the review says against the first review's methods (a stale power figure, successive halving on a decaying
+  schedule, Schedule-Free AdamW) agrees with `references/loop.md`, `hpo.md` and `optimization.md`; nothing changed.
 
 ## Coverage map
 

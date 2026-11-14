@@ -65,6 +65,9 @@ keeps something between calls was refused where the evaluator saw an assignment 
 buffer; it is now scored as on its first call, because every call goes to a freshly loaded copy, which also
 covers what those two checks did not see (a list or a dictionary that grows). The score of a model that passed
 before is the same number: `train.py` as shipped, trained for three seconds, gave 2.1732656613119863 under both.
+The pickle entries of a model file are no second way in: `torch.jit.load` reads them with a reader of its own,
+and a pickle that creates a file when Python loads it created none in any entry (36 files, PyTorch 2.9.1, tried on
+14 November 2026; `tests/test_benchmarks.py` repeats this with the PyTorch that runs the tests).
 Not covered: a file operation that a later PyTorch adds to TorchScript, and a model with a method or attribute
 named `save` or `from_file`, which is refused. A project created before this date keeps its own copy of the old
 `evaluate.py`; copying the new one in changes a frozen file, so it starts a new protocol version

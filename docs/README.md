@@ -1,10 +1,11 @@
 # Guides and background material
 
-- `GUIDE.md` — the guide for the person who uses the kit; start here. Part 1: what the kit is, a picture of it,
-  how it works step by step (with diagrams), what it changes, how it improves training, what was measured, what
-  it does not do. Part 2: which tool for which job (this kit, autoresearch, Optuna, a trainer library), set-up,
-  what the agent does and what you decide, thirteen scenarios. Part 3: the commands at a glance, the limits, the
-  words used.
+- `GUIDE.md` — the plain guide for the person who uses the kit; start here. How it works in five ideas (with
+  diagrams), what was measured, how to start, working with the agent, which tool for which job (this kit,
+  autoresearch, Optuna, a trainer library), thirteen scenarios, and a quick reference of commands, limits and
+  words.
+- `REFERENCE.md` — the detail the front page leaves out: what gets installed, the optional modules, what works with
+  which agent and platform, upgrading and removing, the kit's tests, every known limit.
 - `TRAINING_GUIDE.md` — how to get the best model without being an expert: the order of work, the tool stack layer
   by layer with the versions of 11 Nov 2026 and what was tried, recipes, the costly mistakes.
 - `research-notes/` — the raw research notes (23 Oct 2026) behind the stack choices: Claude Code formats and

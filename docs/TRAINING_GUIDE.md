@@ -265,7 +265,7 @@ Your decisions on the way: the licence of the base model, the budget, and the fi
   (`python benchmarks/new_project.py DIR`).
 - Give every experiment the same wall-clock budget, keep data, tokenizer and evaluation in files the agent cannot
   edit, and let it edit the training file. The kit's loop does that on your own script; autoresearch does it on
-  its own task (GUIDE.md, section 1).
+  its own task (GUIDE.md, "Which tool for which job").
 - A fixed budget favours changes that are fast, not changes that are best at convergence: test what was kept at
   the real training length before you rely on it.
 

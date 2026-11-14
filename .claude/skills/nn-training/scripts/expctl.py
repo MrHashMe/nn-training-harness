@@ -2175,6 +2175,102 @@ except Exception as e:
 print(json.dumps(out))
 """
 
+# What training code relies on for speed, each tried in a process of its own with a time limit: a wheel that does
+# not fit the GPU or its driver ends the interpreter instead of raising (seen with a cu132 build in WSL2), and a
+# kernel that is missing gives way to a slow one without a word. Rows: name, needs a CUDA device, seconds, code.
+FAST_PATHS = [
+    ("cuda", True, 120, """
+import torch
+x = torch.randn(256, 256, device="cuda")
+assert bool(torch.isfinite((x @ x).sum())), "a matrix product on the GPU gave no finite number"
+torch.cuda.synchronize()
+"""),
+    ("bf16_autocast", True, 120, """
+import torch
+x = torch.randn(256, 256, device="cuda")
+with torch.autocast("cuda", dtype=torch.bfloat16):
+    y = x @ x
+torch.cuda.synchronize()
+assert y.dtype == torch.bfloat16 and bool(torch.isfinite(y.float()).all()), "bf16 autocast gave a wrong type or value"
+"""),
+    ("flash_attention", True, 120, """
+import torch
+from torch.nn.attention import SDPBackend, sdpa_kernel
+q = torch.randn(2, 4, 64, 32, device="cuda", dtype=torch.bfloat16)
+with sdpa_kernel(SDPBackend.FLASH_ATTENTION):  # no other kernel may answer
+    torch.nn.functional.scaled_dot_product_attention(q, q, q, is_causal=True)
+torch.cuda.synchronize()
+"""),
+    ("fused_adamw", True, 120, """
+import torch
+m = torch.nn.Linear(64, 64).cuda()
+opt = torch.optim.AdamW(m.parameters(), lr=1e-3, fused=True)
+m(torch.randn(8, 64, device="cuda")).sum().backward()
+opt.step()
+torch.cuda.synchronize()
+"""),
+    ("compile", False, 300, """
+import time, torch
+dev = "cuda" if torch.cuda.is_available() else "cpu"
+m = torch.nn.Sequential(torch.nn.Linear(64, 64), torch.nn.GELU(), torch.nn.Linear(64, 8)).to(dev)
+x = torch.randn(16, 64, device=dev)
+t = time.time()
+y = torch.compile(m)(x)
+assert torch.allclose(y, m(x), atol=1e-4), "the compiled module's output differs from eager"
+print(f"{dev}, first call {time.time() - t:.0f} s")
+"""),
+]
+
+
+def fast_paths(py, root, cuda):
+    """What each FAST_PATHS row did in the interpreter `py`: "ok", "failed: <error>", "crashed: <exit code>",
+    "timeout ..." or "skipped ...". `cuda`: what that interpreter's torch said about a CUDA device (None: unknown)."""
+    out = {}
+    for name, needs_cuda, limit, code in FAST_PATHS:
+        if needs_cuda and cuda is False:
+            out[name] = "skipped: torch reports no CUDA device"
+            continue
+        try:
+            r = subprocess.run([py, "-c", code], capture_output=True, text=True, errors="replace", timeout=limit,
+                               cwd=str(root))
+        except subprocess.TimeoutExpired:
+            out[name] = f"timeout after {limit} s"
+            continue
+        except OSError as e:
+            out[name] = f"failed: {type(e).__name__}: {e}"
+            continue
+        said = ((r.stdout or "").strip().splitlines() or [""])[-1][:300]
+        lines = (r.stderr or "").strip().splitlines()  # the exception's own line, not a hint that follows it
+        err = ([x for x in lines if re.match(r"[A-Za-z_][\w.]*: ", x)] or lines or [""])[-1][:300]
+        if r.returncode == 0:
+            out[name] = f"ok ({said})" if said else "ok"
+        elif r.returncode < 0 or r.returncode > 255:  # ended by a signal, or by a Windows exception such as 0xC0000005
+            out[name] = f"crashed: exit code {r.returncode}" + (f" (0x{r.returncode:08X})" if r.returncode > 255 else "")
+        else:
+            out[name] = "failed: " + (err or said or f"exit code {r.returncode}")
+    return out
+
+
+# Dated advice about installed versions; the reference each row names gives the source. Rows: package, first
+# version affected, first version fixed, what is wrong, where to read.
+ADVISORIES = [
+    ("datasets", (0, 0, 0), (5, 2, 0), "runs code when a pickle loads (CVE-2026-57845)",
+     "references/data.md, checked 2026-11-11"),
+    ("torch", (2, 13, 0), (2, 15, 0), "torch.compile with dropout and activation checkpointing can give silently "
+     "wrong gradients (pytorch issue 198333)", "references/performance.md, checked 2026-11-11"),
+]
+
+
+def advisories(packages):
+    """The ADVISORIES rows that apply to these installed versions, one sentence each."""
+    out = []
+    for name, first, fixed, what, where in ADVISORIES:
+        ver = (packages or {}).get(name)
+        v = (tuple(int(x) for x in re.findall(r"\d+", ver or "")[:3]) + (0, 0, 0))[:3]
+        if ver and first <= v < fixed:
+            out.append(f"{name} {ver}: {what}; fixed in {'.'.join(map(str, fixed))} ({where})")
+    return out
+
 
 def cmd_env(args):
     root = find_root(args.root)
@@ -2225,8 +2321,16 @@ def cmd_env(args):
                 else {"error": (r.stderr or r.stdout)[-400:]}
         except (OSError, subprocess.SubprocessError, ValueError, IndexError) as e:
             info["interpreter"] = {"error": f"{type(e).__name__}: {e}"}
+        if args.probe:  # not beside a live run: it would share the GPU with it
+            live = [r["run_id"] for r in scan(root, cfg) if r["state"] in ACTIVE_STATES]
+            info["interpreter"]["fast_paths"] = {"skipped": f"a run is live ({', '.join(live[:3])}): try when it has ended"} \
+                if live else fast_paths(py, root, (info["interpreter"].get("torch") or {}).get("cuda_available"))
+        warn = advisories(info["interpreter"].get("packages"))
+        if warn:
+            info["warnings"] = warn
     else:
-        info["hint"] = "pass --python <project interpreter> (e.g. .venv/bin/python) for framework versions"
+        info["hint"] = ("pass --python <project interpreter> (e.g. .venv/bin/python) for framework versions, "
+                        "and --probe to try the fast paths there")
     print(json.dumps(clean(info), indent=1))
     return 0
 
@@ -2450,6 +2554,9 @@ def main(argv=None):
 
     s = sub.add_parser("env", help="environment report")
     s.add_argument("--python", help="project interpreter to probe for framework/package versions")
+    s.add_argument("--probe", action="store_true",
+                   help="with --python: try CUDA, bf16 autocast, flash attention, fused AdamW and torch.compile there, "
+                        "each in a process of its own (minutes at most; not while a run is live)")
     s.set_defaults(fn=cmd_env)
 
     args = ap.parse_args(argv)

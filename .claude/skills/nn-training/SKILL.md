@@ -26,7 +26,7 @@ In this skill, `expctl` means `python3 .claude/skills/nn-training/scripts/expctl
 | Final evaluation on the sealed test split: once, with a receipt (only with the user's OK) | `expctl final-eval [-- ARGS]` (Phase 5) |
 | Provenance of the working tree | `expctl hash` |
 | Is the harness wired up (hooks registered, guard deciding, protocol configured)? | `expctl selftest` |
-| Environment facts | `expctl env --python <project interpreter>` |
+| Environment facts; which fast paths work here | `expctl env --python <project interpreter>` (`--probe` tries CUDA, bf16 autocast, flash attention, fused AdamW and `torch.compile`, each in its own process; `warnings` holds dated advisories for installed versions) |
 | Log/trace/error deep dives | `run-analyst` subagent (keeps raw logs out of your context) |
 | Methodology/claim review | `experiment-reviewer` subagent (sceptical, read-only) |
 | Optional: unattended keep/revert campaign on cheap runs, within limits the user sets | `nnloop.py` in this skill's `scripts/` — read `references/loop.md` first |
@@ -96,11 +96,16 @@ propose the guard configuration for `.claude/nn-training.json` — `metric` (nam
 rules for the sealed paths in `.claude/settings.json`. These edits require the user's approval (the guard asks).
 *Gate 2:* experiment-reviewer approves the protocol; evaluator hashes recorded; protocol v1 frozen.
 
-**Phase 3 — Baseline and noise floor.** Reuse a trustworthy baseline when provenance matches; otherwise train the
-strongest affordable baseline (tuned learning rate at minimum). Measure seed-to-seed spread (`references/uncertainty.md`)
-and cost per run (wall time, GPU-hours, peak memory). Present a finite campaign estimate and ask for budget once if
-none is authorised.
-*Gate 3:* baseline rows with n seeds, mean ± sd, cost per run; budget authorised.
+**Phase 3 — Baseline and noise floor.** Make a run fast first: every later run pays for a slow one, and a speed
+change made after the baseline changes the numbers it is compared with. `expctl env --python <py> --probe` says
+which fast paths work in this environment; switch on those that pass, one at a time, under the adoption rule of
+`references/performance.md` (throughput measured both ways, the loss on fixed batches unchanged), and write
+throughput and peak memory into the journal. Then reuse a trustworthy baseline when provenance matches; otherwise
+train the strongest affordable baseline (tuned learning rate at minimum). Measure seed-to-seed spread
+(`references/uncertainty.md`) and cost per run (wall time, GPU-hours, peak memory). Present a finite campaign
+estimate and ask for budget once if none is authorised.
+*Gate 3:* the fast paths in use and the throughput are in the journal; baseline rows with n seeds, mean ± sd, cost
+per run; budget authorised.
 
 **Phase 4 — Improvement loop.** Scout first: follow `references/scouting.md` to survey current methods for this
 task with the web tools you have, and write dated, cited notes under `experiments/scouting/`. Their findings are

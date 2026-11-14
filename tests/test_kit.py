@@ -188,6 +188,32 @@ def main():
         shutil.rmtree(proj / n)
     e = jout(expctl(proj, "env", "--python", PY))
     check("interpreter" in e and "packages" in e["interpreter"], "env probes interpreter packages")
+    # --probe tries what training relies on for speed, each in a process of its own. Here a stand-in torch in the
+    # project folder answers, so the check needs neither torch nor a GPU
+    pp = tmp / "probe-proj"
+    pp.mkdir()
+    (pp / "torch.py").write_text("raise ImportError('stand-in')\n")
+    e = jout(sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "--root", str(pp), "env", "--python", PY,
+                 "--probe"], cwd=pp))
+    fp = (e.get("interpreter") or {}).get("fast_paths") or {}
+    check(list(fp) == ["cuda", "bf16_autocast", "flash_attention", "fused_adamw", "compile"]
+          and all(v == "failed: ImportError: stand-in" for v in fp.values()),
+          f"env --probe reports each fast path from a process of its own, run in the project folder ({fp})")
+    code = ("import json, os, sys\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "die = 'import os; os._exit(-1073741819)' if os.name == 'nt' else 'import os; os.kill(os.getpid(), 9)'\n"
+            "expctl.FAST_PATHS = [('fine', False, 30, 'print(1); print(\"cpu, 2 s\")'), ('broken', False, 30, 'raise RuntimeError(\"no kernel\")'),\n"
+            "                     ('dies', False, 30, die), ('slow', False, 1, 'import time; time.sleep(30)'), ('gpu', True, 30, 'print(1)')]\n"
+            "adv = [len(expctl.advisories({'datasets': v, 'torch': t})) for v, t in\n"
+            "       (('5.1.0', '2.15.0'), ('5.2.0', '2.9.1+cu130'), ('5.2', None), (None, '2.14.1+cu130'), ('4.0.0', '2.13.0'))]\n"
+            "print(json.dumps([expctl.fast_paths(sys.executable, '.', False), adv, expctl.advisories({'datasets': '5.1.0'})]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
+    fp, adv, text = json.loads(r.stdout) if r.returncode == 0 else ({}, [], [])
+    check(fp.get("fine") == "ok (cpu, 2 s)" and fp.get("broken") == "failed: RuntimeError: no kernel"
+          and str(fp.get("dies")).startswith("crashed: exit code ") and fp.get("slow") == "timeout after 1 s"
+          and str(fp.get("gpu")).startswith("skipped"),
+          f"a fast path that fails, ends the interpreter or hangs is reported and the others still run ({fp} {r.stderr[-300:]})")
+    check(adv == [1, 0, 0, 1, 2] and "CVE-2026-57845" in "".join(text) and "5.2.0" in "".join(text),
+          f"env warns about an installed version that a dated advisory names, and not about a fixed one ({adv} {text})")
 
     # 3. launch OK run (snapshot copy)
     # 200 steps (10 s): the run must still be alive when the status line and the watch below look at it, and every

@@ -1,6 +1,6 @@
 # Performance: measure first, adopt only measured end-to-end wins
 
-Checked: 2026-11-11 (low-precision training: 2026-11-12)
+Checked: 2026-11-11 (low-precision training: 2026-11-12; what the probe found here: 2026-11-14)
 Refresh: check the PyTorch release notes of the installed version and the NVIDIA CUDA on WSL guide; wheel tags, driver
 floors and platform gaps change per release. The adoption rule (measure end to end) does not age.
 
@@ -12,6 +12,12 @@ margin above the noise floor), not a default to switch on. Each tip names the mi
 without one was not re-checked on 2026-11-11.
 
 ## 1. Measure the baseline
+- What works here: `expctl env --python <py> --probe` tries a matrix product on the GPU, bf16 autocast, the flash
+  attention kernel, fused AdamW and `torch.compile` in the project's interpreter, each in a process of its own with
+  a time limit, and reports `ok`, `failed: <error>`, `crashed: <exit code>` or a timeout. A path that fails is not
+  a lever in that environment; one that passes still has to be measured (section 4). It does not run beside a live
+  run. Seen on an RTX 5090, 2026-11-14: all five pass in WSL2 with 2.9.1+cu128; on native Windows with 2.9.1+cu130
+  the flash kernel is missing ("No available kernel") and `torch.compile` stops for lack of Triton.
 - Steady-state throughput after warm-up, plus end-to-end wall time for a fixed short budget including start-up,
   compilation, evaluation and checkpointing. Parameter count alone does not predict runtime.
 - Input stall: record time waiting for the next batch and time in the step (two `time.perf_counter` marks per step;

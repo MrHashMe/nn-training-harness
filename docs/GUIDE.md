@@ -720,6 +720,7 @@ the runs and your settings, and backs up every kit file it replaces under `.clau
 | Continue it from its checkpoint | `E resume RUN` |
 | Final evaluation, once | `E final-eval -- ARGS` |
 | Is the harness wired up | `E selftest` |
+| Which fast paths work here (CUDA, bf16, flash attention, fused AdamW, `torch.compile`) | `E env --python PY --probe` |
 | Unattended campaign | `nnloop.py start`, `status`, `stop`, `resume` (scenario G) |
 | Remote run | `nnremote.py launch`, `status`, `resume`, `attach` (scenario H) |
 

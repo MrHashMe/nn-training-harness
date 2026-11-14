@@ -1008,6 +1008,28 @@ def campaign_b(tmp, proj, exe):
         show(r)
         print("  loop.log:", nnloop.read_text(proj / "experiments/loop/b/loop.log")[-1500:], "\n  state:", st.get("stop_reason"))
 
+    # the run itself is stopped, not the campaign: the toy trainer ends at the request with exit code 0 and a model
+    plan(tmp, [edit("SLEEP = 0", "SLEEP = 31", title="slow again")])
+    before = {d.name for d in (proj / "runs").glob("*")}
+    r = loop(proj, "resume", "--campaign", "b", "--agent-exe", exe, "--max-runs", "20", "--detach")
+    info = json.loads(r.stdout) if r.stdout.strip().startswith("{") else {}
+    new = tk.wait_for(lambda: [d for d in (proj / "runs").glob("*-b-i*") if d.name not in before
+                               and (d / "pid.json").exists()], timeout=120)
+    r2 = tk.expctl(proj, "stop", new[0].name, "--wait", "60s") if new else r
+    done = tk.wait_for(lambda: state(proj, "b").get("status") == "stopped" and not nnloop.expctl.pid_alive(info.get("pid") or 0),
+                       timeout=60) if info and new else None
+    if not done:
+        loop(proj, "stop", "--campaign", "b")
+        tk.wait_for(lambda: state(proj, "b").get("status") == "stopped", timeout=120)
+    st, its = state(proj, "b"), iters(proj, "b")
+    if not check(bool(done) and str(st.get("stop_reason")).startswith(f"stop requested: the training run {new[0].name} ")
+                 and its[-1]["status"] == "unfinished" and not its[-1]["scores"]
+                 and len([d for d in (proj / "runs").glob("*-b-i*") if d.name not in before]) == 1,
+                 "a training run that is stopped from outside (`expctl stop`) is not scored, although it ended with a "
+                 "model and exit code 0: the campaign pauses (was: scored like a full run, or booked as the change's crash)"):
+        show(r2)
+        print("  loop.log:", nnloop.read_text(proj / "experiments/loop/b/loop.log")[-1500:], "\n  state:", st.get("stop_reason"))
+
     print("== campaign c: a wall-clock limit ==")
     r = loop(proj, "start", "--campaign", "c", "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-hours", "0.00001")
     st = state(proj, "c")

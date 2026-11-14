@@ -365,7 +365,10 @@ because it starts no agent session. It uses the validation split like every othe
 replace Phase 5.
 
 ## It stops instead of working around
-A reached limit · `nnloop stop` · two sessions in a row that decline to propose a change (`search exhausted`;
+A reached limit · `nnloop stop` · a training run of the loop that something else stopped (`expctl stop RUN`, or
+a signal to its supervisor: the run was cut short, so it is not scored whatever it saved, its end is not booked
+as the change's failure, and the campaign pauses with `stop requested: the training run ...` and exit code 0) ·
+two sessions in a row that decline to propose a change (`search exhausted`;
 like a limit and a stop request, it ends with exit code 0; with `restart_after` only where there is no earlier
 commit to go back to) · `max_failures` failed iterations in a row · a session with no result within
 `agent_timeout_s` · a rate limit or usage cap · usage that would be billed per use when no money limit was given ·

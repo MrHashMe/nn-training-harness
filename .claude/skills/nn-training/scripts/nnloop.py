@@ -864,6 +864,11 @@ class Campaign:
         self.save()
         if "deadline" in str(ex.get("stopped_for") or ""):
             return "invalid", f"the run exceeded its {budget:g} s budget and was cut off", rid
+        # not the loop's own stop, which ends in check() above. Whatever such a run saved, it was cut short: it has
+        # no score, and its end is not the change's failure. The file is asked too: a trainer that obeys the request
+        # within the supervisor's poll leaves no stopped_for on Windows
+        if ex.get("stopped_for") or (run_dir / "stop.json").exists():
+            raise Stop(f"stop requested: the training run {rid} was stopped from outside the loop, so it was not scored")
         if ex.get("returncode") != 0:
             return "crash", f"training failed: {expctl.tail_bytes(run_dir / 'stdout.log', 600)[-400:]}", rid
         e = self.evaluate(run_dir)

@@ -218,6 +218,7 @@ GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*|\s*") 
 JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
 WALK, WALK_S = 20000, 5  # files a walk looks at for sure, and the seconds a hook call may spend on the files beyond
+GLOB = 200  # matches of a wildcard that are looked up one by one; each one behind them costs a look at its folder
 # a change of folder: where a command starts (after blanks too), or behind a shell keyword, a wrapper such as `time`
 # or an assignment (X=1 cd data). PowerShell takes -Path:data and a parameter's name cut short
 _CD_WORD = r"(?:cd|pushd|chdir|sl|Set-Location|Push-Location)"
@@ -869,7 +870,7 @@ def inner_code(c: str):
         out += [m.group(1)] if m else []
         out += [after] if after and CODE_FLAG.match(t) else []
         out += [decoded(after)] if ENCODED.match(t) and decoded(after) else []
-    return out[:8]
+    return out
 
 
 def joined(c: str, depth=0, blank=True):
@@ -880,35 +881,39 @@ def joined(c: str, depth=0, blank=True):
     that touch are one. c is the text as it came, with its backslashes. depth below 2: a literal that holds code
     (python -c "open('a' + 'b')", bash -c 'python -c "..."') is read as well.
     shortcut: literals only, so a path with a variable in it passes; that takes running the code in a sandbox"""
-    lits, out = list(itertools.islice(QUOTED.finditer(c), 400)), []
+    lits, out = list(QUOTED.finditer(c)), []
     for i, first in enumerate(lits):
         path = first.group()[1:-1]
         if depth < 2 and re.search(r"['\"]", path):  # in double quotes, one level of \" and \\ comes off
             out += joined(path if first.group()[0] == "'" else re.sub(r"\\([\\'\"])", r"\1", path), depth + 1)
         comma = JOINER.search(c[max(0, first.start() - 100):first.start()])
-        for a, b in zip(lits[i:i + 8], lits[i + 1:i + 8]):
+        for j in range(i, len(lits) - 1):  # as far as the joins go
+            a, b = lits[j], lits[j + 1]
             g = GAP.fullmatch(c[a.end():b.start()])
             if not g or (g.group(1) == "," and not comma) or (g.group() and not g.group(1) and not blank):
                 break
             nxt = b.group()[1:-1]
             path = path + nxt if g.group(1) in ("+", None) else path.rstrip("/\\") + "/" + nxt.lstrip("/\\")
-            out.append(path)
+            if len(path) >= 300:  # no path, and it only grows
+                break
+            out += [path] if nxt else []
     out = dict.fromkeys(re.sub(r"\\+", "/", p) for p in out)
-    return [p for p in out if 0 < len(p) < 300 and not re.search(r"\s", p)][:200]
+    return [p for p in out if p and not re.search(r"\s", p)]
 
 
-def strings(obj, skip=(), depth=0, out=None):
-    """Every string among a call's arguments, however long, except under the keys `skip`."""
+def strings(obj, skip=(), out=None):
+    """Every string among a call's arguments, however long, however many and however deep, except under the keys
+    `skip`. Values nested too deeply to walk end it with a RecursionError, which main() turns into a refusal."""
     out = [] if out is None else out
     if isinstance(obj, str):
         out.append(obj)
-    elif depth < 6 and isinstance(obj, dict):
+    elif isinstance(obj, dict):
         for k, v in obj.items():
             if k not in skip:
-                strings(v, skip, depth + 1, out)
-    elif depth < 6 and isinstance(obj, list):
-        for v in obj[:256]:
-            strings(v, skip, depth + 1, out)
+                strings(v, skip, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            strings(v, skip, out)
     return out
 
 
@@ -923,7 +928,7 @@ def shell_tokens(c: str):
             t = t.split("=", 1)[1]
         if t and not t.startswith("-") and len(t) < 4096:
             out.append(t)
-    return out[:400]
+    return out
 
 
 def winpath(p) -> str:
@@ -981,21 +986,20 @@ def checkouts(root: Path):
     return [p for p in out if p != root]
 
 
-def path_strings(obj, depth=0, out=None):
-    """Short single-line string arguments of a call whose keys this guard does not know."""
+def path_strings(obj, out=None):
+    """Short single-line string arguments of a call whose keys this guard does not know: all of them, at any depth
+    (a tool that reads many files takes a list of any length)."""
     out = [] if out is None else out
-    if depth > 4 or len(out) >= 64:
-        return out
     if isinstance(obj, str):
         if 0 < len(obj) <= 1024 and "\n" not in obj:
             out.append(obj)
     elif isinstance(obj, dict):
         for k, v in obj.items():
             if k not in CONTENT_KEYS:
-                path_strings(v, depth + 1, out)
+                path_strings(v, out)
     elif isinstance(obj, list):
-        for v in obj[:64]:
-            path_strings(v, depth + 1, out)
+        for v in obj:
+            path_strings(v, out)
     return out
 
 
@@ -1112,6 +1116,7 @@ class Ctx:
                     mine = list(self.cfg.get(k) or [])
                     self.cfg[k] = mine + [x for x in theirs[k] if isinstance(x, str) and x not in mine]
         self._links, self.searched, self.t0 = None, {}, time.time()
+        self.cut, self._globs = None, {}  # the wildcard whose matches expand() could not read to the end; its answers
 
     def _abs(self, p):
         pp = Path(os.path.expanduser(winpath(p)))  # not Path.expanduser(): that one raises for a user it does not know
@@ -1128,9 +1133,8 @@ class Ctx:
         a folder on another drive): a file at the real place is the protected file, however it was reached."""
         if self._links is None:
             self._links = []
-            pats = [*(self.cfg.get("sealed_paths") or []), *self.frozen(), *(self.cfg.get("harness_paths") or [])]
             for base in self.bases:
-                for pat in pats:
+                for pat in self.protected():
                     name = re.split(r"[*?\[]", norm_pattern(pat))[0].rstrip("/")
                     while name and not (base / name).exists():
                         name = name.rpartition("/")[0]
@@ -1186,12 +1190,55 @@ class Ctx:
             return self.canon(tail)
         return self.canon(base.rstrip("/") + "/" + tail)
 
+    def protected(self):
+        return [*(self.cfg.get("sealed_paths") or []), *self.frozen(), *(self.cfg.get("harness_paths") or [])]
+
     def expand(self, t):
-        """Paths a wildcard token names on disk now (the first 200), as repository paths."""
+        """Paths a wildcard word names on disk now, as repository paths: the first GLOB of them, and of those behind
+        them each one that a rule of this guard keeps (sealed, frozen, harness, a run's, git's own), so that no
+        number of other files hides it. Behind the first GLOB a file costs no look of its own, only its folder does,
+        so a wildcard over a large data folder stays quick. Where WALK_S seconds do not reach the last match,
+        self.cut is the word: the rest is unread, and main() asks."""
+        key = (self.cwd, t)
+        if key in self._globs:  # a line is read several times over, and from each folder it changes to
+            return self._globs[key]
+        out, seen, n = self._globs.setdefault(key, []), {}, 0
+        pats = self.protected()
+        leads = [re.split(r"[*?\[]", norm_pattern(p).lower() if NOCASE else norm_pattern(p))[0] for p in pats]
+
+        def near(folder):  # may a kept file lie in it or below? None matches a pattern without starting as it does
+            low = folder.lower() if NOCASE else folder
+            return any(low.startswith(x) or x.startswith(low) for x in leads)
         try:
-            return [self.canon(self.rel(f)) for f in itertools.islice(glob.iglob(str(self._abs(t))), 200)]
+            for n, f in enumerate(glob.iglob(str(self._abs(t)))):
+                if n < GLOB:
+                    out.append(self.canon(self.rel(f)))
+                    continue
+                if time.time() > self.t0 + WALK_S:
+                    self.cut = t
+                    break
+                d, name = os.path.split(f.rstrip("/\\"))
+                if d not in seen:  # folder -> its repository path, its folders and links, can a rule keep a file in it
+                    with os.scandir(d) as es:
+                        links = {os.path.normcase(e.name) for e in es if e.is_symlink() or e.is_dir()}
+                    at = self.rel(d)
+                    at = self.canon("" if at in ("", ".") else at.rstrip("/") + "/")
+                    seen[d] = at, links, at.startswith(self.runs_dir + "/") or "/.git/" in "/" + at or near(at)
+                at, links, kept = seen[d]
+                if os.path.normcase(name) in links:  # may lead elsewhere: looked up in full, like the first ones
+                    rel = self.canon(self.rel(f))
+                    above = near(rel.rstrip("/") + "/")  # a folder that holds kept files: a recursive command enters it
+                elif kept:
+                    rel, above = at + name, False
+                else:
+                    continue
+                if above or matches(rel, pats) or re.search(r"(?:^|/)\.git(?:/|$)", rel, _CASE) or \
+                        (rel + "/").startswith(self.runs_dir + "/"):
+                    out.append(rel)
         except (OSError, ValueError, re.error):
-            return []
+            if n >= GLOB:  # a folder that cannot be listed: what lies behind it is unread
+                self.cut = t
+        return out
 
     def frozen(self):
         """frozen_paths plus what the loop checksums or links into its worktrees: none of it is the agent's to edit."""
@@ -1221,11 +1268,11 @@ class Ctx:
 
 def names_sealed(ctx: Ctx, text: str, dirs):
     """(the words, what they are) for the first thing in a text that names sealed data: an unsealing token, or a
-    sealed path, written out or joined from literals, as seen from one of the folders `dirs`. None if nothing does.
-    shortcut: reads the first 400,000 characters and 300 path-like words; raise them if longer files turn up"""
+    sealed path, written out or joined from literals, or a wildcard over the sealed folder's parent, as seen from
+    one of the folders `dirs`. None if nothing does. The whole text is read; where it has more path-like words than
+    WALK_S seconds allow to look up, the answer is (None, why): the rest is unchecked, and the caller asks."""
     sealed = ctx.cfg.get("sealed_paths")
-    came = text[:400_000]
-    text = re.sub(r"\\+", "/", came)
+    came, text = text, re.sub(r"\\+", "/", text)
     for tok in ctx.cfg.get("sealed_tokens") or []:
         if tok and tok in text:
             return tok, "the test-unsealing token"
@@ -1233,16 +1280,24 @@ def names_sealed(ctx: Ctx, text: str, dirs):
         m = rx.search(text)
         if m:
             return m.group(), f"sealed path pattern '{pat}'"
+    pat = sweeps_sealed(text, ctx.root, sealed, False)  # glob('data/*/x.csv'), whatever lies on disk today
+    if pat:
+        return pat, "a wildcard over the folder that holds this sealed path pattern"
     words = dict.fromkeys(WORDS.findall(text) + [q.group()[1:-1] for q in QUOTED.finditer(text)] + joined(came))
-    words = [w for w in words if "/" in w.strip("/") and len(w) < 300][:300]
+    words = [w for w in words if "/" in w.strip("/") and len(w) < 300]
     here = ctx.cwd
     try:
-        for d, w in itertools.product(dict.fromkeys(dirs), words):
-            ctx.cwd = d
-            for rel in [ctx.resolve_token(w)] + (ctx.expand(w) if any(ch in w for ch in "*?[") else []):
-                hit = matches(rel, sealed) if rel and not any(ch in rel for ch in "*?[") else None
-                if hit:
-                    return w, f"sealed path pattern '{hit}'"
+        for n, w in enumerate(words):
+            if time.time() > ctx.t0 + WALK_S:
+                return None, (f"This text has {len(words)} path-like words, more than this guard could look up in "
+                              f"{WALK_S:g} seconds: {len(words) - n} are unchecked, and one of them may name sealed "
+                              f"test data. Approve only if none does, or write the text in smaller parts.")
+            for d in dict.fromkeys(dirs):
+                ctx.cwd = d
+                for rel in [ctx.resolve_token(w)] + (ctx.expand(w) if any(ch in w for ch in "*?[") else []):
+                    hit = matches(rel, sealed) if rel and not any(ch in rel for ch in "*?[") else None
+                    if hit:
+                        return w, f"sealed path pattern '{hit}'"
     finally:
         ctx.cwd = here
     return None
@@ -1317,7 +1372,9 @@ def check_path_tool(ctx: Ctx, tool, ti):
     if ti.get("text") and not any(k == DENY for k, _ in results) and not (
             tool != "Other" and re.search(r"\.(?:md|mdx|rst)$|(?:^|/)\.claude/nn-training\.json$", winpath(file), re.I)):
         hit = names_sealed(ctx, ti["text"], [ctx.root, ctx.cwd] + ([ctx._abs(file).parent] if file else []))
-        if hit and tool == "Other":
+        if hit and hit[0] is None:
+            results.append((ASK, hit[1]))
+        elif hit and tool == "Other":
             results.append((ASK, f"This call's arguments name sealed test data: '{hit[0][:80]}' ({hit[1]}). Approve only "
                                  f"if the tool cannot read or expose sealed content."))
         elif hit:
@@ -1393,12 +1450,13 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     toks += joined(cmd, 0 if code else 2, "<<" in cmd)
     here = cur = ctx.cwd
     dirs = [here]
-    moves += [(m.start(), True, [re.sub(r"[\"']", "", m.group(1))]) for m in itertools.islice(CD.finditer(raw), 4)]
-    for _, cd, ds in sorted(moves)[:8]:  # a cd earlier in the line: what follows is relative to it
+    moves += [(m.start(), True, [re.sub(r"[\"']", "", m.group(1))]) for m in CD.finditer(raw)]
+    for _, cd, ds in sorted(moves):  # a cd earlier in the line: what follows is relative to it
         for d in ds:
             ctx.cwd = cur if d is ds[0] else dirs[-1]
             dirs.append(ctx._abs(d))
         cur = dirs[-1] if cd else cur
+    dirs = list(dict.fromkeys(dirs))
     resolved = []
     for d in dirs:
         ctx.cwd = d
@@ -1420,7 +1478,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     for d in dirs if lost else []:
         ctx.cwd = d
         also += [ctx._abs(t) for t in toks if not t.startswith("//")]
-    for d in [d for d in dict.fromkeys(also) if d not in dirs and os.path.isdir(d)][:8]:
+    for d in [d for d in dict.fromkeys(also) if d not in dirs and os.path.isdir(d)]:
         resolved += [(t, rel) for t in lost for rel in on_disk(d, t)]
     is_final = False
     finals = [str(x).replace("\\", "/") for x in cfg.get("final_eval_commands") or [] if str(x).strip()]
@@ -1498,7 +1556,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                         and re.match(r"[({\s]*(?:(?:time|command|builtin)\s+)*" + _CD_WORD + r"\s", seg, re.I) \
                         and not re.search(r"[<>](?!\s*/dev/null\b)", sq)
                     chain = to if to and after == "&&" else None
-                    curs = list(dict.fromkeys(to if holds else curs + (to or dirs)))[:8]
+                    curs = list(dict.fromkeys(to if holds else curs + (to or dirs)))
                 elif GIT_TAKES.search(sq):  # the folders it names, or the whole checkout: no path, a stash, :(magic)
                     lx = lex(GIT_GLOBAL.sub("git", seg))
                     k = next((j for j, t in enumerate(lx) if t in ("add", "stash")), len(lx))
@@ -1568,7 +1626,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                                     if os.path.isdir(own / rel):
                                         got.append(str(own / rel))
                                     named = named or sure and ("/" in t or os.path.exists(own / rel))
-                            if len(got) > 8:  # a wildcard over many folders, of which expand() gives the first 200:
+                            if len(got) > 8:  # a wildcard over many folders:
                                 got = [os.path.commonpath(got)]  # the folder that holds them all
                             bases += got
                     if not named and tools & CWD_SEARCH:
@@ -1880,6 +1938,11 @@ def main(argv=None):
                     results += check_readonly(tool, ti)
                 if not only_readonly:
                     results += check_bash(ctx, ti["command"]) if tool == "Bash" else check_path_tool(ctx, tool, ti)
+            if ctx.cut:
+                results.append((ASK, f"The wildcard '{ctx.cut[:80]}' names more files than this guard could look at in "
+                                     f"{WALK_S:g} seconds: the rest is unchecked, and one of them may be sealed test "
+                                     f"data or another protected file. Approve only if none is, or name the files "
+                                     f"more narrowly."))
     except Exception as e:  # noqa: BLE001 - fail safe: let the user decide instead of silently allowing
         # a read as well: reading is what the sealed files are kept from, and input can be made to raise an error
         results = [(ASK, f"guard internal error ({type(e).__name__}: {str(e)[:200]}); it could not check this "

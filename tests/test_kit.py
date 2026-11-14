@@ -545,6 +545,12 @@ def main():
     def utf16(text):  # the value PowerShell's -EncodedCommand takes
         return base64.b64encode(text.encode("utf-16-le")).decode()
 
+    # padding that used to end the guard's reading before it reached a sealed path, and code that joins one
+    pad_words = "# " + " ".join("x/%d" % i for i in range(301)) + "\n"
+    pad_lits = "".join("a%d = 'v%d'\n" % (i, i) for i in range(401))
+    join_code = "import os\nprint(open(os.path.join('data', 'test', 'labels.csv')).read())\n"
+    by_letter = "+".join("'%s'" % ch for ch in "data/test/labels.csv")
+
     cases = [
         ("Read", {"file_path": str(proj / "data/test/labels.csv")}, "deny"),
         ("Read", {"file_path": "data/test/labels.csv"}, "deny"),
@@ -908,6 +914,27 @@ def main():
         ("Bash", {"command": "python - <<EOF\nprint(open('data/te'\n           'st/labels.csv').read())\nEOF"}, "deny"),
         ("Write", {"file_path": "peek.py", "content": "print(open('data/te' 'st/labels.csv').read())\n"}, "ask"),
         ("Bash", {"command": "echo 'data/' 'test/labels'"}, None),
+        # were None: a sealed path behind more things than the guard read. It stopped after 300 path-like words or
+        # 400 literals of a text, after 400 words, 8 nested commands or 4 changes of folder of a line, after 8
+        # literals of one join, after 64 arguments or 5 levels of an unknown tool's call, and after 256 parts of an
+        # edit or 6 levels of an MCP tool's call. Now it reads all of them; its time limit is what ends a check
+        ("Write", {"file_path": "peek.py", "content": pad_words + join_code}, "ask"),
+        ("Write", {"file_path": "peek.py", "content": pad_lits + join_code}, "ask"),
+        ("Bash", {"command": "python -c \"" + (pad_lits + join_code).replace("\n", ";") + "\""}, "deny"),
+        ("Bash", {"command": "cd eval; cd ..; " * 3 + "cd data && cd test && cat labels.csv"}, "deny"),
+        ("Bash", {"command": "python -c \"print(open(%s).read())\"" % by_letter}, "deny"),
+        ("Write", {"file_path": "peek.py", "content": "p = %s\nprint(open(p).read())\n" % by_letter}, "ask"),
+        # these two were "ask": the rule for a wildcard beside a sealed folder saw them, the path itself was unread
+        ("Bash", {"command": "echo " + " ".join("w%d" % i for i in range(401)) + " && cat data/te*/labels.csv"}, "deny"),
+        ("Bash", {"command": "bash -c 'echo 1'; " * 8 + "bash -c 'cat data/te*/labels.csv'"}, "deny"),
+        ("ReadFiles", {"paths": ["train.py"] * 64 + ["data/test/labels.csv"]}, "deny"),
+        ("Lookup", {"a": {"b": {"c": {"d": {"e": {"file": "data/test/labels.csv"}}}}}}, "deny"),
+        ("MultiEdit", {"file_path": "train.py", "edits": [{"old_string": "a", "new_string": "b"}] * 256
+                       + [{"old_string": "c", "new_string": "open('data/test/labels.csv')"}]}, "ask"),
+        ("mcp__db__query", {"a": {"b": {"c": {"d": {"e": {"f": {"sql": "select *\nfrom read_csv('data/test/labels.csv')"}}}}}}},
+         "ask"),
+        ("Write", {"file_path": "peek.py", "content": "import glob\nfiles = glob.glob('data/*/labels.csv')\n"}, "ask"),
+        ("Write", {"file_path": "big.py", "content": pad_words + pad_lits}, None),
         # were None: text that a call writes into a file, or hands to an MCP tool, and that names sealed data
         ("Write", {"file_path": str(proj / "train.py"), "content": "import csv\nrows = list(csv.reader(open('data/test/labels.csv')))\n"}, "ask"),
         ("Edit", {"file_path": "train.py", "old_string": "a", "new_string": "p = os.path.join('data', 'test', 'labels.csv')"}, "ask"),
@@ -1131,6 +1158,24 @@ def main():
     check(got == ["ask", None, "ask"],  # was: [None, None, None], the walk ended at its bound without a word
           f"guard: a filtered search is asked about when a sealed file beyond the walk's first bound passes its "
           f"filter, passes when none does, and is asked about when the time ends before the sealed folder does ({got})")
+    r = sh([PY, "-c", code, str(proj / ".claude/hooks"), "0"], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)},
+           inp=json.dumps({"tool_name": "Write", "cwd": str(proj), "session_id": "t", "tool_input": {
+               "file_path": "load.py", "content": "a = open('sub/a.txt')\nb = open('sub/b.txt')\n"}}))
+    check('"ask"' in r.stdout and "could look up" in r.stdout,  # was: the words after the first 300 passed unread
+          f"guard: an edit with more path-like words than it can look up in its time is asked about ({r.stdout[:90]!r})")
+    # A wildcard's matches behind the first GLOB are read as well. Here GLOB is 0, so every match is one of those
+    for i in range(3):
+        (proj / f"a{i}/test").mkdir(parents=True)
+        (proj / f"a{i}/test/labels.csv").write_text("y\n")
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "nn_guard.GLOB, nn_guard.WALK_S = 0, float(sys.argv[2])\n"
+            "sys.exit(nn_guard.main([]))")
+    got = [bounded("cat */test/labels.csv", 5), bounded("cat a*/test/labels.csv", 5), bounded("cat a*/test/labels.csv", 0)]
+    check(got == ["deny", None, "ask"],  # was: [None, None, None] once 200 other files matched the wildcard first
+          f"guard: a wildcard is read to its last match: a sealed file behind the others is refused, the others alone "
+          f"pass, and it asks when its time ends first ({got})")
+    for i in range(3):
+        shutil.rmtree(proj / f"a{i}")
     shutil.rmtree(proj / "data/test/zz")
     for i in range(6):
         (proj / f"data/test/a{i}.csv").unlink()

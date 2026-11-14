@@ -844,6 +844,29 @@ def main():
         {"tool_name": "Read", "tool_input": {"file_path": "train.py"}, "cwd": str(proj), "session_id": "t"}))
     check('"ask"' in r.stdout and "internal error" in r.stdout,  # was: the read passed, with a line on stderr
           f"guard: an error inside the guard asks about a read too, instead of letting it pass ({r.stdout[:80]!r})")
+    # A folder sealed as a whole is walked to its end while the time allows. Here the walk's first bound is three
+    # files, and the one file that the search's filter lets through lies behind seven others
+    for i in range(6):
+        (proj / f"data/test/a{i}.csv").write_text("x\n")
+    (proj / "data/test/zz").mkdir()
+    (proj / "data/test/zz/deep.txt").write_text("x\n")
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "nn_guard.WALK, nn_guard.WALK_S = 3, float(sys.argv[2])\n"
+            "sys.exit(nn_guard.main([]))")
+
+    def bounded(command, secs):
+        r = sh([PY, "-c", code, str(proj / ".claude/hooks"), str(secs)], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)},
+               inp=json.dumps({"tool_name": "Bash", "tool_input": {"command": command}, "cwd": str(proj), "session_id": "t"}))
+        return json.loads(r.stdout)["hookSpecificOutput"]["permissionDecision"] if r.stdout.strip() else None
+
+    got = [bounded("grep -rn --include='*.txt' x .", 5), bounded("grep -rn --include='*.py' x .", 5),
+           bounded("grep -rn --include='*.py' x .", 0)]
+    check(got == ["ask", None, "ask"],  # was: [None, None, None], the walk ended at its bound without a word
+          f"guard: a filtered search is asked about when a sealed file beyond the walk's first bound passes its "
+          f"filter, passes when none does, and is asked about when the time ends before the sealed folder does ({got})")
+    shutil.rmtree(proj / "data/test/zz")
+    for i in range(6):
+        (proj / f"data/test/a{i}.csv").unlink()
     log = (proj / ".claude/state/guard.log").read_text().splitlines()
     check(len(log) >= 10 and json.loads(log[-1])["decision"] in ("ask", "deny"), "guard writes audit log")
     code = ("import sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"

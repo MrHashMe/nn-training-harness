@@ -174,6 +174,7 @@ DECODE_TO_SHELL = re.compile(
 GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*")
 JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
+WALK, WALK_S = 20000, 5  # files a walk looks at for sure, and the seconds a hook call may spend on the files beyond
 # a change of folder: where a command starts (after blanks too), or behind a shell keyword, a wrapper such as `time`
 # or an assignment (X=1 cd data). PowerShell takes -Path:data and a parameter's name cut short
 _CD_WORD = r"(?:cd|pushd|chdir|sl|Set-Location|Push-Location)"
@@ -656,9 +657,17 @@ def reaches_sealed(ctx, base, globs=(), typ=None, skips_ignored=False, cwd=None)
     # found: the sealed files that the search's filters let through, by the folder they really lie in, with their pattern
     found, real, plain = {}, {}, not (globs or typ)
     for (top, root, s, sr), pats in walks.items():
-        # shortcut: looks at 20000 files per walk, so a filtered search over a larger sealed folder passes;
-        # raise the bound, or index the sealed files once, if sealed folders that large turn up
-        for f in itertools.islice(walk(top), 20000):
+        # A folder sealed as a whole (data/test/**) is walked to its end, as long as the hook's time allows: every
+        # file in it is sealed, so one that the search's filters let through anywhere in it counts. Where the time
+        # runs out first, the search counts as reading it.
+        # shortcut: any other pattern's walk looks at WALK files, so a filtered search passes when the sealed files
+        # that it would read lie beyond them; index the sealed files once if projects that large turn up
+        whole = [p for p in pats if not re.search(r"[*?\[]", re.sub(r"/\*\*$", "", norm_pattern(p)))]
+        for n, f in enumerate(walk(top)):
+            if n >= WALK and not (whole and time.time() < ctx.t0 + WALK_S):
+                if whole:
+                    return whole[0]
+                break
             rel = ctx.canon((f.relative_to(root) if under(f, root) else s.relative_to(root) / f.relative_to(sr)
                              if under(f, sr) and under(s, root) else f).as_posix())
             pat = matches(rel, pats)
@@ -958,7 +967,7 @@ class Ctx:
                 if isinstance(theirs, dict) and isinstance(theirs.get(k), list):
                     mine = list(self.cfg.get(k) or [])
                     self.cfg[k] = mine + [x for x in theirs[k] if isinstance(x, str) and x not in mine]
-        self._links, self.searched = None, {}
+        self._links, self.searched, self.t0 = None, {}, time.time()
 
     def _abs(self, p):
         pp = Path(os.path.expanduser(winpath(p)))  # not Path.expanduser(): that one raises for a user it does not know

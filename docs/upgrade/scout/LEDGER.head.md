@@ -231,7 +231,7 @@ GitHub's pages on its runners, all read on 14 November.
 The user pasted a second reviewer's report on `bc96015` and asked for a plan built on it and for the plan to be
 carried out. The report is a third party's text: each of its claims about the code was checked by reading or by a
 run before anything was changed, and its scores against a design of its own ("v2.0") were not taken as a goal.
-The note `round7` has 29 rows. Research went no further than a change needed: one paper's abstract and HTML, and
+The note `round7` has 30 rows. Research went no further than a change needed: one paper's abstract and HTML, and
 one repository's state, both on 14 November.
 
 - Confirmed and built (`scout/covered/built-round7.json`; 12 Adopt rows of this note and one of `round6`). The
@@ -240,11 +240,14 @@ one repository's state, both on 14 November.
   its glob qualifier `e`; and a wildcard seal's walk that the hook's time cuts short ends in a question.
   `expctl stop` checks the pid it signals, the record of final evaluations is written under a lock, and the earlier
   of two remote reservations made at the same moment holds. Public statements and two references were corrected.
+- Built from the review's proposals: one hash over the frozen files in every launch's record, in `expctl hash`, in
+  the final evaluation's receipt and in status, which says when a ranked run was made under other frozen files
+  than the project holds now; and a selftest line that compares the installed kit files with the install manifest.
+  It answers what the guard cannot name (an archive unpacked over the evaluator, a path built at run time).
 - Not confirmed, each by a run or a source: code run through a pickle entry of a model file (36 files, none ran; a
   test now asks the installed PyTorch), a project reached through a link escaping the guard (run in WSL; a test
   keeps asking), TorchAO retired, and a paper cited for what it does not say.
-- Adopt, unfinished at this commit (2): the hash of the frozen files with selftest's check of the installed kit
-  files, and generated guard cases judged by a live shell.
+- Adopt, unfinished at this commit (1): generated guard cases judged by a live shell.
 - Corrected in an earlier round's record: five rows of the note `user-reports` said "finished" beside "enabling
   step not run". The step has now run for four (TRL, PEFT, Transformers, scikit-learn: WSL2, CPU build of torch).
   PyTorch's row is unfinished, because the pinned cu132 build crashed on this machine's GPU on 11 November.
@@ -252,7 +255,8 @@ one repository's state, both on 14 November.
   question after an error of its own, a stop state per RunLog instance, ten training back ends behind one recipe
   file, a search plane whose gain the review gets by multiplying, `/swarm`, the `nnharness/` layout, the
   fine-tuning evaluator in bf16, and more `caffeinate` flags.
-- Hold (3): GPU-hours per device, more junk names out of the loop's protected files, `expctl preflight`.
+- Hold (4): GPU-hours per device, more junk names out of the loop's protected files, `expctl preflight`, and a
+  link below a git-ignored folder that a snapshot carries along.
 - Undecided, each with the test it needs (3 Trial, 2 Assess): a stop on the rented machine (money), the Metal
   wired-memory limit (a Mac), a powered benchmark (agent sessions on the user's subscription), the loop's screen
   with a slack (a simulation), a data recipe with a control run by the harness (a design first).

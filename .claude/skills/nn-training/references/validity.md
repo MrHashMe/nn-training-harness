@@ -1,6 +1,6 @@
 # Validity: protocol, leakage, sanity checks, sealed test, evaluator freeze
 
-Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command and the wiring checks of section 4: 2026-11-14)
+Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command, the wiring checks of section 4 and the hash of the frozen files in section 6: 2026-11-14)
 Refresh: principles, not versions; re-read when the guard's sealed or frozen mechanics change
 (`tests/test_kit.py` covers them) or when a new contamination or leakage route becomes known.
 
@@ -13,7 +13,7 @@ Goal: every number you report measures what the Project card says it measures.
 - Budget unit for comparisons: equal steps / tokens / epochs / samples seen / wall-clock / GPU-hours. Count compile, data loading, evaluation and checkpointing explicitly for wall-clock budgets.
 - Splits: unit of independence (example / user / patient / session / document / site / time) and the split method; permitted data and pretraining sources (licences, contamination concerns).
 - Preprocessing fitted on training data only (normalisation stats, vocabularies/tokenizers trained here, feature selection, imputation, PCA).
-- Protocol version (v1, v2, ...) and the evaluator file hashes (`sha256sum <evaluator files>`; in PowerShell `Get-FileHash <file> -Algorithm SHA256`).
+- Protocol version (v1, v2, ...) and the evaluator file hashes: the `frozen_hash` that `expctl hash` prints once the files are in `frozen_paths` (section 6), or `sha256sum <evaluator files>` (in PowerShell `Get-FileHash <file> -Algorithm SHA256`).
 
 ## 2. Split and leakage audit (record counts in the journal)
 - Unit leakage: the same user/patient/document/scene/time-window in more than one split. Fix with group-aware or chronological splits (GroupKFold, StratifiedGroupKFold, time cut-offs) — never random row splits when rows are dependent.
@@ -54,7 +54,10 @@ Goal: every number you report measures what the Project card says it measures.
 - If someone wants repeated test checks, that set has become a validation set: say so and propose a new held-out set.
 
 ## 6. Frozen evaluator and protocol versions
-- Put evaluator/metric/split files in `frozen_paths`; record their hashes in the Project card.
+- Put evaluator/metric/split files in `frozen_paths`. The guard asks before a write to them that it can name. It cannot name every write (an archive unpacked over a file, a program that builds the path at run time), so the harness records the files themselves:
+  - `expctl launch` writes one hash over them into the run's manifest (`frozen_hash`), `expctl hash` prints the current one, and `expctl final-eval` puts it into the receipt and the journal. Write it into the Project card beside the protocol version.
+  - `expctl status` puts an alert first when a ranked run was made under other frozen files than the project holds now. Such a score does not compare with new runs: restore the files, or treat the change as a new protocol version (next point).
+  - Limits: at most 64 MB are read, smallest files first, and a larger frozen file counts by its size; a run started without `expctl launch` carries no hash; the ranking is not filtered by it.
 - A genuine evaluator bug: stop, explain, get approval, fix it as protocol v(N+1), re-evaluate the baseline and candidates under the new version (from saved checkpoints when possible), and never mix numbers across versions.
 
 ## 7. Baselines

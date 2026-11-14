@@ -173,6 +173,8 @@ def main():
     h = jout(expctl(proj, "hash"))
     check(len(h["source_hash"]) == 64 and h["git"]["dirty"], "hash reports source hash and dirty tree")
     check(h["files_size_only"] >= 1, "large tracked file hashed by size only")
+    check(len(h.get("frozen_hash") or "") == 64 and (h.get("frozen_files"), h.get("frozen_size_only")) == (1, 0),
+          f"hash reports one hash over the frozen files, read in full ({h.get('frozen_hash')}, {h.get('frozen_files')})")
     made = [proj / n for n in ("AGENTS.md", ".mcp.json", ".codex/hooks.json", ".cursor/cli.json",
                                ".agents/skills/x/SKILL.md", "experiments/JOURNAL.md")]
     for p in made:
@@ -293,6 +295,9 @@ def main():
     rid_ok = lo["run_id"]
     rd = proj / lo["run_dir"]
     check((rd / "src/train.py").exists() and (rd / "src/untracked_new.py").exists(), "snapshot copied tracked+untracked files")
+    man_ok = json.loads((rd / "manifest.json").read_text())
+    check(man_ok.get("frozen_hash") == h["frozen_hash"] and man_ok.get("frozen_files") == 1,
+          f"a launched run records the hash of the frozen files it was made under ({man_ok.get('frozen_hash')})")
     # samefile() is true for a symlink and for its Windows stand-ins (junction, hard link), false for a copy
     check(os.path.samefile(rd / "src/data/train.csv", proj / "data/train.csv") and not (rd / "src/data/test").exists()
           and not os.path.samefile(rd / "src/data", proj / "data"),
@@ -461,6 +466,19 @@ def main():
     st = jout(expctl(proj, "status", "--no-gpu"))
     check(st["top"] and st["top"][0]["run_id"] == rid_ok and st["top"][0]["ckpt"], "top lists ok-run with checkpoint")
     check(st["counts"].get("failed", 0) >= 1 and st["counts"].get("lost", 0) == 1, f"counts by state: {st['counts']}")
+    # the frozen files: status says when a ranked run was made under others than the project holds now. The test
+    # changes the file itself, as a program can that the guard reads no write from (an archive unpacked over it)
+    frozen_file, other = proj / "eval/metrics.py", "other frozen files"
+    as_it_was = frozen_file.read_bytes()
+    check(st["top"][0].get("frozen_hash") == h["frozen_hash"][:12] and not any(other in a for a in st["alerts"]),
+          f"status shows the frozen files' hash of a ranked run, and no alert while they are unchanged ({st['alerts']})")
+    frozen_file.write_bytes(as_it_was + b"# changed\n")
+    hc, stc = jout(expctl(proj, "hash")), jout(expctl(proj, "status", "--no-gpu"))
+    frozen_file.write_bytes(as_it_was)
+    check(hc["frozen_hash"] != h["frozen_hash"] and other in stc["alerts"][0] and rid_ok in stc["alerts"][0]
+          and not any(other in a for a in jout(expctl(proj, "status", "--no-gpu"))["alerts"]),
+          "a changed frozen file changes the hash, and status says first that the ranked run was made under other "
+          f"frozen files, until the file is as it was ({stc['alerts'][:1]})")
     cv = jout(expctl(proj, "curve", rid_ok, "--points", "10"))
     check("val/acc" in cv["series"] and len(cv["series"]["val/acc"]["points"]) <= 11 and cv["series"]["train/loss"]["last20pct_trend"],
           "curve downsamples and reports trend")
@@ -1604,6 +1622,9 @@ def main():
           "final-eval: the receipt holds a chained start and end row with the code state and the hash of the output")
     journal = (proj / "experiments/JOURNAL.md").read_text(encoding="utf-8")
     check("final evaluation, use 1" in journal and rows[0]["log"] in journal, "final-eval: the journal names the use and its log")
+    check(rows[0].get("frozen_hash") == jout(expctl(proj, "hash"))["frozen_hash"]
+          and f"frozen files {str(rows[0].get('frozen_hash'))[:12]}" in journal,
+          "final-eval: the receipt and the journal name the frozen files the test set was scored under")
     r = expctl(proj, "final-eval")
     check(r.returncode == 2 and "single-use" in jout(r)["error"] and len(receipt.read_bytes().splitlines()) == 2,
           "final-eval: a second use is refused and nothing is recorded")

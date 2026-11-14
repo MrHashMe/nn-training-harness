@@ -809,17 +809,53 @@ def source_files(root: Path, cfg):
     return res, False
 
 
-def hash_files(root: Path, files, max_bytes):
+def files_matching(root: Path, patterns, runs=None):
+    """Files under root that match the patterns, tracked or not (git-ignored data included). The search for a pattern
+    starts at the folder before its first wildcard, which is the project for **/test/**. `runs`, the runs folder
+    as the configuration names it, is left out: what the runs write there is not what a campaign protects.
+    Files below a folder that is a link are not found: the walk does not follow links."""
+    rels = set((run_git(root, "ls-files", "-z", text=True) or "").split("\0"))
+    for p in patterns:
+        p2 = str(p).replace("\\", "/")
+        head = re.split(r"[*?\[]", p2)[0]
+        lead = p2.rstrip("/") if head == p2 else head.rpartition("/")[0]
+        base = root / lead
+        if base.is_dir() and (lead or head != p2):
+            for d, dirs, files in os.walk(base):
+                here = Path(d).relative_to(root)
+                dirs[:] = [x for x in dirs if x not in (".git", "__pycache__", "worktrees") and (here / x).as_posix() != runs]
+                rels.update((here / f).as_posix() for f in files)
+        elif lead:
+            rels.add(lead)
+    return sorted(r for r in rels if r and path_matches(r, patterns) and (root / r).is_file()
+                  and not finder_file(root / r))
+
+
+def finder_file(p: Path) -> bool:
+    """A folder's view settings, which macOS's Finder writes wherever a person opens a folder: told by the name and by
+    the file's first bytes, so that another file given that name stays protected."""
+    if p.name != ".DS_Store":
+        return False
+    try:
+        with open(p, "rb") as f:
+            return f.read(8) == b"\0\0\0\x01Bud1"
+    except OSError:
+        return False
+
+
+def hash_files(root: Path, files, max_bytes, by_size=(), follow=False):
+    """One hash over the files. A file over max_bytes, or one named in by_size, counts by its size alone; a link
+    counts by where it points, or with follow by the file behind it."""
     h = hashlib.sha256()
     hashed, size_only = 0, []
     for rel in files:
         p = root / rel
         try:
-            if p.is_symlink():
+            if p.is_symlink() and not follow:
                 h.update(b"L\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + os.readlink(p).encode() + b"\0")
                 continue
             size = p.stat().st_size
-            if size > max_bytes:
+            if size > max_bytes or rel in by_size:
                 size_only.append(rel)
                 h.update(b"S\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + str(size).encode() + b"\0")
                 continue
@@ -851,6 +887,35 @@ def provenance(root: Path, cfg):
         info["git"] = {"commit": head.strip() if head else None, "dirty": bool(dirty),
                        "dirty_count": len(dirty), "dirty_examples": dirty[:20]}
     return files, is_git, info
+
+
+FROZEN_READ = 64 << 20
+
+
+def frozen_state(root: Path, cfg):
+    """The files that match frozen_paths as one hash, or None where nothing is frozen. A run's record keeps it, so
+    that a later look can tell whether two runs were made under the same evaluator. The guard asks about a write to
+    such a file only where it can name the write; the hash changes whatever made the change.
+    shortcut: at most FROZEN_READ bytes are read, the smallest files first, so that code is always read in full and
+    large data counts by its size; read everything if frozen data can change without changing its size."""
+    pats = cfg.get("frozen_paths") or []
+    files = files_matching(root, pats, cfg["runs_dir"].strip("/")) if pats else []
+    if not files:
+        return None
+    def size_of(rel):
+        try:
+            return (root / rel).stat().st_size
+        except OSError:  # gone since it was listed, or a link to nothing: hash_files counts it as unread
+            return 0
+
+    left, by_size = FROZEN_READ, set()
+    for size, rel in sorted((size_of(f), f) for f in files):
+        if size > left:
+            by_size.add(rel)
+        else:
+            left -= size
+    digest, _hashed, size_only = hash_files(root, files, float("inf"), by_size, follow=True)
+    return {"frozen_hash": digest, "frozen_files": len(files), "frozen_size_only": len(size_only)}
 
 
 # File names that usually hold credentials. A snapshot links such a file instead of copying it, and a remote run
@@ -1116,6 +1181,7 @@ def load_run(root: Path, d: Path, cfg, t: float):
         "trial": man.get("trial") if man.get("trial") is not None else meta.get("trial"),
         "seed": meta.get("seed") if meta.get("seed") is not None else man.get("seed"),
         "source_hash": ((man.get("snapshot") or {}).get("source_hash") or man.get("source_hash") or "")[:12] or None,
+        "frozen_hash": str(man.get("frozen_hash") or "")[:12] or None,
         "cmd": man.get("cmd"),
         "cwd": man.get("cwd"),
         "deadline": man.get("deadline"),
@@ -1430,7 +1496,15 @@ def build_status(root: Path, cfg, with_gpu=True):
     top_out = [{"run_id": r["run_id"], "value": r["metric"]["value"], "source": r["metric"]["source"],
                 "step": r["metric"].get("step"), "ckpt": r["metric"].get("ckpt"), "seed": r.get("seed"),
                 "study": r.get("study"), "trial": r.get("trial"), "source_hash": r.get("source_hash"),
+                "frozen_hash": r.get("frozen_hash"),
                 "note": r.get("note"), "dir": r["dir"]} for r in top[: int(lim.get("top_k", 5))]]
+    if any(r["frozen_hash"] for r in top_out):  # a score compares only with scores made under the same frozen files
+        cur = ((frozen_state(root, cfg) or {}).get("frozen_hash") or "")[:12]
+        other = [r["run_id"] for r in top_out if r["frozen_hash"] and r["frozen_hash"] != cur]
+        if other:  # first, so that the cap on alerts below never cuts it
+            alerts.insert(0, f"{len(other)} of the top runs (e.g. {other[0]}) were made under other frozen files than "
+                             "the project holds now: their scores do not compare with new runs "
+                             "(references/validity.md, section 6)")
 
     failures = [r for r in runs if r["state"] in ("failed", "lost", "incomplete", "interrupted", "timeout")]
     failures.sort(key=lambda r: r.get("_created") or 0, reverse=True)
@@ -1684,6 +1758,7 @@ def cmd_launch(args):
         "launched_by": "expctl",
         "via": args.via or "setsid",
     }
+    manifest.update(frozen_state(root, cfg) or {})
     if resume_of:
         manifest["resume_of"] = resume_of.name
         manifest["resume_of_source_hash"] = was_hash
@@ -2141,6 +2216,7 @@ def cmd_hash(args):
     _files, is_git, prov = provenance(root, cfg)
     prov["root"] = str(root)
     prov["git_repo"] = is_git
+    prov.update(frozen_state(root, cfg) or {"frozen_hash": None})
     print(json.dumps(clean(prov), indent=1))
     return 0
 
@@ -2252,10 +2328,10 @@ def cmd_final_eval(args):
         if shared:
             chained(shared, dict(row, sub=sub))
 
-    use, prov = len(before) + 1, provenance(root, cfg)[2]
+    use, prov, fz = len(before) + 1, provenance(root, cfg)[2], (frozen_state(root, cfg) or {}).get("frozen_hash")
     git, log = prov.get("git") or {}, d / f"{time.strftime('%Y%m%d-%H%M%S')}-use{use}.log"
     note(event="start", use=use, configured=configured, args=extra, reason=args.again, commit=git.get("commit"),
-         dirty=git.get("dirty"), source_hash=prov["source_hash"], log=rel_to(root, log))
+         dirty=git.get("dirty"), source_hash=prov["source_hash"], frozen_hash=fz, log=rel_to(root, log))
     t0, err = now(), None
     try:
         with open(log, "wb") as f:  # Windows takes the command line as one string; elsewhere it is a word list
@@ -2273,7 +2349,7 @@ def cmd_final_eval(args):
         f.write(f"\n## {time.strftime('%Y-%m-%d')} - final evaluation, use {use}\n\n"
                 f"- Command: `{' '.join([configured, *extra])}`\n"
                 f"- Code: commit {git.get('commit') or 'none'}{' with uncommitted changes' if git.get('dirty') else ''}, "
-                f"source hash {prov['source_hash'][:12]}\n"
+                f"source hash {prov['source_hash'][:12]}, frozen files {fz[:12] if fz else 'none configured'}\n"
                 + (f"- Reason given for this further use: {args.again}\n" if args.again else "")
                 + f"- Exit code {code}{' (' + err + ')' if err else ''}; output in {rel_to(root, log)}, receipt in "
                 f"{FINAL_DIR}/receipt.jsonl\n"
@@ -2625,6 +2701,19 @@ def cmd_selftest(args):
         checks.append({"check": name, "ok": bool(ok), "required": required, "detail": str(detail)[:300]})
 
     add("config readable", not cfg.get("_config_error"), cfg.get("_config_error") or CONFIG_REL)
+    inst = (read_json(root / ".claude" / "nn-training.manifest.json") or {}).get("files")
+    if isinstance(inst, dict) and inst:
+        def as_written(rel):  # install.py hashes a file with its line endings normalised
+            try:
+                return hashlib.sha256((root / rel).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == inst[rel]
+            except OSError:
+                return False
+
+        off = sorted(rel for rel in inst if not as_written(rel))
+        add("kit files are as the installer wrote them", not off,
+            f"{len(off)} of {len(inst)} differ or are missing, e.g. {off[0]}: unless somebody edited them on purpose, "
+            "run install.py again (it keeps a copy of a file that was edited)" if off else f"{len(inst)} files",
+            required=False)
     # one registration file per agent the installer set up (its manifest names them; an older install is Claude Code)
     agents = (read_json(root / ".claude" / "nn-training.manifest.json") or {}).get("agents") or ["claude"]
     hook_files = {"claude": (".claude/settings.json", ".claude/settings.local.json"),

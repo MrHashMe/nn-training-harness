@@ -344,6 +344,16 @@ def install_tests(tmp: Path):
           "the manifest records what was installed and the config records the interpreter")
     st_r = tk.sh([PY, str(t / ".claude/skills/nn-training/scripts/expctl.py"), "selftest"], cwd=t)
     check(st_r.returncode == 0 and tk.jout(st_r)["ok"], "expctl selftest passes in the fresh install")
+    kit_check, ref = "kit files are as the installer wrote them", t / ".claude/skills/nn-training/references/stack.md"
+    fresh, as_installed = [c for c in tk.jout(st_r)["checks"] if c["check"] == kit_check], ref.read_bytes()
+    ref.write_bytes(as_installed + b"\nedited after install\n")
+    st_e = tk.sh([PY, str(t / ".claude/skills/nn-training/scripts/expctl.py"), "selftest"], cwd=t)
+    ref.write_bytes(as_installed)
+    off = [c for c in tk.jout(st_e)["checks"] if c["check"] == kit_check]
+    check([c["ok"] for c in fresh] == [True] and st_e.returncode == 0 and len(off) == 1 and not off[0]["ok"]
+          and not off[0]["required"] and "references/stack.md" in off[0]["detail"],
+          "expctl selftest compares the kit's files with what the installer recorded: all as written in a fresh "
+          f"install, and an edited one is named in a warning that fails nothing ({fresh}, {off})")
     before = {f: (t / f).read_bytes() for f in listing(t)}
     r2 = install(t, env=env)
     check(r2.returncode == 0 and not re.search(r"^  (create|merge|upgrade|replace|update)\b", r2.stdout, re.M)

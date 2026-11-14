@@ -271,37 +271,8 @@ def literal(pattern):
     return re.split(r"[*?\[]", str(pattern).replace("\\", "/"))[0].rstrip("/")
 
 
-def protected_files(root: Path, patterns, runs=None):
-    """Files under root that match the patterns, tracked or not (git-ignored data included). The search for a pattern
-    starts at the folder before its first wildcard, which is the project for **/test/**. `runs`, the runs folder
-    as the configuration names it, is left out: what the runs write there is not what a campaign protects."""
-    rels = set(git(root, "ls-files", "-z", check=False).split("\0"))
-    for p in patterns:
-        p2 = str(p).replace("\\", "/")
-        head = re.split(r"[*?\[]", p2)[0]
-        lead = literal(p) if head == p2 else head.rpartition("/")[0]
-        base = root / lead
-        if base.is_dir() and (lead or head != p2):
-            for d, dirs, files in os.walk(base):
-                here = Path(d).relative_to(root)
-                dirs[:] = [x for x in dirs if x not in (".git", "__pycache__", "worktrees") and (here / x).as_posix() != runs]
-                rels.update((here / f).as_posix() for f in files)
-        elif lead:
-            rels.add(lead)
-    return sorted(r for r in rels if r and expctl.path_matches(r, patterns) and (root / r).is_file()
-                  and not finder_file(root / r))
-
-
-def finder_file(p: Path) -> bool:
-    """A folder's view settings, which macOS's Finder writes wherever a person opens a folder: told by the name and by
-    the file's first bytes, so that another file given that name stays protected."""
-    if p.name != ".DS_Store":
-        return False
-    try:
-        with open(p, "rb") as f:
-            return f.read(8) == b"\0\0\0\x01Bud1"
-    except OSError:
-        return False
+# both live in expctl, which hashes the frozen files with them
+protected_files, finder_file = expctl.files_matching, expctl.finder_file
 
 
 def tool_inputs(text):

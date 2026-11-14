@@ -633,7 +633,7 @@ Last updated: 14 November 2026.
   status entries untouched, nothing staged), the backup folder, and 21 lines in its guard record, 17 of
   them marked `upgrade-check`.
 
-## Round 5 (another model's review, 14 November): in progress
+## Round 5 (another model's review, 14 November): done; what it left open is under "Not done"
 
 The review's text is kept beside the other user reports (`scout/scouts/user-review-1114.md`, not in git). Its
 line numbers fit the tree at `60cc0b0`. Each claim was checked there before anything was changed: a claimed
@@ -1084,19 +1084,154 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
     verdict; `env --probe` and the warnings of `env` are this round's addition to the last.
   - (14, 15, 20 to 22) U, four Hold rows: ports for Antigravity and Gemini CLI, the proposed MCP servers,
     cloud drivers, a container as the box. N new skills and the rebuild as six "planes", as in the verdict.
-- Next: step 9, the full tests on both platforms on the tree of `850020a`, then REPORT.md.
+- Done, step 9: the full tests on the tree of `850020a`, all seven files in three interpreters per platform,
+  all passing. Default interpreters: 968 checks on Windows (benchmarks 44, kit 417, loop 235, ports 125,
+  remote 90, review_fixes 38, runlog_units 19) and 980 in WSL (44, 421, 240, 126, 90, 40, 19); 866 and 874
+  at the public commit.
+- Done after the nine steps: the control for the fine-tuning task (`2071d99`). `benchmarks/finetune/
+  controls.py shuffled` trains the shipped script on the training messages with their intents dealt out
+  again at random: 0.012, 0.023 and 0.008 exact answers on seeds 1 to 3 and 0.011 with a learning rate of
+  1e-3, against 0.35 to 0.39 for the script as shipped. Floor 0.05, in `loop.controls` of the task's
+  config; the loop's self-test trains it once before a campaign's first session, as one run of the run
+  limit (tried with the stand-in agent: 4 runs, 283 s, passed).
+- Done: the independent review. One fresh subagent (Opus) with a throwaway clone at `850020a` and a brief
+  that says what the guard, the snapshot, the loop and the two practice evaluators must guarantee; it took
+  the place of the deep-sweep-red-team skill (usage limit). It ran 14 probe scripts on native Windows and
+  reported nine findings and four of lower weight. All are fixed, one commit per idea, each with checks
+  that state what the code did before:
+  1. a hook input nested too deeply to read ended the guard with exit code 1, which Claude Code takes for a
+     hook that failed (`5aff688`): refused now, and any error the guard's main function does not catch ends
+     as a refusal;
+  2. git settings that make git start a program (`13dd89f`): asked about; the kit's own git calls switch
+     `core.fsmonitor` and the hooks path off;
+  3. `git add -f` and `git stash --all` over sealed files (`cc2bfbe`): asked about;
+  4. spellings of a sealed path that a shell resolves, a backslash, `$'..'`, a brace list, PowerShell's
+     escape character (`f7ed572`): every rule also runs on the line as each shell would take it;
+  5. decoded text that reaches a command without a pipe (`826222d`): asked about;
+  6. Python literals side by side, and fixed counts behind which the guard stopped reading (`70a4aeb`,
+     `d8d34c1`): joined, and no count decides what is checked;
+  7. a notes file run as code (`84d7360`): asked about;
+  8. `du -a` and tree walks in code on the line (`4e204eb`), and an MCP tool handed a folder with sealed
+     files (`cd75002`): asked about;
+  9. the character-model evaluator scored a model that reads its own scoring file (`079d1f0`): every code
+     entry of a model file is read as tokens, PyTorch loads an archive the evaluator wrote itself, and every
+     call goes to a fresh copy;
+  10. a junction gave sealed files a second name under which a snapshot copied them, and a sealed pattern in
+      another case than the folder on disk did not match in the run tools (`4842b81`): a snapshot and a remote
+      run's archive judge a file by its real place, and the run tools read path patterns without case where
+      the filesystem ignores it.
+- Found while fixing, and fixed in the same commits: text handed to a nested shell was checked only from the
+  folder the line starts in (`cadf196`); code on a runner's standard input was not read (`4e204eb`); the
+  evaluator loaded a second directory of a model file that its check had not read (`079d1f0`); a snapshot
+  made an absolute link to a folder again as it was (`4842b81`); and where the sealed folder is itself a link
+  to storage outside the project, a second link to that storage, to the first link or to the sealed folder
+  brought sealed files into a snapshot, in six of six layouts of my probe (`4842b81`).
+- The public version has most of these faults. Tried on `60cc0b0`: the junction, the linked storage, the
+  case of a pattern, the nested folder, the standard input and the model file's forms.
+- Changed checks since `850020a`: in `tests/test_benchmarks.py`, two models that keep something between
+  calls are scored as the fair model, where they were refused (every call now goes to a fresh copy); one
+  row of `tests/test_kit.py` that this series had added itself was made stricter. No guard check that
+  existed before the round was changed or removed.
+- Not done about the review: no second reviewer saw the fixes (usage limit). Limits kept and documented
+  (README "Notes and limits"; REPORT.md "Round 5"): making a junction or a link is not asked about; a link
+  inside a git-ignored folder is not looked into when the sealed pattern begins with a folder's name; a
+  sealed pattern written as an absolute path does not keep a git-ignored link to its folder out of a
+  snapshot; names and programs that are put together at run time.
+- The full tests on `b48d606` (README, guide and the guard's description after the fixes) failed two checks
+  of `tests/test_kit.py` in WSL. Every other file passed there in three interpreters, and on Windows the
+  default interpreter (1,168 checks) and the clean 3.11 passed all seven files; the 3.8 run of that commit
+  was stopped for the new code. Both failures were faults of the kit, older than the round and in the public
+  version. Neither shows on Windows, where the fixes after the review had been run while they were made:
+  1. `guard Bash {"command": "python -c \"a0 = 'v0';... -> ask (want deny)`, all three interpreters. Where
+     `final_eval_commands` is set, the guard looks every word of a command up as a file, and on Linux and
+     macOS that raises for a word of more than 255 bytes (OSError 36, File name too long): the check ended
+     as an internal error, a question for a harmless line and for a line that must be refused. Fixed in
+     `d857607`: such a word names no file (`there()` in `nn_guard.py`); two new rows in the guard's table.
+     Only that error is taken so; another error of a lookup still ends as the internal-error question.
+  2. `session hook injects status after compaction`, the default interpreter only, and not in two later
+     runs. `expctl` told a run from a later process with its number by the start time, which on Linux is
+     the boot time plus ticks and moves when the system clock is set. In that WSL session the clock was set
+     back about 2.5 s every 30 s (the distance between wall clock and time since boot fell by 4.955 s in
+     66 s), and the test's two live runs read as lost 36 s after their launch. Fixed in `9d6f876`: on Linux
+     `pid.json`, the manifest that `RunLog` writes and a remote run's two process records carry the boot's
+     id and the start tick (`proc_key`, `supervisor_key`), and those decide where a record and the system
+     both have them; the time decides otherwise, as before. One new check, with a recorded start a minute
+     off.
+- After those two fixes, each was checked in WSL against the code before it, and the second one changed
+  once more:
+  1. The three commands with a long word, asked of the guard at `7c6a120` and at `a135bea`: before, the
+     internal-error question for all three; after, a refusal for the `python -c` read of a sealed path, and
+     the other two allowed.
+  2. The full tests at `a135bea`: WSL passed in all three interpreters (1,184 checks in the default one).
+     On Windows the default interpreter passed all seven files (1,171); I stopped the run in the clean 3.11
+     for the change of item 5.
+  3. The fix of a run's identity under WSL's own clock: one run that only sleeps per kit (`7c6a120` and
+     the new code), each read by its own controller every 30 s. First session (new code `a135bea`): 181 s
+     after the launch the clock had been set back by 5.431 s; the old code read its run as lost, the new
+     one as starting. Second session (new code `827c35c`), with each guard asked about a `Write` into its
+     run's folder: both refuse at the launch; after 211 s (6.599 s) the old code reads lost; at the end
+     (7.570 s) the old guard lets the `Write` pass and the new one refuses it. The guard takes its live
+     runs from `expctl.scan` (`Ctx.active()` in `nn_guard.py`), so the fault ended the protection of the
+     run as well, in the public version too.
+  4. The clock of this machine's WSL, measured in six sessions on 14 November: still at first, then set
+     back in steps of one to three seconds, 2.7 to 4.5 s a minute, beginning one to three minutes after
+     the virtual machine's start. Load is not the cause: the run at `a135bea` started with nothing else
+     of mine running, and its clock was set back by 74.9 s in 20.5 minutes (in the run at `827c35c`: by
+     66.6 s in 20.3 minutes). My earlier reading, also told to the user in chat,
+     was wrong. Clock source `tsc`; Hyper-V's time synchronisation and `systemd-timesyncd` both active;
+     not looked into further. Round 2's two clock faults fit: about two minutes after a start.
+  5. A reader inside a time namespace with a boot-time offset (`unshare --time --boottime 1000`) sees
+     another start tick for the same process, while the start time reads the same. With `9d6f876`, where
+     the key decided alone, such a reader took a live run for lost, which the rule before the round did
+     not: a narrow step back in the protection of live runs, found by my own check. Repaired in `827c35c`:
+     a key that matches says "the same process"; in every other case the start time decides as before the
+     round. The check that `9d6f876` had added was changed with it. Tried in that namespace before and
+     after; `tests/test_kit.py` and `tests/test_remote.py` on Windows and the kit file in WSL passed with
+     the change before the commit. Open: such a reader after a clock set of five seconds reads the run as
+     lost. Not tried: a clock that is set forward.
+- Done: the full tests on the final code, `827c35c`, all seven files in three interpreters per platform:
+  no check failed. Default interpreters: 1,171 checks on Windows (benchmarks 50, kit 610, loop 238, ports
+  126, remote 90, review_fixes 38, runlog_units 19) and 1,184 in WSL (50, 614, 244, 127, 90, 40, 19); 866
+  and 874 at the public commit. The clean interpreters: 1,163 (3.11) and 1,162 (3.8) on Windows, 1,176
+  (3.12) and 1,175 (3.8) in WSL: 42 checks in the benchmarks file without PyTorch, and one check of the
+  ports file fewer under 3.8. The WSL run went under a clock that was set back by 66.6 s while it ran.
+- Done: REPORT.md, "Round 5", and the ledger (`7c6a120`, `a135bea`, `a31f632`): 1,609 rows; Adopt 474, of which 332 are
+  finished and 142 are not; Trial 233, Assess 324, Hold 324, Reject 254. The note `round5` has 104 rows: the
+  review's 89 claims (37 adopted, 29 rejected, 9 Trial, 10 Assess, 4 Hold), 13 rows for the fixes after the
+  independent review and two for the faults of the full test run, all adopted and finished. Round 4's Trial
+  row about two controls for the fine-tuning task stays Trial for the untrained adapter; shuffled intents is
+  the finished `round5` row.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
   signed in).
-- 134 adopted rows are unfinished, and of the Trial and Assess rows only round 2's three built items were tried
-  (usage limit). ROUND2.md gave the go-ahead for all of them; what was built first is what the live campaign
-  and the review pointed at. The first three items of my order are built (round 3), and the first four of the
-  ranked list of 12 November (round 4). My order for what remains: an index of the sealed files, so that the
-  guard's look on disk has no bound; containment of each run's processes (a job object on Windows, a process
-  namespace under bubblewrap); controls for the fine-tuning task; a repair attempt after a crash; then a
-  minimum agent version, the readiness report and a checkpoint helper.
+- 142 adopted rows are unfinished (134 before round 5, whose check of the ledger moved eight rows there),
+  and of the Trial and Assess rows only round 2's three built items were tried (usage limit). ROUND2.md gave
+  the go-ahead for all of them; what was built first is what the live campaign and the review pointed at.
+  The first three items of my order are built (round 3), and the first four of the ranked list of 12
+  November (round 4). Of the order after round 4, round 5 built the repair attempt after a crash and lifted
+  the guard's file bound for a folder sealed as a whole, and the control for the fine-tuning task. My order
+  for what remains: a second reviewer's look at the fixes after round 5's independent review, on Linux
+  this time (both faults of the round's last test run show only there); a
+  guard walk that skips the folders no sealed pattern can match, so that the bound goes for patterns that
+  begin with a wildcard too; containment of each run's processes (a process namespace under bubblewrap,
+  which first needs the heartbeat's process number left out or translated for boxed runs; a job object on
+  Windows); then a minimum agent version, the readiness report and a checkpoint helper.
+- Round 5 with a real agent: the repair turn, the compile check and the rotation of the screening seed ran
+  with the stand-in agent of the tests only. `on_finish` ran a stand-in command; no machine was stopped
+  with it. The evaluator's box exists on Linux with bubblewrap only. File links were exercised in WSL only.
+  The fixes after the independent review are checked by my own probes and tests, not by a reviewer, and
+  the reviewer ran on native Windows only. The same holds for the three commits after the full test runs
+  (`d857607`, `9d6f876`, `827c35c`). Not tried: a clock that is set forward, and a Linux machine other
+  than this WSL. Left as they are, and not tried under a clock that is set: the age of a heartbeat and the
+  guard's five seconds for its own searches, which both read the wall clock; what else in the kit reads it
+  was not looked at.
+- Round 5, not opened (usage limit), seven Assess rows of the note `round5`: further RL objectives, parity
+  between trainer and generator, distillation and preference objectives, adapter options, further
+  optimizers, low-precision and kernel items, architectures. The papers behind the new reference text were
+  read as abstract pages, and no result was reproduced.
+- Round 5 is not on the real install, which runs the kit of the fifth installer run, and it is not pushed.
 - Round 3's three items are not shown to raise results with a real agent. Each ran with the stand-in agent
   of the tests only: no real agent session, no pilot on the fine-tuning task, and that task ran on native
   Windows only. Round 4 ran the trial that the search's ledger row names (campaigns with and without, at an
@@ -1124,7 +1259,9 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
 - The guard's kept gap (a plain `grep -r`, `find` or `ls -R` started at the project root was not questioned)
   is closed in round 4, and on the real install since the fourth installer run. What stays is the file
   bound: the guard looks at no more than 20,000 files per folder it walks, and a sealed file beyond them is
-  not seen (README "Notes and limits"; "Round 4" above). The gap for other checkouts is closed in round 2,
+  not seen (README "Notes and limits"; "Round 4" above). Round 5 lifted it for a folder sealed as a whole,
+  which is walked on for up to five seconds; it stays for patterns that begin with a wildcard, and the real
+  install does not have round 5. The gap for other checkouts is closed in round 2,
   and on the real install since the third installer run.
 - Found on the real install and built in round 4 (`43adda1`), installed there since the fourth installer
   run: for a search of the whole project by the search tool, the guard walked up to 20,000 files once per
@@ -1226,6 +1363,20 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   other status entries are untouched and nothing is staged. Where these records say the two files are not
   committed, this entry replaces it.
 - Answered on 14 Nov ("Yes, push"): the records of that run are pushed to the public repository.
+- Answered on 14 Nov by the request itself (review the other model's recommendations, build a plan from
+  them, carry it out): "Round 5" above. The request covers changes in this folder and local commits. It is
+  not a word for a push, for an install, or for anything on the real install.
+- Open, from round 5: a push of the round to the public repository (its commits follow the public commit).
+- Open, from round 5: a sixth installer run on the real install, which would bring it the round. An edit
+  there whose text names a sealed path would then ask, and its source hash changes once if that project
+  tracks agent files.
+- Open, from round 5, each an install, an account or a paid resource: ports for Antigravity and Gemini CLI
+  (neither agent is installed here), the MCP servers the review proposes, cloud drivers beyond `ssh` and
+  Hugging Face Jobs, and a container as the box for training and evaluation (Docker Desktop, asked before).
+- Open, from round 5: whether to spend usage on a campaign or a second pilot with a real agent, now with the
+  repair turn and the compile check to try as well, and on a second reviewer's look at the fixes after the
+  independent review. (The control for the fine-tuning task, asked about here before, is built.)
+- Open, from round 5: what to build next (the order under "Not done").
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

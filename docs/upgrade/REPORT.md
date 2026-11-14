@@ -1,6 +1,6 @@
 # Upgrade report: nn-training harness kit
 
-Work of 10 to 13 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
+Work of 10 to 14 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
 who has not seen the work. Requirements: `docs/upgrade/PROMPT.md`, and `docs/upgrade/ROUND2.md` for the second
 round of 12 November, which has its own section right after "Read this first". A third stretch of work on the
 same day built three items that round 2 had left open, and on 13 November repaired three small faults it had
@@ -11,8 +11,10 @@ follows "Round 3". Its last part, "The fourth installer run on the real install"
 request, ran the full tests and the fine-tuning script, fixed two faults and uploaded the kit ("After the
 guide"). On your word it then made the repository public, from one new commit: the commit ids in this report
 belong to the history before it, which is not part of the public repository. On a further word it ran the
-installer on your real install a fifth time (the last entry of "After the guide"). Decision record:
-`docs/upgrade/LEDGER.md`.
+installer on your real install a fifth time (the last entry of "After the guide"). On 14 November you gave
+me another model's review of the kit and asked for a plan from it and for the plan's execution: its
+section, "Round 5", follows "After the guide". The commit ids of that section follow the public commit and
+are not pushed. Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -47,8 +49,9 @@ installer on your real install a fifth time (the last entry of "After the guide"
    (section 4), and those of rounds 2 to 4 since the third and fourth installer runs (12 and 13 November).
 4. **The work was cut down on 11 November** on your instruction (usage limit): no second verification round of the
    research, no outside scouts, no trial runs for undecided candidates, one independent reviewer instead of the
-   deep-sweep skill. Of 422 adopted ledger rows, 288 are finished and 134 are listed as unfinished, not built
-   (399, 261 and 138 before round 2; 415, 277 and 138 before round 3; 418, 280 and 138 before round 4).
+   deep-sweep skill. Of 474 adopted ledger rows, 332 are finished and 142 are listed as unfinished, not built
+   (399, 261 and 138 before round 2; 415, 277 and 138 before round 3; 418, 280 and 138 before round 4; 422,
+   288 and 134 before round 5, whose check of the ledger moved eight rows from finished to unfinished).
 5. **Not verified live:** the Codex and Cursor ports in a real session, and the loop with either; the loop with
    Claude Code on Linux; the Hugging Face Jobs route, which is the internet GPU path. All are built and pass tests
    against stand-ins. Each waits for something only you can do (section 9).
@@ -77,10 +80,11 @@ installer on your real install a fifth time (the last entry of "After the guide"
    whose hash did not match the index (a damaged download on a connection of about 1 MB/s), so nothing was
    installed there.
 9. Tests: all seven test files pass in WSL (default Python 3.12, clean 3.8, clean 3.12) and on native Windows
-   (default 3.11, clean 3.11, clean 3.8) at the last code change, commit `0450067` of 13 November ("After
-   the guide"), as they did at round 4's, `00be575` ("Round 4", "Tests"), at round 3's, `0f23999`, and at
-   round 2's, `6e01543`.
-   Running things for real exposed seven faults, all fixed and tested. Before round 2: a Hugging Face
+   (default 3.11, clean 3.11, clean 3.8) at the last code change, commit `827c35c` of 14 November ("Round
+   5", "Tests"), as they did at `0450067` of 13 November ("After the guide"), at round 4's, `00be575`
+   ("Round 4", "Tests"), at round 3's, `0f23999`, and at round 2's, `6e01543`.
+   Full test runs and real runs exposed nine faults, all fixed and tested (three more, found on 13
+   November, are in points 12 and 13). Before round 2: a Hugging Face
    job's last files could be lost (section 3, "Tests"); on Windows, guard log lines written at the same moment
    destroyed each other (section 6, "Guard"); and nothing stopped a session that would have gone on at
    pay-as-you-go prices once the plan's usage ran out (section 6, "Other"). In round 2's full test runs: a
@@ -89,6 +93,9 @@ installer on your real install a fifth time (the last entry of "After the guide"
    round 3's, both on Windows: a training run could end at its start while another process read one of its
    first records, and status could report a live run as stalled for one call. Three smaller faults that I saw
    beside those two are repaired as well, on 13 November ("Round 3", "The faults the full test runs found").
+   In round 5's, both in WSL and both on Linux only: a command with a very long word ended the guard's
+   check as an internal error, and a live run read as lost once the system clock had been set by five
+   seconds, after which the guard no longer protected it ("Round 5", "Tests").
 10. **Round 3 built three more items, and none was shown to raise results** ("Round 3"; round 4 has since
     measured the first of them with a stand-in agent, point 11). Where a project's config
     sets them, the harness searches the numeric settings that a change leaves open (`loop.search_trials`), and a
@@ -106,7 +113,8 @@ installer on your real install a fifth time (the last entry of "After the guide"
     the character model, so it stays off by default. Round 3's three repairs hold, and five faults beside
     them are fixed. `install.py --worktrees` registers the guard for sessions started in a repository's other
     checkouts. One limit of the root check stays: the guard looks at no more than 20,000 files per folder it
-    walks, so in a tree larger than that a sealed file can go unseen. Your real install has this round and
+    walks, so in a tree larger than that a sealed file can go unseen (round 5 lifted it for a folder that
+    is sealed as a whole, point 14). Your real install has this round and
     round 3 since the fourth installer run of 13 November. There, four exploring commands at the root went
     from allowed to a question, and one way to read a file in a sealed folder went from allowed to refused.
     The fifteen files that run changed are committed there, on your word ("Round 4", "The fourth installer
@@ -127,6 +135,26 @@ installer on your real install a fifth time (the last entry of "After the guide"
     first, because every commit carries your private e-mail address. On your word of the same day it is
     public: it starts from one new commit under your account's no-reply address and has an MIT licence
     ("After the guide", "Public, on your word").
+14. **Round 5 checked another model's review claim by claim, built what held, and then fixed what an
+    independent reviewer and the last test run found in the result** (14 November, on your request; "Round
+    5"). Of the review's 89 claims, 37 were adopted and built, 29 rejected, 19 are undecided and 4 wait for
+    you. Built: two practice evaluators and a loop evaluator that are harder to fool, five closed ways past
+    the guard, sealed files kept out of snapshots under any pattern, a keep rule whose bar a change's own
+    runs cannot lower, a stop that is obeyed, one hashed archive per remote run, checks that fail before a
+    run does, and a control for the fine-tuning task. A reviewer without the working context then found
+    nine faults and four smaller ones in the result, most of them further ways past the guard; all are
+    fixed, with five more that the fixing turned up. The full test run on the fixed code failed two checks
+    in WSL, and both were real faults that only Linux shows: a command with a very long word ended the
+    guard's check as an internal error, and a live run read as lost once the system clock had been set by
+    five seconds, after which the guard no longer protected it. I watched the second one under WSL's own
+    clock, which was being set back by several seconds a minute that day: the code before the fix lost its
+    live run three and a half minutes after the launch, and its guard then let a write into the run's
+    folder pass; the fixed code kept both. Both faults are fixed, and a third commit takes back a step
+    that my own check found in the second fix. Most of all these faults are older than the round, so the
+    public version has them until you have the round pushed. The guard asks more often now, also about
+    some harmless commands. All seven test files pass on both platforms at `827c35c`. No second reviewer
+    saw the fixes, no campaign ran with a real agent, nothing is pushed, and your real install was not
+    touched.
 
 ## Round 2 (12 November 2026)
 
@@ -2095,6 +2123,677 @@ that explains in detail how the kit works.
 - **Not done.** The fine-tuning script ran with one seed, on native Windows only. The status fix is not tried
   on a real remote run. The commands of the guide's scenario A were not run on Linux.
 
+## Round 5 (14 November 2026): another model's review, checked claim by claim, and what was built from it
+
+You gave me a review of the kit by another model, 22 ranked recommendations and a proposal to rebuild the kit
+as six "planes", and asked for three things: review it, build a plan from it, carry the plan out. I treated
+every statement of the review as a claim to check before anything changed. A claimed way past the guard
+counted only where a probe call in a temporary project showed it (21 calls). The claims about the keep rule
+were tried in a simulation of the rule (40,000 campaigns per case). The others were read in the code. The
+plan had nine steps, one per area, and each claim has its verdict (`docs/upgrade/PROGRESS.md`, "Round 5").
+When the nine steps were built and tested, a reviewer with no part in the work looked at the result. It
+found nine faults and four smaller ones; all are fixed, and so are five more of the same kind that fixing
+them turned up ("The independent review"). The full test run on the fixed code then failed two checks in
+WSL. Both were faults of the kit, older than the round, and both are fixed ("Tests").
+The usage limit shaped the work as before: research went no further than a build or a line of a reference
+needed, the papers behind the reference text were read as abstract pages, one reviewer took the place of
+the deep-sweep skill, and no campaign ran with a real agent. Commits: `600499a` to `850020a` (49, the nine
+steps), `2071d99` (a control for the fine-tuning task), `5aff688` to `4842b81` (13, the fixes after the
+independent review), `b48d606` (README, guide and the guard's description of itself), `d857607` and `9d6f876`
+(the two faults the test run found), `827c35c` (a repair of the second of those fixes) and those of the
+records. They follow the public commit `60cc0b0`, so
+a push makes them public history. Nothing is pushed. Nothing was run, read or changed on your real install.
+
+### In short
+1. **The review held where it named a concrete fault, less often where it proposed a design.** Its claims
+   went into the ledger as 89 rows of the note `round5`: 37 adopted and built, 29 rejected, 19 undecided
+   (each with the test it needs) and 4 held for your decision. Three of its claims were wrong on the facts:
+   calls such as `Path.unlink` do not pass under `--readonly` (four probes were refused), `AGENTS.md` was
+   part of the source hash, and the repository has a licence file. Its repair of the keep rule did worse in
+   the simulation than the rule it would replace. Two of its instructions I did not follow: removing the
+   checkout under `.claude/worktrees/`, which is the working copy of this session, and adding an Apache
+   licence, where the repository has the MIT licence you chose.
+2. **The two practice evaluators and the loop's evaluator are harder to fool.** The character-model
+   evaluator looked for a look-ahead at one position, 64, and scored the rows in file order: a model that
+   copies the next token everywhere else scored 0.11 nats, where an honest model scores about 1.7. It
+   now scores the rows in a fixed shuffled order, tries the look-ahead at every position with another row's
+   text, and refuses a saved model whose code reads or writes files. A real export scores the same to all
+   printed digits. The fine-tuning evaluator followed a link out of the run folder and handed every key of
+   the adapter's config to PEFT. The adapter's files must now lie in the run folder, and the config may set
+   only the keys of a plain LoRA adapter. On Linux with bubblewrap the loop runs a project's evaluator with
+   the project read-only, apart from the run folder it scores and what the new key `loop.eval_writable`
+   names. The self-test's tampered copy no longer equals the original where a run's records hold whole
+   numbers only.
+3. **Five ways past the guard are closed, and you will notice the questions.** Each was allowed without a
+   word in a probe: shell code attached to its flag (`bash -c"..."`), a PowerShell command inside
+   `-EncodedCommand`, a sealed path put together from string parts in a line of code, a file edited so that
+   its code opens a sealed path, and a sealed path inside the arguments of an MCP tool. The first three are
+   now read like a written command or path. The last two are questions, because the guard cannot know
+   whether the text will run: an edit that writes `data/test/...` into a script asks, also when the file
+   named that path before. In an unattended session, and with Codex and Cursor, a question is a refusal.
+   Three smaller changes: a decoder piped into a shell is asked about, a shell command that names git's
+   hooks or its configuration file is asked about, and a folder sealed as a whole is searched to its end
+   while five seconds of the call allow, where the bound of 20,000 files let a filtered search pass.
+4. **Sealed files stay out of a run's snapshot whatever the pattern.** The snapshot and the loop went by the
+   literal start of a sealed pattern. With `**/test/**` or `data/*/test/x.csv`, a git-ignored data folder
+   was linked whole into the run's copy of the source, sealed files included, and the loop neither hid such
+   files from training nor noticed a change to them. Both now follow the pattern, at any depth and behind
+   links inside the project. Where a run is not confined (Windows, macOS, Linux without bubblewrap), a
+   change that adds a line with `EXP_PROJECT_ROOT`, the name through which a run finds the project folder,
+   makes its iteration invalid.
+5. **The keep rule: a change's own runs can no longer lower the bar it has to clear.** Of the review's two
+   main claims the first did not hold: a change's three seeds against the baseline's panels keep a change
+   without a gain in 1.4 to 2.7 % of cases, around the nominal 2.3 %. The second held in part: a change
+   whose runs vary far less than the baseline's was kept without a gain in 5.6 % of first iterations,
+   because its own panels pulled the pooled noise down. The review's repair was worse where it matters (a
+   change three times as noisy kept in 15 % of cases, a real gain found in 44 % instead of 68 %). Built
+   instead: the change's panels may not lower the variance, and a change more than three times as noisy is
+   tested with its own variance. Simulated: 2.9 % for the quiet change, about 7 % for the noisy one (10 to
+   14 % before). The price is power at a campaign's first change, 61 % for a gain of two deviations where it
+   was 68 %, and about two points later. Three smaller repairs: a stray run of a rejected change leaves the
+   pooled noise again, the seed that screens a change rotates, and a pause keeps the line a restart began.
+6. **A stop is obeyed, and a stopped run is not scored.** The two practice trainers never asked whether a
+   stop was requested, so `expctl stop` waited for the time budget. They now end, score and save. Trying
+   that showed two faults of the loop that the review had not named: it scored a training run that something
+   outside had stopped (Windows) or booked the stop as the change's crash (Linux), and a change whose test
+   was interrupted could not be proposed again. Both are fixed. `RunLog` no longer writes run files from the
+   extra ranks of Lightning's own launcher.
+7. **A remote run gets the code that was hashed, and the records have fewer gaps.** The archive for a remote
+   run was built again by the background controller, and again after a preemption, so what ran could differ
+   from what the launch had hashed. The launch now packs it once, and that file is what is sent. A link in
+   the project that leads to sealed data stays at home. Rows written to the remote ledger at the same moment
+   could destroy each other on Windows (eight writers of 100 rows left 748 rows and 19 torn lines; now 800
+   and none). `resume` refuses when the source changed since the launch. The receipts of final evaluations
+   are also kept in git's common folder, so removing a worktree no longer takes its uses out of the count.
+   An `ssh` target can name a command that runs here when its last run has ended (`on_finish`), for a rented
+   machine that would go on costing.
+8. **Failures show before they cost a run.** `expctl env --probe` tries CUDA, bf16 autocast, the flash
+   attention kernel, fused AdamW and `torch.compile` in the project's interpreter, one process each, so a
+   wheel that ends the interpreter is a line of a report and not a dead run. The loop compiles a change and
+   compares it with the campaign's base before training: a change that does not compile is a crash without
+   a run, and one that alters only comments or layout is no change. After a compile error, or a failure of
+   the first seed in the first quarter of the run budget, the worker gets one repair turn. The new command
+   `expctl audit-splits` counts the records that two splits share and prints a fingerprint per split, never
+   a row.
+9. **References, installer, ledger.** The fine-tuning reference says which objective TRL 1.17.1 runs when a
+   script sets nothing (not the GRPO of the original paper) and names four objectives after GRPO by the
+   symptom each answers. Two installer faults are fixed: an apostrophe in the interpreter's path broke the
+   two subagent files, and a later run wrote a second header into `.gitignore`. The ledger had a fault of
+   its own, which the review found: a reference that covers a row outranked the record of what was built,
+   so eleven rows showed as finished on the reference's word. Eight of them are unfinished and say what is
+   missing; three are finished, two of those because this round built them.
+10. **The fine-tuning task has a control.** A run that trains the shipped script on the training messages
+    with their intents dealt out again at random can learn the form of an answer, not which intent a message
+    has. It scored 0.012, 0.023 and 0.008 exact answers on three seeds, where the honest script scores 0.35
+    to 0.39, and 0.011 with a stronger learning rate. Its floor is 0.05. The loop's self-test trains it once
+    before a campaign's first session and stops the campaign when the evaluator scores it above the floor,
+    which is what an evaluator that leaks the answers would do.
+11. **A reviewer with no part in the work then found nine faults and four smaller ones, and all are
+    fixed.** Most are further spellings of what point 3 had just closed: a sealed path with a backslash, a
+    brace list or `$'..'` inside its name; code that decodes its own text; two string literals side by
+    side; a fixed count of words or literals behind which the guard stopped reading; code written into a
+    notes file and run from there; `git add -f` over the sealed folder, after which `git diff --cached`
+    prints it; git settings that make git start a program. One made the hook crash: a tool input nested
+    about a thousand brackets deep, which Claude Code takes for a hook that failed, and lets the call go
+    on. Two lie outside the guard. The character-model evaluator scored an untrained model that reads its
+    own scoring file, through a call written with blanks around the dot (1.25 nats, where the shipped script
+    reaches about 1.7). And a directory junction gave sealed files a second name, under which a snapshot
+    copied them. Fixing these turned up five more faults: code handed to a nested shell was checked only
+    from the folder the line starts in, code on a runner's standard input was not read at all, the
+    evaluator loaded a second directory of a model file that its check had not read, a snapshot made an
+    absolute link to a folder again as it was, and where the sealed folder is itself a link to storage
+    outside the project, a second link to that storage brought the sealed files into a snapshot. The price
+    is more questions, some about harmless commands ("Things to know"). No second reviewer looked at the
+    fixes.
+12. **Most of the faults of point 11 are older than this round, so the public version has them.** I tried
+    the junction, the linked storage, the case of a sealed pattern, the nested folder, the standard input
+    and the model file's forms on the public commit `60cc0b0`: each is there. The fixes reach the public
+    repository with a push, which waits for your word.
+13. **The full test run on the fixed code found two more faults, both older than the round and both in the
+    public version.** At `b48d606` two checks of `tests/test_kit.py` failed in WSL. The first: where a final
+    evaluation is configured, the guard looks every word of a command up as a file, and on Linux and macOS
+    that lookup raises an error for a word of more than 255 bytes, which the program behind `python -c` or
+    a long commit message is. The check ended there as an internal error: a question for a harmless line,
+    so a refusal in an unattended session and with Codex and Cursor, and a question where a refusal was
+    due. The second: `expctl` told a run from a later process with the same number by its start time, which
+    on Linux moves whenever the system clock is set. Once the clock has been set by five seconds a live run
+    reads as lost, and the guard, which learns of live runs through the same function, stops protecting
+    it. I watched both in WSL, whose clock was being set back that day by three to four and a half seconds
+    a minute: three and a half minutes after its launch the code before the fix read its own live run as
+    lost, and its guard let a write into that run's folder pass, which it had refused at the launch. The
+    new code kept the run and the refusal in the same session. On Linux the records now carry the boot's id
+    and the process's start tick, which do not move. Both faults are fixed (`d857607`, `9d6f876`); a third
+    commit, `827c35c`, takes back a step my own check of the second fix found, a reader inside a time
+    namespace, which the first form of the fix no longer recognised ("Tests"). Neither fault shows on
+    Windows, where every fix after the independent review had been run before that full run, and where the
+    reviewer had worked.
+14. **Tests**: all seven files pass at `827c35c`, this round's last change outside the records, in WSL and
+    on native Windows, in three interpreters each: 1,171 checks on Windows and 1,184 in WSL
+    with the default interpreters (866 and 874 before this round). One commit of the round broke a check
+    that passed before, and the next but one repaired it. The first full run on the fixed code failed the
+    two checks of point 13; the second, at `a135bea`, passed in WSL, and I stopped it on Windows after the
+    default interpreter had passed, when point 13's last change became due ("Tests").
+15. **The ledger**: 1,609 rows (1,505 before): the review's 89 claims and 15 rows for the fixes of points
+    11 and 13. Of 474 adopted rows, 332 are finished and 142 unfinished (422, 288 and 134 before;
+    the check of the ledger in point 9 moved eight rows from finished to unfinished).
+16. **Not built.** The rebuild as six planes: every installed path would move, which breaks the upgrade of
+    existing installs through the manifest, and the single-file scripts that run without packages are a
+    requirement of the prompt. The mechanisms worth having went into the existing files. New skills, a hash
+    chain for the remote ledger, seeds matched with the baseline's and a `doctor` command are among the 29
+    rejected rows, each with its reason. Seven groups of methods that the review names were not opened
+    under the usage limit and are Assess rows: nothing about them is verified ("Not done, and why").
+17. **Your real install does not have this round, and nothing is pushed.** Both wait for your word, with
+    six other questions ("What needs your decision").
+
+### The review's claims, rank by rank
+"Held" means that a probe, the simulation or the code showed the fault. The reasons for what did not hold
+are in the ledger rows of the note `round5` and under "Verdicts" in `docs/upgrade/PROGRESS.md`.
+
+| Rank | Subject | Held, and built | Did not hold, or not built | Commits |
+|---|---|---|---|---|
+| 1 | The practice evaluators, the evaluator's box | Look-ahead at one position only, rows in file order, a loaded module unchecked; a link out of the run folder, every config key handed on; every file writable for the evaluator; a tampered copy equal to the original | A switch to weights with a fixed architecture: the task must stay free to change the architecture | `3fd5c16`, `f274041`, `ccf8ad0` |
+| 2 | Ways past the guard | The five ways of point 3; the bound of 20,000 files, for a folder sealed as a whole; shell writes to git's hooks and configuration | `Path.unlink` under `--readonly`: refused already. A refusal after the guard's time limit: a question is the design, and a refusal where nobody can be asked. Held back: a walk for patterns that begin with a wildcard | `2a2edf6`, `32442fb`, `47cb8eb`, `0abddf2`, `19d5ff5` |
+| 3 | Sealed paths in snapshots and the training box | Wildcard patterns in snapshots and in the loop's checksums; found while building: a link to a folder with sealed files | `EXP_PROJECT_ROOT` out of a run's environment: runs share outputs through it (the loop's scan of a change now counts the name). Held back: a process namespace. Yours to decide: a container | `5563f6c`, `319daf2`, `d8cc1e9` |
+| 4 | The keep rule | A change's runs lower its margin (in part); a stray run stays in the pool; the screening seed is always the same; a pause drops the line a restart began | Three seeds against six; the review's repair; Welch's degrees of freedom (tried); a bootstrap over test items; "GPU seconds are overbilled" (an upper bound on purpose; the reference now says how they are counted) | `92b9419`, `3792686`, `be6abde`, `1ed9177`, `2386068` |
+| 5 | `runlog.py` | The ranks of Lightning's launcher all write run files; the practice trainers never ask for a stop | A stop for one run of a process: the request stands in for the signal, which reaches the process. Locks around two sets: their operations are atomic | `2953f6d`, `3ab4ae4`; found here: `fd98c12`, `d8ed0da` |
+| 6 | The remote runner and provenance | The bundle built again; a link to sealed data followed; a pulled name outside the mirror; ledger rows lost on Windows; a rented machine that goes on costing; four faults of `expctl` (a credential-named file copied into the snapshot, `resume` with changed code, a reused process number, a receipt that leaves with its worktree) | "`AGENTS.md` is left out of the source hash": it was in, and the reverse is built. A refusal of every link out of the project; a hash chain for the ledger; two launches at the spending cap; a restricted environment for runs | `0c4ba73`, `d6ded34`, `58e248a`, `20859f6`, `89493f4`, `e386102`, `6d0ecca`, `d64a154`, `8ff6f8b`, `7d9dcc7`, `1141fcd` |
+| 7 to 10 | Speed and search | No check that the fast paths work here; a change that does not compile costs a run; an early crash costs the iteration | Import checks of every package; a callback for TRL (`hf_callback` serves its trainers); helpers for tabular models and prompt optimisation; block markers; `nnloop finalize`. Held back: a stop at a quarter of the budget, other engines' logs, traces for the worker, crossover | `dec8971`, `a4dc52e` |
+| 11 to 13, 17 | References | The fine-tuning reference named no objective after GRPO | A qualification of Schedule-Free AdamW (SKILL.md calls it an alternative to test already); `RunLog.check_rlvr()` (thresholds without a source). Not opened: seven groups of methods | `11ca540`, `cae1f44`, `b56207d` |
+| 14, 15 | Other agents, MCP servers | Nothing to build without an install | `sandbox_mode` in Codex agent files (against Codex's documentation); a refusal in place of the question before Hugging Face tools. Yours to decide: Antigravity, Gemini CLI, the MCP servers | none |
+| 16, 18 | Data and wiring checks | Ledger rows named kit code that was never written: the split check is built, the wiring checks are reference text; a control for the fine-tuning task, with a measured floor | A data manifest at every launch; near-duplicates in the core; a check of timestamp order; floors computed by the loop. Held back: a leak audit, parallel trials | `e1cf085`, `50549c1`, `2071d99` |
+| 19 | Small repairs | The ledger's generator; the apostrophe; the `.gitignore` header; the warnings that the references promise in `expctl env` | Folded YAML in the installer's reader; a licence file; removing this checkout; a `doctor` command (`selftest` and `env` are that command) | `00a5eb1`, `e376b6c`, `7cede64` |
+| 20 to 22, the rebuild | New skills, cloud drivers, a second pilot, six planes | Nothing | New skills; the rebuild. Yours to decide: cloud drivers, a second pilot | none |
+
+### The independent review
+One reviewer with no access to my working context: a fresh subagent (Claude Opus) with a throwaway clone of
+the kit at `850020a`, a description of what the guard, the snapshot, the loop and the two practice
+evaluators must guarantee, and the question which calls or files get past them. It replaced the
+deep-sweep-red-team skill, to stay inside the usage limit. It read the code, ran 14 probe scripts of its own
+against temporary projects and reported nine findings and four of lower weight, each with its probe. I ran
+the probes for findings 1 and 2 again before and after the fix; every fix has checks in the test files that
+state what the code did before.
+
+| Finding | What I did |
+|---|---|
+| 1. The character-model evaluator scores a model that reads its own scoring file. The saved code calls `torch . from_file(...)`, with blanks around the dot, which the evaluator's text check did not match and PyTorch runs as written. Untrained, it scored 1.25 nats, and every look-ahead, row and repeat check passed | Fixed (`079d1f0`). Every code entry of a model file is read as tokens before anything is loaded, so blanks, `getattr` with a name joined from strings, a `Code/` folder and a second entry of one name are seen and refused. Found while fixing: a file with a second directory, which Python's `zipfile` does not read and PyTorch does; the evaluator scored such a file. What PyTorch loads now is an archive the evaluator writes from the entries it read. Every call goes to a freshly loaded copy, which replaces the two checks for a model that keeps something between calls: they did not see a list that grows. The shipped trainer scores the same to the last digit |
+| 2. A directory junction puts a real copy of a sealed file into the snapshot. With `data/test/**` sealed and a junction `alias` that leads to `data`, git lists `alias/test/labels.csv` as a file of its own, the snapshot copied it, and a read of the copy was allowed. Making the junction was allowed too | Fixed (`4842b81`): a snapshot judges every source file by the place it really lies in as well as by its name. Found while fixing: a link to a folder that leads out of the snapshot (an absolute one) was made again as it was, with the sealed files below it; it is now linked without them, as a git-ignored one is. The reviewer's probe: sealed files reachable in three of six layouts before, in none after. Also found while fixing: the layout in which the sealed folder is itself a link to storage outside the project (`data` leads to another drive). The storage has no name in the project, so a second link to it, to `data` or to the sealed folder brought the sealed files along, copied where git lists the files below a junction and linked whole as a git-ignored folder. A file is now also judged by the name the sealed pattern has for its real place, which is the guard's rule for reads. My probe of that layout: sealed files reachable in six of six cases before, on the public commit too, and in none after. Not built: a question about making a junction or a link (a limit, below) |
+| 3. `git add -f data`, then `git diff --cached`, prints sealed content; `git add -Af`, a commit and `git show` do too | Fixed (`cc2bfbe`): a forced add, or `git stash --all`, over a folder that holds sealed files is asked about. An ordinary add stays unasked: it takes what git does not ignore |
+| 4. Spellings that leave the path's letters intact: `data/te\st/labels.csv`, `data/{test,}/labels.csv`, `data/$'test'/labels.csv`, and PowerShell's escape character inside the name | Fixed (`f7ed572`): every rule also runs on the line as a POSIX shell and as PowerShell would take it, with those marks resolved, for the read-only subagents too. A brace list of more than 64 names is asked about |
+| 5. Decoded code that runs without a pipe: `sh -c "$(echo ... \| base64 -d)"`, `exec(base64.b64decode('...'))`, PowerShell's `[scriptblock]::Create(...FromBase64String(...))` | Fixed (`826222d`): asked about, as the piped form was: a decoder inside `$( )`, `<( )` or backticks, one piped into `xargs`, and code on the line that decodes text itself |
+| 6. The checks that join string literals stop early and miss one way of joining: a sealed path behind 300 path-like words or 400 literals of a text was not looked at, and Python's `'data/te' 'st/labels.csv'` was read as two strings | Fixed (`70a4aeb`, `d8d34c1`): literals side by side are joined, and no fixed count decides any more what is checked. Eight more such counts went with these two (words, nested commands and changes of folder of a line, arguments and levels of a tool's call, parts of an edit, files a wildcard matches). What five seconds of the call do not finish is asked about |
+| 7. Code written to a `.md` file can be run: the edit tools write notes without the guard reading their text, and `python peek.md` passed | Fixed (`84d7360`): a command, or a file's new text, that runs a `.md`, `.mdx` or `.rst` file is asked about. Reading, rendering, linting and writing notes stay unasked |
+| 8. A deeply nested tool input crashes the hook: about 1,500 nested brackets, exit code 1, nothing printed. Claude Code takes that for a hook that failed and runs the call | Fixed (`5aff688`): refused like other input the guard cannot read, with exit code 2, and whatever error the guard's main function does not catch itself now ends as a refusal too |
+| 9. Git's hooks and settings can be changed without naming `.git`: `git config core.hooksPath`, `core.fsmonitor`, `--file .git/config` | Fixed (`13dd89f`): a git setting that makes git start a program is asked about, in `git config`, `git -c`, the `GIT_*` variables, a clone and a template folder. Tried with git 2.43 and 2.52: a plain `git status` ran both planted programs. The kit's own git calls now switch the two settings off that act without a word |
+| Lower weight: `python -c` with `os.walk('data')`, `shutil.make_archive`, `du -ab data` | Fixed (`4e204eb`): asked about over a folder that holds sealed files, as `grep -r` and `tar` were |
+| Lower weight: MCP search tools over `data` | Fixed (`cd75002`): an MCP tool that is handed the folder which holds the sealed files is asked about |
+| Lower weight: a sealed pattern in another case than the folder on disk (`data/Test` beside `data/test/**`, or the pattern `DATA/TEST/**`): the snapshot reached the file, while the guard refused the agent's read | Fixed (`4842b81`): the run tools read the sealed, frozen and editable patterns without case where the filesystem ignores it, as the guard does |
+| Found while fixing: text handed to a nested shell or interpreter was checked from the folder the line starts in, so `cd data && python -c "open('test/labels.csv')"` passed | Fixed (`cadf196`): checked from every folder the line may be in |
+| Found while fixing: a runner without a script takes its code from standard input, and `echo "..." \| sh` or `bash <<< "..."` was not read as code | Fixed (`4e204eb`): read like the text behind `-c` |
+
+**What held, in the reviewer's words:** encoded PowerShell commands, with the parameter's name in full or
+cut short; joins with `+`, `/`, `os.path.join`, `Path(...)` and `'/'.join([...])`; edits whose new text
+names the path in other case or with backslashes; `file://` addresses in MCP arguments; shell writes to
+`.git/hooks` and `.git/config`, also through a `cd`, `cp`, `ln -s`, `tee` or a Write; recursive commands
+over the sealed folder's parent; snapshots with `**/test/**`, `data/*/test/labels.csv` and paths with
+blanks; a NUL byte in a path, which gives a question and no crash.
+
+**What it did not look at:** the evaluator's box in `nnloop.py`, the fine-tuning evaluator beyond its diff,
+`nn_readonly.py`, `audit-splits`, the walk of a sealed folder and its time limit, and `nnremote.py`. It ran
+on native Windows only. No second look was made: the fixes are verified by my own probes and by the checks
+in the test files, not by a reviewer.
+
+### Changes in the behaviour of existing features
+**The guard.** The sealed test set, the frozen evaluator and the protection of live runs are not weaker:
+items 1 to 22 below each add a question or a refusal, and none lets through what was asked about or refused
+before. Item 23 is the one change in the other direction, and it is a repair: on Linux and macOS a command
+with a very long word was asked about because the guard's check broke off with an error, whatever the
+command did. Such a command now gets the check every other command gets, so a harmless one passes, and one
+that reads sealed data is refused where it was asked about. No guard check that existed before this round
+was changed or removed. Tests: the guard's table and cases in `tests/test_kit.py` and three port checks in
+`tests/test_ports.py`. On the code before the five commits of step 2, 21 of that step's new checks in the
+first file and 2 in the second fail; the fixes after the independent review added 190 checks to the first
+file and one to the second, and the two faults of the full test run at `b48d606` three to the first. One
+change to the protection of live runs is not in this table, because it is made in `expctl`: on Linux the
+guard no longer loses a live run when the system clock is set ("Runs, snapshots and records", item 12).
+
+| | Change | Before | Reason | Commit |
+|---|---|---|---|---|
+| 1 | Shell code attached to its flag (`bash -c"..."`, `cmd /c"..."`) is checked like a command of its own, under `--readonly` too | not read | a probe read a sealed file that way | `2a2edf6` |
+| 2 | The value of PowerShell's `-EncodedCommand`, short forms included, is decoded and checked | not read | the same | `2a2edf6` |
+| 3 | Question: a decoder whose output goes to a shell or an interpreter (`base64 -d \| sh`) | passed | the guard cannot read what will run | `2a2edf6` |
+| 4 | A path joined from string literals in a line of code (`Path('data') / 'test'`, `os.path.join`, `+`) is resolved like a written one, so a sealed one is refused | passed | a probe read a sealed file that way | `32442fb` |
+| 5 | Question: the new text of Write, Edit, MultiEdit or NotebookEdit, or the lines a patch adds, name a sealed path or the unsealing token. Not for `.md`, `.mdx` and `.rst` files or the kit's config | passed | this is how training code comes to read the test split | `47cb8eb` |
+| 6 | Question, a refusal where nobody can be asked: the arguments of an MCP tool name sealed data inside a longer string. Not for the agent's own tools (Task, WebFetch): a task for a subagent may name the sealed folder, and the subagent's calls reach the guard too | passed | in a probe, an SQL query that names a sealed file passed on its way to an MCP tool | `47cb8eb` |
+| 7 | A folder sealed as a whole is walked beyond 20,000 files for up to five seconds of the hook call; a walk that the time ends counts as reading, a question | a filtered search passed | behind the bound a sealed file went unseen | `0abddf2` |
+| 8 | Question: a shell command that names `.git/hooks/...` or `.git/config`. The guard cannot tell a source from a target, so `cat .git/config > x` is asked about; `cat .git/config` alone passes | passed (the edit tools were asked about) | a hook written there runs outside the guard | `19d5ff5` |
+| 9 | Question: a shell command that changes `.git/nn-training-final-eval.jsonl` | the file did not exist | it is the shared record of final evaluations (below) | `0c4ba73` |
+| 10 | Question before `expctl audit-splits` where the config seals anything, a refusal where nobody can be asked; a read-only subagent is refused the command | the command did not exist | every count of records shared with a sealed split is a small look at it | `e1cf085` |
+| 11 | Refusal: a hook input nested too deeply to read. Any error that the guard's main function does not catch itself ends as a refusal too (exit code 2) | the hook ended with exit code 1, and Claude Code ran the call | an unread call must never pass | `5aff688` |
+| 12 | Question: a git setting that makes git start a program: `git config` with `core.hooksPath`, `core.fsmonitor`, an alias or any key outside the list of keys that hold a plain value; `git -c key=value`, `--config-env`, `--exec-path=`; the `GIT_*` variables for the same settings; a clone that sets one; a template folder. An option of git's own that the guard did not know (`-P`, `--no-advice`, a quoted value with a blank) no longer hides the subcommand from the rules for a push and a reset | passed | git then runs a program that the guard never sees | `13dd89f` |
+| 13 | Question: `git add -f` (also `-Af`, `--force`, with a wildcard, from another folder) and `git stash --all` where sealed files lie below what the command takes | passed | they put ignored files into git's store, from where `git diff --cached`, `git show` and `git stash show -p` print them without naming one | `cc2bfbe` |
+| 14 | Every rule also runs on the command line as a POSIX shell and as PowerShell would take it: a backslash inside a name, `$'..'`, a brace list, PowerShell's and `cmd`'s escape character. Question: a brace list of more than 64 names. The read-only subagents' rule reads the same second texts | such a spelling of a sealed path passed | a probe read a sealed file with each | `f7ed572` |
+| 15 | Question: decoded text that reaches a command without a pipe into a shell: a decoder inside `$( )`, `<( )` or backticks, one piped into `xargs`, and code on the line that decodes text itself (`b64decode`, `unhexlify`, `FromBase64String`, `atob`). Decode flags written together (`-di`) count | passed | the guard cannot read what will run, or be named | `826222d` |
+| 16 | Python's string literals that stand side by side are joined (`'data/te' 'st/labels.csv'`), in code handed to an interpreter, in a here-document and in the text an edit writes. In a shell's own line two literals with blanks between them stay two arguments | read as two strings | Python reads them as one path | `70a4aeb` |
+| 17 | No fixed count decides what is checked: 300 path-like words or 400 literals of a text, 400 words, 8 nested commands or 4 changes of folder of a line, 8 literals of one join, 64 arguments or 5 levels of an unknown tool's call, 256 parts of an edit and 200 files that a wildcard matches were the counts. Question: an edit with more path-like words than five seconds allow to look up, and a wildcard with more matches than that | a sealed path behind the count passed | a probe hid one behind 301 words | `d8d34c1` |
+| 18 | Question: a command line, or a file's new text, that runs a `.md`, `.mdx` or `.rst` file: as a runner's script or standard input, piped into a runner, sourced, as the command itself, spliced into a command line where code stands, or executed or loaded by code that names it on the same line | passed | the edit tools write such files unread, because documentation may name the test set | `84d7360` |
+| 19 | Text handed to a nested shell or interpreter (`bash -c`, `python -c`, `powershell -Command`) is checked from every folder the line may be in | checked from the folder the line starts in | `cd data && python -c "open('test/labels.csv')"` passed | `cadf196` |
+| 20 | Question over a folder that holds sealed files: `du -a`; a tree walk in Python code that an interpreter is handed on the line (`os.walk`, `Path.rglob`, `shutil.copytree`, `shutil.make_archive`, a `**` in a string) | passed | they list or copy every file of the tree, as `find` and `cp -r` do | `4e204eb` |
+| 21 | Code on a runner's standard input (`echo "..." \| sh`, `bash <<< "..."`, `cat <<EOF \| python -`) is read like the text behind `-c` | not read | `cd data && echo "cat test/labels.csv" \| sh` passed | `4e204eb` |
+| 22 | Question: an MCP tool that is handed a folder with sealed files below it (under `path`, `paths`, `directory`, `root`, as a `file://` address, or any argument written as a path). Not for the project root, which tools are handed all the time, and not for a bare word under a key that names no place | passed | such a tool lists and reads files by itself | `cd75002` |
+| 23 | A word of a command that is longer than a file name can be (255 bytes on Linux and macOS) counts as naming no file, and the check goes on to its end | where `final_eval_commands` is set, the lookup of such a word raised an error there and the check ended as an internal error: a question, whatever the command did | the last full test run in WSL: a line that must be refused was asked about, and a long commit message or a long `python -c` program was asked about too | `d857607` |
+
+Limits, each also in the README ("Notes and limits"):
+- Items 1 to 10: a path with a variable in it passes (literals only). Text that merely mentions a sealed
+  folder, a URL for one, is asked about, as it is in a command, and item 5 asks about every edit that writes
+  such a mention, also when the file held it before. Item 10 reads the command's text, so a script that
+  calls the command is not asked about, as with the final evaluation. For a sealed pattern that begins with
+  a wildcard the walk covers the whole checkout and keeps the old bound.
+- Item 12: a git folder elsewhere (`--git-dir=x`) whose `config` was written as an ordinary file is not
+  seen. Two harmless forms ask: `git config --type bool key value` and a read with `-f file key`.
+- Item 13: `git stash -u` and an ordinary add take what git does not ignore and stay unasked.
+- Item 14: a name built at run time, from variables, a `{a..b}` range or a command's output, passes.
+- Item 15: text decoded into a file and run later passes, and so do `rev`, `tr` and `printf` inside a
+  substitution and strings that code computes.
+- Item 17: a recursive wildcard written into a code file passes the check of an edit's text. On Windows a
+  program text of more than 32,767 characters ends as an internal error of the guard, which is a question.
+- Item 18: not seen are a notes file that is copied, renamed or cut into a file of another name first, one
+  with a blank in its name, text read on one line and executed on another, a file name computed at run
+  time, a runner the guard does not know (`conda run`, `sudo -u`, `pytest --doctest-glob`, `jupytext
+  --execute`), a command written inline in YAML, and PowerShell's `[scriptblock]::Create(...)`. Asked about
+  though harmless: a notes file handed to a runner as data (`perl -ne print notes.md`).
+- Item 19: a change of folder the guard cannot read (`sudo -D data`, `start /D data`, a variable) in front
+  of nested code is not followed.
+- Item 20: a walk in a script file, in another language or through `tarfile`'s `.add()` is not seen, nor
+  is a here-document that a command writes into a file. A walk whose folder is a variable asks, and so does
+  a `**/` that stands in prose inside program text.
+- Item 21: text piped into a runner the guard does not know is not read, nor is a file's content piped in
+  (`cat script.py | python`).
+- Item 22: a tool that only lists the folder asks too, and so does a folder above the project.
+- Item 23: only the error for a name that is too long is taken as "no such file". Another error of a
+  lookup, as for a word that names a place in a folder the account may not search, still ends the check as
+  an internal error, which is a question. That was not tried.
+
+**The loop and its evaluator.**
+1. On Linux with bubblewrap the evaluator cannot write into the project outside the folder it scores (the
+   way out is `loop.eval_writable`), and it no longer sees sealed data that only `final_eval_commands`
+   names. An evaluator that writes elsewhere in the project fails there until the key names the place.
+2. The loop checksums files sealed by wildcard patterns, so a campaign stops when one of them changes or
+   appears, and its sandbox hides each folder sealed that way. `loop.link_paths` and `loop.eval_writable`
+   are refused where a name below them matches such a pattern.
+3. Where a run is not confined, a change that adds a line with `EXP_PROJECT_ROOT` makes the iteration
+   invalid; the worker's rules say so. The scan reads the change's text, so a name built at run time passes.
+4. The keep rule: the variance a gain is tested against is never below the estimate without the change's
+   own panels, and a change more than three times as noisy as the pool is tested with its own variance; the
+   confirmation applies the second rule to the kept commit's fresh panel. The panels of a change that is
+   not kept leave the pool when one score lies farther from the change's median than a t multiple (z = 4)
+   of the deviation the other panels give; the ledger row carries `unpooled: true`.
+5. The first seed of an iteration rotates through the panel, and the discard reason names the seed. A
+   campaign that pauses on the line a restart began puts that line by and a `resume` takes it up again.
+6. A training run that something outside the loop stopped is not scored and is not the change's failure:
+   the campaign pauses with `stop requested: the training run ...` and exit code 0. An iteration that a
+   limit or a stop interrupted leaves the list of tried changes, so its hypothesis counts as untried.
+7. Before a run, every changed Python file is compiled in the project's interpreter and its syntax tree
+   compared with the campaign's base. The identity of a change is the hash of those trees, so a reformatted
+   repeat of an earlier change is a `duplicate`. A campaign started before this round can test once more
+   what it tried before, because its stored hashes no longer match.
+8. One repair turn after a compile error, or after a failure of the first seed within a quarter of the run
+   budget (at least 30 s). The worker gets the end of the run's output, and nothing of it where a sealed
+   token appears in it. Not for a change that comes with a search. The session counts into the campaign's
+   sessions, tokens and money; the ledger row carries `repaired`.
+9. The loop reads the sealed, frozen and editable patterns without case on Windows and macOS (point 10 of
+   the next list). A change to `Train.py` is a change to the editable `train.py` there, and a file under
+   `Data/Test/` is checksummed and hidden as one under the sealed `data/test/**`.
+
+**Runs, snapshots and records (`expctl`, `runlog`).**
+1. A snapshot leaves out files sealed by a pattern that begins with a wildcard or has one in the middle. A
+   launch now fails, with the reason, where a git-ignored link leads to the project folder or above it, and
+   where sealed paths lie more than twelve folders deep in a git-ignored folder (only when the config seals
+   something).
+2. A snapshot links a file named like a credential (`.env`, `*.key`, `credentials.json`) instead of copying
+   it, tracked or not, so it no longer freezes such a file's content. On Windows without the right to make
+   links that is a hard link, as for git-ignored files.
+3. `AGENTS.md`, `.mcp.json`, `.codex/`, `.cursor/` and `.agents/` are not experiment source: they leave the
+   source hash, the snapshots and the remote bundles, so the hash of a project that tracks them, or does
+   not ignore them, changes once. The journal, the search's storage file and the runs folder no longer make
+   a tree `dirty`.
+4. `expctl resume` and `nnremote resume` refuse when the source changed since the launch, unless
+   `--allow-code-change` is given.
+5. The receipts of final evaluations lie in git's common folder as well, shared by every worktree of the
+   repository. `expctl selftest` may write there when it brings older receipts into the shared copy.
+6. Without psutil, Windows reads a process's start time from the system, so a process number that went to
+   another process no longer passes for the run.
+7. `RunLog` writes no run files in a process whose `LOCAL_RANK` or `NODE_RANK` is above zero, unless `RANK`
+   is set, which decides alone as before.
+8. `expctl env` carries `warnings`: dated advisories for installed versions (`datasets` below 5.2.0 among
+   them). `env --probe` is refused beside a live run.
+9. A snapshot judges every source file by the place it really lies in as well as by its name: a file that
+   git lists below a junction or a link, and that lies in a sealed place, stays out and is named under
+   `sealed_kept_out`. A link to a folder that would lead out of the snapshot is linked without the sealed
+   paths below it, as a git-ignored one is, where it was made again as it was. Where a folder on a sealed
+   pattern's way is itself a link to another place, a file is also judged by the name the pattern has for
+   that place, as source file and below a git-ignored link (`4842b81`). Limit: below a git-ignored link the
+   absolute name of a place outside the project is not compared, as before, so a sealed pattern written as
+   an absolute path does not keep a git-ignored link to its folder out of a snapshot (tried on Windows: the
+   files that git lists below such a link stay out now, the git-ignored link is linked whole, as on the
+   public commit; on Linux and macOS, by the code, the run tools match no absolute pattern at all, because
+   the name they compare has lost its leading slash). The README says to name sealed data by its path in
+   the project.
+10. Path patterns are read without case on Windows and macOS, as the guard reads them: sealed, frozen and
+    editable paths in snapshots, in the loop's checksums and in a remote run's archive. A folder there whose
+    names do tell case apart is sealed further than its pattern says, which is the safe side (`4842b81`).
+11. The git calls of `expctl`, the loop, the installer and the guard pass `-c core.fsmonitor=` and an empty
+    hooks path, so a file monitor or a hooks folder that someone set in the project's git configuration
+    does not run through the kit's own commands (`13dd89f`).
+12. On Linux a run's records carry the boot's id and the process's start tick: `proc_key` in `pid.json`, in
+    the manifest that `RunLog` writes and in a remote run's two process records, and `supervisor_key` for
+    the supervisor. A process that matches them is the run's process, whatever the system clock has done
+    since (`9d6f876`). Without a match the start time decides, as it did before: for a run launched before
+    this change or logged by an older vendored `runlog.py`, on Windows and macOS, which are unchanged, and
+    for a reader inside a time namespace, where the same process shows another tick (`827c35c`; tried in
+    WSL with a namespace whose boot time is offset by 1000 s, before and after). So every record that was
+    recognised before this round still is. What stays open is both at once: a reader in such a namespace
+    after the clock was set by five seconds reads the run as lost.
+
+**The remote runner.**
+1. A launch packs one archive, refuses when the source changes while it packs, and removes the run folder
+   when the launch is refused. The archive lies in the mirror until the run ends, so a live remote run
+   takes up to `max_bundle_mb` of local disk. The automatic resume after a preemption sends it again; where
+   it is gone, the resume goes by the working tree and is refused when that has changed.
+2. A link or a junction is judged by its own name and by the place it leads to: one that leads into a sealed
+   path, or to a file named like a credential, stays at home, and `remote.files` refuses a path with such a
+   link below it. Since `4842b81` the place also counts by the name a sealed pattern has for it, where the
+   sealed folder is itself a link to storage elsewhere. A pulled name that leaves the mirror never counts
+   as mirrored.
+3. Ledger rows are appended under a byte lock on Windows.
+4. New key `on_finish` per `ssh` target: an argument list, checked at the launch, run on this machine when
+   the last pull is complete and no other run of the project on that target lacks its exit record.
+
+**The practice tasks.** Both evaluators refuse more (points 2 and 11), and both trainers end at a stop
+request or at the launch's deadline and still score and save. A real export of the character model scores
+the same to all printed digits; the fine-tuning evaluator scores as before and only refuses more. Three
+things differ for a model file of the character task since the independent review: one with a method or an
+attribute named `save` or `from_file`, or with code that Python's tokenizer cannot read, is refused; a
+model that keeps something between calls is scored as on its first call, where two checks refused it; and
+the evaluator holds the model in memory twice. A campaign on the fine-tuning task trains the control once
+before its first session, as one run of the run limit (`loop.controls` in the task's config).
+
+**The installer.** An apostrophe in the interpreter's path is written twice inside the subagent files'
+quoted hook command, and the warning about a path with a space names a quote too. A later run adds its
+paths under the kit's header in `.gitignore`; a file that has two headers already keeps them.
+
+**Existing checks that changed, each with its reason.**
+- `tests/test_loop.py`: the sandbox check "the evaluator runs without network" gave way to the stricter
+  checks of the evaluator's box (`ccf8ad0`). The expected text of a first-seed discard ends with the seed
+  (`92b9419`). In the second-panel test the two expected margins follow the new rule (`be6abde`). Three
+  checks of campaign a (the crash of iteration 6, the number of sessions, the counters) expect the repair
+  session that now follows that early crash (`a4dc52e`).
+- `tests/test_remote.py`: the check added with `58e248a`, that the automatic resume is refused after the
+  source changed, was replaced in `20859f6`, because that resume now sends the launch's archive and runs.
+- `tests/test_benchmarks.py`: the check of the character-model evaluator's contract expected a refusal for
+  two models that keep something between calls. It expects the fair model's score for both now, because
+  every call goes to a freshly loaded copy (`079d1f0`); the refusals of the other three models are as they
+  were, and four further forms of the file-reading model are refused.
+- `tests/test_kit.py`: one row that `d8d34c1` had added, an edit whose text holds a wildcard over the folder
+  with the sealed file, was made stricter in `84d7360`: its wildcard matches no file on disk and is asked
+  about all the same. The check of a run's identity that `9d6f876` had added expected a record that carries
+  another boot's key to count as another process. Since `827c35c` the start time decides there, so the
+  check expects "the same process" for such a record with the right start time, and has one more case: a
+  record with another key and a start time a minute off is another process.
+- No other existing check was changed, and none was removed. The two checks that failed in WSL (below)
+  stand as they were written: the code was repaired, not the checks.
+
+### Tests
+A full run is what "Round 2", "Tests" describes: a clean clone of one commit, all seven files, three
+interpreters per platform. The number of checks per file, default interpreters:
+
+| Commit | Platform | benchmarks | kit | loop | ports | remote | review_fixes | runlog_units | Failed |
+|---|---|---|---|---|---|---|---|---|---|
+| the public commit, before this round | Windows | 41 | 364 | 210 | 120 | 75 | 38 | 18 | none |
+| | WSL | 41 | 368 | 211 | 121 | 75 | 40 | 18 | none |
+| `850020a`, the nine steps | Windows | 44 | 417 | 235 | 125 | 90 | 38 | 19 | none |
+| | WSL | 44 | 421 | 240 | 126 | 90 | 40 | 19 | none |
+| `b48d606`, with the control and the fixes after the review | Windows | 50 | 607 | 238 | 126 | 90 | 38 | 19 | none |
+| | WSL | 50 | 611 | 244 | 127 | 90 | 40 | 19 | 2 of the kit file's 611 |
+| `a135bea`, with the two faults of that run fixed | Windows | 50 | 610 | 238 | 126 | 90 | 38 | 19 | none |
+| | WSL | 50 | 614 | 244 | 127 | 90 | 40 | 19 | none |
+| `827c35c`, with the repair of the second fix | Windows | 50 | 610 | 238 | 126 | 90 | 38 | 19 | none |
+| | WSL | 50 | 614 | 244 | 127 | 90 | 40 | 19 | none |
+
+At `827c35c` every file passes in all six interpreters. The benchmarks file has 42 checks in the two clean
+interpreters of each platform, which have no PyTorch: the eight checks that need it are skipped there (five
+that put model files through the character-model evaluator, three about a run of `train.py` under `expctl
+launch`), and the file says so. `ports` has one check fewer under Python 3.8, which lacks a module that
+check needs. The two platforms differ where a check exists on one of them only.
+
+**The full run at `b48d606` failed two checks of `tests/test_kit.py` in WSL.** Every other file passed there
+in all three interpreters, and on Windows the default interpreter and the clean 3.11 passed all seven files
+(I stopped the 3.8 run of that commit when the WSL result called for new code).
+- `guard Bash {"command": "python -c \"a0 = 'v0';... -> ask (want deny)`, in all three WSL interpreters. The
+  row hands `python -c` a program of about 5,000 characters that opens a sealed file, and wants a refusal.
+  The guard's answer was "guard internal error (OSError: [Errno 36] File name too long ...)". The traceback
+  leads to the place where the guard, with `final_eval_commands` set, asks of each word whether it is a
+  file: on Linux that question raises for a name of more than 255 bytes. The line is in the public commit
+  too. The row itself came with `d8d34c1`, one of the fixes after the independent review, and I had run
+  those fixes on Windows only, where the same question simply answers "no". That is the gap in my
+  procedure which let a fault of Linux through to the last run: I checked narrowly while working and fully
+  at the end, as instructed, and the full run did what it is for, but a run of the kit file in WSL with
+  each guard commit would have shown the fault at once. Fixed in `d857607`, with two more rows (a long word
+  after `echo`, a long commit message). Asked in WSL at `7c6a120`, the last commit before the repair, the
+  guard answered all three commands with that internal error; at `a135bea` it refuses the first and lets the
+  other two pass.
+- `session hook injects status after compaction`, in the default interpreter only. The check wants the two
+  live runs of the test in the session's context as RUNNING; they read "LOST: process gone without
+  result/exit record" 36 s after their launch, though both were alive. `expctl` compares a process's start
+  time with the one it recorded and allows five seconds. On Linux the start time is the boot time plus the
+  process's ticks, and the boot time moves with the clock. In that WSL session the clock was set back in
+  steps: the system's journal has "Clock change detected" every 30 s, and the distance between the wall
+  clock and the time since boot fell by 4.955 s in 66 s when I measured it. In two later runs of the kit
+  file from a clone of its own the check passed, so the failure comes and goes: two steps of that clock
+  leave the shift just under the five seconds. Fixed in `9d6f876`: on Linux the records carry the boot's
+  id and the start tick. The new check gives a live process a record whose start time is a minute off and
+  expects it to be known as the same process on Linux, and as another one on Windows, where the time is
+  all there is and does not move.
+
+**The second fault and its repair, watched under WSL's own clock.** The check of `9d6f876` uses a record
+whose start time is a minute off. To see the fault and the repair under a real clock, I launched one run
+that only sleeps with the kit as it was before the fix (`7c6a120`; the lines that decide are those of the
+public commit) and one with the new code, in temporary projects in WSL, and had each controller read its
+own run every 30 s. The middle column is the distance between the wall clock and the time since boot, as it
+moved since the launch.
+
+| Session | Seconds after the launch | Clock set by | Code before the fix reads | New code reads |
+|---|---|---|---|---|
+| first: `7c6a120` against `a135bea` | 0 to 60 | under 0.02 s | starting | starting |
+| | 90 | −0.994 s | starting | starting |
+| | 120 and 151 | −3.505 s | starting | starting |
+| | 181 | −5.431 s | **lost** | starting |
+| second: `7c6a120` against `827c35c` | 0 to 90 | under 0.03 s | starting | starting |
+| | 121 | −2.769 s | starting | starting |
+| | 151 and 181 | −3.802 s | starting | starting |
+| | 211 | −6.599 s | **lost** | starting |
+| | 241 | −7.570 s | **lost** | starting |
+
+Both processes were alive throughout. In the second session each kit's guard was also asked about a `Write`
+into its own run's folder. At the launch both refused it. After the last row the guard of the code before
+the fix let it pass, and the new one refused it as before. The guard takes its list of live runs from
+`expctl`, so a run that reads as lost is no longer protected: no refusal of an edit in its folder or its
+snapshot, no question for a command that may write there. That is how this fault reaches the protection of
+live runs, in the public version too.
+
+*The clock of this machine's WSL.* I measured it in six sessions on 14 November. Where I watched from the
+start of the virtual machine, the clock stood still at first (a run of the kit file that ended 69 s after
+the start saw 0.015 s) and was then set back in steps of one to three seconds, which began between one and
+three minutes after the start. Once they came, they added up to 2.7 to 4.5 s a minute: 4.955 s in 66 s in
+the session that failed, 74.9 s in the 20.5 minutes of the full run at `a135bea`, 66.6 s in the 20.3
+minutes of the full run at `827c35c`, and the two sessions of the table. So both full runs of the repaired
+code ran under a clock that was being set back, and passed. In my first account of this fault I took the load of the Windows tests, which ran beside that
+session, for the cause. That was wrong: the full run at `a135bea` started with nothing else of mine running
+on the machine, and its clock was set back as fast. What the numbers show is that every step went
+backwards and that the rate was steady, as with a guest clock that runs about a twentieth fast and is set
+to the host's time twice a minute; that is a reading, not a finding. The kernel there keeps time by the
+processor's cycle counter, and both Hyper-V's time synchronisation and `systemd-timesyncd` were active. I
+did not look further. Round 2's two clock faults fit the picture: both showed about two minutes after the
+virtual machine had started, one with a step of about two seconds, which I read then as a single
+correction after the start ("Round 2", "Tests"). For the public version it means that on this machine's
+WSL, as its clock was that day, a live run reads as lost within minutes of its launch and for the rest of
+its time.
+
+*The step back that my check of the fix found.* In its first form (`9d6f876`) the fix let the boot's id
+and the start tick decide alone wherever a record had them. I then read one process from inside a time
+namespace whose boot time is offset by 1000 s (`unshare --time`, util-linux 2.39.3): the process shows
+another start tick there, while its start time reads the same as outside. So that form of the fix took a
+live run for lost where the rule before it had not. No part of the kit makes such a namespace, so I know
+of no install it would have met; but the protection of live runs may not get narrower anywhere, and it had.
+`827c35c` puts it right: a key that matches says "the same process", and in every other case the start
+time decides exactly as it did before the round. Tried before and after in that namespace, and the check
+of `9d6f876` was changed with it ("Existing checks that changed"). One case stays open: a reader in such a
+namespace after the clock was set by five seconds reads the run as lost, as every reader did before.
+
+*The run at `a135bea`.* It passed in WSL in all three interpreters. On Windows I stopped it after the
+default interpreter had passed all seven files, because `827c35c` was due; the clean 3.11 had passed the
+benchmarks file and was in the kit file, and the 3.8 run had not begun.
+
+**One commit broke a check that passed before.** `7d9dcc7` (the `on_finish` command) was committed with the
+reference-header check of `tests/test_kit.py` failing: its note had pushed the Refresh line of `remote.md`
+out of the first eight lines, and I had run only the remote file before the commit. `1141fcd`, two commits
+later, put the line back. Since then I ran the kit file before every commit that touches a reference, the
+README or the guide.
+
+### Verified by running, from documentation only, unverified
+**By running.** The 21 probe calls of the guard before the fixes, and the new checks against the old code
+(23 fail there). The simulations of the keep rule, for the rule as it was, the review's repair and what is
+built. The lost ledger rows on Windows, before and after. The apostrophe fault, end to end, with an
+environment in a folder named `o'c`. The three wiring checks of the sanity gate, with PyTorch 2.9.1. The
+LoRA scales, with PEFT 0.21.2. The fine-tuning trainer's stop, once by hand on the GPU: launched with a
+budget of 600 s and asked to stop after eight seconds of training, it ended after 105 steps as
+`interrupted`, scored and saved its adapter, 22 s after the launch. The control of the fine-tuning task:
+three seeds and the stronger script on the GPU, and once under the loop with the stand-in agent (the
+self-test passed; 4 runs, 283 seconds). After the independent review: its snapshot probe before and after
+the fix and on the public version; my probe of a sealed folder that is a link to storage elsewhere, in
+three layouts of a second link, each as source files and as a git-ignored folder, before and after and on
+the public version (Windows, with junctions; the test of it also runs in WSL, with links); the forms of a
+model file that PyTorch 2.9.1 loads (blanks, `getattr`,
+a `Code/` folder, a second entry, a second directory), each against the old and the new evaluator; the two
+planted git programs with git 2.43 and 2.52; the guard's new answers as probe calls on Windows. After the
+full run that failed: the guard's traceback for the failing row in WSL, in a project set up as the test
+sets it up; the WSL clock, as described under "Tests"; the kit file with both repairs, on Windows and in
+WSL, before the commits. After those repairs: the three commands with a long word, asked of the guard in
+WSL before and after its repair; one live run per kit, read every 30 s under WSL's own clock by the code
+before the fix and by the new code, in two sessions, the second with each guard asked about a write into
+its run's folder; one process read from outside and from inside a time namespace, before and after
+`827c35c`; the kit file and the remote file with `827c35c` on Windows and the kit file in WSL, before the
+commit. The full tests above.
+
+**From documentation only.** The settings of the objectives after GRPO come from TRL's `grpo_config.py` at
+v1.17.1. The papers behind them, and behind the candidates in the optimization reference, were read as
+abstract pages; no result was reproduced and no objective was run. No fetched page tried to give an
+instruction.
+
+**Unverified.** The fixes after the independent review and after the test runs, by anyone but me. A run's
+identity after a clock that is set forward, as when a virtual machine's host has slept: the clock I
+watched was only set back, and by the code the direction makes no difference. A Linux machine other than
+this WSL. The guard's lookup on macOS, where the code is the same and no test ran. The repair turn and the compile
+check with a real agent (the stand-in agent only). The `on_finish` command against a real machine: it ran a
+stand-in command, and no machine was stopped with it. File links on Windows, which this account cannot make
+(junctions and hard links were exercised; links in WSL): the snapshot's handling of a link that leads out
+of it is tested in WSL only. The case rule on macOS, and on a Windows folder that tells case apart. The
+evaluator's box on native Windows and macOS, where it is missing as the box for training is. What an agent
+other than Claude Code does with the guard's new refusal of a nested input: the exit code is the one that
+blocks on all three, by their documentation. The seven groups of methods in the Assess rows. Everything on
+your real install.
+
+### Things to know
+- **The guard asks more, and sometimes about a harmless command.** A session that writes a sealed path into
+  code, a config file or a notebook meets a question at every such edit. That is the intended price: the
+  question is the only moment at which a person sees that training code is about to name the test split.
+  Since the independent review these are asked about too, although nothing is read: `git config` with a key
+  the guard does not know as a plain value, and `git config --type bool key value`; `git stash --all` and a
+  forced add where sealed files lie below; a notes file handed to a runner as data; an MCP tool that only
+  lists the folder which holds the sealed files; Python code on the line with `os.walk` over a variable or
+  with a `**/` in a string. In an unattended session, and with Codex and Cursor, each of these is a refusal.
+- **The guard remains a seatbelt.** The reviewer needed seven minutes and 37 tool calls for its findings,
+  and the limits above name more ways around the guard that are known and open. What it cannot see is a path
+  or a program that is put together at run time. For data that must stay unread whatever an agent tries, keep the test split
+  outside the repository or run the agent in a sandbox, as the README says.
+- **Making a junction or a link is not asked about.** A snapshot no longer follows one into sealed data, and
+  the guard refuses a read through one. One case stays open: a link inside a git-ignored folder, where the
+  sealed pattern begins with a folder's name (with `data/test/**` sealed and `cache/alias` leading to
+  `data`, the snapshot links `cache` whole). A pattern such as `**/test/**` finds the files there.
+- **The keep rule finds a real gain a little less often at a campaign's first change** (61 % against 68 %
+  for a gain of two deviations in the simulation). A change that is noisier than the runs before it is
+  still kept above the nominal rate, about 7 % where it is three times as noisy. The simulation covers one
+  iteration; the whole-campaign simulation of 12 November was not repeated.
+- **The control's floor is measured, not derived.** 0.05 is about twice the highest of four scores and a
+  seventh of the honest script's lowest. Measure it again after a change to how a run trains that could let
+  it gain from shuffled intents.
+- **`on_finish` does not replace a shutdown timer.** It runs on this machine, so it does not run when the
+  controller is gone. A rented machine still needs its own timer.
+- **`audit-splits` finds exact matches only**, after Unicode normalisation, case folding and collapsed
+  whitespace: its count is a lower bound. It refuses Parquet, Arrow, HDF5, databases and archives, and it
+  keeps one digest per record in memory.
+- **The compile check covers Python files.** A change to a config file goes to a run as before.
+- **The character-model evaluator's checks are checks of what a model file says, not a sandbox.** A file
+  operation that a later PyTorch adds to TorchScript is not on its list.
+- **A system clock that is set while runs are live.** On Linux a run's identity no longer depends on it.
+  Until this round is on a Linux install, a clock that is set by five seconds while a run lives makes that
+  run read as lost and ends the guard's protection of it. This machine's WSL did that within minutes on
+  14 November ("Tests"); your real install runs on native Windows, where a process's start time does not
+  move with the clock.
+  Two other readings still use the wall clock, and I left them: the age of a heartbeat, so after a forward
+  step of more than the stale time (15 minutes by default) a run reads as stalled until its next
+  heartbeat, and the five seconds the guard gives its own
+  searches, which a forward step ends early (a question) and a backward step lengthens, up to the hook's
+  limit of twelve seconds, which does not go by the wall clock. What else in the kit reads the wall clock,
+  the loop's limits among it, I did not look at.
+- **The two faults of point 13 show on Linux only, and that says something about this round's tests.** The
+  fixes after the independent review were run on Windows while I worked, and the reviewer worked on
+  Windows too. The full run in WSL covers the test files, not what a second reviewer on Linux would try.
+
+### Not done, and why
+- **A second look at the fixes after the independent review.** The reviewer saw `850020a`. The thirteen fix
+  commits after it, and the three after the test runs (`d857607`, `9d6f876`, `827c35c`), are checked by my
+  probes and tests only, for the usage limit. The third of those three exists because my own check found
+  what the second had lost, which is the kind of thing a second reviewer is for.
+- **A question about making a junction or a link to a folder with sealed files.** The guard would have to
+  resolve every link a command makes; the snapshot and the read rules close what such a link gave away.
+- **A campaign with a real agent** that uses the repair turn, the compile check and the search. It draws on
+  your subscription.
+- **A guard walk that skips the folders no sealed pattern can match**, so that the bound of 20,000 files
+  goes for patterns that begin with a wildcard too.
+- **A process namespace for the training box.** `RunLog` writes its own process number into the heartbeat,
+  and inside a namespace that number is another one, so a dead run could pass for a live process outside.
+  It needs the number left out or translated for boxed runs first.
+- **A stop at a quarter of the budget for a run that trails**: it discards slow starters, and its saving
+  needs runs of ten minutes or more to measure.
+- **Not opened**: further RL objectives (AIPO, GiGPO, VAPO, Turn-PPO and four more loss types of TRL),
+  parity between trainer and generator, distillation and preference objectives, adapter options, further
+  optimizers, low-precision and kernel items, architectures. Each is an Assess row with the sources the
+  review gave and the test it needs.
+- **The Adopt rows that earlier rounds named as unfinished** still are: 142 with the eight this round's
+  check of the ledger moved there.
+
+### What needs your decision
+1. **Pushing.** The round is 73 commits on top of the public commit, in the local repository only.
+   Until they are pushed, the public version has the faults of points 11 and 13. A push to the public
+   repository needs your word.
+2. **Your real install.** It runs the kit of the fifth installer run. A sixth run would bring this round:
+   the guard's new questions (an edit there that names the sealed folder would ask), the snapshot's
+   handling of wildcard patterns, links and credential-named files, the case rule, and a source hash that
+   changes once if that project tracks agent files. It needs your word, as each run before it did.
+3. **Ports for Antigravity and Gemini CLI.** Neither agent is installed here, and installing one is your
+   call. I would build each from the vendor's documentation and test it live once it is installed.
+4. **The MCP servers the review proposes.** Each is an install with your permissions; say which, if any.
+5. **Cloud drivers beyond `ssh` and Hugging Face Jobs.** Each needs an account and paid runs to verify.
+6. **A container as the box for training and evaluation.** It needs Docker Desktop running on this machine.
+7. **A second pilot or a campaign with a real agent.** The open question since round 4, now with the repair
+   turn and the compile check to try as well.
+8. **What to build next.** My order: a second reviewer's look at the sixteen fix commits, on Linux this time, the
+   guard walk that skips folders, the process namespace with the heartbeat fix, then the unfinished Adopt
+   rows that earlier
+   rounds ranked. Of round 4's order this round built the repair attempt after a crash and lifted the
+   guard's file bound for a folder sealed as a whole; a job object on Windows, a minimum agent version, the
+   readiness report and a checkpoint helper stand as they were.
+
 ## 1. What changed and why
 
 ### The four known gaps
@@ -2728,18 +3427,20 @@ leaves the metric unset on purpose.
   bytecode cache was written there.
 
 ## 5. The ledger in summary
-`docs/upgrade/LEDGER.md` has one row per candidate (1,505 rows from 31 research notes), a coverage map with one
+`docs/upgrade/LEDGER.md` has one row per candidate (1,609 rows from 32 notes), a coverage map with one
 entry per gap and per "Find the rest" item, the recommended combination, and a table of the points where notes
 disagree and which side the kit follows. The 26th note, `scout/draft/second-look.md`, was written after the live
 runs: it ranks the open rows, adds ten, and holds what the pilot's own data says about the loop's keep rule.
 Round 2 added four notes with 82 rows: `census-loops` (15), `census-harnesses` (17), `newer-methods` (9) and
-`round2` (41). Round 4 added one, `round4`, with seven rows.
+`round2` (41). Round 4 added one, `round4`, with seven rows. Round 5 added one, `round5`, with 104 rows: the
+89 claims of the review of 14 November, 13 rows for the fixes that followed the round's independent review
+and two for the faults that the round's last full test run found.
 
 | Decision | Rows | Before round 2 | |
 |---|---|---|---|
-| Adopt | 422 | 399 | 288 finished, 134 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138 |
-| Trial, Assess | 224, 314 | 221, 293 | undecided: each names the test it needs; none of these tests was run (usage limit) |
-| Hold, Reject | 320, 225 | 310, 193 | with the reason |
+| Adopt | 474 | 399 | 332 finished, 142 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422 |
+| Trial, Assess | 233, 324 | 221, 293 | undecided: each names the test it needs; none of these tests was run (usage limit); before round 5: 224 and 314 |
+| Hold, Reject | 324, 254 | 310, 193 | with the reason; before round 5: 320 and 225 |
 
 - What "Trustworthy decisions" (section 1) changed here: eight adopted rows became finished. Six more are built
   in part and stay unfinished, each saying which part: the confirmation outside the loop, a third data tier
@@ -2756,6 +3457,15 @@ Round 2 added four notes with 82 rows: `census-loops` (15), `census-harnesses` (
 - What round 4 changed here: four adopted rows that were unfinished are finished (the self-test's fixtures,
   the controls, and two on the subagents' hook). The new note `round4` has seven rows: four adopted and
   finished, two rejected, and one Trial, controls for the fine-tuning task ("Round 4").
+- What round 5 changed here: the note `round5` has 52 adopted rows, all built (37 of the review's claims,
+  the 13 fixes after the independent review and two for the faults of the last full test run), 9 Trial, 10
+  Assess, 4 Hold and 29 Reject. Round 4's Trial
+  row about two controls for the fine-tuning task stays Trial for the one that is not built, the untrained
+  adapter; the other, shuffled intents, is a finished row of `round5`. The generator let a reference that covers a row outrank the record of what was built. The
+  record wins now: three rows whose record said "partly built", and five of eight rows that name kit code
+  and were checked against it, moved from finished to unfinished. The other three of the eight are finished:
+  the `datasets` advisory and the split check, both built in this round, and the Windows memory setting,
+  which is reference text by its nature ("Round 5").
 - Added on 12 November, at the user's question whether other projects would do better: four rows for candidates
   no note held. Fine-tuning a small model on a stronger agent's solved traces before RL (a TRL example): Trial.
   Harness adapters (one LoRA per model and agent harness, trained by RL inside the harness): Hold. The safeagents
@@ -3093,6 +3803,11 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     files it changed are committed in that repository: one local commit of exactly those paths, not
     pushed, its 418 other status entries untouched. Where this report says they are not committed, this
     item replaces it. On your "Yes, push" this record is in the public repository.
+13. **Round 5's questions** ("Round 5", "What needs your decision"): a push of the round to the public
+    repository, which has most of the faults the round's independent review found until then; a sixth
+    installer run on the real install; the installs, accounts and paid resources that the review's
+    proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a container as
+    the box); a second pilot or a campaign with a real agent; and what to build next.
 
 ## 10. Most valuable next steps
 A second look after the live runs (11 November, `scout/draft/second-look.md`) put the build work in this order:
@@ -3104,7 +3819,10 @@ part of one item of the third (the loop requires the guard's record after every 
 other two items of the second group, numeric settings searched by the harness and a fine-tuning task, and a
 restart on a stall; none of them is measured. The rest is not built. The list below is the earlier one, brought
 up to date after rounds 2 and 3; what remains of my order for the build work is in "Round 3", "What needs your
-decision".
+decision", and after rounds 4 and 5 in the sections of the same name there. Of round 4's order, round 5 built
+the repair attempt after a crash and the control for the fine-tuning task, and lifted the guard's file bound
+for a folder sealed as a whole. First in my order now is a second reviewer's look at the fixes that followed
+round 5's independent review: they are checked by my own probes and tests only.
 
 1. If you want to know whether the kit helps, a larger comparison of the same kind is not the way. With five runs
    per arm the upgraded kit, the old kit and no kit lie within the noise of one another (an arm's runs differ by

@@ -199,6 +199,12 @@
  },
  {
   "file": "round5",
+  "candidate": "Control for the fine-tuning task: train.py on the training messages with their intents dealt out again, and a measured ceiling for its score (kit-native)",
+  "status": "finished",
+  "where": "benchmarks/finetune/controls.py, nn-training.task.json (loop.controls: the self-test stops a campaign whose evaluator scores the control above 0.05), README.md; references/loop.md; tests/test_benchmarks.py. Commit 2071d99"
+ },
+ {
+  "file": "round5",
   "candidate": "Ledger generator: the record of what was built outranks a reference that covers the same row (kit-native)",
   "status": "finished",
   "where": "docs/upgrade/scout/make_ledger.py; covered/built-round5.json holds the checked status of the eight. The commit that adds this row"
@@ -262,5 +268,83 @@
   "candidate": "Guard rules against running fetched content and agent-initiated installs in unattended mode",
   "status": "unfinished",
   "where": "partly built: no rules for clone-then-run, unpinned npx or uvx, or an install while no job is live. Built: the loop's sessions have no shell tool; elsewhere the guard asks before a download or decoded text goes to a shell and before a dependency change beside live jobs (a denial unattended)"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard refuses hook input nested too deeply to read, and no error of its own ends it as a crash (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit 5aff688"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks about git settings that make git start a program; the kit's own git calls switch them off (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; .claude/skills/nn-training/scripts/expctl.py, nnloop.py and install.py (their git calls); tests/test_kit.py. Commit 13dd89f"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks about a forced git add or a stash of everything over a folder with sealed files (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit cc2bfbe"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard reads a command line a second time, the way a POSIX shell and PowerShell would read it (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; tests/test_kit.py, tests/test_ports.py. Commit f7ed572. A brace list of more than 64 names is asked about; the read-only agents' rule reads the same second texts"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks about decoded text that reaches a command without a pipe into a shell (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit 826222d"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard joins Python's adjacent string literals, and reads a call to its end: its time decides what it checks, no fixed count (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit 70a4aeb and d8d34c1. A text that five seconds do not read to its end is asked about"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks about a file of notes that is run as code (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit 84d7360"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard reads nested code from every folder the line moves to (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit cadf196"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks about du -a, about tree walks in code handed to an interpreter and about code on a runner's standard input over sealed files (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit 4e204eb"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks about an MCP tool that is handed a folder with sealed files (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit cd75002. The project root stays unasked, and so does a word under a key that names no place"
+ },
+ {
+  "file": "round5",
+  "candidate": "Character-model evaluator reads a model's code as tokens in every entry, loads an archive it writes itself and gives every call a fresh copy (kit-native)",
+  "status": "finished",
+  "where": "benchmarks/charlm/evaluate.py, README.md; tests/test_benchmarks.py. Commit 079d1f0. Honest scores are unchanged"
+ },
+ {
+  "file": "round5",
+  "candidate": "Snapshot judges a file by the place it really lies in, and the harness matches path patterns without case on Windows and macOS, as the guard does (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py make_snapshot, places, path_matches, sealed_inside; nnremote.py; tests/test_loop.py. Commit 4842b81"
+ },
+ {
+  "file": "round5",
+  "candidate": "Snapshot judges a file by the name a sealed pattern has for its real place, where the sealed folder is itself a link to storage elsewhere (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py sealed_links, places, _link_tree; nnremote.py bundle, below; tests/test_loop.py. Commit 4842b81"
  }
 ]

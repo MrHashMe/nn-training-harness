@@ -114,6 +114,10 @@ GIT_DESTRUCTIVE = re.compile(
 GIT_PUSH = re.compile(r"\bgit\s+push\b")
 GIT_TREE_CHANGE = re.compile(
     r"\bgit\s+(?:checkout|switch|pull|merge|rebase|am|cherry-pick|revert|stash(?!\s+(?:list|show)\b))\b")
+# git takes the files that it ignores as well: a forced add (in a group of letters too) and a stash of everything.
+# From its store, `git diff --cached`, `git show` and `git stash show -p` print them without naming one
+GIT_TAKES = re.compile(r"\bgit\s+(?:add\b[^;&|]*?\s(?:-[a-zA-Z]*f[a-zA-Z]*|--force)|"
+                       r"stash\b[^;&|]*?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--all))(?=[\s;&|)]|$)")
 DEP_CHANGE = re.compile(
     r"\b(?:pip3?|python3?\s+-m\s+pip)\s+(?:install|uninstall)\b|"
     r"\buv\s+(?:add|remove|sync|lock\s+--upgrade|pip\s+(?:install|uninstall|sync))\b|"
@@ -1386,8 +1390,9 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
             # then each command of the line by itself, with its own tool, file filters and folder: do sealed files
             # lie below a folder that it names, or below the one it runs in?
             curs, chain, stack, moved = [here], None, [], False  # curs: the folders in which the next command may run
+            taken = None
             parts = SEPARATOR.split(QUOTED.sub(lambda q: SEPARATOR.sub(" ", q.group()), raw)) \
-                if (recursive or MOVE.search(c_noq) or STARS.search(c_noq)) and not hit else []
+                if (recursive or MOVE.search(c_noq) or STARS.search(c_noq) or GIT_TAKES.search(c_noq)) and not hit else []
             for i in range(0, len(parts), 2):
                 seg, before, after = parts[i].lstrip(), "".join(parts[i - 1:i]), "".join(parts[i + 1:i + 2])
                 sq = QUOTED.sub(" '' ", ENV_C.sub(r"\1", GIT_GLOBAL.sub("git", seg)))
@@ -1417,6 +1422,20 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
                         and not re.search(r"[<>](?!\s*/dev/null\b)", sq)
                     chain = to if to and after == "&&" else None
                     curs = list(dict.fromkeys(to if holds else curs + (to or dirs)))[:8]
+                elif GIT_TAKES.search(sq):  # the folders it names, or the whole checkout: no path, a stash, :(magic)
+                    lx = lex(GIT_GLOBAL.sub("git", seg))
+                    k = next((j for j, t in enumerate(lx) if t in ("add", "stash")), len(lx))
+                    args = [t for t in lx[k + 1:] if t[:1] != "-"]
+                    whole = lx[k:k + 1] == ["stash"] or not args or any(t[:1] == ":" for t in args)
+                    for d in runs:
+                        ctx.cwd = d
+                        for t in ["."] if whole else args:
+                            own = max((x for x in ctx.bases if under(ctx._abs(t), x)), key=lambda x: len(x.parts),
+                                      default=ctx.root)
+                            for rel in [""] if whole else [ctx.resolve_token(t)] + (
+                                    ctx.expand(t) if any(ch in t for ch in "*?[") else []):
+                                if rel is not None and not any(ch in rel for ch in "*?[") and os.path.isdir(own / rel):
+                                    taken = taken or searched(ctx, str(own / rel), [], None, False, None)
                 elif found or re.search(r"\bgit\s+grep\b", sq):
                     names = [m.group(0).split()[0] for m in found]
                     tools = {re.sub(r"\.exe$", "", n.lower()) for n in names}
@@ -1505,6 +1524,12 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
                                      f"it would read sealed test files indirectly. Name the folders to search instead "
                                      f"(e.g. data/train){way}, or approve only if no sealed content can reach the "
                                      f"output."))
+            if taken:
+                results.append((ASK, f"Puts files that git ignores into git's store (a forced add, or a stash of "
+                                     f"everything) from a folder that holds sealed path '{taken}' (final test data): "
+                                     f"`git diff --cached`, `git show` and `git stash show -p` would then print them. "
+                                     f"Add the files you mean by name, or approve only if no sealed file is among "
+                                     f"them."))
     if WRITE_VERBS.search(c_noq) or PS_WRITE.search(c_noq) or (code and PY_WRITES.search(c)):
         if any(matches(rel, cfg.get("harness_paths")) for _, rel in resolved) or \
                 any(rx.search(c) for _, rx in fragments(cfg.get("harness_paths"))):

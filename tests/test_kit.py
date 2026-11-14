@@ -935,6 +935,17 @@ def main():
         # were None: an option of git's own that the guard did not know hid the subcommand from the rules below it
         ("Bash", {"command": "git -P push origin main"}, "ask"),
         ("Bash", {"command": "git --no-advice -c \"user.name=A B\" reset --hard HEAD~1"}, "ask"),
+        # were None: a forced add, or a stash of everything, takes the files that git ignores into git's store, from
+        # where `git diff --cached` and `git show` print them without naming one. A forced add elsewhere stays unasked
+        ("Bash", {"command": "git add -f data"}, "ask"),
+        ("Bash", {"command": "git add --force ."}, "ask"),
+        ("Bash", {"command": "git add -Af && git commit -qm wip"}, "ask"),
+        ("Bash", {"command": "cd sub && git add -f ../d*"}, "ask"),
+        ("Bash", {"command": "git -C sub add -f -- ../data"}, "ask"),
+        ("Bash", {"command": "git stash push --all"}, "ask"),
+        ("PowerShell", {"command": "git add -f data"}, "ask"),
+        ("Bash", {"command": "git add -A && git commit -qm wip"}, None),
+        ("Bash", {"command": "git add -f train.py eval sub"}, None),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)
@@ -942,6 +953,9 @@ def main():
     why = [guard("Bash", {"command": c})[1] for c in ("grep -rn label .", "grep -rn label data")]
     check("--include" in why[0] and "--include" not in why[1],
           "guard offers a file filter as a way out where the files on disk decided, not where the folder's name did")
+    why = guard("Bash", {"command": "git add -f data"})[1]
+    check("git ignores" in why and "git show" in why and "data/test/**" in why,
+          f"guard says why a forced add is asked about: what git would print afterwards ({why[:90]!r})")
     (proj / "data/test").rename(proj / "data/unsealed")
     check(guard("Bash", {"command": "grep -rn label ."})[0] is None,
           "guard: a recursive search of the project root passes while no sealed file lies below it")

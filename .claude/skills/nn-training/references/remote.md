@@ -5,6 +5,7 @@ huggingface_hub 2.4.0; OpenSSH). The Hugging Face route is built from documentat
 stand-in CLI: **it has not been run against the real service.** The ssh route is tested against a stand-in and
 was run once for real on 2026-11-11: a 30-second GPU training run launched from native Windows into WSL
 (`"exec": ["wsl.exe", "-d", "Ubuntu", "--cd", "~", "--exec", "bash", "-lc"]`), mirrored, scored locally, torn down.
+`on_finish` (2026-11-14) is tested with a stand-in command: no real machine has been stopped with it.
 Refresh: run `tests/test_remote.py`; compare the `hf jobs run`, `hf jobs inspect` and `hf buckets` commands in
 `scripts/nnremote.py` (class `HfJobs`) with the current CLI reference; read `https://huggingface.co/api/jobs/hardware`
 for prices. Before trusting the Hugging Face route with money, run the canary at the end of this file.
@@ -50,6 +51,7 @@ Add a `remote` section to `.claude/nn-training.json`. The file is a guardrail: a
 | ssh: `exec` | Argument list that runs one command line on the machine. The remote side needs a POSIX shell and Python 3.8+. | required |
 | ssh: `dir`, `python` | Where run folders are created (relative to the login directory, or absolute); the interpreter there. | `nnremote`, `python3` |
 | ssh: `usd_per_hour` | Set it when the machine costs money: then `--hours` and the cap apply. | 0 (free) |
+| ssh: `on_finish` | Argument list of a command that this machine runs when a run on the target has ended and its files are all here: the command that stops a rented machine. See "Money". | none |
 | hfjobs: `flavor`, `image`, `bucket` | Hardware flavor, Docker image, and a private storage bucket you own. | required |
 | hfjobs: `usd_per_hour` | Your own price figure. The higher of this and the provider's listed price is used. | listed price |
 | hfjobs: `hf`, `python`, `copy_every_s` | The CLI's argument list, the interpreter in the image, seconds between result copies. | `["hf"]`, `python`, 30 |
@@ -75,6 +77,15 @@ where `nnremote` can call it, sign in with `hf auth login` on an account that ma
   starts until the user restores it, or creates an empty one to start the count anew.
 - An ssh target has no provider-side time limit: if the controller and the network both fail, the remote process
   runs until its own deadline (set from `--hours`) or its end. Put a shutdown timer on rented machines yourself.
+- A rented machine costs money for as long as it is up, not only while a run is on it, and the ledger books the
+  run's hours only. `on_finish` on the target names the command that stops the machine, for example
+  `["ssh", "gpu-box", "sudo", "shutdown", "-h", "+1"]` or the provider's own stop command. The controller runs it
+  on this machine after the last pull is complete and the run's remote folder is removed, whatever way the run
+  ended. It does not run while another run of this project on that target has no exit record (a live one, the
+  resumed one after a preemption, or a lost one, whose files are still there), when the last pull did not
+  complete, or when the controller itself is gone: the shutdown timer stays necessary. The exit record holds the
+  outcome (`remote.on_finish`: the return code, `skipped` with the runs in the way, or `error`); the command's
+  output is in `supervisor.log`.
 
 ## What travels, and what never does
 Sent: the files git tracks or would track (not ignored), the kit's scripts, the config without its `remote`
@@ -124,7 +135,7 @@ The mirror receives changed files every `poll_s` seconds, so at most that much w
 When a run ends (completed, failed, stopped, preempted), the controller pulls a last time and removes what it
 created: the run's folder under `dir` on an ssh target, the run's prefix in the bucket for Hugging Face. Nothing
 else is touched, and nothing is removed before the last pull is complete. The outcome is in the mirror's
-`exit.json` (`remote.teardown`, `remote.usd`, `remote.resumed_as`).
+`exit.json` (`remote.teardown`, `remote.usd`, `remote.resumed_as`, `remote.on_finish`).
 
 Complete means equal content, not equal size and date: the remote side lists a SHA-256 for every file (an ssh
 target computes them at the last pull; a Hugging Face job keeps the list in the bucket as `remote-files.json`,
@@ -141,7 +152,8 @@ bucket is the last there is, so it counts.
 - A Hugging Face job mounts the whole bucket with write access, not only its run's prefix: the job's code can read
   and change everything in it. Use a bucket that holds nothing but this project's runs.
 - Not built: Slurm (`sbatch`) as its own target type, SkyPilot, Modal, machine-shaped rentals (Runpod, Vast.ai,
-  Lambda). An ssh target reaches a Slurm login node or a rented VM, but then you manage the allocation or the VM.
+  Lambda). An ssh target reaches a Slurm login node or a rented VM, but then you manage the allocation or the VM
+  (`on_finish` can stop the VM when a run has ended; nothing starts one).
 - A stop requested while the controller was down is not carried over by `attach`: stop again afterwards.
 - A Hugging Face job that is cut off between copying a file and listing its checksum leaves a list that is one
   copy behind. If the sync passed over that same file, the mirror keeps the copy before it (one `copy_every_s`

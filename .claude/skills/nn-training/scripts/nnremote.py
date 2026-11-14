@@ -540,6 +540,10 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
     lack = [k for k in NEEDS[tgt["type"]] if not tgt.get(k)]
     if lack:
         raise Refuse(f'target "{target}" lacks {", ".join(lack)}')
+    hook = tgt.get("on_finish")
+    if hook is not None and not (isinstance(hook, list) and hook and all(isinstance(c, str) for c in hook)):
+        raise Refuse(f'target "{target}": on_finish must be an argument list, such as '
+                     f'["ssh", "gpu-box", "sudo", "shutdown", "-h", "+1"]')
     if hours is not None and hours <= 0:
         raise Refuse("--hours must be more than zero")
     missing = [n for n in st["env"] if n not in os.environ]
@@ -664,12 +668,32 @@ def used_s(rem, drv, now):
     return max(0.0, now - rem["started_ts"], time.monotonic() - getattr(drv, "since", float("inf")))
 
 
+def after_run(root, cfg, cmd, d, target):
+    """Run the target's on_finish command: the user's own, from the config, which stops a rented machine for
+    instance. Not while another run of this project on that target has no exit record: a live one needs the
+    machine, and a lost one still has its files there. Returns what the exit record says about it."""
+    busy = []
+    for m in sorted(expctl.runs_root(root, cfg).glob("*/manifest.json")):
+        other = expctl.read_json(m)
+        rem = other.get("remote") if isinstance(other, dict) else None
+        if m.parent.name != d.name and isinstance(rem, dict) and rem.get("target") == target \
+                and not (m.parent / "exit.json").exists():
+            busy.append(m.parent.name)
+    if busy:
+        return {"skipped": f"not ended on this target: {', '.join(busy[:5])}"}
+    try:  # its output goes where the controller's goes: supervisor.log
+        return {"returncode": subprocess.run(cmd, stdin=subprocess.DEVNULL, timeout=120, **NOWIN).returncode}
+    except Exception as e:  # noqa: BLE001  whatever the command does, this run's exit record is written
+        return {"error": f"{type(e).__name__}: {e}"[:300]}
+
+
 def finish(root, cfg, st, drv, d, man, why, state, flag):
-    """Last pull, teardown of what this run created, the ledger entry, the exit record, and the automatic resume."""
+    """Last pull, teardown of what this run created, the ledger entry, the exit record, the automatic resume, and
+    the target's on_finish command."""
     rem, t1 = man["remote"], time.time()
-    note, rex, ended = None, None, True
+    note, rex, ended, done = None, None, True, False
     if rem.get("handle"):
-        pulled = done = False
+        pulled = False
         try:
             state = drv.pull(last=True)
             done = complete(d, state)
@@ -720,6 +744,9 @@ def finish(root, cfg, st, drv, d, man, why, state, flag):
                 note=f"automatic resume of {man['run_id']}", tags=man.get("tags"), resume_of=d)["run_id"]
         except Exception as e:  # noqa: BLE001  whatever keeps the resume from starting, this run's exit record is written
             ex["remote"]["not_resumed"] = str(e) if isinstance(e, Refuse) else f"{type(e).__name__}: {e}"[:300]
+    hook = done and (st["targets"].get(rem["target"]) or {}).get("on_finish")
+    if hook:  # the run's files are all here, so the machine is no longer needed for this run
+        ex["remote"]["on_finish"] = after_run(root, cfg, hook, d, rem["target"])
     quiet((d / BUNDLE).unlink)  # no resume took it along: a later one goes by the working tree
     expctl.write_json_atomic(d / "exit.json", ex)
 

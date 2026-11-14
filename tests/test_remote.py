@@ -118,14 +118,15 @@ def ledger(proj, rid):
     return [r for r in nnremote.ledger(proj) if r["run"] == rid]
 
 
-def set_remote(proj, tmp, **over):
+def set_remote(proj, tmp, on_finish=None, **over):
     fake = [PY, str(TESTS / "fake_ssh.py")]
     cfg = json.loads((proj / ".claude/nn-training.json").read_text(encoding="utf-8"))
     cfg["remote"] = dict({
         "cap_usd": None, "env": ["NN_TEST_TOKEN"], "files": ["extra/notes.txt"], "poll_s": 0.3, "unreachable_s": 3,
         "price_url": (tmp / "prices.json").as_uri(),
         "targets": {
-            "box": {"type": "ssh", "exec": fake, "dir": str(tmp / "remote"), "python": PY},
+            "box": dict({"type": "ssh", "exec": fake, "dir": str(tmp / "remote"), "python": PY},
+                        **({"on_finish": on_finish} if on_finish else {})),
             "paid": {"type": "ssh", "exec": fake, "dir": str(tmp / "remote"), "python": PY, "usd_per_hour": 2.0},
             "hf": {"type": "hfjobs", "hf": [PY, str(TESTS / "fake_hf.py")], "flavor": "a10g-small",
                    "image": "python:3.12", "bucket": "tester/nn-runs", "python": PY, "usd_per_hour": 0.5,
@@ -336,6 +337,8 @@ def refusals(tmp, proj):
     check("does not exist" in e, "a named file that does not exist is refused")
     e = refused(["--on", "box", "--hours", "0"])
     check("more than zero" in e, "--hours 0 is refused")
+    e = refused(["--on", "box"], on_finish="sudo shutdown -h +1")
+    check("argument list" in e, f"an on_finish command that is not an argument list is refused at the launch ({e[:60]})")
     e = refused(["--on", "paid"])
     check("needs --hours" in e, "a paid target without --hours is refused")
     e = refused(["--on", "paid", "--hours", "0.25"])
@@ -459,6 +462,8 @@ def ssh_tests(tmp, proj):
     src.write_bytes(code)
 
     print("== preemption: automatic resume from the last checkpoint ==")
+    # the target's on_finish command (the user's: it stops a rented machine) notes each call in a file
+    set_remote(proj, tmp, on_finish=[PY, "-c", "import sys;open(sys.argv[1],'a').write('x')", str(tmp / "finished.txt")])
     out = launch(proj, "--name", "preempt", "--on", "box", "--retries", "1", "--", "{python}", "train_remote.py", "120")
     rid, d = out.get("run_id"), proj / "runs" / str(out.get("run_id"))
     tk.wait_for(lambda: step_of(d) >= 10, timeout=40)
@@ -477,6 +482,12 @@ def ssh_tests(tmp, proj):
         check(man2.get("resume_of") == rid and man2["remote"]["retries"] == 0 and "resumed_as" not in (ex2.get("remote") or {}),
               "the resumed run records what it continues and has one retry fewer")
         check(not (rroot / rid).exists() and not (rroot / rid2).exists(), "both remote directories are removed")
+        hooks = [(e.get("remote") or {}).get("on_finish") or {} for e in (ex, ex2)]
+        calls = (tmp / "finished.txt").read_text() if (tmp / "finished.txt").exists() else ""
+        check(rid2 in str(hooks[0].get("skipped")) and hooks[1] == {"returncode": 0} and calls == "x",
+              "the target's on_finish command runs when the last run on the target has ended and its files are here, "
+              f"not while the resumed run is on the machine ({hooks}, calls: {calls!r})")
+    set_remote(proj, tmp)
     out = launch(proj, "--name", "preempt2", "--on", "box", "--retries", "2", "--", "{python}", "train_remote.py", "4000")
     rid, d = out.get("run_id"), proj / "runs" / str(out.get("run_id"))
     tk.wait_for(lambda: step_of(d) >= 3, timeout=40)

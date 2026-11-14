@@ -2875,9 +2875,13 @@ records only.
 2. **Your real install: the run and the commit are answered.** On 14 November you said "Yes, run it", and
    the installer ran there a sixth time (above). On your "Yes, commit there" of the same day the seventeen
    files it changed are committed in that repository, in one local commit that is not pushed. Open: a push
-   of the records of that run and of that commit to the public repository, where they are not yet; and,
-   since round 4, `install.py --worktrees`, which would register the guard in that repository's other
-   checkouts.
+   of the records of that run and of that commit to the public repository, where they are not yet. The
+   public branch has gone on meanwhile: on 14 November another session of yours pushed two commits
+   (`dc267aa`, `603c336`) that rewrite the front page and the guide, add `docs/REFERENCE.md` and redraw
+   the banners. What this report says about the front page and the guide ("After round 4", "After the
+   guide") describes them before that rewrite. The records and those two commits share no file, so they
+   merge cleanly, and that merge comes before a push. Open as well, since round 4: `install.py
+   --worktrees`, which would register the guard in that repository's other checkouts.
 3. **Ports for Antigravity and Gemini CLI.** Neither agent is installed here, and installing one is your
    call. I would build each from the vendor's documentation and test it live once it is installed.
 4. **The MCP servers the review proposes.** Each is an install with your permissions; say which, if any.
@@ -3906,7 +3910,8 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     real install (14 November, "Yes, run it"; "Round 5", "The sixth installer run on the real install"),
     and the commit of the seventeen files that run changed in that repository (14 November, "Yes, commit
     there": one local commit of exactly those paths, not pushed). Open: pushing the records of the run and
-    of that commit, which are in the local repository only; the installs, accounts and paid resources that the
+    of that commit, which are in the local repository only (first a merge with the two commits that
+    another session pushed to the public branch since); the installs, accounts and paid resources that the
     review's proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a
     container as the box); a second pilot or a campaign with a real agent; and what to build next.
 

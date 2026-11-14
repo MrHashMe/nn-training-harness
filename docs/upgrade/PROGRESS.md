@@ -1434,8 +1434,18 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   before (undo with `git reset --soft HEAD~1` there while it is the newest commit). That repository's
   other status entries number 418 as before, nothing is staged, and no file listed in the install changed
   on disk. Where these records say the seventeen files are not committed, this entry replaces it.
-- Open, from that run: pushing the records of the run and of that commit. They are two commits on top of
-  the public `2666faf`, in the local repository only.
+- Open, from that run: pushing the records of the run and of that commit. They are local commits on top of
+  the public `2666faf`, in the local repository only. The public `main` has gone on without them: on 14
+  Nov another session of the user's pushed two commits on top of `2666faf` (`dc267aa`, `603c336`: the
+  front page and the guide rewritten, a new `docs/REFERENCE.md`, both banners redrawn). What these records
+  and REPORT.md say about the front page and the guide ("After round 4", "After the guide") describes them
+  before that rewrite. The two lines share no file and merge cleanly (tried with `git merge-tree`, which
+  writes to no branch), no installed file is among the seven those commits change, and no test reads one
+  of them. Before a push the lines are joined: fetch, merge `origin/main` into the local branch, scan,
+  push. Not done: it needs the user's word, as every push does.
+- Open, asked in the session of 14 Nov: the dates of those two public commits. The 82 commits before them
+  on the public branch are dated in UTC, these two are not. Changing that rewrites public history, which
+  is the user's call.
 - Open, from round 5, each an install, an account or a paid resource: ports for Antigravity and Gemini CLI
   (neither agent is installed here), the MCP servers the review proposes, cloud drivers beyond `ssh` and
   Hugging Face Jobs, and a container as the box for training and evaluation (Docker Desktop, asked before).

@@ -108,7 +108,8 @@ def check_python(py: str):
         ver = None
     if not ver or ver < (3, 8):
         sys.exit(f"install: the interpreter '{py}' does not run or is older than Python 3.8 (on Windows `python3` is "
-                 f"often a Microsoft Store stub). Pass a working one with --python-cmd; nothing was changed.")
+                 f"often a Microsoft Store stub, and on a Mac without Apple's Command Line Tools it only offers to "
+                 f"install them). Pass a working one with --python-cmd; nothing was changed.")
 
 
 class Plan:

@@ -136,8 +136,8 @@ Deterministic settings (`torch.use_deterministic_algorithms(True)`, `CUBLAS_WORK
   needs `torch.compile`) (source: https://github.com/pytorch/ao/blob/main/torchao/optim/README.md),
   `expandable_segments`.
 - Low-precision training (MXFP8 through torchao, NVFP4), Blackwell-class GPUs only: vendor-measured 1.2x to 1.3x
-  (search level, not opened); a 12B model on 10T tokens "comparable to FP8", and a 3B model on 64B tokens with a loss
-  gap of 0.84 % to BF16, both by their authors, short horizons, no replication. Behind the numerics gate and judged on
+  (search level, not opened); a 12B model on 10T tokens "comparable to FP8", and a 3B model on 64B tokens (a short
+  run) with a loss gap of 0.84 % to BF16, both by their authors, no replication. Behind the numerics gate and judged on
   the end-to-end result, like every item here. (source: https://arxiv.org/abs/2509.25149, v2 4 Mar 2026;
   https://arxiv.org/abs/2607.04422, v2 7 Aug 2026; abstract pages read 2026-11-12)
 - Do not reach for: torchao `CPUOffloadOptimizer` (breaks LR schedulers and clipping), Ray Train (heavy runtime with

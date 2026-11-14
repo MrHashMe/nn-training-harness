@@ -5,6 +5,7 @@ real shells, fresh install, upgrade over the 23 October layout, removal. No netw
 Hook payloads are copied from vendor documentation (source and date beside each) or, where a vendor publishes
 only a schema, built from it and marked so. Tests replace only the fields a case is about.
 """
+import importlib.util
 import json
 import os
 import re
@@ -328,6 +329,14 @@ def install_tests(tmp: Path):
     check(all(re.search(r"nn_readonly\.py.*\n\s+timeout: 15\n\s+onFailure: block\n", texts[f".claude/agents/{a}.md"])
               for a in ("run-analyst", "experiment-reviewer")),
           "the two subagents' own hook blocks the call as well when it cannot run")
+    spec = importlib.util.spec_from_file_location("kit_install", KIT / "install.py")
+    inst = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(inst)
+    odd = "C:/Users/O'Connor/venv/python.exe"  # the command is a YAML value in single quotes
+    cmds = [re.search(r"^ +command: '((?:[^']|'')*)'$", inst.localize((KIT / f".claude/agents/{a}.md").read_text(encoding="utf-8"), odd), re.M)
+            for a in ("run-analyst", "experiment-reviewer")]
+    check(all(m and m.group(1).replace("''", "'").startswith(f'"{odd}" -c "import os,runpy;') for m in cmds),
+          "an apostrophe in the interpreter's path is doubled in the subagents' hook command, which stays one quoted value")
     man = json.loads((t / ".claude/nn-training.manifest.json").read_text(encoding="utf-8"))
     cfg = json.loads((t / ".claude/nn-training.json").read_text(encoding="utf-8"))
     check(man["agents"] == ["claude"] and ".claude/hooks/nn_guard.py" in man["files"] and cfg["python"] == exe,

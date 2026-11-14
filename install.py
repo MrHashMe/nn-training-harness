@@ -78,7 +78,14 @@ def with_interpreter(command: str, py: str) -> str:
 
 def localize(text: str, py: str) -> str:
     """Kit files are written for `python3`; put the chosen interpreter into every command they show or run."""
-    return text if py == "python3" else re.sub(r"(?<![\w./-])python3(?= )", lambda m: exe_text(py), text)
+    if py == "python3":
+        return text
+    exe = exe_text(py)
+
+    def swap(m):  # in a YAML value in single quotes (the agent files' hook command) an apostrophe is written twice
+        line = text[text.rfind("\n", 0, m.start()) + 1:m.start()]
+        return exe.replace("'", "''") if re.match(r"\s*[\w-]+: '", line) else exe
+    return re.sub(r"(?<![\w./-])python3(?= )", swap, text)
 
 
 def legacy_python(target: Path):
@@ -482,8 +489,8 @@ def install(plan: Plan, a, agents, py: str, old: dict):
     if not (target / ".git").exists():
         plan.note("warn", target, "not a git repository: provenance falls back to source-file hashing")
     if exe_text(py).startswith('"'):
-        plan.note("warn", target, "the interpreter path has spaces, so hook commands quote it; PowerShell and "
-                                  "Codex on Windows cannot run that form. Prefer a path without spaces.")
+        plan.note("warn", target, "the interpreter path has a space or a quote, so hook commands quote it; PowerShell and "
+                                  "Codex on Windows cannot run that form. Prefer a path without either.")
 
     for tree in COPY_TREES:  # the kit's home for every agent
         for src in sorted(p for p in (KIT / tree).rglob("*") if p.is_file() and "__pycache__" not in p.parts):

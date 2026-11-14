@@ -17,6 +17,8 @@ import subprocess
 import sys
 import tempfile
 import time
+import warnings
+import zipfile
 from pathlib import Path
 
 KIT = Path(__file__).resolve().parents[1]
@@ -90,7 +92,8 @@ else:
     check(r.returncode == 0 and got is not None and abs(got - bounds["constant"]) < 1e-4,
           f"the constant control passes the evaluator's contract and scores ln(65) ({got}; {(r.stderr + r2.stdout + r2.stderr).strip()[-300:]})")
 
-    # the evaluator's contract, with one model that keeps it and five that each break it in one way
+    # the evaluator's contract, with one model that keeps it, three that each break it in one way, and two that keep
+    # something between calls, which the evaluator does not let reach a later call
     import torch
     from torch.nn.functional import one_hot
 
@@ -131,19 +134,63 @@ else:
             return one_hot(idx, 65).float()
 
     wants = {Fair: None, Peek: "looks ahead", Reads: "reads or writes files", Rows: "other rows of the batch",
-             Counts: "the same way twice", Sets: "assigns to its own attributes"}
-    got = {}
-    for cls in wants:
-        d = tmp / ("model-" + cls.__name__)
+             Counts: None, Sets: None}
+
+    def answer(name, model):  # the evaluator's exit code and its JSON line for a model class or a model file's bytes
+        d = tmp / ("model-" + name)
         d.mkdir()
-        torch.jit.script(cls()).save(str(d / "model.ts"))
+        if isinstance(model, bytes):
+            (d / "model.ts").write_bytes(model)
+        else:
+            torch.jit.script(model()).save(str(d / "model.ts"))
         r = run(TASK / "evaluate.py", "--run-dir", d)
-        got[cls] = (r.returncode, json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {"error": r.stderr[-300:]})
-    check(got[Fair][0] == 0 and "score" in got[Fair][1]
+        return r.returncode, json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {"error": r.stderr[-300:]}
+
+    got = {c: answer(c.__name__, c) for c in wants}
+    fair = got[Fair][1].get("score")
+    check(got[Fair][0] == 0 and fair is not None
           and all(got[c][0] == 3 and w in got[c][1].get("error", "") for c, w in wants.items() if w),
           "the evaluator scores a model that is a function of each row's earlier tokens, and refuses one that looks ahead "
-          "anywhere, one whose code reads a file (before it is loaded), one whose rows see each other and two that keep "
-          f"something between calls ({ {c.__name__: v for c, v in got.items()} })")
+          "anywhere, one whose code reads a file (before it is loaded) and one whose rows see each other "
+          f"({ {c.__name__: v for c, v in got.items()} })")
+    check(fair is not None and all(got[c][0] == 0 and abs(got[c][1].get("score", 0) - fair) < 1e-9 for c in (Counts, Sets)),
+          "a model that keeps something between calls is scored as on its first call: every call goes to a freshly "
+          f"loaded copy, so that nothing it keeps reaches the next ({ {c.__name__: got[c] for c in (Counts, Sets)} })")
+
+    # The file-reading model once more, its file written anew: the call spelled in another way, the code under another
+    # name, a second entry of one name, and a second directory, which zipfile does not read. PyTorch 2.9.1 loaded the
+    # reading code from every one of them (tried on 14 November 2026)
+    def archive(edit):  # the Reads model's file, its code entry replaced by the entries that edit(name, code) returns
+        buf = io.BytesIO()
+        with zipfile.ZipFile(tmp / "model-Reads" / "model.ts") as zi, zipfile.ZipFile(buf, "w") as zo:
+            for i in zi.infolist():
+                data = zi.read(i)
+                for n, c in (edit(i.filename, data) if i.filename.endswith(".py") and b"torch.from_file(" in data
+                             else [(i.filename, data)]):
+                    zo.writestr(n, c)
+        return buf.getvalue()
+
+    def clean(code):  # the same code without the call, at the same length
+        c = re.sub(rb"torch\.from_file\([^)]*\)", b"torch.zeros([1])", code)
+        return c + b"#" * (len(code) - len(c))
+
+    forms = {"spaced": lambda n, c: [(n, c.replace(b"torch.from_file(", b"torch . from_file("))],
+             "getattr": lambda n, c: [(n, c.replace(b"torch.from_file(", b'getattr(torch, "from_" "file")('))],
+             "folder": lambda n, c: [(n.replace("/code/", "/Code/"), c)],
+             "twice": lambda n, c: [(n, c), (n, clean(c))]}
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")  # zipfile warns about a second entry of one name
+        got = {k: answer(k, archive(f)) for k, f in forms.items()}
+    reads, fair_zip = archive(lambda n, c: [(n, c)]), archive(lambda n, c: [(n, clean(c))])
+    check(reads != fair_zip and all(v[0] == 3 and "reads or writes files" in v[1].get("error", "") for v in got.values()),
+          "the evaluator refuses the file-reading model also where its call is spelled with blanks or through getattr "
+          f"and joined strings, where its code lies under Code/, and where a second entry of the same name hides it ({got})")
+    # the whole reading archive without its end record, and behind it the whole archive of the same model without the
+    # call: zipfile reads the second, PyTorch's own reader the first
+    two = answer("twodirs", reads[:reads.rfind(b"PK\x05\x06")] + fair_zip)
+    check(two[0] == 0 and fair is not None and abs(two[1].get("score", 0) - fair) < 1e-9,
+          "a file with a second directory is scored as the code that was read: what PyTorch loads is an archive the "
+          f"evaluator wrote from the entries it read ({two})")
 
 # 2. a project with the kit
 p = tmp / "with-kit"

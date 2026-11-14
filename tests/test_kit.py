@@ -214,6 +214,71 @@ def main():
           f"a fast path that fails, ends the interpreter or hangs is reported and the others still run ({fp} {r.stderr[-300:]})")
     check(adv == [1, 0, 0, 1, 2] and "CVE-2026-57845" in "".join(text) and "5.2.0" in "".join(text),
           f"env warns about an installed version that a dated advisory names, and not about a fixed one ({adv} {text})")
+    # audit-splits: how many records the configured splits share. Counts only, never a row.
+    sp = tmp / "split-proj"
+    (sp / ".claude").mkdir(parents=True)
+    (sp / "data/test").mkdir(parents=True)
+    scfg = {"splits": {"train": "data/train.jsonl", "val": "data/val.csv", "test": "data/test"}}
+    (sp / ".claude/nn-training.json").write_text(json.dumps(scfg))
+    train = ['{"text": "The  cat sat", "label": 1}', '{"label": 1, "text": "the cat sat"}', '{"text": "a dog", "label": 0}', "",
+             '{"text": "ﬁne Über", "label": 2}']
+    (sp / "data/train.jsonl").write_text("\n".join(train) + "\n", encoding="utf-8")
+    (sp / "data/val.csv").write_text('text,label\n"THE CAT   SAT",1\n"a bird",0\n', encoding="utf-8")
+    (sp / "data/test/a.jsonl").write_text('{"label": 0, "text": "A dog"}\n{"text": "a fish", "label": 1}\n', encoding="utf-8")
+    (sp / "data/test/.gitkeep").write_text("")
+
+    def audit(*args):
+        r = sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "--root", str(sp), "audit-splits", *args], cwd=sp)
+        return r, (json.loads(r.stdout) if r.stdout.strip().startswith("{") else {})
+
+    r, a = audit()
+    s, shared = a.get("splits") or {}, {tuple(x["splits"]): x["shared"] for x in a.get("shared") or []}
+    check(r.returncode == 1 and a.get("ok") is False
+          and [(s[n]["records"], s[n]["unique"]) for n in ("train", "val", "test")] == [(4, 3), (2, 2), (2, 2)]
+          and shared == {("train", "val"): 0, ("train", "test"): 1, ("val", "test"): 0}
+          and s["test"]["counted"] == {"rows": 2} and not any(w in r.stdout.lower() for w in ("cat", "dog", "fish", "bird")),
+          f"audit-splits counts records, distinct records and the records two splits share, and prints no row ({r.stdout[-600:]} {r.stderr[-300:]})")
+    r, k = audit("--key", "text")
+    ks, kshared = k.get("splits") or {}, {tuple(x["splits"]): x["shared"] for x in k.get("shared") or []}
+    check(r.returncode == 1 and kshared == {("train", "val"): 1, ("train", "test"): 1, ("val", "test"): 0}
+          and (ks["train"]["records"], ks["train"]["unique"]) == (4, 3) and k.get("key") == "text",
+          f"audit-splits --key compares one field, across .jsonl and .csv files and whatever the case or spacing ({kshared})")
+    (sp / "data/train.jsonl").write_text("\n".join(reversed(train)) + "\n", encoding="utf-8")
+    again = audit()[1]
+    (sp / "data/train.jsonl").write_text("\n".join(train[2:]) + "\n", encoding="utf-8")
+    r, less = audit()
+    rec = sp / ".claude/state/final-eval/split-audits.jsonl"
+    lines = rec.read_bytes().splitlines() if rec.is_file() else []
+    check(again["splits"]["train"]["fingerprint"] == s["train"]["fingerprint"] != less["splits"]["train"]["fingerprint"]
+          and less["splits"]["test"]["fingerprint"] == s["test"]["fingerprint"] and len(s["train"]["fingerprint"]) == 64
+          and len(lines) == 4 and json.loads(lines[1])["prev"] == hashlib.sha256(lines[0]).hexdigest()
+          and json.loads(lines[1])["key"] == "text" and b"dog" not in rec.read_bytes().lower(),
+          "audit-splits gives each split a fingerprint that the order of its records does not change and a changed "
+          "record does, and appends every audit to a chained record")
+    (sp / "data/test/b.parquet").write_bytes(b"PAR1")
+    packed = audit()[0]
+    (sp / "data/test/b.parquet").unlink()
+    nokey = audit("--key", "nope")[0]
+    (sp / ".claude/nn-training.json").write_text("{}")
+    unset = audit()[0]
+    check(packed.returncode == 2 and "project's own loader" in packed.stdout and nokey.returncode == 2
+          and "no records with the field 'nope'" in nokey.stdout and unset.returncode == 2 and "names no splits" in unset.stdout
+          and len(rec.read_bytes().splitlines()) == 4,
+          f"audit-splits refuses a file it cannot read record by record, a field no row has and a config without splits "
+          f"({packed.stdout[-200:]} {nokey.stdout[-200:]} {unset.stdout[-200:]})")
+
+    def audit_guard():
+        r = sh([PY, str(proj / ".claude/hooks/nn_guard.py")], cwd=sp, env={"CLAUDE_PROJECT_DIR": str(sp)},
+               inp=json.dumps({"tool_name": "Bash", "session_id": "t", "cwd": str(sp),
+                               "tool_input": {"command": "python expctl.py --root . audit-splits --key text"}}))
+        return json.loads(r.stdout)["hookSpecificOutput"]["permissionDecision"] if r.stdout.strip() else r.returncode
+
+    (sp / ".claude/nn-training.json").write_text(json.dumps(scfg))
+    free = audit_guard()
+    (sp / ".claude/nn-training.json").write_text(json.dumps(dict(scfg, sealed_paths=["data/test/**"])))
+    asked = audit_guard()
+    check(free == 0 and asked == "ask",
+          f"the guard asks before an audit of splits where the config seals a path, and not where nothing is sealed ({free}, {asked})")
 
     # 3. launch OK run (snapshot copy)
     # 200 steps (10 s): the run must still be alive when the status line and the watch below look at it, and every
@@ -499,6 +564,10 @@ def main():
         ("Bash", {"command": "python .claude/skills/nn-training/scripts/expctl.py --root . final-eval --again \"first try crashed\""}, "ask"),
         ("Bash", {"command": "python .claude/skills/nn-training/scripts/expctl.py final-eval -- --data data/test/labels.csv"}, "deny"),
         ("Bash", {"command": "python .claude/skills/nn-training/scripts/expctl.py --help | grep final-eval"}, None),
+        # new: the split audit counts records of a sealed split, so the user decides on each one
+        ("Bash", {"command": "python .claude/skills/nn-training/scripts/expctl.py audit-splits"}, "ask"),
+        ("Bash", {"command": "python .claude/skills/nn-training/scripts/expctl.py --root . audit-splits --key text"}, "ask"),
+        ("Bash", {"command": "python .claude/skills/nn-training/scripts/expctl.py --help | grep audit-splits"}, None),
         ("Bash", {"command": "rm .claude/state/final-eval/receipt.jsonl"}, "ask"),
         ("Bash", {"command": "Remove-Item .claude\\state\\final-eval\\receipt.jsonl"}, "ask"),
         ("Bash", {"command": "python -c \"open('.claude/state/final-eval/receipt.jsonl','w').close()\""}, "ask"),

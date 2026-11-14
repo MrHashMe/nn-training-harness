@@ -39,6 +39,14 @@ Commands
         The rows are also kept in git's common folder, so they outlive a removed worktree.
         A further use is refused unless --again gives the reason, which is recorded.
         Running it needs the user's explicit approval.
+  audit-splits [--key FIELD]
+        Counts for the splits the config names ("splits": name -> file or folder): records,
+        distinct records and a fingerprint per split, and the distinct records each pair of
+        splits shares. Records are compared after NFKC, casefold and whitespace collapsing;
+        --key compares one field only (the input alone, or a group id). Prints counts, never
+        a row, and appends each audit to .claude/state/final-eval/split-audits.jsonl. Exit
+        code 1 when two splits share a record. Where the config seals anything, running it
+        needs the user's explicit approval.
   hash  Source hash of the working tree (tracked + untracked, not ignored).
   env [--python PATH]
         Environment report (OS/WSL, GPUs, driver, disk, tools, git) and, with
@@ -59,6 +67,7 @@ Run-directory contract (files under <runs_dir>/<run_id>/):
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import math
@@ -74,6 +83,7 @@ import stat
 import subprocess
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 SCHEMA_STATUS = "expctl.status/v1"
@@ -93,6 +103,7 @@ DEFAULT_CONFIG = {
     "sealed_tokens": [],
     "frozen_paths": [],
     "final_eval_commands": [],
+    "splits": {},
     "harness_paths": [
         ".claude/hooks/**",
         ".claude/settings.json",
@@ -2138,6 +2149,133 @@ def cmd_final_eval(args):
     return 0 if code == 0 else 1
 
 
+# ----------------------------------------------------------------------------- split audit
+
+SPLIT_AUDITS = FINAL_DIR + "/split-audits.jsonl"  # beside the final evaluation's receipt, under the same protection
+SPLIT_FORM = "NFKC, casefold, whitespace collapsed"
+ROW_FILES = {".jsonl": "json", ".ndjson": "json", ".csv": ",", ".tsv": "\t", ".txt": "line"}
+# Many records in one file that the standard library cannot read one by one. Counted whole, such a file would
+# report that nothing is shared without a look at a single record.
+PACKED = (".parquet", ".arrow", ".feather", ".h5", ".hdf5", ".npz", ".tfrecord", ".lmdb", ".mdb", ".sqlite", ".db",
+          ".zip", ".tar", ".gz", ".bz2", ".xz", ".zst")
+
+
+def split_digests(path: Path, key=None):
+    """(one digest per record, records per kind, rows without `key`) for a split: a file, or every file below a
+    folder (links followed, names that start with a dot left out). A .jsonl row counts by its parsed value with
+    sorted keys, a .csv or .tsv row by its cells (the first row is the header), a .txt file by its lines, any other
+    file whole, by its bytes. Text is compared in the form SPLIT_FORM names. key: only that field or column of each
+    row. ValueError: a file that packs records the standard library cannot read, or one without fields where a key
+    is asked for."""
+    csv.field_size_limit(2 ** 31 - 1)  # a long text column is one field
+    files = [path]
+    if path.is_dir():
+        files = []
+        for d, dirs, names in os.walk(path, followlinks=True):
+            if os.path.relpath(d, path).count(os.sep) >= 40:
+                raise ValueError(f"{d}: more than 40 folders deep (a link that leads back up?)")
+            dirs[:] = [x for x in dirs if not x.startswith(".")]
+            files += [Path(d) / n for n in names if not n.startswith(".")]
+    out, units, without = [], {}, 0
+
+    def add(kind, text):
+        text = " ".join(unicodedata.normalize("NFKC", text).casefold().split())
+        out.append(hashlib.sha256(text.encode("utf-8", "backslashreplace")).digest()[:16])
+        units[kind] = units.get(kind, 0) + 1
+
+    for f in files:
+        ext = f.suffix.lower()
+        kind = ROW_FILES.get(ext)
+        if ext in PACKED:
+            raise ValueError(f"{f.name}: a {ext} file packs many records, and the standard library cannot read them one "
+                             "by one. Audit it with a script that uses the project's own loader (references/data.md, "
+                             "section 2)")
+        if key is not None and kind not in ("json", ",", "\t"):
+            raise ValueError(f"{f.name}: --key needs rows with fields (.jsonl, .csv or .tsv)")
+        if kind is None:
+            h = hashlib.sha256()
+            with open(f, "rb") as fh:
+                for block in iter(lambda: fh.read(1 << 20), b""):
+                    h.update(block)
+            out.append(h.digest()[:16])
+            units["files"] = units.get("files", 0) + 1
+            continue
+        with open(f, encoding="utf-8", errors="replace", newline="") as fh:
+            if kind == "line":
+                for line in fh:
+                    if line.strip():
+                        add("lines", line)
+            elif kind == "json":
+                for line in fh:
+                    if not line.strip():
+                        continue
+                    try:
+                        v = json.loads(line)
+                    except ValueError:
+                        v = line
+                    if key is not None:
+                        if not isinstance(v, dict) or key not in v:
+                            without += 1
+                            continue
+                        v = v[key]
+                    add("rows", v if isinstance(v, str) else json.dumps(v, sort_keys=True, ensure_ascii=False))
+            else:
+                rows = csv.reader(fh, delimiter=kind)
+                head = next(rows, None) or []
+                if key is not None and key not in head:
+                    raise ValueError(f"{f.name}: its first row names no column {key!r}")
+                at = head.index(key) if key is not None else None
+                for row in rows:
+                    if not row:
+                        continue
+                    if at is None:
+                        add("rows", json.dumps(row, ensure_ascii=False))
+                    elif at < len(row):
+                        add("rows", row[at])
+                    else:
+                        without += 1
+    return out, units, without
+
+
+def cmd_audit_splits(args):
+    """Per split the records and the distinct ones, per pair of splits the distinct records both hold. Counts and
+    fingerprints only, never a row: where a split is sealed the guard asks the user, and each audit is recorded."""
+    root = find_root(args.root)
+    cfg = load_config(root)
+    splits = cfg.get("splits")
+    if not isinstance(splits, dict) or not splits:
+        return fail(2, f'{CONFIG_REL} names no splits. Add them there, for example "splits": {{"train": '
+                       '"data/train.jsonl", "val": "data/val.jsonl", "test": "data/test"}} (a file or a folder each, '
+                       "from the project root). That file belongs to the harness: the user edits it or approves the edit.")
+    out, sets = {}, {}
+    for name, rel in splits.items():
+        p = Path(os.path.expanduser(str(rel)))
+        try:
+            if not (root / p).exists():
+                raise ValueError("the path does not exist")
+            digs, units, without = split_digests(root / p, args.key)
+            if not digs:
+                raise ValueError("no records" + (f" with the field {args.key!r}" if args.key else ""))
+        except (ValueError, OSError, csv.Error) as e:
+            return fail(2, f"split {name!r} ({rel}): {e}")
+        # shortcut: one digest per record stays in memory (about 150 bytes each), fine for millions of records;
+        # a larger split needs its digests sorted on disk
+        sets[name] = set(digs)
+        out[name] = {"path": str(rel), "records": len(digs), "unique": len(sets[name]), "counted": units,
+                     "fingerprint": hashlib.sha256(b"".join(sorted(digs))).hexdigest()}
+        if without:
+            out[name]["rows_without_key"] = without
+    names = list(sets)
+    pairs = [{"splits": [a, b], "shared": len(sets[a] & sets[b])} for i, a in enumerate(names) for b in names[i + 1:]]
+    res = {"ok": not any(p["shared"] for p in pairs), "form": SPLIT_FORM, "key": args.key, "splits": out, "shared": pairs}
+    rec = root / SPLIT_AUDITS
+    rec.parent.mkdir(parents=True, exist_ok=True)
+    chained(rec, dict(res, ts=iso(now())))
+    print(json.dumps(clean(dict(res, record=SPLIT_AUDITS, note="exact matches in that form: a lower bound, because a copy "
+                                "that differs in more than case, spacing or Unicode form is not found")), indent=1))
+    return 0 if res["ok"] else 1
+
+
 PROBE = r"""
 import json, sys, platform, importlib
 out = {"python": sys.version.split()[0], "executable": sys.executable}
@@ -2545,6 +2683,12 @@ def main(argv=None):
     s.add_argument("--which", type=int, metavar="N", help="which final_eval_commands entry (from 1), when several are configured")
     s.add_argument("args", nargs=argparse.REMAINDER, help="after --: arguments appended to the configured command")
     s.set_defaults(fn=cmd_final_eval)
+
+    s = sub.add_parser("audit-splits", help="count the records that the configured splits share: counts only, never a "
+                                            "row (requires user approval where the config seals anything)")
+    s.add_argument("--key", metavar="FIELD", help="compare only this field of each .jsonl row or this column of each "
+                                                  ".csv/.tsv row: the input alone, or a group id")
+    s.set_defaults(fn=cmd_audit_splits)
 
     s = sub.add_parser("hash", help="source hash + git state of the working tree")
     s.set_defaults(fn=cmd_hash)

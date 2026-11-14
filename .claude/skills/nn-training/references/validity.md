@@ -1,6 +1,6 @@
 # Validity: protocol, leakage, sanity checks, sealed test, evaluator freeze
 
-Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12)
+Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command: 2026-11-14)
 Refresh: principles, not versions; re-read when the guard's sealed or frozen mechanics change
 (`tests/test_kit.py` covers them) or when a new contamination or leakage route becomes known.
 
@@ -17,7 +17,7 @@ Goal: every number you report measures what the Project card says it measures.
 
 ## 2. Split and leakage audit (record counts in the journal)
 - Unit leakage: the same user/patient/document/scene/time-window in more than one split. Fix with group-aware or chronological splits (GroupKFold, StratifiedGroupKFold, time cut-offs) — never random row splits when rows are dependent.
-- Exact duplicates across splits: hash normalised records (text: lower-cased, whitespace-normalised; images: file hash). Near-duplicates: perceptual hashes for images, MinHash/embedding similarity for text; report counts and the threshold used.
+- Exact duplicates across splits: hash normalised records (text: lower-cased, whitespace-normalised; images: file hash). `expctl audit-splits` does this for the splits named in the config and prints counts only, never a row; where anything is sealed it needs the user's approval each time, because every count is a small look at the sealed split (`data.md` section 2). Near-duplicates: perceptual hashes for images, MinHash/embedding similarity for text; report counts and the threshold used.
 - Temporal leakage: features computed with future information; training data later than validation/test data when the task predicts forward in time.
 - Target leakage: features derived from the label or from post-outcome data; IDs that encode the label; file paths/folder names that reveal classes.
 - Preprocessing leakage: statistics, tokenizers, vocabularies or augmentation policies fitted on all data; synthetic or augmented samples derived from validation/test items.

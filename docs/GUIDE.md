@@ -719,6 +719,7 @@ the runs and your settings, and backs up every kit file it replaces under `.clau
 | Stop it gracefully | `E stop RUN --wait 5m` |
 | Continue it from its checkpoint | `E resume RUN` |
 | Final evaluation, once | `E final-eval -- ARGS` |
+| Do the splits share records (counts only) | `E audit-splits` (splits named in `.claude/nn-training.json`) |
 | Is the harness wired up | `E selftest` |
 | Which fast paths work here (CUDA, bf16, flash attention, fused AdamW, `torch.compile`) | `E env --python PY --probe` |
 | Unattended campaign | `nnloop.py start`, `status`, `stop`, `resume` (scenario G) |

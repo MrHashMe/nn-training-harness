@@ -201,7 +201,8 @@ def guard_tests(tmp: Path):
                        ("a write from python -c", "python -c \"open('notes.md','w').write('x')\""),
                        ("a write inside bash -c", "bash -c \"echo x > notes.md\""),
                        ("a PowerShell kill", "spps -Id 2147480000"),
-                       ("a remote launch with the verb after an option", "python nnremote.py --root=. launch -- python train.py")):
+                       ("a remote launch with the verb after an option", "python nnremote.py --root=. launch -- python train.py"),
+                       ("an audit of the splits", "python .claude/skills/nn-training/scripts/expctl.py audit-splits")):
         check(guard(proj, cl(cmd, agent_type="run-analyst"))[1] == "deny", f"Claude: {label} by a read-only subagent is denied")
     check(guard(proj, cl("python -c \"print(open('train.py').read())\"", agent_type="run-analyst"))[2] == "",
           "Claude: python -c that only reads passes for a read-only subagent")

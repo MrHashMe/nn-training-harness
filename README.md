@@ -156,7 +156,7 @@ second practice project that fine-tunes a small chat model (`--task finetune`; i
 | Path in your repo | Purpose |
 |---|---|
 | `.claude/skills/nn-training/SKILL.md` + `references/` | The operating procedure (phases and gates) and 15 dated on-demand references: validity, data, evaluation, uncertainty, HPO, optimization, performance, resume, fine-tuning, LLM practice, operations, stack, scouting, loop, remote |
-| `.claude/skills/nn-training/scripts/expctl.py` | Run controller: `status`, `launch`, `watch`, `curve`, `stop`, `resume`, `final-eval`, `hash`, `env`, `selftest` |
+| `.claude/skills/nn-training/scripts/expctl.py` | Run controller: `status`, `launch`, `watch`, `curve`, `stop`, `resume`, `final-eval`, `audit-splits`, `hash`, `env`, `selftest` |
 | `.claude/skills/nn-training/scripts/runlog.py` | Run-side logger for your training code (heartbeat, metrics, checkpoints, graceful stop, resume, HF/Lightning/Optuna helpers). Vendor a copy, as the skill does, or import it from there with the path built from `$EXP_PROJECT_ROOT`: a launched run works from a snapshot of the source that has no `.claude` |
 | `.claude/skills/nn-training/scripts/nnloop.py`, `nnremote.py` | Optional modules: the unattended research loop and remote GPUs (below). Inactive until you configure them |
 | `.claude/hooks/nn_guard.py` | The guard for all three agents (deny/ask), audit log in `.claude/state/guard.log` |
@@ -201,7 +201,8 @@ checks; **missing** = not available. Two rows of the first table stand for a lis
   through `expctl final-eval`, which keeps a receipt of every use), a file-tool edit inside an active run directory,
   unreadable hook input.
 - **Steps that need a person:** stop or kill, deleting runs or checkpoints, destructive git, push, edits of frozen
-  or harness files, the final evaluation (`expctl final-eval`), dependency changes under live runs, paid compute,
+  or harness files, the final evaluation (`expctl final-eval`), an audit of the splits where anything is sealed
+  (`expctl audit-splits`), dependency changes under live runs, paid compute,
   starting a campaign or a remote run. A shell command that writes into an active run directory belongs here too.
 
 ### By agent
@@ -283,7 +284,8 @@ $E final-eval -- --ckpt runs/<run>/ckpt/best.pt     # once, with a receipt and a
 Edit `.claude/nn-training.json`: `metric` (`name`, `direction`, `select`), `sealed_paths` (e.g. `"data/test/**"`),
 `sealed_tokens` (e.g. `"NN_UNSEAL_TEST"`), `frozen_paths` (evaluation, metric and split code),
 `final_eval_commands` (e.g. `"NN_UNSEAL_TEST=1 python -m eval.final"`: one program call without shell syntax, which
-`expctl final-eval` runs once and records in `.claude/state/final-eval/`), `optuna.storage`. For Claude Code add
+`expctl final-eval` runs once and records in `.claude/state/final-eval/`), `splits` (name and path of each split,
+for `expctl audit-splits`, which counts the records they share), `optuna.storage`. For Claude Code add
 matching `Read(...)`/`Edit(...)` deny rules for the sealed paths in `.claude/settings.json`.
 
 ## Testing the kit

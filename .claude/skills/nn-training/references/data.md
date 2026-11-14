@@ -1,6 +1,6 @@
 # Data: quality, duplicates, versions, licences, privacy, synthetic data
 
-Checked: 2026-11-11 (section 8, clustering: 2026-11-12)
+Checked: 2026-11-11 (section 8, clustering: 2026-11-12; the split audit command: 2026-11-14)
 Refresh: scout (`scouting.md`) for data tooling; re-check each version, licence and the datasets CVE fix named here.
 
 Read when you add, filter, split, download or generate training data, or fill the Project card's data line.
@@ -9,8 +9,8 @@ Read when a score looks too good, a dataset has a licence or gate, or rows may h
 Every item is a hypothesis or a check to run under the project's protocol, not a default to switch on. A new
 package needs the user's approval before it is installed. validity.md owns split audits and the sealed test set;
 this file covers what to record and how to run the checks. Items marked (core) need only the standard library:
-write them as a small script in the project. The kit has no data command, and `expctl hash` is not a data
-manifest (section 1).
+write them as a small script in the project. The kit has one data command, `expctl audit-splits` (section 2);
+`expctl hash` is not a data manifest (section 1).
 
 ## 1. Record the data (core)
 - Data manifest. When: before the first run and after any data change. Do: sha256 of the full content of each
@@ -20,7 +20,8 @@ manifest (section 1).
   substitute: it skips git-ignored data and hashes files over 50 MB by size only.
   (source: https://arxiv.org/abs/2302.10149, 2023; the kit's `expctl.py`, read 2026-11-11)
 - Order-independent fingerprint. Do: per split, record count, hash of the sorted per-record sha256 digests, the
-  normalisation string, the filter-config hash. Never XOR the digests (duplicates cancel). Risk: design argument only.
+  normalisation string, the filter-config hash. Never XOR the digests (duplicates cancel). `expctl audit-splits`
+  prints the first three for each split it is given (section 2). Risk: design argument only.
   (source: https://github.com/agentanywhere/shuddhi, 2026-11-11)
 - Per-run record. Do: pass the manifest's root hash in each run's config (`RunLog(config={..., "data_manifest":
   "<root hash>"})` writes it to the run's `config.json`); never compare runs whose data hashes differ.
@@ -30,14 +31,26 @@ manifest (section 1).
   (source: https://www.nature.com/articles/s42256-024-00878-8, 2024)
 
 ## 2. Duplicates and overlap (core)
-- Cross-split exact audit. When: before tuning, and after any data or split change. Do: a script hashes the
-  normalised records of every split and prints collision counts per split pair only. Text form: NFKC, casefold,
-  collapsed whitespace, UTF-8; files: content hash. Listing colliding training rows is a separate, logged step.
-  The guard denies your reads of a sealed split: ask the user to run the script on it. Risk: counts are a small
-  oracle on test membership; exact matching is a lower bound; Parquet and Arrow need the project's own loader.
+- Cross-split exact audit. When: before tuning, and after any data or split change. Do: name the splits in
+  `.claude/nn-training.json` (`"splits": {"train": "data/train.jsonl", "val": "data/val.jsonl", "test":
+  "data/test"}`, a file or a folder each; the user approves that edit) and run `expctl audit-splits`. It hashes
+  the normalised records of every split and prints counts only: records, distinct records and a fingerprint per
+  split, and the distinct records each pair of splits shares (exit code 1 when a pair shares any). Text form:
+  NFKC, casefold, collapsed whitespace, UTF-8. A `.jsonl` row counts by its value, a `.csv` or `.tsv` row by its
+  cells (the first row is the header), a `.txt` file by its lines, any other file whole, by its content: right
+  for one sample per file, useless for a packed array such as a token `.bin`. `--key FIELD` compares one field:
+  the input alone (the same input with another label is still a leak), or a group id (section 4).
+  Where the config seals anything, the guard asks the user before each audit; where nobody can be asked (Codex,
+  Cursor, an unattended session) the user runs the command in a terminal. Listing colliding training rows is a
+  separate, logged step. Risk: counts are a small oracle on test membership, so audit when data or splits
+  changed, not as a routine (every audit is a row in `.claude/state/final-eval/split-audits.jsonl`); exact
+  matching is a lower bound; Parquet, Arrow, HDF5, databases and archives are refused: audit those with a script
+  that uses the project's own loader and prints the same counts, which the user runs on a sealed split.
+  (The command: `tests/test_kit.py`, 2026-11-14.)
   (source: https://www.mdpi.com/2313-433X/6/6/41, 2 Jun 2020; https://aclanthology.org/2022.acl-long.577/, May 2022)
-- Repeat counts. Do: the same pass prints the duplicated share, a repeat-count histogram and, if the user names
-  a group key, group overlap; one run per data fingerprint. Risk: memory grows with unique records; repeat cost
+- Repeat counts. Do: the same pass gives the duplicated share (records against distinct records) and, with
+  `--key` on a group field the user names, group overlap; a repeat-count histogram needs a script of your own;
+  one run per data fingerprint. Risk: memory grows with unique records; repeat cost
   was measured in pretraining from scratch, single runs; transfer to fine-tuning is Inferred.
   (source: https://arxiv.org/abs/2606.24998, 2026-06-23; https://arxiv.org/abs/2609.07399, 2026-09-07)
 - Overlap level. Do: the final report names which level was checked (exact, near, semantic) and the tool version;

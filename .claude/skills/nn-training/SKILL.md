@@ -24,6 +24,7 @@ In this skill, `expctl` means `python3 .claude/skills/nn-training/scripts/expctl
 | Stop gracefully (only with the user's OK) | `expctl stop <run> --wait 5m` → RunLog turns SIGTERM into "checkpoint and exit" |
 | Continue an ended run from its checkpoint (a new run that names its parent) | `expctl resume <run>` → the script loads from `rl.resume_from` (`references/resume.md`) |
 | Final evaluation on the sealed test split: once, with a receipt (only with the user's OK) | `expctl final-eval [-- ARGS]` (Phase 5) |
+| How many records the splits share: counts only (with the user's OK where anything is sealed) | `expctl audit-splits [--key FIELD]` (Phase 2; `references/data.md` section 2) |
 | Provenance of the working tree | `expctl hash` |
 | Is the harness wired up (hooks registered, guard deciding, protocol configured)? | `expctl selftest` |
 | Environment facts; which fast paths work here | `expctl env --python <project interpreter>` (`--probe` tries CUDA, bf16 autocast, flash attention, fused AdamW and `torch.compile`, each in its own process; `warnings` holds dated advisories for installed versions) |
@@ -92,7 +93,7 @@ evaluation, and stops gracefully via `expctl stop` (with DataLoader workers runn
 checks, the sanity gate (finite step, initial loss, tiny-subset overfit, shuffled-label control, trivial baselines,
 checkpoint round trip, throughput/memory, parameter counts). Then write the protocol into the Project card and
 propose the guard configuration for `.claude/nn-training.json` — `metric` (name/direction/select), `sealed_paths`,
-`sealed_tokens`, `frozen_paths`, `final_eval_commands`, `optuna.storage` — plus matching `Read(...)`/`Edit(...)` deny
+`sealed_tokens`, `frozen_paths`, `final_eval_commands`, `splits`, `optuna.storage` — plus matching `Read(...)`/`Edit(...)` deny
 rules for the sealed paths in `.claude/settings.json`. These edits require the user's approval (the guard asks).
 *Gate 2:* experiment-reviewer approves the protocol; evaluator hashes recorded; protocol v1 frozen.
 
@@ -182,7 +183,8 @@ final value), `heartbeat_stale_seconds`, `min_free_disk_gb`, `kill_after_s` (gra
 `max_file_mb` and files named like a credential, such as `.env` or `*.key`, are linked, not copied; `none` runs
 from the working tree), `sealed_paths` (globs), `sealed_tokens` (strings such as an unlock variable),
 `frozen_paths`, `final_eval_commands` (one program call, optionally after `NAME=value` pairs, without shell syntax;
-`expctl final-eval` runs it and appends its own arguments), `external_jobs` (live jobs outside the harness: pid,
+`expctl final-eval` runs it and appends its own arguments), `splits` (name → file or folder, for
+`expctl audit-splits`), `external_jobs` (live jobs outside the harness: pid,
 owner, note),
 `harness_paths`, `optuna.{storage,studies}` (`sqlite:///experiments/optuna.db` or `journal:experiments/optuna.log`,
 relative to the project root), `limits`, `python` (the interpreter the installer recorded). Optional sections,

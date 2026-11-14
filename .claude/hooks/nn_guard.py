@@ -18,6 +18,8 @@ campaigns. It never edits tool input; it answers "deny", "ask" (the user is prom
   deny  the configured final-evaluation command itself, however its interpreter and script are
         spelled: it runs through `expctl final-eval`, which keeps a receipt of every use
   ask   `expctl final-eval` (each test-set access is a human decision)
+  ask   `expctl audit-splits` where the config seals anything (it prints counts only, but each
+        count of records shared with a sealed split is a small look at that split)
   ask   edits to frozen evaluation/protocol files, to the harness itself or to git's own files
   ask   kill/stop commands (always: jobs outside the harness are protected too); deleting run
         directories or checkpoints; shell writes into an active run's directory; destructive git;
@@ -130,6 +132,7 @@ PAID_COMPUTE = re.compile(
     r"\bgcloud\s+compute\s+instances\s+create\b|\baws\s+ec2\s+run-instances\b|\baz\s+vm\s+create\b")
 LOOP_CTL = re.compile(r"\bnn(?:loop|remote)(?:\.py)?\b[^;&|]{0,300}?\b(?:start|resume|launch|stop)\b")
 FINAL_CTL = re.compile(r"\bexpctl(?:\.py)?\b[^;&|]{0,300}?\bfinal-eval\b")
+AUDIT_CTL = re.compile(r"\bexpctl(?:\.py)?\b[^;&|]{0,300}?\baudit-splits\b")
 PUBLISH = re.compile(
     r"\b(?:hf|huggingface-cli)\s+(?:upload(?:-large-folder)?|repos?\s+create)\b|\bpush_to_hub\s*\(|\btwine\s+upload\b|"
     r"\bgh\s+(?:repo|release|gist)\s+create\b|\bdocker\s+push\b")
@@ -1496,6 +1499,11 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
                              "into a receipt and the journal. Approve only after the model-selection procedure, seed "
                              "and checkpoint rule are frozen and written in the journal; a repeated use (--again) is "
                              "another look at the test data."))
+    if AUDIT_CTL.search(c) and (cfg.get("sealed_paths") or cfg.get("sealed_tokens")):
+        results.append((ASK, "Counts the records that the configured splits share. It prints no row, but where a split "
+                             "is sealed each count is a small look at it, and audits repeated on changed data could "
+                             "probe which records it holds. Approve it when the data or the splits changed, not as a "
+                             "routine; every audit is recorded in .claude/state/final-eval/split-audits.jsonl."))
     if PIPE_TO_SHELL.search(c):
         results.append((ASK, "Pipes a download straight into an interpreter. Save it, read it, then run it; approve "
                              "only if the source is trusted."))
@@ -1564,6 +1572,8 @@ def check_readonly(tool, ti):
         why = "signals processes"
     elif MUTATING.search(c) or LOOP_CTL.search(c) or FINAL_CTL.search(c):
         why = "launches or stops work, or changes the repository or environment"
+    elif AUDIT_CTL.search(c):
+        why = "audits the data splits, which is the main session's step and the user's decision"
     return [(DENY, f"Read-only agent: this command {why}. Use bounded read commands, or report what needs doing "
                    f"to the main session.")] if why else []
 

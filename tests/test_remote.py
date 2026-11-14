@@ -8,6 +8,7 @@ import io
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -156,6 +157,19 @@ def unit_tests(tmp):
     rows = [{"event": "reserve", "run": "a", "usd": 2.0}, {"event": "settle", "run": "a", "usd": 0.5},
             {"event": "reserve", "run": "b", "usd": 1.0}]
     check(nnremote.committed(rows) == 1.5, "committed dollars = what ended runs were charged + open reservations in full")
+    # launches and controllers book at the same moment. On Windows two appends could land on one offset: a row
+    # was lost (a reservation the cap then did not count) or torn (and a torn line refuses every paid start)
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import nnremote; from pathlib import Path\n"
+            "for i in range(100): nnremote.book(Path(sys.argv[2]), event='reserve', run=sys.argv[3] + '-' + str(i), "
+            "usd=0.01, pad='x' * (i * 7 % 40))")
+    ps = [subprocess.Popen([PY, "-c", code, str(KIT / SCRIPTS), str(tmp / "same-moment"), str(w)]) for w in range(8)]
+    ends = [p.wait() for p in ps]
+    try:
+        booked = nnremote.ledger(tmp / "same-moment")
+    except nnremote.Refuse as e:
+        booked = [{"run": str(e)}]
+    check(ends == [0] * 8 and len({r["run"] for r in booked}) == 800 and abs(nnremote.committed(booked) - 8) < 1e-6,
+          f"ledger rows that eight processes book at the same moment all survive ({len(booked)} of 800, {booked[0]['run'][:60]})")
     counted = type("Drv", (), {"since": nnremote.time.monotonic() - 36})  # its controller has counted 36 s
     check(nnremote.used_s({"started_ts": 2000.0}, counted, 1000.0) >= 36 and nnremote.used_s({}, counted, 1000.0) == 0
           and nnremote.used_s({"started_ts": 964.0}, object(), 1000.0) == 36,

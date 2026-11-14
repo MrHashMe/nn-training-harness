@@ -138,9 +138,25 @@ def committed(rows):
 
 
 def book(root, **row):
+    """Append a row to the ledger. Launches and controllers book at the same moment, and on Windows two appends
+    can land on one offset, where one line destroys the other: a lost reservation would leave the cap
+    under-counted. So the writer first locks one byte far beyond the end of the file, where no reader meets it
+    (the guard's log is written the same way); closing the file ends the lock."""
     p = ledger_path(root)
     p.parent.mkdir(parents=True, exist_ok=True)
     with open(p, "a", encoding="utf-8") as f:
+        if os.name == "nt":
+            import msvcrt
+            for _ in range(300):  # about 3 s; after that it writes unlocked rather than lose the row
+                try:
+                    os.lseek(f.fileno(), 1 << 40, 0)
+                    msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError as e:
+                    if e.errno != 13:  # 13 (EACCES): another writer holds the lock; anything else: no locking here
+                        break
+                    time.sleep(0.01)
+            os.lseek(f.fileno(), 0, 2)
         f.write(json.dumps({"ts": round(time.time(), 1), **row}) + "\n")
 
 

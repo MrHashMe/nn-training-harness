@@ -5,10 +5,10 @@ huggingface_hub 2.4.0; OpenSSH). The Hugging Face route is built from documentat
 stand-in CLI: **it has not been run against the real service.** The ssh route is tested against a stand-in and
 was run once for real on 2026-11-11: a 30-second GPU training run launched from native Windows into WSL
 (`"exec": ["wsl.exe", "-d", "Ubuntu", "--cd", "~", "--exec", "bash", "-lc"]`), mirrored, scored locally, torn down.
-`on_finish` (2026-11-14) is tested with a stand-in command: no real machine has been stopped with it.
 Refresh: run `tests/test_remote.py`; compare the `hf jobs run`, `hf jobs inspect` and `hf buckets` commands in
 `scripts/nnremote.py` (class `HfJobs`) with the current CLI reference; read `https://huggingface.co/api/jobs/hardware`
 for prices. Before trusting the Hugging Face route with money, run the canary at the end of this file.
+`on_finish` (added 2026-11-14) is tested with a stand-in command: no real machine has been stopped with it.
 
 `nnremote` below means `python3 .claude/skills/nn-training/scripts/nnremote.py`, run from the project root.
 It is optional and does nothing until `.claude/nn-training.json` has a `remote` section.

@@ -701,10 +701,14 @@ keeping a change without a gain is 2.3 %)
   where it matters: a change three times as noisy is kept in 15 % (10 % today), and a real gain of two
   standard deviations is found in 44 % of first iterations instead of 68 %. Build: the change's panels may
   not lower the variance, and its mean is tested with its own variance where that is more than three times
-  the pooled one. Simulated: 3.0 % for the flat change, 7 % for the noisy one, 79 % power with history
-  (81 % today), 60 % in the first iteration.
+  the pooled one. Simulated (`gate_sim2.py`, 40,000 trials per case): 2.9 % for the flat change, 7.1 to
+  7.5 % for the one three times as noisy once several panels are behind the estimate (10.3 to 13.7 %
+  today), 79 % power with history (81 % today), 61 % in the first iteration (68 % today). Welch's degrees
+  of freedom for the noisy case were tried and not adopted: 5.7 % instead of 7.5 % there, for 1 to 2
+  points of power and a multiplier of 13.9 where the panel has two seeds.
 - R one diverged run of a change that is not kept stays in the pooled noise for the rest of the campaign.
-  Build: such a panel leaves the pool again.
+  Build: such a panel leaves the pool again, where one of its scores lies farther from the change's median
+  than a t multiple (z = 4) of the deviation the other panels give.
 - R the first-seed screen always uses the same seed. Build: it rotates.
 - R a pause drops the line that a restart began (`loop.restart_after`). Build: it is set aside and resumed.
 - N a bootstrap over test items inside the keep rule: it compares two trained models, the rule tests a
@@ -847,7 +851,33 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   launch looks at every file name below the fixed part of a wildcard pattern, for at most 20 s per folder,
   after which the folder's children are linked one by one; item 4 reads the change's text, so a variable
   name built at run time passes.
-- Next: step 4, the keep rule.
+- Done, step 4, the keep rule, one commit per idea: the seed that screens a change rotates (`92b9419`); a
+  pause keeps the line a restart began (`3792686`); a change's own runs cannot lower its margin, and a
+  noisy change is tested with its own variance (`be6abde`); a change that is not kept leaves the pooled
+  noise again when one of its runs went astray (`1ed9177`). The final state passed `tests/test_loop.py`,
+  `tests/test_benchmarks.py`, `tests/test_kit.py` and `tests/test_review_fixes.py` on Windows and in WSL;
+  each of the three states before it passed the parts of the loop's tests it touches on Windows.
+- For REPORT.md, the keep rule:
+  1. The variance a gain is tested against is never below the estimate without the change's own panels,
+     and the change's mean is tested with its own variance where that is more than three times the pooled
+     one (`OWN`). The confirmation applies the second rule to the kept commit's fresh panel.
+  2. The panels of a change that is not kept leave the pool when one score lies farther from the change's
+     median than a t multiple (z = 4) of the deviation the other panels give; the ledger row carries
+     `unpooled: true`. Not applied where the other panels have no spread.
+  3. The first seed of an iteration rotates through the panel; the discard reason names the seed.
+  4. A campaign that pauses on the line a restart began puts that line by (`aside` in `state.json`) and a
+     `resume` takes it up again; a campaign that ends drops it as before.
+  Changed tests, with the reason: the expected first-seed discard text now ends with the seed; in the
+  second-panel test the two expected margins follow item 1 (the change's four scores vary more than three
+  times the pooled variance; the estimate without the change's panels is the larger one). New checks: the
+  rotation, a pause and a resume on a restarted line (campaign r2), the margin's unit cases, `unpool`'s
+  unit cases and campaign astray.
+  Limits to name there: the simulation covers one iteration, without item 2 and the rotation, and the
+  whole-campaign simulation of 12 November was not repeated; a change that is noisier than the runs before
+  it is still kept above the nominal rate (7 % where it is three times as noisy, 10 to 14 % before); the
+  rule costs 7 points of power at a campaign's first change (61 % for a gain of two deviations, 68 %
+  before) and about 2 later.
+- Next: step 5, runlog.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

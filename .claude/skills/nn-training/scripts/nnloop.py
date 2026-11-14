@@ -490,7 +490,7 @@ Rules of the campaign:
 - Change only: {editable}. A change to any other file invalidates the iteration.
 - Each run is cut off after {budget} seconds of wall-clock time, start-up and saving included, and a run that is cut off or crashes counts as failed. Keep what the run must save unchanged.
 - Make one coherent change that tests one hypothesis, so that the result can be attributed to it.
-- Held-out and test data, the evaluator, the harness configuration and everything outside this folder are off limits; an attempt invalidates the iteration.
+- Held-out and test data, the evaluator, the harness configuration and everything outside this folder are off limits, whether named by an absolute path or through an environment variable such as EXP_PROJECT_ROOT; an attempt invalidates the iteration.
 
 Current best score: {best} ({direction}; the campaign started at {start}). To be kept, a change must improve the mean over {n} seeds by more than about {margin}; the exact margin comes from the run-to-run noise of all runs so far, your change's included. A gain above two thirds of the margin is measured on {n} more seeds and decided on all of them.{curve}
 
@@ -1117,6 +1117,9 @@ class Campaign:
         if not self.box_train and NET.search(added):
             hits.append(f"the change adds network or process-starting code ('{NET.search(added).group(0)}'), and "
                         f"this platform cannot run training without network access")
+        if not self.box_train and "EXP_PROJECT_ROOT" in added:  # a run gets the main project's place in this variable
+            hits.append("the change reads EXP_PROJECT_ROOT, the main project's folder, and this platform cannot hide "
+                        "the sealed data there from a training run")
         # a refused read counts only when it aimed at sealed data; every other refusal was an attempt to change,
         # stop, publish or leave the project
         bad = [g for g in guard if g.get("decision") == "deny"

@@ -1309,6 +1309,13 @@ def campaign_r(tmp, proj, exe):
 def sandbox_tests(tmp, proj):
     print("== sandbox of a training run ==")
     C = nnloop.Campaign(proj, nnloop.expctl.load_config(proj), "sb", argparse.Namespace())
+    box, diff = C.box_train, "+++ b/train.py\n+root = os.environ['EXP_PROJECT_ROOT']\n"
+    got = []
+    for C.box_train in ([], ["bwrap"]):
+        got.append(any("EXP_PROJECT_ROOT" in h for h in C.scan(diff, "", [])))
+    C.box_train = box
+    check(got == [True, False], "a change that reads EXP_PROJECT_ROOT counts as tampering where no sandbox hides the "
+          f"sealed data from a training run, and not where one does ({got})")
     if not C.box_train:
         print("SKIP sandbox checks: bubblewrap is not usable here (it is Linux-only), so a run is not confined on this platform")
         return

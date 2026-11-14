@@ -18,7 +18,7 @@ process keeps it in step with the run directory on the remote side. So the run c
 
     nnremote launch --name NAME --on TARGET [--hours H] [--retries K] [--seed S] [--tag k=v] -- {python} train.py ...
     expctl status | detail RUN | watch RUN | curve RUN | stop RUN        (unchanged)
-    nnremote resume RUN [--on TARGET] [--hours H] [--retries K]          continue an ended remote run
+    nnremote resume RUN [--on TARGET] [--hours H] [--retries K] [--allow-code-change]   continue an ended remote run
     nnremote attach RUN                                                  take control of a run shown as "lost"
     nnremote status                                                      cap, committed dollars, open runs
 
@@ -94,7 +94,9 @@ then `rl.checkpoint(...)`) and (2) on start continues from `rl.resume_from` when
 The mirror receives changed files every `poll_s` seconds, so at most that much work is lost.
 - Job gone without an exit record (preempted, cancelled from outside, machine died): the run ends as
   `interrupted`, and with `--retries K` left a new run starts from the mirrored directory, with its own
-  reservation. Its manifest names the run it continues (`resume_of`).
+  reservation. Its manifest names the run it continues (`resume_of`). Not when the project's source has changed
+  since the launch: the exit record then says so (`remote.not_resumed`), and `nnremote resume RUN
+  --allow-code-change` continues it if the change is meant (`resume.md`).
 - Hours used up: not retried. `nnremote resume RUN --hours H` continues it if you decide to pay for more.
 - Target unreachable for `unreachable_s`: the controller exits **without** tearing down or settling, the run shows
   as `lost`, and `supervisor.log` says so. When the target answers again: `nnremote attach RUN`.

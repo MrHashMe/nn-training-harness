@@ -486,7 +486,8 @@ def spawn_controller(root, d):
                      **DETACH)
 
 
-def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, note=None, tags=None, resume_of=None):
+def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, note=None, tags=None, resume_of=None,
+              allow_code_change=False):
     """Check everything, reserve the money, create the local run directory and start its controller."""
     tgt = st["targets"].get(target)
     if not isinstance(tgt, dict) or tgt.get("type") not in DRIVERS:
@@ -506,6 +507,9 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
     members = bundle(root, cfg, st, resume_of)  # refuses before anything is reserved
     held = [f for f in held_back(root, cfg) if f not in members]
     _files, _is_git, prov = expctl.provenance(root, cfg)
+    was = ((expctl.read_json(resume_of / "manifest.json") or {}).get("snapshot") or {}).get("source_hash") if resume_of else None
+    if was and was != prov["source_hash"] and not allow_code_change:  # also after a preemption, hours after the launch
+        raise Refuse(expctl.changed_source(resume_of.name, was, prov["source_hash"], "nnremote.py"))
     rdir = expctl.runs_root(root, cfg)
     rdir.mkdir(parents=True, exist_ok=True)
     if rate > 0 and not ledger_path(root).exists() and any(
@@ -527,7 +531,7 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
                       "reserved_usd": usd, "retries": int(retries or 0), "sent_files": len(members),
                       "not_sent": held, "sent_env": list(st["env"])}}
     if resume_of:
-        man["resume_of"] = resume_of.name
+        man["resume_of"], man["resume_of_source_hash"] = resume_of.name, was
     try:
         d.mkdir()
         expctl.write_json_atomic(d / "manifest.json", man)
@@ -883,7 +887,7 @@ def cmd_resume(a):
         root, cfg, st, name=man.get("name") or "run", target=a.on or rem["target"], cmd=man["cmd"],
         hours=a.hours if a.hours is not None else rem.get("hours"),
         retries=a.retries if a.retries is not None else rem.get("retries", 0), seed=man.get("seed"),
-        note=f"resume of {d.name}", tags=man.get("tags"), resume_of=d))
+        note=f"resume of {d.name}", tags=man.get("tags"), resume_of=d, allow_code_change=a.allow_code_change))
 
 
 def cmd_attach(a):
@@ -950,6 +954,8 @@ def main(argv=None):
     s.add_argument("--on")
     s.add_argument("--hours", type=float)
     s.add_argument("--retries", type=int)
+    s.add_argument("--allow-code-change", action="store_true",
+                   help="resume although the source differs from what the run was launched with")
     s.set_defaults(fn=cmd_resume)
 
     s = sub.add_parser("attach", help="restart the local controller of a remote run whose controller died")

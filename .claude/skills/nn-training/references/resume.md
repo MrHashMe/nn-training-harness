@@ -37,8 +37,11 @@ Resuming an Optuna study or a tracker run only continues bookkeeping; it does no
 - In the script: `if rl.resume_from: state = load(rl.resume_from / "ckpt" / "last.pt")`. Restore every item in
   section 1, continue the step counter, and log `resumed_from` (path, step) as the first metrics event. A script
   written this way also survives preemption on a remote target, where `nnremote` resumes it (`remote.md`).
-- The resumed run executes the working tree as it is now. If the code changed since the parent, the source hashes
-  differ: say so in the journal entry, because the result is then not a pure continuation.
+- The resumed run executes the working tree as it is now. So a resume (`expctl resume`, `nnremote resume`, and the
+  automatic one after a preemption) refuses when the source hash differs from the parent's: the checkpoint would
+  go on with other code under one name. Bring the parent's code back, or pass `--allow-code-change` if the change
+  is meant: the new run's manifest then records the parent's hash (`resume_of_source_hash`) beside its own. Say so
+  in the journal entry, because the result is then not a pure continuation.
 - Resuming in place (same `EXP_RUN_DIR`) also works: RunLog moves the old `result.json`/`exit.json` aside as
   `*.prev-<time>.json` so the live run is not reported as finished.
 

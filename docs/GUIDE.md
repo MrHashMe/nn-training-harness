@@ -656,7 +656,8 @@ python3 .claude/skills/nn-training/scripts/nnremote.py launch --name NAME --on T
   stopping a run still needs your approval.
 - Ask for a diagnosis with one precise question ("why did run X diverge at step 12k?"). The agent hands the raw
   logs to its `run-analyst` subagent, which keeps them out of the main context.
-- `expctl resume RUN` continues an ended run from its checkpoint as a new run.
+- `expctl resume RUN` continues an ended run from its checkpoint as a new run. It refuses when the code has
+  changed since that run was launched, unless you pass `--allow-code-change`.
 - On native Windows a graceful stop is a `stop.json` file only: a training loop that does not poll
   `rl.should_stop()` is killed after the grace period.
 

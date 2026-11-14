@@ -1460,6 +1460,14 @@ def fail(code, msg, **extra):
     return code
 
 
+def changed_source(run_id, was, is_now, tool):
+    """Why a resume is refused: the run would go on with other code than it began with, under one name."""
+    return (f"the source has changed since {run_id} was launched (source hash {was[:12]} then, {is_now[:12]} now), so a "
+            f"resume would continue its checkpoint with other code. Bring back the code of that launch (its manifest "
+            f"names the commit, and files that git neither tracks nor ignores count as source), or, if the change is "
+            f"meant, resume with `{tool} resume {run_id} --allow-code-change`: the new run then records both hashes.")
+
+
 def cmd_launch(args):
     root = find_root(args.root)
     cfg = load_config(root)
@@ -1475,6 +1483,10 @@ def cmd_launch(args):
         return fail(3, f"only {free_gb} GB free on the runs filesystem (< min_free_disk_gb); free space or pass --force")
     gpus = [g.strip() for g in args.gpus.split(",")] if args.gpus else None
     files, is_git, prov = provenance(root, cfg)
+    resume_of = getattr(args, "resume_of", None)  # set by `expctl resume`: the run directory this run continues
+    was_hash = ((read_json(resume_of / "manifest.json") or {}).get("snapshot") or {}).get("source_hash") if resume_of else None
+    if was_hash and was_hash != prov["source_hash"] and not getattr(args, "allow_code_change", False):
+        return fail(2, changed_source(resume_of.name, was_hash, prov["source_hash"], "expctl.py"))
     active = [r for r in scan(root, cfg) if r["state"] in ACTIVE_STATES]
     for r in active:
         same_code = (r.get("source_hash") or "") == prov["source_hash"][:12]
@@ -1543,9 +1555,9 @@ def cmd_launch(args):
         "launched_by": "expctl",
         "via": args.via or "setsid",
     }
-    resume_of = getattr(args, "resume_of", None)  # set by `expctl resume`: the run directory this run continues
     if resume_of:
         manifest["resume_of"] = resume_of.name
+        manifest["resume_of_source_hash"] = was_hash
     write_json_atomic(run_dir / "manifest.json", manifest)
     env = os.environ.copy()
     env.update({"EXP_RUN_DIR": str(run_dir), "EXP_RUN_ID": run_id, "PYTHONUNBUFFERED": "1",
@@ -1678,7 +1690,8 @@ def cmd_resume(args):
         gpus=",".join(map(str, gpus)) if gpus else None, seed=man.get("seed"), study=man.get("study"),
         trial=man.get("trial"), tag=[f"{k}={v}" for k, v in (man.get("tags") or {}).items()], force=args.force,
         allow_duplicate=args.allow_duplicate, share_gpu=args.share_gpu,
-        via=man.get("via") if man.get("via") in ("setsid", "tmux") else None, resume_of=d))
+        via=man.get("via") if man.get("via") in ("setsid", "tmux") else None, resume_of=d,
+        allow_code_change=args.allow_code_change))
 
 
 def cmd_supervise(args):
@@ -2374,6 +2387,8 @@ def main(argv=None):
     s.add_argument("--force", action="store_true", help="launch despite low disk space")
     s.add_argument("--allow-duplicate", action="store_true")
     s.add_argument("--share-gpu", action="store_true")
+    s.add_argument("--allow-code-change", action="store_true",
+                   help="resume although the source differs from what the run was launched with")
     s.set_defaults(fn=cmd_resume)
 
     s = sub.add_parser("watch", help="block and print one JSON line per run event (for the Monitor tool)")

@@ -401,6 +401,22 @@ def ssh_tests(tmp, proj):
           f"nnremote resume continues at the step after the last checkpoint ({read(d2 / 'seen.json').get('start')} after {last})")
     stop(proj, rid2)
     ended(d2)
+    src, n = proj / "train_remote.py", len(list((proj / "runs").glob("*")))
+    code = src.read_bytes()
+    src.write_bytes(code + b"# changed after the launch\n")
+    r = remote(proj, "resume", rid, "--retries", "0")
+    check("the source has changed" in r.stdout and "--allow-code-change" in r.stdout and len(list((proj / "runs").glob("*"))) == n,
+          "nnremote resume refuses when the source differs from what the run was launched with (was: it sent today's "
+          f"tree without a word) ({r.stdout.strip()[-200:]})")
+    out3 = parsed(remote(proj, "resume", rid, "--retries", "0", "--allow-code-change"))
+    d3 = proj / "runs" / str(out3.get("run_id"))
+    man3 = read(d3 / "manifest.json")
+    check(out3.get("ok") and man3.get("resume_of_source_hash") == read(d / "manifest.json")["snapshot"]["source_hash"]
+          != man3["snapshot"]["source_hash"],
+          "with --allow-code-change it resumes, and the new run records the source hash it continues from beside its own")
+    stop(proj, str(out3.get("run_id")))
+    ended(d3)
+    src.write_bytes(code)
 
     print("== preemption: automatic resume from the last checkpoint ==")
     out = launch(proj, "--name", "preempt", "--on", "box", "--retries", "1", "--", "{python}", "train_remote.py", "120")
@@ -421,6 +437,16 @@ def ssh_tests(tmp, proj):
         check(man2.get("resume_of") == rid and man2["remote"]["retries"] == 0 and "resumed_as" not in (ex2.get("remote") or {}),
               "the resumed run records what it continues and has one retry fewer")
         check(not (rroot / rid).exists() and not (rroot / rid2).exists(), "both remote directories are removed")
+    out = launch(proj, "--name", "preempt2", "--on", "box", "--retries", "1", "--", "{python}", "train_remote.py", "4000")
+    rid, d = out.get("run_id"), proj / "runs" / str(out.get("run_id"))
+    tk.wait_for(lambda: step_of(d) >= 3, timeout=40)
+    src.write_bytes(code + b"# changed while the run was out\n")
+    fake_hf.kill_tree(read(rroot / rid / ".nnremote.json").get("pid"))
+    rem = ended(d).get("remote") or {}
+    src.write_bytes(code)
+    check("the source has changed" in str(rem.get("not_resumed")) and "resumed_as" not in rem,
+          "a preempted run is not resumed with code that changed meanwhile, and its exit record says why (was: resumed "
+          f"with the changed tree) ({rem})")
 
     print("== target unreachable: nothing torn down, attach picks the run up ==")
     out = launch(proj, "--name", "split", "--on", "box", "--", "{python}", "train_remote.py", "4000")
@@ -559,6 +585,19 @@ def local_resume(tmp, proj, remote_rid):
           f"expctl resume repeats the command with the same seed and tags and continues after the last checkpoint ({out2})")
     stop(proj, rid2)
     check(read(d2 / "result.json").get("meta", {}).get("resume_of") == rid, "the result of a resumed run names the run it continues")
+    src = proj / "train_remote.py"
+    code = src.read_bytes()
+    src.write_bytes(code + b"# changed after the launch\n")
+    r = tk.expctl(proj, "resume", rid)
+    out3 = tk.jout(tk.expctl(proj, "resume", rid, "--allow-code-change"))
+    man3 = read(proj / "runs" / str(out3.get("run_id")) / "manifest.json")
+    src.write_bytes(code)
+    check(r.returncode == 2 and "the source has changed" in r.stdout and "--allow-code-change" in r.stdout,
+          "expctl resume refuses when the source differs from what the run was launched with (was: it ran today's tree "
+          "without a word)")
+    check(man3.get("resume_of_source_hash") == read(d / "manifest.json")["snapshot"]["source_hash"] != man3["snapshot"]["source_hash"],
+          "with --allow-code-change it resumes, and the new run records the source hash it continues from beside its own")
+    stop(proj, str(out3.get("run_id")))
     r = remote(proj, "resume", rid)
     check("not a remote run" in r.stdout, "nnremote resume refuses a local run")
     if remote_rid:

@@ -1,7 +1,8 @@
 # Unattended research loop (`nnloop`)
 
 Checked: 2026-11-11 (Claude Code 2.1.303, Codex CLI 0.167, Cursor CLI docs of that date; keep rule, the
-harness's search of numeric settings and the restart of a stalled campaign: 2026-11-12; the rotating first seed: 2026-11-14)
+harness's search of numeric settings and the restart of a stalled campaign: 2026-11-12; the rotating first seed
+and a pause on a restarted line: 2026-11-14)
 Refresh: re-read each agent's headless-mode and permission documentation and run `tests/test_loop.py`; the
 start-up lines of `agent_argv` in `scripts/nnloop.py` are the only agent-specific part.
 
@@ -283,9 +284,12 @@ so far, and once the changes on top of that commit stop helping, the rest of the
   against the commit it started from. When it is kept, the branch moves to it only if its mean over the seed
   panel is also better than that of the commit that was left (the panel, because every kept commit has those
   runs). Otherwise it is the tip of a line of its own: later iterations build on it, and it is dropped when
-  the campaign stops, with its `diff.patch` as the record.
+  the campaign ends (a limit, a finished search, repeated failure), with its `diff.patch` as the record.
 - However a campaign stops, it rests on the best commit it found: the confirmation compares that commit with
-  the start, the journal and `nnloop status` report it, and a `resume` goes on from it.
+  the start, the journal and `nnloop status` report it, and a `resume` goes on from it. One exception (since
+  14 November 2026): a campaign that only pauses on the line a restart began (a stop request, an interruption,
+  a usage cap, any stop that is not its end) puts that line by (`aside` in `state.json`), and the `resume`
+  takes it up again with the best commit set aside as before.
 - The worker reads the history of the code in front of it: the iterations that started from a commit that is
   part of that code. A change that was kept elsewhere stays in the list, marked as not in the code, so that
   the session neither assumes it is there nor repeats it unknowingly. The same diff from the same commit is
@@ -295,7 +299,7 @@ so far, and once the changes on top of that commit stop helping, the rest of the
   code.
 
 What it is not. No tree search and no population: one line is worked on at a time, and the campaign returns
-to a line it left only when it stops (then to the best one). Choosing the better of two lines on the seed
+to a line it left only when it ends (then to the best one). Choosing the better of two lines on the seed
 panel is one more selection on the same seeds; like every keep, it is what the confirmation on fresh seeds is
 for. No value of K was tried on real campaigns: a small K gives up a line early, and a K near the number of
 iterations that the limits allow never restarts.

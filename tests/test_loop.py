@@ -1307,6 +1307,26 @@ def campaign_r(tmp, proj, exe):
           "back on its best commit the worker reads that commit's history again, with the change kept elsewhere marked, "
           "and the journal follows the branch to the new best")
 
+    plan(tmp, [edit("QUALITY = 1.0", "QUALITY = 1.5", title="first"), edit("QUALITY = 1.5", "QUALITY = 1.4", title="lower"), no,
+               {"result": "cap"}])
+    r = loop(proj, "start", "--campaign", "r2", "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-runs", "40")
+    s2, i2 = state(proj, "r2"), iters(proj, "r2")
+    b0, b1 = s2.get("base_commit"), (i2[0].get("commit") if i2 else None)
+    paused = (r.returncode == 1 and "usage cap" in str(s2.get("stop_reason")) and len(i2) == 3 and s2.get("kept_commit") == b1
+              and "best" not in s2 and (s2.get("aside") or {}).get("kept_commit") == b0 and near(s2["baseline"]["mean"], 1.51)
+              and '"best_score": 1.51' in loop(proj, "status", "--campaign", "r2").stdout)
+    r, s2, new = resume(tmp, proj, exe, "r2", [edit("QUALITY = 1.0", "QUALITY = 1.8", title="other")] + [no] * 4, "--max-runs", "40")
+    if not check(paused and r.returncode == 0 and [e["status"] for e in new] == ["keep"] + ["declined"] * 4
+                 and new[0]["base"] == b0 and "aside" not in s2 and "best" not in s2 and s2["kept_commit"] == new[0]["commit"]
+                 and git(proj, "rev-list", "--count", f'{b0}..{s2["kept_commit"]}') == "1" and near(s2["baseline"]["mean"], 1.81)
+                 and (s2.get("confirm") or {}).get("status") == "confirmed",
+                 "a campaign that pauses (here: a usage cap) on the line a restart began rests on its best commit, and the "
+                 "resume goes on with that line (was: the line was dropped, and the resume went back to the commit that "
+                 "had stalled)"):
+        show(r)
+        print("  paused:", paused, "state:", {k: s2.get(k) for k in ("stop_reason", "kept_commit", "aside")},
+              [(e.get("status"), e.get("base")) for e in new], b0, b1)
+
 
 # ---------------------------------------------------------------- 11. the sandbox of a run (Linux)
 

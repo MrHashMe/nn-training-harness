@@ -1503,6 +1503,9 @@ class Campaign:
             st["margin"] = self.margin(n - 1)
         if (st.get("confirm") or {}).get("status") not in CONFIRMED:
             st.pop("confirm", None)  # an attempt that did not finish says nothing about the run that starts now
+        if st.get("aside"):  # the line a restart had begun when the campaign paused: go on with it
+            st["best"] = {"kept_commit": st["kept_commit"], "baseline": st["baseline"], "line": st["line"], "stall": 0}
+            st.update(st.pop("aside"))
         st["hold"] = self.pending() and not self.short()
         (self.dir / "stop.request").unlink(missing_ok=True)
         self.save()
@@ -1527,8 +1530,11 @@ class Campaign:
             st["stop_reason"] = "interrupted"
         except Exception as e:  # noqa: BLE001 - whatever goes wrong, the state is written and the loop ends
             st["stop_reason"] = f"internal error: {type(e).__name__}: {str(e)[:300]}"
-        # however it ends, a campaign rests on its best commit: a line that a restart began and that did not beat
-        # the one set aside is dropped, and a resume goes on from the best
+        # however it ends, a campaign rests on its best commit. A line that a restart began and that did not beat
+        # the one set aside is dropped where the campaign is over (above), and a resume goes on from the best. Where
+        # it only pauses (a stop request, an interruption, a usage cap), the line is put by and the resume takes it up
+        if "best" in st:
+            st["aside"] = {k: st[k] for k in ("kept_commit", "baseline", "line", "stall")}
         st.update(st.pop("best", {}), status="stopped", pid=None)
         try:
             self.drop_worktree()

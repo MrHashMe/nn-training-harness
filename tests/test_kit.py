@@ -470,8 +470,21 @@ def main():
             "expctl.same_process(me, a), expctl.same_process(me, (a or 0) - 60), time.time()]))\n")
     r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
     a, b, gone, same, other, now = json.loads(r.stdout) if r.returncode == 0 else [None] * 6
-    check(a and b and abs(a - b) < 1 and gone is None and same and other is False and (os.name != "nt" or abs(now - a) < 60),
+    check(a and b and abs(a - b) < 1 and gone is None and same and other is False
+          and (sys.platform.startswith("linux") or abs(now - a) < 60),
           f"a process's start time is known without psutil, to expctl and to the run logger alike, and tells a reused pid ({r.stdout.strip()} {r.stderr[-200:]})")
+    # macOS has no /proc, so there the start time comes from ps: asked in UTC whatever zone this process is in (here
+    # one nine hours off), and it agrees with the other route where both exist
+    if os.name != "nt":
+        code = ("import json, os, subprocess, sys, time\nsys.modules['psutil'] = None\nsys.path.insert(0, sys.argv[1])\n"
+                "import expctl\nme = os.getpid()\n"
+                "hours = [subprocess.run(['ps', '-o', 'lstart=', '-p', str(me)], capture_output=True, text=True,\n"
+                "                        env=dict(os.environ, LC_ALL='C', TZ=z)).stdout.split()[3][:2] for z in ('UTC', 'XYZ-9')]\n"
+                "print(json.dumps([expctl._ps_start(me), expctl.proc_start_time(me), time.time(), hours, expctl._ps_start(4294967292)]))\n")
+        r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj, env={"TZ": "XYZ-9"})
+        ps, a, now, hours, gone = json.loads(r.stdout) if r.returncode == 0 else [None] * 5
+        check(ps and a and abs(ps - a) < 5 and abs(now - ps) < 60 and hours[0] != hours[1] and gone is None,
+              f"ps gives a process's start time in UTC, the route for a system with no /proc ({r.stdout.strip()} {r.stderr[-200:]})")
     # on Linux that start time is the boot time plus the ticks since boot, and the boot time moves whenever the system
     # clock is set (a VM's time sync): after five seconds of it a live run read as lost. The records carry the boot's
     # id and the ticks as well, and a process they match is the same one. Without a match the time decides as before:

@@ -166,6 +166,15 @@ def _proc_start_time(pid):
             ok = k32.GetProcessTimes(h, *[ctypes.byref(x) for x in t])
             k32.CloseHandle(h)
             return ((t[0].dwHighDateTime << 32) | t[0].dwLowDateTime) / 1e7 - 11644473600 if ok else None  # 100 ns from 1601
+        if not sys.platform.startswith("linux"):  # macOS has no /proc: ask ps, as expctl._ps_start does
+            import calendar
+            import subprocess
+
+            out = subprocess.run(["ps", "-o", "lstart=", "-p", str(int(pid))], capture_output=True, text=True, timeout=10,
+                                 env=dict(os.environ, LC_ALL="C", TZ="UTC")).stdout
+            _, mon, day, hms, year = out.split()  # Sat Nov 14 10:23:45 2026
+            h, m, s = (int(x) for x in hms.split(":"))
+            return float(calendar.timegm((int(year), "JanFebMarAprMayJunJulAugSepOctNovDec".index(mon) // 3 + 1, int(day), h, m, s)))
         with open(f"/proc/{pid}/stat", "r") as f:
             data = f.read()
         ticks = int(data[data.rfind(")") + 2:].split()[19])

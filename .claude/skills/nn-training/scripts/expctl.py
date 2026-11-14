@@ -67,6 +67,7 @@ Run-directory contract (files under <runs_dir>/<run_id>/):
 from __future__ import annotations
 
 import argparse
+import calendar
 import csv
 import hashlib
 import json
@@ -437,6 +438,8 @@ def proc_start_time(pid):
         pass
     if os.name == "nt":  # without psutil a pid that had gone to another process counted as the run's
         return _win_proc_start(pid)
+    if not sys.platform.startswith("linux"):  # macOS has no /proc, which left the same gap there
+        return _ps_start(pid)
     try:
         with open(f"/proc/{int(pid)}/stat", "r") as f:
             data = f.read()
@@ -450,6 +453,19 @@ def proc_start_time(pid):
         if btime is None:
             return None
         return btime + ticks / os.sysconf("SC_CLK_TCK")
+    except Exception:
+        return None
+
+
+def _ps_start(pid):
+    """A process's start time as `ps` gives it, in whole seconds (same_process allows five). Asked in UTC and in the C
+    locale, and read by hand, so that neither a daylight-saving hour nor a locale of this process changes the answer."""
+    try:
+        out = subprocess.run(["ps", "-o", "lstart=", "-p", str(int(pid))], capture_output=True, text=True, timeout=10,
+                             env=dict(os.environ, LC_ALL="C", TZ="UTC")).stdout
+        _, mon, day, hms, year = out.split()  # Sat Nov 14 10:23:45 2026
+        h, m, s = (int(x) for x in hms.split(":"))
+        return float(calendar.timegm((int(year), "JanFebMarAprMayJunJulAugSepOctNovDec".index(mon) // 3 + 1, int(day), h, m, s)))
     except Exception:
         return None
 

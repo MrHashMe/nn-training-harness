@@ -946,6 +946,29 @@ def main():
         ("PowerShell", {"command": "git add -f data"}, "ask"),
         ("Bash", {"command": "git add -A && git commit -qm wip"}, None),
         ("Bash", {"command": "git add -f train.py eval sub"}, None),
+        # were None: spellings that a shell takes back to the sealed name before it runs the line. The guard reads
+        # the line a second time as a POSIX shell does (an escape character off, $'..' decoded, {a,b} written out)
+        # and as PowerShell and cmd do (their escape characters off). A brace list elsewhere, a Windows path and
+        # braces inside quotes stay unasked; a list too long to write out is asked about
+        ("Bash", {"command": "cat data/te\\st/labels.csv"}, "deny"),
+        ("Bash", {"command": "cat data/te\\\nst/labels.csv"}, "deny"),
+        ("Bash", {"command": "cat data/{test,}/labels.csv"}, "deny"),
+        ("Bash", {"command": "head -n 2 data/t{e,}st/labels.csv"}, "deny"),
+        ("Bash", {"command": "cat data/$'test'/labels.csv"}, "deny"),
+        ("Bash", {"command": "cat data/$'te\\x73t'/labels.csv"}, "deny"),
+        ("Bash", {"command": "cat data/$\"test\"/labels.csv"}, "deny"),
+        ("Bash", {"command": "bash -c 'cat data/te\\st/labels.csv'"}, "deny"),
+        ("Bash", {"command": "NN_UNSEAL\\_TEST=1 python train.py"}, "deny"),
+        ("Bash", {"command": "cmd /c \"type data\\te^st\\labels.csv\""}, "deny"),
+        ("PowerShell", {"command": "Get-Content \"data/te`st/labels.csv\""}, "deny"),
+        ("PowerShell", {"command": "Get-Content data\\te`u{73}t\\labels.csv"}, "deny"),
+        ("Bash", {"command": "echo {a,b}{c,d}{e,f}{g,h}{i,j}{k,l}{m,n}"}, "ask"),
+        ("Bash", {"command": "bash -c 'echo {a,b}{c,d}{e,f}{g,h}{i,j}{k,l}{m,n}'"}, "ask"),
+        ("Bash", {"command": "python -c \"print([{'a':1,'b':2},{'a':3,'b':4},{'a':5,'b':6},{'a':7,'b':8},"
+                             "{'a':9,'b':0},{'a':1,'b':2},{'a':3,'b':4}])\""}, None),
+        ("Bash", {"command": "mkdir -p out/{a,b} && echo {1,2} `date`"}, None),
+        ("Bash", {"command": "python sub\\hello.py --params '{\"a\":{\"b\":1,\"c\":2},\"d\":{\"e\":1,\"f\":2}}'"}, None),
+        ("Bash", {"command": "python -c \"print({1,2}, {'a':{'b':1,'c':2},'d':{'e':1,'f':2}})\""}, None),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)

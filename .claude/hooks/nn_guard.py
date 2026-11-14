@@ -188,6 +188,7 @@ PS_KILL = re.compile(r"\b(?:Stop-Process|spps|taskkill)\b|\bwmic\b[^;&|]{0,200}?
 # a command that hands text to a nested shell or an interpreter (bash -c "...", python -c "...", cmd /c "...")
 SHELLS = re.compile(r"\b(?:(?:ba|z|da|k)?sh|cmd|powershell|pwsh|python[0-9.]*|py|node|perl|ruby|eval|iex|"
                     r"Invoke-Expression|wsl|ssh)\b", re.I)
+POSIX_SHELL = re.compile(r"\b(?:(?:ba|z|da|k)?sh|eval|wsl|ssh)\b", re.I)
 CODE_FLAG = re.compile(r"^(?:-[a-z]*c|-e|-command|--command|--eval|/c|/k|eval|iex|invoke-expression)$", re.I)
 # the same flag with its text attached (bash -c"echo x > f", cmd /c"type f"): what follows it is no plain option value
 ATTACHED = re.compile(r"^(?:-[a-z]*?c|/[ck])(?=.*[^\w.=:,/@%+-])(.+)$", re.I | re.S)
@@ -198,6 +199,12 @@ DECODE_TO_SHELL = re.compile(
     r"(?:sudo\s+)?(?:(?:ba|z|da|k|c)?sh|pwsh|powershell|iex|Invoke-Expression|python[0-9.]*|perl|node|ruby)\b|"
     r"\b(?:iex|Invoke-Expression)\b[^;&|]*FromBase64String|FromBase64String[^;&]*\|\s*(?:iex|Invoke-Expression)\b", re.I)
 # text that joins paths from string literals: the gap between two of them, and the calls in which a comma joins
+# what a shell takes out of a name before it runs the line: see readings()
+ANSI_C = re.compile(r"\$'((?:\\.|[^'\\])*)'", re.S)
+C_ESCAPE = re.compile(r"\\(x[0-9a-fA-F]{1,2}|u[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{1,8}|[0-7]{1,3}|.)", re.S)
+POSIX_PART = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"|\\(.)", re.S)
+BRACE_WORD = re.compile(r"[^\s;&|<>()]*\{[^{}\s]*,[^{}\s]*\}[^\s;&|<>()]*")
+WIN_ESCAPE = re.compile(r"[`^](?=[\w./\\:-])")
 GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*")
 JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
@@ -775,6 +782,46 @@ def git_runs(c: str):
     return None
 
 
+def readings(cmd: str):
+    """The line as another shell reads it, where that is another text, and whether a word of it was too long to
+    write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell takes it
+    off the character behind it (te\\st is test, also across the end of a line), reads $'te\\x73t' and $"test" as
+    test, and writes a word with {a,b} out; PowerShell and cmd take their own escape characters off (te`st, te^st).
+    Each reading may name more than the shell would (an escape that stands for a control character is read as its
+    letter): it is checked in addition to the line as it came.
+    shortcut: text only, so a name put together from variables, {a..b} or a command's output passes; that takes
+    running the line in a sandbox"""
+    held, long = [], []
+
+    def hold(s):  # quoted text is no escape and no brace list
+        held.append(s)
+        return "\0%d\0" % (len(held) - 1)
+
+    def c_char(m):
+        e = m.group(1)
+        return chr(min(int(e[1:], 16), 0x10FFFF)) if e[0] in "xuU" and len(e) > 1 else \
+            chr(int(e, 8) % 256) if e[0] in "01234567" else e
+
+    def part(m):
+        x = m.group(1)
+        if x is None or not re.match(r"[\w./:@%+=~^-]", x):  # a quoted string, or a character that stays quoted
+            return hold(m.group() if x is None else "" if x == "\n" else shlex.quote(x))
+        return x
+
+    def written_out(m):
+        names = braces(m.group())
+        long.append(names is None)
+        return " ".join(names or [m.group()])
+
+    text = cmd.replace("\0", "")
+    posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), text)
+    posix = BRACE_WORD.sub(written_out, POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix)))
+    posix = re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], posix)
+    win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), text)
+    win = WIN_ESCAPE.sub("", win).replace("\0", "")
+    return [t for t in dict.fromkeys((posix, win)) if t != cmd], any(long)
+
+
 def decoded(t: str):
     """The text PowerShell reads from the value of -EncodedCommand (base64 of UTF-16), or None if t is no such value."""
     try:
@@ -1284,7 +1331,9 @@ def runs_final(seg, fin):
     return False
 
 
-def check_bash(ctx: Ctx, cmd: str, depth=0):
+def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
+    """alt: also check the line as another shell reads it. sh: the text may be a POSIX shell's (the line of a tool
+    call, or text handed to a shell), where a brace list stands for names."""
     cfg = ctx.cfg
     # a command word in quotes is the same command, and .NET's AllDirectories mostly comes as a string
     raw = FIND_END.sub(r"\1+", cmd.replace("\\", "/"))  # for the guard, find's two ends of a command are one
@@ -1611,8 +1660,16 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
         results.append((ASK, f"`uv run` syncs the environment by default and jobs are live ({ctx.live_desc()}); use "
                              f"`uv run --frozen` (or --no-sync) while runs or studies are active."))
     if depth < 2 and not is_final:  # what it hands to a nested shell or interpreter obeys the same rules
-        for s in inner_code(c):
-            results += check_bash(ctx, s, depth + 1)
+        # also from the line as it came: there the text still has the backslashes that readings() looks at
+        for s in dict.fromkeys(inner_code(c) + inner_code(GIT_GLOBAL.sub("git", cmd))):
+            results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)))
+    others, long = readings(cmd) if alt else ([], False)
+    if long and sh:  # program text (python -c "...") has braces of its own
+        results.append((ASK, "A word of this command stands for more than 64 names (a brace list such as "
+                             "{a,b}{c,d}...), more than this guard writes out to check them. Name the files one by "
+                             "one, or approve only if none of them is sealed test data."))
+    for other in others:  # every rule above, for the line as another shell reads it
+        results += check_bash(ctx, other, depth, False, sh)
     return results
 
 
@@ -1656,17 +1713,18 @@ def check_readonly(tool, ti):
         return [(DENY, "Read-only agent: it may not edit files. Report what needs changing to the main session.")]
     if tool != "Bash":
         return []
-    c = GIT_GLOBAL.sub("git", ti["command"])
-    texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c)]
     why = None
-    if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) for t in texts) or PY_WRITES.search(c):
-        why = "writes, moves or deletes files"
-    elif KILL.search(c) or PS_KILL.search(c):
-        why = "signals processes"
-    elif MUTATING.search(c) or LOOP_CTL.search(c) or FINAL_CTL.search(c):
-        why = "launches or stops work, or changes the repository or environment"
-    elif AUDIT_CTL.search(c):
-        why = "audits the data splits, which is the main session's step and the user's decision"
+    for cmd in [ti["command"]] + readings(ti["command"])[0]:  # r\m is rm to a POSIX shell
+        c = GIT_GLOBAL.sub("git", cmd)
+        texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c)]
+        if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) for t in texts) or PY_WRITES.search(c):
+            why = why or "writes, moves or deletes files"
+        elif KILL.search(c) or PS_KILL.search(c):
+            why = why or "signals processes"
+        elif MUTATING.search(c) or LOOP_CTL.search(c) or FINAL_CTL.search(c):
+            why = why or "launches or stops work, or changes the repository or environment"
+        elif AUDIT_CTL.search(c):
+            why = why or "audits the data splits, which is the main session's step and the user's decision"
     return [(DENY, f"Read-only agent: this command {why}. Use bounded read commands, or report what needs doing "
                    f"to the main session.")] if why else []
 

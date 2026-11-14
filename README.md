@@ -319,7 +319,41 @@ neither kit was shown to beat running the agent with no kit.
   (Task, WebFetch) are not read that way. A shell command that names `.git/hooks/` or `.git/config` is asked
   about when it could write there: the guard cannot tell a source from a target, so `cat .git/config > x` is
   asked about as well, while `cat .git/config` alone passes.
-- Recursive commands over the project root (`grep -r`, `rgrep`, `find`, `ls -R`, `tree`, `tar`, `zip`, `cp -r`,
+- More of the same, after an independent review on 14 November 2026. The guard reads a command line a second
+  time, the way a POSIX shell and PowerShell would take it (a backslash inside a name, `$'..'`, a brace list,
+  PowerShell's or cmd's escape character), and joins Python's string literals that stand side by side
+  (`'data/te' 'st/x.csv'`) in code and in an edit's text. Code that a runner takes from standard input
+  (`echo "..." | sh`, `bash <<< "..."`, `cat <<EOF | python -`) is read like the text behind `-c`, and nested
+  code is checked from every folder the line moves to (`cd data && python -c "open('test/x.csv')"` passed
+  before). No fixed count of words, literals, nested commands or wildcard matches decides what is checked any
+  more: the call is read to its end, and where five seconds do not allow to look up every path-like word of an
+  edit or every match of a wildcard, the call is asked about. Asked about as well, because the guard cannot
+  read what will run: decoded text that reaches a command (a decoder piped into a shell or `xargs`, inside
+  `$( )`, `<( )` or backticks, or code that decodes: `b64decode`, `unhexlify`, `FromBase64String`, `atob`); a
+  `.md`, `.mdx` or `.rst` file that is run as code (as a runner's script or standard input, sourced, piped into
+  a runner, spliced into a command line, or executed by code that names it on the same line), since the edit
+  tools write such files unread; a brace list of more than 64 names; an MCP tool that is handed a folder with
+  sealed files (under `path`, `paths`, `directory`, `root`, as a `file://` address or as any argument written as
+  a path); and a git setting that makes git start a program (`core.hooksPath`, `core.fsmonitor`, an alias,
+  `git -c key=value`, `--config-env`, `--exec-path=`, the `GIT_*` variables for them, a clone that sets one, a
+  template folder), because such a program runs outside the guard. The kit's own git calls switch the two
+  settings off that act without a word (the file monitor and the hooks path). Limits: a name built at run time
+  from variables, a `{a..b}` range or a command's output passes, as do text that is decoded into a file and run
+  later, `rev`, `tr` or `printf` in a substitution and a string that code computes. A notes file passes when it
+  is copied, renamed or cut into a file of another name and run under that name, when its name has a blank,
+  when its text is read on one line and executed on another, and behind a wrapper the guard does not know
+  (`conda run`, `pytest --doctest-glob`, `jupytext --execute`). Text piped into a runner the guard does not
+  know (php, lua, deno, bun, Rscript, julia) and a file's content piped in (`cat script.py | python`) are not
+  read. An MCP tool that is handed the project root is not asked about, because tools are handed it all the
+  time, nor is a bare word under a key that names no place (a query for `data`). A git folder elsewhere
+  (`--git-dir=x`) whose `config` was written as an ordinary file is not seen; `git config --type bool key value`
+  and a read with `-f file key` are asked about though they start nothing. A recursive wildcard written into a
+  code file passes the check of the edit's text (the walk is seen only in code on the command line). A change
+  of folder that the guard cannot read (`sudo -D data`, `start /D data`, a variable) in front of nested code is
+  not followed. The other way round, some harmless calls are asked about: a notes file handed to a runner as
+  data (`perl -ne print notes.md`, `python manage notes.md`), an MCP tool that only lists the folder with the
+  sealed files, and on Windows a program text of more than 32,767 characters, on which the path lookup fails.
+- Recursive commands over the project root (`grep -r`, `rgrep`, `find`, `ls -R`, `tree`, `du -a`, `tar`, `zip`, `cp -r`,
   `cp -a`, `rsync`, a path with `**` in it such as `cat **/*.csv`; in PowerShell and cmd.exe `Get-ChildItem -Recurse` with
   its short forms, `dir /s`, `findstr /s`, `tree /f`, `Copy-Item -Recurse`, `Compress-Archive`, `robocopy`, `xcopy`,
   a .NET call with `AllDirectories`) are asked about when sealed files lie below it on disk, as in every folder
@@ -356,8 +390,14 @@ neither kit was shown to beat running the agent with no kit.
   path (`ls **` under bash's globstar); a link that one line makes and reads through (`ln -s data d2; cat d2/…`)
   is not followed, as it is in every later call; a heredoc line that starts with `find` or `tree` is read as a command;
   a command line inside one quoted argument (`Start-Process -WorkingDirectory data cmd '/c type test\x.csv'`) is
-  not read; and program code that walks or moves the tree (`os.walk`, `shutil.move`, .NET's `Directory.Move`) is
-  not parsed, .NET's `AllDirectories` excepted. One more limit, measured on 13 November 2026 with 19,000 and with
+  not read; and program code that moves the tree (`shutil.move`, .NET's `Directory.Move`) is not parsed. A walk
+  in program code is seen in two forms only: a .NET call with `AllDirectories`, and, since 14 November 2026,
+  Python code that an interpreter is handed on the line (`python -c`, a here-document or standard input it
+  reads) with `os.walk`, `Path.rglob`, `shutil.copytree`, `shutil.make_archive` or a `**` in a string; such a
+  walk is asked about also where its folder is a variable or the `**` stands in prose. Not seen: a walk in a
+  script file, in another language or through `tarfile`'s `.add()`, a here-document that a command writes into
+  a file, and a shell command inside a string of program text (`os.system('find data -type f')`), which is
+  checked only for the paths it names. One more limit, measured on 13 November 2026 with 19,000 and with
   20,500 files in front of a sealed one: the look on disk stops after 20,000 files per folder it walks, and a
   sealed file beyond them is not seen, so the command passes. Where a sealed pattern begins with `**/`, that is
   any recursive command or search over a folder, the project root included, in which more than 20,000 files come
@@ -403,17 +443,39 @@ neither kit was shown to beat running the agent with no kit.
   ignores the link (compared with ripgrep 15.2 on Windows, 12 November 2026). So if a link ends in a folder of
   another checkout that git does not ignore there, a search of that whole checkout is refused as well: keep
   linked data in a folder that git ignores, or outside the repository. A hard link to a sealed file cannot be
-  told from its path; making one names the sealed file, which the guard refuses.
+  told from its path; making one names the sealed file, which the guard refuses. A run's snapshot judges every
+  source file by its real place as well as by its name (since 14 November 2026): a sealed file that a junction
+  or a link gives a second name (`alias` leads to `data`, and git lists `alias/test/x.csv`) stays out, where it
+  was copied in under the link's name before, and a link to a folder that would lead out of the snapshot is
+  linked without the sealed paths below it. Where the sealed folder is itself a link to storage elsewhere
+  (`data` leads to another drive, `data/test/**` is sealed), a file is also judged by the name the sealed
+  pattern has for that storage: a second link to the storage, to `data` or to its sealed folder brings no
+  sealed file into a snapshot or a remote run's archive. Where the filesystem ignores case (Windows, macOS), the run tools
+  read the sealed, frozen and editable patterns that way too, as the guard did already: `data/Test/x.csv` is
+  the file that `data/test/**` names, in snapshots, in the loop's checksums and in a remote run's archive.
+  Limits: making a junction or a link to a folder with sealed files is not asked about. A link inside a
+  git-ignored folder is not looked into when the sealed pattern begins with a folder's name: with `data/test/**`
+  sealed and `cache/alias` leading to `data`, the folder `cache` is linked whole, and a run's own code can reach
+  the sealed files through it (a pattern such as `**/test/**` finds them there and keeps them out). And name
+  sealed data by its path in the project (`data/test/**`): a sealed pattern written as an absolute path does
+  not keep a git-ignored link to that folder out of a snapshot (tried on Windows, 14 November 2026).
 - Sealed files that git tracks are a gap. The guard checks the paths a command names (`git show <rev>:<path>`
   is refused), and git prints a tracked file without being given its name: `git log -p`, `git show <commit>`.
   Keep the test split out of git. `expctl selftest` warns when sealed paths are tracked; a line
   `<pattern> -diff` in `.gitattributes` keeps those two commands and `git diff` from printing the content
   (checked with git 2.52), not `git cat-file` or an archive. The loop's Claude Code sessions have no shell.
+  Files that git ignores get into its store by a forced add (`git add -f data`, `-Af`, `--force`, a wildcard) or
+  a stash of everything (`git stash --all`), from where `git diff --cached`, `git show` and `git stash show -p`
+  print them without naming one: the guard asks when sealed files lie below what such a command takes (since
+  14 November 2026). An ordinary add and `git stash -u` take only what git does not ignore and stay unasked, so
+  keep the sealed files ignored.
 - The rule against starting the final evaluation directly compares commands. It knows the configured command
   after `cd`, in a chain and behind `py` or `cmd /c`; a wrapper script or an option with a value
   (`python -X dev ...`) gets past it. `sealed_tokens` is the stronger rule: a command that names the variable
   your evaluator needs for the test split is refused, however the rest of it is spelled.
-- It fails safe: an unreadable hook input is refused; an unreadable config or an internal error turns every
+- It fails safe: an unreadable hook input is refused, also one that is nested too deeply to read (since
+  14 November 2026; before, the guard ended with an error there, which an agent program takes for a hook that
+  failed); an unreadable config or an internal error turns every
   action, reads included, into a question (a refusal where nobody can be asked). So does a check that takes the
   guard longer than 12 seconds (a path on a server that does not answer, a line with very many different
   searches): its hooks give it 15 to 20, and not every agent blocks a call whose hook ran out of time. Claude Code

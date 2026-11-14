@@ -9,24 +9,38 @@ campaigns. It never edits tool input; it answers "deny", "ask" (the user is prom
         the repository are combined and hold in each; a protected folder that is a link to storage
         elsewhere is protected at both ends
   deny  Edit/Write inside an active run's directory or code snapshot
-  deny  a hook input it cannot read (not JSON, no tool name, a shell call without a command, a
-        file call without a path): an unread call is refused, never let through
+  deny  a hook input it cannot read (not JSON, nested too deeply to parse, no tool name, a shell
+        call without a command, a file call without a path): an unread call is refused, never
+        let through
   deny  writes, signals and launches by the read-only subagents (experiment-reviewer, run-analyst)
-  ask   anything else that mentions a sealed path (e.g. inside a python -c string)
+  ask   anything else that mentions a sealed path (e.g. inside a python -c string, in the text
+        an edit writes, in an MCP tool's arguments)
   ask   recursive or wildcard sweeps over the folder that holds sealed data (find, grep -r,
-        ls -R, cp -r, tar, rsync, rg, or globs such as data/*/...)
+        ls -R, cp -r, tar, rsync, rg, du -a, a tree walk in code on the line, an MCP tool that is
+        handed the folder, or globs such as data/*/...), and a forced `git add` or
+        `git stash --all` there
   deny  the configured final-evaluation command itself, however its interpreter and script are
         spelled: it runs through `expctl final-eval`, which keeps a receipt of every use
   ask   `expctl final-eval` (each test-set access is a human decision)
   ask   `expctl audit-splits` where the config seals anything (it prints counts only, but each
         count of records shared with a sealed split is a small look at that split)
-  ask   edits to frozen evaluation/protocol files, to the harness itself or to git's own files
+  ask   edits to frozen evaluation/protocol files, to the harness itself or to git's own files,
+        and git settings that make git start a program (core.hooksPath, core.fsmonitor, an alias,
+        `git -c`, the GIT_* variables for them)
   ask   kill/stop commands (always: jobs outside the harness are protected too); deleting run
         directories or checkpoints; shell writes into an active run's directory; destructive git;
         any git push; branch switches/pulls while a run executes from the working tree;
         dependency changes (and syncing `uv run`) while harness runs or listed external jobs are live
   ask   commands that start paid compute directly (outside the remote module's spending cap) and
         commands that pipe a download into a shell
+  ask   text the guard cannot read before it runs: decoded text that reaches a shell or an
+        interpreter (base64 -d | sh, a decoder inside $( ), code that decodes its own text), and
+        a notes file (.md, .mdx, .rst) run as code
+
+A command line is read as written and as a POSIX shell and PowerShell would take it (a backslash
+inside a name, $'..', a brace list, an escape character). Code behind -c, in PowerShell's
+-EncodedCommand and on a runner's standard input is read like a command, from every folder the
+line may be in.
 
 Usage: nn_guard.py [--agent claude|codex|cursor] [--readonly]. --agent names the caller, which
 decides the answer format; the input shape is recognised from the payload. Every "ask" becomes

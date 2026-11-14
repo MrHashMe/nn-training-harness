@@ -876,7 +876,7 @@ def second_panel(tmp, proj, exe):
     own = statistics.variance([1.05, 1.07, 1.012, 1.02])  # the change's four scores: more than three times the 0.0002 below
     check(near(a["first"]["delta"], 0.05) and near(a["first"]["margin"], tm(2, 2) * sd) and len(a["scores"]) == len(a["runs"]) == 4
           and near(a["delta"], 0.028) and near(a["margin"], tm(2.2, 3) * (own / 4 + 0.0002 / 4) ** 0.5)
-          and "better by 0.028 on 4 seeds, which is within the noise margin" in a["why"],
+          and "better by 0.028 on 4 seeds, which is within the noise margin" in a["why"] and "unpooled" not in a,
           "a gain above two thirds of the margin is measured on two more seeds and decided on all four, more strictly; "
           "the ledger keeps the first look. The change's second panel, which varies less than the baseline's, does not "
           "lower the variance its gain is tested against, and its mean is tested with the variance of its own four "
@@ -929,6 +929,25 @@ def second_panel(tmp, proj, exe):
           f"a change's own panels cannot lower the variance its gain is tested against (was: a change whose runs hardly "
           f"differ lowered its own margin), and a change whose scores vary more than three times the pooled variance "
           f"has its mean tested with its own (got {got}, want {want})")
+    got = []
+    for hi, rest in ((1.5, {"ss": 0.04, "df": 4}), (9.0, {"ss": 0.04, "df": 4}), (9.0, {"ss": 0.0, "df": 1}), (1e9, {"ss": 0.04, "df": 4})):
+        C.st["noise"] = {"ss": rest["ss"] + (hi - 1.0) ** 2 / 2, "df": rest["df"] + 1}  # with the change's panel: 1.0 and hi
+        got.append((C.unpool({"1": 1.0, "2": hi}, rest), C.st["noise"] == rest))
+    check(got == [(False, False), (True, True), (False, False), (True, True)],
+          f"the panels of a change leave the pooled noise again when one of its scores lies farther from its median than "
+          f"the other panels make plausible for any run, however large that score is; they stay where none does, and "
+          f"where the others have no spread to judge by ({got})")
+    plan(tmp, [edit("NOISE = {1: 0.0, 2: 0.02}", "NOISE = {1: 0.5, 2: -5000.0}", title="one run diverges")])
+    r = loop(proj, "start", "--campaign", "astray", "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-runs", "5")
+    st, it = state(proj, "astray"), iters(proj, "astray")
+    z = st.get("noise") or {}
+    if not check(r.returncode == 0 and [e["status"] for e in it] == ["discard"] and it[0].get("unpooled") is True
+                 and len(it[0]["runs"]) == 2 and it[0]["margin"] > 100 and near(z.get("ss"), 0.0002) and z.get("df") == 1
+                 and near(st["margin"], tm(2, 2) * sd),
+                 "a change that is not kept and of which one run diverged leaves the noise estimate as it was before it, "
+                 "and the ledger says so (was: its panel stayed in, and the margin of every later change rose with it)"):
+        show(r)
+        print("  state:", st.get("stop_reason"), z, st.get("margin"), it)
 
 
 # ---------------------------------------------------------------- 5-7. limits, hang, stop, other agents

@@ -1010,6 +1010,20 @@ class Campaign:
         v = max(z["ss"] / z["df"], rest["ss"] / rest["df"] if rest and rest["df"] else 0.0)
         return max(float(L.get("min_margin") or 0), t * math.sqrt((own if own > OWN * v else v) / (nc or n) + v / nb))
 
+    def unpool(self, scores, rest):
+        """Take a change's panels out of the noise estimate again where one of its runs went astray: a score farther
+        from the change's median than the other panels make plausible for any run (4 deviations where the deviation
+        is known, about 1 run in 30,000; more while few panels are behind it). A change that was not kept and of
+        which a run diverged says nothing about the noise that later changes are tested against. rest: the estimate
+        without those panels, kept as its own tally because a diverged score is too large to subtract again.
+        -> whether it did."""
+        mid = statistics.median(scores.values())
+        if not rest["ss"] or (max(abs(v - mid) for v in scores.values())
+                              <= t_mult(4, rest["df"]) * math.sqrt(rest["ss"] / rest["df"])):
+            return False  # also where the other panels have no spread to judge by
+        self.st["noise"].update(rest)
+        return True
+
     def extra(self):
         """The seeds of the second panel that a near-miss is decided on. They are the same for every change, so the
         best so far is trained on them once."""
@@ -1272,7 +1286,7 @@ class Campaign:
         # a search is read only where the prompt offered one
         space, flaw = search_space(prop["search"]) if k and isinstance(prop, dict) and "search" in prop else (None, "")
         changed = self.changed()
-        status, why, commit, scores, runs = None, "", None, {}, []
+        status, why, commit, scores, runs, rest = None, "", None, {}, [], None
         try:
             self.unguarded(res, changed)
             outside =[p for p in changed if not expctl.path_matches(p, L["editable_paths"])]
@@ -1356,8 +1370,12 @@ class Campaign:
                         status, why = "inconclusive", f"better by {delta:.4g}{on}, which is within the noise margin {m:.4g}"
                     else:
                         status, why = "discard", f"not better{on or ' on the seed panel'}"
+                if status != "keep" and self.unpool(scores, rest):
+                    entry["unpooled"] = True
                 st["margin"] = self.margin(len(L["seeds"]) - 1)
         except Stop as e:
+            if rest and status is None and self.unpool(scores, rest):  # a stop during the second panel: as above
+                entry["unpooled"] = True
             self.record(**dict(entry, status="unfinished", why=str(e), scores=scores, runs=runs))
             raise
         # margin: the one applied to a full panel, otherwise the one that was announced to the session

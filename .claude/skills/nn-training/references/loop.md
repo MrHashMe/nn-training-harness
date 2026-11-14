@@ -164,6 +164,11 @@ times the pooled one, its mean is tested with its own variance, and the best so 
 one: a change that makes training noisier needs a larger gain. The confirmation applies this second rule to
 the kept commit's fresh panel.
 
+A change that was not kept leaves the pool again when one of its runs went astray: a score farther from the
+change's median than the other panels make plausible for any run (4 pooled deviations where many panels are
+behind the estimate, about 1 run in 30,000; more while few are). One diverged run then does not widen the
+margin of every later change. Its ledger row carries `unpooled: true`.
+
 A near-miss gets a second look. A gain above two thirds of the margin, but not above it, is trained on a second
 seed panel, and so is the best so far (once per best commit: later near-misses reuse those runs). The decision
 is then taken on all seeds of both, with `noise_mult` raised by a tenth because it is a second chance. It costs

@@ -36,6 +36,7 @@ Commands
         project root and without a shell. Single-use: every use is a row in the
         hash-chained receipt .claude/state/final-eval/receipt.jsonl, written before the
         command starts, and a journal entry; the output goes to a log beside the receipt.
+        The rows are also kept in git's common folder, so they outlive a removed worktree.
         A further use is refused unless --again gives the reason, which is recorded.
         Running it needs the user's explicit approval.
   hash  Source hash of the working tree (tracked + untracked, not ignored).
@@ -1972,6 +1973,40 @@ def cmd_hash(args):
 
 
 FINAL_DIR = ".claude/state/final-eval"
+FINAL_SHARED = "nn-training-final-eval.jsonl"  # in git's common folder, which outlives a removed worktree
+
+
+def chained(path: Path, row):
+    """Append a row to a record of the kind ledger_rows() reads."""
+    lines = path.read_bytes().splitlines() if path.is_file() else []
+    prev = hashlib.sha256(lines[-1]).hexdigest() if lines else ""
+    with open(path, "ab") as f:
+        f.write(json.dumps(clean(dict(row, prev=prev)), sort_keys=True).encode("utf-8") + b"\n")
+
+
+def final_uses(root: Path):
+    """(the start rows of every use of the final evaluation, a record of them that was edited or None, the copy all
+    checkouts share or None, this project's path inside the repository). Every checkout of the repository looks at
+    the same test split, so a use in another one counts here. A worktree that is removed takes its receipt along,
+    so each row is also kept in git's common folder; rows of a checkout's receipt that this copy lacks (written
+    before it existed) are added to it here."""
+    sub = (run_git(root, "rev-parse", "--show-prefix", text=True) or "").strip()
+    common = (run_git(root, "rev-parse", "--git-common-dir", text=True) or "").strip()
+    shared = (root / common / FINAL_SHARED).resolve() if common else None
+    tops = [x[9:] for x in (run_git(root, "worktree", "list", "--porcelain", text=True) or "").splitlines()
+            if x.startswith("worktree ")]
+    rows, ok = ledger_rows(shared) if shared else ([], True)
+    edited = None if ok else shared
+    seen = {(r.get("event"), r.get("use"), r.get("ts")): r for r in rows if r.get("sub") == sub}
+    for p in dict.fromkeys([(root / FINAL_DIR / "receipt.jsonl").resolve()]
+                           + [(Path(t) / sub / FINAL_DIR / "receipt.jsonl").resolve() for t in tops]):
+        rows, ok = ledger_rows(p)
+        edited = edited or (None if ok else p)
+        for r in rows:
+            if seen.setdefault((r.get("event"), r.get("use"), r.get("ts")), r) is r and shared:
+                chained(shared, dict(r, sub=sub))
+    uses = sorted((r for r in seen.values() if r.get("event") == "start"), key=lambda r: str(r.get("ts")))
+    return uses, edited, shared, sub
 ENV_PREFIX = re.compile(r"\s*([A-Za-z_]\w*)=(\"[^\"]*\"|'[^']*'|\S*)\s+")
 NEEDS_SHELL = re.compile(r"[;&|<>$`^%\r\n]")  # also what cmd.exe would act on if the program is a batch file
 
@@ -2005,17 +2040,7 @@ def cmd_final_eval(args):
         return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}")
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"
-    # every checkout of the repository looks at the same test split, so a use in another one counts here.
-    # shortcut: a worktree that was removed took its receipt along, keep the receipt in git's common folder if that matters
-    sub = (run_git(root, "rev-parse", "--show-prefix", text=True) or "").strip()
-    tops = [x[9:] for x in (run_git(root, "worktree", "list", "--porcelain", text=True) or "").splitlines()
-            if x.startswith("worktree ")]
-    before, edited = [], None
-    for p in dict.fromkeys([receipt.resolve()] + [(Path(t) / sub / FINAL_DIR / "receipt.jsonl").resolve() for t in tops]):
-        rows, chain_ok = ledger_rows(p)
-        before += [r for r in rows if r.get("event") == "start"]
-        edited = edited or (None if chain_ok else p)
-    before.sort(key=lambda r: str(r.get("ts")))
+    before, edited, shared, sub = final_uses(root)
     if (before or edited) and not args.again:
         why = (f"its receipt {rel_to(root, edited)} was edited, so earlier uses cannot be counted" if edited else
                f"it was already used {len(before)} time(s), other checkouts of the repository included, first on "
@@ -2027,10 +2052,10 @@ def cmd_final_eval(args):
     d.mkdir(parents=True, exist_ok=True)
 
     def note(**row):
-        lines = receipt.read_bytes().splitlines() if receipt.is_file() else []
-        prev = hashlib.sha256(lines[-1]).hexdigest() if lines else ""
-        with open(receipt, "ab") as f:
-            f.write(json.dumps(clean(dict(row, ts=iso(now()), prev=prev)), sort_keys=True).encode("utf-8") + b"\n")
+        row = dict(row, ts=iso(now()))
+        chained(receipt, row)
+        if shared:
+            chained(shared, dict(row, sub=sub))
 
     use, prov = len(before) + 1, provenance(root, cfg)[2]
     git, log = prov.get("git") or {}, d / f"{time.strftime('%Y%m%d-%H%M%S')}-use{use}.log"
@@ -2275,6 +2300,12 @@ def cmd_selftest(args):
     add("primary metric configured", m.get("name") and m.get("direction") in ("maximize", "minimize"),
         f"{m.get('name')} / {m.get('direction')}", required=False)
     add("final-eval command configured", bool(cfg.get("final_eval_commands")), "", required=False)
+    try:  # this also brings receipts of an earlier version into the copy that every checkout shares
+        uses, edited = final_uses(root)[:2]
+        add("final-evaluation uses on record", edited is None,
+            f"{len(uses)} use(s)" + (f"; edited: {rel_to(root, edited)}" if edited else ""), required=False)
+    except OSError as e:
+        add("final-evaluation uses on record", False, f"{type(e).__name__}: {e}", required=False)
     uses = run_git(root, "grep", "-l", "-E", r"(from|import) runlog", text=True)
     add("training code uses runlog", bool(uses and uses.strip()),
         (uses or "").strip()[:200] or "not found yet (Phase 1)", required=False)

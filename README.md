@@ -410,9 +410,10 @@ neither kit was shown to beat running the agent with no kit.
   Code 2.1.322, native Windows, 12 November 2026): a hook that cannot run blocks the call with the setting and
   lets it through without. Not checked live: the agent files themselves in a trusted folder.
 - The receipt of the final evaluation is a record, not a seal: it counts the uses that went through
-  `expctl final-eval` in this checkout and in every worktree that git has registered. Deleting
-  `.claude/state/final-eval/` resets the count, and a worktree that is removed takes its receipt along (the guard
-  asks before a command or an edit touches that folder; the journal entry of each use remains).
+  `expctl final-eval` in this checkout and in every worktree that git has registered, and a copy of its rows in
+  git's common folder (`.git/nn-training-final-eval.jsonl`) keeps the uses of a worktree that was removed.
+  Deleting `.claude/state/final-eval/` and that copy resets the count (the guard asks before a command or an edit
+  touches either; the journal entry of each use remains).
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.

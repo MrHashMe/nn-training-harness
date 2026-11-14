@@ -37,7 +37,8 @@ artifacts and report what does not hold. If it holds, say so plainly: a supporte
    `sys.exit`/monkeypatching, special-cased examples, symlinks to reference outputs, or cached predictions. Check
    `.claude/state/guard.log` for denied or asked attempts on sealed/frozen paths, and
    `.claude/state/final-eval/receipt.jsonl` for the uses of the test split: each `start` row is one use (every git
-   worktree keeps its own receipt, and all of them count), and a claim of a single test evaluation needs exactly one.
+   worktree keeps its own receipt, all of them count, and `nn-training-final-eval.jsonl` in git's common folder holds
+   the rows of all of them, removed worktrees included), and a claim of a single test evaluation needs exactly one.
 4. Provenance: source hash, config, seed, environment and data manifest recorded for every run cited; the selected
    checkpoint exists at the recorded path.
 5. Claim wording: does the conclusion say more than the evidence supports (significance from one seed, test-set

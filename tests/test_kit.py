@@ -451,6 +451,10 @@ def main():
         ("Bash", {"command": "Remove-Item .claude\\state\\final-eval\\receipt.jsonl"}, "ask"),
         ("Bash", {"command": "python -c \"open('.claude/state/final-eval/receipt.jsonl','w').close()\""}, "ask"),
         ("Edit", {"file_path": str(proj / ".claude/state/final-eval/receipt.jsonl"), "old_string": "a", "new_string": "b"}, "ask"),
+        # the copy of the receipt's rows that every checkout shares
+        ("Bash", {"command": "rm .git/nn-training-final-eval.jsonl"}, "ask"),
+        ("Bash", {"command": "python -c \"open('.git/nn-training-final-eval.jsonl','w').close()\""}, "ask"),
+        ("Bash", {"command": "cat .git/nn-training-final-eval.jsonl"}, None),
         ("Bash", {"command": "NN_UNSEAL_TEST=1 python other.py"}, "deny"),
         ("Bash", {"command": "kill 12345"}, "ask"),
         ("Bash", {"command": "pkill -f train.py"}, "ask"),
@@ -989,12 +993,28 @@ def main():
           and rows[3]["exit_code"] == 3 and rows[2]["log"] != rows[0]["log"]
           and f"Reason given for this further use: {reason}" in (proj / "experiments/JOURNAL.md").read_text(encoding="utf-8"),
           "final-eval: --again runs a further use, records the reason and passes the command's exit code on")
+    shared, key = proj / ".git/nn-training-final-eval.jsonl", lambda x: (x["event"], x["use"], x["ts"])
+    lines = shared.read_bytes().splitlines()
+    kept = [json.loads(x) for x in lines]
+    check([key(x) for x in kept] == [key(x) for x in rows] and all(x["sub"] == "" for x in kept)
+          and [x["prev"] for x in kept] == [""] + [hashlib.sha256(x).hexdigest() for x in lines[:-1]],
+          "final-eval: every row of the receipt is also kept, chained, in git's common folder")
+    shared.unlink()  # as an earlier version left it: the receipt alone
     wt = tmp / "wt"  # another checkout of the same repository, with the same test split
     subprocess.run(["git", "worktree", "add", "-q", "--detach", str(wt)], cwd=proj, check=True)
     (wt / ".claude/nn-training.json").write_text(cfgp.read_text())
     r = expctl(wt, "final-eval")
     check(r.returncode == 2 and jout(r).get("uses") == 2 and not (wt / ".claude/state/final-eval").exists(),
           "final-eval: the uses of every checkout of the repository count, so a worktree gets no first use of its own")
+    check([key(json.loads(x)) for x in shared.read_bytes().splitlines()] == [key(x) for x in rows],
+          "final-eval: rows that the shared copy lacks are added to it from the receipts")
+    (wt / "eval").mkdir(exist_ok=True)
+    (wt / "eval/final.py").write_text(FINAL)
+    r = expctl(wt, "final-eval", "--again", "a look from the worktree")
+    subprocess.run(["git", "worktree", "remove", "--force", str(wt)], cwd=proj, check=True)
+    r2 = expctl(proj, "final-eval")
+    check(r.returncode == 0 and jout(r)["use"] == 3 and not wt.exists() and r2.returncode == 2 and jout(r2).get("uses") == 3,
+          "final-eval: a use made in a worktree still counts after the worktree was removed (was: its receipt left with it)")
     receipt.write_bytes(b'{"event": "end"}\n')
     r = expctl(proj, "final-eval")
     check(r.returncode == 2 and "edited" in jout(r)["error"], "final-eval: a receipt whose chain is broken counts as used")

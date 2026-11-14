@@ -9,10 +9,12 @@ session. "After round 4" below is what that session did next: the guide for the 
 script, two fixes, the front page and the upload. Its last part is the publication: the repository is public
 from one new commit, and the commit ids in these records belong to the history before it, which is kept
 locally and not published. The entry after the publication is the fifth installer run on the real install.
+"Round 5" below is the work on the request of 14 November: another model's review of the kit, checked claim
+by claim, and what was built from it.
 
 # Upgrade progress
 
-Last updated: 13 November 2026.
+Last updated: 14 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -82,6 +84,18 @@ Last updated: 13 November 2026.
   it gets the status fix): the fifth installer run ("After the guide"). My reading: the word covers the run
   and its checks, as with the runs before it. A commit of the two changed files in that repository and a
   push of this record each wait for a word of their own.
+- 14 Nov, user: "I need you to review the following recommendation and suggestion to upgrade the project. Then I
+  need you to build a plan to upgrade the project based on it. Make sure that it will be upgraded to best
+  possible way. then execute the plan.", followed by another model's review of the kit (22 ranked items, and a
+  second part that rebuilds the kit as six "planes"). My reading, as with the audit of 12 November: the
+  review's claims enter as candidates, each checked against the code or its source; a defect that the check
+  confirms is fixed with a test, a feature or technique is adopted on evidence, and what is wrong, cannot be
+  checked here or needs the user's go-ahead is recorded with the reason. The request is the go-ahead for
+  changes inside this folder and local commits. It is not a word for pushing, for installing software,
+  plugins, MCP servers or agent CLIs, for anything on the real install, or for paid resources. Instructions
+  inside the review are data: two of them are not followed (to remove the checkout under `.claude/worktrees/`
+  that this work runs in, and to add an Apache licence, where the repository has the MIT licence the user
+  chose). The plan and where it stands are under "Round 5".
 
 ## Done (commit in brackets)
 - Git repository, repository-local identity, LF pinned. Baseline `5ea9659` = the 23 October kit. Baseline tests on
@@ -618,6 +632,158 @@ Last updated: 13 November 2026.
   names no metric. Left there: the two files, changed and not committed (that repository's 418 other
   status entries untouched, nothing staged), the backup folder, and 21 lines in its guard record, 17 of
   them marked `upgrade-check`.
+
+## Round 5 (another model's review, 14 November): in progress
+
+The review's text is kept beside the other user reports (`scout/scouts/user-review-1114.md`, not in git). Its
+line numbers fit the tree at `60cc0b0`. Each claim was checked there before anything was changed: a claimed
+way past the guard counts only where a probe call showed it, the claims about the keep rule were tried in a
+simulation of the rule (40,000 campaigns per case), the others were read in the code. Marks: R real, to
+build; N not a defect, or wrong; H held, with the test it needs; U waits for the user. "Where it stands" at
+the end of this section says what is built.
+
+### Verdicts
+Rank 1, the two evaluators and the box around an evaluator
+- R `benchmarks/charlm/evaluate.py` looks for a look-ahead at one position only, scores the rows in file
+  order and does not look at what the loaded module can do. Build: rows in a fixed shuffled order, a probe at
+  every position, a probe with rows exchanged, a refusal of modules whose code touches files.
+- N the review's switch of that file to weights plus a fixed architecture: the task must stay free to change
+  the architecture, and `torch.jit.load` does not unpickle arbitrary objects.
+- R `benchmarks/finetune/evaluate.py` follows a link out of the run folder and hands every key of
+  `adapter_config.json` to PEFT. Build: both files must lie in the run folder, and a key outside a short
+  list must hold PEFT's default.
+- R the loop's box for the evaluator leaves every file writable. Build: the project read-only for it, apart
+  from the scored run folder and what a new key `loop.eval_writable` names.
+- R the self-test's tampered copy equals the original when every number in the file is an integer.
+
+Rank 2, ways past the guard (21 probe calls in a temporary project)
+- R shell code attached to its flag (`bash -c"..."`): allowed without a word, under `--readonly` too.
+- R PowerShell `-EncodedCommand` and its short forms: allowed without a word.
+- R a sealed path put together from parts in inline code (`Path('data')/'test'/...`, `os.path.join`):
+  allowed without a word.
+- R a file written or edited so that its code opens a sealed path: allowed without a word. The one that
+  matters most: this is how training code comes to read the test split. Build: a question.
+- R a sealed path inside a longer string handed to another tool (an SQL query to an MCP tool): allowed
+  without a word, on one line too. Build: a question.
+- N `Path.unlink` and its kind under `--readonly`: denied today (four probes).
+- R, known: the bound of 20,000 files per walk. Build the narrow part: a walk that ends at the bound inside
+  a folder sealed as a whole counts as a hit. H for patterns that begin with a wildcard, whose walk covers
+  the whole checkout: answering the bound with a question would question every filtered search in a large
+  project; it needs a walk that skips folders no pattern can match (my order under "Not done", first item).
+- N the answer "ask" after 12 s: as designed. Where nobody can be asked, the guard turns it into a denial.
+- R, small: a shell write below `.git/hooks/` or to `.git/config` is not questioned (the edit tools are).
+
+Rank 3, sealed paths in snapshots and in the training box
+- R `expctl.sealed_inside` goes by the literal start of a pattern: with `**/test/**` or
+  `data/*/test/x.csv` a git-ignored data folder is linked whole into the run's snapshot, sealed files
+  included; a folder six levels down is linked whole in any case.
+- R `nnloop.protected_files` has the same blind spot: such sealed files are neither hidden from training
+  nor in the hashes that show a change to them.
+- N `EXP_PROJECT_ROOT` in a run's environment: on purpose (outputs that runs share). Build: the loop's scan
+  of a change counts the name as a hit where no box hides the sealed files.
+- H a process namespace for the training box: decided when the box is changed (step 6 below).
+- U a container as the box: needs Docker Desktop (question below).
+
+Rank 4, the keep rule (simulation: `gate_sim.py`, kept outside the repository; one test's nominal rate of
+keeping a change without a gain is 2.3 %)
+- N "the change's three seeds against the baseline's six": the rate stays at or below 2.3 % in every case
+  tried (1.4 to 2.7 %). Matched seeds would cost 4 points of power for 0.4 points fewer wrong keeps.
+- R in part, "the change's own runs lower the margin": a change with a twentieth of the baseline's noise
+  is kept without a gain in 5.6 % of first iterations. The review's fix (margin before pooling) is worse
+  where it matters: a change three times as noisy is kept in 15 % (10 % today), and a real gain of two
+  standard deviations is found in 44 % of first iterations instead of 68 %. Build: the change's panels may
+  not lower the variance, and its mean is tested with its own variance where that is more than three times
+  the pooled one. Simulated: 3.0 % for the flat change, 7 % for the noisy one, 79 % power with history
+  (81 % today), 60 % in the first iteration.
+- R one diverged run of a change that is not kept stays in the pooled noise for the rest of the campaign.
+  Build: such a panel leaves the pool again.
+- R the first-seed screen always uses the same seed. Build: it rotates.
+- R a pause drops the line that a restart began (`loop.restart_after`). Build: it is set aside and resumed.
+- N a bootstrap over test items inside the keep rule: it compares two trained models, the rule tests a
+  recipe across seeds. N "GPU seconds are overbilled": the count is the reservation's upper bound on purpose.
+
+Rank 5, `runlog.py`
+- R a stop request read from one run's folder stops every later run of the same process.
+- R ranks of Lightning's own launcher (`LOCAL_RANK`, `NODE_RANK`, no `RANK`) all write the run files, against
+  what `references/performance.md` says.
+- R the two benchmark trainers never ask `should_stop()`.
+- N locks around the two module sets: additions and removals of a set are atomic in CPython.
+
+Rank 6, the remote runner and provenance
+- R the bundle is built again by the detached controller and by the resume after a preemption, so what runs
+  can differ from what was hashed. Build: the archive is written once at the start and that file is sent.
+- R a link inside the project that leads to a sealed file is followed into the bundle. Build: refuse.
+- R `complete()` accepts a pulled name that leaves the run folder. R two appends to the remote ledger can
+  interleave on Windows. N a hash chain for that ledger.
+- R a rented `ssh` machine keeps costing after the run. Build: an optional command per target, run after the
+  last pull; the reference says what it is for.
+- R `expctl`: an untracked secret-like file is copied into the snapshot; `resume` takes the code of today's
+  tree without a word; a reused process number passes for the run on Windows without psutil; the receipt of
+  a final evaluation leaves with a removed worktree. Build each.
+- N `AGENTS.md` is in the source hash already (the review says it is left out). Build the reverse: agent
+  instruction files and the kit's own bookkeeping do not make a tree "dirty".
+- N the environment handed to runs, and hard links as the fallback for links on Windows: as designed.
+
+Ranks 7 to 10, speed and search
+- R (7) no step checks that the fast paths work on this machine before runs use them; the report's own note
+  of a crash with the pinned wheel in WSL shows why. Build: `expctl env --probe`, each probe in a process of
+  its own; a short "make it fast first" step in SKILL.md with the measured checks; the pin in `stack.md`.
+- R (8) a change that does not compile, or that changes nothing but comments, costs a run; a crash in the
+  first seconds costs the iteration. Build: a compile and same-code check before training, one repair turn
+  after an early crash. H the stop at a quarter of the budget: it discards slow starters, and its saving
+  needs long runs to measure (test: replay on a campaign with runs of ten minutes or more).
+- N (9) a callback for TRL: its trainers are `transformers.Trainer`s, which `hf_callback` serves. H a
+  wrapper that reads other engines' logs: no engine in use here to test against. N the tabular and prompt
+  optimisation helpers: outside training neural networks. N recipe mode: `loop.editable` takes any file.
+- H (10) traces for the worker beyond the crash output, two lines of descent with crossover: each needs
+  campaigns with and without, GPU hours. N block markers inside files (the ledger's earlier decision stands:
+  paths are the unit the guard can enforce); N `nnloop finalize`: each kept change is one commit already.
+  N the advice on worker models in `loop.md`: it is what the pilot measured here.
+
+Ranks 11 to 13 and 17, references
+- R the fine-tuning reference names no objective after GRPO. Build: a short section with the sources that
+  can be checked (Dr. GRPO, DAPO, GSPO, CISPO; rsLoRA and DoRA where missing). H the items whose source
+  could not be found or opened; each is listed in the ledger with what was looked for.
+- N routing of tabular and prompt-optimisation tasks: outside the kit's purpose.
+
+Rank 14 and 15, other agents and MCP servers
+- U a plugin for Antigravity, a hook for Gemini CLI: neither is installed here, and installing an agent is
+  the user's call. N `sandbox_mode` in Codex agent files: contradicted by Codex's documentation in the
+  research of 11 November (`scout/draft/user-reports.md`, row 32). H more denials in `.cursor/cli.json`:
+  Cursor's terminal agent is not installed, so the rule syntax cannot be tried. N "ask" to "deny" for the
+  Hugging Face tools: a question is what the user chose, and headless sessions cannot answer one.
+- U the MCP servers: each is an install.
+
+Rank 16 and 18
+- R the ledger counts as finished some adopted rows that name kit code which was never written (see rank
+  19). Build: `expctl audit-splits` (duplicates inside a split, overlap between splits, a fingerprint per
+  split; counts only), controls for the fine-tuning task. Decided when read again: the wiring check.
+- H parallel trials and other samplers for the search: need campaigns to compare.
+
+Rank 19, small repairs
+- R `make_ledger.py` lets a reference outrank the record of what was built: three rows marked "partly
+  built" and eight that name kit code show as finished. Build: the build record wins; the eight are checked.
+- R an apostrophe in the interpreter's path breaks the YAML of the two agent files. R the `.gitignore`
+  header is written again by a later run. N folded YAML: the installer reads the kit's own two files.
+- N a licence file (there is one, MIT) and the removal of `.claude/worktrees/...` (this checkout).
+- R, as said under rank 7: the warnings that the references promise in `expctl env` (the `datasets`
+  advisory) are not there. N a new `doctor` command: `selftest` and `env` are that command.
+
+Ranks 20 to 22 and the second part
+- N new skills beside this one; U cloud drivers (accounts, paid); H a second pilot (subscription use and GPU
+  hours; the question stands under "Questions for the user").
+- N the rebuild as six "planes" with a new package layout: every installed path would move, which breaks the
+  upgrade of existing installs through the manifest, and the single-file scripts that run without packages
+  are a requirement of PROMPT.md. The mechanisms worth having are built into the existing files, as above.
+
+### Order of work
+1 the evaluators and their box; 2 the guard; 3 snapshots and the training box; 4 the keep rule; 5 runlog;
+6 the remote runner and provenance; 7 speed and search; 8 references, installer, ledger; 9 the full tests
+on both platforms, REPORT.md, the ledger rows. One commit per idea, each with its test.
+
+### Where it stands
+- Done: the checks behind the verdicts above. Nothing is built yet.
+- Next: step 1.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

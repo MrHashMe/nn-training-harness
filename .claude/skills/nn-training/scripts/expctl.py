@@ -469,9 +469,11 @@ def proc_key(pid):
 
 
 def same_process(pid, expected_start, key=None) -> bool:
-    now_key = proc_key(pid) if key else None
-    if now_key:  # a record written before the key existed, or by a vendored runlog.py without it, goes by the time
-        return now_key == key
+    if key and proc_key(pid) == key:
+        return True
+    # Otherwise by the start time, as before the key existed: a record without one (an older record, a vendored
+    # runlog.py), a system without one, and a key that differs though the process is the one. A reader inside a time
+    # namespace with a boot-time offset sees other ticks, while the boot time plus the ticks reads the same there
     if not is_num(expected_start):
         return True
     actual = proc_start_time(pid)
@@ -1057,10 +1059,11 @@ def load_run(root: Path, d: Path, cfg, t: float):
     # The supervisor writes the exit record a moment after the process has gone, so while it is there the run has not
     # ended. Only where its start time shows that the pid is still the supervisor's: a pid is given out again
     sup = pidj.get("supervisor_pid")
-    sup_key = proc_key(sup) if not alive and pidj.get("supervisor_key") and pid_alive(sup) else None
-    sup_start = proc_start_time(sup) if not alive and not sup_key and pid_alive(sup) else None
-    ending = sup_key == pidj["supervisor_key"] if sup_key else (
-        sup_start is not None and is_num(pidj.get("started_at")) and abs(sup_start - pidj["started_at"]) < 5)
+    sup_up = not alive and pid_alive(sup)
+    ending = bool(sup_up and pidj.get("supervisor_key") and proc_key(sup) == pidj["supervisor_key"])
+    sup_start = proc_start_time(sup) if sup_up and not ending else None  # the key first, then the time, as same_process
+    ending = ending or (sup_start is not None and is_num(pidj.get("started_at"))
+                        and abs(sup_start - pidj["started_at"]) < 5)
     # The records of the end are read after the looks at the processes: a process that is gone has written all it
     # ever will. Read before them, a run that wrote its result and ended between the two looks read as lost
     res = _dict_or_none(read_json(d / "result.json"), "result", errors)

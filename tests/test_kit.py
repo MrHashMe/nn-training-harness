@@ -4,6 +4,7 @@
 Run from anywhere:  python tests/test_kit.py   (Linux, macOS, native Windows; takes ~2 minutes; uses a temporary
 git repo and short CPU-only fake training runs; Optuna is stubbed so it is not required).
 """
+import base64
 import hashlib
 import json
 import os
@@ -424,6 +425,9 @@ def main():
         o = json.loads(r.stdout)["hookSpecificOutput"]
         return o["permissionDecision"], o["permissionDecisionReason"]
 
+    def utf16(text):  # the value PowerShell's -EncodedCommand takes
+        return base64.b64encode(text.encode("utf-16-le")).decode()
+
     cases = [
         ("Read", {"file_path": str(proj / "data/test/labels.csv")}, "deny"),
         ("Read", {"file_path": "data/test/labels.csv"}, "deny"),
@@ -738,6 +742,16 @@ def main():
         ("Bash", {"command": "python .claude/skills/nn-training/scripts/nnloop.py status"}, None),
         ("Bash", {"command": "ls data"}, None),
         ("Monitor", {"command": "tail -f data/test/labels.csv", "description": "x"}, "deny"),
+        # were None: shell code attached to its flag, or encoded for PowerShell, went unread
+        ("Bash", {"command": "bash -c\"echo x > eval/metrics.py\""}, "ask"),
+        ("Bash", {"command": "bash -lc\"cat data/te*/labels.csv\""}, "deny"),
+        ("Bash", {"command": "cmd /c\"type data\\te*\\labels.csv\""}, "deny"),
+        ("Bash", {"command": "powershell -EncodedCommand " + utf16("Get-Content data/te*/labels.csv")}, "deny"),
+        ("PowerShell", {"command": "pwsh -enc " + utf16("Set-Content eval/metrics.py x")}, "ask"),
+        ("Bash", {"command": "powershell -ExecutionPolicy Bypass -File tools/x.ps1"}, None),  # no encoded command
+        ("Bash", {"command": "grep -color=auto \"def train\" train.py"}, None),  # an option that only starts like -c
+        ("Bash", {"command": "echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 -d | sh"}, "ask"),
+        ("Bash", {"command": "base64 -d weights.b64 > weights.bin"}, None),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)

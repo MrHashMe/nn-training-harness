@@ -42,6 +42,7 @@ hard isolation keep the test split outside the repository, or use the agent's sa
 """
 from __future__ import annotations
 
+import base64
 import fnmatch
 import functools
 import glob
@@ -160,6 +161,14 @@ PS_KILL = re.compile(r"\b(?:Stop-Process|spps|taskkill)\b|\bwmic\b[^;&|]{0,200}?
 SHELLS = re.compile(r"\b(?:(?:ba|z|da|k)?sh|cmd|powershell|pwsh|python[0-9.]*|py|node|perl|ruby|eval|iex|"
                     r"Invoke-Expression|wsl|ssh)\b", re.I)
 CODE_FLAG = re.compile(r"^(?:-[a-z]*c|-e|-command|--command|--eval|/c|/k|eval|iex|invoke-expression)$", re.I)
+# the same flag with its text attached (bash -c"echo x > f", cmd /c"type f"): what follows it is no plain option value
+ATTACHED = re.compile(r"^(?:-[a-z]*?c|/[ck])(?=.*[^\w.=:,/@%+-])(.+)$", re.I | re.S)
+ENCODED = re.compile(r"^[-/]e[a-z]*$", re.I)  # PowerShell's -EncodedCommand, which may be cut short (-enc, -e)
+# a decoder whose output a shell or an interpreter runs (base64 -d <<< ... | sh, iex of FromBase64String)
+DECODE_TO_SHELL = re.compile(
+    r"\b(?:base64\s+(?:-d|-D|--decode)|certutil\s+-decode|xxd\s+-r|openssl\s+(?:enc|base64)\b[^|;&]*\s-d)\b[^;&]*\|\s*"
+    r"(?:sudo\s+)?(?:(?:ba|z|da|k|c)?sh|pwsh|powershell|iex|Invoke-Expression|python[0-9.]*|perl|node|ruby)\b|"
+    r"\b(?:iex|Invoke-Expression)\b[^;&|]*FromBase64String|FromBase64String[^;&]*\|\s*(?:iex|Invoke-Expression)\b", re.I)
 # a change of folder: where a command starts (after blanks too), or behind a shell keyword, a wrapper such as `time`
 # or an assignment (X=1 cd data). PowerShell takes -Path:data and a parameter's name cut short
 _CD_WORD = r"(?:cd|pushd|chdir|sl|Set-Location|Push-Location)"
@@ -683,13 +692,28 @@ def lex(c: str):
         return c.split()
 
 
+def decoded(t: str):
+    """The text PowerShell reads from the value of -EncodedCommand (base64 of UTF-16), or None if t is no such value."""
+    try:
+        s = base64.b64decode(t, validate=True).decode("utf-16-le")
+    except ValueError:
+        return None
+    return s if s.strip() and all(ch.isprintable() or ch in "\r\n\t" for ch in s) else None
+
+
 def inner_code(c: str):
     """Text a command hands to a nested shell or an interpreter as one argument (bash -c '...', python -c "...",
-    cmd /c "...", powershell -Command "..."). The caller checks it like a command of its own."""
+    cmd /c "...", powershell -Command "..."), also where it is attached to its flag (bash -c"...") or encoded
+    (powershell -EncodedCommand <base64>). The caller checks it like a command of its own."""
     if not SHELLS.search(c):
         return []
-    toks = lex(c)
-    return [toks[i + 1] for i in range(len(toks) - 1) if CODE_FLAG.match(toks[i])][:8]
+    toks, out = lex(c), []
+    for t, after in zip(toks, toks[1:] + [""]):
+        m = ATTACHED.match(t)
+        out += [m.group(1)] if m else []
+        out += [after] if after and CODE_FLAG.match(t) else []
+        out += [decoded(after)] if ENCODED.match(t) and decoded(after) else []
+    return out[:8]
 
 
 def shell_tokens(c: str):
@@ -1364,6 +1388,9 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
     if PIPE_TO_SHELL.search(c):
         results.append((ASK, "Pipes a download straight into an interpreter. Save it, read it, then run it; approve "
                              "only if the source is trusted."))
+    if DECODE_TO_SHELL.search(c):
+        results.append((ASK, "Decodes text and hands it to a shell or an interpreter, so this guard cannot read what "
+                             "would run. Run it as plain text, or approve only if you know what it says."))
     live = bool(ctx.external_jobs()) or bool(ctx.active())
     if live and DEP_CHANGE.search(c):
         results.append((ASK, f"Dependency change while jobs are live ({ctx.live_desc()}). Changing the environment "

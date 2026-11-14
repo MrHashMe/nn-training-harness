@@ -203,7 +203,8 @@ reference older than about six months is a lead to verify, not a fact.
 - `references/uncertainty.md` — noise floor, paired comparisons, winner's curse, reporting
 - `references/hpo.md` — when and how to search (Optuna 5), samplers, pruners, study identity, budgets, objective template
 - `references/optimization.md` — optimizer and schedule baseline, scaling rules, alternatives worth a controlled run
-- `references/performance.md` — profiling, AMP/compile/data-loading levers, adoption rule, OOM triage, multi-GPU
+- `references/performance.md` — profiling, AMP/compile/data-loading levers, adoption rule, OOM triage, multi-GPU,
+  Apple silicon (section 9)
 - `references/resume.md` — checkpoint contents, DCP/FSDP2, retention, resume verification, pretrained-model specifics
 - `references/finetuning.md` — base model and licence, regime ladder, LoRA/QLoRA, RL post-training, export and reload
 - `references/llm.md` — small-model pretraining, tokenizer and chat-template preflight, instruction/preference tuning

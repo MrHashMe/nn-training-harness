@@ -252,17 +252,23 @@ def literal(pattern):
     return re.split(r"[*?\[]", str(pattern).replace("\\", "/"))[0].rstrip("/")
 
 
-def protected_files(root: Path, patterns):
-    """Files under root that match the patterns, tracked or not (git-ignored data included)."""
+def protected_files(root: Path, patterns, runs=None):
+    """Files under root that match the patterns, tracked or not (git-ignored data included). The search for a pattern
+    starts at the folder before its first wildcard, which is the project for **/test/**. `runs`, the runs folder
+    as the configuration names it, is left out: what the runs write there is not what a campaign protects."""
     rels = set(git(root, "ls-files", "-z", check=False).split("\0"))
     for p in patterns:
-        base = root / literal(p)
-        if literal(p) and base.is_dir():
+        p2 = str(p).replace("\\", "/")
+        head = re.split(r"[*?\[]", p2)[0]
+        lead = literal(p) if head == p2 else head.rpartition("/")[0]
+        base = root / lead
+        if base.is_dir() and (lead or head != p2):
             for d, dirs, files in os.walk(base):
-                dirs[:] = [x for x in dirs if x not in (".git", "__pycache__", "worktrees")]
-                rels.update(Path(d, f).relative_to(root).as_posix() for f in files)
-        elif literal(p):
-            rels.add(literal(p))
+                here = Path(d).relative_to(root)
+                dirs[:] = [x for x in dirs if x not in (".git", "__pycache__", "worktrees") and (here / x).as_posix() != runs]
+                rels.update((here / f).as_posix() for f in files)
+        elif lead:
+            rels.add(lead)
     return sorted(r for r in rels if r and expctl.path_matches(r, patterns) and (root / r).is_file())
 
 
@@ -518,6 +524,7 @@ class Campaign:
         self.exe = None
         self.pats = (list(cfg.get("frozen_paths") or []) + list(cfg.get("sealed_paths") or [])
                      + list(cfg.get("harness_paths") or []) + list(self.L.get("protected_data") or []) + LOCKS)
+        self.runs_rel = str(cfg["runs_dir"]).replace("\\", "/").strip("/")
         self.run_env = {k: v for k, v in os.environ.items() if not SECRET_ENV.search(k) and not PARENT_ENV.match(k)}
         self.run_env.update(HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", HF_DATASETS_OFFLINE="1",
                             WANDB_MODE="offline", PIP_NO_INDEX="1")
@@ -605,7 +612,7 @@ class Campaign:
         """The evaluator, the data, the harness files and the dependency pins must be what they were at the start."""
         if self.ledger_tip() != self.tip:
             raise Stop("safeguard: the campaign's ledger was changed by something other than the loop")
-        now = {r: file_sha(self.root / r) for r in protected_files(self.root, self.pats)}
+        now = {r: file_sha(self.root / r) for r in protected_files(self.root, self.pats, self.runs_rel)}
         old = self.st["hashes"]
         changed = sorted(r for r in set(old) | set(now) if old.get(r) != now.get(r))
         if changed:
@@ -625,9 +632,19 @@ class Campaign:
                 lit, base = literal(p), self.root / literal(p)
                 if lit and str(p).replace("\\", "/").rstrip("/") in (lit, lit + "/**") and base.is_dir():
                     pre += ["--tmpfs", str(base)]
-                else:
-                    for f in protected_files(self.root, [p]):
+                    continue
+                # A pattern that seals folders wherever they lie (**/test/**) hides each of them as one: the highest
+                # folder in which every name matches. Any other pattern hides its files one by one
+                whole, tops = str(p).replace("\\", "/").endswith("/**"), {}
+                for f in protected_files(self.root, [p], self.runs_rel):
+                    q = f.split("/")[:-1]
+                    if "/".join(q) not in tops:
+                        tops["/".join(q)] = next((d for d in ("/".join(q[:i]) for i in range(1, len(q) + 1))
+                                                  if whole and expctl.path_matches(d + "/x", [p])), None)
+                    if not tops["/".join(q)]:
                         pre += ["--ro-bind", "/dev/null", str(self.root / f)]
+                for d in sorted(set(filter(None, tops.values()))):
+                    pre += ["--tmpfs", str(self.root / d)]
             runs = expctl.runs_root(self.root, self.cfg)
             pre += ["--bind", str(self.wt), str(self.wt), "--bind", str(runs), str(runs)]
         return pre
@@ -1601,8 +1618,8 @@ def preflight(C: Campaign, agent, limits, args):
     if both:
         fail(f"editable_paths overlaps protected files: {', '.join(both[:5])}")
     sealed = cfg.get("sealed_paths")
-    bad = [p for p in L.get("link_paths") or [] if expctl.path_matches(p, sealed) or expctl.sealed_inside(p, sealed)
-           or expctl.path_matches(p, L["editable_paths"])]
+    bad = [p for p in L.get("link_paths") or [] if expctl.path_matches(p, sealed)
+           or expctl.sealed_inside(p, sealed, root / p) or expctl.path_matches(p, L["editable_paths"])]
     if bad:
         fail(f"loop.link_paths may not name sealed or editable paths, or folders that hold sealed ones: {', '.join(bad)}")
     fixed = list(cfg.get("frozen_paths") or []) + list(L.get("protected_data") or [])
@@ -1610,7 +1627,7 @@ def preflight(C: Campaign, agent, limits, args):
     if bad:  # a link reaches the project's own copy, so what it names must be checksummed like the evaluator
         fail(f"loop.link_paths entries must be covered by frozen_paths or loop.protected_data: {', '.join(bad)}")
     bad = [p for p in L.get("eval_writable") or [] if os.path.isabs(p) or ".." in Path(p).parts
-           or expctl.path_matches(p, C.pats) or expctl.sealed_inside(p, C.pats)]
+           or expctl.path_matches(p, C.pats) or expctl.sealed_inside(p, C.pats, root / p)]
     if bad:  # what the evaluator may write must not be what the loop checksums
         fail(f"loop.eval_writable entries must be paths inside the project that are not protected (frozen, sealed, "
              f"harness or protected data) and hold nothing protected: {', '.join(bad)}")
@@ -1681,7 +1698,7 @@ def cmd_run(args, resume):
                 "branch": branch, "base_commit": head, "kept_commit": head, "iteration": 0, "failures": 0, "tried": [],
                 "limits": limits, "conditions": conditions,
                 "counters": {"runs": 0, "elapsed_s": 0.0, "gpu_s": 0.0, "usd": 0.0, "tokens": 0, "sessions": 0},
-                "hashes": {r: file_sha(root / r) for r in protected_files(root, C.pats)}}
+                "hashes": {r: file_sha(root / r) for r in protected_files(root, C.pats, C.runs_rel)}}
     return C.run()
 
 

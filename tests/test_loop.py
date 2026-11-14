@@ -335,6 +335,10 @@ def unit_tests():
         for f in ("data/a/test/secret.csv", "data/a/train/x.csv", "data/b/train/x.csv", deep, "data/test_1.csv",
                   "runs/r1/src/test/copy.csv", "other/x.txt", ".hid/test/h.csv"):
             put(root / f, "x")
+        got = [nnloop.protected_files(root, p, "runs") for p in (["**/test/**"], ["data/test_*.csv"], ["data/*/test/*.csv"])]
+        check(got == [[".hid/test/h.csv", "data/a/test/secret.csv", deep], ["data/test_1.csv"], ["data/a/test/secret.csv"]],
+              f"protected files: a pattern that begins with a wildcard or with part of a name finds its files, git-ignored "
+              f"ones included, and leaves the runs folder alone (was: none for the first two) ({got})")
         asked = [("data", ["**/test/**"]), ("data/b", ["**/test/**"]), ("data", ["data/*/test/secret.csv"]),
                  ("data/b", ["data/*/test/secret.csv"]), ("other", ["**/test/**"]), ("data", ["*.csv"]),
                  (".hid", [".hid/test/**"]), ("data", ["data/a/test/**"]), ("data/b", ["data/a/test/**"])]
@@ -1315,6 +1319,19 @@ def sandbox_tests(tmp, proj):
     got = json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]
     check(got == {"net": False, "sealed": False, "main": False, "worktree": True, "runs": True},
           f"a training run has no network, cannot see the sealed data and can write only its worktree and the runs folder (got {got})")
+    # sealed by a pattern that begins with a wildcard: git-ignored files in a folder of that name, hidden as a folder
+    for f in ("blobs/test/secret.bin", "blobs/test/more/secret2.bin"):
+        put(proj / f, "sealed")
+    C.cfg["sealed_paths"] = ["**/test/**"]
+    wild = C.sandbox(True)
+    r = tk.sh(wild + [PY, "-c", "import os, sys; print([os.path.exists(p) for p in sys.argv[1:]])",
+                      str(proj / "blobs/test/secret.bin"), str(proj / "blobs/test/more"), str(proj / "blobs/x.bin")], cwd=C.wt)
+    tmpfs = [wild[i + 1] for i, a in enumerate(wild) if a == "--tmpfs"]
+    check(r.stdout.strip() == "[False, False, True]" and str(proj / "blobs/test") in tmpfs and "/dev/null" not in wild,
+          f"a training run cannot see files that a pattern with a leading wildcard seals, and each sealed folder is hidden "
+          f"as one (was: visible) ({r.stdout.strip()} {r.stderr[-200:]} {tmpfs})")
+    C.cfg["sealed_paths"] = ["data/test/**"]
+    shutil.rmtree(proj / "blobs/test")
     def seen():  # what the evaluator's box lets a program do, when the folder it scores is the runs folder
         r = tk.sh(C.eval_box(proj / "runs") + [PY, str(tmp / "probe.py"), str(proj), str(C.wt)], cwd=proj)
         return json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]

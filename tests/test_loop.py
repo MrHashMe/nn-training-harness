@@ -320,6 +320,12 @@ def unit_tests():
           and json.loads(nnloop.shifted_text('{"loss": 2, "acc": "0.91", "val": 3.0}', 1)) == {"loss": 2, "acc": "0.91", "val": 4.0},
           "the self-test's copy of a log moves the numbers written with a fraction and leaves whole numbers, names, "
           "paths and versions; in a JSON record it moves the numbers with a fraction and no text")
+    check(json.loads(nnloop.shifted_text('{"correct": 85, "total": [100], "ok": true, "by": "7"}', 0.3))
+          == {"correct": 86, "total": [101], "ok": True, "by": "7"}
+          and nnloop.shifted_text('{"step": 1, "correct": 85}\n{"step": 2, "loss": 0.5}\n', 2.5)
+          == '{"step": 4, "correct": 88}\n{"step": 2, "loss": 3.0}\n',
+          "a JSON record without any number with a fraction has its whole numbers moved, so that the copy states "
+          "other values there too; truth values and text stay, and each line of a JSON-lines file is taken by itself")
 
 
 # ---------------------------------------------------------------- the test project

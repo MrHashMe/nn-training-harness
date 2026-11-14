@@ -97,7 +97,10 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
      about itself). In the copy every number with a fraction in `metrics.jsonl`, `result.json`,
      `heartbeat.json`, `loop_eval.json` and `stdout.log` is moved by ten margins; in the log that is every
      number written with digits on both sides of a decimal point that is not a piece of a name, a path or a
-     version. Whole numbers such as steps stay, and so do numbers inside text values of the JSON records,
+     version. Whole numbers such as steps stay, except in a JSON record (a file, or a line of a JSON-lines
+     file) that holds no number with a fraction at all: its values are whole numbers (`{"correct": 85}`), so
+     they are moved, by at least 1. RunLog writes every metric as a number with a fraction, so this concerns
+     records a script writes itself. Numbers inside text values of the JSON records stay as well, as do
      files in subfolders, what a checkpoint holds and log files of the project's own: the check catches an
      evaluator that takes a metric from the run's records or its log, not every way in which a run could
      hand it a score. The copy lies in the campaign's folder during the

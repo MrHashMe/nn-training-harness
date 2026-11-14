@@ -331,23 +331,31 @@ CLAIMS = ("heartbeat.json", "metrics.jsonl", "result.json", "loop_eval.json", "s
 DECIMAL = re.compile(r"(?<![\w.])\d+\.\d+(?:[eE][-+]?\d+)?(?!\w|\.\w)")
 
 
-def shifted(o, d):
-    """o with every float moved by d: metric values change; whole-number steps and counts, and names, do not."""
+def shifted(o, d, k=0):
+    """o with every float moved by d and every whole number by k. With k = 0 the metric values change; whole-number
+    steps and counts, and names, do not."""
     if isinstance(o, float):
         return o + d
+    if k and type(o) is int:  # not a bool
+        return o + k
     if isinstance(o, dict):
-        return {k: shifted(v, d) for k, v in o.items()}
-    return [shifted(v, d) for v in o] if isinstance(o, list) else o
+        return {key: shifted(v, d, k) for key, v in o.items()}
+    return [shifted(v, d, k) for v in o] if isinstance(o, list) else o
 
 
 def shifted_text(text, d):
-    """A JSON or JSON-lines text with its numbers moved as shifted() moves them. In any other text, such as a log,
-    every number written with a fraction is moved."""
+    """A JSON or JSON-lines text with its numbers moved as shifted() moves them. A record that holds no number with
+    a fraction states its values as whole numbers ({"correct": 85, "total": 100}), so there those are moved. In any
+    other text, such as a log, every number written with a fraction is moved."""
+    def record(o):
+        new = shifted(o, d)
+        return json.dumps(shifted(o, d, max(1, math.ceil(abs(d)))) if new == o else new)
+
     try:
-        return json.dumps(shifted(json.loads(text), d))
+        return record(json.loads(text))
     except ValueError:
         if all(x.lstrip().startswith("{") for x in text.splitlines() if x.strip()):
-            return "".join(json.dumps(shifted(o, d)) + "\n" for o in _json_lines(text))
+            return "".join(record(o) + "\n" for o in _json_lines(text))
         return DECIMAL.sub(lambda m: repr(float(m.group()) + d), text)
 
 

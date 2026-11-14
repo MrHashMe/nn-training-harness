@@ -1,6 +1,6 @@
 # Optimization: optimizers, schedules, warmup, weight decay and scaling rules
 
-Checked: 2026-11-11 (gradient clipping: 2026-11-12)
+Checked: 2026-11-11 (gradient clipping: 2026-11-12; cautious weight decay and the two Muon variants: 2026-11-14)
 Refresh: re-read the cited papers and the PyTorch optimizer docs of the installed version; scout the AlgoPerf rolling
 leaderboard (https://github.com/mlcommons/algorithmic-efficiency) for newer optimizer results.
 
@@ -52,6 +52,18 @@ Run each as one change under the protocol above.
   (unverified). `Muon(params, lr=0.001, weight_decay=0.1, momentum=0.95, ns_steps=5, adjust_lr_fn=None)`;
   `"match_rms_adamw"` eases LR transfer. (source: https://arxiv.org/abs/2512.05620, 18 Jan 2026;
   https://arxiv.org/abs/2607.20548, 13 Jul 2026; https://docs.pytorch.org/docs/2.15/generated/torch.optim.Muon.html)
+- Muon variants, each its authors' result with no replication found. Polar Express replaces the fixed Newton-Schulz
+  coefficients with ones chosen per step (GPT-2 on 1B to 10B tokens, lower validation loss across learning rates).
+  NorMuon normalises each row after the orthogonalisation with a second-moment estimate (at 1.1B: 21.74 % better
+  training efficiency than Adam and 11.31 % than Muon, by its abstract). `torch.optim.Muon` has neither: in 2.9.1
+  it takes one coefficient triple, `ns_coefficients`, for all `ns_steps`. (source: https://arxiv.org/abs/2505.16932,
+  v5 4 May 2026; https://arxiv.org/abs/2510.05491, 7 Oct 2025; abstract pages read 2026-11-14)
+- Cautious weight decay: the decay acts only on the coordinates where its direction agrees with the optimizer's
+  update, and the authors argue that the unmodified loss is then what gets optimised. A one-line change to AdamW,
+  Lion or Muon; they report better final loss and accuracy in language-model pretraining and on ImageNet, millions
+  to billions of parameters. No code on the page read, no replication found. It is not the masked update of the
+  Cautious optimizers held below. (source: https://arxiv.org/abs/2510.12402, v2 24 Feb 2026; abstract page read
+  2026-11-14)
 - Warmup-stable-decay with a square-root-style cooldown: used for 8B to 72B runs; the preferred schedule can reverse
   with training length. (source: https://arxiv.org/abs/2607.20548, 13 Jul 2026; https://arxiv.org/abs/2609.04577,
   4 Sep 2026)
@@ -80,8 +92,8 @@ Run each as one change under the protocol above.
 ## Held or rejected: do not reach for these
 - Lion: near the bottom in AlgoPerf v1, diverged on one diffusion task, trails Adam after tuning.
   (source: https://arxiv.org/abs/2610.13036, 9 Oct 2026)
-- AdEMAMix, Cautious variants, MARS and MARS-M, Dion3, SAMuon and similar: single-source or no better than plain
-  NAdamW in AlgoPerf v1. Single-worker DiLoCo had the lowest score.
+- AdEMAMix, Cautious optimizers (the masked update of C-AdamW and its kin), MARS and MARS-M, Dion3, SAMuon and
+  similar: single-source or no better than plain NAdamW in AlgoPerf v1. Single-worker DiLoCo had the lowest score.
 - Global-norm clipping as a blanket default: it can hide a too-high LR unless the clipped fraction is logged.
 - Optimizer collections (pytorch_optimizer v4.1.0, HeavyBall v3.2.1): extra supply-chain surface; individual
   implementations not checked. (source: https://github.com/kozistr/pytorch_optimizer/releases, 25 Oct 2026)

@@ -115,11 +115,14 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
    - each run in `loop.controls` must not score better than its floor by more than the margin. A control is a
      training command whose result cannot have learned the task: a constant predictor, an untrained model, a
      model trained on shuffled labels. Its floor is the best score such a run can reach, the bound and not the
-     average: for chance-level accuracy on a small split, add the sampling error. A control that beats its
-     floor means that the evaluator rewards something other than learning, that held-out data reaches
-     training, or that the floor is wrong; one that scores worse passes. Each control is trained once, on the
-     first seed, with the budget and sandbox of any run, and uses one run of the run limit. Each control has
-     a name of its own.
+     average: for chance-level accuracy on a small split, add the sampling error. Where no bound can be
+     computed, measure it: a pretrained model that is fine-tuned on shuffled labels still has what it knew
+     before, so train that control with a few seeds, set the floor well above the best of them and far below
+     the baseline, and write down that it is a measured floor for the script it was measured with. A control
+     that beats its floor means that the evaluator rewards something other than learning, that held-out data
+     reaches training, or that the floor is wrong; one that scores worse passes. Each control is trained
+     once, on the first seed, with the budget and sandbox of any run, and uses one run of the run limit. Each
+     control has a name of its own.
 
    A run limit that does not cover one run for each seed and one for each control is refused at the start,
    and at a `resume` as long as the campaign has no baseline. A limit of another kind or a stop request that

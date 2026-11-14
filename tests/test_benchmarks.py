@@ -347,5 +347,41 @@ check(r.returncode == 0 and (cfg.get("loop") or {}).get("link_paths") == ["model
       f"history ({r.stderr.strip()[-300:]})")
 shutil.rmtree(p / "model", ignore_errors=True)  # where the kit's folder holds the fetched model, this was a copy of 270 MB
 
+# 4b. the fine-tuning task's control: train.py on the training messages with their intents dealt out again
+fctl = ft["loop"].get("controls") or [{}]
+floor = fctl[0].get("floor", 1)
+check(len(fctl) == 1 and fctl[0].get("name") == "shuffled" and 0 < floor < 0.2 and f"floor of {floor}" in readme
+      and "controls.py" in ft["frozen_paths"] and (cfg.get("loop") or {}).get("controls") == fctl and (p / "controls.py").is_file(),
+      "finetune: the shuffled control is frozen, its measured floor is the one the README states, far below what the "
+      "baseline scores, and a project made from the task has both")
+c = tmp / "ftcontrols"
+shutil.copytree(FT, c, ignore=shutil.ignore_patterns("__pycache__", "out", "runs", "model"))
+(c / "train.py").write_text('''import hashlib, json, os, sys
+from pathlib import Path
+here = Path(__file__).resolve().parent
+sys.path.insert(0, str(here))
+import evaluate
+pairs = evaluate.read(here / "data" / "train.txt")
+(Path(sys.argv[sys.argv.index("--out") + 1]) / "seen.json").write_text(json.dumps({
+    "argv": sys.argv[1:], "here": os.path.samefile(os.getcwd(), here), "files": sorted(p.name for p in (here / "data").iterdir()),
+    "messages": hashlib.sha256("\\n".join(t for t, _ in pairs).encode()).hexdigest(), "intents": [x for _, x in pairs],
+    "evaluator": evaluate.__file__}))
+''', encoding="utf-8")  # stands for train.py: it writes down what the control gave it
+pairs = [x.split("\t") for x in (FT / "data" / "train.txt").read_text(encoding="utf-8").splitlines()]
+r = run(c / "controls.py", "shuffled", "--seed", "7", env=dict(os.environ, EXP_RUN_DIR=str(tmp / "ft-shuffled-run")))
+seen = json.loads((tmp / "ft-shuffled-run" / "seen.json").read_text(encoding="utf-8")) if r.returncode == 0 else {}
+got = seen.get("intents") or []
+check(seen.get("argv", [])[:2] == ["--seed", "7"] and seen.get("here") and seen.get("files") == ["dev.txt", "train.txt"]
+      and seen.get("messages") == hashlib.sha256("\n".join(x[0] for x in pairs).encode()).hexdigest()
+      and sorted(got) == sorted(x[1] for x in pairs) and sum(a == x[1] for a, x in zip(got, pairs)) < len(pairs) / 20
+      and os.path.samefile(seen.get("evaluator") or c, c / "evaluate.py")
+      and (c / "data" / "train.txt").read_bytes() == (FT / "data" / "train.txt").read_bytes()
+      and not (tmp / "ft-shuffled-run" / "shuffled").exists(),
+      f"finetune: the shuffled control runs train.py in a folder of its own, on the same messages with the same intents "
+      f"in another order, without the sealed splits and with the task's own evaluator, and leaves the task's data alone "
+      f"({r.stderr.strip()[-300:]})")
+r = run(c / "controls.py", "nosuchcontrol")
+check(r.returncode == 1 and "controls.py shuffled" in r.stderr, "finetune: controls.py names its control when it is given another")
+
 print("\nRESULT:", "ALL PASS" if not FAILS else f"{len(FAILS)} FAILURES")
 sys.exit(1 if FAILS else 0)

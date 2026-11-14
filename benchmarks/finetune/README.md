@@ -12,6 +12,7 @@ trained from scratch. It is not a research benchmark: 30 seconds on one GPU, one
 | Score | `python evaluate.py --run-dir RUN [--data data/dev.txt]`: share of the messages whose intent the model names exactly, higher is better |
 | Contract | a run saves `RUN/adapter/`: a LoRA adapter in PEFT's format (`adapter_config.json`, `adapter_model.safetensors`) for the base model in `model/`. The evaluator puts it on its own copy of the base model, asks with its own prompt in the model's chat format and compares the greedy answer with the intent's name. It loads no other weight format, refuses an adapter whose files lie outside the run folder (a link) and a config that sets keys beyond a plain LoRA adapter's (some name a library for PEFT to import), so it executes nothing a run saved |
 | Baseline | `train.py` as shipped: LoRA of rank 8 on the query and value projections, AdamW 2e-4, batch 32, the loss on the answer only. A plain PyTorch loop, because a fixed time budget needs a loop that watches the clock |
+| Control | `controls.py shuffled`: `train.py` as it is, on the training messages with their intents dealt out again at random. Such a run can learn the form of an answer and how often each intent occurs, not which intent a message has. The loop's self-test trains it once before a campaign's first session, as one run of the run limit, and stops if the evaluator scores it above its floor of 0.05 by more than the margin (`loop.controls`) |
 
 Measured on 12 November 2026 (RTX 5090, Windows 11, Python 3.11, PyTorch 2.9.1, Transformers 5.22.2, PEFT 0.21.2,
 the versions `references/finetuning.md` names): the baseline makes about 360 steps and scores 0.372, 0.386 and
@@ -19,6 +20,14 @@ the versions `references/finetuning.md` names): the baseline makes about 360 ste
 with a learning rate of 1e-3 scored 0.691 with seed 1, so the baseline leaves room. The score moves with the
 number of steps that fit into the 30 seconds: under the loop, with 353 steps, the same three seeds scored 0.349,
 0.364 and 0.335.
+
+The control, measured on 14 November 2026 on the same machine and versions: 0.012, 0.023 and 0.008 on
+`loopval.txt` with seeds 1, 2 and 3 (368, 362 and 370 steps), where one intent in 77 is 0.013, and 0.011 with
+seed 1 under the learning rate of 1e-3 (365 steps). Its floor of 0.05 is measured, not a bound from theory: about
+twice the highest of those scores and a seventh of the baseline's lowest. It was measured with the script as
+shipped; measure it again after a change to how a run trains that could let it gain from shuffled intents. The
+same day the start of a campaign with the stand-in agent trained the control under the loop: 0.012 against the
+floor, and the self-test passed (4 runs, 283 seconds).
 
 One campaign of `nnloop.py` ran on a project made from this folder, with the stand-in agent of the kit's tests in
 place of a real one (12 runs, 13 minutes): the learning rate of 1e-3 was kept (0.684 against 0.349 over the three

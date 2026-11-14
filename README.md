@@ -203,7 +203,9 @@ checks; **missing** = not available. Two rows of the first table stand for a lis
 - **Steps that need a person:** stop or kill, deleting runs or checkpoints, destructive git, push, edits of frozen
   or harness files, the final evaluation (`expctl final-eval`), an audit of the splits where anything is sealed
   (`expctl audit-splits`), dependency changes under live runs, paid compute,
-  starting a campaign or a remote run. A shell command that writes into an active run directory belongs here too.
+  starting a campaign or a remote run. A shell command that writes into an active run directory belongs here too,
+  and since 14 November 2026 an edit whose new text names sealed data, an MCP tool call whose arguments do, a
+  shell command that names git's hooks or its configuration file, and decoded text handed to a shell.
 
 ### By agent
 | | Claude Code | Codex CLI | Cursor editor agent | Cursor terminal agent |
@@ -243,6 +245,7 @@ OpenCode are not ported.
 | Graceful stop | SIGTERM and `stop.json` | same | same | `stop.json` only: a loop that does not poll `RunLog.should_stop()` is killed after `kill_after_s` |
 | Source snapshot | symlinks | symlinks | symlinks | junctions and hard links when the account lacks the symlink privilege (local NTFS) |
 | Loop: no network for the run, project read-only for the run, sealed data hidden from the run | enforced with bubblewrap | enforced with bubblewrap | missing: offline variables and a scan of the change only | missing: same |
+| Loop: the evaluator cannot write into the project, apart from the run folder it scores and `loop.eval_writable` | enforced with bubblewrap | enforced with bubblewrap | missing | missing |
 | Loop: harness-side score, keep rule, limits, fresh worktree, ledger | enforced | enforced | enforced | enforced |
 | Loop: evaluator, data and harness files unchanged by a run | enforced with bubblewrap (the project is read-only for the run), and checksummed | same | checked after the fact: a run is not confined, so a changed protected file is caught at the next checksum, and a change to something the evaluator imports from outside the protected paths (an installed package) is not caught | same as macOS; `link_paths` are junctions or hard links there, so a run can write the project's own data through them |
 | Remote runs | works | works | expected to work | works as the controller; an ssh target needs a POSIX shell on the remote side |
@@ -307,6 +310,15 @@ neither kit was shown to beat running the agent with no kit.
 - The guard is a seatbelt, not a sandbox: a program can still build a path at run time. For hard isolation keep
   the test split outside the repository, or use the agent's own sandbox with read-deny rules (test GPU access
   inside it first).
+- What the guard reads in a call, since 14 November 2026: shell code attached to its flag (`bash -c"..."`,
+  `cmd /c"..."`), the value of PowerShell's `-EncodedCommand`, a path joined from string literals in a line of
+  code (`Path('data') / 'test'`, `os.path.join`, `+`), the new text of an edit or the lines a patch adds, and
+  the arguments of an MCP tool. Limits: a path with a variable in it passes (literals only). Text that merely
+  mentions a sealed folder, a URL for one, is asked about, and so is every edit that writes such a mention, also
+  when the file held it before. `.md`, `.mdx` and `.rst` files, the kit's own config and the agent's own tools
+  (Task, WebFetch) are not read that way. A shell command that names `.git/hooks/` or `.git/config` is asked
+  about when it could write there: the guard cannot tell a source from a target, so `cat .git/config > x` is
+  asked about as well, while `cat .git/config` alone passes.
 - Recursive commands over the project root (`grep -r`, `rgrep`, `find`, `ls -R`, `tree`, `tar`, `zip`, `cp -r`,
   `cp -a`, `rsync`, a path with `**` in it such as `cat **/*.csv`; in PowerShell and cmd.exe `Get-ChildItem -Recurse` with
   its short forms, `dir /s`, `findstr /s`, `tree /f`, `Copy-Item -Recurse`, `Compress-Archive`, `robocopy`, `xcopy`,
@@ -351,9 +363,10 @@ neither kit was shown to beat running the agent with no kit.
   any recursive command or search over a folder, the project root included, in which more than 20,000 files come
   before the sealed one. Where a pattern names some files of a folder (`data/held/*.csv`), it is such a command at
   the project root, or the Grep tool from a folder above, when more than 20,000 other files of that folder come
-  first. Where a pattern seals a whole folder (`data/test/**`), it is only a search with a file filter, when more
-  than 20,000 files that the filter leaves out come before the one it matches (`grep -r --include='*.csv' x .`
-  over a folder of 25,000 images and a label file). A sealed file that a command names is refused at any size.
+  first. Where a pattern seals a whole folder (`data/test/**`), the guard walks that folder on beyond the 20,000
+  files for up to five seconds of the hook call, and a walk that the time ends counts as reading it, so the
+  search is asked about (since 14 November 2026; before, `grep -r --include='*.csv' x .` over a folder of 25,000
+  images and a label file passed). A sealed file that a command names is refused at any size.
   Keep a test split of that size outside the repository.
 - Other checkouts of the repository: the guard applies the project's rules to run snapshots, to the main checkout
   and to every worktree that git has registered, wherever it lies (it reads the list from git's own files), and
@@ -418,6 +431,10 @@ neither kit was shown to beat running the agent with no kit.
   touches either; the journal entry of each use remains).
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.
+- What counts as a run's source, since 14 November 2026: agent configuration (`AGENTS.md`, `.mcp.json`, `.codex/`,
+  `.cursor/`, `.agents/`) is left out of the source hash, the snapshots and the remote bundles, so the hash of a
+  project that tracks such files, or does not ignore them, changes once. The journal, the search's storage file
+  and the runs folder no longer make a tree `dirty`.
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route

@@ -418,9 +418,10 @@ and at the end.
 
 The guard asks you before: stopping or killing a run, deleting runs or checkpoints, destructive git, a push,
 edits of frozen or harness files, the final evaluation, dependency changes while runs are live, paid compute,
-and starting a campaign or a remote run. It refuses outright: reading sealed test data, the final-evaluation
-command typed directly, and file edits inside a live run's folder. With Codex and Cursor a hook cannot ask, so what
-would be a question is refused and the agent gives you the command to run yourself.
+starting a campaign or a remote run, and an edit or an MCP tool call whose text names sealed data. It refuses
+outright: reading sealed test data, the final-evaluation command typed directly, and file edits inside a live run's
+folder. With Codex and Cursor a hook cannot ask, so what would be a question is refused and the agent gives you the
+command to run yourself.
 
 ### 4. Scenarios
 

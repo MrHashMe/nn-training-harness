@@ -339,6 +339,15 @@ def unit_tests():
         check(got == [[".hid/test/h.csv", "data/a/test/secret.csv", deep], ["data/test_1.csv"], ["data/a/test/secret.csv"]],
               f"protected files: a pattern that begins with a wildcard or with part of a name finds its files, git-ignored "
               f"ones included, and leaves the runs folder alone (was: none for the first two) ({got})")
+        # macOS's Finder writes its view settings into any folder a person opens. On a Mac that stopped a campaign
+        for f, text in (("data/a/test/.DS_Store", b"\0\0\0\x01Bud1" + bytes(24)), ("data/a/train/.DS_Store", b"id,label\n")):
+            (root / f).write_bytes(text)
+        got = nnloop.protected_files(root, ["data/**"], "runs")
+        check("data/a/test/.DS_Store" not in got and "data/a/train/.DS_Store" in got and "data/a/test/secret.csv" in got,
+              f"protected files: Finder's own file in a protected folder is not one of them, and a file that only has "
+              f"its name is ({got})")
+        for f in ("data/a/test/.DS_Store", "data/a/train/.DS_Store"):
+            (root / f).unlink()
         asked = [("data", ["**/test/**"]), ("data/b", ["**/test/**"]), ("data", ["data/*/test/secret.csv"]),
                  ("data/b", ["data/*/test/secret.csv"]), ("other", ["**/test/**"]), ("data", ["*.csv"]),
                  (".hid", [".hid/test/**"]), ("data", ["data/a/test/**"]), ("data/b", ["data/a/test/**"])]
@@ -1545,6 +1554,12 @@ def sandbox_tests(tmp, proj):
     C.box_train = box
     check(got == [True, False], "a change that reads EXP_PROJECT_ROOT counts as tampering where no sandbox hides the "
           f"sealed data from a training run, and not where one does ({got})")
+    before = C.main_status()
+    (proj / ".DS_Store").write_bytes(b"\0\0\0\x01Bud1" + bytes(24))
+    got = C.main_status()
+    (proj / ".DS_Store").unlink()
+    check(got == before, "Finder's file in the main project is not a change to it: the kit's lines in .gitignore name "
+          f"it (was: a campaign on a Mac stopped) ({got})")
     if not C.box_train:
         print("SKIP sandbox checks: bubblewrap is not usable here (it is Linux-only), so a run is not confined on this platform")
         return

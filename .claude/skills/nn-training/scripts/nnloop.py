@@ -280,7 +280,20 @@ def protected_files(root: Path, patterns, runs=None):
                 rels.update((here / f).as_posix() for f in files)
         elif lead:
             rels.add(lead)
-    return sorted(r for r in rels if r and expctl.path_matches(r, patterns) and (root / r).is_file())
+    return sorted(r for r in rels if r and expctl.path_matches(r, patterns) and (root / r).is_file()
+                  and not finder_file(root / r))
+
+
+def finder_file(p: Path) -> bool:
+    """A folder's view settings, which macOS's Finder writes wherever a person opens a folder: told by the name and by
+    the file's first bytes, so that another file given that name stays protected."""
+    if p.name != ".DS_Store":
+        return False
+    try:
+        with open(p, "rb") as f:
+            return f.read(8) == b"\0\0\0\x01Bud1"
+    except OSError:
+        return False
 
 
 def tool_inputs(text):

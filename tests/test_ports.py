@@ -569,6 +569,7 @@ def install_tests(tmp: Path):
     gi = (u / ".gitignore").read_text(encoding="utf-8").splitlines()
     check(gi.count("# nn-training harness") == 1 and gi[gi.index("# nn-training harness") + 1] == "myruns/",
           f"a later run adds its path to the kit's block of .gitignore, not under a second header {gi}")
+    check(".DS_Store" in gi, "the kit's block of .gitignore names the file macOS's Finder leaves in a folder")
     st = json.loads((u / ".claude/settings.json").read_text(encoding="utf-8"))
     cmds = [h["command"] for g in st["hooks"]["PreToolUse"] for h in g["hooks"]]
     check(sum("nn_guard.py" in c for c in cmds) == 1 and "./my-own-check.sh" in cmds and "CLAUDE_PROJECT_DIR:-" not in json.dumps(st["hooks"])

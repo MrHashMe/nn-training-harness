@@ -483,7 +483,8 @@ def ensure_gitignore(plan: Plan, runs_dir: str):
     raw = text.splitlines()
     rows = [ln.strip() for ln in raw]
     lines = set(rows)
-    want = [p for p in (".claude/state/", ".claude/backups/", ".claude/worktrees/", runs_dir.rstrip("/") + "/")
+    # .DS_Store: macOS's Finder writes one into any folder a person opens; untracked, it would count as changed source
+    want = [p for p in (".claude/state/", ".claude/backups/", ".claude/worktrees/", runs_dir.rstrip("/") + "/", ".DS_Store")
             if p not in lines and p.rstrip("/") not in lines and "/" + p not in lines]
     if not want:
         plan.note("same", path)

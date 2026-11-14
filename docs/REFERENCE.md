@@ -60,7 +60,7 @@ the repository's other checkouts and one line into the repository's `.git/info/e
 | MCP servers (Context7 docs, Hugging Face hub) | `install.py --target DIR --mcp` | network; the agent asks you to approve them |
 | Research scouting | nothing to install: a step of the skill (`references/scouting.md`) | the agent's own web tools; without them it is skipped and the agent says so |
 | Unattended research loop | add a `loop` section to `.claude/nn-training.json`, then `nnloop.py start --campaign NAME --agent claude --max-runs N` (`references/loop.md`) | git; a signed-in agent CLI; at least one limit (runs, hours, GPU-hours, money, tokens) |
-| Remote and rented GPUs | add a `remote` section with a target and a spending cap, then `nnremote.py launch --name NAME --on TARGET -- ...` (`references/remote.md`) | ssh access to a machine, or a Hugging Face account that may run Jobs |
+| Remote and rented GPUs | add a `remote` section with a target and a spending cap, then `nnremote.py launch --name NAME --on TARGET -- ...`; an ssh target's `on_finish` names the command that stops a rented machine once its run has ended and its files are here (`references/remote.md`) | ssh access to a machine, or a Hugging Face account that may run Jobs |
 | Third-party stack (PyTorch, Optuna, lm-evaluation-harness, PEFT/TRL, Trackio) | per row in `references/stack.md`, in the project's own environment | packages, network |
 
 The loop decides keep or revert in harness code, from a score it gets by running your frozen evaluator itself, and
@@ -116,7 +116,7 @@ OpenCode are not ported.
 ### By platform
 | | Linux | WSL2 | macOS | native Windows |
 |---|---|---|---|---|
-| Tests of 11 Nov 2026 | not run on bare Linux; WSL2 Ubuntu 24.04 stands in | all pass: Python 3.8 and 3.12 without third-party packages, 3.12 with psutil | not run | all pass: Python 3.8 without third-party packages, 3.11 with psutil |
+| Tests of 14 Nov 2026 | not run on bare Linux; WSL2 Ubuntu 24.04 stands in | all pass: Python 3.8, 3.14 and 3.15.0b3 without third-party packages, 3.12 with psutil | not run | all pass: Python 3.8 and 3.15.0rc3 without third-party packages, 3.11 with psutil |
 | Run contract, guard, installer, session status | works | works | expected to work | works |
 | `launch --via tmux` | works | works | expected to work | missing (no tmux): runs are detached processes |
 | Graceful stop | SIGTERM and `stop.json` | same | same | `stop.json` only: a loop that does not poll `RunLog.should_stop()` is killed after `kill_after_s` |
@@ -126,6 +126,19 @@ OpenCode are not ported.
 | Loop: harness-side score, keep rule, limits, fresh worktree, ledger | enforced | enforced | enforced | enforced |
 | Loop: evaluator, data and harness files unchanged by a run | enforced with bubblewrap (the project is read-only for the run), and checksummed | same | checked after the fact: a run is not confined, so a changed protected file is caught at the next checksum, and a change to something the evaluator imports from outside the protected paths (an installed package) is not caught | same as macOS; `link_paths` are junctions or hard links there, so a run can write the project's own data through them |
 | Remote runs | works | works | expected to work | works as the controller; an ssh target needs a POSIX shell on the remote side |
+
+macOS: nothing in that column has run on a Mac, because none was at hand. What a reading of the code found
+missing was built on 14 November 2026. A process's start time comes from `ps` where there is no `/proc`; without
+psutil, a process number that had gone to another process counted as the run before. A live run, the loop and
+the controller of a remote run hold off idle sleep with the system's `caffeinate`; a closed lid still puts a Mac
+to sleep. `expctl env` reports the chip and the memory, and a run's `env.json` says whether PyTorch's `mps` device
+is available. Finder's `.DS_Store` is in the kit's block of `.gitignore` and does not count as a changed
+protected file. The guard reads zsh's patterns ("Notes and limits"). Not built: a box for the loop's runs (the
+table above), and the `mps` device in `expctl env --probe`, in the memory figures of a run's heartbeat and in the
+two benchmark tasks, which train on the CPU there. The loop refuses `--max-gpu-hours` on a Mac, because it
+measures them with `nvidia-smi`. Training on the Apple GPU: `references/performance.md`, section 9.
+`.github/workflows/tests.yml` runs the seven test files on GitHub's Ubuntu, Windows and macOS runners when a
+commit is pushed; it had not run when this was written.
 
 Slurm: there is no Slurm target type; an ssh target to a login node with your own `srun` line is the route, and it
 is not tested. Containers: no image ships with the kit; `--in-container` is your statement that the loop already
@@ -158,6 +171,9 @@ $E curve <run> --keys train/loss,val/acc
 $E stop <run> --wait 5m                             # graceful: checkpoint, then exit
 $E resume <run>                                     # a new run from the old run's checkpoint
 $E final-eval -- --ckpt runs/<run>/ckpt/best.pt     # once, with a receipt and a journal entry
+$E audit-splits                                     # how many records the splits share: counts only, never a row
+$E env --python .venv/bin/python --probe            # hardware and versions; --probe tries the GPU features there
+$E selftest                                         # are the hooks, the guard and the protocol wired up
 ```
 
 ## Configure the protocol (Phase 2 does this with your approval)
@@ -230,6 +246,28 @@ neither kit was shown to beat running the agent with no kit.
   not followed. The other way round, some harmless calls are asked about: a notes file handed to a runner as
   data (`perl -ne print notes.md`, `python manage notes.md`), an MCP tool that only lists the folder with the
   sealed files, and on Windows a program text of more than 32,767 characters, on which the path lookup fails.
+- The patterns of zsh and ksh, since 14 November 2026 (on a Mac the agent's shell is zsh). The guard reads a
+  command line a third time, with these written as the wildcards they are: a group inside a name
+  (`data/(test|x)/labels.csv`, `data/te(st)/labels.csv`, and ksh's `@(a|b)`, `!(a)`, `+(a)`, `?(a)`), `[^a]`,
+  zsh's `^name` in a path, `pattern~other`, and a flag such as `(#i)`, behind which every folder name of the word
+  counts as `*`. A line that reaches a sealed path this way is refused like its sh form. A sealed path also
+  counts as mentioned behind `<`, `[`, `@`, a comma and an option's letter (`"$(<data/test/labels.csv)"`,
+  `curl -d @data/test/labels.csv`, `--data a.csv,data/test/labels.csv`), which is asked about, and so does a
+  frozen or harness path in a command with a write that the guard knows (the next point). What each pattern
+  does was run in zsh 5.9 and bash 5.3.9 on Linux; nothing was run on macOS.
+  Limits, each behind a shell option that the line or your shell settings would have to switch on: zsh's `x#`
+  (repeats), a `^name` that is a whole word or stands inside a name (`te^x`), a group without `|` at the end of a
+  word (`data/te(st)`), and a pattern under an option that ignores case. The other way round, a flag makes the
+  guard refuse more than the shell would match: `cat data/(#i)TRAIN.csv` is read as `cat data/*`.
+- A shell command that names a frozen or harness file is asked about only where the line holds a write that the
+  guard knows: a redirect, `tee`, `cp`, `mv`, `rm`, `sed -i`, `truncate`, `dd` and a few more, with their
+  PowerShell forms. A write by another program passes without a question (asked on 14 November 2026; the limit
+  is older): `sort -o eval/metrics.py data/train.csv`, `curl -o`, `wget -O`, `touch`, `patch`, PowerShell's
+  `-OutFile`, and any program that names no file, such as a formatter run over a folder or a script of your
+  own. The edit tools are asked about, and the loop compares the checksums of its protected files at every
+  iteration. In a session of your own, `git status` shows such a change where git tracks the file. The other
+  way round, a harmless line is asked about when it holds such a write anywhere:
+  `python eval/metrics.py > out.txt`.
 - Recursive commands over the project root (`grep -r`, `rgrep`, `find`, `ls -R`, `tree`, `du -a`, `tar`, `zip`, `cp -r`,
   `cp -a`, `rsync`, a path with `**` in it such as `cat **/*.csv`; in PowerShell and cmd.exe `Get-ChildItem -Recurse` with
   its short forms, `dir /s`, `findstr /s`, `tree /f`, `Copy-Item -Recurse`, `Compress-Archive`, `robocopy`, `xcopy`,

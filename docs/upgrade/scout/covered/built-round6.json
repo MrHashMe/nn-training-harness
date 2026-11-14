@@ -1,0 +1,50 @@
+[
+ {
+  "file": "round6",
+  "candidate": "Process start time where there is no /proc and no psutil, read from `ps -o lstart=` (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py and runlog.py; tests/test_kit.py compares the two routes on Linux. Commit 49f7373. The branch for a system without /proc has not run on a Mac"
+ },
+ {
+  "file": "round6",
+  "candidate": "Finder's .DS_Store: named in the installer's .gitignore block, and left out of the loop's protected files when it is a real Finder file (kit-native)",
+  "status": "finished",
+  "where": "install.py ensure_gitignore; .claude/skills/nn-training/scripts/nnloop.py; tests/test_loop.py, tests/test_ports.py. Commit 58c25e6"
+ },
+ {
+  "file": "round6",
+  "candidate": "Keep a Mac from idle sleep while a run, the loop or a remote run's controller lives (`caffeinate -i -w <pid>`), with no option (kit-native)",
+  "status": "unfinished",
+  "where": "Built: expctl.py (the supervisor of a run), nnloop.py, nnremote.py; references/performance.md section 9. Commit ecacd2b. Its checks in tests/test_kit.py run on macOS only and have run nowhere"
+ },
+ {
+  "file": "round6",
+  "candidate": "`expctl env` reports a Mac's chip and memory, RunLog records whether torch's mps device is available, and the loop's note to its worker names the Apple GPU (kit-native)",
+  "status": "unfinished",
+  "where": "Built: expctl.py, runlog.py, nnloop.py gpu_label; references/performance.md section 9. Commit 93029a2. tests/test_loop.py tests the loop's note everywhere; the check of chip and memory in tests/test_kit.py runs on macOS only and has run nowhere"
+ },
+ {
+  "file": "round6",
+  "candidate": "The guard reads the patterns of zsh and ksh (groups, [^a], ^name in a path, pattern~other, flags) and counts a sealed path behind < [ @ , and an option's letter (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py wild, readings, fragments; tests/test_kit.py; references/performance.md section 9 and docs/REFERENCE.md name what is read and what is not. Commit 1f62c2f. Nothing was run on macOS"
+ },
+ {
+  "file": "round6",
+  "candidate": "The installer's refusal of a stub interpreter names the Mac's `python3` without Apple's Command Line Tools (kit-native)",
+  "status": "finished",
+  "where": "install.py check_python. Commit 3f49aa1"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Apple-silicon notes and a backend field in run records",
+  "status": "unfinished",
+  "where": "Since 14 Nov 2026 (commit 93029a2): references/performance.md section 9, and `torch.mps_available` in a run's env.json. Not built: a field for the device a run used, and a refusal to compare runs of different devices"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Platform test matrix for the kit itself (floor and ceiling interpreter on Windows, Linux, macOS)",
+  "status": "unfinished",
+  "where": "Since 14 Nov 2026 (commit 8cb9743): .github/workflows/tests.yml runs the seven test files on GitHub's Ubuntu, Windows and macOS runners, with the oldest and the newest Python each offers. It has not run: a workflow runs when it is pushed, and a push needs the user's word. docs/REFERENCE.md lists what the tests ran with on Windows and in WSL"
+ }
+]

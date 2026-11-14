@@ -12,6 +12,8 @@ locally and not published. The entry after the publication is the fifth installe
 "Round 5" below is the work on the request of 14 November: another model's review of the kit, checked claim
 by claim, and what was built from it. Its last entries are the sixth installer run on the real install,
 which brought the round there, and the commit of the files that run changed in that repository.
+"Round 6" below is the work on the user's "Mac readiness" of the same day: fixes for a Mac, built and
+tested on Windows and in WSL, not run on a Mac and not pushed.
 
 # Upgrade progress
 
@@ -1257,11 +1259,115 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   `2666faf`): 17 names, none added, removed or changed; no subcommand removed, `audit-splits` added. Undo
   while it is the newest commit there: `git reset --soft HEAD~1`.
 
+## Round 6 (Mac readiness, 14 November): built and tested on this machine; not run on a Mac, not pushed
+
+After round 5 was public the user asked, with nothing to be changed, for a comparison of the kit's versions
+with scores, a check for a Mac Pro and a ranked list of improvements (answered in the session; REPORT.md,
+"Round 6", "The review that came first"). To the question what to build first the answer was "Mac
+readiness". My reading, said before the start: fixes for the review's eight Mac findings and a test workflow
+for GitHub's macOS, Linux and Windows runners, tested here, committed locally, no push. No Mac was at hand,
+so every statement about macOS is code reading or documentation.
+
+- Done, one commit per idea, on top of the public `bc96015`:
+  1. A process's start time from `ps -o lstart=` where there is no `/proc` and no psutil (`49f7373`). One
+     existing check changed with it: the comparison of that time with the clock runs on every system but
+     Linux, where it ran on Windows only.
+  2. Finder's `.DS_Store`: a line in the installer's `.gitignore` block, and out of the loop's protected
+     files when it begins with Finder's bytes (`58c25e6`).
+  3. `caffeinate -i -w <pid>` on macOS for a run's supervisor, the loop and a remote run's controller, with
+     `keep_awake_pid` in `pid.json` (`ecacd2b`). Its checks run on macOS only.
+  4. `expctl env` reports a Mac's chip and memory, `env.json` has `torch.mps_available`, the loop's note to
+     its worker names the Apple GPU, and `references/performance.md` has section 9, with lines in
+     `stack.md` and `finetuning.md` (`93029a2`, `2b84ccf`).
+  5. The guard reads the patterns of zsh and ksh and counts a sealed path behind `<`, `[`, `@`, a comma and
+     an option's letter (`1f62c2f`): 39 new cases in `tests/test_kit.py`. What each pattern does was run in
+     zsh 5.9 and bash 5.3.9 in a container (48 lines); the guard's answers before and after were compared on
+     146 command lines.
+  6. The installer's message about a stub interpreter names the Mac case (`3f49aa1`).
+  7. `.github/workflows/tests.yml`: six jobs on Ubuntu, Windows and macOS runners (`8cb9743`). Not run: it
+     runs when it is pushed.
+  8. SKILL.md's list of references names the section on Apple silicon (`c395e0b`).
+- Not built, by decision: a Seatbelt box for the loop's runs on macOS. It could only have been written
+  blind, and where a box exists the loop relaxes its scan of a change. REPORT.md, "Round 6", "Not done, and
+  why" has the design.
+- Found in passing, older than the round, not changed: the guard asks about a shell command that names a
+  frozen or harness file only where the line holds one of its write verbs, so `sort -o`, `curl -o`, `touch`
+  and others write such a file without a question. Recorded (REFERENCE.md "Notes and limits", a Trial row of
+  the note `round6`) and put to the user.
+- Tests: all seven files pass in seven interpreters (WSL: 3.12 with psutil and PyTorch, clean 3.8, 3.14 and
+  3.15.0b3; Windows: 3.11 with psutil and PyTorch, clean 3.8 and 3.15.0rc3). 1,229 checks in WSL's default
+  interpreter and 1,215 on Windows (round 5: 1,184 and 1,171). The table is in REPORT.md, "Round 6",
+  "Tests".
+- Records: REPORT.md "Round 6" (nine changes in the behaviour of existing features, one of them a narrow
+  exception to "not weaker": the `.DS_Store` rule of the loop); LEDGER.md (note `round6`, 11 rows; 1,620
+  rows; Adopt 480, of which 336 finished); REFERENCE.md (a paragraph under the platform table, a bullet and
+  a sentence under "Notes and limits", the table's test row).
+- Not touched: the real install. A seventh installer run would bring it the guard's fix and add one line to
+  the kit's block of its `.gitignore`; it needs the user's word.
+- Left on this machine: the container image `alpine:3` in WSL's Docker (`docker rmi alpine:3` removes it).
+
+## Round 7 (second review, 14 November): in progress
+
+The user's request of 14 November, sent while round 6's last tests ran: review a second reviewer's report (kept out of
+git at `docs/upgrade/scout/scouts/user-review-1114b.md`), plan the upgrade on its basis and carry the plan out. The
+rule of the round: every claim of the report gets a verdict from the code or from a run before anything is built on it,
+and the list is built from the top, so that the usage limit cuts it from the bottom. The report's scores and its
+"v2.0" design are not a goal. Nothing is pushed.
+
+Claims, with the verdict so far (open = not looked at yet):
+- E1 `benchmarks/charlm/evaluate.py` hands the archive's pickle entries to `torch.jit.load` unread; the report says
+  code runs from them. Open: to be run with a crafted archive. Planned whatever the run says: the evaluator reads the
+  pickle entries' opcodes and refuses a name that `torch.jit.save` does not write.
+- G1 guard: a write in Python by `Path.replace`, `Path.rename`, `Path.unlink`, `extractall` is on no list. Confirmed
+  by reading (`WRITE_VERBS`, `PY_WRITES`). To fix, with round 6's Trial row (G2: output options, `touch`, `patch`,
+  `install`).
+- G3 guard: zsh `=(cmd)` and the glob qualifier `(e:'cmd':)`. Open: to be asked of the guard and of zsh 5.9.
+- G4 guard: a search over more than 20,000 files passes when a wildcard seal's files lie beyond them. Confirmed, a
+  commented shortcut. To fix: such a search counts as reading the sealed files once the hook's time is used up.
+- G5 guard: the working folder is not resolved (`/tmp` and `/private/tmp` on a Mac). Open: to be run in WSL through
+  a link to the project.
+- G6 guard: an error of its own asks instead of denying. Open (a decision, probably kept: a person decides).
+- X1 `expctl stop` signals the supervisor's pid without asking whether it is still the supervisor. Confirmed
+  (`supervisor_key` is recorded and not compared). To fix.
+- X2 the start time from `ps` depends on the locale. Wrong for this branch: round 6 asks `ps` in the C locale and UTC.
+- X3 `chained()` appends without a lock. Confirmed. To fix.
+- X4 a link inside a git-ignored folder leads a snapshot to sealed data. Open: to be run; the planned answer is a
+  search for such links in the preflight command, because a walk of every ignored folder at every launch costs too much.
+- R1 two bookings at the same moment both give up. Confirmed (safe, and neither starts). To fix: the earlier row wins.
+- R2 `on_finish` runs on the controller only. Open (a decision).
+- L1 `runlog._STOP` is process-wide. Wrong as a defect: `should_stop()` says so on purpose, a stop request holds for
+  the process like the signal it stands in for.
+- N1 GPU-hours count every GPU the loop sees. Open: deliberate if the reference says so.
+- N2 names beside `.DS_Store` (`._*`, `Thumbs.db`, `desktop.ini`). Open.
+- N3 the screen ends a candidate whose first seed is not better. Open: to be simulated before any change.
+- D1 the banner's and the README's headline against the pilot's result. Open.
+- D2 `docs/REFERENCE.md`: an old date and version, commands and `on_finish` missing. Open.
+- D3 `docs/README.md` on development commits, REPORT.md on commit times. Open.
+- D4 six contradictions between references; six ledger rows marked finished. Open.
+
+To build after the fixes, in this order: generated guard cases judged by a live shell (F1); hashes of harness and
+frozen files, checked before a result counts (F2: the complete answer to writes that no list sees); `expctl preflight`
+(F3); the macOS box for loop runs from the report's profile, tested only by the workflow's Mac runners (F4). Every
+other proposal of the report (training back ends, search methods, cloud drivers, plugin and swarm, MCP servers, the
+retention gate, the data recipe, per-item pairing) gets a ledger row in the note `round7`.
+
+Usage on 14 November: 89 % of the week's limit for this model was used when the round began, three hours before its
+reset, and paid extra usage is switched on for the account. Work stops short of the limit and goes on after the reset.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
   signed in).
-- 142 adopted rows are unfinished (134 before round 5, whose check of the ledger moved eight rows there),
+- Round 6 on a Mac: nothing ran there. Unrun: the workflow (it runs when it is pushed), the four checks of
+  `caffeinate` and the check of chip and memory (macOS only), the `ps` route under macOS's own `ps`, the
+  guard and the loop where `/tmp` and `/var` are links into `/private`, all seven test files, and Python
+  3.15 on any system. Not built: the Seatbelt box, the `mps` device in the probe, the heartbeat and the two
+  benchmark tasks, a device field in run records, mlx-lm. No reviewer without the working context looked at
+  the round's guard change.
+- The guard's list of write verbs (found in round 6, older than it): not changed; a Trial row and a question
+  to the user.
+- 144 adopted rows are unfinished (142 before round 6, whose two new ones are built and wait for a run on
+  macOS; 134 before round 5, whose check of the ledger moved eight rows there),
   and of the Trial and Assess rows only round 2's three built items were tried (usage limit). ROUND2.md gave
   the go-ahead for all of them; what was built first is what the live campaign and the review pointed at.
   The first three items of my order are built (round 3), and the first four of the ranked list of 12
@@ -1466,6 +1572,16 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   repair turn and the compile check to try as well, and on a second reviewer's look at the fixes after the
   independent review. (The control for the fine-tuning task, asked about here before, is built.)
 - Open, from round 5: what to build next (the order under "Not done").
+- Answered on 14 Nov ("Mac readiness", to the question which improvement to build first): "Round 6" above.
+  The word covers changes in this folder and local commits. It is not a word for a push or for anything on
+  the real install.
+- Open, from round 6: a push. It also starts the workflow on GitHub's runners (six jobs, free for a public
+  repository). Recommended: a branch first, on which the workflow runs and what fails on macOS or on Python
+  3.15 is repaired before `main` moves; one word would have to cover the follow-up pushes.
+- Open, from round 6: a seventh installer run on the real install, for the guard's fix.
+- Open, from round 6: whether to close the guard's write-verb gap (more verbs, with more questions about
+  harmless lines), to build the hash of the frozen files in run records, or to leave both.
+- Open, from round 6: a Mac for one training run (the Seatbelt box, the `mps` device, mlx-lm).
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

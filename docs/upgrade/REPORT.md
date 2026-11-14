@@ -20,7 +20,10 @@ on your "Yes, commit there" the seventeen files it changed are committed in that
 "The sixth installer run on the real install"). On your "Merge and push" these records are in the public
 repository, merged with the front page and the guide that another session of yours rewrote that day. What
 this report says about those two pages describes them before the rewrite, and the table of agents and
-platforms that it places in the README is now in `docs/REFERENCE.md`. Decision record:
+platforms that it places in the README is now in `docs/REFERENCE.md`. You then asked for a comparison of
+the kit's versions, a check for the Mac and a ranked list of improvements, with nothing changed, and to my
+question what to build first you answered "Mac readiness": its section, "Round 6", follows "Round 5".
+Nothing of round 6 is pushed, and nothing of it has run on a Mac. Decision record:
 `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -56,9 +59,10 @@ platforms that it places in the README is now in `docs/REFERENCE.md`. Decision r
    (section 4), and those of rounds 2 to 4 since the third and fourth installer runs (12 and 13 November).
 4. **The work was cut down on 11 November** on your instruction (usage limit): no second verification round of the
    research, no outside scouts, no trial runs for undecided candidates, one independent reviewer instead of the
-   deep-sweep skill. Of 474 adopted ledger rows, 332 are finished and 142 are listed as unfinished, not built
+   deep-sweep skill. Of 480 adopted ledger rows, 336 are finished and 144 are listed as unfinished, not built
    (399, 261 and 138 before round 2; 415, 277 and 138 before round 3; 418, 280 and 138 before round 4; 422,
-   288 and 134 before round 5, whose check of the ledger moved eight rows from finished to unfinished).
+   288 and 134 before round 5, whose check of the ledger moved eight rows from finished to unfinished; 474,
+   332 and 142 before round 6, whose two new unfinished rows are built and wait for a run on macOS).
 5. **Not verified live:** the Codex and Cursor ports in a real session, and the loop with either; the loop with
    Claude Code on Linux; the Hugging Face Jobs route, which is the internet GPU path. All are built and pass tests
    against stand-ins. Each waits for something only you can do (section 9).
@@ -87,8 +91,9 @@ platforms that it places in the README is now in `docs/REFERENCE.md`. Decision r
    whose hash did not match the index (a damaged download on a connection of about 1 MB/s), so nothing was
    installed there.
 9. Tests: all seven test files pass in WSL (default Python 3.12, clean 3.8, clean 3.12) and on native Windows
-   (default 3.11, clean 3.11, clean 3.8) at the last code change, commit `827c35c` of 14 November ("Round
-   5", "Tests"), as they did at `0450067` of 13 November ("After the guide"), at round 4's, `00be575`
+   (default 3.11, clean 3.11, clean 3.8) at round 5's last code change, commit `827c35c` of 14 November
+   ("Round 5", "Tests"), and in seven interpreters, Python 3.8 to 3.15, at round 6's ("Round 6",
+   "Tests"), as they did at `0450067` of 13 November ("After the guide"), at round 4's, `00be575`
    ("Round 4", "Tests"), at round 3's, `0f23999`, and at round 2's, `6e01543`.
    Full test runs and real runs exposed nine faults, all fixed and tested (three more, found on 13
    November, are in points 12 and 13). Before round 2: a Hugging Face
@@ -165,6 +170,19 @@ platforms that it places in the README is now in `docs/REFERENCE.md`. Decision r
     that writes a sealed folder's name into a code file now meets a question, and two ways to read a file
     in a sealed folder, one allowed until then and one asked about, are refused ("Round 5", "The sixth
     installer run on the real install").
+15. **Round 6 prepared the kit for a Mac without a Mac, and found that the guard did not read zsh's
+    patterns** (14 November, on your "Mac readiness"; "Round 6"). Nothing of it has run on macOS. A review
+    of the code had named eight findings: six have a fix, one is a test workflow for GitHub's Linux, Windows
+    and macOS runners, which runs when it is pushed, and one, a box for the loop's runs on a Mac, is not
+    built, because it could only have been written blind. Run in a real zsh and a real bash, lines such as
+    `cat data/(test|x)/labels.csv` and `cat data/[^r]est/labels.csv` printed a sealed file, and the guard
+    had let them pass. It reads these patterns now, and it asks about a sealed path behind `<`, `@`, a
+    comma or an option's letter. Several of those lines need neither zsh nor a Mac, so the public version
+    and your real install keep the hole until a push and a seventh installer run, each on your word. An
+    older limit was found in passing and not changed: a frozen or harness file that a program outside the
+    guard's list of write verbs writes (`sort -o`, `curl -o`, `touch`) passes without a question. All seven test files pass in seven
+    interpreters on Windows and in WSL, Python 3.8 to 3.15 ("Round 6", "Tests"); none ran on a Mac.
+    Nothing is pushed.
 
 ## Round 2 (12 November 2026)
 
@@ -2874,8 +2892,8 @@ records only.
    November you said "Yes, push". The round's 74 commits, the one with this line among them, are pushed to
    `main` of the public repository, and nothing else was pushed. Before the push I looked through every
    added line and every commit message of the round for private details (paths of this machine, addresses,
-   time zones, times of day, the names on the real install's path) and found none; every commit carries
-   the account's no-reply address and a date in UTC.
+   time zones, times of day, the names on the real install's path) and found none; each of these 74 commits
+   carries the account's no-reply address and a date in UTC.
 2. **Your real install: the run, the commit and the push of their records are answered.** On 14 November
    you said "Yes, run it", and the installer ran there a sixth time (above). On your "Yes, commit there"
    of the same day the seventeen files it changed are committed in that repository, in one local commit
@@ -2904,6 +2922,311 @@ records only.
    rounds ranked. Of round 4's order this round built the repair attempt after a crash and lifted the
    guard's file bound for a folder sealed as a whole; a job object on Windows, a minimum agent version, the
    readiness report and a checkpoint helper stand as they were.
+
+## Round 6 (14 November 2026): Mac readiness
+
+After round 5 was public you asked for three things with nothing changed: a comparison of the kit's versions
+with a score for each, a check that the kit will work on a Mac Pro, and a ranked list of improvements. I
+answered in the session; "The review that came first" keeps the result. Its Mac part named eight findings.
+They came from reading the code, because no Mac was at hand. To my question which improvement to build first
+you answered "Mac readiness". I read that as the word to build for the eight findings and to add a test
+workflow for GitHub's macOS, Linux and Windows runners, with tests on this machine, local commits and no
+push, and I said so before I started. This section is that work: nine commits, `49f7373` to `c395e0b`,
+on top of the public commit `bc96015`, and the commit of these records. Nothing is pushed. Nothing was run,
+read or changed on your real install.
+
+**Nothing of this round has run on macOS.** What the section says about a Mac rests on reading the code and
+on documentation, named where it is used. The first run on a Mac will be the workflow's, and a workflow runs
+when it is pushed, which waits for your word ("What needs your decision").
+
+### In short
+1. **Of the eight findings, six have a fix in the kit, one is a workflow that has not run, and one is not
+   built.**
+
+   | | Finding of the review | What was done | Commit | Run where |
+   |---|---|---|---|---|
+   | 1 | The kit never ran on macOS | A workflow runs the seven test files on GitHub's Ubuntu, Windows and macOS runners, with the oldest and the newest Python each offers | `8cb9743` | nowhere: it runs when it is pushed |
+   | 2 | Without psutil a finished run could read as live on a Mac, and `expctl stop` could signal another process | A process's start time is read from `ps -o lstart=` where there is no `/proc` | `49f7373` | the `ps` route in WSL, where the test compares it with `/proc`; not on macOS |
+   | 3 | Training does not use the Mac's GPU, and the kit's reports say there is none | `expctl env` reports chip and memory, a run's `env.json` says whether PyTorch's `mps` device is available, the loop's note to its worker names the Apple GPU, and `references/performance.md` has a section on Apple silicon. Not built: the `mps` device in the probe, in the heartbeat and in the benchmark tasks | `93029a2` | the loop's note on Windows and in WSL; the check of chip and memory runs on macOS only, so nowhere |
+   | 4 | The loop's runs are not confined on macOS | Not built ("Not done, and why" has the reason and the design); the references and the platform table say so | `2b84ccf` | |
+   | 5 | Finder's `.DS_Store` can stop a campaign | The installer's `.gitignore` block names it, and the loop leaves a real Finder file out of its protected files | `58c25e6` | Windows and WSL, with a made-up file that begins with Finder's bytes |
+   | 6 | A sleeping Mac pauses a run | On macOS a run's supervisor, the loop and a remote run's controller start `caffeinate -i -w <pid>` | `ecacd2b` | nowhere: its four checks run on macOS only |
+   | 7 | The agent's shell on a Mac is zsh, and the guard's tests had no zsh forms | Run in a real zsh, several forms read a sealed file past the guard; the guard reads them now (point 2) | `1f62c2f` | the patterns in zsh 5.9 and bash 5.3.9 in a Linux container; the guard's answers on Windows and in WSL |
+   | 8 | Smaller points | The installer's message about a stub interpreter names the Mac case (`3f49aa1`); `--max-gpu-hours` and the iCloud folders are in the reference's section; the path forms under `/private` were not looked at | | |
+
+2. **The zsh finding was larger than the review said, and part of it is not about a Mac.** The review said
+   that the guard's shell rules were tested with sh, bash and PowerShell forms only, and recommended tests. I
+   ran the forms in a real zsh and a real bash, in a throwaway Linux container, in a project with a sealed
+   file. Lines that need no shell option printed the sealed file, and the guard let them pass: in zsh
+   `cat data/(test|x)/labels.csv` and `cat data/te(st)/labels.csv`, and in zsh and bash alike
+   `cat data/[^r]est/labels.csv`. More did so with one option set (zsh's `extendedglob` and `kshglob`, bash's
+   `extglob`). The guard now refuses all of them, as it refuses their sh forms. A second group passed
+   although the line names the sealed file outright, because of the character in front of the name:
+   `echo "$(<data/test/labels.csv)"`, `curl -d @data/test/labels.csv URL`, `xargs -adata/test/labels.csv echo`,
+   `grep -fdata/test/labels.csv x`, a list with commas as in `--data data/train.csv,data/test/labels.csv`, and
+   in PowerShell `Get-Content data/train.csv,data/test/labels.csv`. These are asked about now. `[^a]` and the
+   second group need neither zsh nor a Mac: they concern Linux and Windows too. Your real install has round
+   5's guard; asked here in a temporary project, that guard lets them pass (nothing was run on the install).
+   The fix is in the local commits only. The public version keeps the holes until a push, and the real
+   install until a seventh installer run; each needs your word. What the guard still does not read is under
+   "The guard and zsh".
+3. **A Mac's loop runs stay unconfined, by decision.** The review recommended a Seatbelt prefix
+   (`sandbox-exec`) for the loop's runs. I did not write one, because it could only have been written blind.
+   Where a box exists, the loop relaxes its scan of a change: code that opens a network connection or reads
+   `EXP_PROJECT_ROOT` may then be part of a change. A profile that does not hold would therefore weaken what a
+   campaign's result rests on, and one that holds too much would break training on the Apple GPU. A hosted
+   macOS runner cannot settle that, since the part that matters is a training run on the Apple GPU inside the
+   box. Until it is tried on a Mac, macOS has what native Windows has: the checks after the fact.
+4. **Two of the fixes act on a Mac without ever having run.** `caffeinate` and the `sysctl` calls exist on
+   macOS only, so their checks are skipped on Windows and Linux. The same holds for the macOS branch of the
+   start time, of which the `ps` call and its reading ran on Linux only. If the workflow's macOS jobs fail,
+   the repairs need further pushes.
+5. **Tests.** All seven test files pass in seven interpreters: in WSL the default Python 3.12 with
+   psutil and PyTorch and clean 3.8, 3.14 and 3.15.0b3, on native Windows the default 3.11 and clean 3.8
+   and 3.15.0rc3. That is 1,229 checks in WSL's default interpreter and 1,215 on Windows, against 1,184
+   and 1,171 at round 5's last code change. No check failed.
+6. **One existing check was changed.** The check that a process's start time is known without psutil also
+   compares that time with the clock where the two can be compared. It did so on Windows only; it now does so
+   on every system but Linux, where the time is counted from the boot. On Windows and Linux the check is what
+   it was, and on macOS it is stricter. A helper of the sleep checks was renamed (`ended` to `no_process`),
+   because a later variable of the same test had its name.
+
+### The review that came first
+Scores are my judgment from the repository's records and tests, not a measurement. The one measured
+comparison is the pilot ("Read this first", point 1), in which no version is shown to train better than no
+kit. So the scores say how well a version protects a result, what it can do and how well it is tested.
+Points: protecting the result 25, sound keep-or-revert decisions 15, measured effect on results 15, what it
+can do 15, verification 15, agents and platforms 5, documentation 10.
+
+| Version | Commit | Score | Main reasons |
+|---|---|---|---|
+| 23 October kit | `5ea9659` | 32 | Run controller, logger, guard and skill, no loop. The guard let unreadable input pass, and `launch` failed on native Windows with default settings |
+| First upgrade, 10 and 11 November | `b7b7652` | 56 | The loop that scores runs itself, remote runs, scouting, the Codex and Cursor ports, a benchmark. Later rounds found dozens of faults in it |
+| Round 2 | `6e01543` | 61 | The guard covers other worktrees, a hole behind a link is closed, kept changes are confirmed on fresh seeds |
+| Round 3 | `0f23999` | 62 | Numeric search, restart after a stall, a fine-tuning benchmark; none measured to raise results |
+| Round 4 | `00be575` | 68 | 28 review findings fixed, the guard's known gap closed |
+| First public version | `920bddd` | 71 | Round 4's code with the guide, the front page and the licence |
+| Round 5 | `2666faf` | 76 | 37 review points built: evaluators harder to fool, many ways past the guard closed, two faults on Linux fixed |
+| Public version at the time of the review | `bc96015` | 76 | Round 5's code; the front page and guide that another session rewrote were not reviewed, so the score is the same |
+
+The 76 are: protection 20 of 25, decisions 13 of 15, measured effect 5 of 15, capability 14 of 15,
+verification 12 of 15, agents and platforms 4 of 5, documentation 8 of 10. The commit ids of the first six
+rows belong to the history before the public commit. This round is not scored: its changes for a Mac have
+not run on one.
+
+The improvements, ranked by expected effect, as I gave them: (1) a measurement that can show whether the kit
+helps: tasks with room to improve, a stronger agent model, planted temptations to count what the guard stops;
+(2) more decision power per GPU-hour in the loop: the same seeds compared as pairs, seeds added only when a
+result is close, clearly losing runs stopped early; (3) a wider search at low cost: successive halving, and
+the search on where it measured better; (4) data and evaluation as changes the loop can keep or revert; (5) a
+gate before a long run as one command; (6) confinement on native Windows and macOS; (7) attacking the guard
+by machine, with a marker in a sealed file; (8) verifying what is built and unproven: a second reviewer for
+round 5's fixes, tests on Linux, macOS and Windows runners at every push, one live Codex and one live Cursor
+session; (9) Mac support; (10) remote GPUs one can rely on; (11) robustness of long runs; (12) a view of a
+campaign without reading logs; (13) the ledger's open rows, by cheap trials; (14) releases; (15) the guard's
+speed. By effect per effort I named item 8 and the small Mac fixes first. This round is item 9, the workflow
+of item 8 and, by way of the zsh finding, a part of what item 7 would look for. Item 2's pairing of seeds was
+measured in round 2 and rejected at three seeds ("Round 2", point 6); it would have to be measured again with
+more seeds before it is built.
+
+### The guard and zsh
+The guard reads a shell line as a POSIX shell takes it, a second time as other shells take it (round 5), and
+since this round a third time with the patterns of zsh and ksh written as patterns it already knows:
+
+| On the line | Read as | Needs in zsh | In bash |
+|---|---|---|---|
+| a group of plain names inside a name: `data/(test\|x)/f`, `data/te(st)/f`, `@(a\|b)` | a brace list, `data/{test,x}/f`, or the name itself | nothing; `@(..)` needs `kshglob` | `@(..)` with `extglob` |
+| any other group: a pattern inside (`data/(t*\|x)/f`), `!(a)`, `+(a)`, `?(a)` | `*` | nothing for a plain group; `kshglob` for a group with a character in front | `extglob`, for those with a character in front |
+| `[^a]` | `[!a]` | nothing | nothing |
+| `^name` in a path: `data/^train/f` | `*` | `extendedglob` | |
+| `pattern~other` | `pattern` | `extendedglob` | |
+| a flag: `data/(#i)TEST/f`, `(#a1)` | every folder name of the word as `*` | `extendedglob` | |
+
+A pair of parentheses counts as a group only where the line cannot mean a subshell, a case pattern or a call
+in program text: where more of the name follows right behind it, where it lists alternatives or is `!(..)`
+and a name touches it, or where it holds a plain name in front of a `/` or behind one. Quoted text and the
+text behind `python -c` are held out before the patterns are read, so a regular expression in quotes keeps
+its meaning. The reading only adds answers: a line that was refused or asked about is so still.
+
+Still read as the characters they are, each behind an option that the line or the user's shell settings
+would have to switch on: zsh's `x#` (repeats, as in `data/tes#t`), a `^name` that is a whole word (`cd data;
+cat ^train`) or stands inside a name (`te^x`), a group without `|` that ends a word (`data/te(st)`, a group
+only under `nobareglobqual`), and a pattern under an option that ignores case (`nocaseglob`). A name put
+together from variables passes, as before. In the other direction a flag makes the guard refuse more than
+the shell would match: `cat data/(#i)TRAIN.csv` is read as `cat data/*` and refused.
+
+### Changes in the behaviour of existing features
+The sealed test set, the frozen evaluator and the protection of live runs are not weaker, with one narrow
+exception that I name here: item 5. Items 1 to 3 each add a refusal or a question to the guard, and none
+lets through what was asked about or refused before: the answers of the old and the new guard were compared
+on 146 command lines, and the cases that the guard's test table held before pass unchanged.
+
+| | Change | Before | Reason | Test | Commit |
+|---|---|---|---|---|---|
+| 1 | Guard: a shell line whose zsh or ksh pattern reaches a sealed path is refused (the forms of the table above) | passed | run in zsh and bash, the lines printed a sealed file | 20 refusals and 9 lines that must stay allowed in `tests/test_kit.py` | `1f62c2f` |
+| 2 | Guard: a sealed path counts as mentioned behind `<`, `[`, `@`, a comma and an option's letter, and the line is asked about | passed | the same; `"$(<file)"`, `curl -d @file` and `xargs -afile` read the file | 6 questions in `tests/test_kit.py` | `1f62c2f` |
+| 3 | Guard: the same characters count for a frozen or harness path in a command with one of the guard's write verbs | of twelve such lines asked before and after, one answer changed: `rm -f out.log,.claude/hooks/nn_guard.py` passed and is asked about. A frozen path behind a comma was asked about already | one rule for all three kinds of path | none of its own: the rule is the one that items 1 and 2 test | `1f62c2f` |
+| 4 | Installer: the kit's block of `.gitignore` gains the line `.DS_Store`, at an install and at the next upgrade | no such line | untracked, Finder's file counted as a change to the main project during an agent session and as changed source for `expctl resume` | `tests/test_ports.py` | `58c25e6` |
+| 5 | Loop: a file named `.DS_Store` that begins with Finder's eight bytes is left out of the protected files | a changed protected file, which stops a campaign | a person who opens a protected folder in Finder would stop the campaign. A file that only has the name stays protected. The exception is narrow, and it is one: a file of that name and beginning inside a protected folder is no longer noticed | `tests/test_loop.py` | `58c25e6` |
+| 6 | macOS only: a run's supervisor, the loop and the controller of a remote run start `caffeinate -i -w <pid>`, with no option, and `pid.json` gains `keep_awake_pid` | no such process | a sleeping Mac pauses a run while its deadline, a campaign's time limit and a rented machine's bill keep counting. The ledger row of 11 November called keep-awake optional and bound to consent; on a Mac it is on by default, because `caffeinate -i` changes no setting and ends with the process it watches. That is my decision; say so if you want an option | 4 checks in `tests/test_kit.py`, macOS only, not run | `ecacd2b` |
+| 7 | A process's start time is read from `ps -o lstart=` where there is no `/proc` and no psutil | no start time there, so any live process with the run's number counted as the run | the review's finding 2 | `tests/test_kit.py` (the route itself, on Linux) | `49f7373` |
+| 8 | `expctl env` reports `ram_gb` and `chip` on macOS; a run's `env.json` gains `torch.mps_available` on every system; the loop's note to its worker names the Apple GPU when the baseline run's PyTorch saw it and `nvidia-smi` lists none | neither figure on a Mac; "GPUs: none" in the note | the review's finding 3 | `tests/test_loop.py` (the note); `tests/test_kit.py` (chip and memory, macOS only, not run) | `93029a2` |
+| 9 | Installer: the message that refuses a stub interpreter names the Mac's `python3` without Apple's Command Line Tools | the Windows stub only | a Mac user met the refusal with the wrong explanation | none (a message) | `3f49aa1` |
+
+No path or format changed that an installer run would have to migrate. Item 4 is a line the installer adds to
+its own block. On Windows and Linux items 6 and 8 start nothing and report nothing new, apart from the one
+key in `env.json`.
+
+### Tests
+All runs are of 14 November and from the working copy. "Clean" means an interpreter with no third-party
+package. The three runs marked * are of the tree of `8cb9743`; the others also had the one line that
+`c395e0b` adds to SKILL.md. The two default interpreters then repeated the two files that read SKILL.md
+(`test_kit.py`, `test_ports.py`) with that line, and passed. The clean 3.8 in WSL did not repeat them.
+
+| Interpreter | Platform | benchmarks | kit | loop | ports | remote | review_fixes | runlog_units | All | Failed |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 3.12.3 with psutil and PyTorch * | WSL | 50 | 655 | 247 | 128 | 90 | 40 | 19 | 1,229 | none |
+| 3.8.20, clean * | WSL | 42 | 655 | 247 | 127 | 90 | 40 | 19 | 1,220 | none |
+| 3.14.2, clean | WSL | 42 | 655 | 247 | 128 | 90 | 40 | 19 | 1,221 | none |
+| 3.15.0b3, clean | WSL | 42 | 655 | 247 | 128 | 90 | 40 | 19 | 1,221 | none |
+| 3.11.7 with psutil and PyTorch * | Windows | 50 | 650 | 241 | 127 | 90 | 38 | 19 | 1,215 | none |
+| 3.8.20, clean | Windows | 42 | 650 | 241 | 126 | 90 | 38 | 19 | 1,206 | none |
+| 3.15.0rc3, clean | Windows | 42 | 650 | 241 | 127 | 90 | 38 | 19 | 1,207 | none |
+
+Against round 5's last code change (`827c35c`: 1,184 checks in WSL's default interpreter, 1,171 on
+Windows) the kit file has 41 more checks in WSL and 40 more on Windows, the loop file 3 more and the ports
+file 1 more. The other four files have the same number. What the tests leave out, as before: on Windows the
+two tmux checks, the check of a source link that leaves the snapshot and the sandbox checks (bubblewrap is
+Linux only); in the clean interpreters the eight benchmark checks that need PyTorch; under Python 3.8 one
+check of the ports file. The checks of this round that need macOS (`caffeinate`, `sysctl`) ran nowhere. The
+loop file takes about ten minutes on Windows and three in WSL.
+
+### Verified by running, from documentation only, unverified
+**By running.** What each shell pattern does: 48 lines in zsh 5.9 and bash 5.3.9, with and without the
+options, in a container from the official image `alpine:3` (Alpine 3.24.4), in a folder with a made-up sealed
+file. The guard's answers before and after on 146 command lines, in a temporary project, and on 37 more
+lines around a write to a frozen or harness file ("Things to know"). The `ps` route for a start time, in
+WSL, where the test compares it with `/proc` and asks `ps` in two time zones. The `.DS_Store`
+rules with a made-up file, and the loop's note with a made-up record of an Apple GPU, on Windows and in WSL.
+The workflow file is read as YAML by a parser; no runner has read it. The seven test files, as under "Tests".
+
+**From documentation, read on 14 November 2026.** The limits of PyTorch's `mps` device, its memory settings
+and `torch.mps` (the pages of PyTorch 2.15 under "Sources"); `caffeinate -i -w` (a mirror of the manual
+page); mlx-lm 0.32.2; the profile language of Seatbelt, from Bazel's macOS sandbox; that GitHub's standard
+macOS runner is Apple silicon and free for public repositories; the two actions' release commits; which
+Python builds the runners offer (3.8 for Linux up to Ubuntu 24.04 and for Intel Macs, none for Apple
+silicon, 3.15.2 as the newest).
+
+**From memory, not checked.** The first bytes of a `.DS_Store` file; what `python3` does on a Mac without
+the Command Line Tools, and that the system's `python3` is 3.9 with them; that macOS counts a machine as idle
+by its user; that the agent's shell on a Mac is zsh with the user's options; that a hosted macOS runner
+cannot be relied on for the Apple GPU; that `sandbox-exec` is marked deprecated in its manual page.
+
+**Unverified.** Everything on macOS: the format `ps` prints there, the two `sysctl` keys, the start and end
+of `caffeinate`, the guard and the loop where `/tmp` and `/var` are links into `/private`, and all seven
+test files. The tests under the final Python 3.15, which the workflow's newest-Python jobs use: here
+they passed under two pre-releases, 3.15.0b3 in WSL and 3.15.0rc3 on Windows. Whether Python 3.8 resolves on GitHub's Windows runner.
+
+### Things to know
+- **The public version and your real install have the holes of point 2.** Both get the fix only on your
+  word: a push, and a seventh installer run.
+- **A push starts the workflow.** It runs six jobs on GitHub's runners at every push and pull request, of
+  at most an hour each, free for a public repository. It may only read the repository, and the two actions
+  it uses are pinned to commits. The first run may show failures on macOS, which is what it is for. Python
+  3.15 is less of a risk than it was: two pre-releases of it pass here.
+- **Two interpreters were installed for that pre-check.** uv put Python 3.15.0rc3 (Windows) and 3.15.0b3
+  (WSL) into its own folders, where the other test interpreters already lie. On Windows it also put a
+  launcher for the new interpreter into the user's `.local\bin`, which I removed again.
+- **An older limit of the guard, found in passing and not changed.** The guard asks about a shell command
+  that names a frozen or harness file only where the line holds one of its write verbs (a redirect, `tee`,
+  `cp`, `mv`, `rm`, `sed -i`, `truncate`, `dd`, a few more, and their PowerShell forms). A write by a
+  program outside that list passes without a question, on round 5's guard and on the new one alike. Of
+  thirteen lines that write a frozen file, ten passed: `sort -o eval/metrics.py data/train.csv`, `curl -o`,
+  `wget -O`, `patch`, `install`, `touch`, `black`, `python gen.py --out eval/metrics.py`, PowerShell's
+  `Invoke-WebRequest -OutFile`, and `git apply fix.diff`, which names no file. Three were asked about:
+  `truncate`, and two `git` lines that fetch the file from another commit. Five lines of the same kind for a
+  harness file passed as well, among them `curl -o .claude/nn-training.json URL`, which would replace the
+  file that names the sealed paths. The edit tools are asked about. The loop checksums the protected files
+  at every iteration, so a campaign notices such a change; an interactive session does not. More verbs
+  would narrow the gap and add questions about harmless lines: the rule asks about
+  `python eval/metrics.py > out.txt` today, because of the redirect. And a program that names no file, such
+  as a formatter run over a folder or a script of the agent's own, is seen by no list. The complete answer
+  is a hash of the frozen files in each run's record, which the ledger holds as a Trial row since 11
+  November (note `sweep-agent-platform`). I built neither in a round about the Mac, and put the choice to
+  you ("What needs your decision", item 4).
+- **`caffeinate` holds off idle sleep only.** A closed lid still puts a Mac to sleep, and so does a battery
+  that runs low. Its process ends with the run, the loop or the controller it watches.
+- **On a Mac the loop refuses `--max-gpu-hours`**, because it measures them with `nvidia-smi`; `--max-hours`
+  and `--max-runs` work. The two benchmark tasks train on the CPU there.
+- **The container image `alpine:3` is still in WSL's Docker** (a few megabytes, pulled for the shell
+  checks). `docker rmi alpine:3` removes it.
+- **A seventh installer run on your real install** would add the line `.DS_Store` to the kit's block of its
+  `.gitignore` and bring the new guard and scripts. On Windows nothing else of this round acts.
+
+### Not done, and why
+- **A box for the loop's runs on macOS** (the review's finding 4): point 3 says why. The design, for whoever
+  has a Mac. Translate the bubblewrap arguments that `sandbox()` and `eval_box()` in `nnloop.py` already
+  compose into a Seatbelt profile, so that the Linux path does not change: `--unshare-net` becomes
+  `(deny network*)` with allowances for unix sockets, which PyTorch's data workers may need (localhost stays
+  closed, where a run on Linux has a loopback of its own); `--ro-bind R R` becomes `(deny file-write*
+  (subpath R))`; `--tmpfs D` and `--ro-bind /dev/null F`, which hide sealed data, become `(deny file-read*
+  (subpath D))` and `(deny file-read* (literal F))`; `--bind W W` becomes `(allow file-write* (subpath W))`.
+  Paths go in as the kernel names them (`/private/var/...`, and in the case the disk has). The profile runs
+  as `sandbox-exec -f <file>`. Before a campaign the box must prove itself inside the real profile, as the
+  bubblewrap box does: a hidden path refuses to be read, a connection to a socket the loop listens on at
+  127.0.0.1 fails, a write in the project fails, a write in the runs folder succeeds; if any of it does not
+  hold, the loop runs unconfined as today and says so. The sandbox checks of `tests/test_loop.py` (section
+  12) test behaviour, not bubblewrap, and would run on a Mac with one assertion adapted. Then one training
+  run on the Apple GPU inside the box, which no hosted runner can stand in for. A campaign started without
+  the box cannot be resumed with it: the loop refuses changed conditions. Ledger: a Trial row of the note
+  `round6`.
+- **The `mps` device in the kit's own tools**: a row in `expctl env --probe`, the memory figures of a run's
+  heartbeat, the device choice of the two benchmark tasks. None could be run here, and code for a device
+  that never ran is a guess. Ledger: Trial.
+- **A field for the device a run used**, and a refusal to compare runs of different devices: the open half
+  of the row "Apple-silicon notes and a backend field in run records", which stays unfinished.
+- **mlx-lm for fine-tuning on a Mac**: named as a candidate in the reference's section, not tried. Ledger:
+  Trial; the Hold of 11 November no longer holds.
+- **Keep-awake on Windows and Linux**: not built; the row of 11 November stays undecided.
+- **The path forms under `/private`**: not looked at. The workflow's macOS jobs run the tests in temporary
+  folders under `/var/folders`, which will show it. Ledger: Assess.
+- **The guard's limits of "The guard and zsh"**: each needs a shell option. Closing them by reading takes
+  knowing the user's shell options, which the guard cannot; a sandbox is the tool for that.
+- **The guard's list of write verbs**: found, recorded and put to you ("Things to know"). Ledger: Trial.
+- **No reviewer without the working context looked at this round.** Its guard change is 63 lines; my check
+  was the comparison of answers and the test table.
+- **The ledger**: 1,620 rows now (1,609 before). Adopt 480, of which 336 are finished and 144 are not (474,
+  332 and 142 before): the note `round6` adds six adopted rows, four finished, and two that wait for a
+  macOS run. Trial 237 and Assess 325 (233 and 324), Hold 324, Reject 254.
+
+### What needs your decision
+1. **A push.** Nothing of this round is public. The choice is yours: `main` directly, or a branch first, on
+   which the workflow runs and I repair what fails on macOS and on Python 3.15 before `main` moves. Either
+   way a push starts jobs on GitHub's runners, and repairs need further pushes, so I ask for one word that
+   covers them. I recommend the branch.
+2. **A seventh installer run on your real install**, for the guard's fix of point 2. It is the same kind of
+   run as the six before it.
+3. **A Mac.** The box for the loop's runs, the `mps` device in the kit's tools and mlx-lm each need one
+   training run on a real Mac. If you have one, I can give you the commands to run there.
+4. **The guard's write verbs** ("Things to know"). Say whether I should add the common writers to the list,
+   with the questions about harmless lines that brings, or build the hash of the frozen files in run
+   records, or leave both.
+
+### Sources
+Read on 14 November 2026.
+- PyTorch 2.15: [MPS notes](https://docs.pytorch.org/docs/2.15/notes/mps.html),
+  [MPS environment variables](https://docs.pytorch.org/docs/2.15/mps_environment_variables.html),
+  [`torch.mps`](https://docs.pytorch.org/docs/2.15/mps.html),
+  [automatic mixed precision](https://docs.pytorch.org/docs/2.15/amp.html),
+  [torch 2.15.0 on PyPI](https://pypi.org/pypi/torch/2.15.0/json)
+- mlx-lm: [PyPI](https://pypi.org/pypi/mlx-lm/json),
+  [LORA.md](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md)
+- [caffeinate manual page, mirror](https://ss64.com/mac/caffeinate.html)
+- [Bazel's macOS sandbox](https://raw.githubusercontent.com/bazelbuild/bazel/master/src/main/java/com/google/devtools/build/lib/sandbox/DarwinSandboxedSpawnRunner.java)
+- [GitHub-hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),
+  `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, and the list of Python builds for the runners
+  (`actions/python-versions`)
+- [Claude Code sandboxing](https://code.claude.com/docs/en/sandboxing)
 
 ## 1. What changed and why
 
@@ -3538,19 +3861,21 @@ leaves the metric unset on purpose.
   bytecode cache was written there.
 
 ## 5. The ledger in summary
-`docs/upgrade/LEDGER.md` has one row per candidate (1,609 rows from 32 notes), a coverage map with one
+`docs/upgrade/LEDGER.md` has one row per candidate (1,620 rows from 33 notes), a coverage map with one
 entry per gap and per "Find the rest" item, the recommended combination, and a table of the points where notes
 disagree and which side the kit follows. The 26th note, `scout/draft/second-look.md`, was written after the live
 runs: it ranks the open rows, adds ten, and holds what the pilot's own data says about the loop's keep rule.
 Round 2 added four notes with 82 rows: `census-loops` (15), `census-harnesses` (17), `newer-methods` (9) and
 `round2` (41). Round 4 added one, `round4`, with seven rows. Round 5 added one, `round5`, with 104 rows: the
 89 claims of the review of 14 November, 13 rows for the fixes that followed the round's independent review
-and two for the faults that the round's last full test run found.
+and two for the faults that the round's last full test run found. Round 6 added one, `round6`, with 11 rows:
+six for what was built for the Mac, four for what waits for a Mac, and one for a limit of the guard that the
+round found and did not change.
 
 | Decision | Rows | Before round 2 | |
 |---|---|---|---|
-| Adopt | 474 | 399 | 332 finished, 142 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422 |
-| Trial, Assess | 233, 324 | 221, 293 | undecided: each names the test it needs; none of these tests was run (usage limit); before round 5: 224 and 314 |
+| Adopt | 480 | 399 | 336 finished, 144 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474 |
+| Trial, Assess | 237, 325 | 221, 293 | undecided: each names the test it needs; none of these tests was run (usage limit; of round 6's five, four need a Mac and one is put to you); before round 5: 224 and 314; before round 6: 233 and 324 |
 | Hold, Reject | 324, 254 | 310, 193 | with the reason; before round 5: 320 and 225 |
 
 - What "Trustworthy decisions" (section 1) changed here: eight adopted rows became finished. Six more are built
@@ -3577,6 +3902,15 @@ and two for the faults that the round's last full test run found.
   and were checked against it, moved from finished to unfinished. The other three of the eight are finished:
   the `datasets` advisory and the split check, both built in this round, and the Windows memory setting,
   which is reference text by its nature ("Round 5").
+- What round 6 changed here: the note `round6` has six adopted rows. Four are finished: the start time
+  without `/proc`, Finder's `.DS_Store`, the guard's reading of zsh's patterns and the installer's message.
+  Two are built and unfinished, because their checks run on macOS only and have run nowhere: `caffeinate`
+  and the report of a Mac's hardware. Four rows are Trial: a Seatbelt box for the loop's runs, mlx-lm (Hold
+  until now, "only if macOS becomes a target"), the `mps` device in the kit's own tools, and the guard's
+  list of write verbs. One is Assess: the path comparisons where `/tmp` and `/var` are links into
+  `/private`. Two rows of the note `platforms` stay unfinished with new text: the notes on Apple silicon
+  exist while the device field in run records does not, and the test matrix is a workflow that has not run
+  ("Round 6").
 - Added on 12 November, at the user's question whether other projects would do better: four rows for candidates
   no note held. Fine-tuning a small model on a stronger agent's solved traces before RL (a TRL example): Trial.
   Harness adapters (one LoRA per model and agent harness, trained by RL inside the harness): Hold. The safeagents

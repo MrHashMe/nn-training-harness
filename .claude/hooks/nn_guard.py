@@ -193,11 +193,20 @@ CODE_FLAG = re.compile(r"^(?:-[a-z]*c|-e|-command|--command|--eval|/c|/k|eval|ie
 # the same flag with its text attached (bash -c"echo x > f", cmd /c"type f"): what follows it is no plain option value
 ATTACHED = re.compile(r"^(?:-[a-z]*?c|/[ck])(?=.*[^\w.=:,/@%+-])(.+)$", re.I | re.S)
 ENCODED = re.compile(r"^[-/]e[a-z]*$", re.I)  # PowerShell's -EncodedCommand, which may be cut short (-enc, -e)
-# a decoder whose output a shell or an interpreter runs (base64 -d <<< ... | sh, iex of FromBase64String)
+# a decoder whose output a shell or an interpreter runs (base64 -d <<< ... | sh, iex of FromBase64String), or that
+# xargs makes the arguments of a command
+_DECODER = (r"(?:base(?:64|32|nc)\b[^|;&]*?\s(?:-[a-zA-Z]*[dD][a-zA-Z]*|--decode)|certutil\s+-decode|xxd\s+-r|"
+            r"openssl\s+(?:enc|base64)\b[^|;&]*\s-d)")
+DECODER = re.compile(r"\b" + _DECODER + r"\b", re.I)
 DECODE_TO_SHELL = re.compile(
-    r"\b(?:base64\s+(?:-d|-D|--decode)|certutil\s+-decode|xxd\s+-r|openssl\s+(?:enc|base64)\b[^|;&]*\s-d)\b[^;&]*\|\s*"
-    r"(?:sudo\s+)?(?:(?:ba|z|da|k|c)?sh|pwsh|powershell|iex|Invoke-Expression|python[0-9.]*|perl|node|ruby)\b|"
+    r"\b" + _DECODER + r"\b[^;&]*\|\s*"
+    r"(?:sudo\s+)?(?:(?:ba|z|da|k|c)?sh|pwsh|powershell|iex|Invoke-Expression|python[0-9.]*|perl|node|ruby|xargs)\b|"
     r"\b(?:iex|Invoke-Expression)\b[^;&|]*FromBase64String|FromBase64String[^;&]*\|\s*(?:iex|Invoke-Expression)\b", re.I)
+# code given on the command line that decodes text itself: what it does with the result (run it, open it as a path)
+# is not on the line. Followed by "(": the bare word may be what a search looks for
+DECODE_CALL = re.compile(
+    r"\b(?:b(?:64|32|16|85)decode|a85decode|decodebytes|unhexlify|fromhex|a2b_\w+|decompress|FromBase64String|"
+    r"FromHexString|atob|decode_base64|decode64)\s*\(|\bcodecs\.decode\s*\(|\bBuffer\.from\s*\(", re.I)
 # text that joins paths from string literals: the gap between two of them, and the calls in which a comma joins
 # what a shell takes out of a name before it runs the line: see readings()
 ANSI_C = re.compile(r"\$'((?:\\.|[^'\\])*)'", re.S)
@@ -820,6 +829,23 @@ def readings(cmd: str):
     win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), text)
     win = WIN_ESCAPE.sub("", win).replace("\0", "")
     return [t for t in dict.fromkeys((posix, win)) if t != cmd], any(long)
+
+
+def decodes_into_line(c: str) -> bool:
+    """A decoder (base64 -d ...) inside $( ), <( ) or backticks: its output becomes part of a command line, as the
+    text a shell runs (sh -c "$(...)", eval) or as an argument (cat "$(...)")."""
+    for d in DECODER.finditer(c):
+        stack, ticks = [], 0
+        for m in re.finditer(r"[$<]?\(|\)|`", c[:d.start()]):
+            if m.group() == "`":
+                ticks += 1
+            elif m.group() == ")":
+                stack[-1:] = []
+            else:
+                stack.append(len(m.group()) > 1)
+        if ticks % 2 or any(stack):
+            return True
+    return False
 
 
 def decoded(t: str):
@@ -1649,9 +1675,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     if PIPE_TO_SHELL.search(c):
         results.append((ASK, "Pipes a download straight into an interpreter. Save it, read it, then run it; approve "
                              "only if the source is trusted."))
-    if DECODE_TO_SHELL.search(c):
-        results.append((ASK, "Decodes text and hands it to a shell or an interpreter, so this guard cannot read what "
-                             "would run. Run it as plain text, or approve only if you know what it says."))
+    if DECODE_TO_SHELL.search(c) or decodes_into_line(c) or DECODE_CALL.search(c_noq):
+        results.append((ASK, "Decodes text where this guard cannot read the result: handed to a shell or an "
+                             "interpreter, put into a command line, or decoded by code given on the command line. "
+                             "Run it as plain text, or approve only if you know what it says."))
     live = bool(ctx.external_jobs()) or bool(ctx.active())
     if live and DEP_CHANGE.search(c):
         results.append((ASK, f"Dependency change while jobs are live ({ctx.live_desc()}). Changing the environment "

@@ -877,6 +877,24 @@ def main():
         ("Bash", {"command": "grep -color=auto \"def train\" train.py"}, None),  # an option that only starts like -c
         ("Bash", {"command": "echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 -d | sh"}, "ask"),
         ("Bash", {"command": "base64 -d weights.b64 > weights.bin"}, None),
+        # were None: decoded text that reaches a command without a pipe into a shell: inside $( ), <( ) or backticks
+        # (as the text a shell runs, or as an argument), through xargs, or decoded by code given on the line, which
+        # may run the result or open it as a path. A decoder that prints, and the bare word in a search, stay unasked
+        ("Bash", {"command": "sh -c \"$(echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 -d)\""}, "ask"),
+        ("Bash", {"command": "eval \"$(echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 --decode)\""}, "ask"),
+        ("Bash", {"command": "cat \"$(echo ZGF0YS90ZXN0L2xhYmVscy5jc3Y= | base64 -d)\""}, "ask"),
+        ("Bash", {"command": "cat `echo ZGF0YS90ZXN0L2xhYmVscy5jc3Y= | base64 -d`"}, "ask"),
+        ("Bash", {"command": "source <(echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 -d)"}, "ask"),
+        ("Bash", {"command": "echo ZGF0YS90ZXN0L2xhYmVscy5jc3Y= | base64 -d | xargs cat"}, "ask"),
+        ("Bash", {"command": "echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 -w0 -di | bash"}, "ask"),
+        ("Bash", {"command": "python -c \"import base64;exec(base64.b64decode('Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y='))\""}, "ask"),
+        ("Bash", {"command": "python -c \"import base64 as b;print(open(b.b64decode('ZGF0YS90ZXN0L2xhYmVscy5jc3Y=').decode()).read())\""}, "ask"),
+        ("Bash", {"command": "python - <<EOF\nimport binascii\nexec(binascii.unhexlify('7072696e74283129'))\nEOF"}, "ask"),
+        ("Bash", {"command": "node -e \"eval(atob('Y29uc29sZS5sb2coMSk='))\""}, "ask"),
+        ("PowerShell", {"command": "& ([scriptblock]::Create([Text.Encoding]::Unicode.GetString([Convert]::FromBase64String('"
+                                   + utf16("Get-Content data/te*/labels.csv") + "'))))"}, "ask"),
+        ("Bash", {"command": "echo aGk= | base64 -d && echo \"$(date)\" | base64 -d > out.bin"}, None),
+        ("Bash", {"command": "grep -rn b64decode sub && git commit -qm 'use b64decode( in the loader'"}, None),
         # were None: a sealed path that a line of code joins from parts
         ("Bash", {"command": "python -c \"from pathlib import Path; print((Path('data') / 'test' / 'labels.csv').read_text())\""}, "deny"),
         ("Bash", {"command": "python -c \"import os; print(open(os.path.join('data', 'test', 'labels.csv')).read())\""}, "deny"),

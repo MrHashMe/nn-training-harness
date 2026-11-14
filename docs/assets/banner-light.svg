@@ -1,27 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" role="img" aria-labelledby="t d">
-  <title id="t">nn-training harness</title>
-  <desc id="d">Let an AI coding agent train your neural networks, and trust what it reports. Four pieces: a procedure, a guard, run records and a journal.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f5f3ff"/>
-      <stop offset="1" stop-color="#eff6ff"/>
-    </linearGradient>
-  </defs>
-  <rect x="1" y="1" width="1278" height="318" rx="24" fill="url(#bg)" stroke="#ddd6fe" stroke-width="2"/>
-  <g font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif">
-    <text x="72" y="124" font-size="54" font-weight="700" fill="#1f2937">nn-training harness</text>
-    <text x="72" y="178" font-size="26" fill="#4b5563">Let an AI coding agent train your neural</text>
-    <text x="72" y="214" font-size="26" fill="#4b5563">networks, and trust what it reports.</text>
-    <text x="72" y="266" font-size="18" fill="#6b7280">Plain files in your repository · Claude Code, Codex and Cursor</text>
-    <g font-size="20" font-weight="600" fill="#1f2937" text-anchor="middle">
-      <rect x="840" y="84" width="180" height="60" rx="30" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-      <text x="930" y="121">a procedure</text>
-      <rect x="1036" y="84" width="180" height="60" rx="30" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
-      <text x="1126" y="121">a guard</text>
-      <rect x="840" y="176" width="180" height="60" rx="30" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-      <text x="930" y="213">run records</text>
-      <rect x="1036" y="176" width="180" height="60" rx="30" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-      <text x="1126" y="213">a journal</text>
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" role="img" aria-labelledby="t d">
+<title id="t">nn-training harness</title>
+<desc id="d">Your AI coding agent trains the models, and you can trust every number it reports. A guard on every action, every run on record, gains that must beat luck, and an optional overnight loop. For Claude Code, Codex and Cursor; built on autoresearch, Optuna, PyTorch and Hugging Face.</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef2ff"/></linearGradient>
+<linearGradient id="ink" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#0891b2"/></linearGradient>
+<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="70"/></filter>
+<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3" fill="#4338ca" fill-opacity="0.08"/></pattern>
+<clipPath id="frame"><rect x="1" y="1" width="1278" height="618" rx="28"/></clipPath>
+</defs>
+<g clip-path="url(#frame)">
+<rect width="1280" height="620" fill="url(#bg)"/>
+<circle cx="1120" cy="70" r="230" fill="#a78bfa" opacity="0.35" filter="url(#blur)"/>
+<circle cx="760" cy="560" r="200" fill="#67e8f9" opacity="0.35" filter="url(#blur)"/>
+<rect width="1280" height="620" fill="url(#dots)"/>
+</g>
+<rect x="1" y="1" width="1278" height="618" rx="28" fill="none" stroke="#c7d2fe" stroke-width="2"/>
+<g font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<rect x="64" y="60" width="356" height="34" rx="17" fill="#eef2ff" stroke="#a5b4fc"/>
+<text x="242" y="83" font-size="14" font-weight="700" letter-spacing="1.6" text-anchor="middle" fill="#3730a3">FOR CLAUDE CODE · CODEX · CURSOR</text>
+<text x="62" y="170" font-size="58" font-weight="800" letter-spacing="-1" fill="#0f172a">nn-training <tspan fill="url(#ink)">harness</tspan></text>
+<text x="64" y="226" font-size="29" font-weight="600" fill="#0f172a">Your AI agent trains the models.</text>
+<text x="64" y="264" font-size="29" fill="#334155">You can trust every number it reports.</text>
+<text x="64" y="318" font-size="17" fill="#64748b">Built on the best: <tspan font-weight="600" fill="#334155">autoresearch · Optuna · PyTorch · Hugging Face</tspan></text>
+<rect x="64" y="342" width="186" height="38" rx="19" fill="#ffffff" fill-opacity="0.9" stroke="#c7d2fe" stroke-opacity="1"/>
+<text x="157.0" y="367" font-size="16" font-weight="600" text-anchor="middle" fill="#334155">One-command install</text>
+<rect x="262" y="342" width="136" height="38" rx="19" fill="#ffffff" fill-opacity="0.9" stroke="#c7d2fe" stroke-opacity="1"/>
+<text x="330.0" y="367" font-size="16" font-weight="600" text-anchor="middle" fill="#334155">Plain Python</text>
+<rect x="410" y="342" width="176" height="38" rx="19" fill="#ffffff" fill-opacity="0.9" stroke="#c7d2fe" stroke-opacity="1"/>
+<text x="498.0" y="367" font-size="16" font-weight="600" text-anchor="middle" fill="#334155">No account needed</text>
+<rect x="688" y="52" width="528" height="352" rx="22" fill="#ffffff" fill-opacity="0.75" stroke="#c7d2fe" stroke-opacity="1"/>
+<rect x="714" y="80" width="48" height="48" rx="13" fill="#7c3aed" fill-opacity="0.12"/>
+<g transform="translate(720 86) scale(1.5)" fill="none" stroke="#7c3aed" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16.3 19.6 12 21.5 C7.7 19.6 4.5 15.8 4.5 11 V5.5 Z"/><path d="M8.5 11.8 L11 14.3 L15.8 9.3"/></g>
+<text x="780" y="98" font-size="21" font-weight="700" fill="#0f172a">A guard on every action</text>
+<text x="780" y="123" font-size="16.5" fill="#334155">No peeking at the test set, no killed runs,</text>
+<text x="780" y="144" font-size="16.5" fill="#334155">no edits to the evaluator without you</text>
+<rect x="714" y="160" width="48" height="48" rx="13" fill="#2563eb" fill-opacity="0.12"/>
+<g transform="translate(720 166) scale(1.5)" fill="none" stroke="#2563eb" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8 H14.5 L18.5 6.8 V21.2 H6 Z"/><path d="M14.5 2.8 V6.8 H18.5"/><path d="M9 11 H15.5 M9 14.5 H15.5 M9 18 H13"/></g>
+<text x="780" y="178" font-size="21" font-weight="700" fill="#0f172a">Every run on record</text>
+<text x="780" y="203" font-size="16.5" fill="#334155">Each number traces back to the code,</text>
+<text x="780" y="224" font-size="16.5" fill="#334155">command and seed that made it</text>
+<rect x="714" y="240" width="48" height="48" rx="13" fill="#059669" fill-opacity="0.12"/>
+<g transform="translate(720 246) scale(1.5)" fill="none" stroke="#059669" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 L9 11 L13 15 L20.5 7.5"/><path d="M15 7.5 H20.5 V13"/></g>
+<text x="780" y="258" font-size="21" font-weight="700" fill="#0f172a">Gains that beat luck</text>
+<text x="780" y="283" font-size="16.5" fill="#334155">A change counts only when it beats the</text>
+<text x="780" y="304" font-size="16.5" fill="#334155">noise, and it must hold on fresh seeds</text>
+<rect x="714" y="320" width="48" height="48" rx="13" fill="#d97706" fill-opacity="0.12"/>
+<g transform="translate(720 326) scale(1.5)" fill="none" stroke="#d97706" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.6 A8 8 0 1 1 9.4 4.5 A6.4 6.4 0 0 0 19.5 14.6 Z"/><path d="M17 3.5 V7.5 M15 5.5 H19"/></g>
+<text x="780" y="338" font-size="21" font-weight="700" fill="#0f172a">Improves while you sleep</text>
+<text x="780" y="363" font-size="16.5" fill="#334155">An optional overnight loop where code,</text>
+<text x="780" y="384" font-size="16.5" fill="#334155">not the agent, decides what to keep</text>
+<path d="M64 442 H1216" stroke="#6366f1" stroke-opacity="0.2" stroke-width="1.5"/>
+<text x="64" y="512" font-size="50" font-weight="800" letter-spacing="-1" fill="url(#ink)">2 in 100</text>
+<text x="64" y="548" font-size="17" fill="#334155">useless changes get past its keep rule</text>
+<text x="64" y="572" font-size="17" fill="#64748b">(a one-run test lets about 1 in 2 through)</text>
+<text x="464" y="512" font-size="50" font-weight="800" letter-spacing="-1" fill="url(#ink)">4×</text>
+<text x="464" y="548" font-size="17" fill="#334155">the noise margin: an overnight gain</text>
+<text x="464" y="572" font-size="17" fill="#64748b">that held up on fresh seeds</text>
+<text x="864" y="512" font-size="50" font-weight="800" letter-spacing="-1" fill="url(#ink)">1 command</text>
+<text x="864" y="548" font-size="17" fill="#334155">to install: plain Python files in your</text>
+<text x="864" y="572" font-size="17" fill="#64748b">repo, beside the tools you already use</text>
+</g>
 </svg>

@@ -3,7 +3,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
   <img src="docs/assets/banner-light.svg" width="100%"
-       alt="nn-training harness: let an AI coding agent train your neural networks, and trust what it reports">
+       alt="nn-training harness. Your AI agent trains the models; you can trust every number it reports. A guard on every action, every run on record, gains that beat luck, and an optional overnight loop. For Claude Code, Codex and Cursor.">
 </picture>
 
 Install this kit into any machine-learning repository. Your AI coding agent (Claude Code, Codex or Cursor) then

@@ -86,6 +86,11 @@ looks like a credential (`.env*`, `.netrc`, `*.pem`, `*.key`, `id_rsa*`, `creden
 `service-account*.json`): the launch output and the manifest list them under `not_sent`, and naming one in `files`
 sends it. This goes by name only; a secret inside an ordinary source file travels with it. Values of the named variables are not written to the run directory, the
 ledger, a log or a command line; the manifest records their names (`remote.sent_env`).
+Packed once: the launch writes what it sends into one archive in the run's local directory
+(`.nnremote-bundle.tar.gz`) and records its SHA-256 in the manifest (`remote.bundle_sha256`) beside the source
+hash. The controller sends that file and nothing else, so a change of the working tree after the launch does not
+reach the run, and a launch during which the source changed is refused. The archive stays until the run has
+ended and is then removed; a run shown as `lost` keeps it until `nnremote attach RUN` has brought it to an end.
 The final evaluation does not run remotely: sealed data stays on this machine. Evaluate the mirrored checkpoint here.
 
 ## Preemption and resume
@@ -94,9 +99,12 @@ then `rl.checkpoint(...)`) and (2) on start continues from `rl.resume_from` when
 The mirror receives changed files every `poll_s` seconds, so at most that much work is lost.
 - Job gone without an exit record (preempted, cancelled from outside, machine died): the run ends as
   `interrupted`, and with `--retries K` left a new run starts from the mirrored directory, with its own
-  reservation. Its manifest names the run it continues (`resume_of`). Not when the project's source has changed
-  since the launch: the exit record then says so (`remote.not_resumed`), and `nnremote resume RUN
-  --allow-code-change` continues it if the change is meant (`resume.md`).
+  reservation and the code of the launch: the archive that was packed then is sent again, so work on the tree in
+  the meantime neither reaches the run nor keeps it from continuing. Its manifest names the run it continues
+  (`resume_of`). Where that archive is gone (removed by hand, or a run launched by a kit from before 2026-11-14),
+  the resume goes by the working tree and does not start when the source has changed since the launch: the exit
+  record then says so (`remote.not_resumed`), and `nnremote resume RUN --allow-code-change` continues it if the
+  change is meant (`resume.md`).
 - Hours used up: not retried. `nnremote resume RUN --hours H` continues it if you decide to pay for more.
 - Target unreachable for `unreachable_s`: the controller exits **without** tearing down or settling, the run shows
   as `lost`, and `supervisor.log` says so. When the target answers again: `nnremote attach RUN`.

@@ -381,6 +381,8 @@ def ssh_tests(tmp, proj):
           "seed and the names (not the values) of the sent variables are recorded")
     check(not (rroot / rid).exists() and (rroot / "keep.txt").is_file() and str(ex.get("remote", {}).get("teardown")).startswith("removed"),
           f"after the run its directory on the target is removed, and nothing else ({ex.get('remote')})")
+    check(len(read(d / "manifest.json")["remote"].get("bundle_sha256") or "") == 64 and not (d / nnremote.BUNDLE).exists(),
+          "the manifest names the SHA-256 of the archive that was sent, and the archive is gone once the run has ended")
 
     print("== stop, and resume from the mirrored checkpoint ==")
     out = launch(proj, "--name", "stopme", "--on", "box", "--", "{python}", "train_remote.py", "4000")
@@ -437,16 +439,58 @@ def ssh_tests(tmp, proj):
         check(man2.get("resume_of") == rid and man2["remote"]["retries"] == 0 and "resumed_as" not in (ex2.get("remote") or {}),
               "the resumed run records what it continues and has one retry fewer")
         check(not (rroot / rid).exists() and not (rroot / rid2).exists(), "both remote directories are removed")
-    out = launch(proj, "--name", "preempt2", "--on", "box", "--retries", "1", "--", "{python}", "train_remote.py", "4000")
+    out = launch(proj, "--name", "preempt2", "--on", "box", "--retries", "2", "--", "{python}", "train_remote.py", "4000")
     rid, d = out.get("run_id"), proj / "runs" / str(out.get("run_id"))
     tk.wait_for(lambda: step_of(d) >= 3, timeout=40)
+    man, sha = read(d / "manifest.json"), hashlib.sha256((d / nnremote.BUNDLE).read_bytes()).hexdigest()
     src.write_bytes(code + b"# changed while the run was out\n")
     fake_hf.kill_tree(read(rroot / rid / ".nnremote.json").get("pid"))
     rem = ended(d).get("remote") or {}
+    rid2 = str(rem.get("resumed_as"))
+    d2 = proj / "runs" / rid2
+    tk.wait_for(lambda: (d2 / "seen.json").exists(), timeout=40)
+    man2 = read(d2 / "manifest.json")
+    there = (rroot / rid2 / "train_remote.py").read_bytes() if (rroot / rid2 / "train_remote.py").is_file() else None
+    check("not_resumed" not in rem and there == code and man2.get("snapshot") == man["snapshot"]
+          and man2["remote"].get("bundle_sha256") == man["remote"].get("bundle_sha256") == sha
+          and not (d / nnremote.BUNDLE).exists() and (d2 / nnremote.BUNDLE).is_file(),
+          "a preempted run is resumed with the code it was launched with, from the archive of that launch, although the "
+          f"working tree changed meanwhile (was: resumed with the changed tree) ({rem})")
+    (d2 / nnremote.BUNDLE).unlink()  # without that archive a resume can only go by the working tree
+    fake_hf.kill_tree(read(rroot / rid2 / ".nnremote.json").get("pid"))
+    rem = ended(d2).get("remote") or {}
     src.write_bytes(code)
     check("the source has changed" in str(rem.get("not_resumed")) and "resumed_as" not in rem,
-          "a preempted run is not resumed with code that changed meanwhile, and its exit record says why (was: resumed "
-          f"with the changed tree) ({rem})")
+          f"and where the archive is gone it is not resumed with changed code: its exit record says why ({rem})")
+
+    print("== what is sent is what the launch packed ==")
+    prep = ("import sys;sys.path.insert(0,sys.argv[1]);import nnremote as n,expctl as e;n.spawn_controller=lambda *a:None;"
+            "root=e.find_root(None);cfg=e.load_config(root);print(n.start_run(root,cfg,n.settings(cfg),name=sys.argv[2],"
+            "target='box',cmd=['{python}','train_remote.py','4000'],hours=None,retries=0)['run_id'])")
+
+    def packed(name):  # a launch whose controller has not started yet
+        rid = tk.sh([PY, "-c", prep, str(proj / SCRIPTS), name], cwd=proj, env=ENV).stdout.strip()
+        return rid, proj / "runs" / (rid or "none")
+
+    rid, d = packed("late")
+    src.write_bytes(code + b"# changed between the launch and the start of its controller\n")
+    side = threading.Thread(target=remote, args=(proj, "_control", str(d)), kwargs={"timeout": 150})
+    side.start()
+    tk.wait_for(lambda: (d / "seen.json").exists(), timeout=40)
+    there = (rroot / rid / "train_remote.py").read_bytes() if (rroot / rid / "train_remote.py").is_file() else None
+    src.write_bytes(code)
+    check(there == code, "the controller sends the archive of the launch, whose hash the manifest holds, not the working "
+                         "tree as it is when the controller starts (was: it packed the tree a second time)")
+    stop(proj, rid)
+    ended(d)
+    side.join(60)
+    rid, d = packed("swapped")
+    with open(d / nnremote.BUNDLE, "ab") as f:
+        f.write(b"x")
+    remote(proj, "_control", str(d))
+    ex = ended(d, 10)
+    check("not the archive the launch packed" in str(ex.get("error")) and not (rroot / rid).exists(),
+          f"an archive that is not the one the launch packed is not sent ({ex.get('error')})")
 
     print("== target unreachable: nothing torn down, attach picks the run up ==")
     out = launch(proj, "--name", "split", "--on", "box", "--", "{python}", "train_remote.py", "4000")

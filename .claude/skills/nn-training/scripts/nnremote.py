@@ -43,8 +43,11 @@ import expctl  # noqa: E402
 
 KIT_REL = ".claude/skills/nn-training/scripts"
 HF_PRICES = "https://huggingface.co/api/jobs/hardware"
+# What a launch packed for the remote side, with its SHA-256 in the manifest. It lies in the mirror until the run has
+# ended: the controller sends this file and nothing else, and an automatic resume sends it again.
+BUNDLE = ".nnremote-bundle.tar.gz"
 # the mirror's own records: never taken from a remote machine
-LOCAL_ONLY = ("manifest.json", "pid.json", "stop.json", "exit.json", "supervisor.log")
+LOCAL_ONLY = ("manifest.json", "pid.json", "stop.json", "exit.json", "supervisor.log", BUNDLE)
 # how the files of the remote run directory are named in the mirror (None: not mirrored)
 RENAME = {"manifest.json": "remote-manifest.json", "exit.json": "remote-exit.json", "pid.json": None,
           "stop.json": None, "supervisor.log": None}
@@ -57,7 +60,8 @@ USED_UP = "the reserved hours were used up"
 # line of stdin. No quote characters, so it survives the quoting of any transport.
 BOOT = "import sys;exec(sys.stdin.buffer.readline())"
 UNTAR = (b'import os,tarfile;d=sys.argv[1];os.makedirs(d,exist_ok=True);'
-         b'tarfile.open(fileobj=sys.stdin.buffer,mode="r|gz").extractall(d)\n')
+         b'tarfile.open(fileobj=sys.stdin.buffer,mode="r|gz").extractall('
+         b'd,**({"filter":"data"} if hasattr(tarfile,"data_filter") else {}))\n')
 NOWIN = {"creationflags": 0x08000000} if os.name == "nt" else {}  # CREATE_NO_WINDOW
 DETACH = {"creationflags": 0x00000008 | 0x00000200} if os.name == "nt" else {"start_new_session": True}
 
@@ -198,9 +202,9 @@ def held_back(root, cfg):
     return sorted(f for f in expctl.source_files(root, cfg)[0] if SECRETISH.search(f))
 
 
-def bundle(root, cfg, st, resume_dir=None):
-    """{relative path: file or bytes} of what a remote run receives: the experiment's source as git sees it, the
-    kit's scripts and config, the paths named in remote.files and, for a resume, the earlier run directory.
+def bundle(root, cfg, st):
+    """{relative path: file or bytes} of what a launch packs for a remote run: the experiment's source as git sees
+    it, the kit's scripts and config and the paths named in remote.files.
     Never: sealed paths, other git-ignored files (.env among them), the rest of .claude/, and files whose name
     says credentials (SECRETISH) unless remote.files names them."""
     sealed = cfg.get("sealed_paths") or []
@@ -212,27 +216,37 @@ def bundle(root, cfg, st, resume_dir=None):
     raw = expctl.read_json(root / expctl.CONFIG_REL)
     raw = {k: v for k, v in (raw if isinstance(raw, dict) else {}).items() if k != "remote"}
     out[expctl.CONFIG_REL] = json.dumps(raw, indent=1).encode()
-    named = [(n, False) for n in st["files"]] + ([(expctl.rel_to(root, resume_dir), True)] if resume_dir else [])
-    for name, is_run in named:
-        top = Path(os.path.normpath(root / name))
-        try:
-            rel0 = top.relative_to(root).as_posix()
-        except ValueError:
-            raise Refuse(f'"{name}" is outside the project, so it cannot be sent to a remote machine')
-        if not top.exists():
-            raise Refuse(f'remote.files names "{name}", which does not exist')
-        for q in ([top] if top.is_file() else sorted(x for x in top.rglob("*") if x.is_file())):
-            rel = rel0 if q == top else f"{rel0}/{q.relative_to(top).as_posix()}"
-            if expctl.path_matches(rel, sealed):
-                raise Refuse(f"{rel} is sealed and is never sent to a remote machine; name narrower paths in remote.files")
-            if is_run and q.relative_to(top).parts[0] in ("src", "stdout.log", "pid.json", "supervisor.log"):
-                continue
+    for name in st["files"]:
+        out.update(below(root, cfg, name))
+    return out
+
+
+def below(root, cfg, name, run=False):
+    """{relative path: file} of a path that remote.files names or, with run, of the earlier run's directory that a
+    resume sends along."""
+    sealed = cfg.get("sealed_paths") or []
+    top, out = Path(os.path.normpath(root / name)), {}
+    try:
+        rel0 = top.relative_to(root).as_posix()
+    except ValueError:
+        raise Refuse(f'"{name}" is outside the project, so it cannot be sent to a remote machine')
+    if not top.exists():
+        raise Refuse(f'remote.files names "{name}", which does not exist')
+    for q in ([top] if top.is_file() else sorted(x for x in top.rglob("*") if x.is_file())):
+        rel = rel0 if q == top else f"{rel0}/{q.relative_to(top).as_posix()}"
+        if expctl.path_matches(rel, sealed):
+            raise Refuse(f"{rel} is sealed and is never sent to a remote machine; name narrower paths in remote.files")
+        if not (run and q.relative_to(top).parts[0] in ("src", "stdout.log", "pid.json", "supervisor.log", BUNDLE)):
             out[rel] = q
-    size = sum(len(v) if isinstance(v, bytes) else v.stat().st_size for v in out.values())
+    return out
+
+
+def fits(st, *members):
+    """Refuse when what is to be sent is more than remote.max_bundle_mb."""
+    size = sum(len(v) if isinstance(v, bytes) else v.stat().st_size for m in members for v in m.values())
     if size > st["max_bundle_mb"] * 1e6:
         raise Refuse(f"the files to send are {size / 1e6:.0f} MB, more than remote.max_bundle_mb "
                      f"({st['max_bundle_mb']:g}); send less, or raise the limit")
-    return out
 
 
 def write_tar(members, fileobj):
@@ -341,12 +355,17 @@ class Ssh:
                             f"{r.stderr.decode('utf-8', 'replace').strip()[-300:]}")
         return r.stdout
 
-    def start(self, members, args, env):
-        with tempfile.TemporaryFile() as f:
-            f.write(UNTAR)
-            write_tar(members, f)
-            f.seek(0)
-            self.call([self.py, "-c", BOOT, self.work], stdin=f)
+    def start(self, arc, extra, args, env):
+        def send(fill):
+            with tempfile.TemporaryFile() as f:
+                f.write(UNTAR)
+                fill(f)
+                f.seek(0)
+                self.call([self.py, "-c", BOOT, self.work], stdin=f)
+        with open(arc, "rb") as a:
+            send(lambda f: shutil.copyfileobj(a, f))
+        if extra:  # a resume: the earlier run's directory, as the mirror holds it
+            send(lambda f: write_tar(extra, f))
         # the named variables go through stdin: never on a command line, never into a file
         out = self.call([self.py, self.tool + "nnremote.py", "_start", "--work", self.work, *args],
                         data=json.dumps(env).encode())
@@ -398,16 +417,15 @@ class HfJobs:
                             f"{(r.stderr or r.stdout).strip()[-300:]}")
         return r.stdout
 
-    def start(self, members, args, env):
+    def start(self, arc, extra, args, env):
         stage = Path(tempfile.mkdtemp(prefix="nnremote-"))
         try:
-            for rel, src in members.items():
+            with tarfile.open(arc, "r:gz") as tar:  # the kit's own archive, checked against the manifest's hash
+                tar.extractall(stage / "code", **({"filter": "data"} if hasattr(tarfile, "data_filter") else {}))
+            for rel, src in extra.items():
                 dest = stage / "code" / rel
                 dest.parent.mkdir(parents=True, exist_ok=True)
-                if isinstance(src, bytes):
-                    dest.write_bytes(src)
-                else:
-                    shutil.copyfile(src, dest)
+                shutil.copyfile(src, dest)
             (stage / "out").mkdir()
             (stage / "out" / "remote-started.json").write_text(json.dumps({"ts": time.time()}), encoding="utf-8")
             (stage / "out" / SUMS).write_text("{}", encoding="utf-8")  # there from the start: the last pull reads it
@@ -504,12 +522,25 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
     py = str(tgt.get("python") or ("python" if tgt["type"] == "hfjobs" else "python3"))
     cmd = [py if c == "{python}" else str(c) for c in cmd]
     rate, price_note = hourly_rate(target, tgt, st)
-    members = bundle(root, cfg, st, resume_of)  # refuses before anything is reserved
-    held = [f for f in held_back(root, cfg) if f not in members]
-    _files, _is_git, prov = expctl.provenance(root, cfg)
-    was = ((expctl.read_json(resume_of / "manifest.json") or {}).get("snapshot") or {}).get("source_hash") if resume_of else None
-    if was and was != prov["source_hash"] and not allow_code_change:  # also after a preemption, hours after the launch
-        raise Refuse(expctl.changed_source(resume_of.name, was, prov["source_hash"], "nnremote.py"))
+    parent = (expctl.read_json(resume_of / "manifest.json") or {}) if resume_of else {}
+    was = (parent.get("snapshot") or {}).get("source_hash")
+    extra = below(root, cfg, expctl.rel_to(root, resume_of), run=True) if resume_of else {}
+    kept = resume_of / BUNDLE if resume_of and not allow_code_change else None
+    sha = digest(kept) if kept and was and kept.is_file() else None
+    if sha and sha == (parent.get("remote") or {}).get("bundle_sha256"):
+        # The earlier run's archive is there until its controller has finished: the automatic resume after a
+        # preemption sends the code that run was launched with, whatever the working tree holds by now.
+        members, snap = None, parent["snapshot"]
+        sent = {"sent_files": parent["remote"].get("sent_files"), "not_sent": parent["remote"].get("not_sent"),
+                "bundle_sha256": sha}
+        fits(st, extra, {BUNDLE: kept})
+    else:
+        kept, snap = None, {"mode": "remote", **expctl.provenance(root, cfg)[2]}
+        if was and was != snap["source_hash"] and not allow_code_change:
+            raise Refuse(expctl.changed_source(resume_of.name, was, snap["source_hash"], "nnremote.py"))
+        members = bundle(root, cfg, st)  # refuses before anything is reserved
+        fits(st, members, extra)
+        sent = {"sent_files": len(members), "not_sent": [f for f in held_back(root, cfg) if f not in members]}
     rdir = expctl.runs_root(root, cfg)
     rdir.mkdir(parents=True, exist_ok=True)
     if rate > 0 and not ledger_path(root).exists() and any(
@@ -518,22 +549,34 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
                      f"{expctl.rel_to(root, rdir)}: without it the cap cannot count what was spent. Nothing paid "
                      f"starts until the user has restored the file, or created an empty one to start the count anew")
     run_id = f"{time.strftime('%Y%m%d-%H%M%S')}-{expctl.slug(name)}-{secrets.token_hex(2)}"
-    usd = reserve(root, st, run_id, target, rate, hours)
     d = rdir / run_id
+    d.mkdir()
+    try:
+        if members is not None:  # packed here, once: the tree may change before the controller sends it
+            with open(d / BUNDLE, "wb") as f:
+                write_tar(members, f)
+            if expctl.provenance(root, cfg)[2]["source_hash"] != snap["source_hash"]:
+                raise Refuse("the source changed while it was packed for sending, so the archive and the recorded "
+                             "source hash may not agree; launch again")
+            sent["bundle_sha256"] = digest(d / BUNDLE)
+        usd = reserve(root, st, run_id, target, rate, hours)
+    except BaseException:
+        shutil.rmtree(d, ignore_errors=True)  # nothing was reserved or started, and an earlier run's archive is not in it
+        raise
     t = time.time()
     deadline = t + hours * 3600 if hours else None
     man = {"schema": expctl.SCHEMA_MANIFEST, "run_id": run_id, "name": name, "note": note, "tags": dict(tags or {}),
            "created_at": expctl.iso(t), "created_ts": t, "host": socket.gethostname(),
            "platform": platform.platform(), "cmd": cmd, "cwd": str(root), "root": str(root), "seed": seed,
-           "deadline": deadline, "deadline_at": expctl.iso(deadline), "snapshot": {"mode": "remote", **prov},
+           "deadline": deadline, "deadline_at": expctl.iso(deadline), "snapshot": snap,
            "launched_by": "nnremote", "via": "remote",
            "remote": {"target": target, "type": tgt["type"], "hours": hours, "usd_per_hour": rate,
-                      "reserved_usd": usd, "retries": int(retries or 0), "sent_files": len(members),
-                      "not_sent": held, "sent_env": list(st["env"])}}
+                      "reserved_usd": usd, "retries": int(retries or 0), **sent, "sent_env": list(st["env"])}}
     if resume_of:
         man["resume_of"], man["resume_of_source_hash"] = resume_of.name, was
     try:
-        d.mkdir()
+        if kept:
+            os.replace(kept, d / BUNDLE)
         expctl.write_json_atomic(d / "manifest.json", man)
         spawn_controller(root, d)
     except OSError:
@@ -541,7 +584,7 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
             book(root, event="settle", run=run_id, usd=0.0, why="the run could not be created")
         raise
     return {"run_id": run_id, "dir": d, "usd": usd, "rate": rate, "note": price_note, "target": target,
-            "type": tgt["type"], "hours": hours, "held": held}
+            "type": tgt["type"], "hours": hours, "held": sent["not_sent"]}
 
 
 def follow(drv, d, man, st, cfg, flag, t0):
@@ -651,6 +694,7 @@ def finish(root, cfg, st, drv, d, man, why, state, flag):
                 note=f"automatic resume of {man['run_id']}", tags=man.get("tags"), resume_of=d)["run_id"]
         except Exception as e:  # noqa: BLE001  whatever keeps the resume from starting, this run's exit record is written
             ex["remote"]["not_resumed"] = str(e) if isinstance(e, Refuse) else f"{type(e).__name__}: {e}"[:300]
+    quiet((d / BUNDLE).unlink)  # no resume took it along: a later one goes by the working tree
     expctl.write_json_atomic(d / "exit.json", ex)
 
 
@@ -674,11 +718,14 @@ def op_control(a):
     why, state = None, {}
     try:
         if not rem.get("handle"):
-            resume_dir = expctl.runs_root(root, cfg) / man["resume_of"] if man.get("resume_of") else None
             env = {n: os.environ[n] for n in st["env"] if n in os.environ}
+            if digest(d / BUNDLE) != rem.get("bundle_sha256"):
+                raise Refuse(f"{BUNDLE} is not the archive the launch packed, so nothing was sent")
+            extra = below(root, cfg, expctl.rel_to(root, expctl.runs_root(root, cfg) / man["resume_of"]), run=True) \
+                if man.get("resume_of") else {}
             rem["starting_ts"] = time.time()  # from here on something may exist remotely (see cmd_attach)
             expctl.write_json_atomic(d / "manifest.json", man)
-            rem["handle"] = drv.start(bundle(root, cfg, st, resume_dir), run_args(man), env)
+            rem["handle"] = drv.start(d / BUNDLE, extra, run_args(man), env)
             rem["started_ts"] = time.time()
             expctl.write_json_atomic(d / "manifest.json", man)
         if rem.get("started_ts"):  # this controller's own count of the run's time starts where the clock puts it now
@@ -911,6 +958,7 @@ def cmd_attach(a):
     t = time.time()
     why = "the controller died before the remote run was recorded" + (
         f"; check the target for leftovers of {d.name}" if began else "; nothing was started")
+    quiet((d / BUNDLE).unlink)
     expctl.write_json_atomic(d / "exit.json", {"returncode": None, "error": why, "ended_ts": t,
                                                "ended_at": expctl.iso(t), "remote": {"usd": usd}})
     print(json.dumps({"ok": True, "run_id": d.name, "attached": False, "closed": why, "booked_usd": usd}))

@@ -191,3 +191,13 @@ to check on your machine.
 - Files: Finder writes a `.DS_Store` file into a folder a person opens. The installer names it in `.gitignore`, and
   the loop does not count a real one as a changed protected file. Keep a training project out of a folder that iCloud
   Drive syncs: it can replace a file with a placeholder while a run reads it (from memory, not checked).
+- The unattended loop does not confine a run on a Mac. macOS has a sandbox of its own (Seatbelt, started with
+  `sandbox-exec`), and `nnloop` does not use it yet: a profile for it has to be tried on a Mac, a run on the Apple
+  GPU inside it included, and no Mac was at hand. Until then a Mac has what Windows has, the checks after the fact
+  in the right-hand column of the table in `references/loop.md` ("What is enforced, and where").
+- Shell: the guard reads zsh's own patterns as the wildcards they are (`data/(test|x)/f`, `da(ta)/f`, `[^a]`, and
+  with `extendedglob` `^name` in a path, `pattern~other` and a flag such as `(#i)`), so a line that reaches sealed
+  data through one is refused as its sh form is. What they do was run in zsh 5.9 in a container; the guard's answers
+  were tested on Windows and Linux. Read as plain characters, each behind a shell option that the line or your
+  shell settings would have to change: `x#`, a `^name` that is a whole word or stands inside a name, a group
+  without `|` that ends a word, and a pattern under an option that ignores case.

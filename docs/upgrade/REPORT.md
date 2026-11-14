@@ -14,8 +14,9 @@ belong to the history before it, which is not part of the public repository. On 
 installer on your real install a fifth time (the last entry of "After the guide"). On 14 November you gave
 me another model's review of the kit and asked for a plan from it and for the plan's execution: its
 section, "Round 5", follows "After the guide". The commit ids of that section follow the public commit, and
-on your word of the same day ("Yes, push") they are in the public repository. Decision record:
-`docs/upgrade/LEDGER.md`.
+on your word of the same day ("Yes, push") they are in the public repository. On a further word of that
+day ("Yes, run it") the installer ran on your real install a sixth time, which brought it the round ("Round
+5", "The sixth installer run on the real install"). Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -154,8 +155,11 @@ on your word of the same day ("Yes, push") they are in the public repository. De
     that my own check found in the second fix. Most of all these faults are older than the round, so the
     public version had them until the round was pushed, which it was on your word of 14 November. The
     guard asks more often now, also about some harmless commands. All seven test files pass on both
-    platforms at `827c35c`. No second reviewer saw the fixes, no campaign ran with a real agent, and your
-    real install was not touched.
+    platforms at `827c35c`. No second reviewer saw the fixes, and no campaign ran with a real agent. Your
+    real install has the round since the sixth installer run of 14 November, on your word. There, an edit
+    that writes a sealed folder's name into a code file now meets a question, and two ways to read a file
+    in a sealed folder, one allowed until then and one asked about, are refused ("Round 5", "The sixth
+    installer run on the real install").
 
 ## Round 2 (12 November 2026)
 
@@ -2145,8 +2149,10 @@ independent review), `b48d606` (README, guide and the guard's description of its
 records. They follow the public commit `60cc0b0`, so
 a push makes them public history. When this section was written nothing was pushed. On your word of the same
 day ("Yes, push") the round is in the public repository: where the section says that nothing is pushed, or
-that a push waits for your word, "What needs your decision", item 1, replaces it. Nothing was run, read or
-changed on your real install.
+that a push waits for your word, "What needs your decision", item 1, replaces it. During the round nothing
+was run, read or changed on your real install. After it, on your word ("Yes, run it"), the installer ran
+there a sixth time: where the section says that the install does not have the round, "The sixth installer
+run on the real install" replaces it.
 
 ### In short
 1. **The review held where it named a concrete fault, less often where it proposed a design.** Its claims
@@ -2286,8 +2292,9 @@ changed on your real install.
     chain for the remote ledger, seeds matched with the baseline's and a `doctor` command are among the 29
     rejected rows, each with its reason. Seven groups of methods that the review names were not opened
     under the usage limit and are Assess rows: nothing about them is verified ("Not done, and why").
-17. **Your real install does not have this round.** That waits for your word, with six other questions
-    ("What needs your decision"). The round itself is pushed, on your word of 14 November.
+17. **Your real install has this round since the sixth installer run of 14 November**, on your word ("The
+    sixth installer run on the real install"). When this list was written it did not. Six other questions
+    wait ("What needs your decision"). The round itself is pushed, on your word of 14 November.
 
 ### The review's claims, rank by rank
 "Held" means that a probe, the simulation or the code showed the fault. The reasons for what did not hold
@@ -2686,7 +2693,9 @@ WSL before and after its repair; one live run per kit, read every 30 s under WSL
 before the fix and by the new code, in two sessions, the second with each guard asked about a write into
 its run's folder; one process read from outside and from inside a time namespace, before and after
 `827c35c`; the kit file and the remote file with `827c35c` on Windows and the kit file in WSL, before the
-commit. The full tests above.
+commit. The full tests above. On your real install, after the round: the installer's sixth run, the
+self-test, `status` with the old and the new `expctl.py`, and the guard's answers to twenty made-up calls
+before and after ("The sixth installer run on the real install").
 
 **From documentation only.** The settings of the objectives after GRPO come from TRL's `grpo_config.py` at
 v1.17.1. The papers behind them, and behind the candidates in the optimization reference, were read as
@@ -2703,8 +2712,9 @@ stand-in command, and no machine was stopped with it. File links on Windows, whi
 of it is tested in WSL only. The case rule on macOS, and on a Windows folder that tells case apart. The
 evaluator's box on native Windows and macOS, where it is missing as the box for training is. What an agent
 other than Claude Code does with the guard's new refusal of a nested input: the exit code is the one that
-blocks on all three, by their documentation. The seven groups of methods in the Assess rows. Everything on
-your real install.
+blocks on all three, by their documentation. The seven groups of methods in the Assess rows. On your real
+install, everything beyond the checks of the sixth installer run: its training scripts, a launch, a final
+evaluation, and a live agent session with the new guard.
 
 ### Things to know
 - **The guard asks more, and sometimes about a harmless command.** A session that writes a sealed path into
@@ -2776,6 +2786,73 @@ your real install.
 - **The Adopt rows that earlier rounds named as unfinished** still are: 142 with the eight this round's
   check of the ledger moved there.
 
+### The sixth installer run on the real install
+You asked for it on 14 November with "Yes, run it", after the round was pushed. It went as the fourth and
+fifth runs did: a read-only look, a rehearsal on a fresh copy of the install's kit files, a dry run on the
+install, then the run, at 14:55 UTC. The installer came from a clean clone of the public commit `2666faf`.
+Its installed files are those of `827c35c`, where the full tests last ran; the commits after it change
+records only.
+
+- **Before the run.** The install was as the fifth run had left it. Of the 272 files I list there (its
+  `.claude` folder, its experiments, its runs, `CLAUDE.md` and `.gitignore`) none was added or removed, and
+  one had changed: the guard's record, by the lines of my own calls after the fifth run. None of its five
+  runs was live. The guard's record had last been written nineteen and a half hours before, at the time of
+  those calls, so nobody was at work there. One thing was new to check. Since round 5, `expctl selftest`
+  copies receipts of final evaluations into the git folder that every checkout of a repository shares,
+  which there would be a write outside the install. None of that repository's eleven checkouts holds such
+  a receipt, so the self-test had nothing to copy, and the shared record does not exist after the run
+  either.
+- **What changed there.** Sixteen kit files and the manifest, each with a backup in a new folder under the
+  install's `.claude/backups/`. The installer's other sixteen files were up to date. The sixteen are what
+  round 5 changed in the installed kit: the guard `nn_guard.py`, the scripts `expctl.py`, `nnloop.py`,
+  `nnremote.py` and `runlog.py`, `SKILL.md`, the references `data.md`, `finetuning.md`, `loop.md`,
+  `optimization.md`, `performance.md`, `remote.md`, `resume.md`, `stack.md` and `validity.md`, and the
+  agent file `experiment-reviewer.md`. None of them had been edited there. Config (19 keys),
+  `settings.json` with its permissions and hooks, `CLAUDE.md`, `.gitignore`, journal and runs are byte for
+  byte as before.
+- **Checked by running, there.** `expctl selftest` passes. The two optional checks that fail are those of
+  the runs before: no metric is configured, and 9 of the 10 other checkouts are without the guard. Its new
+  check of the final-evaluation record passes, with no use on record. `expctl status` gives the same answer
+  with the old and the new `expctl.py`, key by key: five runs, four completed and one failed, no alert. The
+  logger imports from the skill's folder. Through the command that its settings register, the guard lets a
+  harmless read pass, refuses input it cannot read, refuses both configured final commands typed directly
+  and asks for `expctl final-eval`. The 27 files of its skill, hooks and agents folders equal the kit's,
+  apart from lines in five of them that name its interpreter.
+- **What the new guard decides differently there.** I put twenty made-up calls to its guard before and
+  after the run, with that install's own config; none was carried out. The twelve of the fourth and fifth
+  runs get the answers they got before. Eight are new, for what round 5 changed:
+
+  | Made-up call | Before | After |
+  |---|---|---|
+  | Write of a new `.py` file whose text names a sealed folder | allowed | question |
+  | Write of a new `.md` file whose text names it | allowed | allowed |
+  | Write of a new `.py` file with harmless text | allowed | allowed |
+  | `cat` of a file in a sealed folder, as shell code attached to its flag (`bash -c"..."`) | question | refused |
+  | `python -c` that joins the sealed path from string literals and reads the file | allowed | refused |
+  | `git add -f .` at the project root | allowed | question |
+  | `git -c core.hooksPath=hooks status` | allowed | question |
+  | `expctl audit-splits` | allowed | question |
+
+  Whether a file lies at the place the two reads name I did not look. A call takes the guard 0.3 to 0.8 s
+  there, before and after. Only the forced add takes longer than it did (0.8 s, where it took 0.3 s),
+  because the guard now looks for sealed files below it.
+- **What else the round does there.** Snapshots are off in that install (`snapshot.mode` is `none`), so
+  this round's snapshot rules do nothing there today. None of the agent files that left the experiment
+  source (`AGENTS.md`, `.mcp.json`, `.codex/`, `.cursor/`, `.agents/`) exists at its root, so that change
+  does not touch its source hash. I did not compute the hash there before and after.
+- **Left there.** The seventeen files are changed and not committed in that repository; its 418 other
+  status entries are untouched and nothing is staged. Git ignores the backup folder and the guard's record
+  there. The record has 28 more lines: 4 from the self-test's own probes and 24 from my calls, marked
+  `upgrade-check` (3 on the final-evaluation rule, 8 from the twenty calls before the run and 13 from those
+  after it; an allowed call leaves no line). Committing the seventeen files needs your word, as after the
+  runs before it ("What needs your decision", item 2).
+- **Not done there.** Its two registered scripts, a launch and a final evaluation were not run, no agent
+  session was started, `install.py --worktrees` was not run and its files were not counted, as before.
+- **To know.** The guard there is the new one from the next tool call on, because the hook starts the file
+  anew each time. A session in that project that writes the sealed folder's name into a code file, a
+  config file or a notebook now meets a question at each such edit, and in an unattended session a refusal
+  ("Things to know").
+
 ### What needs your decision
 1. **Pushing: answered.** When this section was written the round was 73 commits on top of the public
    commit, in the local repository only, and the public version had the faults of points 11 and 13. On 14
@@ -2784,10 +2861,10 @@ your real install.
    added line and every commit message of the round for private details (paths of this machine, addresses,
    time zones, times of day, the names on the real install's path) and found none; every commit carries
    the account's no-reply address and a date in UTC.
-2. **Your real install.** It runs the kit of the fifth installer run. A sixth run would bring this round:
-   the guard's new questions (an edit there that names the sealed folder would ask), the snapshot's
-   handling of wildcard patterns, links and credential-named files, the case rule, and a source hash that
-   changes once if that project tracks agent files. It needs your word, as each run before it did.
+2. **Your real install: the run is answered, the commit is open.** On 14 November you said "Yes, run it",
+   and the installer ran there a sixth time (above). The seventeen files it changed are not committed in
+   that repository: that needs your word, as after each run before it. Open as well, since round 4:
+   `install.py --worktrees`, which would register the guard in that repository's other checkouts.
 3. **Ports for Antigravity and Gemini CLI.** Neither agent is installed here, and installing one is your
    call. I would build each from the vendor's documentation and test it live once it is installed.
 4. **The MCP servers the review proposes.** Each is an install with your permissions; say which, if any.
@@ -3793,7 +3870,7 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
    The real install has it since the third installer run of 12 November, which also brought the guard fixes
    of round 2's review ("Round 2", "What needs your decision", item 1), and rounds 3 and 4 since the fourth
    run of 13 November ("Round 4", "The fourth installer run on the real install"). The fifth run of the
-   same day brought the status fix (item 12).
+   same day brought the status fix (item 12), and the sixth run of 14 November brought round 5 (item 13).
 9. **What to build next** ("Round 2", "What needs your decision", item 2): the first three items of that order
    are built ("Round 3"). What remains is in "Round 3", "What needs your decision", item 3.
 10. **Round 3's two questions**: whether to measure any of its three items with a real agent, and this machine's
@@ -3812,10 +3889,12 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
     pushed, its 418 other status entries untouched. Where this report says they are not committed, this
     item replaces it. On your "Yes, push" this record is in the public repository.
 13. **Round 5's questions** ("Round 5", "What needs your decision"): the push of the round to the public
-    repository is answered and done (14 November, "Yes, push"). Open: a sixth
-    installer run on the real install; the installs, accounts and paid resources that the review's
-    proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a container as
-    the box); a second pilot or a campaign with a real agent; and what to build next.
+    repository is answered and done (14 November, "Yes, push"), and so is the sixth installer run on the
+    real install (14 November, "Yes, run it"; "Round 5", "The sixth installer run on the real install").
+    Open: committing the seventeen files that run changed in that repository, and pushing the record of
+    the run, which is in the local repository only; the installs, accounts and paid resources that the
+    review's proposals need (ports for Antigravity and Gemini CLI, its MCP servers, cloud drivers, a
+    container as the box); a second pilot or a campaign with a real agent; and what to build next.
 
 ## 10. Most valuable next steps
 A second look after the live runs (11 November, `scout/draft/second-look.md`) put the build work in this order:

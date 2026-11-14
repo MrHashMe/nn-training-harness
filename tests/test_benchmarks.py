@@ -6,6 +6,7 @@ skipped without it."""
 import collections
 import contextlib
 import hashlib
+import importlib.util
 import io
 import json
 import math
@@ -88,6 +89,61 @@ else:
     got = json.loads(r2.stdout.strip().splitlines()[-1]).get("score") if r2.returncode == 0 else None
     check(r.returncode == 0 and got is not None and abs(got - bounds["constant"]) < 1e-4,
           f"the constant control passes the evaluator's contract and scores ln(65) ({got}; {(r.stderr + r2.stdout + r2.stderr).strip()[-300:]})")
+
+    # the evaluator's contract, with one model that keeps it and five that each break it in one way
+    import torch
+    from torch.nn.functional import one_hot
+
+    class Fair(torch.nn.Module):  # the token itself as the answer: causal, row by row, nothing kept
+        def forward(self, idx):
+            return one_hot(idx, 65).float()
+
+    class Peek(torch.nn.Module):  # the next token as the answer, except at the one position a single probe at 64 compares
+        def forward(self, idx):
+            out = one_hot(torch.roll(idx, -1, 1), 65).float() * 10
+            out[:, 63] = 0
+            return out
+
+    class Reads(torch.nn.Module):  # TorchScript can read a file into a tensor
+        def forward(self, idx):
+            return one_hot(idx, 65).float() + torch.from_file("data/loopval.txt", False, 4, dtype=torch.uint8).sum() * 0
+
+    class Rows(torch.nn.Module):  # every row sees the whole batch
+        def forward(self, idx):
+            return one_hot(idx, 65).float() + idx.float().mean()
+
+    class Counts(torch.nn.Module):  # a buffer that knows how often the model was called
+        def __init__(self):
+            super().__init__()
+            self.register_buffer("calls", torch.zeros(1))
+
+        def forward(self, idx):
+            self.calls.add_(1)
+            return one_hot(idx, 65).float() * self.calls
+
+    class Sets(torch.nn.Module):  # the same with a plain attribute
+        def __init__(self):
+            super().__init__()
+            self.n = 0
+
+        def forward(self, idx):
+            self.n += 1
+            return one_hot(idx, 65).float()
+
+    wants = {Fair: None, Peek: "looks ahead", Reads: "reads or writes files", Rows: "other rows of the batch",
+             Counts: "the same way twice", Sets: "assigns to its own attributes"}
+    got = {}
+    for cls in wants:
+        d = tmp / ("model-" + cls.__name__)
+        d.mkdir()
+        torch.jit.script(cls()).save(str(d / "model.ts"))
+        r = run(TASK / "evaluate.py", "--run-dir", d)
+        got[cls] = (r.returncode, json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {"error": r.stderr[-300:]})
+    check(got[Fair][0] == 0 and "score" in got[Fair][1]
+          and all(got[c][0] == 3 and w in got[c][1].get("error", "") for c, w in wants.items() if w),
+          "the evaluator scores a model that is a function of each row's earlier tokens, and refuses one that looks ahead "
+          "anywhere, one whose code reads a file (before it is loaded), one whose rows see each other and two that keep "
+          f"something between calls ({ {c.__name__: v for c, v in got.items()} })")
 
 # 2. a project with the kit
 p = tmp / "with-kit"
@@ -237,6 +293,36 @@ r2 = run(FT / "evaluate.py", "--run-dir", ev.parent)
 check(r.returncode == 3 and "adapter_model.safetensors" in str((pilot.nnloop.last_json(r.stdout) or {}).get("error"))
       and r2.returncode == 3 and "LoRA" in str((pilot.nnloop.last_json(r2.stdout) or {}).get("error")),
       "finetune: the evaluator refuses weights that are not in safetensors and an adapter that is not LoRA, and loads neither")
+# what PEFT 0.21.2 saves for LoraConfig(), and the same with a key that names a library for PEFT to import
+saved = {"task_type": None, "peft_type": "LORA", "auto_mapping": None, "peft_version": "0.21.2", "base_model_name_or_path": None,
+         "revision": None, "inference_mode": False, "r": 8, "target_modules": None, "exclude_modules": None, "lora_alpha": 8,
+         "lora_dropout": 0.0, "fan_in_fan_out": False, "bias": "none", "use_rslora": False, "modules_to_save": None,
+         "init_lora_weights": True, "layers_to_transform": None, "layers_pattern": None, "rank_pattern": {}, "alpha_pattern": {},
+         "megatron_config": None, "megatron_core": "megatron.core", "trainable_token_indices": None, "loftq_config": {},
+         "eva_config": None, "corda_config": None, "lora_ga_config": None, "use_dora": False, "velora_config": None,
+         "alora_invocation_tokens": None, "use_qalora": False, "qalora_group_size": 16, "monteclora_config": None,
+         "layer_replication": None, "lora_bias": False, "target_parameters": None, "use_bdlora": None, "arrow_config": None,
+         "kasa_config": None, "ensure_weight_tying": False}
+spec = importlib.util.spec_from_file_location("ft_evaluate", FT / "evaluate.py")
+ft_evaluate = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(ft_evaluate)
+(ev / "adapter_config.json").write_text(json.dumps(dict(saved, auto_mapping={"base_model_class": "X", "parent_library": "os"},
+                                                        megatron_core="os")), encoding="utf-8")
+r = run(FT / "evaluate.py", "--run-dir", ev.parent)
+far = tmp / "elsewhere"
+shutil.copytree(ev, far)
+(far / "adapter_config.json").write_text(json.dumps(saved), encoding="utf-8")
+shutil.rmtree(ev)
+try:
+    ev.symlink_to(far, target_is_directory=True)
+except OSError:  # Windows without the symlink privilege: a junction
+    subprocess.run(["cmd", "/c", "mklink", "/J", str(ev), str(far)], capture_output=True, check=True)
+r2 = run(FT / "evaluate.py", "--run-dir", ev.parent)
+check(ft_evaluate.other_keys(saved) == [] and r.returncode == 3
+      and "auto_mapping, megatron_core" in str((pilot.nnloop.last_json(r.stdout) or {}).get("error"))
+      and r2.returncode == 3 and "outside the run folder" in str((pilot.nnloop.last_json(r2.stdout) or {}).get("error")),
+      "finetune: the evaluator takes the config that PEFT saves, refuses one that names a library to import, and refuses "
+      f"an adapter that is a link out of the run folder ({r.stdout.strip()[-200:]} {r2.stdout.strip()[-200:]})")
 
 p = tmp / "finetune"
 r = run(KIT / "benchmarks" / "new_project.py", p, "--task", "finetune")

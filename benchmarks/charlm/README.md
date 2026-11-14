@@ -8,7 +8,7 @@ without the kit (`../pilot.py`). It is not a research benchmark: 30 seconds of t
 |---|---|
 | Train | `python train.py --seed 1 --time-budget 30` (needs PyTorch; a GPU is used when there is one) |
 | Score | `python evaluate.py --run-dir RUN [--data data/dev.txt]`: mean cross-entropy in nats per character, lower is better |
-| Contract | a run saves `RUN/model.ts`, a TorchScript module that maps token ids `[64, 128]` to logits `[64, 128, 65]`. The evaluator computes the loss itself and refuses a model whose logits depend on later tokens |
+| Contract | a run saves `RUN/model.ts`, a TorchScript module that maps token ids `[64, 128]` to logits `[64, 128, 65]`. The evaluator computes the loss itself and refuses a model that is not a function of each row's earlier tokens alone: one whose logits depend on later tokens (tried at every position) or on other rows of the batch, one that keeps something between calls, and one whose code reads or writes files (TorchScript can; the code is read in the file before it is loaded) |
 | Baseline | `train.py` as shipped: 4 layers, width 192, AdamW 3e-4, batch 64 |
 | Controls | `controls.py`: two runs that cannot have learned the text. `constant` gives every character the same probability, a loss of ln 65 = 4.174. `shuffled` runs `train.py` on the training text with its characters in random order; what that learns cannot score below 3.300, the entropy of the character frequencies in `loopval.txt`. The loop trains both before a campaign's first agent session and stops if the evaluator scores one better than that (`loop.controls`) |
 

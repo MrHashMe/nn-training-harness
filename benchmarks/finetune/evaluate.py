@@ -5,8 +5,9 @@ exactly, in text the model generates.
     python evaluate.py --run-dir RUN [--data data/dev.txt]   ->  one JSON line with "score" (higher is better)
 
 Contract for RUN/adapter (a run that breaks it is refused: exit 3, an "error" line, no score):
-- a LoRA adapter saved by PEFT for the base model in model/: adapter_config.json and adapter_model.safetensors.
-  Weights in another format are not loaded, so nothing a run saved is executed.
+- a LoRA adapter saved by PEFT for the base model in model/: adapter_config.json and adapter_model.safetensors,
+  both inside RUN (no link out of it). Weights in another format are not loaded, and adapter_config.json may set
+  only the keys of a plain LoRA adapter (KEYS), so nothing a run saved is executed or names code to load.
 - the base model, its tokenizer and its chat template are the files in model/ (fetch_model.py); a run cannot
   replace them.
 - every message is put into PROMPT, rendered with the chat template and answered greedily in at most MAX_NEW
@@ -27,11 +28,22 @@ MODEL = HERE / "model"
 PROMPT = "Which intent does this message to a bank's support have? Answer with the intent's name only.\n\n{text}"
 MAX_NEW = 24  # tokens per answer; the longest intent name takes 17
 EVAL_BATCH = 100
+# what a LoRA adapter's config may set. PEFT reads more keys, some of which name a module or a class for it to
+# import (auto_mapping, megatron_config): those must be empty, as PEFT saves them.
+KEYS = {"peft_type", "task_type", "peft_version", "base_model_name_or_path", "revision", "inference_mode", "r",
+        "target_modules", "exclude_modules", "lora_alpha", "lora_dropout", "fan_in_fan_out", "bias", "use_rslora",
+        "modules_to_save", "init_lora_weights", "layers_to_transform", "layers_pattern", "rank_pattern",
+        "alpha_pattern", "use_dora", "lora_bias", "use_qalora", "qalora_group_size", "trainable_token_indices"}
 
 
 def refuse(msg):
     print(json.dumps({"error": msg}))
     sys.exit(3)
+
+
+def other_keys(cfg):
+    """The keys of an adapter_config.json that are set and are not a plain LoRA adapter's."""
+    return sorted(k for k, v in cfg.items() if k not in KEYS and v and (k, v) != ("megatron_core", "megatron.core"))
 
 
 def read(path):
@@ -92,15 +104,21 @@ def main():
     ap.add_argument("--data", default="data/dev.txt", help="file to score on, relative to this file")
     a = ap.parse_args()
     adapter = Path(a.run_dir) / "adapter"
-    if not (adapter / "adapter_config.json").is_file() or not (adapter / "adapter_model.safetensors").is_file():
+    files = [adapter / "adapter_config.json", adapter / "adapter_model.safetensors"]
+    if not all(f.is_file() for f in files):
         refuse(f"{adapter} does not hold adapter_config.json and adapter_model.safetensors: a run must save a PEFT "
                f"LoRA adapter there")
+    if any(Path(a.run_dir).resolve() not in f.resolve().parents for f in files):  # a link or a junction leads out
+        refuse(f"the files of {adapter} lie outside the run folder: a run is scored on the adapter it saved itself")
     try:
-        kind = json.loads((adapter / "adapter_config.json").read_text(encoding="utf-8")).get("peft_type")
+        cfg = json.loads(files[0].read_text(encoding="utf-8"))
+        kind = cfg.get("peft_type")
     except (ValueError, AttributeError):
-        kind = None
+        cfg, kind = {}, None
     if kind != "LORA":
         refuse(f"the adapter is not a LoRA adapter (peft_type {kind!r})")
+    if other_keys(cfg):
+        refuse(f"adapter_config.json sets {', '.join(other_keys(cfg))}: only the keys of a plain LoRA adapter may be set")
     model, tok = load_base()
     import torch
     from peft import PeftModel

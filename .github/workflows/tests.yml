@@ -1,0 +1,48 @@
+# The kit's tests on the three systems it supports, with the oldest and the newest Python each one offers.
+# They need no packages, network, accounts or GPU: fake runs in temporary projects (docs/REFERENCE.md, "Testing the kit").
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: ${{ matrix.os }}, Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-24.04, python: "3.8"}    # the oldest Python the kit supports; newer images have no build of it
+          - {os: ubuntu-latest, python: "3.x"}
+          - {os: windows-latest, python: "3.8"}
+          - {os: windows-latest, python: "3.x"}
+          - {os: macos-latest, python: "3.x"}
+          - {os: macos-latest, python: system}   # /usr/bin/python3: what the hooks get on a Mac with nothing installed
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - if: matrix.python != 'system'
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run the tests
+        shell: bash
+        run: |
+          py=python
+          if [ "${{ matrix.python }}" = system ]; then py=/usr/bin/python3; fi
+          git config --global user.name test
+          git config --global user.email test@localhost
+          "$py" --version
+          rc=0
+          for t in test_runlog_units test_kit test_review_fixes test_ports test_loop test_remote test_benchmarks; do
+            echo "::group::$t"
+            "$py" tests/$t.py || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc

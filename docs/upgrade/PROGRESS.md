@@ -758,7 +758,7 @@ Last updated: 13 November 2026.
   before (undo with `git reset --soft HEAD~1` there while it is the newest commit). That repository's 418
   other status entries are untouched and nothing is staged. Where these records say the two files are not
   committed, this entry replaces it.
-- Open, from that run: whether this record is pushed to the public repository.
+- Answered on 14 Nov ("Yes, push"): the records of that run are pushed to the public repository.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

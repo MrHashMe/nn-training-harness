@@ -905,6 +905,36 @@ def main():
         ("Bash", {"command": "cp tools/runlog.py .git/config"}, "ask"),
         ("Bash", {"command": "cat .git/config > gitconfig.txt"}, "ask"),  # the rule cannot tell a source from a target
         ("Bash", {"command": "cat .git/config"}, None),
+        # were None: the same settings written by git itself, given for one call, or as environment variables. A key
+        # that holds a plain value passes, as do reading a setting and a pager or editor that is none
+        ("Bash", {"command": "git config core.hooksPath tools/hooks"}, "ask"),
+        ("Bash", {"command": "git config core.fsmonitor 'python train.py'"}, "ask"),
+        ("Bash", {"command": "git config --global alias.st '!python train.py'"}, "ask"),
+        ("Bash", {"command": "git config set Core.SshCommand tools/ssh.sh"}, "ask"),
+        ("Bash", {"command": "git config --file tools/gitconfig user.name t"}, "ask"),  # another file: not a plain write
+        ("Bash", {"command": "git config --edit"}, "ask"),
+        ("Bash", {"command": "git -c core.fsmonitor='python train.py' status"}, "ask"),
+        ("Bash", {"command": "git -C sub -c core.hooksPath=tools/hooks commit -m x"}, "ask"),
+        ("Bash", {"command": "git --no-pager --config-env=core.pager=VIEWER log"}, "ask"),
+        ("Bash", {"command": "git --exec-path=tools/git-core status"}, "ask"),
+        ("Bash", {"command": "GIT_SSH_COMMAND='python train.py' git fetch"}, "ask"),
+        ("Bash", {"command": "export GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.fsmonitor GIT_CONFIG_VALUE_0=tools/mon.sh"}, "ask"),
+        ("Bash", {"command": "git init --template=tools/template"}, "ask"),  # git copies the template's hooks into its own
+        ("Bash", {"command": "git clone -c core.fsmonitor=tools/mon.sh ../other other"}, "ask"),
+        ("Bash", {"command": "bash -c \"git config core.hooksPath tools/hooks\""}, "ask"),
+        ("PowerShell", {"command": "git config core.hooksPath tools\\hooks"}, "ask"),
+        ("PowerShell", {"command": "$env:GIT_EXTERNAL_DIFF = 'tools/diff.cmd'; git diff"}, "ask"),
+        ("Bash", {"command": "git config user.name t && git config --global user.email t@t"}, None),
+        ("Bash", {"command": "git config --get core.hooksPath; git config -l; git config core.fsmonitor"}, None),
+        ("Bash", {"command": "git config --unset core.hooksPath"}, None),
+        ("Bash", {"command": "git -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -m x"}, None),
+        ("Bash", {"command": "GIT_PAGER=cat git -c core.pager=cat log -c -3"}, None),  # log's own -c is no setting
+        ("Bash", {"command": "GIT_EDITOR=true git commit --amend"}, None),
+        ("Bash", {"command": "git commit -m 'docs: git config core.hooksPath is asked about'"}, None),  # a message
+        ("Bash", {"command": "git clone -c core.autocrlf=false ../other other"}, None),
+        # were None: an option of git's own that the guard did not know hid the subcommand from the rules below it
+        ("Bash", {"command": "git -P push origin main"}, "ask"),
+        ("Bash", {"command": "git --no-advice -c \"user.name=A B\" reset --hard HEAD~1"}, "ask"),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)
@@ -983,6 +1013,36 @@ def main():
     check(got == [(2, True), (2, True)] and r.returncode == 2 and "internal error" in r.stderr and not r.stdout.strip(),
           "guard: input nested too deeply to read is refused like other unreadable input, and an error that nothing "
           f"inside the guard caught is a refusal (exit code 2), not a crash ({got}, {r.returncode})")
+    # A repository's settings can make git start a program by itself: core.fsmonitor on every status, a hook on
+    # every change of the index. The kit's own git calls run outside the session and its guard, so they must not
+    # run what a session planted there. `plain` shows that this git does run both when nothing switches them off
+    planted, ran = tmp / "planted", tmp / "planted-ran.txt"
+    (planted / "hooks").mkdir(parents=True)
+    (planted / "a.txt").write_text("a\n")
+    (tmp / "mon.py").write_text("import sys\nopen(sys.argv[1], 'a').write('ran\\n')\n")
+    (planted / "hooks/post-index-change").write_bytes(f"#!/bin/sh\necho hook >> '{ran.as_posix()}'\n".encode())
+    os.chmod(planted / "hooks/post-index-change", 0o755)
+    for c in (["init", "-q"], ["add", "a.txt"], ["-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "init"],
+              ["config", "core.fsmonitor", f'"{Path(PY).as_posix()}" "{(tmp / "mon.py").as_posix()}" "{ran.as_posix()}"'],
+              ["config", "core.hooksPath", (planted / "hooks").as_posix()]):
+        subprocess.run(["git", *c], cwd=planted, check=True, capture_output=True)
+    (planted / "a.txt").write_text("b\n")
+    subprocess.run(["git", "status"], cwd=planted, capture_output=True)
+    plain = ran.exists() and ran.read_text().split()
+    if plain:
+        ran.unlink()
+    (planted / "a.txt").write_text("c\n")
+    code = ("import sys; sys.path[:0] = sys.argv[1:4]; import expctl, nnloop, nn_guard, install\n"
+            "from pathlib import Path\np = Path(sys.argv[4])\n"
+            "print([expctl.run_git(p, 'status', '--porcelain', text=True), expctl.run_git(p, 'ls-files', text=True),\n"
+            "       nnloop.git(p, 'status', '--porcelain'), nnloop.git(p, 'add', '-A'), install.git_out(p, 'status'),\n"
+            "       sorted(nn_guard.git_ignored(p, ['a.txt']))])\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(proj / ".claude/hooks"), str(KIT),
+            str(planted)], cwd=tmp)
+    check(plain and "ran" in plain and "hook" in plain and r.returncode == 0 and "a.txt" in r.stdout and not ran.exists(),
+          "the git calls of expctl, the loop, the installer and the guard run neither the program that the repository's "
+          "core.fsmonitor names nor its hooks, which a plain `git status` there runs "
+          f"(plain: {plain}, rc {r.returncode}, ran again: {ran.exists()}, {r.stderr[-200:]!r})")
     code = ("import sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
             "def broken(*a):\n    raise RuntimeError('made by the test')\n"
             "nn_guard.check_path_tool = broken\n"

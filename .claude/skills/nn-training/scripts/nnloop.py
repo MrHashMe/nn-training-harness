@@ -213,8 +213,14 @@ def agent_argv(agent, exe, role, model, effort, usd_left, wt, restricted):
 
 # ---------------------------------------------------------------- helpers
 
+# A repository's settings can make git start a program by itself (core.fsmonitor on every status, a hook on every
+# change of the index). The kit's own git calls run with the user's rights, outside the agent's session and its
+# guard, so they switch both off. Checked with git 2.43 and 2.52: the empty value turns the monitor off
+GIT = ["git", "-c", "core.fsmonitor=", "-c", "core.hooksPath=" + os.devnull]
+
+
 def git(cwd, *args, check=True, env=None, inp=None):
-    r = subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, text=True, encoding="utf-8",
+    r = subprocess.run([*GIT, "-C", str(cwd), *args], capture_output=True, text=True, encoding="utf-8",
                        errors="replace", env=env, input=inp, **NOWIN)
     if check and r.returncode != 0:
         raise Stop(f"git {' '.join(args[:2])} failed: {(r.stderr or r.stdout).strip()[:300]}")
@@ -1229,7 +1235,7 @@ class Campaign:
     def commit(self, paths, msg):
         """The harness's own commit on the campaign branch: no project hooks, no signing prompt. -> the commit."""
         git(self.wt, "add", "-A", "--", *paths)
-        git(self.wt, "-c", f"core.hooksPath={os.devnull}", "-c", "commit.gpgsign=false", "commit", "-q", "-m", msg,
+        git(self.wt, "-c", "commit.gpgsign=false", "commit", "-q", "-m", msg,
             env=dict(os.environ, **IDENT))
         return git(self.wt, "rev-parse", "HEAD").strip()
 
@@ -1321,7 +1327,7 @@ class Campaign:
             rows.append((path, ma, mb, a, b))
             for mode, sha in ((ma, a), (mb, b)):
                 if path.endswith(".py") and mode in ("100644", "100755"):  # a plain file on that side
-                    blob = subprocess.run(["git", "-C", str(self.wt), "cat-file", "blob", sha], capture_output=True, **NOWIN)
+                    blob = subprocess.run([*GIT, "-C", str(self.wt), "cat-file", "blob", sha], capture_output=True, **NOWIN)
                     blobs[sha] = [base64.b64encode(blob.stdout).decode("ascii"), path]
         if blobs:
             try:

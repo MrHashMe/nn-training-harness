@@ -318,10 +318,16 @@ def merge_cursor_hooks(existing: dict, fresh: dict):
     return out
 
 
+# A repository's settings can make git start a program by itself (core.fsmonitor on every status, a hook on every
+# change of the index). The installer's git calls run with the user's rights, outside the agent's session and its
+# guard, so they switch both off. Checked with git 2.43 and 2.52: the empty value turns the monitor off
+GIT = ["git", "-c", "core.fsmonitor=", "-c", "core.hooksPath=" + os.devnull]
+
+
 def git_out(cwd: Path, *args):
     """What a git command prints, None when it fails."""
     try:
-        r = subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, timeout=60)
+        r = subprocess.run([*GIT, "-C", str(cwd), *args], capture_output=True, timeout=60)
     except (OSError, subprocess.SubprocessError):
         return None
     return r.stdout.decode("utf-8", "replace") if r.returncode == 0 else None

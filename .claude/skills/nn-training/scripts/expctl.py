@@ -585,9 +585,15 @@ def disk_free(path):
         return None, None
 
 
+# A repository's settings can make git start a program by itself (core.fsmonitor on every status, a hook on every
+# change of the index). The kit's own git calls run with the user's rights, outside the agent's session and its
+# guard, so they switch both off. Checked with git 2.43 and 2.52: the empty value turns the monitor off
+GIT = ["git", "-c", "core.fsmonitor=", "-c", "core.hooksPath=" + os.devnull]
+
+
 def run_git(root, *args, timeout=30, text=False):
     try:
-        r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, timeout=timeout)
+        r = subprocess.run([*GIT, "-C", str(root), *args], capture_output=True, timeout=timeout)
     except (OSError, subprocess.SubprocessError):
         return None
     if r.returncode != 0:

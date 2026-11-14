@@ -84,9 +84,29 @@ KILL = re.compile(
     r"screen\s+[^;&|]{0,200}?-X\s+quit|nvidia-smi\s+[^;&|]{0,200}?(?:--gpu-reset|\s-r\b)|\bfuser\b[^;&|]{0,200}?\s-k\b|"
     r"systemctl\s+(?:stop|kill|restart)|docker\s+(?:stop|kill|rm)\b|podman\s+(?:stop|kill|rm)\b|\bscancel\b|"
     r"\bqdel\b|\bbkill\b|\bray\s+stop\b|expctl(?:\.py)?\s+stop\b")
+# git's own options, which stand between `git` and its subcommand: those with a value (which may hold a quoted
+# blank), then any other one (-P, --no-pager, --bare, --no-advice ...), so that none hides the subcommand
+_GV = r"(?:\"[^\"]*\"|'[^']*'|[^\s'\"])+"
 GIT_GLOBAL = re.compile(
-    r"\bgit((?:\s+(?:-C\s+\S+|-c\s+\S+|--no-pager|--paginate|-p|--bare|--no-optional-locks|--literal-pathspecs|"
-    r"--no-replace-objects|--git-dir(?:=|\s+)\S+|--work-tree(?:=|\s+)\S+|--namespace(?:=|\s+)\S+))+)(?=\s)")
+    r"\bgit((?:\s+(?:-[Cc]\s+" + _GV + r"|--(?:git-dir|work-tree|namespace|super-prefix|attr-source|config-env|"
+    r"exec-path)(?:=|\s+)" + _GV + r"|--?[A-Za-z][\w-]*))+)(?=\s)")
+GIT_VALUE_OPT = ("-C", "-c", "--git-dir", "--work-tree", "--namespace", "--super-prefix", "--attr-source", "--config-env")
+# A setting can make git start a program by itself, later and outside this guard: core.hooksPath, core.fsmonitor,
+# core.pager, core.sshCommand, alias.*, filter.*, diff.*.textconv, credential.helper and more, and git keeps adding
+# to them. So the rule names the keys that hold a plain value and asks about every other one
+GIT_PLAIN_KEY = re.compile(
+    r"(?:user\.(?:name|email)|core\.(?:autocrlf|eol|safecrlf|filemode|longpaths|quotepath|symlinks|ignorecase|abbrev)|"
+    r"init\.defaultbranch|pull\.(?:rebase|ff)|push\.(?:default|autosetupremote)|fetch\.prune|commit\.gpgsign|"
+    r"color\.[\w.]+|advice\.\w+)$", re.I)
+_NO_PROGRAM = r"['\"]?(?:cat|less|more|true|:)?['\"]?"  # a pager or an editor that is none
+GIT_NO_PROGRAM = re.compile(r"(?:core\.pager|core\.editor|sequence\.editor)=" + _NO_PROGRAM + "$", re.I)
+GIT_ENV = re.compile(  # the same settings as environment variables (GIT_CONFIG_COUNT with its keys, GIT_SSH_COMMAND ...)
+    r"\bGIT_(?:CONFIG(?:_(?!NOSYSTEM)\w+)?|SSH(?:_COMMAND)?|EXTERNAL_DIFF|PAGER|EDITOR|SEQUENCE_EDITOR|ASKPASS|EXEC_PATH|"
+    r"PROXY_COMMAND|TEMPLATE_DIR)\s*=\s*(?!" + _NO_PROGRAM + r"(?:[\s;&|)]|$))")
+GIT_CONFIG_READ = {"--get", "--get-all", "--get-regexp", "--get-urlmatch", "--get-color", "--get-colorbool", "-l", "--list"}
+GIT_CONFIG_FLAG = re.compile(  # git config's options that take no value and leave the file it writes alone
+    r"--(?:global|local|system|worktree|add|replace-all|append|all|bool|int|bool-or-int|path|expiry-date|no-type|null|"
+    r"fixed-value|show-origin|show-scope|name-only|(?:no-)?includes|unset|unset-all|type=[\w-]+)$|-z$")
 GIT_DESTRUCTIVE = re.compile(
     r"\bgit\s+(?:reset\s+--hard|clean\s+-[a-zA-Z]*f|checkout\s+(?:-f\b|--\s|\.(?:\s|$|[;&|])|(?!-)\S+\s+--\s)|"
     r"restore\b(?![^;&|]*--staged)|stash\s+(?:drop|clear)\b|switch\s+(?:-f\b|--discard-changes)|"
@@ -521,10 +541,16 @@ def passes(f: Path, rr: str, globs, typ, cr=None) -> bool:
     return read
 
 
+# A repository's settings can make git start a program by itself (core.fsmonitor on every status, a hook on every
+# change of the index). The guard's own git call runs with the user's rights and before the call it checks, so it
+# switches both off. Checked with git 2.43 and 2.52: the empty value turns the monitor off
+GIT = ["git", "-c", "core.fsmonitor=", "-c", "core.hooksPath=" + os.devnull]
+
+
 def git_ignored(root: Path, rels) -> set:
     """Those of the paths below root that git's ignore rules exclude, by themselves or with a folder above them."""
     try:  # --no-index: by the ignore rules alone, which is how ripgrep decides. One call for all the paths
-        out = subprocess.run(["git", "-C", str(root), "check-ignore", "--no-index", "--stdin", "-z"],
+        out = subprocess.run([*GIT, "-C", str(root), "check-ignore", "--no-index", "--stdin", "-z"],
                              input="\0".join(rels).encode(errors="surrogateescape"), capture_output=True, timeout=10,
                              creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
         return set(out.decode(errors="surrogateescape").split("\0")) - {""}
@@ -707,6 +733,42 @@ def lex(c: str):
         return list(lx)
     except ValueError:
         return c.split()
+
+
+def git_runs(c: str):
+    """What on a line could make git start a program by itself, or None: a setting given for one call (git -c
+    key=value, --config-env, --exec-path=), a `git config` that writes a key outside GIT_PLAIN_KEY or that this
+    guard cannot read as a plain write, a clone that sets such a key, or a template folder, whose hooks git copies
+    into its own. Reading a setting, and unsetting one, pass."""
+    toks = lex(c)
+    for i, t in enumerate(toks):
+        if re.sub(r"\.exe$", "", t.rsplit("/", 1)[-1].lower()) != "git":
+            continue
+        j = i + 1
+        while j < len(toks) and toks[j][:1] == "-":  # git's own options, up to its subcommand
+            o, val = toks[j], "".join(toks[j + 1:j + 2])
+            if o == "-c" and not GIT_PLAIN_KEY.match(val.split("=", 1)[0]) and not GIT_NO_PROGRAM.match(val):
+                return "-c " + val
+            if o.startswith(("--config-env", "--exec-path=")):
+                return o
+            j += 2 if o in GIT_VALUE_OPT else 1
+        sub = "".join(toks[j:j + 1])
+        rest = list(itertools.takewhile(lambda x: x.strip(";&|()<>"), toks[j + 1:]))
+        for o, val in zip(rest, rest[1:] + [""]) if sub in ("clone", "init") else ():
+            key = val if o in ("-c", "--config") else o[9:] if o.startswith("--config=") else None
+            if o.startswith("--template") or (key is not None and not GIT_PLAIN_KEY.match(key.split("=", 1)[0])):
+                return f"{sub} {o} {val if key == val else ''}".strip()
+        opts, pos = [x for x in rest if x[:1] == "-"], [x for x in rest if x[:1] != "-"]
+        if sub != "config" or set(opts) & GIT_CONFIG_READ or pos[:1] in (["get"], ["list"]):
+            continue
+        if pos[:1] in (["set"], ["unset"]):
+            pos = pos[1:]
+        plain = all(GIT_CONFIG_FLAG.match(o) for o in opts)
+        if len(pos) == 1 and plain:  # one key and no value: it prints the key's value, or unsets it
+            continue
+        if not (pos and plain and GIT_PLAIN_KEY.match(pos[0])):
+            return "config " + " ".join(rest)
+    return None
 
 
 def decoded(t: str):
@@ -1477,6 +1539,12 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
                              "user's explicit approval."))
     elif GIT_PUSH.search(c):
         results.append((ASK, "git push publishes code; it needs the user's explicit approval."))
+    setting = git_runs(raw) or "".join(m.group() for m in [GIT_ENV.search(c)] if m)
+    if setting:
+        results.append((ASK, f"Gives git a setting that can make it start a program by itself, later and outside this "
+                             f"guard (a hooks folder, core.fsmonitor, an alias, a pager, an ssh command), or changes "
+                             f"git's settings in a way this guard cannot read: '{setting[:80]}'. Approve only if you "
+                             f"know what git would run."))
     if PUBLISH.search(c):
         results.append((ASK, "Publishes or uploads outside this machine (model hub, package index, registry or "
                              "GitHub). It needs the user's explicit approval."))

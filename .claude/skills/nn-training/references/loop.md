@@ -2,7 +2,7 @@
 
 Checked: 2026-11-11 (Claude Code 2.1.303, Codex CLI 0.167, Cursor CLI docs of that date; keep rule, the
 harness's search of numeric settings and the restart of a stalled campaign: 2026-11-12; the keep rule's variance
-rules, the rotating first seed and a pause on a restarted line: 2026-11-14)
+rules, the rotating first seed, a pause on a restarted line, the checks before a run and the repair turn: 2026-11-14)
 Refresh: re-read each agent's headless-mode and permission documentation and run `tests/test_loop.py`; the
 start-up lines of `agent_argv` in `scripts/nnloop.py` are the only agent-specific part.
 
@@ -128,7 +128,8 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 3. Iterations, each in a fresh worktree at the best commit so far (`.claude/worktrees/nnloop-NAME`):
    a fresh agent session gets the task, the score to beat, the history (for a change that failed on the first
    seed: both scores), the notes, the untried hypotheses and, when the training script logs with RunLog, a few
-   points per metric of one run of the best commit (the session cannot read run folders), and makes one change. The harness commits it on branch `nnloop/NAME`, saves the diff, scans it, trains
+   points per metric of one run of the best commit (the session cannot read run folders), and makes one change. The harness commits it on branch `nnloop/NAME`, saves the diff, scans it, checks
+   that it compiles and alters code ("Before a run costs anything" below), trains
    one seed, discards at once if that run is not better than the best so far's run on the same seed, otherwise
    trains the rest and applies the keep rule. The seed that comes first rotates through the panel from one
    iteration to the next, so that one seed on which the best so far was lucky does not turn away every change.
@@ -146,9 +147,41 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 | `keep` | Better than the best so far by more than the margin; the branch moves to this commit. After a restart (`restart_after`) the change is compared with the commit it started from, and the branch moves only when the new commit also beats the one that was left. |
 | `inconclusive` / `discard` | Better within the noise margin (a near-miss: on both seed panels together) / not better. Reverted (the next worktree starts from the best commit). |
 | `invalid` | Changed a file outside `editable_paths`, the guard refused a call, a sealed path or token appears in the change or the tool calls, the run exceeded its budget, the evaluator refused what the run saved, or every seed scored exactly the same although earlier panels had spread (the change took the seed's effect away; with a coarse metric and two seeds this can happen by chance, one more reason for three). |
-| `crash`, `no_change`, `agent_error`, `duplicate` | The run or evaluator failed; the session changed nothing; the agent ended with an error; the same diff was tried before. |
+| `crash`, `no_change`, `agent_error`, `duplicate` | The run or evaluator failed, or a changed Python file does not compile; the session changed nothing, or only comments and layout; the agent ended with an error; the same change was tried before (Python files compared without comments and layout). |
 | `declined` | The session proposed no change and said why. The prompt offers this as an accepted result, because an agent with no way to say "nothing" tends to game the score instead (arXiv 2510.20270 v1: an abort option cut cheating from 54 % to 9 %). It costs no run and is no failure; two in a row end the campaign (with `restart_after`: once there is no earlier commit to go back to). |
 | `unfinished` | A limit or a stop arrived during the iteration. Its change was not decided: a later session may propose it again (it is no `duplicate`), and its hypothesis still counts as untried. |
+
+### Before a run costs anything
+Since 14 November 2026 a change is checked after its commit and before its first run:
+- The same change. Two changes are the same when they turn the same code into the same code: a Python file counts
+  by its syntax tree, which holds neither comments nor layout, any other file by its content. The second one is a
+  `duplicate` and costs no run. (Before, another comment made a change new.)
+- No code. A change in which only comments or layout of Python files differ is `no_change`.
+- Does not compile. A changed Python file that no longer parses, where the best commit's version of it did, is a
+  `crash` without a run. This verdict is given only where `train_command` starts with `{python}`, because the
+  files are parsed by the project's interpreter; with another one a run decides.
+
+The harness reads both versions of each changed file from git's objects, not through the worktree, and only
+parses them (`ast.parse`, in a process of its own with the project's interpreter in isolated mode, 120 s at
+most): no line of the change is executed. Where that check itself fails, files count by their content and a run
+shows what does not compile. The tamper scan comes first, so a sealed token in a comment is still `invalid`.
+
+One repair turn. A change that does not compile, or whose first run fails before 30 seconds or a quarter of
+`run_budget_s` have passed (the longer of the two), gets one more session before the iteration is lost. It
+has the worker's tools, guard and rules. It is told the hypothesis, the changed files and the failure: the
+compile error, or the last 3,000 characters of the failed run's output, non-ASCII characters replaced. Where
+that output holds a sealed token, no turn is offered. It sees no score. What it corrects is committed on top,
+checked and scanned as above, and then meets the first-seed check and the keep rule like any other change;
+where it changes nothing, or no code, the iteration ends as the crash it was. There is one turn per iteration
+at most, none for a change that comes with a search, none after a failure of a later seed, and none when the
+limits have no room for a panel. The turn counts as a session against `--max-tokens` and `--max-usd`.
+
+The ledger row carries `repaired` (`false`: a turn ran and corrected nothing) and sums both sessions' tokens,
+cost and guard calls and both runs; the turn's prompt and transcript are in `iter-NNN/repair/`. The keep rule
+is as it was: a repaired change needs the same margin.
+
+A campaign started before this check compares changes by their text: on a `resume`, a change that was tried
+before the upgrade is not recognised and costs its runs once more.
 
 ### The keep rule
 A one-sided t-test of the change's mean against the best commit's mean. Its noise is the variance within seed
@@ -410,7 +443,7 @@ Leave the project folder alone while a campaign runs: a changed file stops it.
 ## Records
 `experiments/loop/NAME/`: `state.json`, `ledger.jsonl` (every baseline run, control, the self-test, scout, iteration, restart, confirmation and stop; each row
 names the hash of the one before), `loop.log`, and per iteration the prompt, transcript, guard record and
-`diff.patch`. Each run directory has `loop_eval.json` (the harness's evaluation). The journal gets one entry per
+`diff.patch` (those of a repair turn in `iter-NNN/repair/`). Each run directory has `loop_eval.json` (the harness's evaluation). The journal gets one entry per
 campaign stop. Kept code is on branch `nnloop/NAME`; nothing is merged for you.
 
 ## After a campaign
@@ -427,6 +460,13 @@ campaign stop. Kept code is on branch `nnloop/NAME`; nothing is merged for you.
 - Seed panel with a noise margin, checksummed evaluator and data, fresh worktree, no network, saved diff,
   transcript scan: `docs/research-notes/agent_frameworks_patterns.md` in the kit's repository (sections 2 and 5).
 - Agent start-up flags: each vendor's CLI reference, read 2026-11-11.
+- One repair turn for a change that fails at once, and no run for a change that repeats an earlier one: the
+  review of 14 November 2026 named AIDE (https://arxiv.org/abs/2502.13138, v1 of 2025-02-18) for the first and
+  ShinkaEvolve (https://arxiv.org/abs/2509.19349, v1 of 2025-09-17) for the second. Abstracts read on
+  2026-11-14: ShinkaEvolve's names "code novelty rejection-sampling"; AIDE's describes a tree search over
+  solutions and does not mention debugging, which the review places in the paper's method (not opened). The
+  design here (syntax trees instead of embeddings, one turn, the 30-second bound) is the kit's own, tested with
+  `tests/test_loop.py` on 2026-11-14 with a stand-in agent and not measured on training results.
 - Numbers by search, code changes by the agent: https://arxiv.org/abs/2603.24647 (v3, 2026-04-04), opened by a
   research subagent on 2026-11-11 and not cross-checked; `hpo.md` section 8 gives another figure from the same
   paper for its hybrid method (0.9739), and the two readings were not reconciled. Sampling: `hpo.md`

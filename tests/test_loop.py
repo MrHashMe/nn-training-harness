@@ -648,9 +648,10 @@ def campaign_a(tmp, proj, exe):
     check("the guard refused 1 call" in it[3]["why"] and "frozen" in it[3]["why"] and it[3]["guard_denials"] == 1
           and not it[3].get("commit"), "an attempt to change the evaluator, refused by the guard, invalidates the iteration")
     check("outside editable_paths: eval.py" in it[4]["why"], "a change outside editable_paths invalidates the iteration")
-    check("training failed" in it[5]["why"], "a crashing change is recorded as a crash")
+    check("training failed" in it[5]["why"] and it[5]["repaired"] is False and len(it[5]["runs"]) == 1,
+          "a crashing change is recorded as a crash, also after a repair turn that corrected nothing")
     ss = sessions(tmp)
-    check(len(ss) == 7 and all(s["env"]["NN_UNATTENDED"] == "1" and s["env"]["NN_GUARD_BEACON"] and not s["env"]["CLAUDECODE"]
+    check(len(ss) == 8 and all(s["env"]["NN_UNATTENDED"] == "1" and s["env"]["NN_GUARD_BEACON"] and not s["env"]["CLAUDECODE"]
                                and not s["env"]["CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH"]
                                and Path(s["cwd"]).as_posix().endswith(".claude/worktrees/nnloop-a") for s in ss),
           "every session runs in the campaign's worktree, marked unattended, without the variables of the launching "
@@ -673,8 +674,9 @@ def campaign_a(tmp, proj, exe):
           "it also shows what a run of the best so far logged, with names and steps that the training code chose "
           "reduced to plain ASCII characters and rounded numbers")
     c = st["counters"]
-    check(c["runs"] == 12 and c["sessions"] == 7 and c["tokens"] == 35000 and near(c["usd"], 3.5),
-          "runs (the four of the confirmation among them), sessions, tokens and cost are counted")
+    check(c["runs"] == 12 and c["sessions"] == 8 and c["tokens"] == 40000 and near(c["usd"], 4.0),
+          "runs (the four of the confirmation among them), sessions (the repair turn after the crash among them), "
+          "tokens and cost are counted")
     cf = st.get("confirm") or {}
     check(cf.get("status") == "confirmed" and near(cf.get("delta"), 0.5, 1e-6) and near(cf.get("margin"), tm(2, 3) * sd)
           and len(set(cf.get("seeds") or [])) == 2 and not set(cf["seeds"]) & {1, 2} and len(cf.get("runs") or []) == 4
@@ -1394,7 +1396,92 @@ def campaign_r(tmp, proj, exe):
               [(e.get("status"), e.get("base")) for e in new], b0, b1)
 
 
-# ---------------------------------------------------------------- 11. the sandbox of a run (Linux)
+# ---------------------------------------------------------------- 11. checks before a run, and one repair turn
+
+def repair_tests(tmp, proj, exe):
+    print("== campaign f: a change that alters no code, one that does not compile, one repair turn ==")
+    C = nnloop.Campaign(proj, nnloop.expctl.load_config(proj), "zz", argparse.Namespace())
+    run, got = proj / "runs" / "made-up", []
+    for secs, budget, text in ((29.9, 3, "NameError: x"), (30.0, 3, "NameError: x"), (45.0, 200, "NameError: x"),
+                               (50.0, 200, "NameError: x"), (1.0, 3, "the row NN_UNSEAL_TEST"), (1.0, 3, "café \x1b[31m")):
+        put(run / "exit.json", json.dumps({"returncode": 1, "duration_s": secs}))
+        put(run / "stdout.log", "Traceback\n" + text + "\n")
+        C.L["run_budget_s"] = budget
+        got.append(C.failure("made-up"))
+    shutil.rmtree(run)
+    check(got[0].startswith("Its first training run failed after 29.9 s.") and got[0].endswith("Traceback\nNameError: x\n")
+          and got[1] == "" and "after 45 s" in got[2] and got[3] == "" and got[4] == "" and "caf? ?[31m" in got[5],
+          "a repair turn is offered for a run that failed within 30 s or a quarter of its budget, whichever is longer: "
+          "it gets the end of the run's output in plain ASCII characters, and nothing when a sealed token is in it")
+
+    no = {"proposal": {"no_change": "nothing left"}}
+    plan(tmp, [
+        edit("QUALITY = 1.0", "QUALITY = 1.0  # tuned by hand", title="a comment"),
+        edit("QUALITY = 1.0", "QUALITY = 0.9", title="lower"),
+        edit("QUALITY = 1.0", "QUALITY  =  0.9  # lower, said again", title="lower again"),
+        edit("QUALITY = 1.0", "QUALITY = (1.5", title="open bracket"), {},
+        edit("QUALITY = 1.0", "QUALITY = 0.8 + MISSING", title="unknown name"),
+        {"do": [["sub", "train.py", "QUALITY = 0.8 + MISSING", "QUALITY = 0.8"]]},
+        edit("QUALITY = 1.0", "QUALITY = 1.5)", title="stray bracket"),
+        {"do": [["sub", "train.py", "QUALITY = 1.5)", "QUALITY = 1.5"]]},
+        edit("QUALITY = 1.5", "QUALITY = 1.7)", title="then the evaluator"),
+        {"do": [["read", "train.py"], ["!write", "eval.py", "print(1)\n"]]},
+        edit("QUALITY = 1.5", "QUALITY = 1.4)", title="then a cap"), {"result": "cap"}])
+    r = loop(proj, "start", "--campaign", "f", "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-runs", "40")
+    st, it, ss = state(proj, "f"), iters(proj, "f"), sessions(tmp)
+    got = [e.get("status") for e in it]
+    if not check(r.returncode == 1 and got == ["no_change", "discard", "duplicate", "crash", "discard", "keep", "invalid", "unfinished"]
+                 and "rate limit or usage cap" in str(st.get("stop_reason")) and len(ss) == 13,
+                 f"eight iterations end as no_change, discard, duplicate, crash, discard, keep, invalid and unfinished (got {got})"):
+        show(r)
+        print("  ledger:", json.dumps(rows(proj, "f"))[-3000:])
+        return
+    check("alters no code" in it[0]["why"] and not it[0]["runs"] and not it[2]["runs"] and len(it[1]["runs"]) == 1
+          and it[2]["diff_sha"] == it[1]["diff_sha"] != it[0]["diff_sha"],
+          "a change that differs from the code only in comments and layout costs no run, and one that differs from an "
+          "earlier change only in those is the same change (was: each was trained)")
+    d, p4, p5, a = proj / "experiments/loop/f", ss[4]["prompt"], ss[6]["prompt"], ss[6]["argv"]
+    check("does not compile: SyntaxError" in it[3]["why"] and "train.py" in it[3]["why"] and not it[3]["runs"]
+          and it[3]["repaired"] is False and "The change does not compile: SyntaxError" in p4 and '"open bracket"' in p4
+          and "It changed: train.py." in p4 and "repair step" in p4
+          and "one iteration of an unattended" in (d / "iter-004/prompt-worker.md").read_text(encoding="utf-8")
+          and (d / "iter-004/repair/transcript-worker.jsonl").is_file(),
+          "a change that does not compile is not launched (was: one run): one more session is shown the error, and "
+          "where that corrects nothing the iteration is a crash without a run")
+    check(it[4]["repaired"] is True and len(it[4]["runs"]) == 2
+          and "scored 0.8 against 1 for the best so far (seed 1)" in it[4]["why"]
+          and "Its first training run failed after" in p5 and "NameError: name 'MISSING' is not defined" in p5
+          and it[4]["tokens"] == 10000 and near(it[4]["usd"], 1.0) and it[4]["guard_calls"] == 3
+          and a[a.index("--tools") + 1] == "Read,Glob,Grep,Edit,Write" and Path(ss[6]["cwd"]).as_posix().endswith("worktrees/nnloop-f"),
+          "a change whose first run fails at once gets one repair turn with the end of the run's output (was: the "
+          "iteration was lost); the corrected change is trained and decided like any other, and its row counts both "
+          "sessions and both runs")
+    k, tip, patch = it[5], git(proj, "rev-parse", "nnloop/f"), (d / "iter-006/diff.patch").read_text(encoding="utf-8")
+    check(k["repaired"] is True and k["commit"] == st["kept_commit"] == tip and len(k["runs"]) == 2 and near(k["delta"], 0.5, 1e-6)
+          and "QUALITY = 1.5\n" in git(proj, "show", "nnloop/f:train.py") and "+QUALITY = 1.5\n" in patch and "1.5)" not in patch
+          and git(proj, "log", "-1", "--format=%s", tip).endswith("iteration 6: repair")
+          and git(proj, "rev-list", "--count", f"{st['base_commit']}..{tip}") == "2",
+          "a corrected change that beats the best so far is kept as corrected: the branch is at the repair's commit, "
+          "and the saved diff is the whole change")
+    check("the repair turn changed files outside editable_paths: eval.py" in it[6]["why"] and not it[6]["runs"],
+          "the repair turn is held to the campaign's rules: a file outside editable_paths invalidates the iteration")
+    check(st["counters"]["runs"] == 7 and st["counters"]["sessions"] == 13
+          and it[7]["diff_sha"] not in st["tried"] and it[3]["diff_sha"] in st["tried"],
+          "runs and sessions are counted with the repair turns, and a change whose repair turn a stop interrupted is "
+          "not on the list of tried changes")
+    r, st, new = resume(tmp, proj, exe, "f", [
+        edit("QUALITY = 1.5", "QUALITY = 1.4)", title="the same again"),
+        {"do": [["sub", "train.py", "QUALITY = 1.4)", "QUALITY = 1.4"]]}, no, no], "--max-runs", "40")
+    got = [e.get("status") for e in new]
+    if not check(r.returncode == 0 and got == ["discard", "declined", "declined"] and new[0]["repaired"] is True
+                 and (st.get("confirm") or {}).get("status") == "confirmed" and st["counters"]["runs"] == 12,
+                 f"proposed again after the stop, that change gets its repair turn and is trained (got {got}), and the "
+                 f"kept change is confirmed on fresh seeds"):
+        show(r)
+        print("  ledger:", json.dumps(rows(proj, "f"))[-3000:])
+
+
+# ---------------------------------------------------------------- 12. the sandbox of a run (Linux)
 
 def sandbox_tests(tmp, proj):
     print("== sandbox of a training run ==")
@@ -1451,7 +1538,7 @@ def sandbox_tests(tmp, proj):
     (proj / "runs/probe.tmp").unlink(missing_ok=True)
 
 
-# ---------------------------------------------------------------- 12. guard rules the loop relies on
+# ---------------------------------------------------------------- 13. guard rules the loop relies on
 
 def guard_tests(tmp, proj):
     print("== guard rules in a worktree of the project ==")
@@ -1641,6 +1728,7 @@ def main():
             resume_refusals(tmp, proj, exe)
             search_tests(tmp, proj, exe)
             restart_tests(tmp, proj, exe)
+        repair_tests(tmp, proj, exe)
         sandbox_tests(tmp, proj)
         guard_tests(tmp, proj)
     finally:

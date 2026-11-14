@@ -2543,6 +2543,13 @@ def cmd_env(args):
                     info["ram_available_gb"] = round(int(line.split()[1]) / 1e6, 1)
     except OSError:
         pass
+    if sys.platform == "darwin":  # no /proc and no nvidia-smi: the chip's one GPU shares this memory with the processor
+        for key, name in (("ram_gb", "hw.memsize"), ("chip", "machdep.cpu.brand_string")):
+            try:
+                v = subprocess.run(["sysctl", "-n", name], capture_output=True, text=True, timeout=6).stdout.strip()
+                info[key] = round(int(v) / 2**30, 1) if key == "ram_gb" else v or None
+            except (OSError, ValueError, subprocess.SubprocessError):
+                pass
     g = gpu_info()
     info["gpus"] = g
     if shutil.which("nvidia-smi"):

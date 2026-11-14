@@ -631,6 +631,8 @@ class RunLog:
             try:
                 env["torch"] = {"version": torch.__version__, "cuda": torch.version.cuda,
                                 "cuda_available": torch.cuda.is_available(),
+                                "mps_available": bool(getattr(torch.backends, "mps", None)  # a Mac's GPU
+                                                      and torch.backends.mps.is_available()),
                                 "cudnn": torch.backends.cudnn.version() if torch.backends.cudnn.is_available() else None,
                                 "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
                                 "cudnn_benchmark": bool(torch.backends.cudnn.benchmark),

@@ -1,11 +1,11 @@
 # Performance: measure first, adopt only measured end-to-end wins
 
-Checked: 2026-11-11 (low-precision training: 2026-11-12; what the probe found here: 2026-11-14)
-Refresh: check the PyTorch release notes of the installed version and the NVIDIA CUDA on WSL guide; wheel tags, driver
-floors and platform gaps change per release. The adoption rule (measure end to end) does not age.
+Checked: 2026-11-11 (low-precision training: 2026-11-12; what the probe found here and Apple silicon: 2026-11-14)
+Refresh: check the PyTorch release notes of the installed version, its MPS notes and the NVIDIA CUDA on WSL guide;
+wheel tags, driver floors and platform gaps change per release. The adoption rule (measure end to end) does not age.
 
 Read when you change precision, compilation, data loading, optimizer implementation, memory use, parallelism or batch
-size for speed or memory reasons, or when the platform is native Windows or WSL2.
+size for speed or memory reasons, or when the platform is native Windows, WSL2 or macOS (section 9).
 
 Every item here is a hypothesis to test under the project's protocol (one change, declared budget, paired seeds, a
 margin above the noise floor), not a default to switch on. Each tip names the minimum version it needs; a tip
@@ -142,3 +142,52 @@ Deterministic settings (`torch.use_deterministic_algorithms(True)`, `CUBLAS_WORK
   https://arxiv.org/abs/2607.04422, v2 7 Aug 2026; abstract pages read 2026-11-12)
 - Do not reach for: torchao `CPUOffloadOptimizer` (breaks LR schedulers and clipping), Ray Train (heavy runtime with
   its own supervision), TorchTitan v0.4.0 (an example only), multi-GPU on native Windows (no NCCL).
+
+## 9. Apple silicon (macOS)
+Nothing in this section was run on a Mac. It is read from the pages named, on 2026-11-14; what the kit's own code for
+macOS was tested on is in the platform table of the kit repository's `docs/REFERENCE.md`. Take each line as a thing
+to check on your machine.
+- What there is: one GPU that shares the machine's memory with the processor, reached as torch's `mps` device or
+  through MLX. There is no CUDA and no `nvidia-smi`: `expctl env` reports the chip and the memory, `expctl status` lists
+  no GPU, and the loop refuses `--max-gpu-hours` because it cannot measure them: limit a campaign with
+  `--max-hours` or `--max-runs`.
+- Stack: PyTorch 2.15.0 has macOS wheels for arm64 only (tag `macosx_14_0_arm64`, Python 3.11 to 3.15), and its MPS
+  backend needs macOS 15.0 or later. `torch.backends.mps.is_available()` says whether the device can be used;
+  `torch.backends.mps.is_built()` tells a build without the backend from a machine without it. (source:
+  https://pypi.org/pypi/torch/2.15.0/json; https://docs.pytorch.org/docs/2.15/notes/mps.html)
+- Device choice: `cuda` if available, else `mps` if available, else `cpu`. A script that knows only `cuda` and `cpu`
+  trains on a Mac's processor without a word, so print the device in the first log line. The kit's benchmark tasks
+  choose between `cuda` and `cpu` only: on a Mac they run on the processor.
+- Limits the documentation states: no `float64` and no `complex128` on `mps` (a TypeError; do such computations on the
+  CPU). `PYTORCH_ENABLE_MPS_FALLBACK=1` makes an operation the backend lacks run on the CPU instead, so a throughput
+  number measured with it may be a CPU number. The page on automatic mixed precision names no `mps` device. The levers
+  of section 3 were checked for CUDA only: on `mps` each one is a thing to try and measure, not a known gain.
+  `expctl env --probe` skips its four CUDA rows on a Mac and tries `torch.compile` on the CPU. (source:
+  https://docs.pytorch.org/docs/2.15/notes/mps.html; https://docs.pytorch.org/docs/2.15/mps_environment_variables.html;
+  https://docs.pytorch.org/docs/2.15/amp.html)
+- Memory: an allocation beyond `PYTORCH_MPS_HIGH_WATERMARK_RATIO` times the recommended maximum fails (default 1.7;
+  1.0 is the recommended maximum; 0.0 lifts the limit). Read `torch.mps.current_allocated_memory()`,
+  `torch.mps.driver_allocated_memory()` and `torch.mps.recommended_max_memory()` per phase and log them yourself:
+  RunLog's `gpu_mem_gb` field holds CUDA memory only. `torch.mps.set_per_process_memory_fraction(f)` caps the process.
+  (source: https://docs.pytorch.org/docs/2.15/mps_environment_variables.html; https://docs.pytorch.org/docs/2.15/mps.html)
+- Timing and comparisons: call `torch.mps.synchronize()` before reading a clock around GPU work. Keep one device for
+  a whole comparison: a baseline measured on `cpu` says nothing about a change measured on `mps`. RunLog records
+  whether `mps` was available (`env.json`), not which device the script chose, so log the device with the run.
+- DataLoader: Python starts worker processes with spawn on macOS, as on Windows, so the DataLoader rules of section 2
+  apply (main guard, top-level functions, `persistent_workers=True`). (source:
+  https://docs.python.org/3/library/multiprocessing.html)
+- MLX and `mlx-lm` (0.32.2, MIT, Python 3.11+): Apple's array framework and its language-model tools, with LoRA, DoRA
+  and full fine-tuning from one command (`mlx_lm.lora --model <id> --train --data <folder> --iters <n>`; the folder
+  holds `train.jsonl`, `valid.jsonl` and `test.jsonl`). A candidate: the kit neither installs nor tried it. Under the
+  protocol, start it with `expctl launch` from a script that logs with RunLog, keep the project's sealed test data out
+  of its data folder (its `--test` flag reads `test.jsonl`), and score the result with the project's frozen evaluator,
+  not with the perplexity it prints. Its own memory advice: a quantized base model, a smaller `--batch-size` with
+  `--grad-accumulation-steps`, fewer `--num-layers`, `--grad-checkpoint`. (source: https://pypi.org/pypi/mlx-lm/json;
+  https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/LORA.md)
+- Sleep: a sleeping Mac pauses a run while its deadline keeps counting. The kit holds off idle sleep for as long as a
+  run, the loop or the controller of a remote run lives (`caffeinate -i -w <pid>`, started by `expctl`; the pid is in
+  the run's `pid.json`). A closed lid or the Sleep menu item still puts the machine to sleep. (source: the caffeinate
+  manual page, as mirrored at https://ss64.com/mac/caffeinate.html)
+- Files: Finder writes a `.DS_Store` file into a folder a person opens. The installer names it in `.gitignore`, and
+  the loop does not count a real one as a changed protected file. Keep a training project out of a folder that iCloud
+  Drive syncs: it can replace a file with a placeholder while a run reads it (from memory, not checked).

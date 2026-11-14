@@ -34,6 +34,8 @@ explicit = true
 [tool.uv.sources]
 torch = [{ index = "pytorch-cu132", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]
 ```
+On a Mac the marker leaves torch to PyPI, whose arm64 wheel carries the `mps` device and no CUDA: `performance.md`,
+section 9 (read 2026-11-14, not run on a Mac).
 
 ## Core
 The kit's own standard-library code, always on: guard hook, session status, run controller `expctl` (with `resume`), run logger

@@ -75,6 +75,9 @@ installed version before using an API.
   16-bit LoRA to 9-11B, 4-bit QLoRA to 27-32B, before long sequences. Vendor table figures are minimums.
 - Risk: a published estimator reported 46.2% mean error on four runs; do not decide a launch on a formula.
   (source: https://raw.githubusercontent.com/DaoyuanLi2816/can-i-finetune-this/main/README.md, 2026-11-11)
+- On a Mac the GPU shares the machine's memory and is reached as `mps` or through MLX, not CUDA. Whether 4-bit loading
+  with bitsandbytes works there was not checked; `mlx-lm` with a quantized base model is the candidate to test
+  (`performance.md`, section 9; read 2026-11-14, not run on a Mac).
 
 ## LoRA and QLoRA
 - Starting values are hypotheses to tune (see the closing section). Variants (DoRA, PiSSA, MiLoRA and others) are not

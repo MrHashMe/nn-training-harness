@@ -239,6 +239,10 @@ def unit_tests():
     check(not r["ok"] and r["stop"] is None and r["tokens"] is None, "Claude Code: no result event is a failed session")
     r = nnloop.parse_claude(ev(dict(res, is_error=True, subtype="error_max_turns")))
     check(r["ok"], "Claude Code: running out of turns still leaves a usable session")
+    mps = {"torch": {"mps_available": True}}
+    check([nnloop.gpu_label(g, e) for g, e in (([], mps), (["RTX"], mps), ([], {"torch": {"mps_available": False}}), ([], None))]
+          == ["Apple GPU (torch's mps device)", "RTX", "none", "none"],
+          "the worker's note names a Mac's GPU, which nvidia-smi does not list, when the baseline run's torch saw it")
     with tempfile.TemporaryDirectory() as d:
         f, lim = Path(d) / "t.jsonl", {"type": "rate_limit_event", "rate_limit_info": {
             "status": "allowed", "rateLimitType": "seven_day", "overageStatus": "allowed", "isUsingOverage": False}}

@@ -188,6 +188,9 @@ def main():
         shutil.rmtree(proj / n)
     e = jout(expctl(proj, "env", "--python", PY))
     check("interpreter" in e and "packages" in e["interpreter"], "env probes interpreter packages")
+    if sys.platform == "darwin":  # no /proc/meminfo and no nvidia-smi there
+        check(isinstance(e.get("ram_gb"), float) and e["ram_gb"] > 1 and e.get("chip"),
+              f"env reports a Mac's memory and chip ({e.get('ram_gb')} {e.get('chip')})")
     # --probe tries what training relies on for speed, each in a process of its own. Here a stand-in torch in the
     # project folder answers, so the check needs neither torch nor a GPU
     pp = tmp / "probe-proj"
@@ -379,7 +382,7 @@ def main():
     wait_for(lambda: state_of(proj, long["run_id"])[0] == "running", 15)
     mac = sys.platform == "darwin"  # there a live run holds off idle sleep with the system's caffeinate
 
-    def ended(pid):  # used on macOS only: signal 0 asks whether the process exists
+    def no_process(pid):  # used on macOS only: signal 0 asks whether the process exists
         try:
             os.kill(pid, 0)
         except OSError:
@@ -397,7 +400,7 @@ def main():
     check(stp2.get("final_state") == "interrupted" and res2["state"] == "interrupted" and res2["last_ckpt"],
           "graceful stop -> RunLog interrupted with last checkpoint")
     if mac:
-        check(bool(ka and wait_for(lambda: ended(ka), 15)), "the sleep guard ends when the run is stopped")
+        check(bool(ka and wait_for(lambda: no_process(ka), 15)), "the sleep guard ends when the run is stopped")
 
     # lost run: SIGKILL supervisor + child
     lost = jout(expctl(proj, "launch", "--name", "lost", "--", PY, "train.py", "--steps", "5000", "--sleep", "0.02"))
@@ -408,12 +411,12 @@ def main():
     check(wait_for(lambda: state_of(proj, lost["run_id"])[0] == "lost", 10) is not None, "killed run -> lost")
     if mac:
         ka = pj.get("keep_awake_pid")
-        check(bool(ka and wait_for(lambda: ended(ka), 15)), "the sleep guard of a run whose supervisor was killed ends with the run")
+        check(bool(ka and wait_for(lambda: no_process(ka), 15)), "the sleep guard of a run whose supervisor was killed ends with the run")
         # the loop and the controller of a remote run hold the guard on themselves: it has to end when they do
         code = ("import os, sys, time\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
                 "p = expctl.keep_awake(os.getpid())\nprint(p.pid if p else 0, flush=True)\ntime.sleep(1)\n")
         ka = int(sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj).stdout.strip() or 0)
-        check(bool(ka and wait_for(lambda: ended(ka), 15)), f"a sleep guard held on its own parent ends with that process ({ka})")
+        check(bool(ka and wait_for(lambda: no_process(ka), 15)), f"a sleep guard held on its own parent ends with that process ({ka})")
 
     # ok run completes; top list + curve
     check(wait_for(lambda: terminal(rid_ok) == "completed", 30) is not None, "ok-run completes")

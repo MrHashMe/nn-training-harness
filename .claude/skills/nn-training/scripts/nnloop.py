@@ -254,6 +254,14 @@ def gpu_names():
     return sorted(str(x.get("name") or "") for x in g) if isinstance(g, list) else []
 
 
+def gpu_label(gpus, env):
+    """The GPUs as the worker's note names them. nvidia-smi does not list a Mac's GPU, so the note names it when the
+    baseline run's torch saw it (`env`: that run's env.json): the worker is not told that there is no GPU."""
+    tor = env.get("torch") if isinstance(env, dict) else None
+    mps = isinstance(tor, dict) and tor.get("mps_available")
+    return ", ".join(gpus or (["Apple GPU (torch's mps device)"] if mps else [])) or "none"
+
+
 def write_text(p: Path, text):
     with open(p, "w", encoding="utf-8", newline="\n") as f:  # Path.write_text has no newline argument before 3.10
         f.write(text)
@@ -1113,7 +1121,7 @@ class Campaign:
         st["baseline"] = {"scores": scores, "mean": statistics.mean(scores.values()), "run": rid}
         st["start_mean"], st["margin"] = st["baseline"]["mean"], margin
         env = expctl.read_json(last / "env.json")  # written by RunLog, if used
-        st["env_note"] = (f"{sys.platform}; GPUs: {', '.join(st['conditions']['gpus']) or 'none'}; " + json.dumps(
+        st["env_note"] = (f"{sys.platform}; GPUs: {gpu_label(st['conditions']['gpus'], env)}; " + json.dumps(
             {k: env.get(k) for k in ("python", "packages", "torch")} if isinstance(env, dict) else {}))[:1500]
         self.save()
 

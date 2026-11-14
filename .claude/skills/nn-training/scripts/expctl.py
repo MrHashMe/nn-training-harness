@@ -1874,6 +1874,7 @@ def cmd_supervise(args):
     write_json_atomic(run_dir / "pid.json", {"pid": child.pid, "pgid": child.pid, "supervisor_pid": os.getpid(),
                                              "started_at": t0, "proc_start": proc_start_time(child.pid),
                                              "proc_key": proc_key(child.pid), "supervisor_key": proc_key(os.getpid()),
+                                             "supervisor_start": proc_start_time(os.getpid()),
                                              **({"keep_awake_pid": awake.pid} if awake else {})})
     state = {"stop_at": None, "why": None, "killed": False}
 
@@ -1940,7 +1941,10 @@ def cmd_stop(args):
     # RunLog.should_stop() polls this file, so the request also reaches a trainer behind a wrapper that does not
     # forward signals, and a trainer on Windows, where it is the only graceful route.
     write_json_atomic(d / "stop.json", req)
-    sent, via, killed = bool(sup) and pid_alive(sup), "supervisor", None
+    # The supervisor's pid may by now belong to another program (after a restart, or a long time): signal it only
+    # while it is the process that the launch recorded. A record without its start time or key is taken as before.
+    sent = bool(sup) and pid_alive(sup) and same_process(sup, pj.get("supervisor_start"), pj.get("supervisor_key"))
+    via, killed = "supervisor", None
     if os.name == "nt":
         if not sent:  # no supervisor is left to escalate: give the loop its time to save and exit, then kill the tree
             sent, via = True, "process"
@@ -2146,10 +2150,32 @@ FINAL_SHARED = "nn-training-final-eval.jsonl"  # in git's common folder, which o
 
 
 def chained(path: Path, row):
-    """Append a row to a record of the kind ledger_rows() reads."""
-    lines = path.read_bytes().splitlines() if path.is_file() else []
-    prev = hashlib.sha256(lines[-1]).hexdigest() if lines else ""
-    with open(path, "ab") as f:
+    """Append a row to a record of the kind ledger_rows() reads. Two writers at the same moment would both read
+    the same last line and the chain would break, so the writer holds a lock from its read to its write: on
+    Windows one byte far beyond the end of the file, where no reader meets it (as nnremote.book() does),
+    elsewhere flock. Where no lock is to be had it writes without one rather than lose the row."""
+    with open(path, "ab+") as f:
+        if os.name == "nt":
+            import msvcrt
+            for _ in range(300):  # about 3 s
+                try:
+                    os.lseek(f.fileno(), 1 << 40, 0)
+                    msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError as e:
+                    if e.errno != 13:  # 13 (EACCES): another writer holds the lock; anything else: no locking here
+                        break
+                    time.sleep(0.01)
+        else:
+            try:
+                import fcntl
+                fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+            except (ImportError, OSError):
+                pass
+        f.seek(0)
+        lines = f.read().splitlines()
+        prev = hashlib.sha256(lines[-1]).hexdigest() if lines else ""
+        f.seek(0, 2)
         f.write(json.dumps(clean(dict(row, prev=prev)), sort_keys=True).encode("utf-8") + b"\n")
 
 

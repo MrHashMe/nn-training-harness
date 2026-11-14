@@ -197,7 +197,12 @@ def reserve(root, st, run_id, target, rate, hours):
         raise Refuse(f"the cap does not cover this run: ${usd:.4g} to reserve ({hours:g} h x ${rate:.4g}/h), "
                      f"${before:.4g} already committed, cap ${cap:.4g}")
     book(root, event="reserve", run=run_id, target=target, usd=usd, hours=hours, rate=rate)
-    if committed(ledger(root)) > cap + 1e-9:  # another launch reserved at the same moment
+    # Another launch may have reserved at the same moment. The ledger's order decides: the launch whose row came
+    # first keeps its reservation, the later one gives way. (Until 14 November 2026 both gave way.)
+    rows = ledger(root)
+    mine = max((i for i, r in enumerate(rows) if r.get("event") == "reserve" and r.get("run") == run_id),
+               default=len(rows) - 1)
+    if committed(rows[:mine + 1]) > cap + 1e-9:
         book(root, event="settle", run=run_id, usd=0.0, why="lost the race for the rest of the cap")
         raise Refuse("another launch reserved the rest of the cap at the same moment")
     return usd

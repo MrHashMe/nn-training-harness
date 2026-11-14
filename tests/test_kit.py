@@ -399,6 +399,34 @@ def main():
     res2 = json.loads((proj / long["run_dir"] / "result.json").read_text())
     check(stp2.get("final_state") == "interrupted" and res2["state"] == "interrupted" and res2["last_ckpt"],
           "graceful stop -> RunLog interrupted with last checkpoint")
+    # stop signals the supervisor only while that pid is still the process the launch recorded. Here another
+    # program has the pid, as after a restart: it must be left alone, and the run is stopped by its own process
+    reuse = jout(expctl(proj, "launch", "--name", "reuse", "--", PY, "train.py", "--steps", "5000", "--sleep", "0.02"))
+    wait_for(lambda: state_of(proj, reuse["run_id"])[0] == "running", 15)
+    by = subprocess.Popen([PY, "-c", "import time; time.sleep(120)"])
+    pjp = proj / reuse["run_dir"] / "pid.json"
+    pj = json.loads(pjp.read_text())
+    known = isinstance(pj.get("supervisor_start"), (int, float))
+    pjp.write_text(json.dumps(dict(pj, supervisor_pid=by.pid, supervisor_key="another-boot:1",
+                                   supervisor_start=(pj.get("supervisor_start") or 0) - 600)))
+    stp3 = jout(expctl(proj, "stop", reuse["run_id"], "--wait", "20s", timeout=60))
+    time.sleep(0.5)
+    check(known and stp3.get("ok") and stp3.get("via") == "process" and by.poll() is None,  # was: via supervisor
+          f"stop leaves a program alone that only has the recorded supervisor's pid ({stp3}, bystander {by.poll()})")
+    by.kill()
+    # the record of the final evaluation keeps its chain when several writers append at the same moment
+    code = ("import sys, time; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
+            "while time.time() < float(sys.argv[4]): pass\n"
+            "for i in range(40): expctl.chained(Path(sys.argv[2]), {'w': sys.argv[3], 'i': i})\n")
+    go = str(time.time() + 3)
+    ps = [subprocess.Popen([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "chain.jsonl"),
+                            str(w), go]) for w in range(6)]
+    ends = [p.wait(120) for p in ps]
+    r = sh([PY, "-c", "import sys, json; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
+                      "rows, ok = expctl.ledger_rows(Path(sys.argv[2])); print(json.dumps([len(rows), ok]))",
+            str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "chain.jsonl")], cwd=proj)
+    check(ends == [0] * 6 and r.stdout.strip() == "[240, true]",  # was: rows that name the same line before them
+          f"a chained record that six processes append to at the same moment keeps its chain ({ends}, {r.stdout.strip()})")
     if mac:
         check(bool(ka and wait_for(lambda: no_process(ka), 15)), "the sleep guard ends when the run is stopped")
 

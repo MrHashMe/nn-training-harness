@@ -171,6 +171,25 @@ def unit_tests(tmp):
         booked = [{"run": str(e)}]
     check(ends == [0] * 8 and len({r["run"] for r in booked}) == 800 and abs(nnremote.committed(booked) - 8) < 1e-6,
           f"ledger rows that eight processes book at the same moment all survive ({len(booked)} of 800, {booked[0]['run'][:60]})")
+    # Two launches reserve at the same moment, and together they exceed the cap: the one whose row came first
+    # holds, the later one gives way. Here the rival's row lands just before, or just after, this launch's own
+    real_book, got = nnremote.book, []
+    for where in ("before", "after"):
+        def racing(root, **row):
+            for turn in ("before", "mine", "after"):
+                if turn == "mine":
+                    real_book(root, **row)
+                elif turn == where and row.get("event") == "reserve":
+                    real_book(root, event="reserve", run="rival", usd=0.8)
+        nnremote.book = racing
+        try:
+            got.append(nnremote.reserve(tmp / ("race-" + where), {"cap_usd": 1.0}, "mine", "t", 0.8, 1))
+        except nnremote.Refuse:
+            got.append("refused")
+        nnremote.book = real_book
+    left = nnremote.committed(nnremote.ledger(tmp / "race-before"))
+    check(got == ["refused", 0.8] and abs(left - 0.8) < 1e-9,  # was: both refused, and nothing started
+          f"of two reservations at the same moment the earlier row holds and the later gives way ({got}, {left})")
     counted = type("Drv", (), {"since": nnremote.time.monotonic() - 36})  # its controller has counted 36 s
     check(nnremote.used_s({"started_ts": 2000.0}, counted, 1000.0) >= 36 and nnremote.used_s({}, counted, 1000.0) == 0
           and nnremote.used_s({"started_ts": 964.0}, object(), 1000.0) == 36,

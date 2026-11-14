@@ -162,12 +162,15 @@ simulation of the keep rule. Research went no further than a build or a line of 
   GRPO, the LoRA scale in a rank sweep, three wiring checks for the sanity gate. Two installer faults. A control
   for the fine-tuning task: the shipped script trained on shuffled intents, with a measured floor.
 - After that, a reviewer with no access to the working context looked at the result and found nine faults and
-  four smaller ones. Each fix is a row of the same note, with two more for faults that the fixing turned up: 13
-  rows, all adopted and finished, which brings the note to 102 rows. Most are further ways past the guard (a
-  sealed path spelled so that only the shell resolves it, decoded text, a notes file run as code, a forced git
-  add, git settings that start a program, a hook input nested too deeply to read); two lie outside it: the
-  character-model evaluator scored a model that reads its own scoring file, and a junction or a second link to
-  linked storage brought sealed files into a snapshot. No second reviewer looked at the fixes.
+  four smaller ones. Each fix is a row of the same note, with two more for faults that the fixing turned up and
+  two for faults that the full test run in WSL then found: 15 rows, all adopted and finished, which brings the
+  note to 104 rows. Most are further ways past the guard (a sealed path spelled so that only the shell resolves
+  it, decoded text, a notes file run as code, a forced git add, git settings that start a program, a hook input
+  nested too deeply to read); two lie outside it: the character-model evaluator scored a model that reads its own
+  scoring file, and a junction or a second link to linked storage brought sealed files into a snapshot. The two
+  from the test run are older than the round: where a final evaluation is configured, a word longer than a file
+  name can be ended the guard's check as an internal error on Linux and macOS, and on Linux a live run read as
+  lost once the system clock had been set by five seconds. No second reviewer looked at the fixes.
 - A fault of this ledger, found by the review: a reference that covers a row outranked the record of what was
   built, so three rows marked "partly built" and eight rows that name kit code showed as finished. The build
   record now wins, and the eight were checked against the code. Three of them are finished (the `datasets`

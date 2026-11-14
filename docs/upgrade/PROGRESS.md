@@ -1030,7 +1030,61 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
     labels (the GPU, about two minutes each in the fine-tuning environment) to set a measured ceiling.
     Not run: usage. N floors computed by the loop where `loop.controls` is missing, for the same reason.
   - (18) N "GPU seconds are overbilled", as under rank 4; the reference now says how they are counted.
-- Next: step 8, references, installer, ledger.
+- Done, step 8, references, installer and ledger, one commit per idea: the fine-tuning reference names the
+  objectives after GRPO and the LoRA scale in a rank sweep (`11ca540`); the optimization reference names
+  cautious weight decay and two Muon variants as candidates (`cae1f44`); the performance reference calls
+  only the 64B-token run short (`b56207d`); the installer writes an apostrophe of the interpreter's path
+  twice inside the agent files' quoted hook command (`00a5eb1`) and adds a later run's paths to the kit's
+  block of `.gitignore` (`e376b6c`); the ledger's generator lets the record of what was built outrank a
+  reference, and the review is the note `round5` (`7cede64`); README and guide say what the guard reads and
+  asks since this round (`850020a`). Whole files, all passing: on the tree of `e376b6c` `tests/test_ports.py`
+  125 checks on Windows and 126 in WSL, `tests/test_kit.py` 417 and 421, `tests/test_review_fixes.py` 40 in
+  WSL; `tests/test_kit.py` again on Windows on the tree of `850020a` (417).
+- For REPORT.md, references, installer and ledger:
+  1. `references/finetuning.md`: which objective TRL 1.17.1 runs when a script sets nothing (`loss_type`
+     defaults to `"dapo"`, not the GRPO of the original paper); Dr. GRPO, DAPO, GSPO and CISPO by the
+     symptom each answers, with their settings in `GRPOConfig`; GDPO and on-policy self-distillation as
+     candidates; the LoRA scale in a rank sweep (`lora_alpha/r`, measured with PEFT 0.21.2, and
+     `use_rslora`).
+  2. `references/optimization.md`: cautious weight decay, Polar Express and NorMuon as candidates, each its
+     authors' result; the held line now says which "Cautious" it means (the masked update). The performance
+     reference: wording only.
+  3. Installer: an interpreter path with an apostrophe ended the single-quoted hook command of the two
+     subagent files early, so their frontmatter did not parse. The apostrophe is written twice there, as
+     YAML asks; tried end to end with an environment in a folder named `o'c`. The warning about a path with
+     a space names a quote too.
+  4. Installer: a run that added paths to `.gitignore` after an earlier one wrote the kit's header a second
+     time. It adds them under the header that is there; a file that has two headers already keeps them.
+  5. Ledger: a reference that covers a row outranked the record of what was built. The record wins now.
+     Three rows whose record said "partly built" and five of eight rows that name kit code moved from
+     finished to unfinished; the other three of the eight are finished (the `datasets` advisory and the
+     split check, both built in this round; the Windows memory setting, reference text by its nature).
+     Numbers: 1,505 rows before (Adopt 422, of them 288 finished and 134 not; Trial 224, Assess 314, Hold
+     320, Reject 225), 1,594 after (Adopt 458, of them 316 finished and 142 not; Trial 234, Assess 324,
+     Hold 324, Reject 254). The note `round5` has 89 rows: 36 adopted, all built; 10 Trial; 10 Assess; 4
+     held for the user; 29 rejected.
+  6. README and guide: the guard's new questions, what it reads in a call and where that ends, the walk of
+     a folder sealed as a whole (the README still said that such a search passes), what counts as a run's
+     source, and the platform row for the evaluator's read-only project.
+  New checks: two in `tests/test_ports.py`; on the code before, both fail (123 pass). No existing test was
+  changed or removed in step 8.
+  Limits to name there: the papers were read as abstract pages and the settings come from TRL's config file
+  at v1.17.1; no result was reproduced and no objective was run. The candidates in the two references are
+  Trial rows. Seven Assess rows list what the review named and this round did not open (further RL
+  objectives, trainer and generator parity, distillation and preference objectives, adapter options,
+  optimizers, low-precision and kernel items, architectures): nothing about them is verified. No fetched
+  page tried to give an instruction.
+- Decided without a build in step 8, each with its reason:
+  - (11 to 13, 17) N a qualification of Schedule-Free AdamW in SKILL.md: SKILL.md already calls it, Muon,
+    SOAP, warmup-stable-decay and muP controlled alternatives to test against the baseline, not defaults.
+    N `RunLog.check_rlvr()`: `hf_callback` logs those metrics already and the reference says what to read;
+    the thresholds are the review's own, without a source. N routing for tabular models and prompt
+    optimisation, as in the verdict.
+  - (19) N folded YAML, a licence file, the removal of this checkout and a `doctor` command, as in the
+    verdict; `env --probe` and the warnings of `env` are this round's addition to the last.
+  - (14, 15, 20 to 22) U, four Hold rows: ports for Antigravity and Gemini CLI, the proposed MCP servers,
+    cloud drivers, a container as the box. N new skills and the rebuild as six "planes", as in the verdict.
+- Next: step 9, the full tests on both platforms on the tree of `850020a`, then REPORT.md.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

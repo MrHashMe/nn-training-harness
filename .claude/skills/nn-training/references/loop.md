@@ -60,6 +60,9 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
   reports neither cost nor tokens. Limits are totals of the whole campaign; it stops at the first one reached.
   They are checked between steps (a session, a run). The wall-clock limit also cuts off a run or a session in
   flight; tokens, money and GPU-hours can overshoot by the one step that was under way.
+- GPU-hours are each run's duration times the number of GPUs `nvidia-smi` lists. The loop cannot see how many of
+  them a command uses, so it counts the machine it holds: where a command uses one GPU of several, the count is
+  that many times too high and the limit ends the campaign early. Use `--max-hours` there.
 - Once a change is kept, the loop holds back what the confirmation needs: two seed panels of runs, with their
   wall-clock time and GPU-hours at the full run budget. The iterations end that much earlier, and the stop reason
   names what was held. If the limits no longer cover it at the moment a change is kept, nothing is held, the

@@ -603,12 +603,33 @@ def path_matches(rel: str, patterns):
     return None
 
 
-def sealed_inside(rel: str, patterns) -> bool:
-    """True if some sealed pattern names a path strictly below directory `rel`."""
-    rel = rel.strip("/")
+def sealed_inside(rel: str, patterns, target=None) -> bool:
+    """True if some sealed pattern names a path strictly below directory `rel`. A pattern whose wildcard stands at
+    or above that directory (**/test/**, data/*/test/x.csv) is answered from the names below `target`, the
+    directory on disk; without a target the answer for such a pattern is True."""
+    rel, wild = rel.strip("/"), []
     for p in patterns or []:
-        lit = re.split(r"[*?\[]", str(p).strip().replace("\\", "/").lstrip("./"))[0].rstrip("/")
-        if lit.startswith(rel + "/"):
+        p2 = str(p).strip().replace("\\", "/")
+        p2 = p2[2:] if p2.startswith("./") else p2
+        head = re.split(r"[*?\[]", p2)[0]
+        if head.rstrip("/").startswith(rel + "/"):
+            return True
+        base = head.rpartition("/")[0]  # the folder that holds every match of a pattern with a wildcard
+        if head != p2 and (not base or (rel + "/").startswith(base + "/")) and (
+                "**" in p2 or p2.count("/") > rel.count("/")):
+            wild.append(p)
+    return bool(wild) and (target is None or _named_below(target, rel, wild))
+
+
+def _named_below(target, rel: str, patterns, secs=20.0) -> bool:
+    """Whether a file or folder below the directory `target` (repo-relative: `rel`) matches a pattern; links to
+    folders are followed. True as well where the look goes 40 folders deep (a link that leads back up) or takes
+    longer than `secs`: the snapshot then links the folder's children one by one, which costs time, never data."""
+    end = time.time() + secs
+    for d, dirs, files in os.walk(target, followlinks=True):
+        sub = os.path.relpath(d, target).replace("\\", "/")
+        pre = rel if sub == "." else f"{rel}/{sub}"
+        if sub.count("/") >= 40 or time.time() > end or any(path_matches(f"{pre}/{n}", patterns) for n in dirs + files):
             return True
     return False
 
@@ -789,24 +810,37 @@ def _link(target: Path, link: Path):
             os.link(str(target), str(link))
 
 
-def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, sealed=(), kept_out=None):
+def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, sealed=(), kept_out=None, real=None):
     """Link target at link; if link is already a real directory (tracked files inside an ignored dir), or
     a sealed path lies below it, create a real directory and link the children instead (sealed ones are left out,
-    so training runs cannot reach the test split even through a broad glob)."""
+    so training runs cannot reach the test split even through a broad glob). `real` is the place in the project
+    that a link on the way led to (data/latest -> data/2026-01): the target is judged by that name as well."""
     if _is_link(link):  # never descend through a link: its children are the real files
         return
-    if path_matches(rel, sealed):
+    if sealed and _is_link(target):
+        top, to = Path(os.path.realpath(target.parents[rel.count("/")])), Path(os.path.realpath(target))
+        if to == top or to in top.parents:
+            failures.append(f"link {rel}: it leads to the project folder or above it, so it would bring the sealed "
+                            f"paths into the snapshot under another name")
+            return
+        real = to.relative_to(top).as_posix() if top in to.parents else None
+    names = [rel] + ([real] if real else [])
+    if any(path_matches(n, sealed) for n in names):
         if kept_out is not None:
             kept_out.append(rel)
         return
-    if target.is_dir() and not link.exists() and sealed_inside(rel, sealed) and depth < 6:
+    inside = target.is_dir() and not link.exists() and any(sealed_inside(n, sealed, target) for n in names)
+    if inside and depth >= 12:  # never linked whole: that would bring the sealed paths along
+        failures.append(f"link {rel}: sealed paths lie below it, more than 12 folders deep in a git-ignored folder")
+        return
+    if inside:
         try:
             link.mkdir(parents=True, exist_ok=True)
         except OSError as e:
             failures.append(f"mkdir {rel}: {e}")
             return
     if link.exists():
-        if link.is_dir() and target.is_dir() and depth < 6:
+        if link.is_dir() and target.is_dir() and (inside or depth < 6):
             try:
                 children = sorted(target.iterdir())
             except OSError as e:
@@ -816,7 +850,7 @@ def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, se
                 if child.name in NOLINK_IGNORED:
                     continue
                 _link_tree(child, link / child.name, f"{rel}/{child.name}", linked, failures, depth + 1,
-                           sealed=sealed, kept_out=kept_out)
+                           sealed=sealed, kept_out=kept_out, real=real and f"{real}/{child.name}")
         return
     try:
         link.parent.mkdir(parents=True, exist_ok=True)

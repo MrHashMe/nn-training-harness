@@ -328,6 +328,46 @@ def unit_tests():
           "a JSON record without any number with a fraction has its whole numbers moved, so that the copy states "
           "other values there too; truth values and text stay, and each line of a JSON-lines file is taken by itself")
 
+    # sealed patterns whose wildcard comes first, or that lie deep: found by the loop, and kept out of a snapshot
+    E = nnloop.expctl
+    with tempfile.TemporaryDirectory() as d:
+        root, deep = Path(d), "data/deep/1/2/3/4/5/6/test/s.csv"
+        for f in ("data/a/test/secret.csv", "data/a/train/x.csv", "data/b/train/x.csv", deep, "data/test_1.csv",
+                  "runs/r1/src/test/copy.csv", "other/x.txt", ".hid/test/h.csv"):
+            put(root / f, "x")
+        asked = [("data", ["**/test/**"]), ("data/b", ["**/test/**"]), ("data", ["data/*/test/secret.csv"]),
+                 ("data/b", ["data/*/test/secret.csv"]), ("other", ["**/test/**"]), ("data", ["*.csv"]),
+                 (".hid", [".hid/test/**"]), ("data", ["data/a/test/**"]), ("data/b", ["data/a/test/**"])]
+        got = [E.sealed_inside(r, p, root / r) for r, p in asked]
+        check(got == [True, False, True, False, False, False, True, True, False] and E.sealed_inside("data", ["**/test/**"]),
+              f"a folder holds sealed paths when a pattern with a leading or inner wildcard matches a name below it "
+              f"(was: False for both), and a folder whose name begins with a dot is looked at too ({got})")
+
+        def snapshot(sealed):
+            shutil.rmtree(root / "snap", ignore_errors=True)
+            linked, failures, kept = [], [], []
+            E._link_tree(root / "data", root / "snap/data", "data", linked, failures, sealed=sealed, kept_out=kept)
+            return failures, [f for f in ("data/a/test/secret.csv", "data/a/train/x.csv", "data/b/train/x.csv", deep,
+                                          "data/latest/test/secret.csv", "data/latest/train/x.csv")
+                              if (root / "snap" / f).exists()]
+
+        want = ["data/a/train/x.csv", "data/b/train/x.csv"]
+        got = [snapshot(p) for p in (["**/test/**"], ["data/*/test/secret.csv", "data/deep/1/2/3/4/5/6/**"])]
+        check(got == [([], want), ([], want)],
+              f"a snapshot links a git-ignored folder without the files that such patterns seal, however deep they lie "
+              f"(was: the folder was linked whole, and one more than six folders deep too) ({got})")
+        E._link(root / "data/a", root / "data/latest")  # a link inside the project: another name for the same files
+        got = snapshot(["data/a/test/**"])
+        check(got == ([], want + [deep, "data/latest/train/x.csv"]),
+              f"a link that leads to a folder with sealed paths is linked without them (was: linked whole, so the "
+              f"sealed files were there under the link's name) ({got})")
+        os.unlink(root / "data/latest") if os.path.islink(root / "data/latest") else os.rmdir(root / "data/latest")
+        E._link(root, root / "data/up")
+        got = snapshot(["data/a/test/**"])
+        os.unlink(root / "data/up") if os.path.islink(root / "data/up") else os.rmdir(root / "data/up")
+        check(len(got[0]) == 1 and "leads to the project folder" in got[0][0] and not os.path.lexists(root / "snap/data/up"),
+              f"a link that leads to the project folder itself is not linked, and the snapshot reports it ({got[0]})")
+
 
 # ---------------------------------------------------------------- the test project
 

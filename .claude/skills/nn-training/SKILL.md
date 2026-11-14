@@ -54,8 +54,10 @@ In this skill, `expctl` means `python3 .claude/skills/nn-training/scripts/expctl
 - Seeds and paths: `--seed N` exports `EXP_SEED` (RunLog records it); the training code must actually use it
   (`--seed` argument or `$EXP_SEED`) — `expctl status` alerts when the recorded seed differs. Snapshot runs start in
   `runs/<id>/src` with that copy first on `PYTHONPATH` (so editable installs cannot leak live code in); build paths
-  to shared files such as Optuna storage from `$EXP_PROJECT_ROOT`. Snapshots leave sealed test data out entirely;
-  the final evaluation runs from the working tree (`expctl final-eval`).
+  to shared files such as Optuna storage from `$EXP_PROJECT_ROOT`. Snapshots leave sealed test data out entirely,
+  whatever the pattern that seals it (`data/test/**`, `**/test/**`, `data/*/test.csv`) and however deep it lies; a
+  link inside the project is judged by the place it leads to, and a launch fails where one leads to the project
+  folder itself. The final evaluation runs from the working tree (`expctl final-eval`).
 - Stopping: `expctl stop` sends SIGTERM to the launched process only (DataLoader workers die on a stray SIGTERM), then
   SIGKILLs the whole group after `kill_after_s`. Launch Python, `torchrun` or `accelerate launch` directly — a shell
   wrapper must `exec` the trainer or forward SIGTERM.

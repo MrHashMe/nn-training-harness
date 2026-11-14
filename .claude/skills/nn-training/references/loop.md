@@ -148,7 +148,7 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 | `invalid` | Changed a file outside `editable_paths`, the guard refused a call, a sealed path or token appears in the change or the tool calls, the run exceeded its budget, the evaluator refused what the run saved, or every seed scored exactly the same although earlier panels had spread (the change took the seed's effect away; with a coarse metric and two seeds this can happen by chance, one more reason for three). |
 | `crash`, `no_change`, `agent_error`, `duplicate` | The run or evaluator failed; the session changed nothing; the agent ended with an error; the same diff was tried before. |
 | `declined` | The session proposed no change and said why. The prompt offers this as an accepted result, because an agent with no way to say "nothing" tends to game the score instead (arXiv 2510.20270 v1: an abort option cut cheating from 54 % to 9 %). It costs no run and is no failure; two in a row end the campaign (with `restart_after`: once there is no earlier commit to go back to). |
-| `unfinished` | A limit or a stop arrived during the iteration. |
+| `unfinished` | A limit or a stop arrived during the iteration. Its change was not decided: a later session may propose it again (it is no `duplicate`), and its hypothesis still counts as untried. |
 
 ### The keep rule
 A one-sided t-test of the change's mean against the best commit's mean. Its noise is the variance within seed

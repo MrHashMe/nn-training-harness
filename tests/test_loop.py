@@ -1009,7 +1009,8 @@ def campaign_b(tmp, proj, exe):
         print("  loop.log:", nnloop.read_text(proj / "experiments/loop/b/loop.log")[-1500:], "\n  state:", st.get("stop_reason"))
 
     # the run itself is stopped, not the campaign: the toy trainer ends at the request with exit code 0 and a model
-    plan(tmp, [edit("SLEEP = 0", "SLEEP = 31", title="slow again")])
+    slow = edit("SLEEP = 0", "SLEEP = 31", "H2", "slow again")
+    plan(tmp, [slow])
     before = {d.name for d in (proj / "runs").glob("*")}
     r = loop(proj, "resume", "--campaign", "b", "--agent-exe", exe, "--max-runs", "20", "--detach")
     info = json.loads(r.stdout) if r.stdout.strip().startswith("{") else {}
@@ -1029,6 +1030,16 @@ def campaign_b(tmp, proj, exe):
                  "model and exit code 0: the campaign pauses (was: scored like a full run, or booked as the change's crash)"):
         show(r2)
         print("  loop.log:", nnloop.read_text(proj / "experiments/loop/b/loop.log")[-1500:], "\n  state:", st.get("stop_reason"))
+    sp = proj / "experiments/loop/b/state.json"  # as if the campaign had scouted: the stopped change tested H2
+    put(sp, json.dumps(dict(st, hypotheses=[{"id": "H2", "text": "try a warm-up schedule"}])))
+    r, st, new = resume(tmp, proj, exe, "b", [slow], "--max-runs", str(st["counters"]["runs"] + 2))
+    got, p = [(e["status"], e["why"]) for e in new], (sessions(tmp) or [{"prompt": ""}])[0]["prompt"]
+    if not check(r.returncode == 0 and len(got) == 1 and got[0][0] == "invalid" and "exceeded its 3 s budget" in got[0][1]
+                 and "not been tried: H2: try a warm-up schedule" in p
+                 and f'- iteration {its[-1]["iter"]}: unfinished - "slow again" [H2] - stop requested: the training run' in p,
+                 "a change whose test a stop interrupted was not decided: proposed again it is trained (was: a duplicate), "
+                 f"and its hypothesis still counts as untried (got {got})"):
+        show(r)
 
     print("== campaign c: a wall-clock limit ==")
     r = loop(proj, "start", "--campaign", "c", "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-hours", "0.00001")

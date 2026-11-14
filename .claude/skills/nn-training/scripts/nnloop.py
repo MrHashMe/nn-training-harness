@@ -1113,7 +1113,8 @@ class Campaign:
                     + (" - not in the code you see: the campaign left this change behind to look for a gain in another "
                        "direction" if e["status"] == "keep" and e.get("commit") not in on else ""))
 
-        tried = {str(e.get("source") or "").strip().upper() for e in rows}
+        # a hypothesis whose iteration a limit or a stop interrupted was not tested
+        tried = {str(e.get("source") or "").strip().upper() for e in rows if e["status"] != "unfinished"}
         untried = [f'{h["id"]}: {h["text"]}' for h in st.get("hypotheses") or [] if h["id"] not in tried]
         notes = read_text(self.root / st["notes"])[:6000] if st.get("notes") else ""
         return WORKER.format(
@@ -1381,6 +1382,8 @@ class Campaign:
         except Stop as e:
             if rest and status is None and self.unpool(scores, rest):  # a stop during the second panel: as above
                 entry["unpooled"] = True
+            if status is None and entry.get("diff_sha") in st["tried"]:
+                st["tried"].remove(entry["diff_sha"])  # not decided: proposed again, it is trained and not a duplicate
             self.record(**dict(entry, status="unfinished", why=str(e), scores=scores, runs=runs))
             raise
         # margin: the one applied to a full panel, otherwise the one that was announced to the session

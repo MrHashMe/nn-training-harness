@@ -1449,9 +1449,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
                 any(rx.search(c) for _, rx in fragments(ctx.frozen())):
             results.append((ASK, "Command may modify frozen evaluation/protocol files: that creates a new protocol "
                                  "version and requires re-baselining."))
-        if any(rel and re.search(r"(?:^|/)\.git/worktrees/", rel, _CASE) for _, rel in resolved):
-            results.append((ASK, "Command may modify git's list of worktrees, from which this guard reads the "
-                                 "repository's other checkouts. Approve only if intended."))
+        if any(rel and re.search(r"(?:^|/)\.git/(?:worktrees/|hooks/|config$)", rel, _CASE) for _, rel in resolved):
+            results.append((ASK, "Command may modify git's own files: its list of worktrees, from which this guard reads "
+                                 "the repository's other checkouts, its hooks or its configuration, which make git run "
+                                 "programs that this guard does not see. Approve only if intended."))
         for r in ctx.active():
             rd = (r.get("dir") or "").rstrip("/")
             if rd and any(rel == rd or rel.startswith(rd + "/") for _, rel in resolved):

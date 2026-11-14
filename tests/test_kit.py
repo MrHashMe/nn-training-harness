@@ -775,6 +775,11 @@ def main():
         ("mcp__db__query", {"query": "SELECT * FROM read_csv('data/train.csv')"}, None),
         # the agent's own tools are not read so: a task for a subagent may name the sealed folder
         ("Task", {"description": "review", "prompt": "Check that nothing reads data/test/labels.csv.\nReport."}, None),
+        # were None: a shell write to git's hooks or configuration (the edit tools asked already)
+        ("Bash", {"command": "echo 'cat data/train.csv' > .git/hooks/pre-commit"}, "ask"),
+        ("Bash", {"command": "cp tools/runlog.py .git/config"}, "ask"),
+        ("Bash", {"command": "cat .git/config > gitconfig.txt"}, "ask"),  # the rule cannot tell a source from a target
+        ("Bash", {"command": "cat .git/config"}, None),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)

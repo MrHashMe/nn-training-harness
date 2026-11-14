@@ -752,6 +752,14 @@ def main():
         ("Bash", {"command": "grep -color=auto \"def train\" train.py"}, None),  # an option that only starts like -c
         ("Bash", {"command": "echo Y2F0IGRhdGEvdGUqL2xhYmVscy5jc3Y= | base64 -d | sh"}, "ask"),
         ("Bash", {"command": "base64 -d weights.b64 > weights.bin"}, None),
+        # were None: a sealed path that a line of code joins from parts
+        ("Bash", {"command": "python -c \"from pathlib import Path; print((Path('data') / 'test' / 'labels.csv').read_text())\""}, "deny"),
+        ("Bash", {"command": "python -c \"import os; print(open(os.path.join('data', 'test', 'labels.csv')).read())\""}, "deny"),
+        ("Bash", {"command": "python -c \"print(open('data/te' + 'st/labels.csv').read())\""}, "deny"),
+        ("Bash", {"command": "python -c \"import os; print(open(os.path.join('data', 'train.csv')).read())\""}, None),
+        ("Bash", {"command": "python -c \"for split in ('data', 'test'): print(split)\""}, None),  # a list is no path
+        ("Bash", {"command": "bash -c 'python -c \"import os; print(open(os.path.join(\\\"data\\\", \\\"test\\\", \\\"labels.csv\\\")).read())\"'"}, "deny"),
+        ("Bash", {"command": "git commit -m 'eval: join(\"data\", \"test\") is sealed'"}, None),  # a message, not code
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)

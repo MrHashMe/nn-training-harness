@@ -169,6 +169,9 @@ DECODE_TO_SHELL = re.compile(
     r"\b(?:base64\s+(?:-d|-D|--decode)|certutil\s+-decode|xxd\s+-r|openssl\s+(?:enc|base64)\b[^|;&]*\s-d)\b[^;&]*\|\s*"
     r"(?:sudo\s+)?(?:(?:ba|z|da|k|c)?sh|pwsh|powershell|iex|Invoke-Expression|python[0-9.]*|perl|node|ruby)\b|"
     r"\b(?:iex|Invoke-Expression)\b[^;&|]*FromBase64String|FromBase64String[^;&]*\|\s*(?:iex|Invoke-Expression)\b", re.I)
+# text that joins paths from string literals: the gap between two of them, and the calls in which a comma joins
+GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*")
+JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 # a change of folder: where a command starts (after blanks too), or behind a shell keyword, a wrapper such as `time`
 # or an assignment (X=1 cd data). PowerShell takes -Path:data and a parameter's name cut short
 _CD_WORD = r"(?:cd|pushd|chdir|sl|Set-Location|Push-Location)"
@@ -716,6 +719,29 @@ def inner_code(c: str):
     return out[:8]
 
 
+def joined(c: str, depth=0):
+    """Paths that a text puts together from string literals, as far as that shows without running it:
+    Path('data') / 'test' / 'x.csv', os.path.join('data', 'test', 'x.csv'), 'data/' + 'test/x.csv'. A comma joins
+    only inside a call that joins paths. c is the text as it came, with its backslashes. depth below 2: a literal
+    that holds code (python -c "open('a' + 'b')", bash -c 'python -c "..."') is read as well.
+    shortcut: literals only, so a path with a variable in it passes; that takes running the code in a sandbox"""
+    lits, out = list(itertools.islice(QUOTED.finditer(c), 400)), []
+    for i, first in enumerate(lits):
+        path = first.group()[1:-1]
+        if depth < 2 and re.search(r"['\"]", path):  # in double quotes, one level of \" and \\ comes off
+            out += joined(path if first.group()[0] == "'" else re.sub(r"\\([\\'\"])", r"\1", path), depth + 1)
+        comma = JOINER.search(c[max(0, first.start() - 100):first.start()])
+        for a, b in zip(lits[i:i + 8], lits[i + 1:i + 8]):
+            g = GAP.fullmatch(c[a.end():b.start()])
+            if not g or (g.group(1) == "," and not comma):
+                break
+            nxt = b.group()[1:-1]
+            path = path + nxt if g.group(1) == "+" else path.rstrip("/\\") + "/" + nxt.lstrip("/\\")
+            out.append(path)
+    out = dict.fromkeys(re.sub(r"\\+", "/", p) for p in out)
+    return [p for p in out if 0 < len(p) < 300 and not re.search(r"\s", p)][:200]
+
+
 def shell_tokens(c: str):
     """Path-like arguments of a shell command (best effort): values of --opt=value and VAR=value included."""
     toks = lex(c)
@@ -1137,6 +1163,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0):
             toks += [part, (top / part).as_posix()]
     if code:
         toks += [q for q in (m.group(0)[1:-1] for m in QUOTED.finditer(c)) if 0 < len(q) < 300 and not re.search(r"\s", q)]
+    # Path('data') / 'test', os.path.join('data', 'test'): the path they build counts as named. Read from the line as
+    # it came: above, a quoted word where a command may start lost its quotes. Text inside a literal is read only
+    # where the line hands text to an interpreter: a commit message may quote such code
+    toks += joined(cmd, 0 if code else 2)
     here = cur = ctx.cwd
     dirs = [here]
     moves += [(m.start(), True, [re.sub(r"[\"']", "", m.group(1))]) for m in itertools.islice(CD.finditer(raw), 4)]

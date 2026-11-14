@@ -4,8 +4,9 @@ prep   writes covered/todo-<group>.json: the adopted rows that no reference file
        checks each of them against the kit (its answers are covered/built-<group>.json).
 build  writes ../LEDGER.md: LEDGER.head.md (coverage map, written by hand) followed by one table per decision.
 
-Inputs: draft/*.candidates.jsonl (one row per candidate, written during the research of 10 to 12 Nov 2026),
-covered/*.covered.json (rows a reference file documents with when, how and source), covered/built-*.json and
+Inputs: draft/*.candidates.jsonl (one row per candidate, written during the research of 10 to 12 Nov 2026 and
+the rounds after it), covered/*.covered.json (rows a reference file documents with when, how and source),
+covered/built-*.json (what the kit holds for a row, checked against its files; it outranks a reference) and
 covered/tried.json (third-party tools whose enabling step was run in a throwaway environment).
 """
 import collections
@@ -19,7 +20,7 @@ GROUPS = {"A": ["agent-standards", "platform-claude-code", "platform-codex", "pl
           "B": ["loop-autoresearch", "sweep-auto-research", "sweep-unattended-security", "unattended-security",
                 "platforms", "user-reports"]}  # every other note is group C
 UNDECIDED_WHY = ("not run: on 11 Nov 2026 the user limited this upgrade to the most important items "
-                 "(usage limit of the session's model); round 2 of 12 Nov ran under the same limit")
+                 "(usage limit of the session's model); the rounds after it ran under the same limit")
 
 
 def load(path):
@@ -91,7 +92,10 @@ def build(all_rows, cov):
     for r in by["Adopt"]:
         key = (r["_file"], r["candidate"])
         b, t = built.get(key), tried_note(r, tried)
-        if key in cov and t and (t.get("any_note") or r["_file"] != "optimization-performance") and "stack.md" in cov[key]:
+        if b:  # the record of what was built outranks a reference that covers the same row
+            status = "%s: %s" % (b["status"], b["where"])
+            counts[b["status"]] += 1
+        elif key in cov and t and (t.get("any_note") or r["_file"] != "optimization-performance") and "stack.md" in cov[key]:
             status = ("finished: %s; enabling step run %s" if t["ok"] else "unfinished: documented in %s, but %s") \
                 % (cov[key], t["note"])
             counts["finished" if t["ok"] else "unfinished"] += 1
@@ -102,11 +106,8 @@ def build(all_rows, cov):
         elif key in cov:
             status = "finished: " + cov[key]
             counts["finished"] += 1
-        elif b and b["status"] == "finished":
-            status = "finished: " + b["where"]
-            counts["finished"] += 1
         else:
-            status = "unfinished: " + (b["where"] if b else "not checked against the kit")
+            status = "unfinished: not checked against the kit"
             counts["unfinished"] += 1
         out.append("| %s | %s | %s | %s | %s | %s | %s |" % (cell(r["candidate"], 160), r["_file"], r["core_or_optional"],
                    cell(status, 320), cell(r["reason"]), cell(r["evidence"]), cell(r["checked"], 24)))

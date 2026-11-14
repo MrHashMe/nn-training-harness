@@ -1,0 +1,266 @@
+[
+ {
+  "file": "round5",
+  "candidate": "Character-model evaluator: rows in a fixed shuffled order, look-ahead probes at every position and with rows exchanged, no module whose code touches files",
+  "status": "finished",
+  "where": "benchmarks/charlm/evaluate.py; tests/test_benchmarks.py. Commit 3fd5c16"
+ },
+ {
+  "file": "round5",
+  "candidate": "Fine-tuning evaluator: the adapter's files must lie in the run folder, and a key of adapter_config.json outside a short list must hold PEFT's default",
+  "status": "finished",
+  "where": "benchmarks/finetune/evaluate.py; tests/test_benchmarks.py. Commit 3fd5c16"
+ },
+ {
+  "file": "round5",
+  "candidate": "The loop's evaluator runs with the project read-only, apart from the scored run folder and what loop.eval_writable names (kit-native, Linux with bubblewrap)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.sandbox; references/loop.md; the sandbox checks of tests/test_loop.py. Commit ccf8ad0. Linux with bubblewrap only: elsewhere the evaluator is not confined, as before"
+ },
+ {
+  "file": "round5",
+  "candidate": "The self-test's tampered copy moves whole numbers where a record has no number with a fraction (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.selftest; tests/test_loop.py. Commit f274041"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard reads shell code attached to its flag (bash -c\"...\") and PowerShell's -EncodedCommand, and asks about a decoder piped into a shell or interpreter",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; the guard's table in tests/test_kit.py. Commit 2a2edf6"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard resolves a path joined from string literals in a line of code (Path('a') / 'b', os.path.join, +) like a written one (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; tests/test_kit.py. Commit 32442fb. Literals only: a path with a variable in it passes"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks when the text an edit writes, or the arguments an MCP tool gets, name a sealed path or the unsealing token (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; tests/test_kit.py and two port checks in tests/test_ports.py. Commit 47cb8eb. Not read so: .md, .mdx and .rst files, the kit's own config, and the agent's own tools (Task, WebFetch)"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard walks a folder sealed as a whole beyond the bound of 20,000 files for up to five seconds of the hook call; a walk the time ends counts as reading",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; tests/test_kit.py. Commit 0abddf2"
+ },
+ {
+  "file": "round5",
+  "candidate": "Guard asks before a shell command that names .git/hooks/ or .git/config (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; tests/test_kit.py. Commit 19d5ff5. It cannot tell a source from a target, so a redirect out of .git/config is asked about as well"
+ },
+ {
+  "file": "round5",
+  "candidate": "Snapshots keep sealed files out under patterns with a wildcard at the start or in the middle, at any depth and behind links (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py (snapshot); SKILL.md; tests/test_loop.py. Commit 5563f6c"
+ },
+ {
+  "file": "round5",
+  "candidate": "The loop checksums files sealed by such patterns and hides them from a run (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py protected_files, sandbox; tests/test_loop.py. Commit 319daf2"
+ },
+ {
+  "file": "round5",
+  "candidate": "A change that adds a line with EXP_PROJECT_ROOT is invalid where a run is not confined (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py; references/loop.md; tests/test_loop.py. Commit d8cc1e9. It reads the change's text: a name built at run time passes"
+ },
+ {
+  "file": "round5",
+  "candidate": "Keep rule: a change's own panels cannot lower the variance its gain is tested against; a change over three times as noisy is tested with its own variance",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (the margin, OWN); references/loop.md; unit cases in tests/test_loop.py. Commit be6abde. Simulated: 2.9 % wrong keeps for the flat change, 7 % for one three times as noisy (10 to 14 % before); 61 % power at a campaign's first change (68 % before)"
+ },
+ {
+  "file": "round5",
+  "candidate": "A change that is not kept leaves the pooled noise again when one of its runs went astray (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py Campaign.unpool; tests/test_loop.py (unit cases, campaign astray). Commit 1ed9177"
+ },
+ {
+  "file": "round5",
+  "candidate": "The seed that screens a change rotates through the panel (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py; tests/test_loop.py. Commit 92b9419"
+ },
+ {
+  "file": "round5",
+  "candidate": "A campaign that pauses keeps the line a restart began (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (aside in state.json); tests/test_loop.py campaign r2. Commit 3792686"
+ },
+ {
+  "file": "round5",
+  "candidate": "RunLog writes no run files in the ranks of Lightning's own launcher (LOCAL_RANK, NODE_RANK, no RANK) (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/runlog.py; tests/test_runlog_units.py. Commit 2953f6d. Not run on several GPUs: one GPU here"
+ },
+ {
+  "file": "round5",
+  "candidate": "The two benchmark trainers ask should_stop() and still score and save (kit-native)",
+  "status": "finished",
+  "where": "benchmarks/charlm/train.py, benchmarks/finetune/train.py; tests/test_benchmarks.py (the character model, live). Commit 3ab4ae4. The fine-tuning trainer has the same line and was not run to a stop"
+ },
+ {
+  "file": "round5",
+  "candidate": "The loop does not score a training run that was stopped from outside, and a change whose test was interrupted can be proposed again",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py; tests/test_loop.py campaign b. Commits fd98c12, d8ed0da"
+ },
+ {
+  "file": "round5",
+  "candidate": "A remote launch packs the bundle once; the controller and the automatic resume send that archive (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py; references/remote.md; tests/test_remote.py. Commit 20859f6"
+ },
+ {
+  "file": "round5",
+  "candidate": "Remote: a link is judged by where it leads (sealed or credential-named targets stay at home); a pulled name outside the mirror never counts",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py; tests/test_remote.py. Commits e386102, 89493f4. File links were exercised in WSL only (this Windows account cannot make them); junctions and hard links on Windows"
+ },
+ {
+  "file": "round5",
+  "candidate": "Rows of the remote ledger are appended under a byte lock on Windows (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py; tests/test_remote.py. Commit d64a154. The same eight writers: 800 rows, no torn line"
+ },
+ {
+  "file": "round5",
+  "candidate": "on_finish: a command per ssh target, run on this machine after the last pull (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnremote.py; references/remote.md; tests/test_remote.py. Commits 7d9dcc7, 1141fcd. Tried with a stand-in command: no machine was stopped with it, and it does not run when the controller is gone"
+ },
+ {
+  "file": "round5",
+  "candidate": "expctl: credential-named files linked into a snapshot, resume refuses a changed source, start time on Windows without psutil, receipts outlive a worktree",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py, runlog.py, nnremote.py; tests/test_kit.py, tests/test_remote.py. Commits 8ff6f8b, 58e248a, 6d0ecca, 0c4ba73"
+ },
+ {
+  "file": "round5",
+  "candidate": "Agent instruction files and the kit's own bookkeeping are not experiment source and do not make a tree dirty (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py; tests/test_kit.py. Commit d6ded34. The source hash of a project that tracks those files changes once"
+ },
+ {
+  "file": "round5",
+  "candidate": "expctl env --probe: each fast path tried in a process of its own with a time limit; env lists dated advisories for installed versions under warnings",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py cmd_env; SKILL.md; references/stack.md; tests/test_kit.py. Commit dec8971"
+ },
+ {
+  "file": "round5",
+  "candidate": "The loop compiles a change and compares syntax trees with the campaign's base before it costs a run; the identity of a change is the hash of those trees",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py; references/loop.md; tests/test_loop.py campaign f. Commit a4dc52e. Python files only"
+ },
+ {
+  "file": "round5",
+  "candidate": "One repair turn after a compile error or an early failure of the first seed (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py; references/loop.md; tests/test_loop.py campaign f. Commit a4dc52e. Tried with the stand-in agent only, not with a live one"
+ },
+ {
+  "file": "round5",
+  "candidate": "RL post-training after GRPO: which objective TRL runs by default, and Dr. GRPO, DAPO, GSPO and CISPO with their settings, by the symptom each answers",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/finetuning.md, RL post-training. Commit 11ca540. None of the papers' results was reproduced here"
+ },
+ {
+  "file": "round5",
+  "candidate": "LoRA scale in a rank sweep: scale alpha with the rank, retune the learning rate per rank, or set use_rslora",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/finetuning.md, LoRA. Commit 11ca540. The paper's gain at high rank was not reproduced"
+ },
+ {
+  "file": "round5",
+  "candidate": "Performance reference: only the 64B-token NVFP4 run is called a short run",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/performance.md. Commit b56207d"
+ },
+ {
+  "file": "round5",
+  "candidate": "expctl audit-splits: records, distinct records and a fingerprint per split, the records each pair shares; counts only, a guard question where anything is sealed",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py cmd_audit_splits; .claude/hooks/nn_guard.py (AUDIT_CTL); references/data.md, validity.md; tests/test_kit.py, tests/test_ports.py. Commit e1cf085. Exact matches after NFKC, casefold and collapsed whitespace: a lower bound"
+ },
+ {
+  "file": "round5",
+  "candidate": "Wiring checks in the sanity gate: optimizer membership, the gradient and not the weights under weight decay, LoRA's A after two steps",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/references/validity.md section 4. Commit 50549c1. Reference text: RunLog cannot make a script call a helper"
+ },
+ {
+  "file": "round5",
+  "candidate": "Ledger generator: the record of what was built outranks a reference that covers the same row (kit-native)",
+  "status": "finished",
+  "where": "docs/upgrade/scout/make_ledger.py; covered/built-round5.json holds the checked status of the eight. The commit that adds this row"
+ },
+ {
+  "file": "round5",
+  "candidate": "Installer: an apostrophe in the interpreter's path is written twice inside the agent files' quoted hook command (kit-native)",
+  "status": "finished",
+  "where": "install.py localize; tests/test_ports.py. Commit 00a5eb1"
+ },
+ {
+  "file": "round5",
+  "candidate": "Installer: a later run adds its paths to the kit's block of .gitignore (kit-native)",
+  "status": "finished",
+  "where": "install.py ensure_gitignore; tests/test_ports.py. Commit e376b6c"
+ },
+ {
+  "file": "data",
+  "candidate": "Standard-library data manifest and split fingerprint command (new, inside expctl)",
+  "status": "unfinished",
+  "where": "partly built: no manifest file, root hash, hub revision or counts per class (decided against on 14 Nov 2026: a manifest is stale once the data changes unless every launch walks the data). Built: `expctl audit-splits` gives records, distinct records and a fingerprint per split; references/data.md section 1"
+ },
+ {
+  "file": "data",
+  "candidate": "Per-run data hash record and comparison flag (expctl launch and status, runlog)",
+  "status": "unfinished",
+  "where": "not built: no launch records a data hash and no status flags a difference. Decided against on 14 Nov 2026 (a walk of the data at every launch, or a stale manifest that misleads). references/data.md section 1 gives the practice; the fingerprint per split comes from `expctl audit-splits`"
+ },
+ {
+  "file": "data",
+  "candidate": "Dated advisory for datasets below 5.2.0 (reference text plus a warning in expctl env)",
+  "status": "finished",
+  "where": "expctl.py ADVISORIES: `expctl env` lists it under `warnings`; references/data.md section 6; tests/test_kit.py. Commit dec8971 (until then the reference promised a warning that no code gave)"
+ },
+ {
+  "file": "evaluation",
+  "candidate": "Harness-computed keep, revert or inconclusive decision (new expctl subcommand, standard library)",
+  "status": "unfinished",
+  "where": "partly built: in the loop, harness code decides keep, revert or inconclusive from scores it gets by running the frozen evaluator itself (nnloop.py; references/loop.md; tests/test_loop.py). No expctl subcommand: for a comparison by hand the agent applies the rule of references/evaluation.md section 1"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "System-memory fallback guard on native Windows",
+  "status": "finished",
+  "where": "references/performance.md section 2, as text: the driver's setting and the per-process memory cap, both set by the user. No kit code sets or checks either; detecting the fallback is the Trial row 'Windows system-memory fallback check'"
+ },
+ {
+  "file": "sweep-data",
+  "candidate": "Harness-run duplicate and split-overlap check (new expctl subcommand, standard library only)",
+  "status": "finished",
+  "where": "expctl.py cmd_audit_splits (`expctl audit-splits [--key FIELD]`): records, distinct records and a fingerprint per split, the records each pair shares, no histogram of repeats; the guard asks where anything is sealed; references/data.md section 2; tests/test_kit.py, tests/test_ports.py. Commit e1cf085"
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Detached, controller-owned runs (never agent background commands)",
+  "status": "unfinished",
+  "where": "partly built: no job object per run on Windows, and nothing forbids an agent's own background command in a session by hand. Built: `expctl launch` returns at once and a supervisor process owns the run; the loop trains through it (nnloop.py Campaign.train)"
+ },
+ {
+  "file": "unattended-security",
+  "candidate": "Guard rules against running fetched content and agent-initiated installs in unattended mode",
+  "status": "unfinished",
+  "where": "partly built: no rules for clone-then-run, unpinned npx or uvx, or an install while no job is live. Built: the loop's sessions have no shell tool; elsewhere the guard asks before a download or decoded text goes to a shell and before a dependency change beside live jobs (a denial unattended)"
+ }
+]

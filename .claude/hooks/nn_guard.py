@@ -225,13 +225,18 @@ DECODE_TO_SHELL = re.compile(
 DECODE_CALL = re.compile(
     r"\b(?:b(?:64|32|16|85)decode|a85decode|decodebytes|unhexlify|fromhex|a2b_\w+|decompress|FromBase64String|"
     r"FromHexString|atob|decode_base64|decode64)\s*\(|\bcodecs\.decode\s*\(|\bBuffer\.from\s*\(", re.I)
-# text that joins paths from string literals: the gap between two of them, and the calls in which a comma joins
 # what a shell takes out of a name before it runs the line: see readings()
-ANSI_C = re.compile(r"\$'((?:\\.|[^'\\])*)'", re.S)
+ANSI_C =re.compile(r"\$'((?:\\.|[^'\\])*)'", re.S)
 C_ESCAPE = re.compile(r"\\(x[0-9a-fA-F]{1,2}|u[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{1,8}|[0-7]{1,3}|.)", re.S)
 POSIX_PART = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"|\\(.)", re.S)
 BRACE_WORD = re.compile(r"[^\s;&|<>()]*\{[^{}\s]*,[^{}\s]*\}[^\s;&|<>()]*")
 WIN_ESCAPE = re.compile(r"[`^](?=[\w./\\:-])")
+# patterns of zsh and ksh that no rule here knows: see wild(). $(..), <(..) and =(..) are no groups: they run commands
+GLOB_GROUP = re.compile(r"(?<![$<>=])([@!+?*]?)\(([^()\s]*)\)")
+GLOB_FLAG = re.compile(r"\(#[^()\s]*\)[^\s;&|<>()]*")
+GLOB_NOT = re.compile(r"(?<=/)\^[^/\s;&|<>()]*|(?<![^\s;&|<>()])\^[^/\s;&|<>()]*(?=/)")
+GLOB_BUT = re.compile(r"([^\s;&|<>()~]*[*?\[][^\s;&|<>()~]*)~[\w./*?\[\0][^\s;&|<>()]*")
+# text that joins paths from string literals: the gap between two of them, and the calls in which a comma joins
 GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*|\s*")  # the second: nothing but blanks
 JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
@@ -447,7 +452,10 @@ def matches(rel: str, patterns) -> str | None:
 
 
 def fragments(patterns):
-    """Anchored literal fragments used to spot sealed/frozen paths anywhere in a shell command (fuzzy)."""
+    """Anchored literal fragments used to spot sealed/frozen paths anywhere in a shell command (fuzzy). A path counts
+    where a word may begin with it: at the start, behind a blank, a quote or one of = / : (, behind the < of
+    "$(<file)", the [ of zsh's $mapfile[file], the @ of curl's -d @file, the comma of a list of files, and behind
+    an option's letter (xargs -afile)."""
     out = []
     for p in patterns or []:
         p2 = norm_pattern(p)
@@ -459,7 +467,8 @@ def fragments(patterns):
         if last and last != lead and not any(ch in last for ch in "*?[") and len(last) >= 6 and not last.startswith("."):
             cands.append(last)
         for s in cands:
-            out.append((p, re.compile(r"(?:^|(?<=[\s'\"=/:(]))" + re.escape(s) + r"(?=$|[^A-Za-z0-9_.\-])", _CASE)))
+            out.append((p, re.compile(r"(?:^|(?<=[\s'\"=/:(<\[@,])|(?<=\s-[A-Za-z]))" + re.escape(s)
+                                      + r"(?=$|[^A-Za-z0-9_.\-])", _CASE)))
     return out
 
 
@@ -876,11 +885,48 @@ def git_runs(c: str):
     return None
 
 
+def wild(text: str, lists) -> str:
+    """A POSIX line with the patterns of zsh and ksh that no rule here knows written as ones they do. A group inside
+    a name: (a|b) and @(a|b) with plain names become the brace list {a,b}, which `lists` writes out, (a) becomes
+    a, and any other group (!(a), +(a), a pattern inside) becomes *. The line also holds parentheses that are no
+    group (a subshell (ls|head), a case pattern, and in program text the call Path('eval').rglob('*.py')), so
+    one counts only where more of the name follows right behind it, where it lists alternatives or is !(..) and a
+    name touches it, or where it holds a plain name in front of a / or behind one. A zsh flag such as (#i) or
+    (#a1) loosens the match of all that follows it in the word: each folder name there becomes *. Then [^a]
+    becomes [!a], zsh's ^name in a path becomes *, and of pattern~other the pattern stays. zsh, the shell of a
+    Mac, knows the group and [^a] with no option set, and bash knows [^a].
+    shortcut: x# (repeats), a ^name that is a whole word or stands inside a name (te^x), a group without | that
+    ends a word (te(st)) and a pattern under a shell option that ignores case are read as the characters they are;
+    each needs a shell option that the line or the user's shell settings change. That takes a sandbox"""
+    def group(m):
+        s, (op, inside) = m.string, m.groups()
+        before, after = s[m.start() - 1:m.start()] if m.start() else "", s[m.end():m.end() + 1]
+        plain = all(re.fullmatch(r"[\w.-]*", a) for a in inside.split("|"))
+        near = re.match(r"[\w\0]", after)  # no call and no subshell ends so
+        if "|" in inside or op == "!":
+            near = near or re.match(r"[./*?\[-]", after) or re.match(r"[\w./\0*?\]-]", before)
+        elif before == "/" or (after == "/" and not op):
+            near = near or plain
+        if not near:
+            return m.group()
+        if op in ("", "@") and plain:
+            return inside if "|" not in inside else "{" + inside.replace("|", ",") + "}"
+        return "*"
+
+    text = GLOB_FLAG.sub(lambda m: re.sub(r"[^/]+", "*", m.group()), text)
+    for _ in range(8):  # a group inside a group
+        was, text = text, GLOB_GROUP.sub(group, text)
+        if was == text:
+            break
+    return GLOB_BUT.sub(r"\1", GLOB_NOT.sub("*", lists(text).replace("[^", "[!")))
+
+
 def readings(cmd: str):
     """The line as another shell reads it, where that is another text, and whether a word of it was too long to
     write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell takes it
     off the character behind it (te\\st is test, also across the end of a line), reads $'te\\x73t' and $"test" as
-    test, and writes a word with {a,b} out; PowerShell and cmd take their own escape characters off (te`st, te^st).
+    test, and writes a word with {a,b} out; zsh and ksh have patterns of their own, which wild() writes as plain
+    wildcards in a reading of its own; PowerShell and cmd take their own escape characters off (te`st, te^st).
     Each reading may name more than the shell would (an escape that stands for a control character is read as its
     letter): it is checked in addition to the line as it came.
     shortcut: text only, so a name put together from variables, {a..b} or a command's output passes; that takes
@@ -909,11 +955,12 @@ def readings(cmd: str):
 
     text = cmd.replace("\0", "")
     posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), text)
-    posix = BRACE_WORD.sub(written_out, POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix)))
-    posix = re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], posix)
+    posix = POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix))
+    posix, globs = (re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], t)
+                    for t in (BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t))))
     win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), text)
     win = WIN_ESCAPE.sub("", win).replace("\0", "")
-    return [t for t in dict.fromkeys((posix, win)) if t != cmd], any(long)
+    return [t for t in dict.fromkeys((posix, globs, win)) if t != cmd], any(long)
 
 
 def runs_notes(c: str, cmd: bool, code: bool) -> bool:

@@ -666,10 +666,12 @@ Rank 2, ways past the guard (21 probe calls in a temporary project)
 - R a sealed path inside a longer string handed to another tool (an SQL query to an MCP tool): allowed
   without a word, on one line too. Build: a question.
 - N `Path.unlink` and its kind under `--readonly`: denied today (four probes).
-- R, known: the bound of 20,000 files per walk. Build the narrow part: a walk that ends at the bound inside
-  a folder sealed as a whole counts as a hit. H for patterns that begin with a wildcard, whose walk covers
-  the whole checkout: answering the bound with a question would question every filtered search in a large
-  project; it needs a walk that skips folders no pattern can match (my order under "Not done", first item).
+- R, known: the bound of 20,000 files per walk. Built, the narrow part: a folder sealed as a whole is walked
+  on beyond the bound for up to five seconds of the hook call, and a walk that the time ends counts as
+  reading it. (Counting every walk that reaches the bound as a hit, the first design, would have questioned
+  each filtered search in a project with a large sealed folder.) H for patterns that begin with a wildcard,
+  whose walk covers the whole checkout: it needs a walk that skips folders no pattern can match (my order
+  under "Not done", first item).
 - N the answer "ask" after 12 s: as designed. Where nobody can be asked, the guard turns it into a denial.
 - R, small: a shell write below `.git/hooks/` or to `.git/config` is not questioned (the edit tools are).
 
@@ -782,8 +784,42 @@ Ranks 20 to 22 and the second part
 on both platforms, REPORT.md, the ledger rows. One commit per idea, each with its test.
 
 ### Where it stands
-- Done: the checks behind the verdicts above. Nothing is built yet.
-- Next: step 1.
+- Done: the checks behind the verdicts above. Step 1 is built: the two benchmark evaluators (`3fd5c16`), the
+  self-test's tampered copy for records of whole numbers (`f274041`), the evaluator's box on Linux with
+  `loop.eval_writable` (`ccf8ad0`). Checked narrowly on Windows and in WSL; the full runs come in step 9.
+- Done, step 2, the guard, one commit per idea: shell code attached to its flag, encoded for PowerShell or
+  piped from a decoder (`2a2edf6`); paths joined from string literals (`32442fb`); the text that an edit
+  writes or an MCP tool gets (`47cb8eb`); the walk of a folder sealed as a whole (`0abddf2`); shell writes to
+  git's hooks and configuration (`19d5ff5`). Each of the five states passed `tests/test_kit.py` and
+  `tests/test_ports.py` on Windows, the last one in WSL too, with `tests/test_review_fixes.py` and the loop's
+  guard tests. On the code before them, 21 of the new checks in the first file and 2 in the second fail.
+- For REPORT.md section 6 so far: on Linux with bubblewrap the loop's evaluator can no longer write into the
+  project outside the folder it scores (the way out is `loop.eval_writable`) and no longer sees sealed data
+  that only `final_eval_commands` names; the self-test's tampered copy moves whole numbers in a record that
+  has no number with a fraction; the benchmark evaluators refuse more. Changed test: the sandbox check "the
+  evaluator runs without network" gave way to the stricter checks of the evaluator's box.
+- For REPORT.md section 6, the guard (tests: the guard cases of `tests/test_kit.py`; the two port checks in
+  `tests/test_ports.py`). No existing test was changed or removed for it.
+  1. Code attached to its flag (`bash -c"..."`, `cmd /c"..."`) is checked like a command of its own, under
+     `--readonly` too. Was: unread.
+  2. The value of PowerShell's `-EncodedCommand`, short forms included, is decoded and checked. Was: unread.
+  3. New question: a decoder whose output goes to a shell or an interpreter (`base64 -d | sh`).
+  4. A path joined from string literals in a line of code (`Path('data') / 'test'`, `os.path.join`, `+`) is
+     resolved like a written one, so a sealed one is denied. Was: passed.
+  5. New question: the new text of Write, Edit, MultiEdit, NotebookEdit, or the lines a patch adds, names a
+     sealed path or the unsealing token. Not read so: `.md`, `.mdx`, `.rst` files and
+     `.claude/nn-training.json`.
+  6. New question (a denial where nobody can be asked, as in Cursor's hook): an MCP tool's arguments name
+     sealed data inside a longer string. The agent's own tools (Task, WebFetch) are not read so, since a
+     task for a subagent may name the sealed folder and the subagent's calls reach the guard as well.
+  7. A folder sealed as a whole is walked beyond 20,000 files for up to 5 s of the hook call; a walk that the
+     time ends counts as reading (a question). Was: a filtered search passed.
+  8. New question: a shell command that names `.git/hooks/...` or `.git/config` (it cannot tell a source
+     from a target, so `cat .git/config > x` is asked about as well; `cat .git/config` alone passes).
+  Limits to name there: a path with a variable in it passes (literals only); text that merely contains the
+  sealed folder's path, a URL for one, is asked about, as it is in a command; item 5 asks about every edit
+  that writes such a mention, also when the file held it before.
+- Next: step 3, snapshots and the training box.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

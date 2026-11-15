@@ -189,6 +189,10 @@ def main():
             "git checkout -q .", "git checkout -q HEAD -- .", "git checkout ./", "git checkout HEAD '*.py'",
             "git checkout HEAD :/", "git checkout --force", "GIT checkout .", "git.exe reset --hard",
             "git restore -SW eval/metrics.py")],
+        # the last three were None: a forced clean was read with its -f in the first group of letters only
+        *[(f"git deletes what it does not track: {c}", "Bash", {"command": c}, None, None, "ask") for c in (
+            "git clean -fd", "git clean -d -f", "git clean --force", "git clean -x -d --force src")],
+        ("a clean that only lists", "Bash", {"command": "git clean -n -d; git clean --dry-run"}, None, None, None),
         ("a branch in brackets and behind an option, a branch that follows another", "Bash",
          {"command": "(git checkout main); git checkout -q main; git checkout -t origin/feature"}, None, None, None),
         ("the index alone", "Bash", {"command": "git restore --staged eval/metrics.py"}, None, None, None),

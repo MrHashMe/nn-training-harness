@@ -168,10 +168,20 @@ that would discard the session's own work (`git checkout -- train.py`, `git rest
 An agent with a shell reaches for both as a matter of habit, and neither aims at what the guard protects. The
 guard refuses them as before where nobody can be asked, nothing of them is carried out, and they count in the
 ledger's `guard_denials`. It marks a refusal as routine only when it had no other reason: a formatter aimed at
-a frozen folder, an undo that names a frozen file, a forced push, a stopped run or a read of sealed data make
-the iteration `invalid` as they did. A change that was `invalid` only through its session's refused calls is
-not remembered as tried: proposed again by a session without them, it is trained and is no `duplicate`. (Before,
-one `git restore` by a Codex session cost the iteration and barred its change for the rest of the campaign.)
+a frozen folder, an undo or a forced `git clean` that names a frozen file or a folder with frozen files, a
+forced push, a stopped run or a read of sealed data make the iteration `invalid` as they did. The mark goes by
+the guard's reasons, not by what else the line holds: a second command on the line takes the mark away only
+where the guard refuses that command too (`git checkout -- train.py; echo x > eval.py` does,
+`git checkout -- train.py; ls` does not). Nothing of a refused line runs either way; the mark decides only
+whether the session's change is still trained.
+
+A change that was `invalid` only through its session's refused calls is not remembered as tried: proposed again
+by a session without them, it is trained and is no `duplicate`. (Before, one `git restore` by a Codex session
+cost the iteration and barred its change for the rest of the campaign.) One case is left out on purpose: a
+refused call that itself names a sealed path or token, such as an edit whose comment names the test split. The
+tamper scan reads a session's tool calls whatever the guard answered, so that iteration is `invalid` on its own
+account, its change is remembered, and the same change from a later session is a `duplicate`. The scan cannot
+tell a mention from an attempt.
 
 ### Before a run costs anything
 Since 14 November 2026 a change is checked after its commit and before its first run:

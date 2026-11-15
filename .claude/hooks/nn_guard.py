@@ -100,11 +100,16 @@ _INPLACE = (r"\b(?i:sed)\b[^;&|]*?\s(?:-[a-zA-Z]*[iI]|--in-place)|"
 # git restore --staged alone changes the index, not the files
 _GIT_BACK = (r"\bgit\s+(?:checkout\b|restore\b(?:(?![^;&|]*\s--staged\b)|"
              r"(?=[^;&|]*\s(?:--worktree\b|-[a-zA-Z]*W))))")
-_REDIRECT = r"(?<![0-9&])>{1,2}(?!&)|(?<=[0-9&])>(?![>&])(?!\s*(?:/dev/null\b|(?i:\$null|nul)\b))|>&(?!\s*[0-9-])"
+# a forced clean deletes what git does not track below the paths it names, and a kept file may be among that. The -f
+# counts wherever it stands among the options, and written out (-fd, -d -f, --force). GIT_DESTRUCTIVE asks about the
+# same spelling, so that as a write verb this adds a reason to an ask and no ask of its own
+_GIT_CLEAN = r"\bgit\s+clean\b(?=[^;&|]*?\s(?:-[a-zA-Z]*f|--force\b))"
+_REDIRECT =r"(?<![0-9&])>{1,2}(?!&)|(?<=[0-9&])>(?![>&])(?!\s*(?:/dev/null\b|(?i:\$null|nul)\b))|>&(?!\s*[0-9-])"
 # the verbs behind which any path of the line may be the one written
 VERBS = re.compile(
     r"\b(?i:mv|cp|rm|rmdir|unlink|chmod|chown|truncate|ln|dd|rsync)\b|" + _INPLACE +
-    r"|" + _GIT_BACK + r"|\b(?i:find)\b[^;&|]*?\s-delete\b|open\([^)]*['\"][wax+]|write_text|write_bytes|"
+    r"|" + _GIT_BACK + r"|" + _GIT_CLEAN + r"|\b(?i:find)\b[^;&|]*?\s-delete\b|open\([^)]*['\"][wax+]|write_text|"
+    r"write_bytes|"
     r"shutil\.(?:rmtree|move|copy)|os\.(?:remove|unlink|rename|replace)")
 WRITE_VERBS = re.compile(_REDIRECT + r"|\b(?i:tee)\b|" + VERBS.pattern)
 # A redirection and a tee that starts a command name the file they write: > f, 2>> f, &> f, >| f, | tee -a f g.
@@ -144,7 +149,7 @@ GIT_CONFIG_FLAG = re.compile(  # git config's options that take no value and lea
 # A checkout discards work where it is forced, where -- ends its options, and where a path of it stands for the
 # tree or a part of it (., ./, :/, '*.py', which git matches in every folder), wherever its options stand
 GIT_DESTRUCTIVE = re.compile(
-    r"\bgit\s+(?:reset\s+--hard|clean\s+-[a-zA-Z]*f|"
+    _GIT_CLEAN + r"|\bgit\s+(?:reset\s+--hard|"
     r"checkout\b(?=[^;&|]*?\s(?:-[a-zA-Z]*f[a-zA-Z]*(?=[\s;&|)]|$)|--force\b|--(?=[\s;&|)]|$)|"
     r"['\"]?(?:\.\.?/?|:[/(!^][^\s'\"]*|[^\s;&|'\"]*[*?\[][^\s;&|'\"]*)['\"]?(?=\s|$|[;&|)}\"'`])))|"
     r"restore\b(?:(?![^;&|]*\s--staged\b)|(?=[^;&|]*\s(?:--worktree\b|-[a-zA-Z]*W)))|"
@@ -360,9 +365,9 @@ FORMATS = re.compile(_GO + r"(?:(?:(?:black|isort)(?:@[\w.]+)?|ruff(?:@[\w.]+)?\
                      r"(?![^;&|\n]*\s--(?:diff|help)\b))", re.I | re.M)
 PY_FILES = ("*.py", "*.pyi", "*.ipynb")  # what they rewrite below a folder
 # Commands that change a folder as a whole when they are given one: a move, a removal, a copy onto it, a link,
-# git's checkout of it. PowerShell's and cmd's follow, the short names where a command starts
+# git's checkout of it and its forced clean. PowerShell's and cmd's follow, the short names where a command starts
 TREE_VERBS = re.compile(
-    r"\b(?i:mv|cp|rm|rmdir|rsync|ln)\b|" + _GIT_BACK + r"|shutil\.(?:rmtree|move|copy)|"
+    r"\b(?i:mv|cp|rm|rmdir|rsync|ln)\b|" + _GIT_BACK + r"|" + _GIT_CLEAN + r"|shutil\.(?:rmtree|move|copy)|"
     r"os\.(?:rename|replace|removedirs|rmdir)|\.(?:rename|replace)\(|(?i:\b(?:Remove|Move|Rename|Copy)-Item\b|"
     r"\b(?:xcopy|robocopy)\b)|" + _AT + r"(?i:ri|del|erase|rd|copy|move|ren|rename|cpi|mi|rni)\b", re.M)
 # Commands that change the files they find themselves: find with -delete, and an edit whose list of files a search

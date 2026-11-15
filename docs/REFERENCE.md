@@ -305,8 +305,8 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   place inside the project (Git Bash's `/c/Users/…`, a mounted drive) is searched by name, an output option's
   word among them. Three kinds of line are asked about although they name
   no such file. A line that changes a folder holding such files as a whole: `mv eval old`, `rm -r eval`,
-  `git checkout HEAD eval`, `Remove-Item eval -Recurse`, and `cp -r` or `rsync` with such a folder on either
-  side, because the guard does not tell a source from a target. A line that deletes or edits the files which a
+  `git checkout HEAD eval`, a forced `git clean -fd eval`, `Remove-Item eval -Recurse`, and `cp -r` or `rsync`
+  with such a folder on either side, because the guard does not tell a source from a target. A line that deletes or edits the files which a
   search of the same line finds in such a folder: `find … -delete`, `find … -exec rm` (or `cp`),
   `… | xargs sed -i`, `sed -i … $(git ls-files '*.py')`, a loop that reads the names
   (`… | while read f; do sed -i … "$f"; done`, `done < <(…)`, also where the loop writes by a redirect into its
@@ -316,7 +316,11 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   (`black .`, `ruff check --fix`), where a frozen or harness `.py`, `.pyi` or `.ipynb` file lies below; since
   15 November 2026 with a reason of its own, which the unattended loop counts as routine like git that discards
   uncommitted work (`references/loop.md`, "Routine refusals"). A forced push carries both reasons, the
-  destructive one and the push's.
+  destructive one and the push's. So does a forced `git clean` that names a frozen or harness file or a folder
+  holding one (`git clean -f eval/metrics.py`, `git clean -fd eval`): it was asked about as destructive git
+  alone and now carries the file's or the folder's reason beside it, so that the loop does not count its
+  refusal as routine. Both rules read the `-f` wherever it stands among the options, and written out
+  (`git clean -d -f`, `git clean --force`, which passed unasked before).
   Text that runs counts wherever it stands: the text behind a code flag, also where the flag stands in a group
   of letters, is cut short or has options behind it (`sh -ce '…'`, `bash -c -- '…'`, `bash -c -o pipefail '…'`,
   `powershell -com "…"`), every word of an `eval`, the text of a `trap`, a command inside `$(…)` or backticks
@@ -339,7 +343,11 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   that puts the path together while it runs, a script that a loop over a search starts among them. The same
   holds for reading sealed data: a wildcard that program text applies below a folder which it names apart from
   it passes (`Path('data').glob('*/*.csv')`, `os.chdir('data')` before `glob.glob('*/*.csv')`,
-  `[IO.Directory]::GetFiles("$PWD\data", '*', 1)`). For the frozen files, every run's record holds one hash
+  `[IO.Directory]::GetFiles("$PWD\data", '*', 1)`). Deleting sealed data is not reading it: a line that removes
+  a folder in which sealed files lie, and no frozen or harness file, is not asked about (`rm -rf data` with
+  `data/test/**` sealed; an independent review on 15 November 2026 pointed it out), while a move, a rename or a
+  recursive copy of that folder is, and a forced `git clean` of it is asked about as destructive git, which the
+  unattended loop counts as routine. For the frozen files, every run's record holds one hash
   over them (`frozen_hash`; `expctl hash` prints the current one, `expctl status` warns when ranked
   runs were made under other frozen files, and the final evaluation's receipt carries it), the loop compares
   the checksums of its protected files at every iteration, and `git status` shows the change where git tracks

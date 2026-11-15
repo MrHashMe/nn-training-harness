@@ -172,7 +172,7 @@ $E stop <run> --wait 5m                             # graceful: checkpoint, then
 $E resume <run>                                     # a new run from the old run's checkpoint
 $E final-eval -- --ckpt runs/<run>/ckpt/best.pt     # once, with a receipt and a journal entry
 $E audit-splits                                     # how many records the splits share: counts only, never a row
-$E hash                                             # the hash of the frozen files now; each run's manifest holds its own
+$E hash                                             # source hash, git state and the hash of the frozen files now; each run's manifest holds its own
 $E env --python .venv/bin/python --probe            # hardware and versions; --probe tries the GPU features there
 $E selftest                                         # are the hooks, the guard and the protocol wired up
 ```
@@ -316,8 +316,13 @@ neither kit was shown to beat running the agent with no kit.
   runs were made under other frozen files, and the final evaluation's receipt carries it), the loop compares
   the checksums of its protected files at every iteration, and `git status` shows the change where git tracks
   the file. In that hash a text file counts with LF line ends, so that a checkout with CRLF on another machine
-  gives the same value, and a file of more than 64 MB counts by its size alone. The edit tools are asked
-  about. The other way round, harmless lines are asked about when they hold
+  gives the same value. At most 64 MB are read, the smallest files first, and what lies beyond counts by its
+  size alone. The time grows with the number of frozen files, not only with their bytes: on Windows, measured
+  on 15 November 2026 with the tests running beside it, 64 MB in 64 files took 0.1 s, 5,000 small files 2 s and
+  20,000 small files 9 s (in WSL, on its own file system: 0.2 s and 0.7 s). `expctl launch`, `expctl hash` and the final evaluation pay that each time, and
+  `expctl status` and the status at a session's start once a ranked run carries a hash. That hook has 30 s:
+  with a frozen data folder of some 60,000 files or more the status at a session's start may not arrive, while
+  the guard's protection of those files does not depend on it. The edit tools are asked about. The other way round, harmless lines are asked about when they hold
   such a write anywhere: `python eval/metrics.py > out.txt`, `python eval/metrics.py 2> err.txt`,
   `cp -r eval sub/copy`, `ruff check --fix .`, `ls *.py | xargs black`, a line that names such a file beside a
   word in capitals that is a program's name (`RM`, `CP`, `DD`, `TEE`) or beside a restore of another file, and

@@ -597,6 +597,7 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
            "launched_by": "nnremote", "via": "remote",
            "remote": {"target": target, "type": tgt["type"], "hours": hours, "usd_per_hour": rate,
                       "reserved_usd": usd, "retries": int(retries or 0), **sent, "sent_env": list(st["env"])}}
+    man.update(expctl.frozen_state(root, cfg) or {})  # as expctl launch does: the frozen files this run's score is made under
     if resume_of:
         man["resume_of"], man["resume_of_source_hash"] = resume_of.name, was
     try:

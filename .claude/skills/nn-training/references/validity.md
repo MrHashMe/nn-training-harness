@@ -1,6 +1,6 @@
 # Validity: protocol, leakage, sanity checks, sealed test, evaluator freeze
 
-Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command, the wiring checks of section 4 and the hash of the frozen files in section 6: 2026-11-14)
+Checked: 2026-10-23 (section 5, the single-use final evaluation: 2026-11-12; the split audit command and the wiring checks of section 4: 2026-11-14; the hash of the frozen files in section 6: 2026-11-15)
 Refresh: principles, not versions; re-read when the guard's sealed or frozen mechanics change
 (`tests/test_kit.py` covers them) or when a new contamination or leakage route becomes known.
 
@@ -55,9 +55,9 @@ Goal: every number you report measures what the Project card says it measures.
 
 ## 6. Frozen evaluator and protocol versions
 - Put evaluator/metric/split files in `frozen_paths`. The guard asks before a write to them that it can name. It cannot name every write (an archive unpacked over a file, a program that builds the path at run time), so the harness records the files themselves:
-  - `expctl launch` writes one hash over them into the run's manifest (`frozen_hash`), `expctl hash` prints the current one, and `expctl final-eval` puts it into the receipt and the journal. Write it into the Project card beside the protocol version.
+  - `expctl launch` and `nnremote launch` write one hash over them into the run's manifest (`frozen_hash`), `expctl hash` prints the current one, and `expctl final-eval` puts it into the receipt and the journal. Write it into the Project card beside the protocol version.
   - `expctl status` puts an alert first when a ranked run was made under other frozen files than the project holds now. Such a score does not compare with new runs: restore the files, or treat the change as a new protocol version (next point).
-  - Limits: at most 64 MB are read, smallest files first, and a larger frozen file counts by its size; a run started without `expctl launch` carries no hash; the ranking is not filtered by it.
+  - Limits: at most 64 MB are read, smallest files first, and a larger frozen file counts by its size; a text file counts with LF line ends, so a checkout with CRLF gives the same value; a run started by neither of the two launch commands carries no hash; the ranking is not filtered by it.
 - A genuine evaluator bug: stop, explain, get approval, fix it as protocol v(N+1), re-evaluate the baseline and candidates under the new version (from saved checkpoints when possible), and never mix numbers across versions.
 
 ## 7. Baselines

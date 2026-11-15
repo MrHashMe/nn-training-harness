@@ -443,6 +443,9 @@ def ssh_tests(tmp, proj):
           f"after the run its directory on the target is removed, and nothing else ({ex.get('remote')})")
     check(len(read(d / "manifest.json")["remote"].get("bundle_sha256") or "") == 64 and not (d / nnremote.BUNDLE).exists(),
           "the manifest names the SHA-256 of the archive that was sent, and the archive is gone once the run has ended")
+    fz = tk.jout(tk.expctl(proj, "hash")).get("frozen_hash")
+    check(fz and read(d / "manifest.json").get("frozen_hash") == fz,
+          "the manifest holds the hash of the frozen files, as a local run's does")  # was: no hash in a remote run's
 
     print("== stop, and resume from the mirrored checkpoint ==")
     out = launch(proj, "--name", "stopme", "--on", "box", "--", "{python}", "train_remote.py", "4000")

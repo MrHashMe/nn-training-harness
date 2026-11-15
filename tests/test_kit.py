@@ -175,6 +175,14 @@ def main():
     check(h["files_size_only"] >= 1, "large tracked file hashed by size only")
     check(len(h.get("frozen_hash") or "") == 64 and (h.get("frozen_files"), h.get("frozen_size_only")) == (1, 0),
           f"hash reports one hash over the frozen files, read in full ({h.get('frozen_hash')}, {h.get('frozen_files')})")
+    fzf = proj / "eval/metrics.py"  # the same evaluator as git checks it out elsewhere: with the other line ends
+    as_is = fzf.read_bytes()
+    ends = []
+    for eol in (b"\n", b"\r\n"):
+        fzf.write_bytes(as_is.replace(b"\r\n", b"\n").replace(b"\n", eol))
+        ends.append(jout(expctl(proj, "hash"))["frozen_hash"])
+    fzf.write_bytes(as_is)
+    check(ends == [h["frozen_hash"]] * 2, f"the frozen files' hash is the same with LF and with CRLF line ends ({ends})")  # was: two
     made = [proj / n for n in ("AGENTS.md", ".mcp.json", ".codex/hooks.json", ".cursor/cli.json",
                                ".agents/skills/x/SKILL.md", "experiments/JOURNAL.md")]
     for p in made:
@@ -418,6 +426,16 @@ def main():
     time.sleep(0.5)
     check(known and stp3.get("ok") and stp3.get("via") == "process" and by.poll() is None,  # was: via supervisor
           f"stop leaves a program alone that only has the recorded supervisor's pid ({stp3}, bystander {by.poll()})")
+    # the record of an older launch has no start time of the supervisor: the launch's own time stands for it
+    old = jout(expctl(proj, "launch", "--name", "oldrec", "--", PY, "train.py", "--steps", "5000", "--sleep", "0.02", "--seed", "7"))
+    wait_for(lambda: state_of(proj, old["run_id"])[0] == "running", 15)
+    pjp = proj / old["run_dir"] / "pid.json"
+    pj = {k: v for k, v in json.loads(pjp.read_text()).items() if k not in ("supervisor_start", "supervisor_key")}
+    pjp.write_text(json.dumps(dict(pj, supervisor_pid=by.pid, started_at=pj["started_at"] - 600)))
+    stp4 = jout(expctl(proj, "stop", old["run_id"], "--wait", "20s", timeout=60))
+    time.sleep(0.5)
+    check(stp4.get("ok") and stp4.get("via") == "process" and by.poll() is None,  # was: via supervisor
+          f"stop leaves it alone too where the record has no start time of the supervisor ({stp4}, bystander {by.poll()})")
     by.kill()
     # the record of the final evaluation keeps its chain when several writers append at the same moment
     code = ("import sys, time; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
@@ -1745,6 +1763,25 @@ def main():
     receipt.write_bytes(b'{"event": "end"}\n')
     r = expctl(proj, "final-eval")
     check(r.returncode == 2 and "edited" in jout(r)["error"], "final-eval: a receipt whose chain is broken counts as used")
+    # two that start at the same moment both find no earlier use: one runs, the other gives way (was: both ran)
+    (tmp / "race").mkdir()
+    race = setup(tmp / "race")
+    (race / "eval/final.py").write_text(FINAL)
+    rcfg = json.loads((race / ".claude/nn-training.json").read_text())
+    (race / ".claude/nn-training.json").write_text(json.dumps(dict(
+        rcfg, final_eval_commands=[f'NN_UNSEAL_TEST=1 "{PY}" eval/final.py']), indent=1))
+    code = ("import sys, time; sys.path.insert(0, sys.argv[1]); import expctl\n"
+            "while time.time() < float(sys.argv[2]): pass\n"
+            "sys.exit(expctl.main(['--root', sys.argv[3], 'final-eval']))\n")
+    go = str(time.time() + 3)
+    ps = [subprocess.Popen([PY, "-c", code, str(race / ".claude/skills/nn-training/scripts"), go, str(race)], cwd=race,
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) for _ in range(2)]
+    said = [p.communicate(timeout=120)[0] for p in ps]
+    rr = [json.loads(x) for x in (race / ".claude/state/final-eval/receipt.jsonl").read_bytes().splitlines()]
+    ran = [x for x in rr if x["event"] == "end" and x.get("exit_code") == 0]
+    check(sorted(p.returncode for p in ps) == [0, 2] and len(ran) == 1 and "single-use" in "".join(said),
+          f"final-eval: of two started at the same moment one runs and the other gives way ({[p.returncode for p in ps]}, "
+          f"{sum(x['event'] == 'start' for x in rr)} start rows, {len(ran)} ran)")
 
     # cleanup live runs
     for x in (active, live):

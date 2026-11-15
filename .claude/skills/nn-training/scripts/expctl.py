@@ -70,6 +70,7 @@ import argparse
 import calendar
 import csv
 import hashlib
+import itertools
 import json
 import math
 import os
@@ -843,9 +844,10 @@ def finder_file(p: Path) -> bool:
         return False
 
 
-def hash_files(root: Path, files, max_bytes, by_size=(), follow=False):
+def hash_files(root: Path, files, max_bytes, by_size=(), follow=False, eol=False):
     """One hash over the files. A file over max_bytes, or one named in by_size, counts by its size alone; a link
-    counts by where it points, or with follow by the file behind it."""
+    counts by where it points, or with follow by the file behind it. With eol a text file (no NUL byte at its
+    start, as git tells) counts with LF line ends, so that a checkout with CRLF gives the same hash."""
     h = hashlib.sha256()
     hashed, size_only = 0, []
     for rel in files:
@@ -859,10 +861,16 @@ def hash_files(root: Path, files, max_bytes, by_size=(), follow=False):
                 size_only.append(rel)
                 h.update(b"S\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + str(size).encode() + b"\0")
                 continue
-            fh = hashlib.sha256()
+            fh, cr, text = hashlib.sha256(), b"", None
             with open(p, "rb") as f:
                 for chunk in iter(lambda: f.read(1 << 20), b""):
+                    text = eol and b"\0" not in chunk if text is None else text
+                    if text:  # a \r that ends a chunk waits for the next one, whose \n it may belong to
+                        chunk = cr + chunk
+                        cr = chunk[-1:] if chunk.endswith(b"\r") else b""
+                        chunk = chunk[:len(chunk) - len(cr)].replace(b"\r\n", b"\n")
                     fh.update(chunk)
+            fh.update(cr)
             h.update(b"F\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + fh.hexdigest().encode() + b"\0")
             hashed += 1
         except OSError:
@@ -895,7 +903,8 @@ FROZEN_READ = 64 << 20
 def frozen_state(root: Path, cfg):
     """The files that match frozen_paths as one hash, or None where nothing is frozen. A run's record keeps it, so
     that a later look can tell whether two runs were made under the same evaluator. The guard asks about a write to
-    such a file only where it can name the write; the hash changes whatever made the change.
+    such a file only where it can name the write; the hash changes whatever made the change. Text counts with LF
+    line ends: the same evaluator checked out with CRLF on another machine is no other evaluator.
     shortcut: at most FROZEN_READ bytes are read, the smallest files first, so that code is always read in full and
     large data counts by its size; read everything if frozen data can change without changing its size."""
     pats = cfg.get("frozen_paths") or []
@@ -914,7 +923,7 @@ def frozen_state(root: Path, cfg):
             by_size.add(rel)
         else:
             left -= size
-    digest, _hashed, size_only = hash_files(root, files, float("inf"), by_size, follow=True)
+    digest, _hashed, size_only = hash_files(root, files, float("inf"), by_size, follow=True, eol=True)
     return {"frozen_hash": digest, "frozen_files": len(files), "frozen_size_only": len(size_only)}
 
 
@@ -2017,8 +2026,10 @@ def cmd_stop(args):
     # forward signals, and a trainer on Windows, where it is the only graceful route.
     write_json_atomic(d / "stop.json", req)
     # The supervisor's pid may by now belong to another program (after a restart, or a long time): signal it only
-    # while it is the process that the launch recorded. A record without its start time or key is taken as before.
-    sent = bool(sup) and pid_alive(sup) and same_process(sup, pj.get("supervisor_start"), pj.get("supervisor_key"))
+    # while it is the process that the launch recorded. A record without the supervisor's start time (an older
+    # launch) has the launch's own, moments after it, as status compares; one with neither is taken as before.
+    start = pj.get("supervisor_start") if is_num(pj.get("supervisor_start")) else pj.get("started_at")
+    sent = bool(sup) and pid_alive(sup) and same_process(sup, start, pj.get("supervisor_key"))
     via, killed = "supervisor", None
     if os.name == "nt":
         if not sent:  # no supervisor is left to escalate: give the loop its time to save and exit, then kill the tree
@@ -2255,6 +2266,10 @@ def chained(path: Path, row):
         f.write(json.dumps(clean(dict(row, prev=prev)), sort_keys=True).encode("utf-8") + b"\n")
 
 
+def use_key(r):  # the nonce: two rows of the same second are two rows
+    return r.get("event"), r.get("use"), r.get("ts"), r.get("nonce")
+
+
 def final_uses(root: Path):
     """(the start rows of every use of the final evaluation, a record of them that was edited or None, the copy all
     checkouts share or None, this project's path inside the repository). Every checkout of the repository looks at
@@ -2268,13 +2283,13 @@ def final_uses(root: Path):
             if x.startswith("worktree ")]
     rows, ok = ledger_rows(shared) if shared else ([], True)
     edited = None if ok else shared
-    seen = {(r.get("event"), r.get("use"), r.get("ts")): r for r in rows if r.get("sub") == sub}
+    seen = {use_key(r): r for r in rows if r.get("sub") == sub}
     for p in dict.fromkeys([(root / FINAL_DIR / "receipt.jsonl").resolve()]
                            + [(Path(t) / sub / FINAL_DIR / "receipt.jsonl").resolve() for t in tops]):
         rows, ok = ledger_rows(p)
         edited = edited or (None if ok else p)
         for r in rows:
-            if seen.setdefault((r.get("event"), r.get("use"), r.get("ts")), r) is r and shared:
+            if seen.setdefault(use_key(r), r) is r and shared:
                 chained(shared, dict(r, sub=sub))
     uses = sorted((r for r in seen.values() if r.get("event") == "start"), key=lambda r: str(r.get("ts")))
     return uses, edited, shared, sub
@@ -2330,8 +2345,20 @@ def cmd_final_eval(args):
 
     use, prov, fz = len(before) + 1, provenance(root, cfg)[2], (frozen_state(root, cfg) or {}).get("frozen_hash")
     git, log = prov.get("git") or {}, d / f"{time.strftime('%Y%m%d-%H%M%S')}-use{use}.log"
-    note(event="start", use=use, configured=configured, args=extra, reason=args.again, commit=git.get("commit"),
-         dirty=git.get("dirty"), source_hash=prov["source_hash"], frozen_hash=fz, log=rel_to(root, log))
+    nonce = os.urandom(8).hex()
+    note(event="start", use=use, nonce=nonce, configured=configured, args=extra, reason=args.again,
+         commit=git.get("commit"), dirty=git.get("dirty"), source_hash=prov["source_hash"], frozen_hash=fz,
+         log=rel_to(root, log))
+    # Two that start at the same moment both found no earlier use. The record that both write keeps its rows in the
+    # order of their writing: whoever finds a start there, before its own, that it did not know gives way
+    starts = [r for r in ledger_rows(shared or receipt)[0]
+              if r.get("event") == "start" and (not shared or r.get("sub") == sub)]
+    ahead = set(map(use_key, itertools.takewhile(lambda r: r.get("nonce") != nonce, starts)))
+    if len(ahead) > len(before) and not args.again:
+        note(event="end", use=use, nonce=nonce, exit_code=None, error="gave way: another use started at the same moment")
+        return fail(2, "The final evaluation is single-use, and another one was started at the same moment: that one "
+                       "runs, and this one gave way before it looked at anything. The receipt records both.",
+                    uses=len(ahead))
     t0, err = now(), None
     try:
         with open(log, "wb") as f:  # Windows takes the command line as one string; elsewhere it is a word list
@@ -2342,7 +2369,8 @@ def cmd_final_eval(args):
         code, err = None, f"could not start: {e}"
     out = tail_bytes(log, 2000)
     digest = hashlib.sha256(log.read_bytes()).hexdigest() if log.is_file() else None
-    note(event="end", use=use, exit_code=code, error=err, seconds=round(now() - t0, 1), output_sha256=digest, output_tail=out)
+    note(event="end", use=use, nonce=nonce, exit_code=code, error=err, seconds=round(now() - t0, 1), output_sha256=digest,
+         output_tail=out)
     jpath = root / (cfg.get("journal") or "experiments/JOURNAL.md")
     jpath.parent.mkdir(parents=True, exist_ok=True)
     with open(jpath, "a", encoding="utf-8", newline="\n") as f:

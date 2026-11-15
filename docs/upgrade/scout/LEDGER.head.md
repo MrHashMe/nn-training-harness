@@ -300,7 +300,7 @@ nothing new was looked at. The record `scout/covered/built-test-branch.json` cha
   every system and nothing touched the Apple GPU), no sleep, no closed lid. The rows that need a real Mac stay
   undecided: a Seatbelt box for the loop's runs, mlx-lm, the `mps` device in the kit's own tools, the Metal
   wired-memory limit.
-- Open: `main` does not have rounds 6 and 7; that push waits for the user's word.
+- `main` took rounds 6 and 7 on the same day, on the user's "Push main", as the branch was: no merge commit.
 
 ## Coverage map
 

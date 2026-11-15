@@ -27,7 +27,7 @@
   "file": "platforms",
   "candidate": "Platform test matrix for the kit itself (floor and ceiling interpreter on Windows, Linux, macOS)",
   "status": "finished",
-  "where": ".github/workflows/tests.yml (8cb9743): eight test files on GitHub's Ubuntu, macOS and Windows runners, oldest and newest Python. First run 15 Nov 2026, branch test/rounds-6-7: four of six jobs failed (fixes bd8350e, 70b137e). Second run (97b3211): all six pass. docs/REFERENCE.md \"By platform\". Not on main"
+  "where": ".github/workflows/tests.yml (8cb9743): eight test files on GitHub's Ubuntu, macOS and Windows runners, oldest and newest Python. First run 15 Nov 2026, branch test/rounds-6-7: four of six jobs failed (fixes bd8350e, 70b137e). Second run (97b3211): all six pass. docs/REFERENCE.md \"By platform\". On main"
  },
  {
   "file": "platforms",

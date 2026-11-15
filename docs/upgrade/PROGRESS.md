@@ -20,7 +20,7 @@ its fifteen findings, all fixed.
 "The test branch" below is the work on the user's "Push test branch" of 15 November: rounds 6 and 7 are in
 the public repository as the branch `test/rounds-6-7`, the workflow ran there on GitHub's Ubuntu, macOS and
 Windows machines, three commits repaired what its first run showed, and its second run passes in all six
-jobs. `main` there is as it was (`bc96015`).
+jobs. "`main`" below is the user's "Push main" of the same day: `main` took the branch as it was.
 
 # Upgrade progress
 
@@ -1313,7 +1313,7 @@ so every statement about macOS is code reading or documentation.
   the kit's block of its `.gitignore`; it needs the user's word.
 - Left on this machine: the container image `alpine:3` in WSL's Docker (`docker rmi alpine:3` removes it).
 
-## Round 7 (second review, 14 and 15 November): done; on the public test branch since 15 November
+## Round 7 (second review, 14 and 15 November): done; on the public `main` since 15 November
 
 Request of 14 November: review a second reviewer's report on the public version (`bc96015`), plan from it and
 carry the plan out. The report is kept out of git at `docs/upgrade/scout/scouts/user-review-1114b.md`. Rule of
@@ -1419,7 +1419,7 @@ recommended so that the workflow runs on GitHub's three systems before `main` mo
 November: the next section); a seventh installer run on the real install; money, accounts and hardware for
 the rows that wait for them.
 
-## The test branch (15 November): pushed, the workflow passes in all six jobs; `main` not moved
+## The test branch (15 November): pushed, the workflow passes in all six jobs
 
 The user's word, 15 November: "Push test branch", to the question whether to push rounds 6 and 7 to a test
 branch so that the tests run on GitHub's macOS, Linux and Windows. What it covers, as said before it was
@@ -1458,15 +1458,34 @@ Done:
   three rows finished, one Assess row decided, five with new text; 1,650 rows, 494 Adopt, 352 finished and
   142 unfinished), this file. Both commits pushed to the same branch (`edd61c8`), which started a third run.
 - Third run (`edd61c8`): all six jobs pass, with the checks per job of the second run (1,469, 1,462, 1,470,
-  1,463, 1,460, 1,461) and the same numbers in the generated guard test. This line is in a commit that is
-  not pushed, so that it starts no fourth run: the local branch is one commit ahead of the test branch.
+  1,463, 1,460, 1,461) and the same numbers in the generated guard test. This line was committed after the
+  run (`7b54c4a`) and not pushed to the test branch by itself, which would have started a fourth run; it
+  went out with `main`.
 
 Behaviour of existing features: a snapshot's link on Windows (REPORT.md, "The test branch", "Changes in the
 behaviour of existing features"). The guard and the installer are not touched. Existing tests changed: five
 places in four files, listed there with reasons; no check removed.
 
-Next: the user's word on `main` (it can take the branch without a merge commit). Then the seventh installer
-run, which is a separate word.
+## `main` (15 November): moved to the tested branch and pushed
+
+The user's word, 15 November: "Push main", to the question whether to move `main` to the tested branch and
+push it. It covers that move and that push. Not covered: deleting the test branch, a pull request, a
+force-push, anything on the real install.
+
+Done:
+- Fetched: `main` in the public repository unchanged at `bc96015`; this branch, with the commit of this
+  entry, 27 commits ahead of it and none behind. `main` took the branch as it was: no merge commit, no
+  force.
+- Beyond the last commit that the runners tested on the test branch (`edd61c8`), `main` holds two commits of
+  records only (`7b54c4a` and the commit of this entry): no code, no test, no page of the kit.
+- The push starts a run of the workflow on `main`. Its result is not in this file: `gh run list --branch
+  main` shows it.
+- The local `main`, which the main checkout has checked out, was moved to the public one after the push.
+- Left as it is: the branch `test/rounds-6-7` in the public repository, and the README's line "tested on
+  Windows and WSL2" (the front page is another session's work).
+
+Next: the seventh installer run on the real install, and whether the test branch is deleted. Each is a
+separate word of the user's.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1481,8 +1500,7 @@ run, which is a separate word.
 - The test branch: no second reader has seen its three commits. What the stand-in home directory held in
   the first run under macOS's own Python is an explanation from memory, which the second run fits. The
   sandbox checks ran on one Linux job only, because the Ubuntu 24.04 image has no bubblewrap. The clean
-  interpreters of this machine did not repeat their full passes after the three commits. `main` is not
-  moved.
+  interpreters of this machine did not repeat their full passes after the three commits.
 - Round 7: no second reader has seen the two commits
   that fixed the review's findings (`0aafe9a`, `439ab60`). The generated test finds what its parts build and
   nothing else; a path that a program builds while it runs stays outside the guard. The time of the frozen
@@ -1716,8 +1734,10 @@ run, which is a separate word.
 - Answered on 15 Nov ("Push test branch"), from rounds 6 and 7: the push, to a test branch. "The test
   branch" above. The word covers that branch and follow-up pushes to it. It is not a word for `main`, a pull
   request, a deletion or anything on the real install.
-- Open, from the test branch: `main`. It has not moved since `bc96015` and can take the test branch as it
-  is. After that, whether the test branch is deleted in the public repository.
+- Answered on 15 Nov ("Push main"), from the test branch: `main`. "`main`" above. The word covers the move
+  and the push of `main`. It is not a word for deleting the test branch, a pull request or anything on the
+  real install.
+- Open, from `main`: whether the branch `test/rounds-6-7` is deleted in the public repository.
 - Open, from round 7: the seventh installer run on the real install. It would now bring the guard changes of
   rounds 6 and 7 (the guard asks in more cases), the stop and lock fixes and the hash of the frozen files.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented

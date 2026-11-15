@@ -26,9 +26,9 @@ question what to build first you answered "Mac readiness": its section, "Round 6
 You then gave me a second reviewer's report and asked for the best plan from it and for the plan's
 execution: its section, "Round 7", follows "Round 6". On your "Push test branch" of 15 November both rounds
 are in the public repository as the branch `test/rounds-6-7`, where the kit's tests ran for the first time
-on GitHub's macOS, Linux and Windows machines: its section, "The test branch", follows "Round 7". `main`
-there is as it was. Decision record:
-`docs/upgrade/LEDGER.md`.
+on GitHub's macOS, Linux and Windows machines: its section, "The test branch", follows "Round 7". On your
+"Push main" of the same day `main` took that work as it was, with no merge commit (the last part of that
+section, "`main`"). Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -183,14 +183,15 @@ there is as it was. Decision record:
     built, because it could only have been written blind. Run in a real zsh and a real bash, lines such as
     `cat data/(test|x)/labels.csv` and `cat data/[^r]est/labels.csv` printed a sealed file, and the guard
     had let them pass. It reads these patterns now, and it asks about a sealed path behind `<`, `@`, a
-    comma or an option's letter. Several of those lines need neither zsh nor a Mac, so the public `main`
-    and your real install keep the hole until a push of `main` and a seventh installer run, each on your
-    word. An
+    comma or an option's letter. Several of those lines need neither zsh nor a Mac, so your real install
+    keeps the hole until a seventh installer run, on your word (the public `main` kept it until 15
+    November: point 17). An
     older limit was found in passing and not changed: a frozen or harness file that a program outside the
     guard's list of write verbs writes (`sort -o`, `curl -o`, `touch`) passes without a question (round 7
     closed it). All seven test files pass in seven
     interpreters on Windows and in WSL, Python 3.8 to 3.15 ("Round 6", "Tests"); none ran on a Mac in that
-    round. Since 15 November it is on the public test branch (point 17), not on `main`.
+    round. Since 15 November it is in the public repository, on a test branch first and then on `main`
+    (point 17).
 16. **Round 7 checked a second review claim by claim, fixed what held, and gave the guard a test that looks
     for holes by itself** (14 and 15 November; "Round 7"). The review's claim that the benchmark's evaluator
     runs code from a model file is wrong, by a run (36 files, none ran). Its findings about the guard (four
@@ -207,11 +208,13 @@ there is as it was. Decision record:
     now build those forms: on the final state none of 15,600 generated lines in five shells did harm. That
     is a sample, not a proof, and a path that a program builds while it runs stays outside what a guard
     over command lines can read. All eight test files pass in six interpreters on Windows and in WSL, Python
-    3.8 to 3.15 ("Round 7", "Tests"). Since 15 November the round is on the public test branch (point 17),
-    not on `main`, and your real install has none of it until a seventh installer run, on your word.
+    3.8 to 3.15 ("Round 7", "Tests"). Since 15 November the round is in the public repository, on a test
+    branch first and then on `main` (point 17); your real install has none of it until a seventh installer
+    run, on your word.
 17. **The kit's tests pass on a Mac, on bare Linux and on Windows on GitHub's machines, and the first run
     there found one real fault in the kit** (15 November, on your "Push test branch"; "The test branch").
-    Rounds 6 and 7 are public as the branch `test/rounds-6-7`; `main` is as it was. The first run of the
+    Rounds 6 and 7 went public as the branch `test/rounds-6-7`, and on your "Push main" of the same day
+    `main` took them, with no merge commit. The first run of the
     workflow failed in four of six jobs. One cause was the kit's: on a Windows account that may create
     symlinks, which this machine's account may not, a snapshot made a link to a folder again as a link to a
     file, and on Python 3.8 a launch in a project without git then ended with "Access is denied". It is
@@ -2973,10 +2976,10 @@ push, and I said so before I started. This section is that work: nine commits, `
 on top of the public commit `bc96015`, and the commit of these records. Nothing is pushed. Nothing was run,
 read or changed on your real install.
 
-Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`,
-and its tests have run on GitHub's macOS runner. Where this section says that nothing is pushed, that
-nothing ran on a Mac or that the workflow has not run, "The test branch" (after "Round 7") has what is true
-now. The rest of the section stands as it was written.
+Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`
+and, on your "Push main" of the same day, on `main`, and its tests have run on GitHub's macOS runner. Where
+this section says that nothing is pushed, that nothing ran on a Mac or that the workflow has not run, "The
+test branch" (after "Round 7") has what is true now. The rest of the section stands as it was written.
 
 **Nothing of this round has run on macOS.** What the section says about a Mac rests on reading the code and
 on documentation, named where it is used. The first run on a Mac will be the workflow's, and a workflow runs
@@ -3284,10 +3287,11 @@ goal. This section is that work: nine commits, `e777e0b` to `4d0d543`, on top of
 these records. Nothing is pushed. Nothing was run, read or changed on your real install. **Nothing of this
 round has run on macOS.**
 
-Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`,
-and its tests have run on GitHub's macOS, Linux and Windows runners. Where this section says that nothing is
-pushed, that nothing ran on a Mac or that the workflow has never run, "The test branch" (the next section)
-has what is true now. The rest of the section stands as it was written.
+Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`
+and, on your "Push main" of the same day, on `main`, and its tests have run on GitHub's macOS, Linux and
+Windows runners. Where this section says that nothing is pushed, that nothing ran on a Mac or that the
+workflow has never run, "The test branch" (the next section) has what is true now. The rest of the section
+stands as it was written.
 
 ### In short
 1. **The report's claim about the evaluator is wrong, and its findings about the guard and the controller are
@@ -3741,8 +3745,9 @@ repair what fails, and the six jobs that each push starts there (free for a publ
 stays. This section is that work: the push of round 7's last commit, `9d2ff12`, as the branch
 `test/rounds-6-7`; three commits for what the first run showed (`bd8350e`, `70b137e`, `97b3211`) and their
 push; and, after the second run, a correction of one page of the kit (`1578bd0`) and the commit of these
-records, pushed to the same branch. `main` is unchanged at `bc96015`. There is no pull request. Nothing was
-run, read or changed on your real install.
+records, pushed to the same branch. During this work `main` stayed at `bc96015`; what you then decided for
+it is the last part of this section ("`main`"). There is no pull request. Nothing was run, read or changed
+on your real install.
 
 ### In short
 1. **The kit's tests pass on a Mac, on bare Linux and on a Windows that may create symlinks.** Second run of
@@ -3768,8 +3773,9 @@ run, read or changed on your real install.
    nothing ran on the Apple GPU; sleep and a closed lid; a box for the loop's runs, which is not built. The
    runner is a virtual machine (`expctl env` read 7 GB and "Apple M1 (Virtual)"), not a Mac that a person
    uses.
-6. **`main` does not have rounds 6 and 7.** The guard's holes that those rounds closed are open in the public
-   `main` and on your real install until you say so ("What needs your decision").
+6. **`main` did not have rounds 6 and 7 while this work ran, and has them since your "Push main" of the same
+   day** ("`main`", the last part of this section). On your real install the guard's holes that those
+   rounds closed stay open until a seventh installer run ("What needs your decision").
 
 ### The first run (commit `9d2ff12`)
 | Job | Result | What failed |
@@ -3897,21 +3903,36 @@ No check was removed.
 - **Still unverified on a Mac:** point 5 of "In short".
 
 ### What needs your decision
-1. **`main`.** Rounds 6 and 7 and this section's commits are on the test branch only. `main` has not
-   moved since `bc96015`, so it can take them as they are, without a merge commit. Until then the public
-   front page stands for a version without the guard fixes of rounds 6 and 7. The test branch can go after
-   that, which is a deletion in the public repository and waits for your word like the push.
+1. **`main`.** Answered on 15 November ("Push main") and done: "`main`" below. Open from it: whether the
+   test branch goes now, which is a deletion in the public repository and waits for your word.
 2. **A seventh installer run on your real install**, as in "Round 7": it brings the guard fixes of rounds 6
    and 7, and the guard there will ask in more cases.
 3. **Money, accounts, hardware**, only if you want what waits for them: a Mac for one agent session and one
    training run on the Apple GPU; a rented machine; agent sessions for a powered benchmark.
 
 ### Most valuable next steps
-1. `main`, then the seventh installer run.
+1. The seventh installer run (`main` is done: "`main`" below).
 2. A seventh job in the workflow: a Mac with PyTorch, so that the nine benchmark checks and a run's record of
    the `mps` device run on a Mac. It would be the first job that installs a package, so the six others stay as
    they are. Whether GitHub's virtual Mac offers the Apple GPU to PyTorch is not known.
 3. The powered benchmark, as in "Round 7".
+
+### `main` (15 November 2026)
+To the question whether to move `main` to the tested branch and push it you answered "Push main". It covers
+that move and that push, and was done like this:
+
+- Fetched first: `main` in the public repository had not moved since `bc96015`, and the branch was 27
+  commits ahead of it and none behind. `main` took the branch as it was: no merge commit, no force.
+- Beyond the last commit that GitHub's machines tested on the test branch (`edd61c8`), `main` holds two
+  commits of records only, the note on the third run (`7b54c4a`) and the commit of this part. No code, no
+  test and no page of the kit differs from what the third run tested.
+- The push starts a run of the workflow on `main`. Its result is not in this report; GitHub's list of runs
+  for `main` has it.
+- Not done, because the word does not cover it: the branch `test/rounds-6-7` is still in the public
+  repository, and nothing was run, read or changed on your real install.
+- The repository's front page (README) still says "tested on Windows and WSL2". It is the work of another
+  session of yours and was not changed here; `docs/REFERENCE.md`, "By platform", has the runs on GitHub's
+  machines.
 
 ### Sources
 - The three runs of the workflow `tests` on the branch `test/rounds-6-7` of the public repository, 15

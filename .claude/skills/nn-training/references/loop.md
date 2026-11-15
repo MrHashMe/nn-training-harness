@@ -465,8 +465,8 @@ denies every file tool aimed outside the project, reads included.
 |---|---|---|
 | Score from the harness's own evaluator run; evaluator self-test; keep rule; confirmation on fresh seeds; limits; fresh worktree; saved diff; hash-chained ledger | enforced | enforced |
 | Evaluator, data, harness files, dependency pins unchanged | checksummed every run and session; main project mounted read-only for the run | checksummed every run and session: a change is caught at the next check, not prevented. On Windows without the symlink privilege `link_paths` are junctions or hard links, so a run that writes through one changes the project's own data |
-| The evaluator's environment (interpreter, installed packages) unchanged by a run | not enforced: the run's sandbox keeps the rest of the file system writable; only the project is read-only | not enforced: only the protected paths are checksummed. Keep the evaluator's imports inside `frozen_paths` where a tampered package would matter |
-| What the evaluator's process can reach, should a file that a run saved make it run code | no network; the project is read-only for it except the folder it scores and `loop.eval_writable`; sealed data that a `final_eval_commands` entry names and `loop.eval_command` does not (the test set) is hidden from it. The rest of the file system stays writable, as for a run | not confined. On every platform the first protection is the evaluator itself: it loads data formats only (safetensors, JSON, a TorchScript file whose code it has checked, as `benchmarks/charlm/evaluate.py` does) and never unpickles or imports what a run saved |
+| The evaluator's environment (interpreter, installed packages) unchanged by a run | enforced: the file system is read-only for a run, apart from its worktree, its own run folder and a `/tmp`, `/run` and `/dev/shm` of its own (see "What a sandboxed run can write" below; until 15 November 2026 only the project was read-only, so a run could write an installed package). Tried on WSL2, not on bare Linux | not enforced: only the protected paths are checksummed. Keep the evaluator's imports inside `frozen_paths` where a tampered package would matter |
+| What the evaluator's process can reach, should a file that a run saved make it run code | no network; the project is read-only for it except the folder it scores and `loop.eval_writable`; sealed data that a `final_eval_commands` entry names and `loop.eval_command` does not (the test set) is hidden from it. The rest of the file system is read-only for it, as for a run, with a `/tmp` of its own | not confined. On every platform the first protection is the evaluator itself: it loads data formats only (safetensors, JSON, a TorchScript file whose code it has checked, as `benchmarks/charlm/evaluate.py` does) and never unpickles or imports what a run saved |
 | Sealed test data out of reach, whatever the pattern that seals it (`data/test/**`, `**/test/**`, `data/*/test.csv`, a folder outside the project as `../NAME/**` or by its full path) | absent from the worktree and hidden from the run; guard denies the agent | absent from the worktree; guard denies the agent; a run could still open the main project's copy by absolute path. The change is scanned for that path, for sealed names and for `EXP_PROJECT_ROOT`, the variable that holds the path, and any of them makes the iteration invalid: training code reads its data by relative paths |
 | The data the loop scores on, out of the agent's sight | only when `sealed_paths` lists it, which works for a split that training does not read: then it is absent from the worktree and the evaluator, which runs in the main project, still reads it. Otherwise the agent can read it, and `nnloop` says so at start | same |
 | No network for the run | enforced (`--unshare-net`) | offline environment variables only, plus a scan of the change for network and process-starting code, which invalidates the iteration |
@@ -476,6 +476,25 @@ denies every file tool aimed outside the project, reads included.
 
 Not enforced anywhere: that the agent's one change tests one hypothesis; that scouting notes are accurate.
 Leave the project folder alone while a campaign runs: a changed file stops it.
+
+What a sandboxed run can write (Linux with bubblewrap; tried on WSL2 with bubblewrap 0.9.0 on 15 November 2026,
+not on bare Linux). A training run writes its worktree, its own run folder (`EXP_RUN_DIR`) and a `/tmp`, `/run`
+and `/dev/shm` of its own, which are empty when it starts and gone when it ends. The evaluator writes the folder
+it scores, `loop.eval_writable` and such a `/tmp`. Everything else is read-only. So a training script or an
+evaluator that writes elsewhere (a cache in the home folder, a file beside its data) fails with "Read-only file
+system", and data, an interpreter or a socket that lies under `/tmp` or `/run` is not there for it. Point a cache
+at one of the writable places: the run folder for a large one, because the sandbox's `/tmp` is kept in memory.
+An evaluator's cache goes into a project folder that `loop.eval_writable` lists.
+- Hugging Face `datasets` (5.2.0, tried that day): `load_dataset` fails with its default cache, and also with a
+  cache that was filled beforehand, because it wants a lock file there. It works with `HF_DATASETS_CACHE` set to a
+  folder in `/tmp` or in the run folder. Data that was saved once into the project with `save_to_disk` loads with
+  `load_from_disk` as it is; a `map` on it needs `keep_in_memory=True`.
+- Until that day only the project was read-only. A run could then write another run's records, reach the
+  session's sockets (Docker, the session bus, X) and, under WSL, start a Windows program, which has the network,
+  and read sealed data through the distro's second mount under `/mnt/wslg`.
+- Not closed: a socket file that lies elsewhere (under the home folder, for example) stays reachable; a run reads
+  whatever the account can read, apart from the sealed paths; and of a second mount of the same disk only WSL's
+  `/mnt/wslg` is hidden.
 
 Large protected files. A protected file over 64 MB is read in full once in a campaign's process, and again when
 its size, one of its times or its first or last MiB has changed. Before every keep and before a confirmation's

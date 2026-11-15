@@ -26,7 +26,7 @@ Resuming an Optuna study or a tracker run only continues bookkeeping; it does no
 
 ## 3. Safety and retention
 - Write atomically: save to a temporary name in the same directory, flush/fsync, then rename. DCP writes a directory: write a small completion sentinel last.
-- Use per-run paths (`RunLog.path("ckpt", ...)` or `$EXP_RUN_DIR/ckpt/`) so concurrent runs never overwrite each other.
+- Use per-run paths (`RunLog.path("ckpt", ...)` or `$EXP_RUN_DIR/ckpt/`; in a command given to `expctl launch`, `{run_dir}` stands for the run's folder) so concurrent runs never overwrite each other.
 - Keep `best` (by the declared selection rule), `last` (for resume) and a bounded number of periodic checkpoints. Never delete `best`. Deleting artifacts outside the retention policy needs the user's approval.
 - Check free disk space before saving. Checkpoint frequency follows step time and interruption risk (typically every 15–30 minutes of compute for long runs), and always when `should_stop()` turns true.
 

@@ -89,7 +89,7 @@ One finding about quality (source: model memory).
 - H1: raise QUALITY to 1.5 (source: model memory)
 - H2: try a warm-up schedule (source: model memory)
 """
-PROBE = '''import json, os, socket, sys
+PROBE = '''import json, os, socket, subprocess, sys
 proj, wt = sys.argv[1], sys.argv[2]
 def writable(p):
     try:
@@ -97,6 +97,14 @@ def writable(p):
             pass
         return True
     except OSError:
+        return False
+def can(a):  # w:FILE can be written, r:FILE can be read, c:PROGRAM is a Windows command interpreter that answers
+    try:
+        if a[0] == "c":
+            return subprocess.run([a[2:], "/c", "ver"], capture_output=True, timeout=30).returncode == 0
+        open(a[2:], "a" if a[0] == "w" else "r").close()
+        return True
+    except (OSError, subprocess.SubprocessError):
         return False
 try:
     socket.create_connection(("1.1.1.1", 53), timeout=3).close()
@@ -106,7 +114,8 @@ except OSError:
 sealed = os.path.join(proj, "data/test/labels.csv")
 print(json.dumps({"net": net, "sealed": os.path.exists(sealed) and os.path.getsize(sealed) > 0,
                   "main": writable(os.path.join(proj, "train.py")), "worktree": writable(os.path.join(wt, "probe.tmp")),
-                  "runs": writable(os.path.join(proj, "runs", "probe.tmp"))}))
+                  "runs": writable(os.path.join(proj, "runs", "probe.tmp")),
+                  **({"more": [can(a) for a in sys.argv[3:]]} if sys.argv[3:] else {})}))
 '''
 
 
@@ -1658,19 +1667,38 @@ def sandbox_tests(tmp, proj):
     if not C.box_train:
         bw = shutil.which("bwrap")  # the reason, in the words of the loop's own trial of it: a Linux may have it and refuse it
         why = ("it is Linux-only" if not sys.platform.startswith("linux") else "it is not installed" if not bw else
-               "it does not start: " + " ".join(subprocess.run([bw, "--unshare-net", "--dev-bind", "/", "/", "true"],
+               "it does not start: " + " ".join(subprocess.run([bw, "--unshare-net", "--ro-bind", "/", "/", "true"],
                                                                capture_output=True, text=True).stderr.split())[:200])
         print(f"SKIP sandbox checks: bubblewrap is not usable here ({why}), so a run is not confined on this platform")
         return
     C.fresh_worktree("HEAD")
-    put(tmp / "probe.py", PROBE)
-    (proj / "runs").mkdir(exist_ok=True)
-    r = tk.sh(C.box_train + [PY, str(tmp / "probe.py"), str(proj), str(C.wt)], cwd=C.wt)
+    # The probe lies in the project, because a box has a /tmp of its own and this test's folder lies in /tmp. What is
+    # asked of the box is asked of this system first: only what a program can do here says something when a box refuses it
+    probe, own, away = [PY, str(proj / "runs/probe.py"), str(proj), str(C.wt)], str(proj / "runs/own"), Path(
+        "/var/tmp") / f"nnkit-probe-{os.getpid()}.tmp"
+    put(proj / "runs/probe.py", PROBE)
+    put(tmp / "outside.txt", "outside the project")
+    for d in ("own", "other"):
+        (proj / "runs" / d).mkdir(exist_ok=True)
+    asked = [f"w:{own}/x", f"w:{proj / 'runs/other/x'}", f"w:{away}", f"r:{tmp / 'outside.txt'}",
+             f"r:/mnt/wslg/distro{os.path.realpath(proj)}/data/test/labels.csv", "c:/mnt/c/Windows/System32/cmd.exe"]
+    here = json.loads(tk.sh(probe + asked, cwd=C.wt).stdout)["more"]
+    asked = [a for a, ok in zip(asked, here) if ok]  # the last two are what WSL adds: the distro's second mount, Windows
+    r = tk.sh(C.box_train + ["--bind", own, own] + probe + asked, cwd=C.wt)  # as train() binds a run's own folder
     got = json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]
-    check(got == {"net": False, "sealed": False, "main": False, "worktree": True, "runs": True},
-          f"a training run has no network, cannot see the sealed data and can write only its worktree and the runs folder (got {got})")
+    check(here[:4] == [True] * 4 and got == {"net": False, "sealed": False, "main": False, "worktree": True, "runs": False,
+                                             "more": [True] + [False] * (len(asked) - 1)},
+          "a training run has no network, cannot see the sealed data and can write only its worktree and its own run "
+          "folder: not the runs folder, another run's folder or a file outside the project, and it does not see this "
+          "system's /tmp; under WSL it cannot read the sealed data through the distro's second mount or start a Windows "
+          f"program (was: all of these but the first two) (asked {[a[:2] + Path(a[2:]).name for a in asked]}, got {got})")
+    r = tk.sh(C.box_train + [PY, "-c", "open(%r, 'w')" % str(away)], cwd=C.wt)
+    check(r.returncode != 0 and "loop.eval_writable" in C.ro_hint(r.stderr) and not C.ro_hint("No such file or directory"),
+          "a failure that the sandbox's read-only file system caused is reported with the places a run and the evaluator "
+          f"may write, and no other failure is ({r.stderr.strip().splitlines()[-1:]})")
+    away.unlink(missing_ok=True)
     # a process namespace where the system gives one: what runs in the sandbox then reaches no process outside
-    given = subprocess.run([C.box_train[0], "--unshare-net", "--unshare-pid", "--dev-bind", "/", "/", "--proc", "/proc",
+    given = subprocess.run([C.box_train[0], "--unshare-net", "--unshare-pid", "--ro-bind", "/", "/", "--proc", "/proc",
                             "true"], capture_output=True).returncode == 0
     reach = ("import os, sys\ntry:\n    os.kill(int(sys.argv[1]), 0)\n    print('reached')\n"
              "except OSError as e:\n    print(type(e).__name__)\n")
@@ -1690,8 +1718,9 @@ def sandbox_tests(tmp, proj):
     check(r.stdout.strip() == "[False, False, True]" and str(proj / "blobs/test") in tmpfs and "/dev/null" not in wild,
           f"a training run cannot see files that a pattern with a leading wildcard seals, and each sealed folder is hidden "
           f"as one (was: visible) ({r.stdout.strip()} {r.stderr[-200:]} {tmpfs})")
-    # sealed data in a folder outside the project, named from the project or by its full path, as a folder and as files
-    vault = Path(os.path.realpath(tmp)) / "held.vault"
+    # sealed data in a folder outside the project, named from the project or by its full path, as a folder and as files.
+    # Not in /tmp, which a box replaces as a whole: there the file that no pattern seals would be hidden too
+    vault = Path(tempfile.mkdtemp(prefix="nnkit-vault-", dir="/var/tmp")) / "held.vault"
     for f in ("labels.csv", "sub/more.txt"):
         put(vault / f, "sealed")
     rel, show = os.path.relpath(vault, os.path.realpath(proj)).replace(os.sep, "/"), (
@@ -1705,7 +1734,7 @@ def sandbox_tests(tmp, proj):
     C.cfg["final_eval_commands"] = [f"{PY} eval.py --final --data={vault.as_posix()}/labels.csv"]
     got.append(tk.sh(C.eval_box(proj / "runs") + [PY, "-c", show] + files, cwd=proj).stdout.split())
     C.cfg["final_eval_commands"] = []
-    shutil.rmtree(vault)
+    shutil.rmtree(vault.parent)
     check(got == [["hidden", "hidden"]] * 2 + [["hidden", "sealed"]] * 3,
           "sealed data in a folder outside the project is hidden from a training run, as a folder or file by file, "
           "whether the pattern names it from the project or by its full path, and from the loop's evaluator when only "
@@ -1714,7 +1743,7 @@ def sandbox_tests(tmp, proj):
     C.cfg["sealed_paths"] = ["data/test/**"]
     shutil.rmtree(proj / "blobs/test")
     def seen():  # what the evaluator's box lets a program do, when the folder it scores is the runs folder
-        r = tk.sh(C.eval_box(proj / "runs") + [PY, str(tmp / "probe.py"), str(proj), str(C.wt)], cwd=proj)
+        r = tk.sh(C.eval_box(proj / "runs") + probe, cwd=proj)
         return json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]
 
     got = seen()
@@ -1732,7 +1761,10 @@ def sandbox_tests(tmp, proj):
     check(isinstance(got, dict) and got.get("sealed") is True,
           f"sealed data that the loop's own evaluator command names stays readable for it (got {got})")
     C.drop_worktree()
-    (proj / "runs/probe.tmp").unlink(missing_ok=True)
+    for x in ("probe.tmp", "probe.py", "own/x", "other/x"):
+        (proj / "runs" / x).unlink(missing_ok=True)
+    for d in ("own", "other"):
+        (proj / "runs" / d).rmdir()
 
 
 # ---------------------------------------------------------------- 13. guard rules the loop relies on

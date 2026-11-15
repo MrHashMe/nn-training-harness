@@ -685,11 +685,19 @@ class Campaign:
             raise Stop(f"safeguard: protected file(s) changed since the campaign started: {', '.join(changed[:6])}")
 
     def sandbox(self, train):
-        """bubblewrap prefix: no network and, where the system gives one, a process namespace; for a training run
-        also the project read-only except the worktree and the runs folder, with the sealed paths hidden. [] where
+        """bubblewrap prefix: no network, the file system read-only with a /tmp, /run and /dev/shm of the box's own
+        and, where the system gives one, a process namespace; for a training run also the sealed paths hidden and the
+        worktree writable. train() adds the run's own folder, the only other place a run can write. [] where
         bubblewrap does not work: then none of this is enforced."""
         bw = shutil.which("bwrap") if sys.platform.startswith("linux") else None
-        net = [bw, "--unshare-net", "--die-with-parent", "--dev-bind", "/", "/"]
+        # Until 15 November 2026 the box bound / read-write. A run could then write anywhere outside the project (an
+        # installed package the evaluator imports, another run's folder) and reach the session's sockets (Docker, the
+        # bus, X); under WSL it could start Windows programs through /run, which have the network, and read sealed
+        # data through the distro's second mount under /mnt/wslg
+        net = [bw, "--unshare-net", "--die-with-parent", "--ro-bind", "/", "/", "--dev-bind", "/dev", "/dev"]
+        for d in ("/tmp", "/run", "/dev/shm", "/mnt/wslg"):
+            if os.path.isdir(d) and not os.path.islink(d):  # a mount point that is missing or a link would stop bwrap
+                net += ["--tmpfs", d]
         # In a process namespace of its own, what runs inside sees and signals no process outside: without one a run
         # could end another live run, or the campaign. /proc comes after the bind of /, which would cover it
         pre = next((p for p in (net + ["--unshare-pid", "--proc", "/proc"], net)
@@ -713,8 +721,7 @@ class Campaign:
                         pre += ["--ro-bind", "/dev/null", str(self.root / f)]
                 for d in sorted(set(filter(None, tops.values()))):
                     pre += ["--tmpfs", str(self.root / d)]
-            runs = expctl.runs_root(self.root, self.cfg)
-            pre += ["--bind", str(self.wt), str(self.wt), "--bind", str(runs), str(runs)]
+            pre += ["--bind", str(self.wt), str(self.wt)]
         return pre
 
     # ---- worktree
@@ -795,6 +802,12 @@ class Campaign:
             if os.path.exists(w):
                 pre += ["--bind", str(w), str(w)]
         return pre
+
+    def ro_hint(self, text):
+        """For a failure that the sandbox's read-only file system caused, where the failing program may write."""
+        return (" (the loop's sandbox: a run writes only its worktree, its own run folder and /tmp, the evaluator only the "
+                "folder it scores, loop.eval_writable and /tmp; see references/loop.md)"
+                if self.box_eval and ("Read-only file system" in text or "[Errno 30]" in text) else "")
 
     def evaluate(self, run_dir):
         """The frozen evaluator on one folder, started by the harness itself; None when it timed out."""
@@ -901,6 +914,9 @@ class Campaign:
                         f"loop={self.name}", "--tag", f"step={tag}", "--tag",
                         f"commit={git(self.wt, 'rev-parse', '--short=12', 'HEAD').strip()}",
                         *(["--tag", f"values={values}"] if values else []), "--", *self.box_train,
+                        # of the runs folder a boxed run writes its own folder only, whose place expctl fills in: the
+                        # records of another run, by which the harness judges and stops that run, are out of its reach
+                        *(["--bind", "{run_dir}", "{run_dir}"] if self.box_train else []),
                         *self.fill(command or L["train_command"], seed=seed), cwd=self.wt)
         try:
             out = json.loads(r.stdout)
@@ -934,7 +950,8 @@ class Campaign:
         if ex.get("stopped_for") or (run_dir / "stop.json").exists():
             raise Stop(f"stop requested: the training run {rid} was stopped from outside the loop, so it was not scored")
         if ex.get("returncode") != 0:
-            return "crash", f"training failed: {expctl.tail_bytes(run_dir / 'stdout.log', 600)[-400:]}", rid
+            said = expctl.tail_bytes(run_dir / "stdout.log", 600)
+            return "crash", f"training failed: {said[-400:]}{self.ro_hint(said)}", rid
         e = self.evaluate(run_dir)
         if e is None:
             return "crash", "the evaluator timed out", rid
@@ -947,7 +964,8 @@ class Campaign:
             return "ok", score, rid
         if res.get("error"):
             return "invalid", f"the evaluator refused the run: {str(res['error'])[:300]}", rid
-        return "crash", f"the evaluator failed (exit {e.returncode}): {(e.stderr or e.stdout)[-300:]}", rid
+        said = e.stderr or e.stdout
+        return "crash", f"the evaluator failed (exit {e.returncode}): {said[-300:]}{self.ro_hint(said[-2000:])}", rid
 
     # ---- one agent session
     def session(self, role, prompt, idir: Path):

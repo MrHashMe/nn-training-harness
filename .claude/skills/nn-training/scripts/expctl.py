@@ -1987,6 +1987,9 @@ def cmd_supervise(args):
     if not cmd:
         write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": "manifest has no cmd", "ended_ts": now()})
         return 1
+    # {run_dir} in a command is this run's folder, which no caller knows before the launch: the loop binds it into the
+    # sandbox of its run. The manifest keeps the placeholder, so `resume` fills in the folder of the new run
+    cmd = [str(c).replace("{run_dir}", os.path.abspath(run_dir)) for c in cmd]
     log = open(run_dir / "stdout.log", "ab", buffering=0)
     t0 = now()
     env = dict(os.environ, EXP_LAUNCH_TS=repr(t0))  # RunLog ignores a stop.json older than this launch

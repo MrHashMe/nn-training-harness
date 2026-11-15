@@ -382,7 +382,8 @@ def main():
     crash = jout(expctl(proj, "launch", "--name", "crash", "--", PY, "train.py", "--mode", "crash"))
     nan = jout(expctl(proj, "launch", "--name", "nan", "--", PY, "train.py", "--mode", "nan", "--steps", "20"))
     hang = jout(expctl(proj, "launch", "--name", "hang", "--", PY, "train.py", "--mode", "hang"))
-    plain = jout(expctl(proj, "launch", "--name", "plain", "--snapshot", "none", "--", PY, "-c", "print('plain ok')"))
+    plain = jout(expctl(proj, "launch", "--name", "plain", "--snapshot", "none", "--", PY, "-c",
+                        "import sys; print('plain ok ' + sys.argv[1])", "{run_dir}"))
     vanish = jout(expctl(proj, "launch", "--name", "vanish", "--", PY, "train.py", "--mode", "vanish"))
     dl = jout(expctl(proj, "launch", "--name", "deadline", "--deadline", "2s", "--", PY, "train.py", "--steps", "2000"))
     subr = expctl(proj, "launch", "--name", "subdir", "--", PY, "hello.py", env=None, timeout=60)
@@ -403,6 +404,11 @@ def main():
     check(wait_for(lambda: terminal(plain["run_id"]) == "completed", 15) is not None, "plain (no runlog) -> completed (inferred)")
     detp = jout(expctl(proj, "status", "--run", plain["run_id"]))
     check("inferred" in detp, "plain run flagged as inferred")
+    said = (proj / plain["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace").strip()[len("plain ok "):]
+    kept = json.loads((proj / plain["run_dir"] / "manifest.json").read_text(encoding="utf-8"))["cmd"][-1]
+    check(os.path.isdir(said) and os.path.samefile(said, proj / plain["run_dir"]) and kept == "{run_dir}",
+          "{run_dir} in a launched command is the run's own folder, and the manifest keeps the placeholder for a resume "
+          f"(said {Path(said).name!r}, kept {kept!r})")
     check(wait_for(lambda: terminal(vanish["run_id"]) == "incomplete", 15) is not None,
           "exit code 0 without RunLog's result.json -> incomplete, not completed")
     check(wait_for(lambda: terminal(dl["run_id"]) == "timeout", 25) is not None, "deadline run -> timeout")

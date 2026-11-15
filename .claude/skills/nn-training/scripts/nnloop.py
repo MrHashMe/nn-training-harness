@@ -1252,9 +1252,19 @@ class Campaign:
             untried="; ".join(untried) or "none", search=SEARCH.format(k=k) if k else "")
 
     def scan(self, diff, transcript, guard):
-        """Signs of tampering in the change, the transcript and the guard's record of the session."""
-        cfg, hits = self.cfg, []
-        added = "\n".join(x[1:] for x in diff.splitlines() if x.startswith("+") and not x.startswith("+++"))
+        """Signs of tampering in the change, the transcript and the guard's record of the session. The lines a change
+        adds are read as text: a sealed name counts wherever it stands, and a program's name counts in a string or in a
+        line that only moved. A comment line of a Python file is no code: it counts for the sealed names and the
+        project's path alone."""
+        cfg, hits, lines, name, new = self.cfg, [], diff.split("\n"), "", []
+        for i, x in enumerate(lines):
+            # a file's `+++` line stands right before its first hunk; an added line that itself begins with `++` does not
+            if x.startswith("+++ ") and lines[i + 1:i + 2] and lines[i + 1].startswith("@@ "):
+                name = x[4:].strip()
+            elif x.startswith("+"):
+                new.append((name, x[1:]))
+        added = "\n".join(x for _, x in new)
+        code = "\n".join(x for f, x in new if not (f.endswith(".py") and x.lstrip().startswith("#")))
         calls = tool_inputs(transcript)
         for where, text in (("change", added.replace("\\", "/")), ("agent's tool calls", calls)):
             for tok in cfg.get("sealed_tokens") or []:
@@ -1265,13 +1275,13 @@ class Campaign:
                     hits.append(f"the sealed path '{literal(p)}' appears in the {where}")
         if self.root.as_posix().lower() in added.replace("\\", "/").lower():
             hits.append("the change reaches into the main project by absolute path")
-        if not self.box_train and NET.search(added):
-            hits.append(f"the change adds network or process-starting code ('{NET.search(added).group(0)}'), and "
+        if not self.box_train and NET.search(code):
+            hits.append(f"the change adds network or process-starting code ('{NET.search(code).group(0)}'), and "
                         f"this platform cannot run training without network access")
-        if "--unshare-pid" not in self.box_train and re.search(r"\bos\.kill(?:pg)?\b", added):
+        if "--unshare-pid" not in self.box_train and re.search(r"\bos\.kill(?:pg)?\b", code):
             hits.append("the change signals processes (os.kill), and this platform cannot keep a training run from "
                         "reaching the processes outside it")
-        if not self.box_train and "EXP_PROJECT_ROOT" in added:  # a run gets the main project's place in this variable
+        if not self.box_train and "EXP_PROJECT_ROOT" in code:  # a run gets the main project's place in this variable
             hits.append("the change reads EXP_PROJECT_ROOT, the main project's folder, and this platform cannot hide "
                         "the sealed data there from a training run")
         # a refused read counts only when it aimed at sealed data, and a refusal that the guard marks as routine
@@ -1777,7 +1787,10 @@ class Campaign:
         if st.get("baseline") and "noise" not in st:  # a campaign begun when the baseline runs alone gave the noise
             n = len(st["baseline"]["scores"])
             st["noise"] = {"ss": st["baseline"]["sd"] ** 2 * (n - 1), "df": n - 1}
-            st["margin"] = self.margin(n - 1)
+        if st.get("baseline") and st["noise"]["df"]:
+            # by this version's rule: a state that an earlier version wrote went on showing that version's margin (to
+            # the worker, in the journal, on the ledger row of a change without a full panel) until the next full panel
+            st["margin"] = self.margin(len(self.L["seeds"]) - 1)
         if (st.get("confirm") or {}).get("status") not in CONFIRMED:
             st.pop("confirm", None)  # an attempt that did not finish says nothing about the run that starts now
         if st.get("aside"):  # the line a restart had begun when the campaign paused: go on with it
@@ -1835,9 +1848,10 @@ def preflight(C: Campaign, agent, limits, args):
     L.setdefault("direction", (cfg.get("metric") or {}).get("direction"))
     if L["direction"] not in ("minimize", "maximize"):
         fail('loop.direction must be "minimize" or "maximize"')
-    if len(set(L["seeds"])) < 2 or not all(isinstance(s, int) for s in L["seeds"]):
-        fail("loop.seeds needs at least two different seeds, each a whole number: the keep rule compares against "
-             "run-to-run noise, and a near-miss is measured on the seeds that follow the largest one")
+    if len(set(L["seeds"])) < max(2, len(L["seeds"])) or not all(isinstance(s, int) for s in L["seeds"]):
+        fail("loop.seeds needs at least two different seeds, each a whole number and none of them twice: the keep rule "
+             "compares against run-to-run noise and counts one run for every entry, and a near-miss is measured on the "
+             "seeds that follow the largest one")
     if L.get("search_trials") is not None and not (expctl.finite(L["search_trials"]) and L["search_trials"] >= 2
                                                    and L["search_trials"] == int(L["search_trials"])):
         fail("loop.search_trials must be a whole number of at least 2: the versions the harness trains when a change "

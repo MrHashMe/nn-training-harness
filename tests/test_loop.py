@@ -597,6 +597,8 @@ def refusal_tests(tmp, proj, exe):
         ("a GPU-hour limit without a GPU", dict(gpu_hours=1.0, tweak=lambda C: setattr(C, "gpus", [])), "refusing --max-gpu-hours"),
         ("a missing loop setting", dict(runs=5, loop={"eval_command": None}), "lacks: eval_command"),
         ("a single seed", dict(runs=5, loop={"seeds": [1, 1]}), "at least two different seeds"),
+        # was accepted: a panel then held two scores, and the margin counted three runs behind the best so far's mean
+        ("a seed given twice", dict(runs=5, loop={"seeds": [1, 1, 2]}), "none of them twice"),
         ("a bad direction", dict(runs=5, loop={"direction": "up"}), "loop.direction must be"),
         ("a sealed token in a command", dict(runs=5, loop={"train_command": ["{python}", "train.py", "--seed", "{seed}", "NN_UNSEAL_TEST=1"]}),
          "sealed token 'NN_UNSEAL_TEST'"),
@@ -899,6 +901,8 @@ def resume_tests(tmp, proj, exe):
     check(near(z.get("ss"), 0.0009) and z.get("df") == 1 and near(st["margin"], nnloop.t_mult(2, 2) * 0.03),
           "a campaign from before the pooled estimate is resumed with its old deviation as the first panel")
 
+    want = st["margin"]
+    put(sp, json.dumps(dict(json.loads(sp.read_text(encoding="utf-8")), margin=9.9)))  # as a version with another rule left it
     r, st, new = resume(tmp, proj, exe, "a", [
         {"do": [["read", "train.py"], ["!sub", "train.py", "QUALITY = 1.5", "QUALITY = 1.5  # NN_UNSEAL_TEST"]]},
         {}, {"result": "refusal"}], *lim)
@@ -907,6 +911,11 @@ def resume_tests(tmp, proj, exe):
                  and "refused the request" in str(st.get("stop_reason")),
                  f"a sealed token in a change is invalid, an idle session is no_change, a model refusal stops (got {got})"):
         show(r)
+    got = [st.get("margin")] + [e.get("margin") for e in new]
+    check(len(got) == 3 and all(near(m, want) for m in got),
+          f"a resumed campaign shows the margin by the rule of the version that runs it, in its state and on the rows of "
+          f"changes without a full panel (was: the figure the state held, which an earlier version had worked out by its "
+          f"own rule, until the next full panel) ({got}, expected {want})")
 
     r, st, new = resume(tmp, proj, exe, "a", [
         edit("QUALITY = 1.5", "QUALITY = 0.5"), edit("CHEAT = False", "CHEAT = True"),
@@ -1708,6 +1717,18 @@ def sandbox_tests(tmp, proj):
     check(got == [[True, True, False], [True, False, False], [False, False, False]],
           "a change that signals processes counts as tampering where a run has no process namespace of its own, and one "
           f"that starts processes where a run has no sandbox at all (was: os.kill passed everywhere) ({got})")
+    C.box_train, hunk = [], "diff --git a/{f} b/{f}\n--- a/{f}\n+++ b/{f}\n@@ -1,0 +1,2 @@\n+{line}\n+x = 1\n"
+    got = [bool(C.scan(hunk.format(f=f, line=line), "", [])) for f, line in (
+        ("train.py", "# no subprocess, no os.kill, no socket, and EXP_PROJECT_ROOT is not read"),
+        ("train.py", "    # curl is not used"), ("train.py", "x = 2  # through subprocess"),
+        ("train.py", 'note = "# subprocess"'), ("run.sh", "# curl is not used"), ("train.py", "# NN_UNSEAL_TEST"),
+        ("train.py", "# see data/test/labels.csv"), ("train.py", "++ x; import subprocess"))]
+    C.box_train = box
+    check(got == [False, False] + [True] * 6,
+          "where a run has no sandbox, a comment line of a Python file that names subprocess, os.kill or "
+          "EXP_PROJECT_ROOT is no code and voids no change (was: it did). What still counts: a comment after code on "
+          "its line, a string, a comment in a file that is not Python, a sealed token or path in a comment, and an "
+          f"added line that begins with `++` (was: such a line was not read at all) ({got})")
     before = C.main_status()
     (proj / ".DS_Store").write_bytes(b"\0\0\0\x01Bud1" + bytes(24))
     got = C.main_status()

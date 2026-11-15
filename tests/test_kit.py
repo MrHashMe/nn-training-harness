@@ -203,18 +203,67 @@ def main():
             "poke(b'\\0', True)\n"
             "out['back'] = fz()\n"
             "k = json.loads(kept.read_text()); k['eval/val.bin'][1] = '0' * 64; kept.write_text(json.dumps(k))\n"
-            "out['planted'], out['read'], out['after'] = fz(), fz('read'), fz()\n"
+            "out['planted'], out['launch'], out['after'] = fz(), expctl.frozen_state(root, cfg)['frozen_hash'], fz()\n"
+            "st = big.stat(); key = [st.st_size, st.st_mtime_ns, st.st_ctime_ns]\n"
+            "bad = {'a lone surrogate': [key, '\\ud800'], 'any text': [key, 'not a digest'], 'no text': [key, ''],\n"
+            "       '64 capitals': [key, 'A' * 64], 'a number': [key, 5]}\n"
+            "bad = {k: json.dumps({'eval/val.bin': v}) for k, v in bad.items()}\n"
+            "bad.update({'a list': '[1, 2]', 'no JSON': '{', 'nested too deep': '[' * 100000 + ']' * 100000})\n"
+            "out['bad'] = {}\n"
+            "for name, text in bad.items():\n"
+            "    kept.write_text(text)\n"
+            "    try:\n        out['bad'][name] = fz() == out['first']\n"
+            "    except Exception as e:\n        out['bad'][name] = type(e).__name__\n"
             "print(json.dumps(out))\n")
     r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "frozen-big")], cwd=proj)
     fb = json.loads(r.stdout) if r.returncode == 0 else {}
     check(fb and fb["first"] not in (fb["size"], fb["changed"]) and fb["size2"] == fb["size"] and fb["back"] == fb["first"],
           f"a change inside a frozen file beyond the bytes that every call reads changes the hash, and the file as it "
           f"was gives the first hash again (was: the hash by size, which such a change leaves as it is) ({fb}, {r.stderr[-300:]})")
+    # changed on 15 November 2026: this check said that a launch uses a planted hash; a launch reads every file now
     check(fb and fb["kept"] == ["eval/val.bin"] and fb["kept2"] == [] and fb["planted"] != fb["first"]
-          and fb["read"] == fb["after"] == fb["first"],
+          and fb["launch"] == fb["after"] == fb["first"],
           f"such a file's hash is kept while its size and times stand, and not for a file written this moment; a "
-          f"hash planted there is used by a launch, which is why the file is a harness file, and never by `expctl "
-          f"hash` or the final evaluation, whose read also puts it right ({fb})")
+          f"hash planted there is used by `status` alone (was: by a launch too), never by a launch, `expctl hash` or "
+          f"the final evaluation, whose read also puts it right ({fb})")
+    check(fb and len(fb["bad"]) == 8 and all(v is True for v in fb["bad"].values()),
+          "kept hashes that are no hashes are not used, and the file is read: a text that cannot be encoded made the "
+          "call fail, any other text gave another hash until `expctl hash` was run, and a file nested too deep made "
+          f"it fail with a RecursionError ({fb.get('bad')})")
+    # The same from end to end, in a project of its own: the hash that a launch records does not depend on a file in
+    # the project. (Was: a large frozen file changed with its times set back and its old hash written under its new
+    # size and times gave the next run's record the hash of the files as they had been.)
+    side = tmp / "frozen-launch"
+    (side / ".claude").mkdir(parents=True)
+    (side / "eval").mkdir()
+    (side / ".claude/nn-training.json").write_text(json.dumps({"frozen_paths": ["eval/**"], "min_free_disk_gb": 0}))
+    big, keptf = side / "eval/val.bin", side / ".claude/state/frozen-hashes.json"
+    with open(big, "wb") as f:
+        f.seek((65 << 20) - 1)  # beyond the 64 MiB that every call reads
+        f.write(b"\0")
+    os.utime(big, (1e9, 1e9))
+    xp = [PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "--root", str(side)]
+
+    def launched(name):  # the frozen files' hash in a new run's record, and the one `expctl hash` prints right after
+        d = side / jout(sh(xp + ["launch", "--name", name, "--snapshot", "none", "--allow-duplicate", "--", PY, "-c", "pass"],
+                           cwd=side))["run_dir"]
+        wait_for(lambda: (d / "exit.json").exists(), 30)
+        return json.loads((d / "manifest.json").read_text()).get("frozen_hash"), jout(sh(xp + ["hash"], cwd=side))["frozen_hash"]
+
+    h1, said1 = launched("a")
+    old = ((json.loads(keptf.read_text()) if keptf.exists() else {}).get("eval/val.bin") or [0, ""])[1]
+    with open(big, "r+b") as f:
+        f.seek(30 << 20)
+        f.write(b"x")
+    os.utime(big, (1e9, 1e9))
+    st = big.stat()
+    keptf.write_text(json.dumps({"eval/val.bin": [[st.st_size, st.st_mtime_ns, st.st_ctime_ns], old]}))
+    h2, said2 = launched("b")
+    check(len(old) == 64 and h1 and h1 == said1 and h2 == said2 and h2 != h1,
+          "a launch records the hash of the frozen files as they are: a frozen file of 65 MiB changed in its middle, "
+          "its times set back and its old hash written under its new size and times gives the next run another hash, "
+          f"the one `expctl hash` prints (was: the first run's) (kept hash of {len(old)} characters, first {str(h1)[:12]} "
+          f"and {str(said1)[:12]}, then {str(h2)[:12]} and {str(said2)[:12]})")
     made = [proj / n for n in ("AGENTS.md", ".mcp.json", ".codex/hooks.json", ".cursor/cli.json",
                                ".agents/skills/x/SKILL.md", "experiments/JOURNAL.md")]
     for p in made:

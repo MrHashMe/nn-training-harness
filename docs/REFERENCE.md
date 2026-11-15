@@ -345,22 +345,26 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   the file. In that hash a text file counts with LF line ends, so that a checkout with CRLF on another machine
   gives the same value. Every frozen file counts with its content. (Until 15 November 2026 at most
   64 MB were read, the smallest files first, and what lay beyond counted by its size alone, so that a change
-  inside a large file left the hash as it was.) The smallest files are read at every call, 64 MB of them, so
-  that code is always read. A file beyond those is read once, and again when its size or one of its times has
-  changed; meanwhile its hash is taken from `.claude/state/frozen-hashes.json`, a harness file. `expctl hash`
-  and the final evaluation read every file whatever is kept there. What remains: a program that changes such a
-  large file and sets its times back passes a launch and `status` until one of those two reads; on Linux and
-  macOS the file's change time gives it away at once, Windows has none. A run made before that day holds the
-  older hash, which `status` still takes for the same frozen files. The loop reads its protected files alike:
+  inside a large file left the hash as it was.) `expctl launch`, `nnremote launch`, `expctl hash` and the final
+  evaluation read every file, so the hash in a run's record depends on nothing that a program could have written
+  beside the files. `expctl status` is called often: it reads the smallest files, 64 MB of them, and a file
+  beyond those once, and again when its size or one of its times has changed; meanwhile it takes that file's
+  hash from `.claude/state/frozen-hashes.json`, a harness file that every full read puts right. What remains: a
+  program that changes such a large file and writes the file's old hash there, or sets the file's times back, is
+  not seen by `status` until the next launch, `expctl hash` or final evaluation. Two runs made under different
+  frozen files hold different hashes whatever was written there, so the alert comes with the next run at the
+  latest. A run made before that day holds the older hash, which `status` still takes for the same frozen
+  files. The loop reads its protected files by a rule of its own:
   one over 64 MB in full once in a campaign's process, again when its size, its times or its first or last MiB
   have changed (before, only the size and those two MiB counted), and in full before every keep and before a
   confirmation's verdict (`references/loop.md`, "Large protected files"). A full read of 1 GiB took 0.65 s on
   Windows and 0.44 s in WSL on 15 November 2026, from the system's file cache; a first read takes as long as the
   disk needs. The time grows with the number of frozen files, not only with their bytes: on Windows, measured
   on 15 November 2026 with the tests running beside it, 64 MB in 64 files took 0.1 s, 5,000 small files 2 s and
-  20,000 small files 9 s (in WSL, on its own file system: 0.2 s and 0.7 s). `expctl launch`, `expctl hash` and
-  the final evaluation pay that each time, and
-  `expctl status` and the status at a session's start once a ranked run carries a hash. That hook has 30 s:
+  20,000 small files 9 s (in WSL, on its own file system: 0.2 s and 0.7 s). The two launch commands, `expctl
+  hash` and the final evaluation pay for the bytes and for the files each time; `expctl status` and the status
+  at a session's start pay for the files and for the 64 MB they read, once a ranked run carries a hash. That
+  hook has 30 s:
   with a frozen data folder of some 60,000 files or more the status at a session's start may not arrive, while
   the guard's protection of those files does not depend on it. The edit tools are asked about. The other way
   round, harmless lines are asked about when they hold such a write anywhere: a redirect to another file beside

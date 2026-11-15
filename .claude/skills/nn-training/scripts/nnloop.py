@@ -326,7 +326,7 @@ def file_sha(p: Path, again=False):
     too late.
     shortcut: every protected file is read at every check, which is slow beyond a few thousand files; cache by
     size and modification time when a project protects that many"""
-    st = p.stat()
+    st, at = p.stat(), time.time()
     key = (ends_sha(p, st.st_size), st.st_mtime_ns, st.st_ctime_ns) if st.st_size > BIG else None
     if key and not again and WHOLE.get(str(p), (None,))[0] == key:
         return WHOLE[str(p)][1]
@@ -334,7 +334,7 @@ def file_sha(p: Path, again=False):
     with open(p, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 20), b""):
             h.update(chunk)
-    if key and time.time() - st.st_mtime > 2:  # a file written this moment may change again under the same time stamp
+    if key and at - st.st_mtime > 2:  # written that moment, it may change again under the same time stamp
         WHOLE[str(p)] = (key, h.hexdigest())
     return h.hexdigest()
 

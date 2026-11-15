@@ -226,7 +226,7 @@ def read_json(path):
                 return json.load(f)
         except FileNotFoundError:
             return None
-        except (OSError, ValueError, UnicodeDecodeError) as e:
+        except (OSError, ValueError, UnicodeDecodeError, RecursionError) as e:  # the last: a file nested too deep
             # Windows refuses the open in the instant in which the writer replaces the file. With a single look a
             # live run read as stalled for that one call, when the file was its heartbeat
             if not isinstance(e, PermissionError) or attempt == 3:
@@ -948,24 +948,25 @@ FROZEN_READ = 64 << 20
 FROZEN_KEPT = ".claude/state/frozen-hashes.json"
 
 
-def frozen_state(root: Path, cfg, big="kept"):
+def frozen_state(root: Path, cfg, big="read"):
     """The files that match frozen_paths as one hash, or None where nothing is frozen. A run's record keeps it, so
     that a later look can tell whether two runs were made under the same evaluator. The guard asks about a write to
     such a file only where it can name the write; the hash changes whatever made the change. Text counts with LF
     line ends: the same evaluator checked out with CRLF on another machine is no other evaluator.
-    Every file counts with its content. The smallest are read at every call, FROZEN_READ bytes of them, so that code
-    is always read. A file beyond those is read once, and again when its size or one of its times has changed;
-    meanwhile its hash is taken from FROZEN_KEPT (big="kept"). big="read" reads it now whatever is kept there, as
-    `expctl hash` and the final evaluation do. big="size" counts it by its size alone, which was the rule until
-    15 November 2026: the hash that the records of older runs hold.
-    shortcut: with big="kept" a program that changes a file beyond FROZEN_READ and sets its times back is not seen;
-    on POSIX the change time gives it away, on Windows that field is the creation time. Read everything at every
-    call if a launch must not miss that."""
+    Every file counts with its content, and a launch, `expctl hash` and the final evaluation read every file
+    (big="read"; 1 GiB takes about half a second from the system's file cache). `expctl status` is called often: for
+    it (big="kept") the smallest files are read, FROZEN_READ bytes of them, and a file beyond those is read once and
+    again when its size or one of its times has changed, its hash taken from FROZEN_KEPT meanwhile, which every full
+    read puts right. big="size" counts a file beyond those by its size alone, which was the rule until 15 November
+    2026: the hash that the records of older runs hold.
+    shortcut: FROZEN_KEPT lies in the project, so with big="kept" a program that changes a file beyond FROZEN_READ
+    and writes the old hash there, or sets the file's times back, is not seen by `status` until the next full read;
+    keep the hashes where no run can write if `status` must not miss that."""
     pats = cfg.get("frozen_paths") or []
     files = files_matching(root, pats, cfg["runs_dir"].strip("/")) if pats else []
     if not files:
         return None
-    stats = {}
+    stats, at = {}, time.time()
     for rel in files:
         try:
             stats[rel] = (root / rel).stat()
@@ -982,12 +983,13 @@ def frozen_state(root: Path, cfg, big="kept"):
         for rel in beyond:
             st = stats[rel]
             key, was = [st.st_size, st.st_mtime_ns, st.st_ctime_ns], (kept if isinstance(kept, dict) else {}).get(rel)
-            try:
+            try:  # a kept hash is taken only in a hash's form: any program may have written that file
                 known[rel] = (was[1] if big == "kept" and isinstance(was, list) and len(was) == 2 and was[0] == key
-                              and isinstance(was[1], str) else file_digest(root / rel, True))
+                              and isinstance(was[1], str) and re.fullmatch("[0-9a-f]{64}", was[1])
+                              else file_digest(root / rel, True))
             except OSError:
                 continue  # hash_files counts it as unread
-            if time.time() - st.st_mtime > 2:  # a file written this moment may change again under the same time stamp
+            if at - st.st_mtime > 2:  # written that moment, it may change again under the same time stamp
                 keep[rel] = [key, known[rel]]
         if keep != (kept or {}):
             try:

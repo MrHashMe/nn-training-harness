@@ -48,17 +48,22 @@ adaptive schemes are candidates below.
   `Muon(hidden, lr=0.02, weight_decay=0, adjust_lr_fn="original")` beside AdamW at 1e-3 (the signature's defaults:
   `lr=0.001, weight_decay=0.1, momentum=0.95, ns_steps=5, adjust_lr_fn=None`). Measured here, 2026-11-15
   (`benchmarks/charlm`: a 1.8M-parameter character model, 30 s runs on one RTX 5090, PyTorch 2.9.1, seeds 11 to 13,
-  held-out loss in nats per character): Muon with AdamW 1.6483 (sd 0.0077) against 1.6748 (sd 0.0102) for AdamW
-  alone at its best rate under the same schedule, a difference of 0.0265 or 3.6 standard errors. A step cost 1.84
-  times as much (2717 steps against 4999), so Muon won by loss per step, not by speed. Both peak rates were
-  bracketed on a development seed, seven settings per family. Published: about 1.4x with correct width scaling of
-  LR and weight decay (190M to 1.4B), vanishing under wrong scaling; vendor-measured at 8B to 72B; kept 47% of its
-  per-workload score under one fixed configuration in AlgoPerf; convolution weights did better with AdamW. Risk:
-  one small task, one machine and three seeds here; AdamW's loss was still falling when the budget ended and
-  Muon's was flat, so the gap may narrow in a longer run; the AdamW run with matched update RMS (the rule above)
-  was not made; weight decay was not tuned (0 for Muon, 0.01 for AdamW); `"match_rms_adamw"`, which eases LR
-  transfer, was not ranked, because its best tried rate was the highest tried; FSDP2 use is undocumented
-  (unverified). Cost: a second optimizer and, at this size, almost twice the time per step.
+  loss on the held-out `data/loopval.txt` in nats per character): Muon with AdamW 1.6483 (sd 0.0077) against 1.6748
+  (sd 0.0102) for AdamW alone at its best rate under the same schedule, a difference of 0.0265 or 3.6 standard
+  errors (a t with about 4 degrees of freedom: one-sided p near 0.01). A step cost 1.84 times as much (2717 steps
+  against 4999), so Muon won by loss per step, not by speed: AdamW stopped at about Muon's number of steps (16 s)
+  scored 1.6942 (sd 0.0100). Muon's rate and the rate of AdamW alone were bracketed on `data/dev.txt` with one
+  seed, seven settings per family; the AdamW rate beside Muon stayed at 1e-3 in all seven and was not tuned.
+  Published: about 1.4x with correct width scaling of LR and weight decay (190M to 1.4B), vanishing under wrong
+  scaling; vendor-measured at 8B to 72B; kept 47% of its per-workload score under one fixed configuration in
+  AlgoPerf; convolution weights did better with AdamW. Risk: one small task, one machine and three seeds here; a
+  repeat of both arms at seed 11 moved Muon's score by 0.010, more than its sd across seeds, and AdamW's by 0.003
+  (counted in place of the first runs the difference is 0.024, counted beside them 0.0265); under a rate that
+  decays to zero both development curves were flat at the end (one run per arm) and no longer run was made, so
+  whether the gap holds with more steps is open; the AdamW run with matched update RMS (the rule above) was not
+  made; weight decay was not tuned (0 for Muon, 0.01 for AdamW); `"match_rms_adamw"`, which eases LR transfer, was
+  not ranked, because its best tried rate was the highest tried; FSDP2 use is undocumented (unverified). Cost: a
+  second optimizer and, at this size, almost twice the time per step.
   (source: `benchmarks/charlm`, measured 2026-11-15; https://arxiv.org/abs/2512.05620, 18 Jan 2026;
   https://arxiv.org/abs/2607.20548, 13 Jul 2026; https://docs.pytorch.org/docs/2.15/generated/torch.optim.Muon.html)
 - AlgoPerf rolling leaderboard. When: scouting only. How: read it, no dependency; current entries were not checked.

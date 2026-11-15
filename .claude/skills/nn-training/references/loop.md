@@ -299,14 +299,20 @@ poor side: a near-miss comes more often when the best so far's own panel turned 
 15 November 2026 with the rule as built (campaigns of 34 runs, three seeds, normal noise, the seed carrying 0,
 0.3 or 0.5 of the variance; 100,000 campaigns per case of ideas without effect; one test's nominal rate is
 2.3 %): a later change without effect was kept in 2.96 %, 2.35 % and 2.14 % of cases with the margin for six
-runs, and in 1.85 %, 1.36 % and 1.22 % with the margin for three, which is the rule since that day. Campaigns
-with at least one such keep fell from 12.5 to 11.3 %, from 7.2 to 6.5 % and from 4.7 to 4.2 %. With the mix
+runs (5.09 %, 3.80 % and 3.34 % of the changes that passed the first-seed check), and in 1.85 %, 1.36 % and
+1.22 % with the margin for three, which is the rule since that day. So the margin for six runs went over the
+nominal rate only where the seed carries none of the variance. Campaigns with at least one keep of a change
+without effect,
+at any iteration, fell from 12.5 to 11.3 %, from 7.2 to 6.5 % and from 4.7 to 4.2 %. The best so far came to
+stand on six runs in 22 %, 17 % and 12 % of campaigns; of these, the share that then kept 15 % or more of the
+changes judged against it fell from 13.3 to 8.0 %, from 10.4 to 6.0 % and from 9.6 to 5.5 %. With the mix
 of harmful, neutral and helpful ideas of 12 November (60,000 campaigns per case) the true gain of the commit a
 campaign ended on stayed where it was (3.86 to 4.04 deviations; differences of 0.02 or less at an error of
-0.015 per figure). The other remedy, comparing the change with the best so far's mean on the change's own three
+0.015 per figure). Another remedy, comparing the change with the best so far's mean on the change's own three
 seeds, kept more changes without effect where the seed carries little of the variance (3.83 % and 2.71 % at 0
 and 0.3, 2.02 % at 0.5) and was not adopted. Not simulated: noise that is not normal, a change that alters the
-noise, a campaign with restarts.
+noise, a campaign with restarts, and a best-so-far mean shrunk by the correlation between seeds, which was
+proposed with this change without its form.
 
 Runs are not compared seed by seed. Measured on the benchmark on 12 November 2026 (two commits, eight seeds,
 two repeats each): the seed means of the two commits correlated at r = 0.3, no more than runs of unrelated

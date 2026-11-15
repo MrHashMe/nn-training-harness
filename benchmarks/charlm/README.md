@@ -62,8 +62,12 @@ PyTorch 2.9.1 on 15 November 2026:
 
 - `torch.compile`: train with the compiled model, save the plain one. `torch.jit.trace` of a compiled model fails
   ("Detected that you are using FX to torch.jit.trace a dynamo-optimized function"), so `train.py` traces the
-  module inside the wrapper, which holds the same weights and scored the same. At this size compiling did not
-  pay: 138.6 steps a second after a first call of 4.8 s, against 151.7 without (WSL, one RTX 5090).
+  module inside the wrapper, which holds the same weights and scored the same (`tests/test_benchmarks.py` saves
+  one that way). Once compiled, the training step alone ran 16 % faster: 189.0 steps a second against 162.4 (WSL,
+  one RTX 5090, a fixed batch of 64). Compiling comes first: the first call took 1.4 s in one session and 4.8 s
+  in another, and the first 5 s after it ran at 125.6 steps a second, because the backward pass is compiled at
+  its first use. For a 30 s run that works out at about 4 % more steps or 9 % fewer, by arithmetic from these
+  figures and not by a timed run.
 - A hand-written `torch.autograd.Function` (a kernel with a backward of its own) in the forward: saving the trace
   fails ("Could not export Python function call"). Call it while `self.training` only, and give the other branch
   the same arithmetic in plain operations: `train.py` traces after `model.eval()`. A model built that way is

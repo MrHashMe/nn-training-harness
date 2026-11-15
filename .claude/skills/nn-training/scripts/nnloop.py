@@ -1117,10 +1117,11 @@ class Campaign:
         behind the mean it is compared with, each one seed panel unless given. A best so far that a second look put
         on two panels counts as one at a later change's first look all the same: a near-miss comes more often when
         the best so far's own panel turned out poorly, so its mean leans that way, and with the margin for all of
-        its runs changes without effect were kept more often than the rule's rate (references/loop.md). mult: a
-        factor on noise_mult. rest: the noise estimate without the change's own panels, which may raise the variance
-        its gain is tested against and never lower it. own: the variance of the change's scores, which stands for
-        the pooled one in the change's mean where it is more than OWN times as large."""
+        its runs changes without effect were kept more often than the rule's rate where the seed carries none of
+        the variance (2.96 % against 2.3 % in a simulation; references/loop.md). mult: a factor on noise_mult. rest:
+        the noise estimate without the change's own panels, which may raise the variance its gain is tested against
+        and never lower it. own: the variance of the change's scores, which stands for the pooled one in the
+        change's mean where it is more than OWN times as large."""
         L, z, n = self.L, self.st["noise"], len(self.L["seeds"])
         t = t_mult(mult * float(L.get("noise_mult") or 2), z["df"] + ahead)
         v = max(z["ss"] / z["df"], rest["ss"] / rest["df"] if rest and rest["df"] else 0.0)

@@ -144,9 +144,10 @@ Deterministic settings (`torch.use_deterministic_algorithms(True)`, `CUBLAS_WORK
   its own supervision), TorchTitan v0.4.0 (an example only), multi-GPU on native Windows (no NCCL).
 
 ## 9. Apple silicon (macOS)
-Nothing in this section was run on a Mac. It is read from the pages named, on 2026-11-14; what the kit's own code for
-macOS was tested on is in the platform table of the kit repository's `docs/REFERENCE.md`. Take each line as a thing
-to check on your machine.
+What this section says about PyTorch, MLX and macOS itself was not run on a Mac: it is read from the pages named, on
+2026-11-14. The kit's own code for macOS has run only in the kit's tests, on GitHub's macOS runner, which has no
+PyTorch (2026-11-15); what those tests cover is in the platform table of the kit repository's `docs/REFERENCE.md`.
+Take each line as a thing to check on your machine.
 - What there is: one GPU that shares the machine's memory with the processor, reached as torch's `mps` device or
   through MLX. There is no CUDA and no `nvidia-smi`: `expctl env` reports the chip and the memory, `expctl status` lists
   no GPU, and the loop refuses `--max-gpu-hours` because it cannot measure them: limit a campaign with
@@ -198,6 +199,6 @@ to check on your machine.
 - Shell: the guard reads zsh's own patterns as the wildcards they are (`data/(test|x)/f`, `da(ta)/f`, `[^a]`, and
   with `extendedglob` `^name` in a path, `pattern~other` and a flag such as `(#i)`), so a line that reaches sealed
   data through one is refused as its sh form is. What they do was run in zsh 5.9 in a container; the guard's answers
-  were tested on Windows and Linux. Read as plain characters, each behind a shell option that the line or your
+  were tested on Windows, Linux and macOS. Read as plain characters, each behind a shell option that the line or your
   shell settings would have to change: `x#`, a `^name` that is a whole word or stands inside a name, a group
   without `|` that ends a word, and a pattern under an option that ignores case.

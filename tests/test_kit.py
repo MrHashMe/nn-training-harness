@@ -1199,7 +1199,9 @@ def main():
         # were None: a shell write to git's hooks or configuration (the edit tools asked already)
         ("Bash", {"command": "echo 'cat data/train.csv' > .git/hooks/pre-commit"}, "ask"),
         ("Bash", {"command": "cp tools/runlog.py .git/config"}, "ask"),
-        ("Bash", {"command": "cat .git/config > gitconfig.txt"}, "ask"),  # the rule cannot tell a source from a target
+        # was "ask" (the rule could not tell a source from a target): a redirection's target is read as one (round 8)
+        ("Bash", {"command": "cat .git/config > gitconfig.txt"}, None),
+        ("Bash", {"command": "cat gitconfig.txt > .git/config"}, "ask"),
         ("Bash", {"command": "cat .git/config"}, None),
         # were None: the same settings written by git itself, given for one call, or as environment variables. A key
         # that holds a plain value passes, as do reading a setting and a pager or editor that is none
@@ -1346,6 +1348,43 @@ def main():
         ("Bash", {"command": "find eval/metrics.py -delete"}, "ask"),
         ("Bash", {"command": "python -c \"import os; open(os.getcwd() + '/eval/metrics.py', 'a').write('x')\""}, "ask"),
         ("Bash", {"command": "python -c \"import pathlib; pathlib.Path('eval/metrics.py').open('w').write('x')\""}, "ask"),
+        # a redirection and tee write the file they name, and only that one where they are all the line writes
+        # with (round 8). These were "ask": any path of a line with a redirection counted as written
+        ("Bash", {"command": "python eval/metrics.py > score.json; python eval/metrics.py 2> err.log"}, None),
+        ("Bash", {"command": "echo starting > run.log && python eval/metrics.py | tee -a sub/eval.log"}, None),
+        ("Bash", {"command": "git diff eval/metrics.py > eval.patch; cat eval/metrics.py > /dev/null"}, None),
+        ("Bash", {"command": "cd sub && python ../eval/metrics.py &> 'all out.log'"}, None),
+        ("PowerShell", {"command": "python eval/metrics.py > score.json"}, None),
+        # still asked: the target is the frozen file, however it is spelled or reached
+        ("Bash", {"command": "echo x > \"eval/metrics.py\""}, "ask"),
+        ("Bash", {"command": "echo x > 'eval'/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo x >| eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo x#>eval/metrics.py"}, "ask"),  # was None: the rules found no path behind a >
+        ("Bash", {"command": "cd eval; python ../train.py > metrics.py"}, "ask"),
+        ("Bash", {"command": "python eval/metrics.py | tee eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd eval && python ../train.py | tee -a metrics.py"}, "ask"),
+        ("Bash", {"command": "python train.py > log.txt 2> eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "exec 3> eval/metrics.py; echo x >&3"}, "ask"),
+        ("PowerShell", {"command": "python train.py | tee eval/metrics.py"}, "ask"),
+        # and asked as before where the line cannot be read so: a variable, a backslash, a pattern, a tee that starts
+        # no command, a folder that the line does not name, another write verb, a redirection in a text handed on
+        ("Bash", {"command": "d=eval; cd $d && cat eval/metrics.py > metrics.py"}, "ask"),
+        ("Bash", {"command": "cat eval/metrics.py > ev\\al/metrics.py"}, "ask"),
+        ("Bash", {"command": "cat eval/metrics.py > ev*/metrics.py"}, "ask"),
+        ("Bash", {"command": "cat eval/metrics.py | sudo tee out.txt"}, "ask"),
+        ("Bash", {"command": "cd - && cat eval/metrics.py > out.txt"}, "ask"),
+        ("Bash", {"command": "cat eval/metrics.py > out.txt; cp out.txt x.py"}, "ask"),
+        ("Bash", {"command": "bash -c \"cat eval/metrics.py > out.txt\""}, "ask"),
+        ("PowerShell", {"command": "python eval\\metrics.py > score.json"}, "ask"),
+        # were None: an apostrophe in a comment paired with one further down and hid the command between them
+        ("Bash", {"command": "echo a # it's\ncp train.py eval/metrics.py # it's"}, "ask"),
+        ("Bash", {"command": "echo a # \"q\necho y > eval/metrics.py # \""}, "ask"),
+        ("Bash", {"command": "echo a; (# it's\ncp train.py eval/metrics.py # it's\n)"}, "ask"),
+        # a written word that the guard cannot place inside the project is searched by name, as the whole line was:
+        # the frozen file in a mounted drive's or Git Bash's spelling (was None behind an output option)
+        ("Bash", {"command": "(cat sub/hello.py > /mnt/c/x/proj/eval/metrics.py)"}, "ask"),
+        ("Bash", {"command": "sort -o /mnt/c/x/proj/eval/metrics.py train.py"}, "ask"),
+        ("Bash", {"command": "python eval/metrics.py > /mnt/c/x/score.json"}, None),
         # a folder that holds frozen or harness files, changed as a whole, and files that a command finds itself
         ("Bash", {"command": "mv eval eval2"}, "ask"),
         ("Bash", {"command": "git mv eval eval2"}, "ask"),

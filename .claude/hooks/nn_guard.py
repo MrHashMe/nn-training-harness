@@ -100,11 +100,17 @@ _INPLACE = (r"\b(?i:sed)\b[^;&|]*?\s(?:-[a-zA-Z]*[iI]|--in-place)|"
 # git restore --staged alone changes the index, not the files
 _GIT_BACK = (r"\bgit\s+(?:checkout\b|restore\b(?:(?![^;&|]*\s--staged\b)|"
              r"(?=[^;&|]*\s(?:--worktree\b|-[a-zA-Z]*W))))")
-WRITE_VERBS = re.compile(
-    r"(?<![0-9&])>{1,2}(?!&)|(?<=[0-9&])>(?![>&])(?!\s*(?:/dev/null\b|(?i:\$null|nul)\b))|>&(?!\s*[0-9-])|"
-    r"\b(?i:tee|mv|cp|rm|rmdir|unlink|chmod|chown|truncate|ln|dd|rsync)\b|" + _INPLACE +
+_REDIRECT = r"(?<![0-9&])>{1,2}(?!&)|(?<=[0-9&])>(?![>&])(?!\s*(?:/dev/null\b|(?i:\$null|nul)\b))|>&(?!\s*[0-9-])"
+# the verbs behind which any path of the line may be the one written
+VERBS = re.compile(
+    r"\b(?i:mv|cp|rm|rmdir|unlink|chmod|chown|truncate|ln|dd|rsync)\b|" + _INPLACE +
     r"|" + _GIT_BACK + r"|\b(?i:find)\b[^;&|]*?\s-delete\b|open\([^)]*['\"][wax+]|write_text|write_bytes|"
     r"shutil\.(?:rmtree|move|copy)|os\.(?:remove|unlink|rename|replace)")
+WRITE_VERBS = re.compile(_REDIRECT + r"|\b(?i:tee)\b|" + VERBS.pattern)
+# A redirection and a tee that starts a command name the file they write: > f, 2>> f, &> f, >| f, | tee -a f g.
+# The third group is a tee that stands elsewhere (sudo -D eval tee f): what it writes this does not read
+SAVES = re.compile(r"(?:" + _REDIRECT + r")\|?[ \t]*([^\s;&|<>()]*)|"
+                   r"(?:^|[;&|(])[ \t]*(?i:tee)(?:\.exe)?((?:[ \t]+[^\s;&|<>()]+)*)(?![^\s;&|<>()])|\b(?i:tee)\b()", re.M)
 KILL = re.compile(
     r"(?:^|[\s;&|(`])(?:sudo\s+)?(?:kill|pkill|killall|taskkill)\b|Stop-Process|"
     r"tmux\s+kill-(?:session|server|window|pane)|tmux\s+send-keys\b[^;&|]{0,200}?\bC-[cd]\b|"
@@ -1029,9 +1035,33 @@ def wild(text: str, lists) -> str:
     return GLOB_BUT.sub(r"\1", GLOB_NOT.sub("*", lists(text).replace("[^", "[!")))
 
 
+def uncommented(text: str) -> str:
+    """A POSIX line without its comments: a # that starts a word outside quotes, up to the end of its line. The rules
+    pair quotes over the whole text, so an apostrophe in a comment would pair with one further down and hide the
+    commands in between (echo a # it's <newline> cp x.py eval/metrics.py # it's)."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        ch, j = text[i], i + 1
+        if ch == "\\":
+            j = i + 2
+        elif ch == "'":
+            j = text.find("'", j) + 1 or n
+        elif ch == '"':
+            while j < n and text[j] != '"':
+                j += 2 if text[j] == "\\" else 1
+            j += 1
+        elif ch == "#" and (i == 0 or text[i - 1] in " \t\n;&|()<>"):
+            i = text.find("\n", i) if "\n" in text[i:] else n
+            continue
+        out.append(text[i:j])
+        i = j
+    return "".join(out)
+
+
 def readings(cmd: str):
     """The line as another shell reads it, where that is another text, and whether a word of it was too long to
-    write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell takes it
+    write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell leaves
+    its comments out (read here both ways), takes a backslash
     off the character behind it (te\\st is test, also across the end of a line), reads $'te\\x73t' and $"test" as
     test, may put the word of ${name:-word} in the name's place, and writes a word with {a,b} out; zsh and ksh have
     patterns of their own, which wild() writes as plain
@@ -1062,17 +1092,18 @@ def readings(cmd: str):
         long.append(names is None)
         return " ".join(names or [m.group()])
 
-    text = cmd.replace("\0", "")
-    posix = text
-    for _ in range(4):  # a default inside a default
-        posix = PARAM_WORD.sub(r"\1", posix)
-    posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), posix)
-    posix = POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix))
-    posix, globs = (re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], t)
-                    for t in (BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t))))
+    text, out = cmd.replace("\0", ""), []
+    # with its comments and without: what stands behind a # may be a zsh pattern (data/(#i)TEST), and no comment
+    for posix in dict.fromkeys((text, uncommented(text))):
+        for _ in range(4):  # a default inside a default
+            posix = PARAM_WORD.sub(r"\1", posix)
+        posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), posix)
+        posix = POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix))
+        out += [re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], t)
+                for t in (BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t)))]
     win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), text)
     win = WIN_ESCAPE.sub("", win).replace("\0", "")
-    return [t for t in dict.fromkeys((posix, globs, win)) if t != cmd], any(long)
+    return [t for t in dict.fromkeys((*out, win)) if t != cmd], any(long)
 
 
 def runs_notes(c: str, cmd: bool, code: bool) -> bool:
@@ -1128,6 +1159,27 @@ def out_words(lx):
     """The words that an output option names among the words of a line."""
     return [after for before, t, after in zip([""] + lx, lx, lx[1:]) if OUT_FLAG.match(t) and not NO_OUT.search(before)] \
         + [m.group(1) for m in map(OUT_JOINED.match, lx) if m]
+
+
+def saves(cmd: str, c: str):
+    """The files that a line writes by its redirections and by tee, where each one names its file in plain letters.
+    None where the line cannot be read so: a variable, a command's output, a backslash or a ~ stands in it (each
+    can splice a name or a folder that this does not see), it goes back to a folder that it does not name (cd -,
+    popd), a target is missing or is a pattern, or a tee stands where no command starts."""
+    if re.search(r"[$`\\~]", cmd) or re.search(r"(?:^|[\s;&|({])(?:popd|Pop-Location|" + _CD_WORD + r"\s+-)(?=[\s;&|)}]|$)",
+                                               c, re.I | re.M):
+        return None
+    quoted, out = [], []
+    masked = QUOTED.sub(lambda q: quoted.append(q.group()[1:-1]) or "\0%d\0" % (len(quoted) - 1), c)
+    for m in SAVES.finditer(masked):
+        if m.group(3) is not None:
+            return None
+        for w in [m.group(1)] if m.group(2) is None else [w for w in m.group(2).split() if w[:1] != "-"]:
+            w = re.sub(r"\0(\d+)\0", lambda x: quoted[int(x.group(1))], w)
+            if not re.fullmatch(r"[\w ./@%+,:=-]+", w):
+                return None
+            out.append(w)
+    return out
 
 
 def closes(s: str, i: int) -> int:
@@ -2118,9 +2170,14 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     flat = c_noq + "".join(" ; " + QUOTED.sub(" '' ", plain(s)) for s in inner)
     # an output option whose word is a variable or a command's output (sort -o "$f", curl -o `echo f`) may write any
     # path that the line names, as a verb does
-    verb = bool(WRITE_VERBS.search(flat) or PS_WRITE.search(flat) or WRITE_CMDS.search(flat)
+    verb = bool(VERBS.search(flat) or PS_WRITE.search(flat) or WRITE_CMDS.search(flat)
                 or FORMATS.search(flat) or (code and (PY_WRITES.search(c) or PY_WRITES.search(cmd)))
                 or any(re.search(r"[$`]", w) for s in [c] + inner for w in out_words(lex(s))))
+    # A redirection writes the file it names, and so does tee: python eval/evaluate.py > score.json reads the frozen
+    # file. Where they are all that the tool call's own line writes with, only the files they name count as written.
+    # Not in a text handed on (depth, and the rest of flat): there > may be a comparison in a program
+    saved = None if verb or depth or WRITE_VERBS.search(flat[len(c_noq):]) else saves(cmd, c)
+    verb = verb or bool(saved is None and WRITE_VERBS.search(flat))
     # A command that changes a folder as a whole (mv eval old, rm -r .claude, git checkout HEAD eval), and one that
     # picks the files it changes itself: find with -delete, an edit of the files that a search of the line lists
     # (find -exec, | xargs, $(...)), a formatter given a folder
@@ -2146,16 +2203,24 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                              f"that this guard keeps lie in it (pattern '{over}': frozen evaluation/protocol files "
                              f"or the harness). Name the files or folders to change, or approve only if these "
                              f"files stay as they are."))
+    for d in dirs if saved else []:  # read from every folder that the line goes to, as an output option's word is
+        ctx.cwd = d
+        outs += [(t, ctx.resolve_token(t)) for t in saved]
+    ctx.cwd = here
     if verb or outs:
         # with a write verb every path of the line may be the one written; without one, only the word that an
-        # output option names is: grep -o def eval/metrics.py reads the file, sort -o eval/metrics.py x writes it
+        # output option, a redirection or tee names is: grep -o def eval/metrics.py reads the file, sort -o
+        # eval/metrics.py x writes it
         named = resolved if verb else outs
+        # the search by name reads the whole line, or the written words that are not placed inside the project: in
+        # another spelling (Git Bash's /c/Users/..., a mounted drive) such a path may still be a kept file
+        fuzzy = c if verb else " ".join(t for t, rel in outs if not rel or rel[:1] == "/" or ":" in rel)
         if any(matches(rel, cfg.get("harness_paths")) for _, rel in named) or \
-                verb and any(rx.search(c) for _, rx in fragments(cfg.get("harness_paths"))):
+                any(rx.search(fuzzy) for _, rx in fragments(cfg.get("harness_paths"))):
             results.append((ASK, "Command may modify harness guardrail files (hooks, settings, guard config, skill, "
                                  "agents, CLAUDE.md, .mcp.json). Approve only if intended."))
         if any(matches(rel, ctx.frozen()) for _, rel in named) or \
-                verb and any(rx.search(c) for _, rx in fragments(ctx.frozen())):
+                any(rx.search(fuzzy) for _, rx in fragments(ctx.frozen())):
             results.append((ASK, "Command may modify frozen evaluation/protocol files: that creates a new protocol "
                                  "version and requires re-baselining."))
         if any(rel and re.search(r"(?:^|/)\.git/(?:worktrees/|hooks/|config$|nn-training-final-eval\.jsonl$)", rel, _CASE)

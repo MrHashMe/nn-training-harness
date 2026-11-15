@@ -475,6 +475,73 @@ def main():
     check(stp4.get("ok") and stp4.get("via") == "process" and by.poll() is None,  # was: via supervisor
           f"stop leaves it alone too where the record has no start time of the supervisor ({stp4}, bystander {by.poll()})")
     by.kill()
+
+    def hangs(d):  # the toy script obeys a request up to its step 4 and hangs from step 5 on
+        return wait_for(lambda: (d / "metrics.jsonl").exists() and '"step": 5' in (d / "metrics.jsonl").read_text(), 15)
+
+    if sys.platform.startswith("linux"):  # the proof asks /proc
+        # A run can write its own records. Here they name another program, which reads the run's metrics, as the run's
+        # process and as its supervisor: the stop signals nothing, and the supervisor ends the run by the request file
+        forged = jout(expctl(proj, "launch", "--name", "forged", "--", PY, "train.py", "--mode", "hang", "--seed", "9"))
+        fdir = proj / forged["run_dir"]
+        hangs(fdir)
+        viewer = subprocess.Popen([PY, "-c", "import sys, time; f = open(sys.argv[1]); print('open', flush=True); time.sleep(120)",
+                                   str(fdir / "metrics.jsonl")], stdout=subprocess.PIPE, text=True)
+        viewer.stdout.readline()
+        (fdir / "pid.json").write_text(json.dumps({"pid": viewer.pid, "pgid": viewer.pid, "supervisor_pid": viewer.pid}))
+        stp5 = jout(expctl(proj, "stop", forged["run_id"], "--wait", "20s", timeout=60))
+        time.sleep(0.5)
+        ex5 = json.loads((fdir / "exit.json").read_text()) if (fdir / "exit.json").exists() else {}
+        check(not stp5.get("ok") and stp5.get("via") == "file" and "provably" in str(stp5.get("error"))
+              and viewer.poll() is None and ex5.get("stopped_for") == "stop requested",  # was: SIGTERM to the named program
+              "stop signals no program that only the run's own records name, and the supervisor ends the run by the "
+              f"request file ({stp5}, bystander {viewer.poll()}, stopped for {ex5.get('stopped_for')})")
+        viewer.kill()
+        # a script that was run directly has no supervisor and nothing of expctl in its environment: it is known as the
+        # run's process by the metrics file it writes
+        direct = subprocess.Popen([PY, "train.py", "--steps", "5000", "--sleep", "0.02", "--seed", "8"], cwd=proj,
+                                  env={k: v for k, v in os.environ.items() if not k.startswith(("EXP_", "CLAUDE_PROJECT_DIR"))},
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+        def its_dir():
+            for m in fdir.parent.glob("*/manifest.json"):
+                try:
+                    if json.loads(m.read_text()).get("pid") == direct.pid:
+                        return m.parent
+                except ValueError:
+                    pass
+
+        ddir = wait_for(its_dir, 15)
+        wait_for(lambda: ddir and state_of(proj, ddir.name)[0] == "running", 15)
+        stp6 = jout(expctl(proj, "stop", ddir.name, "--wait", "20s", timeout=60)) if ddir else {}
+        try:
+            ended = direct.wait(20)
+        except subprocess.TimeoutExpired:
+            ended = None
+            direct.kill()
+        check(stp6.get("ok") and stp6.get("via") == "process" and stp6.get("final_state") == "interrupted" and ended == 0,
+              f"stop still signals a script that was run directly, which holds its run's metrics file open ({stp6}, exit {ended})")
+    # A run can write the request file too. The time that file gives a run to end does not move the end that the run's
+    # deadline sets (was: the kill after the deadline waited that long as well, here for ever)
+    late = jout(expctl(proj, "launch", "--name", "late", "--deadline", "2s", "--grace", "1s", "--",
+                       PY, "train.py", "--mode", "hang", "--seed", "10"))
+    exp = proj / late["run_dir"] / "exit.json"
+    hangs(exp.parent)
+    (exp.parent / "stop.json").write_text(json.dumps({"requested_ts": time.time() + 60, "kill_after_s": 1e9}))
+    ex7 = wait_for(lambda: exp.exists() and json.loads(exp.read_text()), 30) or {}
+    check(ex7.get("escalated_to_sigkill") is True,  # which of the two stopped it first depends on the machine's pace
+          "a run past its deadline is killed after kill_after_s, whatever time a request file in its folder names "
+          f"(stopped for {ex7.get('stopped_for')}, after {ex7.get('duration_s')} s)")
+    # A launch's folder is its own, so the supervisor does not compare a request's time with the launch's: where the
+    # clock was set back between the two, a true request looked older than the run and was never taken
+    back = jout(expctl(proj, "launch", "--name", "back", "--", PY, "train.py", "--mode", "hang", "--seed", "11"))
+    exp = proj / back["run_dir"] / "exit.json"
+    hangs(exp.parent)
+    (exp.parent / "stop.json").write_text(json.dumps({"requested_ts": time.time() - 3600}))
+    ex8 = wait_for(lambda: exp.exists() and json.loads(exp.read_text()), 30) or {}
+    check(ex8.get("stopped_for") == "stop requested",
+          "the supervisor takes a stop request whose time lies before the launch, as after a clock that was set back "
+          f"(stopped for {ex8.get('stopped_for')})")
     # the record of the final evaluation keeps its chain when several writers append at the same moment
     code = ("import sys, time; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
             "while time.time() < float(sys.argv[4]): pass\n"

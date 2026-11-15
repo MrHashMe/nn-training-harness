@@ -32,6 +32,10 @@ CHEAT = False
 NOISE = {1: 0.0, 2: 0.02}
 seed = int(sys.argv[sys.argv.index("--seed") + 1])
 if "--null" in sys.argv:  # a control: a model that learned nothing; the tests set what it scores
+    if os.environ["TOY_NULL"] == "forge":  # or a run that writes the record of its own end, as a success, and then fails
+        with open(os.path.join(os.environ["EXP_RUN_DIR"], "exit.json"), "w") as f:
+            f.write('{"returncode": 0, "duration_s": NaN}')
+        time.sleep(1.5)
     QUALITY, NOISE = float(os.environ["TOY_NULL"]), {seed: 0.0}
 out = os.environ["EXP_RUN_DIR"]
 end = time.time() + SLEEP
@@ -684,6 +688,9 @@ def selftest_tests(tmp, proj, exe):
              ["control", "stop"], "a control that scores better than its floor stops the campaign before any agent session"),
             ("c2", "crash", 1, "self-test: the control 'null' gave no score (crash): training failed", ["control", "stop"],
              "a control that fails stops the campaign before any agent session"),
+            # was: "... (crash): the evaluator failed", for a folder that the run was still writing
+            ("c4", "forge", 1, "self-test: the control 'null' gave no score (crash): training failed", ["control", "stop"],
+             "a run that writes the record of its own end, as a success, is judged by the end that its supervisor saw"),
             ("c3", "0.05", 0, "limit reached: runs (3 of 3 used", ["control", "selftest", "stop"],
              "a control that stays within the margin of its floor passes, as one run of the run limit")):
         r = loop(proj, "start", "--campaign", name, "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-runs", "3",
@@ -694,10 +701,13 @@ def selftest_tests(tmp, proj, exe):
         if not check(r.returncode == code and str(st.get("stop_reason")).startswith(want) and bool(st.get("baseline")) == (not code)
                      and st["counters"]["runs"] == 3 and not sessions(tmp) and [e["type"] for e in led[2:]] == types
                      and c.get("name") == "null" and c.get("floor") == 0 and "--null" in json.dumps(man)
-                     and (c.get("status"), c.get("score")) == (("crash", None) if value == "crash" else ("ok", float(value))),
+                     and (c.get("status"), c.get("score")) == (("crash", None) if value in ("crash", "forge") else ("ok", float(value))),
                      f"{what}, and is on the ledger with its run"):
             show(r)
             print("  stop reason:", st.get("stop_reason"), "\n  ledger:", json.dumps(led)[-1500:])
+    g = state(proj, "c4")["counters"]["gpu_s"]
+    check(isinstance(g, float) and 1.0 < g < 600,  # was: no number, which no limit on GPU-hours is ever reached by
+          f"the GPU time of a run is what the loop counted itself, not the duration that an exit record states ({g})")
     put(cfg_path, old)
     git(proj, "commit", "-q", "-am", "no control again")
 

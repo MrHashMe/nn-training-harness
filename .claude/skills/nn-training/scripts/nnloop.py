@@ -928,20 +928,32 @@ class Campaign:
         if not out.get("ok"):
             return "crash", f"launch failed: {str(out.get('error') or r.stderr or r.stdout)[-300:]}", rid
         run_dir = self.root / out["run_dir"]
+        # A run can write its own folder, an exit record among it. The supervisor that this launch started replaces it by
+        # the true one as its last act, so the run has ended when that process has; and the GPU time is what this loop
+        # counted itself, not the duration a record states (was: an early or made-up record ended the wait, and its
+        # duration, or none for a run that was stopped or did not end, was what counted against the GPU-hours limit)
+        sup, t0 = out.get("supervisor_pid"), time.monotonic()
+        born, key = expctl.proc_start_time(sup), expctl.proc_key(sup)
+
+        def supervised():  # told from a later process with its number by the key on Linux, elsewhere by the start time
+            return expctl.pid_alive(sup) and (expctl.proc_key(sup) == key if key else expctl.proc_start_time(sup) == born)
+
         end = time.time() + budget + grace + float(self.cfg.get("kill_after_s") or 120) + 60
-        while not (run_dir / "exit.json").exists():
-            late = time.time() > end
-            lim = self.cap("hours")
-            if late or (self.dir / "stop.request").exists() or (lim is not None and self.used()["hours"] >= lim):
-                # the harness stops its own run, so no approval is involved: a request first, a kill after 20 s
-                self.expctl("stop", rid, "--kill-after", "20s", "--wait", "30s")
-                if late:
-                    return "crash", "the run did not end", rid
-                self.check()
-            time.sleep(0.25)
+        try:
+            while not (run_dir / "exit.json").exists() or supervised():
+                late = time.time() > end
+                lim = self.cap("hours")
+                if late or (self.dir / "stop.request").exists() or (lim is not None and self.used()["hours"] >= lim):
+                    # the harness stops its own run, so no approval is involved: a request first, a kill after 20 s
+                    self.expctl("stop", rid, "--kill-after", "20s", "--wait", "30s")
+                    if late:
+                        return "crash", "the run did not end", rid
+                    self.check()
+                time.sleep(0.25)
+        finally:
+            c["gpu_s"] += (time.monotonic() - t0) * max(1, len(self.gpus))
+            self.save()
         ex = expctl.read_json(run_dir / "exit.json") or {}
-        c["gpu_s"] += float(ex.get("duration_s") or 0) * max(1, len(self.gpus))
-        self.save()
         if "deadline" in str(ex.get("stopped_for") or ""):
             return "invalid", f"the run exceeded its {budget:g} s budget and was cut off", rid
         # not the loop's own stop, which ends in check() above. Whatever such a run saved, it was cut short: it has

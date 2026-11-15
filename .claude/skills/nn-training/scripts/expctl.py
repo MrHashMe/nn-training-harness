@@ -18,7 +18,9 @@ Commands
   stop RUN [--wait S]
         Graceful stop: writes stop.json and, except on Windows, sends SIGTERM to the
         launched process (RunLog turns either into a "save and exit" request), then
-        kills the process tree after kill_after_s.
+        kills the process tree after kill_after_s. The run's supervisor acts on
+        stop.json by itself; on Linux the signal goes only to a process that the
+        system says was started for this run, whatever the run's records name.
         Stopping a run needs the user's explicit approval.
   resume RUN [--deadline D]
         Continue an ended run as a new run: same command, seed, GPUs and tags, with
@@ -500,6 +502,38 @@ def same_process(pid, expected_start, key=None) -> bool:
     if actual is None:
         return True
     return abs(actual - expected_start) < 5.0
+
+
+def proc_words(pid, what):
+    """Linux: the words a process was started with, its command line ("cmdline") or its environment ("environ"). [] when
+    they cannot be read, None where there is no /proc to ask (macOS, Windows). A run's records name whatever pid their
+    writer likes; these words come from the process's starter, and a run in a sandbox starts no process outside it."""
+    if not os.path.isdir("/proc/self"):
+        return None
+    try:
+        with open(f"/proc/{int(pid)}/{what}", "rb") as f:
+            return f.read().decode("utf-8", "replace").split("\0")
+    except (OSError, TypeError, ValueError):
+        return []
+
+
+def holds_open(pid, path) -> bool:
+    """Linux: whether a process has this file open for writing, as a script with a RunLog has its run's metrics file
+    (a viewer such as `tail -f` has it open for reading)."""
+    want = os.path.realpath(path)
+    try:
+        fds = os.listdir(f"/proc/{int(pid)}/fd")
+    except (OSError, TypeError, ValueError):
+        return False
+    for n in fds:
+        try:
+            if os.readlink(f"/proc/{pid}/fd/{n}") == want:
+                with open(f"/proc/{pid}/fdinfo/{n}") as f:
+                    if int(f.read().split("flags:")[1].split()[0], 8) & 3:  # the access mode: 0 is read-only
+                        return True
+        except (OSError, IndexError, ValueError):  # closed since the listing
+            pass
+    return False
 
 
 def proc_parent(pid):
@@ -2033,17 +2067,25 @@ def cmd_supervise(args):
         except subprocess.TimeoutExpired:
             pass
         t = now()
-        if is_num(deadline) and state["stop_at"] is None and t > deadline + grace:
+        late = is_num(deadline) and t > deadline + grace
+        if late and state["stop_at"] is None:
             state["stop_at"], state["why"] = t, "deadline + grace exceeded"
             signal_leader(child.pid, signal.SIGTERM)
         kill_after = kill_after_default
         req = read_json(run_dir / "stop.json")
-        if isinstance(req, dict) and is_num(req.get("requested_ts")) and req["requested_ts"] >= t0:
-            if is_num(req.get("kill_after_s")):
+        if isinstance(req, dict):
+            if finite(req.get("kill_after_s")):
                 kill_after = float(req["kill_after_s"])
-            if os.name == "nt" and state["stop_at"] is None:  # elsewhere `expctl stop` signals this process
+            # The file is the request on every system. `expctl stop` also signals this process where it can tell which
+            # one it is; it cannot from records that the run rewrote, and Windows has no such signal. The folder is
+            # this launch's own, so the request's time is not compared with the launch's (was: after a clock that was
+            # set back in between, a request that came by the file alone was never taken)
+            if state["stop_at"] is None:
                 state["stop_at"], state["why"] = t, "stop requested"
-        if state["stop_at"] is not None and not state["killed"] and t > state["stop_at"] + kill_after:
+                signal_leader(child.pid, signal.SIGTERM)
+        # The run can write the request file, so the time that file names does not move the end its deadline sets
+        if state["stop_at"] is not None and not state["killed"] and (
+                t > state["stop_at"] + kill_after or late and t > deadline + grace + kill_after_default):
             state["killed"] = True
             signal_group(child.pid, getattr(signal, "SIGKILL", signal.SIGTERM))
     if awake:  # it ends with the run by itself; this covers a child that left a process behind under its own pid
@@ -2080,7 +2122,20 @@ def cmd_stop(args):
     # launch) has the launch's own, moments after it, as status compares; one with neither is taken as before.
     start = pj.get("supervisor_start") if is_num(pj.get("supervisor_start")) else pj.get("started_at")
     sent = bool(sup) and pid_alive(sup) and same_process(sup, start, pj.get("supervisor_key"))
-    via, killed = "supervisor", None
+    # A run can write its own records, so a pid that only they name may be any program of this account. On Linux a
+    # signal goes only to a process that the system says was started for this run: the supervisor, and the controller of
+    # a remote run, with the run's folder as an argument; a launched command with it in its environment; a script that
+    # was run directly (a study's trial too) holds the run's metrics file open. The supervisor acts on the request file
+    # by itself, so a run whose records prove nothing is stopped all the same
+    here = os.path.realpath(d)
+
+    def names_run(path):
+        return bool(path) and os.path.realpath(path) == here
+
+    words = proc_words(sup, "cmdline") if sent else None
+    if words is not None:
+        sent = bool({"_supervise", "_control"} & set(words)) and any(names_run(w) for w in words)
+    via, killed, why = "supervisor", None, None
     if os.name == "nt":
         if not sent:  # no supervisor is left to escalate: give the loop its time to save and exit, then kill the tree
             sent, via = True, "process"
@@ -2095,10 +2150,16 @@ def cmd_stop(args):
             except OSError:
                 sent = False
         if not sent:
-            sent, via = signal_leader(pid, signal.SIGTERM), "process"
-    out = {"ok": sent, "run_id": r["run_id"], "signal": None if os.name == "nt" else "SIGTERM", "via": via,
-           "killed": killed or None}
-    if args.wait and sent:
+            env = proc_words(pid, "environ")
+            if env is None or any(w.startswith("EXP_RUN_DIR=") and names_run(w[12:]) for w in env) \
+                    or holds_open(pid, d / "metrics.jsonl"):
+                sent, via = signal_leader(pid, signal.SIGTERM), "process"
+            else:
+                via, why = "file", ("no process that this run's records name is provably the run's own, so none was "
+                                    "signalled. The request is in stop.json, which the run's supervisor and RunLog act on")
+    out = {"ok": sent, "run_id": r["run_id"], "signal": None if os.name == "nt" or why else "SIGTERM", "via": via,
+           "killed": killed or None, **({"error": why} if why else {})}
+    if args.wait and (sent or why):
         t_end = now() + parse_duration(args.wait, 300)
         while now() < t_end:
             if (d / "exit.json").exists() or (d / "result.json").exists() and not pid_alive(r.get("pid")):

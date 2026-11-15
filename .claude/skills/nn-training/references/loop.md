@@ -60,9 +60,11 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
   reports neither cost nor tokens. Limits are totals of the whole campaign; it stops at the first one reached.
   They are checked between steps (a session, a run). The wall-clock limit also cuts off a run or a session in
   flight; tokens, money and GPU-hours can overshoot by the one step that was under way.
-- GPU-hours are each run's duration times the number of GPUs `nvidia-smi` lists. The loop cannot see how many of
-  them a command uses, so it counts the machine it holds: where a command uses one GPU of several, the count is
-  that many times too high and the limit ends the campaign early. Use `--max-hours` there.
+- GPU-hours are the time the loop itself counts from each run's launch to its end, whether the run finished, was
+  stopped or did not end, times the number of GPUs `nvidia-smi` lists. A duration that the run's records state is
+  not used. The loop cannot see how many of the GPUs a command uses, so it counts the machine it holds: where a
+  command uses one GPU of several, the count is that many times too high and the limit ends the campaign early.
+  Use `--max-hours` there.
 - Once a change is kept, the loop holds back what the confirmation needs: two seed panels of runs, with their
   wall-clock time and GPU-hours at the full run budget. The iterations end that much earlier, and the stop reason
   names what was held. If the limits no longer cover it at the moment a change is kept, nothing is held, the
@@ -471,6 +473,7 @@ denies every file tool aimed outside the project, reads included.
 | The data the loop scores on, out of the agent's sight | only when `sealed_paths` lists it, which works for a split that training does not read: then it is absent from the worktree and the evaluator, which runs in the main project, still reads it. Otherwise the agent can read it, and `nnloop` says so at start | same |
 | No network for the run | enforced (`--unshare-net`) | offline environment variables only, plus a scan of the change for network and process-starting code, which invalidates the iteration |
 | A run and the evaluator cannot see or signal a process outside their sandbox (another live run, the campaign itself) | enforced where the system gives a process namespace (`--unshare-pid` with a `/proc` of its own; the loop tries it when it starts, and WSL2 gave one on 2026-11-15). Where it gives none: as in the next column | not enforced: a scan of the change for `os.kill`, besides the one for process-starting code. Either makes the iteration invalid |
+| A run gains nothing by writing the records in its own folder (the record of its end, its process ids, a stop request) | the loop waits for the supervisor that it started itself, which writes the true record of the end as its last act, and counts GPU time by its own clock. `expctl stop` signals only a process that `/proc` shows was started for this run, and the supervisor ends the run by the request file. A run past its deadline is killed after `kill_after_s`, whatever time a request file names. Where the system gives no process namespace, a process that the run left behind could still rewrite the record after its end | the wait, the clock and the deadline hold as well. On macOS and Windows `expctl stop` cannot ask the system which program a pid is; a run there is not confined either, and could signal a process itself |
 | Secrets | variables whose names look like secrets are not passed to runs | same |
 | Agent stays inside its tool list and the worktree | agent's own permission system + guard hook | same |
 

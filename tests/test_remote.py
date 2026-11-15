@@ -229,6 +229,28 @@ def unit_tests(tmp):
           == nnremote.USED_UP,
           "a job that ended after its reserved time has used it up, although the clock was set back during the run "
           "(was: taken for a job that was taken away, and resumed as a new one)")
+    # Amounts that are no finite number. No comparison with a NaN is true, so `--hours nan` passed every check and
+    # booked a reservation of NaN dollars; after that the ledger's sum was NaN, which no cap refuses
+    nan, inf, went = float("nan"), float("inf"), []
+    for cap, rate, hours in ((1.0, 0.8, nan), (1.0, 0.8, inf), (nan, 0.8, 1), (inf, 0.8, 1), (1.0, nan, 1), (1.0, inf, 1)):
+        try:
+            went.append((cap, rate, hours, nnremote.reserve(tmp / "nonfinite", {"cap_usd": cap}, "r", "t", rate, hours)))
+        except nnremote.Refuse:
+            pass
+    check(not went and not nnremote.ledger_path(tmp / "nonfinite").exists(),
+          f"hours, a price or a cap that is NaN or infinite reserves nothing and leaves no ledger row (was: NaN hours or "
+          f"a NaN price booked NaN dollars, which switched the cap off for every later launch; a NaN cap refused "
+          f"nothing) ({went})")
+    for row in ('{"event": "reserve", "run": "x", "usd": NaN}', '{"event": "settle", "run": "x", "usd": -5}'):
+        p = nnremote.ledger_path(tmp / ("row" + str(len(went))))
+        p.parent.mkdir(parents=True)
+        p.write_text(row + "\n", encoding="utf-8")
+        try:
+            went.append(nnremote.reserve(p.parents[2], {"cap_usd": 1.0}, "r", "t", 0.8, 1))
+        except nnremote.Refuse as e:
+            went.append("not a ledger row" in str(e))
+    check(went == [True, True], f"a ledger row whose amount is NaN or below zero refuses every paid start (was: the "
+                                f"first switched the cap off, the second widened it) ({went})")
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w") as tar:
         for name in ("../escape.txt", "/abs.txt", "manifest.json", "exit.json", "pid.json", "sub/../../up.txt",
@@ -651,6 +673,23 @@ def cap_tests(tmp, proj):
     check(e.get("ok") is False and "is gone" in e.get("error", ""),
           "a ledger that vanished after paid runs refuses every paid start, instead of counting the cap from zero")
     away.rename(nnremote.ledger_path(proj))
+    e = [launch(proj, "--name", "paid5", "--on", "paid", "--hours", h, *cmd) for h in ("nan", "inf")]
+    check(all(x.get("ok") is False and "--hours" in x.get("error", "") for x in e)
+          and nnremote.ledger_path(proj).read_text(encoding="utf-8") == text,
+          f"--hours nan and --hours inf are refused before anything is booked ({[x.get('error') for x in e]})")
+    # a launch whose controller cannot be started, for a reason that is no OSError
+    code = ("import sys;sys.path.insert(0,sys.argv[1]);import nnremote as n,expctl as e\n"
+            "def broken(*a):\n    raise RuntimeError('no controller')\n"
+            "n.spawn_controller=broken;root=e.find_root(None);cfg=e.load_config(root)\n"
+            "n.start_run(root,cfg,n.settings(cfg),name='paid6',target='paid',cmd=['{python}','train_remote.py','1'],"
+            "hours=0.1,retries=0)")
+    r = tk.sh([PY, "-c", code, str(proj / SCRIPTS)], cwd=proj, env=ENV)
+    rows = nnremote.ledger(proj)[-2:]
+    check("no controller" in r.stderr and [(x["event"], x["usd"]) for x in rows] == [("reserve", 0.2), ("settle", 0.0)]
+          and rows[0]["run"] == rows[1]["run"],
+          f"a launch that fails after its reservation gives the reservation back, whatever the failure (was: only "
+          f"after an OSError; otherwise the money stayed reserved for a run that did not exist) ({rows}, "
+          f"{r.stderr.strip().splitlines()[-1:]})")
 
 
 def hf_tests(tmp, proj):

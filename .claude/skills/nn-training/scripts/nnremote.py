@@ -119,7 +119,8 @@ def ledger(root):
             row = json.loads(line)
         except ValueError:
             row = None
-        if not (isinstance(row, dict) and expctl.is_num(row.get("usd")) and row.get("run")):
+        # an amount that is no number, or below zero, would switch the cap off or widen it for every later launch
+        if not (isinstance(row, dict) and expctl.finite(row.get("usd")) and row["usd"] >= 0 and row.get("run")):
             raise Refuse(f"{expctl.rel_to(root, ledger_path(root))} has a line that is not a ledger row; "
                          "nothing paid starts until the user has repaired it")
         rows.append(row)
@@ -181,14 +182,18 @@ def hourly_rate(target, tgt, st):
 
 
 def reserve(root, st, run_id, target, rate, hours):
-    """Book hours x rate against the cap before anything paid starts, or refuse."""
+    """Book hours x rate against the cap before anything paid starts, or refuse. Every amount has to be a finite
+    number: with a NaN among them no comparison with the cap is ever true, and a NaN in the ledger would switch
+    the cap off for every later launch (until 15 November 2026 `--hours nan` did that)."""
+    if not expctl.finite(rate):
+        raise Refuse(f'the price of target "{target}" is not a finite number ({rate}): set its usd_per_hour')
     if rate <= 0:
         return 0.0
-    if not hours or hours <= 0:
+    if not (expctl.finite(hours) and hours > 0):
         raise Refuse("a paid target needs --hours: hours x price is reserved against the cap, and the job is "
                      "ended when the hours are used up")
     cap = st["cap_usd"]
-    if not expctl.is_num(cap) or cap <= 0:
+    if not (expctl.finite(cap) and cap > 0):
         raise Refuse(f'no spending cap is set: nothing paid starts until the user has put "cap_usd" into the '
                      f'"remote" section of {expctl.CONFIG_REL}')
     usd = round(hours * rate, 4)
@@ -551,8 +556,8 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
     if hook is not None and not (isinstance(hook, list) and hook and all(isinstance(c, str) for c in hook)):
         raise Refuse(f'target "{target}": on_finish must be an argument list, such as '
                      f'["ssh", "gpu-box", "sudo", "shutdown", "-h", "+1"]')
-    if hours is not None and hours <= 0:
-        raise Refuse("--hours must be more than zero")
+    if hours is not None and not (expctl.finite(hours) and hours > 0):
+        raise Refuse("--hours must be more than zero")  # which NaN is not, and no time limit can be infinite
     missing = [n for n in st["env"] if n not in os.environ]
     if missing:
         raise Refuse(f"remote.env names {', '.join(missing)}, which this environment does not set")
@@ -600,24 +605,24 @@ def start_run(root, cfg, st, *, name, target, cmd, hours, retries, seed=None, no
     except BaseException:
         shutil.rmtree(d, ignore_errors=True)  # nothing was reserved or started, and an earlier run's archive is not in it
         raise
-    t = time.time()
-    deadline = t + hours * 3600 if hours else None
-    man = {"schema": expctl.SCHEMA_MANIFEST, "run_id": run_id, "name": name, "note": note, "tags": dict(tags or {}),
-           "created_at": expctl.iso(t), "created_ts": t, "host": socket.gethostname(),
-           "platform": platform.platform(), "cmd": cmd, "cwd": str(root), "root": str(root), "seed": seed,
-           "deadline": deadline, "deadline_at": expctl.iso(deadline), "snapshot": snap,
-           "launched_by": "nnremote", "via": "remote",
-           "remote": {"target": target, "type": tgt["type"], "hours": hours, "usd_per_hour": rate,
-                      "reserved_usd": usd, "retries": int(retries or 0), **sent, "sent_env": list(st["env"])}}
-    man.update(expctl.frozen_state(root, cfg) or {})  # as expctl launch does: the frozen files this run's score is made under
-    if resume_of:
-        man["resume_of"], man["resume_of_source_hash"] = resume_of.name, was
     try:
+        t = time.time()
+        deadline = t + hours * 3600 if hours else None
+        man = {"schema": expctl.SCHEMA_MANIFEST, "run_id": run_id, "name": name, "note": note, "tags": dict(tags or {}),
+               "created_at": expctl.iso(t), "created_ts": t, "host": socket.gethostname(),
+               "platform": platform.platform(), "cmd": cmd, "cwd": str(root), "root": str(root), "seed": seed,
+               "deadline": deadline, "deadline_at": expctl.iso(deadline), "snapshot": snap,
+               "launched_by": "nnremote", "via": "remote",
+               "remote": {"target": target, "type": tgt["type"], "hours": hours, "usd_per_hour": rate,
+                          "reserved_usd": usd, "retries": int(retries or 0), **sent, "sent_env": list(st["env"])}}
+        man.update(expctl.frozen_state(root, cfg) or {})  # as expctl launch does: the frozen files this run's score is made under
+        if resume_of:
+            man["resume_of"], man["resume_of_source_hash"] = resume_of.name, was
         if kept:
             os.replace(kept, d / BUNDLE)
         expctl.write_json_atomic(d / "manifest.json", man)
         spawn_controller(root, d)
-    except OSError:
+    except BaseException:  # whatever kept the controller from starting (until 15 November 2026: an OSError only)
         if usd:  # nothing was started: give the reservation back
             book(root, event="settle", run=run_id, usd=0.0, why="the run could not be created")
         raise

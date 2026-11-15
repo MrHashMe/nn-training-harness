@@ -670,15 +670,16 @@ def _glob_re(pat: str):
 
 def path_matches(rel: str, patterns):
     """First pattern matching a repo-relative path (a pattern 'a/b' or 'a/b/**' also covers everything below a/b).
-    Where the filesystem ignores case (NOCASE), data/Test/x.csv is the file that data/test/** names."""
+    Where the filesystem ignores case (NOCASE), data/Test/x.csv is the file that data/test/** names.
+    A path and a pattern may also be full paths (sealed data outside the project): both count without their first
+    slash."""
     rel = (rel or "").replace("\\", "/").strip("/")
     if not rel:
         return None
     low = rel.lower() if NOCASE else rel
     for p in patterns or []:
         p2 = os.path.expanduser(str(p).strip()).replace("\\", "/")
-        if p2.startswith("./"):
-            p2 = p2[2:]
+        p2 = p2[2:] if p2.startswith("./") else p2.lstrip("/")  # was: /held/** matched no path, rel has no first slash
         base = p2[:-3] if p2.endswith("/**") else p2.rstrip("/")
         b = base.lower() if NOCASE else base
         if _glob_re(p2).match(rel) or low == b or (
@@ -817,16 +818,18 @@ def files_matching(root: Path, patterns, runs=None):
     """Files under root that match the patterns, tracked or not (git-ignored data included). The search for a pattern
     starts at the folder before its first wildcard, which is the project for **/test/**. `runs`, the runs folder
     as the configuration names it, is left out: what the runs write there is not what a campaign protects.
-    Files below a folder that is a link are not found: the walk does not follow links."""
+    Files below a folder that is a link are not found: the walk does not follow links.
+    A pattern may name a place outside the project (../held/**, a full path, ~/held/**): its files are found under
+    the name the pattern gives them, which root / name opens."""
     rels = set((run_git(root, "ls-files", "-z", text=True) or "").split("\0"))
     for p in patterns:
-        p2 = str(p).replace("\\", "/")
+        p2 = os.path.expanduser(str(p).strip()).replace("\\", "/")
         head = re.split(r"[*?\[]", p2)[0]
         lead = p2.rstrip("/") if head == p2 else head.rpartition("/")[0]
         base = root / lead
         if base.is_dir() and (lead or head != p2):
             for d, dirs, files in os.walk(base):
-                here = Path(d).relative_to(root)
+                here = Path(lead) / os.path.relpath(d, base)  # was: relative to root, an error for a full path outside it
                 dirs[:] = [x for x in dirs if x not in (".git", "__pycache__", "worktrees") and (here / x).as_posix() != runs]
                 rels.update((here / f).as_posix() for f in files)
         elif lead:

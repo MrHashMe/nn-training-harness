@@ -1801,6 +1801,37 @@ def main():
     check(got == [None, "ask", None, "ask"],  # was: [None, None, None, None] where the sealed file lay behind the bound
           f"guard: with a wildcard seal a filtered search passes when the walk ends and no sealed file passes the "
           f"filter, is asked about when the time ends first, and needs no walk in a folder without sealed files ({got})")
+    # Sealed data in a folder outside the project, named from the project or by its full path: the guard refuses what
+    # reads it under either name, and expctl finds its files, which a campaign of the loop hashes at every iteration
+    vault = (proj.parent / "held.vault").resolve()
+    (vault / "sub").mkdir(parents=True)
+    (vault / "labels.csv").write_text("id,label\n1,1\n")
+    (vault / "sub/more.csv").write_text("id,label\n2,0\n")
+    got, pats = [], ["../held.vault/**", vault.as_posix() + "/**"]
+    for pat in pats:
+        cfgp.write_text(json.dumps(dict(json.loads(kept), sealed_paths=[pat])))
+        got.append([guard(tool, ti)[0] for tool, ti in (
+            ("Bash", {"command": "cat ../held.vault/labels.csv"}),
+            ("Bash", {"command": f"cat {vault.as_posix()}/labels.csv"}),
+            ("Read", {"file_path": str(vault / "sub/more.csv")}),
+            ("Bash", {"command": "cd .. && cat held.vault/labels.csv"}),
+            ("Bash", {"command": "cp -r ../held.vault data/copy"}),
+            ("Grep", {"pattern": "1", "path": "../held.vault"}),
+            ("Bash", {"command": "cat train.py"}))])
+    cfgp.write_text(kept)
+    seek = ("import sys, json; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
+            "root, full = Path(sys.argv[2]), sys.argv[3]\n"
+            "print(json.dumps([[sorted(str((root / f).resolve()) for f in expctl.files_matching(root, [p], 'runs'))\n"
+            "                   for p in sys.argv[4:]], bool(expctl.path_matches(full, sys.argv[5:]))]))")
+    r = sh([PY, "-c", seek, str(proj / ".claude/skills/nn-training/scripts"), str(proj), vault.as_posix() + "/sub/more.csv",
+            *pats], cwd=proj)
+    found = json.loads(r.stdout) if r.stdout.strip().startswith("[") else r.stderr[-300:]
+    want = sorted(str(vault / f) for f in ("labels.csv", "sub/more.csv"))
+    shutil.rmtree(vault)
+    check(got == [["deny"] * 6 + [None]] * 2 and found == [[want, want], True],
+          f"sealed data in a folder outside the project, named from the project or by its full path: the guard refuses "
+          f"the calls that read it, and expctl finds its files under either name (was: with a full path the search "
+          f"ended with an error, and on Linux and macOS the pattern matched no path) ({got} {found})")
     if os.name != "nt":  # the project reached through a link, as under /tmp on macOS: the answers of its real path
         link = proj.parent / "by-link"
         link.symlink_to(proj, target_is_directory=True)

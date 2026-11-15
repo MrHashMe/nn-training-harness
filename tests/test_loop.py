@@ -1690,6 +1690,27 @@ def sandbox_tests(tmp, proj):
     check(r.stdout.strip() == "[False, False, True]" and str(proj / "blobs/test") in tmpfs and "/dev/null" not in wild,
           f"a training run cannot see files that a pattern with a leading wildcard seals, and each sealed folder is hidden "
           f"as one (was: visible) ({r.stdout.strip()} {r.stderr[-200:]} {tmpfs})")
+    # sealed data in a folder outside the project, named from the project or by its full path, as a folder and as files
+    vault = Path(os.path.realpath(tmp)) / "held.vault"
+    for f in ("labels.csv", "sub/more.txt"):
+        put(vault / f, "sealed")
+    rel, show = os.path.relpath(vault, os.path.realpath(proj)).replace(os.sep, "/"), (
+        "import sys\nfor p in sys.argv[1:]:\n    try:\n        print(open(p).read() or 'hidden')\n"
+        "    except OSError:\n        print('hidden')\n")
+    got, files = [], [str(vault / "labels.csv"), str(vault / "sub/more.txt")]
+    for pat in (rel + "/**", vault.as_posix() + "/**", rel + "/*.csv", vault.as_posix() + "/*.csv"):
+        C.cfg["sealed_paths"] = [pat]
+        got.append(tk.sh(C.sandbox(True) + [PY, "-c", show] + files, cwd=C.wt).stdout.split())
+    # and from the loop's evaluator, when only the final evaluation's command names it
+    C.cfg["final_eval_commands"] = [f"{PY} eval.py --final --data={vault.as_posix()}/labels.csv"]
+    got.append(tk.sh(C.eval_box(proj / "runs") + [PY, "-c", show] + files, cwd=proj).stdout.split())
+    C.cfg["final_eval_commands"] = []
+    shutil.rmtree(vault)
+    check(got == [["hidden", "hidden"]] * 2 + [["hidden", "sealed"]] * 3,
+          "sealed data in a folder outside the project is hidden from a training run, as a folder or file by file, "
+          "whether the pattern names it from the project or by its full path, and from the loop's evaluator when only "
+          f"the final evaluation names it (was: with a full path, an error for a pattern of files and no hiding from "
+          f"the evaluator) ({got})")
     C.cfg["sealed_paths"] = ["data/test/**"]
     shutil.rmtree(proj / "blobs/test")
     def seen():  # what the evaluator's box lets a program do, when the folder it scores is the runs folder

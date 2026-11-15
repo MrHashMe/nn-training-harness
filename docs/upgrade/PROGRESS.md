@@ -1516,8 +1516,12 @@ Done (REPORT.md, "The seventh installer run on the real install", has it in full
   folder.
 - Not done there: its scripts, a launch, a final evaluation, an agent session, `install.py --worktrees`.
 
-Next: whether these records are pushed, and whether the test branch is deleted. Each is a separate word
-of the user's.
+- Pushed on the user's "Yes, push" of 15 Nov: these records, to the public `main`. Fetched first (`main`
+  unchanged at `fb101a7`); three commits of records (`2251379`, `c709c6f` and the commit of this line), no
+  force. The push starts a run of the workflow on `main`: `gh run list --branch main` shows it. The
+  other repository was not pushed.
+
+Next: whether the test branch is deleted, which waits for a word of the user's.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1775,7 +1779,9 @@ of the user's.
   covers the run and its checks. It is not a word for a commit in that repository or for a push.
 - Answered on 15 Nov ("Yes, commit there"), from the seventh run: the thirteen files are committed in that
   repository. The word covers that commit; it is not a word for a push of either repository.
-- Open, from the seventh run: whether the records of the run are pushed to the public `main`.
+- Answered on 15 Nov ("Yes, push"), from the seventh run: the records of the run are on the public `main`.
+  The word covers that push. It is not a word for deleting the test branch or for pushing the other
+  repository.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented
   machine for a stop on the machine itself, agent sessions for a powered benchmark, a Mac).
 

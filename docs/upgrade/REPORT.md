@@ -4005,6 +4005,12 @@ it change records only.
   subcommands. To undo the commit while it is the newest one there: `git reset --soft HEAD~1`.
 - **Not done there.** Its two registered scripts, a launch and a final evaluation were not run, no agent
   session was started, `install.py --worktrees` was not run and its files were not counted, as before.
+  That repository was not pushed.
+- **These records are in the public repository, on your word.** On 15 November you said "Yes, push" to the
+  question whether to push them to `main`. Fetched first: `main` had not moved since `fb101a7`. Three
+  commits of records went out, the two on the run and on the commit there (`2251379`, `c709c6f`) and the
+  commit of this line: no code, no test, no page of the kit, no force. The push starts a run of the
+  workflow on `main`; its result is not in this report.
 - **To know.** The guard there is the new one from the next tool call on. A session in that project now
   meets a question where it writes a frozen file by a command the guard did not read before (`touch`,
   `sort -o`, a copy onto it), where it copies a folder that holds one, and at a formatter or fixer run over

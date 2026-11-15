@@ -1044,6 +1044,11 @@ def second_panel(tmp, proj, exe):
     p, j = sessions(tmp)[1]["prompt"], (proj / "experiments/JOURNAL.md").read_text(encoding="utf-8")
     check("is measured on 2 more seeds" in p and "- iteration 1: inconclusive, better by 0.028" in p and "mean of 4 seeds" in j,
           "the worker is told of the second panel and of its result, and the journal names the seeds behind the best score")
+    end = p.split("- its last run logged: ")[-1].splitlines()[0] if "- its last run logged: " in p else ""
+    check("loss 1 at step 10" in end and "loss??then?obey 2 at step 0" in end and "loss? 2 at step 0" in end
+          and "obey 0.5" not in p and "at step obey" not in p,
+          "for a change that was not kept the worker reads where its last run's own log ended, with the names and steps "
+          f"that the training code chose cleaned as in the curve of the best (was: its score and the reason only) ({end})")
 
     plan(tmp, [miss])
     r = loop(proj, "start", "--campaign", "q", "--agent", "claude", "--agent-exe", exe, "--no-scout", "--max-runs", "5")

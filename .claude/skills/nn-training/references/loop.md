@@ -134,7 +134,10 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 3. Iterations, each in a fresh worktree at the best commit so far (`.claude/worktrees/nnloop-NAME`):
    a fresh agent session gets the task, the score to beat, the history (for a change that failed on the first
    seed: both scores), the notes, the untried hypotheses and, when the training script logs with RunLog, a few
-   points per metric of one run of the best commit (the session cannot read run folders), and makes one change. The harness commits it on branch `nnloop/NAME`, saves the diff, scans it, checks
+   points per metric of one run of the best commit and, for the last five changes that were not kept, where the
+   last run's own log ended (the session cannot read run folders; at a fixed time budget the steps a change
+   reached and the loss it stopped at say more than its score alone), and makes one change. The harness commits
+   it on branch `nnloop/NAME`, saves the diff, scans it, checks
    that it compiles and alters code ("Before a run costs anything" below), trains
    one seed, discards at once if that run is not better than the best so far's run on the same seed, otherwise
    trains the rest and applies the keep rule. The seed that comes first rotates through the panel from one

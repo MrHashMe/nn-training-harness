@@ -222,6 +222,13 @@ def unit_tests(tmp):
     check(nnremote.used_s({"started_ts": 2000.0}, counted, 1000.0) >= 36 and nnremote.used_s({}, counted, 1000.0) == 0
           and nnremote.used_s({"started_ts": 964.0}, object(), 1000.0) == 36,
           "a clock that was set back during a run does not shorten the time booked: the controller's own count holds")
+    # reserved 5 s, lasted 10 s by the controller's count, 2 s by a clock that was set back 8 s on the way
+    late = type("Drv", (), {"since": nnremote.time.monotonic() - 10, "pull": lambda self: {"alive": False}})()
+    over = {"remote": {"started_ts": nnremote.time.time() - 2, "hours": 5 / 3600}}
+    check(nnremote.follow(late, tmp, over, {"poll_s": 0.01, "unreachable_s": 5}, {}, {"stop": False}, 0.0)[0]
+          == nnremote.USED_UP,
+          "a job that ended after its reserved time has used it up, although the clock was set back during the run "
+          "(was: taken for a job that was taken away, and resumed as a new one)")
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w") as tar:
         for name in ("../escape.txt", "/abs.txt", "manifest.json", "exit.json", "pid.json", "sub/../../up.txt",

@@ -630,7 +630,7 @@ def follow(drv, d, man, st, cfg, flag, t0):
     the last remote state)."""
     rem = man["remote"]
     kill_after = float(cfg.get("kill_after_s") or 120)
-    limit = rem["started_ts"] + rem["hours"] * 3600 if rem.get("hours") else None
+    span = rem["hours"] * 3600 if rem.get("hours") else None  # the reserved time, counted as the ledger counts it
     bad_since = stop_at = killed_at = None
     why, state, gone = None, {}, 0
     while True:
@@ -649,7 +649,7 @@ def follow(drv, d, man, st, cfg, flag, t0):
         if not state.get("alive"):
             gone += 1  # twice in a row: the exit record may be written between a pull and its liveness check
             if gone > 1:
-                return why or (USED_UP if limit and t >= limit else GONE), state
+                return why or (USED_UP if span and used_s(rem, drv, t) >= span else GONE), state
             continue
         req = expctl.read_json(d / "stop.json")
         asked = flag["stop"] or (isinstance(req, dict) and expctl.is_num(req.get("requested_ts"))
@@ -659,7 +659,7 @@ def follow(drv, d, man, st, cfg, flag, t0):
             if not isinstance(req, dict):
                 expctl.write_json_atomic(d / "stop.json", {"requested_ts": t})
             quiet(drv.stop)
-        if limit and t > limit + 60 and stop_at is None:  # neither the run's deadline nor the provider ended it
+        if span and used_s(rem, drv, t) > span + 60 and stop_at is None:  # neither its deadline nor the provider ended
             stop_at, why = t - kill_after, USED_UP
         if stop_at is not None and t > stop_at + kill_after:
             quiet(drv.kill)

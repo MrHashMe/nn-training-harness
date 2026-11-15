@@ -20,7 +20,8 @@ its fifteen findings, all fixed.
 "The test branch" below is the work on the user's "Push test branch" of 15 November: rounds 6 and 7 are in
 the public repository as the branch `test/rounds-6-7`, the workflow ran there on GitHub's Ubuntu, macOS and
 Windows machines, three commits repaired what its first run showed, and its second run passes in all six
-jobs. "`main`" below is the user's "Push main" of the same day: `main` took the branch as it was.
+jobs. "`main`" below is the user's "Push main" of the same day: `main` took the branch as it was. The entry
+after it is the seventh installer run on the real install, which brought rounds 6 and 7 there.
 
 # Upgrade progress
 
@@ -1484,8 +1485,35 @@ Done:
 - Left as it is: the branch `test/rounds-6-7` in the public repository, and the README's line "tested on
   Windows and WSL2" (the front page is another session's work).
 
-Next: the seventh installer run on the real install, and whether the test branch is deleted. Each is a
-separate word of the user's.
+Next, when this entry was written: the seventh installer run on the real install (done: the next entry),
+and whether the test branch is deleted. Each is a separate word of the user's.
+
+## The seventh installer run on the real install (15 November)
+
+The user's word, 15 November: "Yes, run it", to the question whether to run the installer on the real install
+a seventh time. My reading: the word covers the run and its checks, as with the runs before it. A commit of
+the thirteen changed files in that repository and a push of this record each wait for a word of their own.
+
+Done (REPORT.md, "The seventh installer run on the real install", has it in full):
+- Read-only look, rehearsal on a fresh copy, dry run, then the run at 08:07 UTC from a clean clone of the
+  public commit `fb101a7`. Before it the install's 289 listed files were as the commit after the sixth run
+  had left them, and no run was live.
+- Replaced, each with a backup under the install's `.claude/backups/`: eleven kit files (the guard, the four
+  scripts, `SKILL.md`, five references), the manifest, and `.gitignore` (one line, `.DS_Store`, in the kit's
+  block). Config, settings, `CLAUDE.md`, journal and runs unchanged.
+- `expctl selftest` passes with the two optional failures of the runs before; `status` is the same with the
+  old and the new `expctl.py`; the 27 kit files equal the kit's apart from interpreter lines in five.
+- Guard answers on 28 made-up calls, none carried out: the twenty of the sixth run unchanged; of the eight
+  new ones, a sealed file behind a zsh group goes from allowed to refused, and behind `[^z]`, `touch`,
+  `sort -o` and `Path.touch()` on a frozen file, `black .` and `cp -r` of the frozen file's folder go from
+  allowed to a question.
+- Left there: thirteen files changed and not committed, 418 other status entries untouched, nothing staged,
+  the backup folder, 40 more lines in the guard's record (36 marked `upgrade-check`).
+- Not done there: a commit, its scripts, a launch, a final evaluation, an agent session,
+  `install.py --worktrees`.
+
+Next: whether the thirteen files are committed in that repository, whether this record is pushed, and
+whether the test branch is deleted. Each is a separate word of the user's.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1724,7 +1752,7 @@ separate word of the user's.
   on GitHub's runners (six jobs, free for a public repository). Recommended: a branch first, on which the
   workflow runs and what fails on macOS or on Python 3.15 is repaired before `main` moves; one word would
   have to cover the follow-up pushes.
-- Open, from round 6: a seventh installer run on the real install, for the guard's fix.
+- Answered on 15 Nov ("Yes, run it"), from round 6: the seventh installer run on the real install.
 - Settled by round 7: whether to close the guard's write-verb gap (more verbs, with more questions about
   harmless lines), to build the hash of the frozen files in run records, or to leave both. Both are built.
 - Open, from round 6: a Mac for one training run (the Seatbelt box, the `mps` device, mlx-lm).
@@ -1738,8 +1766,11 @@ separate word of the user's.
   and the push of `main`. It is not a word for deleting the test branch, a pull request or anything on the
   real install.
 - Open, from `main`: whether the branch `test/rounds-6-7` is deleted in the public repository.
-- Open, from round 7: the seventh installer run on the real install. It would now bring the guard changes of
-  rounds 6 and 7 (the guard asks in more cases), the stop and lock fixes and the hash of the frozen files.
+- Answered on 15 Nov ("Yes, run it"), from round 7: the seventh installer run on the real install, which
+  brought it rounds 6 and 7. The entry "The seventh installer run on the real install" above. The word
+  covers the run and its checks. It is not a word for a commit in that repository or for a push.
+- Open, from the seventh run: whether the thirteen files it changed are committed in that repository, and
+  whether the record of the run is pushed to the public `main`.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented
   machine for a stop on the machine itself, agent sessions for a powered benchmark, a Mac).
 
@@ -1825,6 +1856,12 @@ separate word of the user's.
   commits: runlog's public names and signatures, expctl's subcommands). The results are `real8-*.json` and
   `real8-*.log`, the copy of the install's kit files from before the run is
   `real-install-before-20261114-sixth`, and the kit clone that the installer ran from is `kit-2666faf`.
+- The seventh installer run's helpers are in the same folder, made from the sixth run's by renaming:
+  `real9.sh STEP`, `real9_pre.py`, `real9_clone.sh`, `real9_calls.py` (the twenty calls and eight for
+  rounds 6 and 7, with sealed and frozen paths from the install's config) and `real9_commit.py check |
+  commit MSGFILE` for its thirteen files (`check` only reads; `commit` was not run). The results are
+  `real9-*.json` and `real9-*.log`, the copy from before the run is
+  `real-install-before-20261115-seventh`, and the kit clone is `kit-fb101a7`.
 - A session that ends on an error leaves its last exchange only in its saved transcript, under
   `~/.claude/projects/<this folder's path, with dashes>/<session id>.jsonl`. The first session's is 263 MB:
   read its tail with a script, not whole.

@@ -28,7 +28,9 @@ execution: its section, "Round 7", follows "Round 6". On your "Push test branch"
 are in the public repository as the branch `test/rounds-6-7`, where the kit's tests ran for the first time
 on GitHub's macOS, Linux and Windows machines: its section, "The test branch", follows "Round 7". On your
 "Push main" of the same day `main` took that work as it was, with no merge commit (the last part of that
-section, "`main`"). Decision record: `docs/upgrade/LEDGER.md`.
+section, "`main`"). On your "Yes, run it" of that day the installer ran on your real install a seventh
+time, which brought it rounds 6 and 7 ("The seventh installer run on the real install", after "`main`").
+Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
 1. **The upgraded kit does not beat the old one by more than the noise.** Pilot with five runs per arm (the first
@@ -184,8 +186,8 @@ section, "`main`"). Decision record: `docs/upgrade/LEDGER.md`.
     `cat data/(test|x)/labels.csv` and `cat data/[^r]est/labels.csv` printed a sealed file, and the guard
     had let them pass. It reads these patterns now, and it asks about a sealed path behind `<`, `@`, a
     comma or an option's letter. Several of those lines need neither zsh nor a Mac, so your real install
-    keeps the hole until a seventh installer run, on your word (the public `main` kept it until 15
-    November: point 17). An
+    kept the hole until the seventh installer run of 15 November, on your word (the public `main` kept it
+    until the same day: point 17). An
     older limit was found in passing and not changed: a frozen or harness file that a program outside the
     guard's list of write verbs writes (`sort -o`, `curl -o`, `touch`) passes without a question (round 7
     closed it). All seven test files pass in seven
@@ -209,8 +211,8 @@ section, "`main`"). Decision record: `docs/upgrade/LEDGER.md`.
     is a sample, not a proof, and a path that a program builds while it runs stays outside what a guard
     over command lines can read. All eight test files pass in six interpreters on Windows and in WSL, Python
     3.8 to 3.15 ("Round 7", "Tests"). Since 15 November the round is in the public repository, on a test
-    branch first and then on `main` (point 17); your real install has none of it until a seventh installer
-    run, on your word.
+    branch first and then on `main` (point 17), and your real install has it since the seventh installer
+    run of that day, on your word ("The seventh installer run on the real install").
 17. **The kit's tests pass on a Mac, on bare Linux and on Windows on GitHub's machines, and the first run
     there found one real fault in the kit** (15 November, on your "Push test branch"; "The test branch").
     Rounds 6 and 7 went public as the branch `test/rounds-6-7`, and on your "Push main" of the same day
@@ -2979,7 +2981,9 @@ read or changed on your real install.
 Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`
 and, on your "Push main" of the same day, on `main`, and its tests have run on GitHub's macOS runner. Where
 this section says that nothing is pushed, that nothing ran on a Mac or that the workflow has not run, "The
-test branch" (after "Round 7") has what is true now. The rest of the section stands as it was written.
+test branch" (after "Round 7") has what is true now; where it says that your real install waits for a
+seventh installer run, that run was made on 15 November (the last part of "The test branch"). The rest of
+the section stands as it was written.
 
 **Nothing of this round has run on macOS.** What the section says about a Mac rests on reading the code and
 on documentation, named where it is used. The first run on a Mac will be the workflow's, and a workflow runs
@@ -3290,8 +3294,9 @@ round has run on macOS.**
 Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`
 and, on your "Push main" of the same day, on `main`, and its tests have run on GitHub's macOS, Linux and
 Windows runners. Where this section says that nothing is pushed, that nothing ran on a Mac or that the
-workflow has never run, "The test branch" (the next section) has what is true now. The rest of the section
-stands as it was written.
+workflow has never run, "The test branch" (the next section) has what is true now; where it says that a
+seventh installer run on your real install was not made, it was made on 15 November (the last part of that
+section). The rest of the section stands as it was written.
 
 ### In short
 1. **The report's claim about the evaluator is wrong, and its findings about the guard and the controller are
@@ -3774,8 +3779,9 @@ on your real install.
    runner is a virtual machine (`expctl env` read 7 GB and "Apple M1 (Virtual)"), not a Mac that a person
    uses.
 6. **`main` did not have rounds 6 and 7 while this work ran, and has them since your "Push main" of the same
-   day** ("`main`", the last part of this section). On your real install the guard's holes that those
-   rounds closed stay open until a seventh installer run ("What needs your decision").
+   day** ("`main`", near the end of this section). On your real install the guard's holes that those
+   rounds closed stayed open until the seventh installer run of that day ("The seventh installer run on
+   the real install").
 
 ### The first run (commit `9d2ff12`)
 | Job | Result | What failed |
@@ -3905,13 +3911,15 @@ No check was removed.
 ### What needs your decision
 1. **`main`.** Answered on 15 November ("Push main") and done: "`main`" below. Open from it: whether the
    test branch goes now, which is a deletion in the public repository and waits for your word.
-2. **A seventh installer run on your real install**, as in "Round 7": it brings the guard fixes of rounds 6
-   and 7, and the guard there will ask in more cases.
+2. **A seventh installer run on your real install**, as in "Round 7". Answered on 15 November ("Yes, run
+   it") and done: "The seventh installer run on the real install" below. Open from it: whether the thirteen
+   files it changed are committed in that repository, as after the runs before.
 3. **Money, accounts, hardware**, only if you want what waits for them: a Mac for one agent session and one
    training run on the Apple GPU; a rented machine; agent sessions for a powered benchmark.
 
 ### Most valuable next steps
-1. The seventh installer run (`main` is done: "`main`" below).
+1. One ordinary working session on your real install, to see which of the guard's new questions get in the
+   way (`main` and the seventh installer run are done: below).
 2. A seventh job in the workflow: a Mac with PyTorch, so that the nine benchmark checks and a run's record of
    the `mps` device run on a Mac. It would be the first job that installs a package, so the six others stay as
    they are. Whether GitHub's virtual Mac offers the Apple GPU to PyTorch is not known.
@@ -3933,6 +3941,68 @@ that move and that push, and was done like this:
 - The repository's front page (README) still says "tested on Windows and WSL2". It is the work of another
   session of yours and was not changed here; `docs/REFERENCE.md`, "By platform", has the runs on GitHub's
   machines.
+
+### The seventh installer run on the real install (15 November 2026)
+To the question whether to run the installer on your real install a seventh time you answered "Yes, run it".
+My reading: the word covers the run and its checks, as with the runs before it. It went as the sixth run
+did: a read-only look, a rehearsal on a fresh copy of the install's kit files, a dry run on the install, then
+the run, at 08:07 UTC. The installer came from a clean clone of the public commit `fb101a7`, which is `main`.
+Its installed files are those of `edd61c8`, the last commit that GitHub's machines tested; the commits after
+it change records only.
+
+- **Before the run.** The install was as the commit after the sixth run had left it: of the 289 files I list
+  there (its `.claude` folder, its experiments, its runs, `CLAUDE.md` and `.gitignore`) none was added,
+  removed or changed. None of its five runs was live. The guard's record had last been written about
+  seventeen hours before, so nobody was at work there. None of that repository's eleven checkouts holds a
+  receipt of a final evaluation, so the self-test had nothing to copy outside the install.
+- **What changed there.** Eleven kit files, the manifest and `.gitignore`, each with a backup in a new folder
+  under the install's `.claude/backups/`. The installer's other twenty files were up to date. The eleven are
+  what rounds 6 and 7 and the test branch changed in the installed kit: the guard `nn_guard.py`, the scripts
+  `expctl.py`, `nnloop.py`, `nnremote.py` and `runlog.py`, `SKILL.md`, and the references `finetuning.md`,
+  `llm.md`, `performance.md`, `stack.md` and `validity.md`. None of them had been edited there. `.gitignore`
+  got one line, `.DS_Store`, inside the kit's block; its other 41 lines are as before. Config (19 keys),
+  `settings.json` with its permissions and hooks, `CLAUDE.md`, journal and runs are byte for byte as before.
+- **Checked by running, there.** `expctl selftest` passes. The two optional checks that fail are those of the
+  runs before: no metric is configured, and 9 of the 10 other checkouts are without the guard. `expctl
+  status` gives the same answer with the old and the new `expctl.py`, key by key: five runs, four completed
+  and one failed, no alert. The logger imports from the skill's folder. Through the command that its settings
+  register, the guard lets a harmless read pass, refuses input it cannot read, refuses both configured final
+  commands typed directly and asks for `expctl final-eval`. The 27 files of its skill, hooks and agents
+  folders equal the kit's, apart from lines in five of them that name its interpreter.
+- **What the new guard decides differently there.** I put 28 made-up calls to its guard before and after the
+  run, with that install's own config; none was carried out. The twenty of the sixth run get the answers they
+  got before. Eight are new, for what rounds 6 and 7 changed; the sealed and frozen paths in them are taken
+  from that install's config:
+
+  | Made-up call | Before | After |
+  |---|---|---|
+  | `cat` of a file in a sealed folder, the folder written as a zsh group `(name\|zz)` | allowed | refused |
+  | `cat` of the same file, the folder's first letter written as `[^z]` | allowed | question |
+  | `touch` of a frozen file | allowed | question |
+  | `sort -o` onto a frozen file | allowed | question |
+  | `python -c` with `Path(frozen file).touch()` | allowed | question |
+  | `black .` at the project root | allowed | question |
+  | `cp -r` of the frozen file's folder | allowed | question |
+  | `ls .claude/skills` | allowed | allowed |
+
+  The first two rows are the hole of point 15 of "Read this first": it is closed there now. A call takes the
+  guard 0.3 to 0.4 s there, before and after. The eight calls that look through the whole project took 0.6 to
+  0.8 s before and 0.9 to 1.1 s after, each measured once.
+- **Left there.** The run left the thirteen files changed and not committed in that repository, its 418 other
+  status entries untouched and nothing staged. Git ignores the backup folder and the guard's record there.
+  The record has 40 more lines: 4 from the self-test's own probes and 36 from my calls, marked
+  `upgrade-check` (3 on the final-evaluation rule, 13 from the 28 calls before the run and 20 from those
+  after it; an allowed call leaves no line).
+- **Not done there.** The thirteen files are not committed: that needs your word, as after the runs before.
+  Its two registered scripts, a launch and a final evaluation were not run, no agent session was started,
+  `install.py --worktrees` was not run and its files were not counted, as before. I did not compare what
+  scripts bind to between the two kits (`runlog.py`'s public names, `expctl.py`'s subcommands), which the
+  sixth run's commit did.
+- **To know.** The guard there is the new one from the next tool call on. A session in that project now
+  meets a question where it writes a frozen file by a command the guard did not read before (`touch`,
+  `sort -o`, a copy onto it), where it copies a folder that holds one, and at a formatter or fixer run over
+  the whole project (`black .`); in an unattended session each such question is a refusal. One ordinary
+  working session there would show which of these get in the way.
 
 ### Sources
 - The three runs of the workflow `tests` on the branch `test/rounds-6-7` of the public repository, 15

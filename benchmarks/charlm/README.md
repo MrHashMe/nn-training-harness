@@ -54,6 +54,28 @@ python .claude/skills/nn-training/scripts/expctl.py final-eval -- runs/RUN
 It runs `evaluate.py --data data/test.txt --run-dir runs/RUN` and writes a receipt; a second use is refused unless
 `--again "reason"` says why.
 
+## Faster training code and the model file
+
+The model file is TorchScript because the evaluator must not run a run's Python code: it reads the file's code as
+text, refuses what a model must not do, and only then loads it. What that means for speed-ups, tried with
+PyTorch 2.9.1 on 15 November 2026:
+
+- `torch.compile`: train with the compiled model, save the plain one. `torch.jit.trace` of a compiled model fails
+  ("Detected that you are using FX to torch.jit.trace a dynamo-optimized function"), so `train.py` traces the
+  module inside the wrapper, which holds the same weights and scored the same. At this size compiling did not
+  pay: 138.6 steps a second after a first call of 4.8 s, against 151.7 without (WSL, one RTX 5090).
+- A hand-written `torch.autograd.Function` (a kernel with a backward of its own) in the forward: saving the trace
+  fails ("Could not export Python function call"). Call it while `self.training` only, and give the other branch
+  the same arithmetic in plain operations: `train.py` traces after `model.eval()`. A model built that way is
+  scored like the same model in plain code (`tests/test_benchmarks.py`).
+- Code that TorchScript runs while a file is loaded (`__setstate__`): PyTorch runs it in `torch.jit.load`. The
+  evaluator refuses such a file before it loads anything, if that code names a file operation (same test file).
+- Not offered: a Python model definition beside a file of weights. The evaluator would have to run the run's own
+  code, or the definition would be frozen and the architecture with it. `torch.export` took the model with a
+  hand-written function in its forward, and the saved program gave the same logits after loading; PyTorch 2.9.1
+  marks its file format as under active development ("saved files may not be usable in newer versions"), and
+  the evaluator's checks have not been tried on it.
+
 ## Changes to the evaluator
 
 14 November 2026. The check for file reads looked for the text `torch.from_file(` in the code folder of the

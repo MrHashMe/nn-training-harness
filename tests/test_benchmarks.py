@@ -21,6 +21,7 @@ import time
 import warnings
 import zipfile
 from pathlib import Path
+from typing import Tuple
 
 KIT = Path(__file__).resolve().parents[1]
 TASK = KIT / "benchmarks" / "charlm"
@@ -219,6 +220,72 @@ else:
     check((tmp / "ran-by-python").exists() and tried >= 4 and not ran,
           "a pickle entry that runs code under Python's pickle runs none under the evaluator: each of the model "
           f"file's {tried // 2} pickle entries was replaced by one, in two protocols ({ran or 'none ran'})")
+
+    # Code that TorchScript runs while a model file is loaded: a module's __setstate__. PyTorch 2.9.1 runs it in
+    # torch.jit.load (tried on 15 November 2026). The evaluator reads the file's code before it loads anything
+    class Wakes(torch.nn.Module):  # its state names a file, which the code that restores the state writes
+        def __init__(self, mark):
+            super().__init__()
+            self.mark = mark
+
+        @torch.jit.export
+        def __getstate__(self):
+            return (self.mark, self.training)
+
+        @torch.jit.export
+        def __setstate__(self, state: Tuple[str, bool]):
+            self.mark = state[0]
+            self.training = state[1]
+            torch.save(torch.zeros(1), state[0])
+
+        def forward(self, idx):
+            return one_hot(idx, 65).float()
+
+    mark, buf = tmp / "woken", io.BytesIO()
+    torch.jit.save(torch.jit.script(Wakes(str(mark))), buf)
+    woke = answer("Wakes", buf.getvalue())
+    by_evaluator = mark.exists()
+    torch.jit.load(io.BytesIO(buf.getvalue()))
+    check(woke[0] == 3 and "reads or writes files" in woke[1].get("error", "") and not by_evaluator,
+          "a model file whose code writes a file while it is loaded (__setstate__) is refused before the evaluator "
+          f"loads it, and nothing is written ({woke}; a plain torch.jit.load of the same file wrote it: {mark.exists()})")
+
+    # A hand-written torch.autograd.Function, as a faster kernel has one, cannot be saved in a model file. Used
+    # while the model trains only, with the same arithmetic in plain operations otherwise, it can: train.py traces
+    # after model.eval()
+    class Kernel(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, x):
+            return x * 2
+
+        @staticmethod
+        def backward(ctx, g):
+            return g * 2
+
+    class Both(torch.nn.Module):
+        def forward(self, idx):
+            x = one_hot(idx, 65).float()
+            return Kernel.apply(x) if self.training else x * 2
+
+    class Plain(torch.nn.Module):
+        def forward(self, idx):
+            return one_hot(idx, 65).float() * 2
+
+    def traced(model):  # the model file's bytes, made as train.py makes them
+        buf = io.BytesIO()
+        torch.jit.save(torch.jit.trace(model, torch.zeros(64, 128, dtype=torch.long)), buf)
+        return buf.getvalue()
+
+    try:
+        traced(Both().train())
+        training = "saved"
+    except Exception as e:  # noqa: BLE001
+        training = type(e).__name__
+    both, plain = answer("Both", traced(Both().eval())), answer("Plain", traced(Plain().eval()))
+    check(both[0] == plain[0] == 0 and abs(both[1].get("score", 0) - plain[1].get("score", 1)) < 1e-9,
+          "a model that calls a hand-written autograd function while it trains, and plain operations otherwise, is "
+          f"saved after model.eval() and scored like the same model in plain code ({both}, {plain}; saving it in "
+          f"training mode: {training})")
 
 # 2. a project with the kit
 p = tmp / "with-kit"

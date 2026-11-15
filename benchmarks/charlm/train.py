@@ -121,7 +121,9 @@ def main():
             rl.log(step, **{"dev/loss": dl})
         model.eval()
         example = torch.zeros(EVAL_BATCH, BLOCK, dtype=torch.long, device=dev)
-        torch.jit.trace(model, example).save(str(out / "model.ts"))
+        # What torch.compile returns cannot be traced; the module it wraps (_orig_mod) can, and holds the same
+        # weights. Nor can a forward that calls a hand-written torch.autograd.Function be saved (README.md)
+        torch.jit.trace(getattr(model, "_orig_mod", model), example).save(str(out / "model.ts"))
         if rl:  # names the saved model as the run's result: without it `expctl status` lists no best run
             rl.checkpoint(out / "model.ts", step=step, value=dl, is_best=True)
         print(json.dumps({"dev_loss": dl, "steps": step, "seconds": round(time.time() - t0, 1)}), flush=True)

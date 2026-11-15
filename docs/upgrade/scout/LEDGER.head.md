@@ -306,38 +306,73 @@ nothing new was looked at. The record `scout/covered/built-test-branch.json` cha
 
 The user pasted a third reviewer's report on `fb101a7` and asked for the project to be upgraded further on its
 recommendations. The report is a third party's text: each of its claims about the code was checked by reading or
-by a run before anything was changed, its instructions (to paste a prompt of its own into a session, to start a
-plan) were not followed, and its scores against a design of its own ("v2-lean") were not taken as a goal. The
-note `round8` has 21 rows. Research went no further than a change needed: one configuration file of TRL at
-a tag, and summaries of one paper, both on 15 November.
+by a run before anything was changed, its instructions (to paste a prompt of its own into a session on a new
+branch, to start a plan or a team of agents, to land its first phase first) were not followed, and its scores
+against a design of its own ("v2-lean") were not taken as a goal. The note `round8` has 33 rows: 21 from the
+report, and 12 that the round's own test runs and the independent review at its end added. Research went no
+further than a change needed: one configuration file of TRL at a tag, summaries of one paper, and the release
+notes of one library, all on 15 November.
 
-- Confirmed and built (`scout/covered/built-round8.json`; 7 Adopt rows of this note). Each of the review's six
-  findings held in part, and each was narrower than stated. A refusal of a git undo or of a formatter given a
-  folder no longer voids an unattended iteration or bars its change, and every other refusal still does. The
-  guard reads the target of a redirection or a tee as the written file, so a line that only redirects an
-  evaluator's output passes; three gaps in the same reading were closed on the way. A remote launch holds the
-  spending ledger's lock from its read to its write. Every frozen file counts with its content, however large.
-  The character-model benchmark saves a model that was trained under `torch.compile`. The margin at a change's
-  first look counts the best so far as one seed panel.
+- Confirmed and built (`scout/covered/built-round8.json`; 7 Adopt rows of this note). The review's six findings
+  all held at least in part, and most were narrower than stated. The one on large frozen files held in full,
+  and what its first fix left open was closed after the independent review (two rows of the third bullet); the
+  one on the margin after a second look held further than this ledger first recorded ("Confirmed in part"
+  below). A refusal of a git undo or of a formatter given a folder no longer voids an unattended iteration or
+  bars its change; every refusal with another reason still does, among them a forced `git clean` aimed at a
+  kept file or folder. The guard reads the target of a redirection or a tee as the written file, so a line that
+  only redirects an evaluator's output passes; three gaps in the same reading were closed on the way. A remote
+  launch holds the spending ledger's lock from its read to its write. Every frozen file counts with its
+  content, however large. The character-model benchmark saves a model that was trained under `torch.compile`.
+  The margin at a change's first look counts the best so far as one seed panel.
 - Built from the review's proposals (3 Adopt rows of this note and 3 of earlier notes). A training run in the
   loop's sandbox has a process namespace of its own (round 5's Trial row, Adopt and finished now). The worker
   reads where the last run of a change that was not kept ended. A test split in a folder outside the project is
   sealed under either spelling of its name. Muon was measured on the kit's benchmark and is in
   `references/optimization.md` as the first challenger for a transformer trained from scratch (two rows of the
   notes `optimization-performance` and `sweep-llm-training`, Trial and Assess until now): 1.6483 against 1.6748
-  nats per character for AdamW at its best rate, 3.6 standard errors, at 1.84 times the cost of a step. The
-  fine-tuning reference has a smoke run before RL post-training.
+  nats per character for AdamW at its best rate, on three seeds, a difference of 3.6 standard errors (a t with
+  about 4 degrees of freedom), at 1.84 times the cost of a step. A repeat of both arms at one seed moved Muon's
+  score by 0.010, more than its spread across seeds, and no longer run was made. The fine-tuning reference has
+  a smoke run before RL post-training.
+- Found by the round's own test runs and by the independent review at its end (9 Adopt and 2 Reject rows of
+  this note). Three readers without the working context were asked. The reader of the claims and decisions
+  kept 14 findings and the reader of the controller and the loop 19: each is fixed, or answered in a row or in
+  this section. The reader of the guard was stopped by the model's safeguards before it reported, and its work
+  was not redone in the working session, so the guard's changes of this round have had no independent reading.
+  Built: a remote job that outlasted its reserved time has used it up, whatever the clock did meanwhile; an
+  amount that is no finite number reserves nothing, and a failed launch gives its reservation back; the loop's
+  sandbox has the file system read-only, and a run writes its worktree and its own run folder; the loop waits
+  for the supervisor it started, and on Linux a stop signals only a process proven to belong to the run; a
+  launch reads every frozen file, whatever hash is kept; a sealed, frozen or harness pattern given by full path
+  or under `~` names one place for every reader of the config; on Windows the loop reads a large protected file
+  in full after every evaluation; a resumed campaign shows this version's margin, a seed given twice is
+  refused, and a comment line of a Python file is not read as code; a forced `git clean` aimed at a kept file
+  or folder is no routine undo. Rejected: a list of further folders that a sandboxed run may write, and a read
+  of every small frozen file at every `expctl status`.
 - Not confirmed, each by a run: that the spending cap was passed or that a refused launch left a reservation
-  behind; 4.15 to 5.14 % false keeps as a rate among later changes (2.96 % at most in the simulation of the rule
-  as built); that the evaluator's load for every batch reads the disk or is a fault; that compiling speeds up
-  the benchmark (138.6 steps a second against 151.7 without, at its size); and that a seed × item formula lowers
-  the smallest detectable effect (in the simulation its standard error was 13 to 18 % above the true one).
-- Rejected, reasons in the rows (9): a comment that names a sealed path passing the guard, one model load per
-  evaluation, the six starter packs, Chronos-2 in a pack, the seed × item formula as the keep rule's standard
-  error, a second archive slot for a faster change, coordinate refinement and Optuna with pruning inside the
-  loop's search, and a command that moves sealed data with the guard eased on the strength of the place.
-- Hold (1): a per-command reading of write verbs in the guard.
-- Undecided, with the test it needs (1 Assess): `torch.export` as the benchmark's model file.
+  behind; and that the evaluator's load for every batch reads the disk or is a fault.
+- Confirmed in part, after a first verdict of this ledger that the independent review corrected. Compiling
+  does speed up the benchmark's step: 189.0 steps a second once compiled against 162.4, after a first call of
+  1.4 to 4.8 s, which for a run of 30 s is 4 % more steps or 9 % fewer, by arithmetic. The first note, 138.6
+  against 151.7, had timed the window that held the compiling. The review's 8.8 to 14.2 % of campaigns with a
+  stretch of 15 % false keeps is borne out for the rule as it was: 9.6 to 13.3 % here, of the campaigns whose
+  best so far came to stand on six runs, and 5.5 to 8.0 % after the change. Its 4.15 to 5.14 % may be the rate
+  among changes that passed the first-seed check (3.3 to 5.1 % here, for the rule as it was); among all later
+  changes the rate was 2.96 % at most before the change and 1.85 % after it.
+- No verdict: that two launches which both write without the lock, after 3 s of waiting for it on Windows,
+  can damage a line of the spending ledger. The fallback is kept. A launch reads the ledger again after its
+  write and gives way if its row is missing or came second, and a line that is no ledger row refuses every
+  paid start; such a wait was not produced in a test.
+- Rejected, reasons in the rows (7 of the report's proposals): a comment that names a sealed path passing the
+  guard, one model load per evaluation, the six starter packs, a second archive slot for a faster or leaner
+  change, coordinate refinement and Optuna with pruning inside the loop's search, and a command that moves
+  sealed data with the guard eased on the strength of the place.
+- Hold (2): a per-command reading of write verbs in the guard; Chronos-2 (first a Reject, now Hold like TabPFN
+  and AutoGluon in `user-reports`, for the same scope).
+- Undecided, with the test it needs (3 Assess): `torch.export` as the benchmark's model file; the seed × item
+  formula as the keep rule's standard error (first a Reject on a wrong reading of this round's own simulation,
+  now joined to round 7's row on per-item paired scoring); NVIDIA's Transformer Engine, for which no note had
+  a row.
 - New text in rows that stay as they were (2): traces for the worker (round 5, Trial: a narrow form is built,
   its gain unmeasured) and `torch.compile` behind a numerics gate (Trial: the step time measured here).
 - Proposals that earlier rows decide, unchanged: a one-word wrapper for the controller (`platforms`: Hold), a
@@ -346,13 +381,22 @@ a tag, and summaries of one paper, both on 15 November.
   safetensors with a model definition in place of the benchmark's model file (round 7: Reject), helpers for
   tabular models and prompt optimisation (round 5: Reject; `user-reports`: Hold for AutoGluon, TabPFN and DSPy
   with GEPA), per-item paired scoring (`evaluation`: Trial; round 7: Assess), Optuna outside the loop (Adopt),
-  and the packs' other ingredients: NorMuon, Polar Express, cautious weight decay, WSD, Liger Kernel, sequence
-  packing, self-distillation, Unsloth and mlx-lm (Trial or Assess; one older row each on Unsloth and MLX-LM
-  is Hold), the objectives after GRPO (Adopt, in `finetuning.md`).
+  FAISS e-means (`user-reports`: Adopt, in `references/data.md`), TorchTitan (Hold in two notes: multi-node
+  scope), and the packs' other ingredients: NorMuon, Polar Express, cautious weight decay, WSD, Liger Kernel,
+  sequence packing, self-distillation, Unsloth and mlx-lm (Trial or Assess; one older row on Unsloth and two
+  on MLX-LM are Hold), the objectives after GRPO (Adopt, in `finetuning.md`).
+- The review's criticisms that no row answers. That the kit gained no training method, and that 326 rows were
+  Assess: this round answers with one measured run, Muon, and nothing else, and the undecided rows stay
+  undecided for the reason at the top of this file. That the guard still passes what `docs/REFERENCE.md` lists
+  as its limits (an unpacked archive, `git apply`, a formatter it does not know, a path that a program puts
+  together while it runs): the guard reads command lines, not what a program does, and this round changed
+  none of these.
 - What "run" means in this round. The kit's test files on Windows and in WSL; probes of the guard and the
-  sandbox in temporary projects; three simulations; training runs of 30 s on one RTX 5090 in WSL. Nothing ran
-  on macOS or on GitHub's runners, because nothing was pushed, and no agent session was started: whatever needs
-  one (the gain from the worker's new history lines, a pilot on a second task) is unmeasured.
+  sandbox in temporary projects; three simulations, and a fourth by the independent review; training runs of
+  30 s on one RTX 5090 in WSL, and one start of a campaign in the read-only sandbox there (baseline, controls
+  and self-test on the GPU). The read-only sandbox and the Linux proofs behind a stop were run on WSL2 only.
+  Nothing ran on macOS or on GitHub's runners, because nothing was pushed, and no agent session was started:
+  whatever needs one (the gain from the worker's new history lines, a pilot on a second task) is unmeasured.
 
 ## Coverage map
 

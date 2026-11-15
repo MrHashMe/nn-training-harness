@@ -3,7 +3,7 @@
   "file": "round8",
   "candidate": "A routine refusal (a git undo, a formatter given a folder with kept files) does not void a loop iteration or bar its change (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`routine` in the guard's record, a formatter's own reason), scripts/nnloop.py; tests/test_loop.py (a campaign with a refused `git restore train.py`), tests/fake_agent.py; references/loop.md (\"Routine refusals\"). Commit d7265c8"
+  "where": ".claude/hooks/nn_guard.py (`routine` in the guard's record, a formatter's own reason), scripts/nnloop.py; tests/test_loop.py (a campaign with a refused `git restore train.py`; a table of lines with and without the mark), tests/fake_agent.py; references/loop.md (\"Routine refusals\"). Commits d7265c8, f429101"
  },
  {
   "file": "round8",
@@ -27,19 +27,19 @@
   "file": "round8",
   "candidate": "Every frozen file counts with its content: a file beyond the first 64 MB is read in full once and again when it changes (kit-native)",
   "status": "finished",
-  "where": "scripts/expctl.py, nnloop.py (`file_sha`, `Campaign.verify`); `.claude/state/frozen-hashes.json` is a new harness path; tests/test_kit.py, test_loop.py, test_ports.py. Commit 6cd4ee3. Left: a large file changed with its times set back passes a launch on Windows until `expctl hash` reads it"
+  "where": "scripts/expctl.py, nnloop.py (`file_sha`, `Campaign.verify`); `.claude/state/frozen-hashes.json` is a new harness path; tests/test_kit.py, test_loop.py, test_ports.py. Commit 6cd4ee3; what it left open is closed in e451124 and e334c3a, which have rows of their own"
  },
  {
   "file": "round8",
   "candidate": "The charlm benchmark saves a model trained under torch.compile, and its README says what the model file allows (kit-native)",
   "status": "finished",
-  "where": "benchmarks/charlm/train.py, benchmarks/charlm/README.md (\"Faster training code and the model file\"); two new checks in tests/test_benchmarks.py, run on Windows and in WSL. Commit 1afc9d1"
+  "where": "benchmarks/charlm/train.py, benchmarks/charlm/README.md (\"Faster training code and the model file\"); three checks in tests/test_benchmarks.py, run on Windows and in WSL. Commits 1afc9d1, 81ffe3a (only torch.compile's own wrapper is taken off, with its check) and dc4fcd6 (the step rate measured again)"
  },
  {
   "file": "round8",
   "candidate": "The margin at a change's first look counts the best so far as one seed panel (kit-native)",
   "status": "finished",
-  "where": "scripts/nnloop.py (`margin`); tests/test_loop.py (`second_panel` expected the smaller margin in two places, now the larger); references/loop.md. Commit 1fe37fd. Not simulated: noise that is not normal, a change that alters the noise, a campaign with restarts"
+  "where": "scripts/nnloop.py (`margin`); tests/test_loop.py (`second_panel` expected the smaller margin in two places, now the larger); references/loop.md. Commits 1fe37fd, dc4fcd6 (the text: the review's second figure). Not simulated: non-normal noise, a change that alters the noise, campaigns with restarts"
  },
  {
   "file": "round8",
@@ -51,7 +51,7 @@
   "file": "round8",
   "candidate": "Sealed data in a folder outside the project, named from the project or by its full path (kit-native)",
   "status": "finished",
-  "where": "scripts/expctl.py (`path_matches`, `files_matching`); tests/test_kit.py and tests/test_loop.py; references/validity.md (section 5), loop.md, docs/REFERENCE.md. Commit 53838a6. Not tested: a snapshot of a project with a link into such a folder named by its full path"
+  "where": "scripts/expctl.py (`path_matches`, `files_matching`); tests/test_kit.py and tests/test_loop.py; references/validity.md (section 5), loop.md, docs/REFERENCE.md. Commit 53838a6; six readings of such a pattern were put right in 8dcc12f, which has a row of its own"
  },
  {
   "file": "round8",
@@ -69,12 +69,66 @@
   "file": "optimization-performance",
   "candidate": "Muon (torch.optim.Muon, PyTorch 2.9+, bf16 fix in 2.15.0)",
   "status": "finished",
-  "where": "references/optimization.md (\"Muon as the first challenger\": when, how, the measurement and its limits), llm.md. Commit 6f4769e. Not run: AdamW with matched update RMS, tuned weight decay, a larger model or a longer run"
+  "where": "references/optimization.md (\"Muon as the first challenger\": when, how, the measurement and its limits), llm.md. Commits 6f4769e and dc4fcd6 (wordings after the review). Not run: AdamW with matched update RMS, tuned weight decay, a larger model or a longer run"
  },
  {
   "file": "sweep-llm-training",
   "candidate": "Muon optimizer via torch.optim.Muon (present in the PyTorch 2.9 and 2.15 docs)",
   "status": "finished",
-  "where": "references/optimization.md (\"Muon as the first challenger\": when, how, the measurement and its limits), llm.md. Commit 6f4769e. Not run: AdamW with matched update RMS, tuned weight decay, a larger model or a longer run"
+  "where": "references/optimization.md (\"Muon as the first challenger\": when, how, the measurement and its limits), llm.md. Commits 6f4769e and dc4fcd6 (wordings after the review). Not run: AdamW with matched update RMS, tuned weight decay, a larger model or a longer run"
+ },
+ {
+  "file": "round8",
+  "candidate": "A remote job that outlasted its reserved time has used it up, whatever the clock did meanwhile (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnremote.py (`follow`); tests/test_remote.py (a job of 10 s by the controller's count and 2 s by the clock, with 5 s reserved, has used its time up). Commit 1787de0"
+ },
+ {
+  "file": "round8",
+  "candidate": "An amount that is no finite number reserves nothing, and a failed launch gives its reservation back (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnremote.py (`reserve`, `ledger`, the launch's $0 settlement on any failure); tests/test_remote.py (four new checks: six NaN or infinite combinations, a damaged row, `--hours nan` and `inf`, a launch whose controller cannot start). Commit 1599a6b"
+ },
+ {
+  "file": "round8",
+  "candidate": "The loop's sandbox has the file system read-only: a run writes its worktree and its own run folder (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (`sandbox`, `eval_box`), expctl.py (`{run_dir}`); tests/test_loop.py (own run folder, another run's, a file outside, /tmp, WSL's second mount, `cmd.exe`), tests/test_kit.py; references/loop.md (\"What a sandboxed run can write\"), resume.md. Commit 9e43544. Not run on bare Linux"
+ },
+ {
+  "file": "round8",
+  "candidate": "The loop waits for the supervisor it started, and a stop signals only a process proven to belong to the run (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py, expctl.py (`stop`, the supervisor); tests/test_kit.py (Linux: a forged `pid.json`; every system: a forged request time, a request older than the launch), tests/test_loop.py (a run that writes its own `exit.json`); references/loop.md, docs/REFERENCE.md. Commit 25f5a24"
+ },
+ {
+  "file": "round8",
+  "candidate": "A launch reads every frozen file; the kept hashes of large files serve `expctl status` alone (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`frozen_state`, `read_json`), nnremote.py; tests/test_kit.py (changed: the check of a planted hash; new: eight kinds of content in the kept file, a 65 MiB file changed with its times set back and the old hash planted); docs/REFERENCE.md, references/validity.md (section 6). Commit e451124"
+ },
+ {
+  "file": "round8",
+  "candidate": "A sealed, frozen or harness pattern given by full path or under `~` names one place for every reader of the config (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`in_project`, `_link_tree`, `sealed_inside`), nnloop.py (`eval_box`, `sandbox`), nnremote.py, the session-start hook; tests/test_loop.py, test_remote.py, test_kit.py; docs/REFERENCE.md, references/validity.md. Commit 8dcc12f. Left as written: the guard's own fallback reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "On Windows the loop reads a large protected file in full after every evaluation (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (`verify(scored=True)`, `file_sha`); tests/test_loop.py (the unit check of large protected files, changed); references/loop.md (\"Large protected files\"), docs/REFERENCE.md. Commit e334c3a"
+ },
+ {
+  "file": "round8",
+  "candidate": "The loop shows this version's margin after a resume, refuses a seed given twice, and reads no comment line of a Python file as code (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (`run`, the check of `loop.seeds`, `scan`); tests/test_loop.py (a resumed state, a seed given twice, eight added lines put to the scan); references/loop.md (the seeds row, \"How the tamper scan reads a change\", the row on processes). Commit 27f318f"
+ },
+ {
+  "file": "round8",
+  "candidate": "A forced `git clean` aimed at a kept file or folder is no routine undo, and its `-f` is read wherever it stands (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (one spelling in three rules); tests/test_loop.py (the table of lines with and without the routine mark, changed), tests/test_review_fixes.py (five new cases); references/loop.md, docs/REFERENCE.md. Commit f429101. The guard's changes of this round had no independent reading"
  }
 ]

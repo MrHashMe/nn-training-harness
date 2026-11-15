@@ -647,6 +647,20 @@ def main():
           "a run whose recorded start time is a minute off, as after the system clock was set, is the same process on Linux, where "
           "the launch record's boot id and start tick say so, and a reused pid elsewhere; a key that does not match leaves it to "
           f"the start time, as a record without a key does ({r.stdout.strip()} {r.stderr[-200:]})")
+    # the pid in a fresh heartbeat stands for a run whose launched process is gone (a later process may own the
+    # folder), but not where the run's command gave it a process namespace of its own: that pid is the namespace's
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "out = []\n"
+            "for cmd in (['python', 'train.py'], ['bwrap', '--unshare-pid', '--proc', '/proc', 'python', 'train.py']):\n"
+            "    d = Path(sys.argv[2]) / str(len(out))\n    d.mkdir(parents=True)\n"
+            "    (d / 'manifest.json').write_text(json.dumps({'cmd': cmd, 'launched_by': 'expctl'}))\n"
+            "    (d / 'pid.json').write_text(json.dumps({'pid': 2147480000}))\n"
+            "    (d / 'heartbeat.json').write_text(json.dumps({'ts': time.time(), 'pid': os.getpid()}))\n"
+            "    out.append(expctl.load_run(d.parent, d, {}, time.time())['state'])\nprint(json.dumps(out))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "hbpid")], cwd=proj)
+    check(r.stdout.strip() == '["running", "lost"]',
+          "the pid in a fresh heartbeat keeps a run alive whose launched process is gone, but not a run in a process "
+          f"namespace of its own, whose heartbeat holds the namespace's pid (was: running) ({r.stdout.strip()} {r.stderr[-200:]})")
     # expctl's own writes leave no temporary file beside the record when they give up, whether the replace was refused
     # to the end or the write itself failed (a full disk)
     wdir = tmp / "wjson"

@@ -1177,9 +1177,12 @@ def load_run(root: Path, d: Path, cfg, t: float):
         hb_age = t - shb["ts"]
     alive = bool(pid) and pid_alive(pid) and same_process(pid, pidj.get("proc_start") or man.get("proc_start"),
                                                           (pidj if pidj.get("pid") else man).get("proc_key"))
-    # (not for the mirror of a remote run: the pid in its heartbeat belongs to another machine)
+    # (not for the mirror of a remote run: the pid in its heartbeat belongs to another machine. Nor for a run whose
+    # command gave it a process namespace of its own, as the loop's sandbox does: that pid is the namespace's)
+    # shortcut: only bubblewrap's flag in the run's command is recognised, not a namespace from docker or unshare;
+    # upgrade when RunLog records the namespace it runs in
     if not alive and hb_ok and hb_age is not None and hb_age <= stale and hb.get("pid") and hb.get("pid") != pid \
-            and not man.get("remote") and pid_alive(hb["pid"]):
+            and not man.get("remote") and "--unshare-pid" not in (man.get("cmd") or []) and pid_alive(hb["pid"]):
         # a later process (e.g. an in-place resume) owns this run directory now
         pid, alive = hb["pid"], True
     # The supervisor writes the exit record a moment after the process has gone, so while it is there the run has not

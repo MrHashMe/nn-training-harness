@@ -685,14 +685,16 @@ class Campaign:
             raise Stop(f"safeguard: protected file(s) changed since the campaign started: {', '.join(changed[:6])}")
 
     def sandbox(self, train):
-        """bubblewrap prefix: no network; for a training run also the project read-only except the worktree and the
-        runs folder, with the sealed paths hidden. [] where bubblewrap does not work: then none of this is enforced."""
+        """bubblewrap prefix: no network and, where the system gives one, a process namespace; for a training run
+        also the project read-only except the worktree and the runs folder, with the sealed paths hidden. [] where
+        bubblewrap does not work: then none of this is enforced."""
         bw = shutil.which("bwrap") if sys.platform.startswith("linux") else None
-        if not bw or subprocess.run([bw, "--unshare-net", "--dev-bind", "/", "/", "true"],
-                                    capture_output=True).returncode != 0:
-            return []
-        pre = [bw, "--unshare-net", "--die-with-parent", "--dev-bind", "/", "/"]
-        if train:
+        net = [bw, "--unshare-net", "--die-with-parent", "--dev-bind", "/", "/"]
+        # In a process namespace of its own, what runs inside sees and signals no process outside: without one a run
+        # could end another live run, or the campaign. /proc comes after the bind of /, which would cover it
+        pre = next((p for p in (net + ["--unshare-pid", "--proc", "/proc"], net)
+                    if bw and subprocess.run(p + ["true"], capture_output=True).returncode == 0), [])
+        if train and pre:
             pre += ["--ro-bind", str(self.root), str(self.root)]
             for p in self.cfg.get("sealed_paths") or []:
                 lit, base = literal(p), self.root / literal(p)
@@ -1210,6 +1212,9 @@ class Campaign:
         if not self.box_train and NET.search(added):
             hits.append(f"the change adds network or process-starting code ('{NET.search(added).group(0)}'), and "
                         f"this platform cannot run training without network access")
+        if "--unshare-pid" not in self.box_train and re.search(r"\bos\.kill(?:pg)?\b", added):
+            hits.append("the change signals processes (os.kill), and this platform cannot keep a training run from "
+                        "reaching the processes outside it")
         if not self.box_train and "EXP_PROJECT_ROOT" in added:  # a run gets the main project's place in this variable
             hits.append("the change reads EXP_PROJECT_ROOT, the main project's folder, and this platform cannot hide "
                         "the sealed data there from a training run")

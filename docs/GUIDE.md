@@ -408,9 +408,9 @@ score along the way. Kept code sits on the branch `nnloop/NAME`; nothing is merg
   for a while.
   `references/loop.md` explains both.
 
-On Linux and WSL2 with bubblewrap a run has no network and sees the project read-only. On native Windows and
-macOS those two are not enforced: a changed protected file is caught at the next checksum. The loop ran live with
-Claude Code on native Windows only.
+On Linux and WSL2 with bubblewrap a run has no network, sees the project read-only and cannot reach other
+processes. On native Windows and macOS none of that is enforced: a changed protected file is caught at the next
+checksum. The loop ran live with Claude Code on native Windows only.
 
 ### H. More GPU than you own, with `nnremote`
 Add a `remote` section with a spending cap and a target to `.claude/nn-training.json`. A remote run then obeys the

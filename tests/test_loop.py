@@ -1635,6 +1635,15 @@ def sandbox_tests(tmp, proj):
     C.box_train = box
     check(got == [True, False], "a change that reads EXP_PROJECT_ROOT counts as tampering where no sandbox hides the "
           f"sealed data from a training run, and not where one does ({got})")
+    got = []
+    for C.box_train in ([], ["bwrap"], ["bwrap", "--unshare-pid"]):
+        got.append([any(word in h for h in C.scan("+++ b/train.py\n+" + line + "\n", "", []))
+                    for line, word in (("os.kill(pid, signal.SIGKILL)", "signals processes"),
+                                       ("import subprocess", "process-starting"), ("skill = os.killer", "signals"))])
+    C.box_train = box
+    check(got == [[True, True, False], [True, False, False], [False, False, False]],
+          "a change that signals processes counts as tampering where a run has no process namespace of its own, and one "
+          f"that starts processes where a run has no sandbox at all (was: os.kill passed everywhere) ({got})")
     before = C.main_status()
     (proj / ".DS_Store").write_bytes(b"\0\0\0\x01Bud1" + bytes(24))
     got = C.main_status()
@@ -1655,6 +1664,16 @@ def sandbox_tests(tmp, proj):
     got = json.loads(r.stdout) if r.stdout.strip().startswith("{") else r.stderr[-300:]
     check(got == {"net": False, "sealed": False, "main": False, "worktree": True, "runs": True},
           f"a training run has no network, cannot see the sealed data and can write only its worktree and the runs folder (got {got})")
+    # a process namespace where the system gives one: what runs in the sandbox then reaches no process outside
+    given = subprocess.run([C.box_train[0], "--unshare-net", "--unshare-pid", "--dev-bind", "/", "/", "--proc", "/proc",
+                            "true"], capture_output=True).returncode == 0
+    reach = ("import os, sys\ntry:\n    os.kill(int(sys.argv[1]), 0)\n    print('reached')\n"
+             "except OSError as e:\n    print(type(e).__name__)\n")
+    got = [tk.sh(b + [PY, "-c", reach, str(os.getpid())], cwd=proj).stdout.strip()
+           for b in (C.box_train, C.eval_box(proj / "runs"))]
+    check(("--unshare-pid" in C.box_train) == given and got == ["ProcessLookupError" if given else "reached"] * 2,
+          "a training run and the evaluator cannot signal a process outside their sandbox where the system gives a "
+          f"process namespace (here: {'given' if given else 'not given, so they can'}; was: they could) (got {got})")
     # sealed by a pattern that begins with a wildcard: git-ignored files in a folder of that name, hidden as a folder
     for f in ("blobs/test/secret.bin", "blobs/test/more/secret2.bin"):
         put(proj / f, "sealed")

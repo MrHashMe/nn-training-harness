@@ -1,6 +1,6 @@
 # Upgrade report: nn-training harness kit
 
-Work of 10 to 14 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
+Work of 10 to 15 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
 who has not seen the work. Requirements: `docs/upgrade/PROMPT.md`, and `docs/upgrade/ROUND2.md` for the second
 round of 12 November, which has its own section right after "Read this first". A third stretch of work on the
 same day built three items that round 2 had left open, and on 13 November repaired three small faults it had
@@ -23,7 +23,9 @@ this report says about those two pages describes them before the rewrite, and th
 platforms that it places in the README is now in `docs/REFERENCE.md`. You then asked for a comparison of
 the kit's versions, a check for the Mac and a ranked list of improvements, with nothing changed, and to my
 question what to build first you answered "Mac readiness": its section, "Round 6", follows "Round 5".
-Nothing of round 6 is pushed, and nothing of it has run on a Mac. Decision record:
+You then gave me a second reviewer's report and asked for the best plan from it and for the plan's
+execution: its section, "Round 7", follows "Round 6". Nothing of rounds 6 and 7 is pushed, and nothing of
+them has run on a Mac. Decision record:
 `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -180,9 +182,28 @@ Nothing of round 6 is pushed, and nothing of it has run on a Mac. Decision recor
     comma or an option's letter. Several of those lines need neither zsh nor a Mac, so the public version
     and your real install keep the hole until a push and a seventh installer run, each on your word. An
     older limit was found in passing and not changed: a frozen or harness file that a program outside the
-    guard's list of write verbs writes (`sort -o`, `curl -o`, `touch`) passes without a question. All seven test files pass in seven
+    guard's list of write verbs writes (`sort -o`, `curl -o`, `touch`) passes without a question (round 7
+    closed it). All seven test files pass in seven
     interpreters on Windows and in WSL, Python 3.8 to 3.15 ("Round 6", "Tests"); none ran on a Mac.
     Nothing is pushed.
+16. **Round 7 checked a second review claim by claim, fixed what held, and gave the guard a test that looks
+    for holes by itself** (14 and 15 November; "Round 7"). The review's claim that the benchmark's evaluator
+    runs code from a model file is wrong, by a run (36 files, none ran). Its findings about the guard (four
+    ways past it) and the controller are right and fixed: `expctl stop` could signal a foreign process, the
+    record of the final evaluation could lose rows, and two remote bookings could both give up. The new test
+    builds command lines from parts and runs every line that the guard lets pass in a real shell: before any
+    fix, 185 of 901 such lines in bash wrote the frozen file or read the sealed one. Each kind found is now
+    closed in the guard or named as a limit in the reference, and every run's record holds a hash of the
+    frozen files for what the guard cannot name. The price is more questions: a copy out of a folder with
+    frozen files, a formatter over such a folder, an error stream sent to a file beside a frozen file. The
+    review's larger design is not built (ledger). **An independent review of the round as I had first
+    finished it then found fifteen faults, nine of them further ways past the guard that the new test had
+    not seen, because its parts did not build them.** All fifteen are fixed with tests, and the test's parts
+    now build those forms: on the final state none of 15,600 generated lines in five shells did harm. That
+    is a sample, not a proof, and a path that a program builds while it runs stays outside what a guard
+    over command lines can read. All eight test files pass in six interpreters on Windows and in WSL, Python
+    3.8 to 3.15 ("Round 7", "Tests"). Nothing is pushed, nothing ran on a Mac, and your real install has none
+    of it until a seventh installer run, on your word.
 
 ## Round 2 (12 November 2026)
 
@@ -3227,6 +3248,461 @@ Read on 14 November 2026.
   `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, and the list of Python builds for the runners
   (`actions/python-versions`)
 - [Claude Code sandboxing](https://code.claude.com/docs/en/sandboxing)
+
+## Round 7 (14 and 15 November 2026): a second review, checked claim by claim
+
+After round 6 you gave me a second reviewer's report on the public version (`bc96015`) and asked for the best
+plan from it and for the plan's execution. The report is kept out of git
+(`docs/upgrade/scout/scouts/user-review-1114b.md`). It has three parts: findings about the code, an audit for
+the Mac, and a design of its own ("v2.0") against which it scores the kit. I took its claims as leads: each
+was checked against the code, and run where a run was cheap, before anything was built. The order of the work
+was: defects that weaken the sealed test set, the frozen evaluator or the protection of live runs; then a
+check that finds such defects without a reviewer; then the proposals. The scores against "v2.0" were not a
+goal. This section is that work: nine commits, `e777e0b` to `4d0d543`, on top of round 6's, and the commit of
+these records. Nothing is pushed. Nothing was run, read or changed on your real install. **Nothing of this
+round has run on macOS.**
+
+### In short
+1. **The report's claim about the evaluator is wrong, and its findings about the guard and the controller are
+   right.** It said that the benchmark's evaluator runs code from a model file through `torch.jit.load`. I
+   built 36 such files, each with one pickle entry swapped for a payload, and loaded them with the installed
+   PyTorch 2.9.1: no payload ran. A test now asks the installed PyTorch again at every run of the tests. The
+   evaluator is unchanged. Right, each confirmed before the change and fixed with a test: four ways to write a
+   frozen file or read a sealed one past the guard (`644b2c9`), and three faults in the controller
+   (`78b1a17`): `expctl stop` signalled a recorded process number without checking whose it had become, the
+   record of the final evaluation was appended to without a lock (six writers at once lost 91 of 240 rows on
+   Windows and broke the chain in WSL), and two remote bookings made at the same moment both gave up.
+2. **The guard now has a test that looks for holes by itself, and its first run found many.**
+   `tests/test_guard_live.py` builds command lines from parts (what is done, how the path is written, what
+   the command is wrapped in), asks the guard about each, and gives every line that the guard lets pass to a
+   real shell in a temporary project. A line that passed must not have printed or copied the sealed file or
+   changed the frozen file. Before any fix, 185 of 901 lines that passed in bash did one of the three (seed
+   11, 2,100 lines). Most were writes of the frozen file; a few read the sealed file. Each kind is now either
+   closed in the guard with a hand-written case, or named as a limit in `docs/REFERENCE.md` and left out of
+   the generator ("The generated test"). About a third of the lines pass the guard.
+3. **An independent review then found fifteen faults in the round as I had first finished it, and all are
+   fixed** (`0aafe9a`, `439ab60`). At `eb73521` the generated test was clean in five shells, and I called the
+   guard's part done. A reviewer with no view of my work found nine further kinds of line that passed the
+   guard and printed the sealed file or changed the frozen file: a code flag in a group of letters
+   (`sh -ce '…'`), a bracket in quotes inside `$(…)`, a program's name in capitals, `git checkout -q .`,
+   `sort -uo`, a search that feeds a `while read` loop, and others. The test had not seen them, because its
+   parts did not build them. The guard reads them now, the parts build them, and the larger samples that
+   followed found 16 more lines of three causes, closed as well. On the final state no line that passed did
+   harm, among 15,600 generated: bash in WSL (three seeds of 2,100 lines), bash and zsh 5.9 in an Alpine
+   container (two seeds of 1,200 lines each), Git's bash (two seeds of 1,500) and PowerShell (two seeds of
+   750) on Windows. **The lesson holds beyond this round: the test finds what its parts can build and nothing
+   else, and a clean sample is not a proof.** The review also found three faults in the controller and five
+   harmless lines that this round had turned into questions ("The independent review").
+4. **Every run's record now holds a hash of the frozen files** (`adeddcf`; a remote run's since `0aafe9a`).
+   The guard asks before a write to a frozen file that it can name, and it cannot name every write (an
+   archive unpacked over the evaluator, a program that builds the path while it runs). `expctl launch` and
+   `nnremote launch` write `frozen_hash` into the run's manifest, `expctl hash` prints the current one,
+   `expctl status` puts an alert first when a ranked run was made under other frozen files than the project
+   holds now, and the final evaluation's receipt carries the hash. `expctl selftest` also compares the
+   installed kit files with the hashes in the install manifest.
+5. **The price: the guard asks in more cases.** A copy out of a folder that holds frozen files
+   (`cp -r eval sub/copy`), an error stream sent to a file beside a frozen file (`python eval/metrics.py 2>
+   err.txt`), a formatter or fixer over a folder with frozen files (`black .`, `ruff check --fix .`), a
+   search that feeds an edit (`ls *.py | xargs black`), cmd's `for /r` wherever sealed files lie below, a
+   word in capitals that is a program's name beside a kept file. In an unattended session each of these
+   questions is a refusal. "Changes in the behaviour of existing features" lists every changed answer.
+6. **The front page and the banner said more than was measured**, as the report noted: the gain they named
+   comes from one campaign. They say so now (`e777e0b`). Round 6 had already added the commands that were
+   missing from the reference.
+7. **The report's design is not built.** Ten training back ends behind one recipe file, a search plane, a
+   campaign run by several agents and a restructure into a package are rejected, each with its reason in the
+   ledger; five further proposals wait for something this machine does not have (a Mac, a rented machine, a
+   second GPU, agent sessions). "Not done, and why" has the list.
+
+### The report's claims, one by one
+"By a run" means that I ran it here; "by reading" means the code only.
+
+| Claim | Verdict | What was done |
+|---|---|---|
+| `torch.jit.load` in the evaluator runs pickle payloads | Wrong, by a run (36 files, PyTorch 2.9.1, none ran) | A test in `tests/test_benchmarks.py` (three pickle entries, two protocols); `benchmarks/charlm/README.md` says what was tried. No move to safetensors (ledger) |
+| The guard misses writes by pathlib's one-argument forms, by an output option, by `touch`, `patch`, `install` and by formatters | Confirmed by a run | Fixed, `644b2c9` |
+| The guard misses zsh's `=(command)` and the glob qualifier `e` | Confirmed by a run in zsh 5.9 | Fixed, `644b2c9` |
+| A filtered search passes where a wildcard seal has more files than the guard's walk visits | Confirmed by a run | Fixed, `644b2c9`: the walk goes on while the hook's time allows, and counts as a read where the time ends |
+| A project under a link (`/tmp` on macOS) is not recognised by the guard | Wrong, by a run in WSL with a linked folder | A test of it, `644b2c9` |
+| An internal error of the guard asks instead of refusing | True and deliberate | Ledger: rejected. A question that nobody can answer is already a refusal, and where a person is present a refusal would lock them out until the kit is repaired |
+| `expctl stop` signals the supervisor's process number without checking whose it is | Confirmed by reading | Fixed, `78b1a17`: the launch record holds the supervisor's start time, and stop signals it only while that still matches; otherwise it stops the run through the run's own process |
+| `chained()` appends to the final evaluation's record without a lock | Confirmed by a run | Fixed, `78b1a17`: a file lock from the read to the write |
+| `nnremote.reserve()`: two bookings at once both give up | Confirmed by reading and a test | Fixed, `78b1a17`: the earlier row holds |
+| A link below a git-ignored folder can bring sealed data into a run's snapshot | Confirmed by reading | Ledger: Hold. Leaving the link out protects nothing, because a script can name the file by its absolute path |
+| `on_finish` runs on the controller only, so a dead controller leaves the rented machine to its time limit | True | Ledger: Trial. A stop on the machine itself needs a rented machine to test, which costs money |
+| `runlog`'s stop state is per process, not per run object | True and deliberate | Ledger: rejected |
+| GPU-hours count every visible GPU | True, an upper bound on purpose | Ledger: Hold; a per-device count needs a second GPU to test |
+| The headline of the front page against the pilot | Confirmed | Fixed, `e777e0b` |
+| Commands missing from the reference; which commit ids are public | Confirmed | Fixed in round 6 (`fd8c18c`) and in `8f45652` |
+| `references/llm.md` and `performance.md` disagree on TorchTitan; `references/stack.md` says the kit denies the Hugging Face write tools, and it asks | Confirmed | Fixed, `8f45652` |
+| Five ledger rows were marked finished although their enabling step had not run | Confirmed | The step of four ran in WSL on 14 November in a uv environment (torch 2.15.0+cpu, transformers 5.22.2, peft 0.21.2, trl 1.17.1, scikit-learn 1.9.1, datasets 5.2.0, accelerate 1.15.0); PyTorch's own row stays unfinished |
+| "TorchAO is retired" | Wrong: its repository had a push on 14 November | Nothing |
+| "arXiv:2603.24647 is misattributed" | Not confirmed: the paper holds what the kit cites | Nothing |
+
+The report's Mac audit repeats points that round 6 built (the process start time without `/proc`, the Finder
+file, `caffeinate`, zsh). Two of its Mac proposals have ledger rows: `caffeinate -dimsu` is rejected (a run
+needs the system awake, which `-i` gives), and a report of Metal's wired-memory limit waits for a Mac. Its
+claims about versions, papers and other tools that no change depends on were not checked.
+
+### The generated test
+- **What it is.** `tests/test_guard_live.py`, the eighth test file. Bash and zsh lines come from 67 ways to
+  read, 51 ways to write, Python one-liners, 34 spellings of a path (quotes, wildcards, variables, `$PWD`,
+  case on a file system that ignores it; 41 under zsh, with its own patterns) and 46 wrappers (a subshell, a
+  function, `bash -c` with its flag in a group or behind options, `eval`, a here-document, `trap`, a variable
+  that is run, `$(…)` with a bracket in quotes, Python's `os.system`); PowerShell lines from its own parts
+  (aliases, cmd, provider paths, script blocks, an encoded command). One line in seven names only the folder
+  above the file. There are two frozen files, because the first one's name (`eval/metrics.py`) holds words
+  that the guard reads as runners, which hid misses; the second is `scoring/rules.txt`. The same parts are
+  also used on files that nothing protects, and nine in ten of those lines must pass: a guard that asked
+  about everything would fail there. In the samples below, 98 to 100 in 100 passed.
+- **The judge is the shell.** Each line that passed runs in a temporary project whose sealed file holds a
+  marker. The test looks for the marker in the output (plain, reversed, hex, base64) and in every file, and
+  compares the frozen files. Before it trusts the judge it gives it one line that prints the sealed file and
+  one that changes the frozen file. The project is put back after every line that changed it.
+- **Where it runs.** bash in WSL and in an Alpine container, zsh 5.9 in that container, Git's bash and
+  PowerShell on Windows. The sample comes from a fixed seed (7, 150 lines of each kind), so the suite's run
+  repeats; `python tests/test_guard_live.py SEED COUNT` takes another sample.
+- **The samples on the final state (`439ab60`), each line that passed run in its shell, none harmful:**
+
+  | Shell | Seeds × lines | Passed the guard | Harmless lines that passed |
+  |---|---|---|---|
+  | bash 5.2.21 in WSL | 5, 7, 311 × 2,100 | 707, 701, 708 | 694, 688, 695 of 700 |
+  | bash 5.3.9 in `alpine:3` | 7, 5 × 1,200 | 403, 406 | 396, 400 of 400 |
+  | zsh 5.9 in `alpine:3` | 7, 5 × 1,200 | 402, 404 | 395, 399 of 400 |
+  | Git's bash 5.2.37 on Windows | 7, 311 × 1,500 | 504, 503 | 496, 499 of 500 |
+  | PowerShell 7.7.0 on Windows | 7, 311 × 750 | 258, 261 | 250, 250 of 250 |
+
+- **What it does not show.** A sample, not a proof, and only of what its parts build. Twice in this round a
+  clean sample was followed by a find: a sixth bash seed found `(git checkout HEAD .)` after five clean
+  ones, and the independent review found nine kinds of line at a commit where every sample was clean. The
+  same samples with the review's forms in the parts then found 16 different harmful lines before the last
+  fixes (counting a line once for each sample that held it: bash 9 in 6,300 in WSL and 2 in 2,400 in the
+  container, zsh 4 in 2,400, Git's bash 5 in 3,000, PowerShell none in 1,500). Another seed, or another
+  reader, may find more. It has not run under macOS's zsh or bash 3.2; the workflow will run it there at the
+  first push. It does not judge live runs.
+
+### Changes in the behaviour of existing features
+**The guard, first part (`644b2c9`). Each was allowed before and is asked about now**, where the line names a
+frozen or harness file, a file in `.git`, or the folder of an active run:
+- a write by pathlib's one-argument `.rename(` and `.replace(`, by `.touch(`, `.symlink_to(`,
+  `.hardlink_to(`, `.link_to(`, and by `os.truncate`, `os.link`, `os.symlink`;
+- the word behind an output option: `-o`, `-O`, `--out…`, PowerShell's `-OutFile`, also attached
+  (`--out…=FILE`, `-OutFile:FILE`, `-oFILE`). A line without a write verb is judged by that word alone;
+- `touch`, `patch`, `install` where a command starts;
+- `black`, `isort`, `ruff format` without `--check` or `--diff`;
+- a notes file run through zsh's `=(…)`; and the text of a zsh glob qualifier `e` gets the answer of the
+  command it holds;
+- a filtered search where a wildcard seal's walk is cut by the hook's time (was: no answer);
+- for read-only agents, `touch`, `patch`, `install` and the pathlib forms are refused (was: no answer).
+
+Reason: each wrote a frozen file or read a sealed one past the guard, confirmed by a run. Tests: cases in
+`tests/test_kit.py`, among them lines that must stay without a question (`str.replace(a, b)`, `grep -o`,
+`--output-dir runs/new --config eval/metrics.py`, `black --check`, `echo touch eval/metrics.py`,
+`ls *(.om[1])`, `sort -o sub/sorted.csv data/train.csv`).
+
+**The guard, second part (`eb73521`), found by the generated test.** Asked about now, allowed before, unless
+the entry says otherwise:
+1. A frozen or harness file, a file in `.git` or an active run's folder on a line with a redirection behind a
+   descriptor or `&` (`1>`, `2>`, `&>`, `1>>`, `>& file`; not `2>&1`, not one to `/dev/null`, `$null` or
+   `nul`).
+2. `sed --in-place`, and sed's `-i` wherever it stands.
+3. `git checkout <rev> <path>` and `git restore <path>` count as writes of the path; `git checkout <rev> .`
+   is a destructive git operation, also where a bracket or a quote follows the dot
+   (`(git checkout HEAD .)`).
+4. `find … -delete` is a write.
+5. Python's `open()` whose path is a call inside a call, and `.open('w')` behind a bracket.
+6. The text of `trap '…' SIGNAL` gets the answer of the command it holds.
+7. A command whose output the line takes in (`$(…)`, backticks) is read as a command of its own, also inside
+   a string in double quotes, where quoting starts anew. A here-document that no program runs stays unread,
+   so a commit message may hold anything. **One existing expectation changed with this:**
+   `echo "$(<data/test/labels.csv)"` was asked about and is now refused, like `cat` of the same file.
+8. `${name:-word}`, `${name-word}`, `${name:=word}` and `${name:+word}` are read as `word`.
+9. `git ls-files` is a reader like `git grep`. With `-o` and no `--exclude-standard`, or with `-i`, it lists
+   what git ignores, and is asked about where sealed files lie below the folder it runs in.
+10. A write verb inside text handed to a shell counts for the paths of the outer line
+    (`f=eval/metrics.py bash -c 'rm "$f"'`).
+11. A new question, "Command changes a whole folder, or the files that it finds there itself, and files that
+    this guard keeps lie in it": `mv`, `rm -r`, `git mv`, `rsync`, `cp -r`, `Remove-Item -Recurse` and the
+    like over a folder that holds frozen or harness files, on either side of a copy; `find … -delete` or an
+    edit fed by a search of the same line (`| xargs`, `$(…)`, `-exec`, PowerShell's pipe into `Remove-Item`,
+    `Set-Content` and their short forms) over such a folder, with the search's file filter respected; and a
+    formatter that is given such a folder or none.
+12. `ruff --fix`, `ruff check --fix` and `--unsafe-fixes` (not with `--diff`) count as a formatter.
+13. Text nested in text is read three levels deep (was two); a fourth level is asked about.
+14. A text that the line keeps in a variable (`c='rm x'; $c`, `$c = 'del x'; iex $c`) is read as a command
+    where the line has something that runs text, or the variable stands where a command starts.
+15. PowerShell: the text of `[scriptblock]::Create('…')` is read as a command, and so is the text behind
+    `iex` or `Invoke-Expression` inside a block without blanks (`&{iex '…'}`, `try{iex '…'}catch{}`). A
+    path with the block's closing bracket on it is read without the bracket (`&{del eval\m*.py}`).
+16. cmd's `for /r` is a recursive command: asked about where sealed files lie below the folder the line runs
+    in, also when it names a folder without them (the guard does not read which folder it walks).
+17. For read-only agents, the new write verbs, the formatters and a `trap` text that writes are refused (was:
+    no answer).
+
+Reason for each: a generated line of that kind passed the guard and did the harm in a real shell. Tests: a
+hand-written case for each in `tests/test_kit.py` (the blocks that begin "a folder that holds frozen or
+harness files" and "a text that the line keeps in a variable"), with the lines that must stay without a
+question beside them; the read-only cases in `tests/test_review_fixes.py`, section 10; and the generated test
+itself.
+
+**The guard, third part (`439ab60`): what the independent review found, and what the generated test found once
+its parts held the review's forms.** Asked about now (refused where the line reaches sealed data), allowed
+before, unless the entry says otherwise:
+1. The text behind a code flag wherever the flag stands: in a group of letters (`sh -ce '…'`, `bash -xc '…'`,
+   `perl -ne '…'`), cut short as PowerShell allows (`powershell -com "…"`), and with options or `--` between
+   the flag and the text (`bash -c -- '…'`, `bash -c -o pipefail '…'`, `trap -- '…' EXIT`). Every word of an
+   `eval` is read, also behind a separator that the line escapes (`eval : \; 'rm …'`); not where `eval` is a
+   folder that `-C`, `--chdir`, `--directory` or `--cwd` names.
+2. A command inside `$(…)` ends where a shell ends it: a bracket in quotes, a pattern of `case` and what
+   follows a here-document no longer cut it short. Its words in single quotes are read as they stand; they
+   were blanked, so `echo "$(python -c "open('eval/metrics.py', 'w')")"` passed.
+3. Variables: `${@:-word}` and `${:-word}` are read as `word`; a variable set from another (`d=$c; $d`); a
+   one-word text where a command starts (`c="rm"; $c file`, `$c = 'del'; & $c file`); zsh's `${=c}`, `$=c`,
+   `${(z)c}`, `${~c}` and `${(e)c}`.
+4. PowerShell: `[Any.Namespace.ScriptBlock]::Create('…')`, the engine's `.InvokeScript('…')`,
+   `.NewScriptBlock(` and `.AddScript(`; a file object's own `.Delete()`, `.MoveTo(` and `.CopyTo(`.
+5. Program text that hands a command to a shell (`os.system('…')`, `subprocess.run([…])`, `popen`, the
+   `exec` and `spawn` calls): the command gets its own answer, with the string read as Python reads it
+   (`\'`, `\\`, `\n`) and as it stands.
+6. zsh: a group with a wildcard beside a slash (`cat dat?/(tes?)/lab*`), and a qualifier `e` whose delimiter
+   is a letter.
+7. A program's name in any case (`RM`, `SED`, `CP`, `Rmdir`, `GREP -r`, `FIND`, `KILL`, `GIT`), and
+   `git.exe`: Windows finds a program so, and so does a Mac as it comes.
+8. `git checkout` with options before the path (`git checkout -q .`), with `./`, `:/` or a wildcard for the
+   path, and `git checkout --force`; `git restore --staged --worktree` and `-SW`.
+9. Writes: perl's and ruby's `-i` wherever it stands, BSD sed's `-I`; an output letter that ends a group
+   (`sort -uo`, `curl -sSLo`, `wget -qO`); an output word that is a wildcard (it counts as what it names on
+   disk), a variable or a command's output (then every path of the line may be the one written). Reads:
+   `diff -r` and `git diff --no-index` over a folder with sealed files.
+10. A search that feeds a loop (`… | while read f; do sed -i … "$f"; done`, `done < <(…)`,
+    `for f in $(…)`), also where the loop writes by a redirect into its variable; a search that feeds `cp` or
+    `dd`; PowerShell's block with a write anywhere in it or a redirect into a variable, and
+    `foreach (…) { … }`.
+11. A formatter behind the runner that starts it: `uvx`, `pipx run`, `uv tool run`, `conda run -n env`,
+    `python -m`, `black@24.1.0`. The wrappers `setsid` and `caffeinate` are seen through.
+12. **Allowed again.** The second part had made these questions, and each was allowed before this round:
+    `black --version`, `black --help`, `isort -c .`, `git restore --staged <file>`, `python -O <file>`,
+    `ls -lo <file>`, and a line with the shell's own `eval` beside a delete or a move of another file.
+13. For read-only agents the same forms are refused (was: no answer): a program's name in capitals, perl's
+    `-i`, a formatter behind a runner, a code flag in a group, `os.system('…')`, `git checkout -q .`.
+
+Reason for 1 to 11 and 13: the reviewer, or the generated test after it, had a line of that kind which passed
+the guard and did the harm in a real shell ("The independent review"). Reason for 12: harmless lines that
+this round had turned into questions. Tests: hand-written cases in `tests/test_kit.py` (the block that begins
+"were None, each of them (the review of round 7", with the lines that must stay without a question below
+it), `tests/test_review_fixes.py` sections 9 and 10, and the generated test, whose parts now build these
+forms. Against the public version, no existing case that expected a question or a refusal was changed to
+expect none.
+
+**The controller.**
+- `expctl stop` signals the supervisor only while the start time (or key) in the launch record still matches
+  the process; otherwise it stops the run through the run's own process. A record from before this round has
+  neither: there the process's start is compared with the record's launch time (`0aafe9a`; in `78b1a17` such a
+  record was taken as the same process, which the review found).
+- The record of the final evaluation is written under a file lock (flock, a byte lock on Windows). Of two
+  final evaluations started at the same moment, one runs and the other gets the single-use refusal; its
+  attempt stays in the receipt and counts as a use (`0aafe9a`; both ran before, and within one second their
+  rows counted as one use). Start and end rows carry a `nonce` for this. With `--again` both run, each with
+  its stated reason.
+- `nnremote.reserve()`: of two bookings that the cap cannot both cover, the earlier row in the ledger holds
+  and the later one gives way. Before, both gave up.
+- A run's manifest has three new fields (`frozen_hash`, `frozen_files`, `frozen_size_only`), `expctl hash`
+  (an older command) prints the same three for the project as it stands, `expctl status` can begin with an
+  alert about changed frozen files (the ranking itself is not filtered), and `expctl selftest` has one more
+  line, which is not a required check. At most 64 MB are
+  read for the hash, the smallest files first; a larger file counts by its size. A text file counts with LF
+  line ends, so a checkout that git wrote with CRLF gives the same value as one with LF (`0aafe9a`; the review
+  found that the two differed). `nnremote launch` writes the hash into a remote run's manifest too
+  (`0aafe9a`). A run started by neither command carries no hash. No path or format changed, so the installer
+  migrates nothing.
+- The installer is unchanged in this round.
+
+### Tests
+All runs are of 15 November, of the tree of `439ab60`, the round's last change to code. "Clean" means an
+interpreter with no third-party package. Every file passed in every run.
+
+| Interpreter | Platform | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All | Failed |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 3.12.3 with psutil and PyTorch | WSL | 51 | 3 | 861 | 247 | 129 | 92 | 76 | 19 | 1,478 | none |
+| 3.8.20, clean | WSL | 42 | 3 | 861 | 247 | 128 | 92 | 76 | 19 | 1,468 | none |
+| 3.15.0b3, clean | WSL | 42 | 3 | 861 | 247 | 129 | 92 | 76 | 19 | 1,469 | none |
+| 3.11.7 with psutil and PyTorch | Windows | 51 | 6 | 855 | 241 | 131 | 92 | 74 | 19 | 1,469 | none |
+| 3.8.20, clean | Windows | 42 | 6 | 855 | 241 | 130 | 92 | 74 | 19 | 1,459 | none |
+| 3.15.0rc3, clean | Windows | 42 | 6 | 855 | 241 | 131 | 92 | 74 | 19 | 1,460 | none |
+
+Against round 6's table (1,229 checks in WSL's default interpreter, 1,215 on Windows) the kit file has 206
+more checks in WSL and 205 more on Windows, the review-fixes file 36 more, the remote file 2 more, the
+benchmarks file 1 more (the pickle test), the ports file 1 more in WSL and 4 more on Windows, and the
+generated test is new: 3 checks in WSL (bash) and 6 on Windows (Git's bash and PowerShell), from seed 7 with
+150 lines of each kind. Its larger samples and the zsh runs are in "The generated test"; they are not part
+of these passes. What the tests leave out, as before: on Windows the two tmux checks, the check of a source
+link that leaves the snapshot and the sandbox checks (bubblewrap is Linux only); in the clean interpreters
+the nine benchmark checks that need PyTorch; under Python 3.8 one check of the ports file (the Codex agent
+file as TOML, which needs a newer Python). The checks that need macOS ran nowhere. The loop file takes about
+ten minutes on Windows and three in WSL.
+
+During and after these passes two documents changed and no code (`4d0d543`): lines in `docs/REFERENCE.md`,
+which no test reads, and one sentence in `references/validity.md` (the time the hash takes, "Things to
+know").
+`tests/test_kit.py`, which checks every reference's head, then ran again with the two default interpreters
+and passed (855 on Windows, 861 in WSL). The clean interpreters did not repeat it.
+
+Changed or removed tests: none removed. One expectation changed (`echo "$(<data/test/labels.csv)"`, asked
+about before, refused now; entry 7 of the second part). `tests/test_guard_live.py` is new in this round, and
+the review's fixes changed two things in it after its first commit: nine in ten harmless lines must pass
+(was half), and there is a second frozen file. The loop over the guard's cases in `tests/test_kit.py` now
+prints the guard's reason when a case fails. `tests/test_ports.py` finds Git's bash also when the tests themselves
+are started from Git's bash, so on Windows it now runs its hook-command checks through that shell too (131
+checks there instead of 128). The workflow runs eight files.
+
+### The independent review
+A reviewer with no access to my working context reviewed the round as it stood at `eb73521`: a fresh subagent,
+as in the rounds before (the deep-sweep-red-team skill was passed over for its cost). Its brief named the diff
+(`fd8c18c..eb73521`), what the guard protects and the limits that `docs/REFERENCE.md` names, and told it not
+to read these records. It read the code, asked the guard at both commits about some 330 lines of its own, ran
+50 of them in a real shell in a throwaway project, and ran the generated test once with its own seed. It kept
+15 findings, 11 marked certain and 4 likely. **Nine of them (1 to 9) were ways past the sealed test set or the
+frozen evaluator at the commit I had called clean, and the generated test did not see them, because its parts
+did not build them.** All 15 are fixed in code, each with a test; none is answered by argument alone.
+
+| # | Finding, with the reviewer's certainty | What was done |
+|---|---|---|
+| 1 | The text behind a code flag in a group of letters or with options behind it, the words of `eval`, `trap --` was not read: sealed file printed, frozen file deleted (certain) | Fixed; third part, entry 1 |
+| 2 | `$(…)` with a bracket in quotes, or with a command behind a here-document (certain) | Fixed; entry 2. Not by the fix it proposed (read all up to the line's last bracket): the guard now ends `$(…)` where a shell does |
+| 3 | `${@:-a}`, `d=$c; $d`, `c="rm"; $c file` (certain) | Fixed; entry 3 |
+| 4 | `powershell -com "…"`, `[Management.Automation.ScriptBlock]::Create('…')` (certain) | Fixed; entries 1 and 4 |
+| 5 | zsh's `cat dat?/(tes?)/lab*` (likely: it had no zsh) | Confirmed by a run in zsh 5.9, which printed the file; fixed; entry 6 |
+| 6 | Program names in capitals, in Git's bash and in PowerShell (certain) | Fixed; entry 7 |
+| 7 | `git checkout -q .`, `./`, `HEAD '*.py'`, `HEAD :/`, `--force` (certain) | Fixed; entry 8 |
+| 8 | `perl -p -i -e`, `sort -uo`, `curl -sSLo`, `wget -qO`; `diff -rN sub data` printed the sealed file (certain) | Fixed; entry 9 |
+| 9 | A search that feeds a `while read` loop, or a PowerShell block with the write inside it (certain) | Fixed; entry 10 |
+| 10 | Formatters started through `uvx`, `pipx run`, `conda run`, `python -m` (likely) | Fixed; entry 11 |
+| 11 | Five harmless lines were asked about that were allowed before the round (certain) | Allowed again; entry 12 |
+| 12 | The frozen hash differs between LF and CRLF copies of one file; the reference does not name the 64 MB limit (certain) | Fixed: text counts with LF line ends; the reference names the limit |
+| 13 | Two `expctl final-eval` at once both run (likely, by reading) | Fixed; a test starts two at the same moment: one runs, one is refused |
+| 14 | The generated test passes while 1 to 9 are open; its frozen file's name holds the runner words `eval` and `py`; it passes with half the harmless lines asked about; the reference overstates it (certain) | Its parts now build the forms of 1 to 10; a second frozen file, `scoring/rules.txt`; nine in ten harmless lines must pass; the reference says what the test can find and what not |
+| 15 | A launch record from before the round has no start time of the supervisor, so `stop` signals whatever holds that process number now (likely, by reading) | Fixed: compared with the record's launch time; a test |
+
+**What the fixes then showed.** With its new parts the generated test found 16 more harmful lines in about
+14,000 (three causes: words in single quotes inside `$(…)`, Python's own escapes in `os.system('…')`, an
+output word given by backticks), and my own probes found two (`eval` with an escaped separator, a loop that
+writes by a redirect). All are fixed with hand-written cases (entries 1, 2, 5, 9 and 10). The samples on the
+final state are in "The generated test".
+
+**The reviewer's own lines.** Of the 50 lines that it ran in a shell, 47 are asked about or refused now. Three
+stay allowed, and they are not among its findings: each reads sealed data through a path that a program puts
+together while it runs (`pathlib.Path('data').glob('*/*.csv')`, `os.chdir('data')` before a `glob`,
+`[IO.Directory]::GetFiles("$PWD\data", '*', 1)`). The reference names this limit. A guard that reads command
+lines cannot close it; what holds against it is a test loader that refuses to load without the unseal
+variable, or test data kept outside the repository (`references/validity.md`, section 5).
+
+**What it checked and found sound:** about 150 everyday lines answer as before the round, apart from those of
+finding 11; zsh's qualifiers and `$(<file)` are refused; by reading, the lock around the chained record, the
+booking with two launches at once, the loading of records without the new fields, and the selftest's file
+comparison. It found no text addressed to it in the files. One remark of its that I left as it is: while a
+second booking gives way, a third can be refused although it would fit under the cap; that errs on the cap's
+side and a second try succeeds (its reading and mine; not run).
+
+**What it could not check, and where that stands now:** zsh, Linux, Python 3.8 and the newest Python: run here
+("Tests"). macOS: nobody has run it. Whether loop and remote runs carry the frozen hash: the loop starts its
+runs with `expctl launch`, which writes it; a remote run's manifest did not carry it and does now, with a
+test. The time `expctl status` takes with many frozen files: measured after the review, and it is bounded
+in bytes but not in files ("Things to know"). The diffs of `tests/test_kit.py` and `tests/test_remote.py`,
+and the reference before its line 180: no second reader has seen them.
+
+### Verified by running, from documentation only, unverified
+- **By running, on this machine:** every verdict marked "by a run" above; the tests ("Tests"); the generated
+  test in the five shells named, on the final state; the enabling step of four ledger rows in WSL; the
+  guard's answer to each line that the third part quotes (85 lines, on `439ab60`) and to the reviewer's 50
+  lines; the review's finding 5 in zsh 5.9; the three controller findings, each by its new test on Windows
+  and in WSL (the same frozen hash for LF and CRLF on both; two final evaluations started at a common time);
+  the time of the frozen hash on five folders of files, on Windows and in WSL, with the tests running beside
+  it.
+- **From documentation or reading only:** `expctl stop`'s fault and the booking fault before their tests
+  existed; the paper arXiv:2603.24647 (its abstract and text through arXiv); TorchAO's state (GitHub's API);
+  the reviewer's remark on a third booking.
+- **Unverified:** everything on macOS, including the generated test under macOS's zsh and bash 3.2; the
+  workflow, which has never run; the report's claims about versions, prices and other tools that no change
+  here depends on; the two commits that fixed the review's findings (`0aafe9a`, `439ab60`) have had no
+  second reader.
+
+### Things to know
+- **What the guard still does not see as a write of a frozen file**, each tried on 14 November and allowed:
+  a git command that replaces the working tree as a whole (`git stash`, a change of branch, `pull`, `merge`,
+  `rebase`; `git reset --hard` is asked about); an archive unpacked over the file (`tar x`, `unzip`);
+  `git apply`; a download that names only its address (`curl -O`); a formatter the guard does not know
+  (`autopep8 -i`, `yapf -i`, `prettier --write`); the whole project removed under another spelling of its
+  folder; `tee` behind a search, a PowerShell block inside a block, a script that a loop over a search
+  starts; and any program that builds the path while it runs. The frozen hash in each run's record is the
+  check for these. `docs/REFERENCE.md`, "Notes and limits", has the list.
+- **Sealed data read through a path that a program builds while it runs is not seen either** (the three lines
+  in "The independent review"). The check for that is not in the guard: a loader that refuses without the
+  unseal variable, or test data kept outside the repository.
+- **The guard's rules look at the whole line.** With a write on the line, every path of the line may be the
+  one written; the search-feeds-edit rule does not ask which search feeds which edit; the whole-folder rule
+  does not tell a copy's source from its target. So harmless lines are asked about: a word in capitals that
+  is a program's name (`RM`, `CP`, `DD`, `TEE`) beside a kept file, a restore of another file beside one,
+  `note='rm -rf runs/old'; python -c "print(1)"`.
+- **The rule for read-only agents does not read output options** (`sort -o notes.txt notes.txt` passes it; a
+  frozen or harness file there is still asked about by the guard's own rule). Reading them would refuse
+  `grep -o`. It has been so since the rule exists.
+- **A frozen hash that a run recorded on a checkout with CRLF line ends before `0aafe9a`** differs from the one
+  computed now. None is public: the hash is from this round.
+- **The frozen hash costs time for each frozen file, not only for each byte.** Measured on Windows on
+  15 November with the tests running beside it, best of three: 64 MB in 64 files 0.1 s; 400 files of 1 MB
+  0.15 s (64 read, 336 by their size); 5,000 files of 2 KB 2.3 s; 20,000 files of 1 KB 8.7 s. In WSL, on its
+  own file system, the last two took 0.16 s and 0.69 s, which points at what Windows charges for opening a
+  file (not looked into further).
+  `expctl launch`, `expctl hash` and the final evaluation pay it each time, `expctl status` and the status at
+  a session's start once a ranked run carries a hash. That hook has 30 s, so on Windows, with a frozen data
+  folder of some 60,000 files or more (my extrapolation, not a run), the status at a session's start may not
+  arrive. The guard's protection of those files does not depend on it. A bound on the number of files read
+  is not the answer: the smallest files are read first, and an evaluator beside 20,000 smaller data files
+  would fall outside it. Not measured on an idle machine.
+- Left on this machine: in WSL's home folder `~/nn-kit-probe/` (a uv environment for the enabling steps, the
+  lock test's files, a copy of a test runner); the container image `alpine:3` in WSL's Docker.
+
+### Not done, and why
+- **The report's design ("v2.0").** Rejected, with the reason in each ledger row: ten training back ends
+  behind one `recipe.yaml` (a run here is any command that keeps the run contract, so each library is usable
+  today; a compiler for ten interfaces could not be tested here, and the report gives no measurement); a
+  search plane in the harness (its figure multiplies gains taken from different tasks); a campaign run by
+  several agents (the evidence behind the kit found that delegation between agents hurt ML results, and the
+  report brings none against it); a restructure into a package (it moves code without changing what the code
+  does, and installed projects import at the present paths); safetensors and a bf16 evaluator (each changes a
+  frozen evaluator for a fault that did not occur, or to save time).
+- **Waiting for something this machine does not have** (ledger: Trial, Assess or Hold, each with the test it
+  needs): a stop on the rented machine itself (a rented machine, money); the Metal wired-memory limit in
+  `expctl env --probe` (a Mac); GPU-hours per device (a second GPU); a powered benchmark with more tasks and
+  three arms (agent sessions on your subscription, many of them); a futility slack and paired scoring for the
+  loop's screen (a simulation first); a data recipe that the loop may change (a validity design first);
+  `expctl preflight` (four of its eight gates need the harness to drive single training steps, which the run
+  contract does not offer).
+- **A seventh installer run on your real install** was not made: it needs your word.
+
+### What needs your decision
+1. **A push.** I recommend a test branch first, not `main`: the workflow then runs the eight test files on
+   GitHub's macOS, Linux and Windows runners (free for a public repository), and the generated test meets
+   macOS's zsh and bash 3.2 for the first time. What fails there can be repaired before `main` moves. One
+   word would have to cover the follow-up pushes to that branch.
+2. **A seventh installer run on your real install.** It would bring the guard fixes of rounds 6 and 7, the
+   stop and lock fixes, the frozen-file hash and one line in the kit's block of `.gitignore`. Know before you
+   say yes: the guard there will ask in more cases (point 5 of "In short").
+3. **Money, accounts, hardware**, only if you want the rows that wait for them: a rented machine for the
+   remote-side stop; agent sessions for a powered benchmark; a Mac.
+
+### Most valuable next steps
+1. Push to a test branch and repair what the three systems show.
+2. The seventh installer run, then one ordinary working session there to see which of the new questions get
+   in the way.
+3. The powered benchmark: two campaigns per arm showed no difference between the kits, and only more
+   campaigns can.
+
+### Sources
+- The second reviewer's report of 14 November 2026 (kept out of git).
+- PyTorch 2.9.1 as installed here, for the pickle test; zsh 5.9 and bash 5.3.9 in `alpine:3`.
+- arXiv:2603.24647 through arXiv's API and its HTML page, read on 14 November 2026.
+- GitHub's API, `repos/pytorch/ao` (last push), read on 14 November 2026.
 
 ## 1. What changed and why
 

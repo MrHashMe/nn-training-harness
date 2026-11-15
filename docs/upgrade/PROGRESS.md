@@ -14,10 +14,13 @@ by claim, and what was built from it. Its last entries are the sixth installer r
 which brought the round there, and the commit of the files that run changed in that repository.
 "Round 6" below is the work on the user's "Mac readiness" of the same day: fixes for a Mac, built and
 tested on Windows and in WSL, not run on a Mac and not pushed.
+"Round 7" below is the work on the request of 14 November that followed: a second reviewer's report on the
+public version, checked claim by claim, what was built from it, and the independent review of that work with
+its fifteen findings, all fixed. It is committed locally and not pushed.
 
 # Upgrade progress
 
-Last updated: 14 November 2026.
+Last updated: 15 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -1306,7 +1309,7 @@ so every statement about macOS is code reading or documentation.
   the kit's block of its `.gitignore`; it needs the user's word.
 - Left on this machine: the container image `alpine:3` in WSL's Docker (`docker rmi alpine:3` removes it).
 
-## Round 7 (second review, 14 November): in progress
+## Round 7 (second review, 14 and 15 November): done, nothing pushed
 
 Request of 14 November: review a second reviewer's report on the public version (`bc96015`), plan from it and
 carry the plan out. The report is kept out of git at `docs/upgrade/scout/scouts/user-review-1114b.md`. Rule of
@@ -1332,8 +1335,8 @@ Verdicts, each from a run or from the code named:
   91 of 240 rows on Windows and broke the chain in WSL), **fixed** in `78b1a17` with a file lock.
 - `nnremote.reserve()`: two bookings at the same moment both give up. **Confirmed, fixed** in `78b1a17`: the
   earlier row holds.
-- A link below a git-ignored folder can bring sealed data into a snapshot. Confirmed by reading, low; a
-  selftest warning if the budget allows, else a ledger row.
+- A link below a git-ignored folder can bring sealed data into a snapshot. Confirmed by reading; ledger: Hold
+  (leaving the link out protects nothing, because a script can name the file by its absolute path).
 - Ledger rows, not changes: `on_finish` runs on the controller only (a remote-side stop needs a rented
   machine); `runlog._STOP` is process-wide on purpose; GPU-hours count every GPU as an upper bound; the
   `EXP_PROJECT_ROOT` scan off Linux is a safeguard; junk names beside `.DS_Store`; a slack in the screen.
@@ -1349,22 +1352,67 @@ Verdicts, each from a run or from the code named:
 - "TorchAO is retired": wrong (its repository had a push on 14 November). "arXiv:2603.24647 is
   misattributed": not confirmed, the paper holds what the kit cites.
 
-The ledger has the note `round7` (29 rows) with `built-round7.json`; row 11 of the note `round6` is Adopt and
-finished. 1,649 rows; 493 Adopt, 346 finished and 147 unfinished.
+Built after the verdicts:
+- `adeddcf`: one hash over the frozen files in every launch's manifest (`frozen_hash`) and in the output of
+  `expctl hash`, an alert in `expctl status` when a ranked run was made under other frozen files, the hash
+  in the final evaluation's receipt, and a selftest line that compares the kit files with the install
+  manifest.
+- `eb73521`: `tests/test_guard_live.py`, the eighth test file. It builds command lines from parts, asks the
+  guard, and runs every line that passes in a real shell (bash, zsh, PowerShell); a line that passed must not
+  print or copy the sealed file or change the frozen file. Its first run found 185 harmful lines among 901
+  that passed in bash. Each kind is closed in the guard with a hand-written case in `tests/test_kit.py`, or
+  named as a limit in `docs/REFERENCE.md` ("Notes and limits") and left out of the generator. The workflow
+  runs eight files.
 
-Next, in this order: a hash of the frozen files in each run's manifest, in `expctl hash`, in a status alert and
-in the final evaluation's receipt, and selftest's check of the kit files against the install manifest; generated
-guard cases judged by a live shell; one independent review; the full tests on Windows and in WSL; REPORT.md
-"Round 7".
+The independent review (15 November; a fresh subagent with no view of these records, on `fd8c18c..eb73521`)
+kept 15 findings. All are fixed, each with a test:
+- `0aafe9a`, the controller: the frozen hash counts text with LF line ends (LF and CRLF copies of one file
+  differed); `expctl stop` compares an older record's supervisor with the record's launch time; of two
+  `expctl final-eval` started at the same moment one runs. Also, not a finding: `nnremote launch` writes
+  `frozen_hash` into a remote run's manifest.
+- `439ab60`, the guard: nine kinds of line that passed it and did harm in a real shell, which the generated
+  test had not built (a code flag in a group of letters or with options behind it, `$(…)` with a bracket in
+  quotes or a here-document, `${@:-word}` and a variable set from another, PowerShell's `-com` and a script
+  block behind a namespace, a zsh group beside a slash, program names in capitals, `git checkout -q .` and
+  its like, `perl -p -i`, `sort -uo`, `diff -r`, a search that feeds a loop, formatters behind runners);
+  five harmless lines are allowed again; the generated test got parts for all of these, a second frozen file
+  (`scoring/rules.txt`) and a bound of nine in ten for harmless lines. With the new parts the samples found
+  16 more lines of three causes, closed in the same commit.
+- The samples on the final state: no harmful line among 15,600 (bash in WSL, bash and zsh 5.9 in an Alpine
+  container, Git's bash and PowerShell on Windows). The reviewer's one unrun finding, zsh's
+  `cat dat?/(tes?)/lab*`, printed the file in zsh 5.9.
+- Three of the 50 lines that the reviewer ran stay allowed: sealed data read through a path that a program
+  builds while it runs. `docs/REFERENCE.md` names the limit.
+- No second reader has seen these two commits.
+- `4d0d543`, measured after the review, because the reviewer could not: the frozen hash costs time per file
+  (Windows, tests running beside it: 5,000 small files 2.3 s, 20,000 files 8.7 s; 64 MB in 64 files 0.1 s;
+  in WSL 0.16 s and 0.69 s for the first two). Named as a limit in `docs/REFERENCE.md`,
+  `references/validity.md` (section 6) and REPORT.md ("Things to know"); no bound on the file count was
+  built, because the smallest files are read first and an evaluator beside many smaller data files would
+  fall outside it. No code changed.
 
-Not built, ledger rows with reasons: `expctl preflight` (the gates exist as commands), a macOS Seatbelt box
-(cannot be tested without macOS runners), a remote-side stop, and the report's larger design (more back ends,
-cloud drivers, a plugin, a restructure).
+The ledger has the note `round7` (30 rows) with `built-round7.json`: 12 Adopt (all finished), 9 Reject, 4 Hold,
+2 Assess, 3 Trial. 1,650 rows; 493 Adopt, 348 finished and 145 unfinished.
 
-Every guard answer that changed is in the message of `644b2c9`; the report lists each with its test.
-Tests so far, default interpreters: `test_kit.py` 693 checks in WSL and 687 on Windows, `test_review_fixes.py`
-49 and 47, `test_remote.py` 91 and 91, `test_benchmarks.py` 51 on Windows, all pass. The full passes have not
-run yet.
+Not built, ledger rows with reasons: the report's design (ten back ends behind a recipe file, a search plane,
+a campaign of several agents, a restructure into a package), safetensors and a bf16 evaluator, `expctl
+preflight`, a remote-side stop (needs a rented machine), the Metal wired-memory limit (needs a Mac), GPU-hours
+per device (needs a second GPU), a powered benchmark (needs agent sessions).
+
+Every guard answer that changed is in REPORT.md, "Round 7", "Changes in the behaviour of existing features":
+the first part came with `644b2c9`, the second with `eb73521`, the third with `439ab60`; the controller's
+changes are listed there too. One existing expectation changed
+(`echo "$(<data/test/labels.csv)"`, asked about before, refused now).
+
+Tests, 15 November, tree of `439ab60`, eight files, every file passed in every run: WSL 1,478 checks
+(3.12.3 with psutil and PyTorch), 1,468 (clean 3.8.20), 1,469 (clean 3.15.0b3); Windows 1,469 (3.11.7 with
+psutil and PyTorch), 1,459 (clean 3.8.20), 1,460 (clean 3.15.0rc3). The one sentence added to
+`references/validity.md` afterwards: `tests/test_kit.py` again with the two default interpreters, passed.
+The table is in REPORT.md, "Round 7", "Tests".
+
+Open questions for the user (REPORT.md, "Round 7", "What needs your decision"): a push, with a test branch
+recommended so that the workflow runs on GitHub's three systems before `main` moves; a seventh installer run
+on the real install; money, accounts and hardware for the rows that wait for them.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1376,12 +1424,17 @@ run yet.
   3.15 on any system. Not built: the Seatbelt box, the `mps` device in the probe, the heartbeat and the two
   benchmark tasks, a device field in run records, mlx-lm. No reviewer without the working context looked at
   the round's guard change.
+- Round 7: nothing ran on macOS, and the workflow has not run. No second reader has seen the two commits
+  that fixed the review's findings (`0aafe9a`, `439ab60`). The generated test finds what its parts build and
+  nothing else; a path that a program builds while it runs stays outside the guard. The time of the frozen
+  hash was measured on a machine under load only. Not built, each with a ledger row: the report's design,
+  and the rows that wait for a rented machine, a Mac, a second GPU or agent sessions.
 - The guard's list of write verbs (found in round 6, older than it): built in round 7 (`644b2c9`). Still
   unseen by any list: an archive unpacked over a file, a download named by its URL, `git apply`, a formatter
   started through another program. The hash of the frozen files is the answer to those.
-- 147 adopted rows are unfinished (144 before round 7: its hash of the frozen files and its generated guard
-  cases are not built yet, and PyTorch's pinned GPU build moved there because it crashed here; 142 before round 6, whose two new ones are built and wait for a run on
-  macOS; 134 before round 5, whose check of the ledger moved eight rows there),
+- 145 adopted rows are unfinished (144 before round 7: PyTorch's pinned GPU build moved there because it
+  crashed here; round 7's own twelve are built; 142 before round 6, whose two new ones are built and wait
+  for a run on macOS; 134 before round 5, whose check of the ledger moved eight rows there),
   and of the Trial and Assess rows only round 2's three built items were tried (usage limit). ROUND2.md gave
   the go-ahead for all of them; what was built first is what the live campaign and the review pointed at.
   The first three items of my order are built (round 3), and the first four of the ranked list of 12
@@ -1593,16 +1646,25 @@ run yet.
   repository). Recommended: a branch first, on which the workflow runs and what fails on macOS or on Python
   3.15 is repaired before `main` moves; one word would have to cover the follow-up pushes.
 - Open, from round 6: a seventh installer run on the real install, for the guard's fix.
-- Open, from round 6: whether to close the guard's write-verb gap (more verbs, with more questions about
-  harmless lines), to build the hash of the frozen files in run records, or to leave both.
+- Settled by round 7: whether to close the guard's write-verb gap (more verbs, with more questions about
+  harmless lines), to build the hash of the frozen files in run records, or to leave both. Both are built.
 - Open, from round 6: a Mac for one training run (the Seatbelt box, the `mps` device, mlx-lm).
+- Answered on 14 Nov (the request to review a second reviewer's report, plan from it and carry the plan out):
+  "Round 7" above. The word covers changes in this folder and local commits. It is not a word for a push or
+  for anything on the real install.
+- Open, from round 7: the push, as from round 6. It now also takes the generated test to macOS's zsh and
+  bash 3.2 for the first time, so a test branch first is recommended all the more.
+- Open, from round 7: the seventh installer run on the real install. It would now bring the guard changes of
+  rounds 6 and 7 (the guard asks in more cases), the stop and lock fixes and the hash of the frozen files.
+- Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented
+  machine for a stop on the machine itself, agent sessions for a powered benchmark, a Mac).
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the
   loop run, the upgrade test). In WSL: `~/nnkit-upgrade` (not `/tmp`, which is emptied at every start).
 - Run install.py and expctl only against temporary test projects, never against this folder.
 - Tests: `python tests/<name>.py` for test_runlog_units, test_kit, test_review_fixes, test_ports, test_loop,
-  test_remote, test_benchmarks; each prints PASS/FAIL lines and `RESULT: ALL PASS`. Wrapper scripts for the
+  test_remote, test_benchmarks, test_guard_live; each prints PASS/FAIL lines and `RESULT: ALL PASS`. Wrapper scripts for the
   three interpreters per platform, each run as `<script> <label> <commit>` on a clean clone of that commit:
   `%TEMP%\nnkit-upgrade\win-tests.sh` and `wsl-tests.sh`; logs in `%TEMP%\nnkit-upgrade\logs\`.
 - In two full runs in WSL the clock went back during `test_remote` of the first interpreter, by half a second

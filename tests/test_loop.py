@@ -840,6 +840,24 @@ def resume_tests(tmp, proj, exe):
           "removing the worktree leaves the linked folder's content alone")
     put(proj / "blobs/x.bin", "weights-v1")
 
+    def after(cmd, q):  # a shell line, which the guard refuses, and then a change
+        return dict(edit("QUALITY = 1.5", f"QUALITY = {q}"), do=[["sh", cmd], ["sub", "train.py", "QUALITY = 1.5", f"QUALITY = {q}"]])
+    r, st, new = resume(tmp, proj, exe, "a", [
+        after("git checkout -- train.py", 0.4), after("black .", 0.3), after("git push origin HEAD", 0.2),
+        edit("QUALITY = 1.5", "QUALITY = 0.2"), {"result": "cap"}], *lim)
+    got = [e["status"] for e in new]
+    marks = [[g.get("routine") for g in map(json.loads, (proj / f"experiments/loop/a/iter-{e['iter']:03d}/guard-worker.jsonl")
+                                            .read_text(encoding="utf-8").splitlines()) if g["decision"] == "deny"] for e in new]
+    if not check(got[:2] == ["discard", "discard"] and marks[:2] == [[True], [True]]
+                 and all(e["guard_denials"] == 1 and len(e["runs"]) == 1 for e in new[:2]),
+                 f"a refused git undo or formatter over the whole folder is no sign of tampering: the guard marks the "
+                 f"refusal as routine and the session's change is trained (was: invalid) (got {got}, {marks})"):
+        show(r)
+    check(got[2:] == ["invalid", "discard"] and marks[2:] == [[None], []] and "the guard refused 1 call" in new[2]["why"]
+          and "git push" in new[2]["why"] and len(new[3]["runs"]) == 1,
+          f"every other refused call still invalidates the iteration, and the same change from a session without such "
+          f"a call is then trained (was: a duplicate) (got {got}, {marks})")
+
     z0 = state(proj, "a").get("noise")
     r, st, new = resume(tmp, proj, exe, "a", [edit("NOISE = {1: 0.0, 2: 0.02}", "NOISE = {1: 0.5, 2: 0.5}", title="flat")]
                         + [{"proposal": {"no_change": "nothing left that I expect to help"}}] * 2, *lim)
@@ -1119,15 +1137,17 @@ def campaign_b(tmp, proj, exe):
 
 def other_agents(tmp, proj, exe):
     print("== the same loop with Codex and Cursor command lines ==")
-    plan(tmp, [edit("QUALITY = 1.0", "QUALITY = 0.5")])
+    plan(tmp, [dict(edit("QUALITY = 1.0", "QUALITY = 0.5"),  # Codex's worker has a shell: a git undo comes first
+                    do=[["sh", "git restore train.py"], ["sub", "train.py", "QUALITY = 1.0", "QUALITY = 0.5"]])])
     r = loop(proj, "start", "--campaign", "x", "--agent", "codex", "--agent-exe", exe, "--no-scout", "--max-runs", "4",
              "--max-tokens", "100000", env={"FAKE_AGENT": "codex"})
     st, ss, it = state(proj, "x"), sessions(tmp), iters(proj, "x")
     if not check(r.returncode == 0 and [e["status"] for e in it] == ["discard"] and len(ss) == 1
                  and ss[0]["argv"] == ["exec", "--json", "--ephemeral", "-s", "workspace-write", "-"]
                  and "one iteration of an unattended" in ss[0]["prompt"] and st["counters"]["tokens"] == 1500
-                 and str(st.get("stop_reason")).startswith("limit reached: runs (3 of 4"),
-                 "Codex: exec with the prompt on stdin, tokens counted, change discarded, run limit reached"):
+                 and str(st.get("stop_reason")).startswith("limit reached: runs (3 of 4") and it[0]["guard_denials"] == 1,
+                 "Codex: exec with the prompt on stdin, tokens counted, change discarded after a git undo that the "
+                 "guard refused, run limit reached"):
         show(r)
     plan(tmp, [edit("QUALITY = 1.0", "QUALITY = 0.5")])
     r = loop(proj, "start", "--campaign", "y", "--agent", "cursor", "--agent-exe", exe, "--no-scout", "--max-runs", "4",
@@ -1773,6 +1793,18 @@ def guard_tests(tmp, proj):
     lines = [json.loads(x) for x in b.read_text(encoding="utf-8").splitlines()] if b.exists() else []
     check([(x.get("tool"), x.get("decision")) for x in lines] == [("Read", "allow"), ("Write", "deny")]
           and "frozen" in str(lines[-1].get("reason")), "the guard records every checked call, allowed ones included, for the loop")
+    cmds = {"git checkout -- train.py": True, "git reset --hard": True, "black .": True, "ruff check --fix .": True,
+            "git push --force origin HEAD": None, "git checkout HEAD -- eval.py": None, "black eval.py": None,
+            "rm -r .claude": None, "git checkout -- train.py; echo x > eval.py": None, "pkill python": None}
+    for cmd in cmds:
+        call("Bash", {"command": cmd}, env)
+    lines = [json.loads(x) for x in b.read_text(encoding="utf-8").splitlines()][2:]
+    got = {x.get("input"): x.get("routine") for x in lines}
+    check(got == cmds and all(x.get("decision") == "deny" for x in lines) and "routine" not in json.dumps(lines[4:]),
+          f"it marks a refusal as routine where every reason is git that discards the session's own work or a formatter "
+          f"over a whole folder, and no refusal that also names a kept file, publishes or stops (got {got})")
+    check(bash("black .")[1] == "ask" and "A formatter would rewrite" in bash("black .")[2]
+          and bash("git push -f")[2].count(" | ") == 1, "a formatter's ask says so, and a forced push asks for both reasons")
     start = "python .claude/skills/nn-training/scripts/nnloop.py start --campaign z --agent claude --max-runs 3"
     code, dec, out, _ = bash(start)
     check(dec == "ask" and "explicit approval" in out, "starting the loop asks for the user's approval")

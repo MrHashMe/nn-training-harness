@@ -10,8 +10,9 @@ one line per session: what it was started with and what it could see. A step is
      "paid": true}
 
 "paid" prints, before anything else, the event with which Claude Code says that the session is billed per use.
-The ops are  write PATH TEXT,  sub PATH OLD NEW  and  read PATH. Each op is first shown to the project's guard
-hook, as the agent's own tool call would be, and is skipped when the guard refuses it. An op that starts with "!"
+The ops are  write PATH TEXT,  sub PATH OLD NEW,  read PATH  and  sh COMMAND. Each op is first shown to the project's
+guard hook, as the agent's own tool call would be, and is skipped when the guard refuses it. A shell line (sh) is
+shown to the guard and reported, and nothing runs it. An op that starts with "!"
 skips the guard, like an agent whose hooks are not loaded; the transcript still reports it. In a path, {notes} is the notes file the prompt names
 and {main} the checkout that holds this worktree. FAKE_AGENT picks the output format (claude, codex or cursor).
 """
@@ -23,7 +24,7 @@ import sys
 import time
 from pathlib import Path
 
-TOOL = {"write": "Write", "sub": "Edit", "read": "Read"}
+TOOL = {"write": "Write", "sub": "Edit", "read": "Read", "sh": "Bash"}
 USAGE = {"input_tokens": 1000, "output_tokens": 500, "cache_creation_input_tokens": 1500, "cache_read_input_tokens": 2000}
 
 
@@ -69,7 +70,7 @@ def main():
         ops.append(["write", "PROPOSAL.json", json.dumps(step["proposal"])])
     for op, path, *rest in ops:
         guarded, op, p = not op.startswith("!"), op.lstrip("!"), place(path)
-        ti = {"file_path": p}
+        ti = {"command": path} if op == "sh" else {"file_path": p}
         if op == "write":
             ti["content"] = rest[0]
         elif op == "sub":
@@ -90,7 +91,7 @@ def main():
                 return 9
             with open(p, "w", encoding="utf-8", newline="") as f:
                 f.write(text.replace(rest[0], rest[1]))
-        elif os.path.isfile(p):
+        elif op == "read" and os.path.isfile(p):
             with open(p, "rb") as f:
                 f.read()
     time.sleep(float(step.get("sleep") or 0))
@@ -110,8 +111,10 @@ def main():
                     "stop_reason": "refusal" if result == "refusal" else "end_turn", "total_cost_usd": 0.5, "usage": USAGE})
     elif kind == "codex":
         out += [{"type": "thread.started", "thread_id": f"fake-{n}"}, {"type": "turn.started"}]
-        out += [{"type": "item.completed", "item": {"id": f"item_{i}", "type": "file_change", "status": "completed",
-                                                    "changes": [{"path": ti["file_path"], "kind": "update"}]}}
+        out += [{"type": "item.completed", "item": dict(
+            {"id": f"item_{i}", "status": "completed"},
+            **({"type": "command_execution", "command": ti["command"]} if "command" in ti else
+               {"type": "file_change", "changes": [{"path": ti["file_path"], "kind": "update"}]}))}
                 for i, (_, ti) in enumerate(calls)]
         if result == "ok":
             out += [{"type": "item.completed", "item": {"id": "item_m", "type": "agent_message", "text": "done"}},

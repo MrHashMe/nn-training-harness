@@ -152,10 +152,21 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 |---|---|
 | `keep` | Better than the best so far by more than the margin; the branch moves to this commit. After a restart (`restart_after`) the change is compared with the commit it started from, and the branch moves only when the new commit also beats the one that was left. |
 | `inconclusive` / `discard` | Better within the noise margin (a near-miss: on both seed panels together) / not better. Reverted (the next worktree starts from the best commit). |
-| `invalid` | Changed a file outside `editable_paths`, the guard refused a call, a sealed path or token appears in the change or the tool calls, the run exceeded its budget, the evaluator refused what the run saved, or every seed scored exactly the same although earlier panels had spread (the change took the seed's effect away; with a coarse metric and two seeds this can happen by chance, one more reason for three). |
+| `invalid` | Changed a file outside `editable_paths`, the guard refused a call (a routine one excepted, below), a sealed path or token appears in the change or the tool calls, the run exceeded its budget, the evaluator refused what the run saved, or every seed scored exactly the same although earlier panels had spread (the change took the seed's effect away; with a coarse metric and two seeds this can happen by chance, one more reason for three). |
 | `crash`, `no_change`, `agent_error`, `duplicate` | The run or evaluator failed, or a changed Python file does not compile; the session changed nothing, or only comments and layout; the agent ended with an error; the same change was tried before (Python files compared without comments and layout). |
 | `declined` | The session proposed no change and said why. The prompt offers this as an accepted result, because an agent with no way to say "nothing" tends to game the score instead (arXiv 2510.20270 v1: an abort option cut cheating from 54 % to 9 %). It costs no run and is no failure; two in a row end the campaign (with `restart_after`: once there is no earlier commit to go back to). |
 | `unfinished` | A limit or a stop arrived during the iteration. Its change was not decided: a later session may propose it again (it is no `duplicate`), and its hypothesis still counts as untried. |
+
+Routine refusals. Since 15 November 2026 two kinds of refused call no longer make an iteration `invalid`: git
+that would discard the session's own work (`git checkout -- train.py`, `git restore`, `git reset --hard`,
+`git clean`, `git branch -D`) and a formatter or fixer given the whole project (`black .`, `ruff check --fix`).
+An agent with a shell reaches for both as a matter of habit, and neither aims at what the guard protects. The
+guard refuses them as before where nobody can be asked, nothing of them is carried out, and they count in the
+ledger's `guard_denials`. It marks a refusal as routine only when it had no other reason: a formatter aimed at
+a frozen folder, an undo that names a frozen file, a forced push, a stopped run or a read of sealed data make
+the iteration `invalid` as they did. A change that was `invalid` only through its session's refused calls is
+not remembered as tried: proposed again by a session without them, it is trained and is no `duplicate`. (Before,
+one `git restore` by a Codex session cost the iteration and barred its change for the rest of the campaign.)
 
 ### Before a run costs anything
 Since 14 November 2026 a change is checked after its commit and before its first run:

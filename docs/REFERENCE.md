@@ -289,7 +289,16 @@ neither kit was shown to beat running the agent with no kit.
   Python's file calls in code on the line (`open(…, 'w')`, `write_text`, `os.replace`, pathlib's `.rename(`,
   `.touch(` and the link calls); and the PowerShell and cmd forms of all these, a file object's own calls among
   them (`(Get-Item f).Delete()`, `.MoveTo(`, `.CopyTo(`). A program's name counts in any case (`RM`, `SED`,
-  `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so. Three kinds of line are asked about although they name
+  `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so.
+  Since 15 November 2026 a line whose only write is a redirect, or a `tee` at the start of a command, is asked
+  about only where a target of it is such a file: `python eval/metrics.py > score.json` passes (it was asked
+  about, and refused where nobody can be asked), `echo x > eval/metrics.py` is asked about as before. The
+  targets are read as words with their quotes taken off, from every folder the line goes to. The older rule,
+  any path of the line, stays wherever a target cannot be read that way: a variable, a command's output, a
+  backslash or a home sign in the line, a target that is a pattern or is missing, `cd -` or `popd`, a second
+  write verb, a `tee` that starts no command, a line inside `bash -c`. A written word that the guard cannot
+  place inside the project (Git Bash's `/c/Users/…`, a mounted drive) is searched by name, an output option's
+  word among them. Three kinds of line are asked about although they name
   no such file. A line that changes a folder holding such files as a whole: `mv eval old`, `rm -r eval`,
   `git checkout HEAD eval`, `Remove-Item eval -Recurse`, and `cp -r` or `rsync` with such a folder on either
   side, because the guard does not tell a source from a target. A line that deletes or edits the files which a
@@ -299,7 +308,10 @@ neither kit was shown to beat running the agent with no kit.
   variable), `gci -r -Filter *.py | Remove-Item`, PowerShell's block with the write anywhere in it
   (`| % { $t = gc $_; Set-Content $_ $t }`) and `foreach (…) { … }`; the search's own file filter is
   respected, so `find . -name '*.pyc' -delete` passes. And a formatter that is given such a folder, or none
-  (`black .`, `ruff check --fix`), where a frozen or harness `.py`, `.pyi` or `.ipynb` file lies below.
+  (`black .`, `ruff check --fix`), where a frozen or harness `.py`, `.pyi` or `.ipynb` file lies below; since
+  15 November 2026 with a reason of its own, which the unattended loop counts as routine like git that discards
+  uncommitted work (`references/loop.md`, "Routine refusals"). A forced push carries both reasons, the
+  destructive one and the push's.
   Text that runs counts wherever it stands: the text behind a code flag, also where the flag stands in a group
   of letters, is cut short or has options behind it (`sh -ce '…'`, `bash -c -- '…'`, `bash -c -o pipefail '…'`,
   `powershell -com "…"`), every word of an `eval`, the text of a `trap`, a command inside `$(…)` or backticks
@@ -333,8 +345,11 @@ neither kit was shown to beat running the agent with no kit.
   20,000 small files 9 s (in WSL, on its own file system: 0.2 s and 0.7 s). `expctl launch`, `expctl hash` and the final evaluation pay that each time, and
   `expctl status` and the status at a session's start once a ranked run carries a hash. That hook has 30 s:
   with a frozen data folder of some 60,000 files or more the status at a session's start may not arrive, while
-  the guard's protection of those files does not depend on it. The edit tools are asked about. The other way round, harmless lines are asked about when they hold
-  such a write anywhere: `python eval/metrics.py > out.txt`, `python eval/metrics.py 2> err.txt`,
+  the guard's protection of those files does not depend on it. The edit tools are asked about. The other way
+  round, harmless lines are asked about when they hold such a write anywhere: a redirect to another file beside
+  a second write or where its target is not read (`cat eval/metrics.py > out.txt; cp out.txt x.py`,
+  `bash -c "cat eval/metrics.py > out.txt"`, PowerShell's `python eval\metrics.py > score.json` with its
+  backslash; alone and in sh's spelling it passes since 15 November 2026, above),
   `cp -r eval sub/copy`, `ruff check --fix .`, `ls *.py | xargs black`, a line that names such a file beside a
   word in capitals that is a program's name (`RM`, `CP`, `DD`, `TEE`) or beside a restore of another file, and
   a line whose variable holds a harmful-looking text beside a runner

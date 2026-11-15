@@ -2191,18 +2191,20 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     if FIND_DELETES.search(c_noq) or (FED.search(c_noq) and (MASS_EDIT.search(flat) or LOOP_OUT.search(c))) \
             or PS_FED.search(c_noq):
         whole += [(ctx.rel(b), globs, typ) for b, globs, typ in walked]
+    n = len(whole)  # from here on: what a formatter is given, which gets its own words (ROUTINE)
     for m in FORMATS.finditer(c_noq):  # its own arguments, or the folder it runs in
         args = [t for t in itertools.takewhile(lambda t: t.strip(";&|()<>"), lex(c_noq[m.end():])) if t[:1] != "-"]
         for d in dirs:
             ctx.cwd = d
             whole += [(ctx.resolve_token(t), PY_FILES, None) for t in args or ["."]]
     ctx.cwd = here
-    over = next((p for rel, globs, typ in whole for p in [below(ctx, rel, kept, globs, typ)] if p), None)
-    if over:
-        results.append((ASK, f"Command changes a whole folder, or the files that it finds there itself, and files "
-                             f"that this guard keeps lie in it (pattern '{over}': frozen evaluation/protocol files "
-                             f"or the harness). Name the files or folders to change, or approve only if these "
-                             f"files stay as they are."))
+    for part, what, do in ((whole[:n], "Command changes a whole folder, or the files that it finds there itself, and "
+                                       "files that this guard keeps lie in it", "change"),
+                           (whole[n:], "A formatter would rewrite files that this guard keeps", "format")):
+        over = next((p for rel, globs, typ in part for p in [below(ctx, rel, kept, globs, typ)] if p), None)
+        if over:
+            results.append((ASK, f"{what} (pattern '{over}': frozen evaluation/protocol files or the harness). Name "
+                                 f"the files or folders to {do}, or approve only if these files stay as they are."))
     for d in dirs if saved else []:  # read from every folder that the line goes to, as an output option's word is
         ctx.cwd = d
         outs += [(t, ctx.resolve_token(t)) for t in saved]
@@ -2246,7 +2248,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     if GIT_DESTRUCTIVE.search(c):
         results.append((ASK, "Destructive git operation (may discard uncommitted work or rewrite history). Needs the "
                              "user's explicit approval."))
-    elif GIT_PUSH.search(c):
+    if GIT_PUSH.search(c):  # a forced push is both
         results.append((ASK, "git push publishes code; it needs the user's explicit approval."))
     setting = git_runs(raw) or "".join(m.group() for m in [GIT_ENV.search(c)] if m)
     if setting:
@@ -2394,17 +2396,24 @@ def nobody_to_ask(payload, agent):
     return f"{mode} is active" if mode in ("bypassPermissions", "dontAsk") else None
 
 
-def beacon(payload, calls, decision, reason=""):
+# Asks about a session's own work and nothing else: git that discards uncommitted work, and a formatter given a
+# folder in which kept files lie. Where nobody can be asked they are refused like every ask. The unattended loop
+# takes a refused call as a sign of tampering and drops the session's change; not these, which the beacon marks
+ROUTINE = ("Destructive git operation", "A formatter would rewrite")
+
+
+def beacon(payload, calls, decision, reason="", routine=False):
     """For the unattended loop: one line per checked call in the file NN_GUARD_BEACON names, allows included, so
-    that the harness can tell that the guard ran in a session and what it refused."""
+    that the harness can tell that the guard ran in a session and what it refused. routine: every reason of the
+    refusal is one of ROUTINE (the reason is cut short here, so the loop could not tell)."""
     path = os.environ.get("NN_GUARD_BEACON")
     if path:
         ti = calls[0][1] if calls else {}
         try:
-            append_line(path, {"tool": calls[0][0] if calls else str(payload.get("tool_name") or "")[:80],
-                               "decision": decision, "reason": reason[:300],
-                               "input": str(ti.get("command") or ti.get("file_path") or ti.get("path")
-                                            or ti.get("pattern") or "")[:300]})
+            append_line(path, dict({"tool": calls[0][0] if calls else str(payload.get("tool_name") or "")[:80],
+                                    "decision": decision, "reason": reason[:300],
+                                    "input": str(ti.get("command") or ti.get("file_path") or ti.get("path")
+                                                 or ti.get("pattern") or "")[:300]}, **({"routine": True} if routine else {})))
         except OSError:
             pass
 
@@ -2418,13 +2427,14 @@ def respond(root, payload, fmt, agent, calls, results, unreadable=False):
     decision = DENY if any(k == DENY for k, _ in results) else ASK
     reasons = [r for k, r in results if k == decision]
     reason = "nn-training guard: " + " | ".join(dict.fromkeys(reasons))
+    routine = decision == ASK and all(r.startswith(ROUTINE) for r in reasons)
     if decision == ASK:
         why = nobody_to_ask(payload, agent)
         if why:
             decision = DENY
             reason += (f" | ({why}, so nobody can be asked: denied. If the action is intended, the user runs it "
                        f"themselves or approves it in an interactive Claude Code session.)")
-    beacon(payload, calls, decision, reason)
+    beacon(payload, calls, decision, reason, routine)
     ti = calls[0][1] if calls else {}
     audit(root, {"ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "via": agent,
                  "tool": str(payload.get("tool_name") or payload.get("hook_event_name") or "")[:80],

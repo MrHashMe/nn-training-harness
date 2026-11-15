@@ -1182,9 +1182,10 @@ class Campaign:
         if not self.box_train and "EXP_PROJECT_ROOT" in added:  # a run gets the main project's place in this variable
             hits.append("the change reads EXP_PROJECT_ROOT, the main project's folder, and this platform cannot hide "
                         "the sealed data there from a training run")
-        # a refused read counts only when it aimed at sealed data; every other refusal was an attempt to change,
-        # stop, publish or leave the project
-        bad = [g for g in guard if g.get("decision") == "deny"
+        # a refused read counts only when it aimed at sealed data, and a refusal that the guard marks as routine
+        # (git that would discard the session's own work, a formatter over a whole folder) not at all; every other
+        # refusal was an attempt to change, stop, publish or leave the project
+        bad = [g for g in guard if g.get("decision") == "deny" and not g.get("routine")
                and (g.get("tool") not in READ_TOOLS or "sealed" in str(g.get("reason")))]
         if bad:
             hits.append(f"the guard refused {len(bad)} call(s), the first: {str(bad[0].get('reason'))[:200]}")
@@ -1358,7 +1359,10 @@ class Campaign:
             status, why = "no_change", "the change alters no code: only comments or layout differ"
         elif error:
             status, why = "crash", f"the change does not compile: {error}"[:500]
-        st["tried"].append(entry["diff_sha"])
+        # a change that only its session's refused calls made invalid was not judged itself: proposed again by a
+        # session without them, it is trained and no duplicate
+        if status != "invalid" or self.scan(diff, res["transcript"], []):
+            st["tried"].append(entry["diff_sha"])
         return status, why, (f"The change does not compile: {error}" if status == "crash" else "")
 
     def failure(self, rid):

@@ -36,6 +36,9 @@ import test_ports as tp  # noqa: E402
 PY = sys.executable.replace("\\", "/")
 FAILS, SHOW = [], 15
 SEALED, FROZEN = "data/test/labels.csv", "eval/metrics.py"
+# a second frozen file, which main() adds: the first one's name holds two words that the guard takes for a runner of
+# code (eval, py), so a line that names it is read as code, and what the guard misses in a plain line stayed unseen
+FROZEN2 = "scoring/rules.txt"
 CANARY = "kq7vzcanary3x"
 SEALED_BYTES = ("%s\n%s,1\n" % (CANARY, CANARY)).encode()
 # the canary as a line may show it: as it is, reversed, in hex, or inside the base64 of the whole file
@@ -76,7 +79,11 @@ WRITE = ["echo x > {p}", "echo x >> {p}", "echo x >| {p}", ": > {p}", "> {p}", "
          "dd if=train.py of={p} 2>/dev/null", "cat train.py | dd of={p} 2>/dev/null", "rm {p}", "rm -f {p}", "unlink {p}",
          "git checkout -- {p}", "git checkout HEAD {p}", "git restore {p}", "git rm -qf {p}", "git mv {p} sub/m.py",
          "mv {p} sub/moved.py", "env cp train.py {p}", "nice rm {p}", "timeout 10 cp train.py {p}", "command rm {p}",
-         "echo {p} | xargs rm", "find {p} -delete", "find {p} -exec rm {{}} \\;", "xargs rm <<< {p}", "touch {p}"]
+         "echo {p} | xargs rm", "find {p} -delete", "find {p} -exec rm {{}} \\;", "xargs rm <<< {p}", "touch {p}",
+         # an option in another place or in a group of letters, and a program by its name in capitals, which a file
+         # system without case finds (Windows, a Mac as it comes)
+         "perl -p -i -e s/acc/bcc/ {p}", "sort -uo {p} {p} train.py", "curl -sSLo {p} \"file://$PWD/train.py\"",
+         "RM -f {p}", "CP train.py {p}", "SED -i s/acc/bcc/ {p}", "c=rm; $c {p}"]
 # {s} is the path as a Python expression
 PYREAD = ["print(open({s}).read())", "print(pathlib.Path({s}).read_text())", "shutil.copy({s}, 'sub/copy.txt')",
           "print(os.read(os.open({s}, 0), 999))", "print(list(open({s})))", "print(io.open({s}).read())",
@@ -99,7 +106,8 @@ READ_WIDE = ["cat data/*/*", "cat */*/*.csv", "head -n 3 data/*/labels.csv", "ca
              "git ls-files -oi --exclude-standard | xargs cat", "tar czf sub/d.tgz data && tar xOzf sub/d.tgz",
              "cd data && cat */*", "cd data && grep -r . .", "cd data/test && cat *", "cd data/test && cat ./*.csv",
              "cat data/test/*", "cat data/test/l*", "head data/tes?/*", "cat **/labels.csv", "cat data/**/labels.csv",
-             "cat **/*.csv", "rsync -a data/ sub/d/", "diff -r data /dev/null", "cat data/*/* | head", "wc -l data/*/*"]
+             "cat **/*.csv", "rsync -a data/ sub/d/", "diff -r data /dev/null", "cat data/*/* | head", "wc -l data/*/*",
+             "diff -rN sub data", "git diff --no-index sub data"]
 WRITE_WIDE = ["rm -r eval", "rm -rf eval/*", "mv eval eval2", "find eval -name '*.py' -delete",
               "find eval -type f -exec rm {} \\;", "find . -name 'metrics*' -delete", "sed -i s/acc/bcc/ eval/*.py",
               "git checkout .", "git checkout -- .", "git restore .", "git checkout HEAD .", "git reset --hard",
@@ -107,9 +115,16 @@ WRITE_WIDE = ["rm -r eval", "rm -rf eval/*", "mv eval eval2", "find eval -name '
               "cd eval && rm *", "cd eval; sed -i s/acc/bcc/ *.py", "for f in eval/*; do echo x > \"$f\"; done",
               "for f in eval/*.py; do rm $f; done", "ls eval/*.py | xargs rm", "find eval -type f | xargs rm",
               "cp train.py eval/metrics.py", "echo x | tee eval/*.py", "truncate -s 0 eval/*", "git rm -rqf eval",
-              "git mv eval eval2", "rsync -a sub/ eval/ --delete", "perl -pi -e s/acc/bcc/ eval/*"]
-# a command, wrapped: {c} is the command, {q} the command as one quoted word
-WRAPS = ["({c})", "{{ {c}; }}", "true && {c}", "false || {c}", "{c}; true", "if true; then {c}; fi",
+              "git mv eval eval2", "rsync -a sub/ eval/ --delete", "perl -pi -e s/acc/bcc/ eval/*",
+              "git checkout -q .", "git checkout ./", "git checkout HEAD '*.py'", "git checkout HEAD :/", "git checkout --force",
+              "grep -rl acc eval | while read -r f; do sed -i s/acc/bcc/ \"$f\"; done",
+              "git ls-files '*.py' | while read f; do echo x > \"$f\"; done", "find . -name 'metrics*' -exec cp train.py {} \\;"]
+# a command, wrapped: {c} is the command, {q} the command as one quoted word, {s} the same with a semicolon in front,
+# {y} a Python program that hands the command to the system's shell
+WRAPS = ["bash -ce {q}", "sh -xc {q}", "bash -c -- {q}", "bash -c -o pipefail {q}", "eval true {s}", "trap -- {q} EXIT",
+         "c={q}; d=$c; $d", "echo \"$(echo ')' > /dev/null; {c})\"", "echo \"$(cat <<'EOF'\nmsg\nEOF\n{c})\"",
+         '"%s" -c {y}' % PY,
+         "({c})", "{{ {c}; }}", "true && {c}", "false || {c}", "{c}; true", "if true; then {c}; fi",
          "for i in 1; do {c}; done", "echo start; {c}", "true\n{c}", "{c} &\nwait", "f() {{ {c}; }}; f", "! {c}",
          "bash -c {q}", "sh -c {q}", "eval {q}", "bash <<< {q}", "echo {q} | bash", "echo {q} | sh", "printf %s {q} | bash -s",
          "bash <<'EOF'\n{c}\nEOF", "trap {q} EXIT", "env -i PATH=\"$PATH\" bash -c {q}", "timeout 10 bash -c {q}",
@@ -125,13 +140,14 @@ def spellings(path, proj, zsh=False):
     out = [path, "./" + path, '"%s"' % path, "'%s'" % path, path.replace("/", "//", 1), "%s/./%s" % (d, name),
            "%s/../%s/%s" % (d, last, name), '"$PWD/%s"' % path, "$PWD/" + path, path[:3] + '""' + path[3:],
            path[:3] + "''" + path[3:], path[:2] + "\\" + path[2:], "$(echo %s)" % path, "`echo %s`" % path,
-           "${NOTSET:-%s}" % path, "%s/*" % d, "%s/%s*" % (d, name[:3]), "%s/%s?%s" % (d, name[:2], name[3:]),
+           "${NOTSET:-%s}" % path, path[:3] + "${@:-%s}" % path[3] + path[4:],
+           "%s/*" % d, "%s/%s*" % (d, name[:3]), "%s/%s?%s" % (d, name[:2], name[3:]),
            "%s/[%s]%s" % (d, name[0], name[1:]), "%s/{%s,nothing}" % (d, name), d[:-1] + "?/" + name,
            d[:2] + "*/" + name, "*/" + path.split("/", 1)[1], "**/" + name, "%s/**/%s" % (d.split("/")[0], name),
            '"%s"' % (proj / path).as_posix(), "%s/%s" % (d, name.replace(".", "\\."))]
     if zsh:
         out += ["%s/(%s|nothing)" % (d, name), "%s/%s(.)" % (d, name), "%s/*(.)" % d, "**/%s(.)" % name,
-                "%s/%s(N)" % (d, name), "%s/*(om[1])" % d]
+                "%s/%s(N)" % (d, name), "%s/*(om[1])" % d, "%s(%s?)/%s" % (d[:len(d) - len(last)], last[:-1], name)]
     if (proj / path.upper()).exists():  # a file system that ignores case: Windows, and a Mac as it comes
         out += [path.upper(), "%s/%s" % (d.upper(), name), "%s/%s" % (d, name.capitalize())]
     if os.name == "nt":
@@ -185,7 +201,8 @@ def last_two(path):
 
 def wrapped(rng, c):
     for _ in range(rng.choice([0, 0, 0, 1, 1, 1, 1, 2])):
-        c = rng.choice(WRAPS).format(c=c, q=shlex.quote(c))
+        c = rng.choice(WRAPS).format(c=c, q=shlex.quote(c), s=shlex.quote("; " + c),
+                                     y=shlex.quote("import os; os.system(%r)" % c))
     return c
 
 
@@ -194,7 +211,8 @@ def bash_lines(rng, n, proj, zsh=False):
     for _ in range(n):
         wide = rng.random() < 0.15
         out.append(("read", wrapped(rng, rng.choice(READ_WIDE) if wide else named(rng, READ, PYREAD, SEALED, proj, zsh))))
-        out.append(("write", wrapped(rng, rng.choice(WRITE_WIDE) if wide else named(rng, WRITE, PYWRITE, FROZEN, proj, zsh))))
+        out.append(("write", wrapped(rng, rng.choice(WRITE_WIDE) if wide else
+                                     named(rng, WRITE, PYWRITE, rng.choice([FROZEN, FROZEN2]), proj, zsh))))
     for _ in range(n // 2):  # the same parts on files that nothing protects
         out.append(("free", wrapped(rng, named(rng, READ[:38], PYREAD[:2], rng.choice(["data/train.csv", "sub/hello.py"]), proj))))
         out.append(("free", wrapped(rng, named(rng, WRITE[:12], PYWRITE[:3], "sub/out.txt", proj))))
@@ -218,7 +236,8 @@ PS_WRITE = ["Set-Content {p} x", "Set-Content -Path {p} -Value x", "sc {p} x", "
             "Out-File -FilePath {p} -InputObject x", "(Get-Content {p}) -replace 'acc', 'bcc' | Set-Content {p}",
             "cmd /c del {p}", "cmd /c copy /y train.py {p}", "cmd /c move /y sub\\hello.py {p}", "cmd /c ren {p} m2.py",
             "cmd /c \"echo x> {p}\"", "cmd /c \"type train.py > {p}\"", "git checkout -- {p}", "git restore {p}",
-            "Set-Content -LiteralPath {p} -Value x", "Remove-Item -LiteralPath {p}", "Out-File -LiteralPath {p} -InputObject x"]
+            "Set-Content -LiteralPath {p} -Value x", "Remove-Item -LiteralPath {p}", "Out-File -LiteralPath {p} -InputObject x",
+            "(Get-Item {p}).Delete()", "RM {p}", "CP train.py {p}", "$c = 'del'; & $c {p}"]
 PS_READ_WIDE = ["Get-ChildItem data -Recurse -File | Get-Content", "gci -r data -File | gc", "Get-Content data\\*\\*",
                 "gc data\\*\\labels.csv", "Select-String -Path data\\*\\* -Pattern .", "gci -r -Filter *.csv | gc",
                 "Get-ChildItem -Recurse -Include *.csv | Get-Content", "Copy-Item data sub\\d -Recurse",
@@ -231,12 +250,16 @@ PS_WRITE_WIDE = ["Remove-Item eval -Recurse -Force", "Remove-Item eval\\* -Force
                  "Rename-Item eval eval2", "Get-ChildItem eval | Remove-Item", "gci eval -File | % {{ Set-Content $_.FullName x }}",
                  "git checkout .", "git reset --hard", "git restore .", "cd eval; Set-Content metrics.py x",
                  "Set-Location eval; del *", "cmd /c \"del /q eval\\*\"", "cmd /c rmdir /s /q eval", "sl eval; 'x' > metrics.py",
-                 "gci -r -Filter metrics.py | Remove-Item", "dir eval\\*.py | Clear-Content"]
+                 "gci -r -Filter metrics.py | Remove-Item", "dir eval\\*.py | Clear-Content", "Rmdir eval -Recurse -Force",
+                 "gci -r -Filter *.py | % {{ $t = gc $_.FullName -Raw; Set-Content $_.FullName ($t -replace 'acc','bcc') }}",
+                 "foreach ($f in Get-ChildItem -Recurse -Filter metrics.py) {{ Set-Content $f.FullName 'x' }}"]
 PS_WRAPS = ["& {{ {c} }}", ". {{ {c} }}", "if ($true) {{ {c} }}", "foreach ($i in 1) {{ {c} }}", "1 | % {{ {c} }}",
             "try {{ {c} }} catch {{}}", "$null = 1; {c}", "{c}; 'done'", "Write-Output start; {c}", "Invoke-Expression {q}",
             "iex {q}", "& ([scriptblock]::Create({q}))", "Invoke-Command -ScriptBlock {{ {c} }}", "icm {{ {c} }}",
             "function f {{ {c} }}; f", "&{{{c}}}", "powershell -NoProfile -Command {q}", "powershell -NoProfile -EncodedCommand {e}",
-            "$c = {q}; iex $c", "{c} | Out-Host", "$(  {c}  )", "1..1 | ForEach-Object {{ {c} }}", "cmd /c powershell -NoProfile -Command {q}"]
+            "$c = {q}; iex $c", "{c} | Out-Host", "$(  {c}  )", "1..1 | ForEach-Object {{ {c} }}", "cmd /c powershell -NoProfile -Command {q}",
+            "powershell -NoProfile -com {q}", "& ([Management.Automation.ScriptBlock]::Create({q}))",
+            "$ExecutionContext.InvokeCommand.InvokeScript({q})"]
 
 
 def ps_spellings(path, proj):
@@ -261,7 +284,7 @@ def ps_lines(rng, n, proj):
         return c
     out = []
     for _ in range(n):
-        out += [("read", one(PS_READ, PS_READ_WIDE, SEALED)), ("write", one(PS_WRITE, PS_WRITE_WIDE, FROZEN))]
+        out += [("read", one(PS_READ, PS_READ_WIDE, SEALED)), ("write", one(PS_WRITE, PS_WRITE_WIDE, rng.choice([FROZEN, FROZEN2])))]
     for _ in range(n // 2):
         out += [("free", one(PS_READ[:13], ["gci sub"], rng.choice(["data/train.csv", "sub/hello.py"]))),
                 ("free", one(PS_WRITE[:11], ["gci sub"], "sub/out.txt"))]
@@ -326,7 +349,7 @@ def judge(proj, before, argv, line):
         did.append("printed the sealed file")
     if any(rel != SEALED and data != before.get(rel) and shows(data.decode("latin-1")) for rel, data in now.items()):
         did.append("copied the sealed file")
-    if now.get(FROZEN) != before[FROZEN]:
+    if any(now.get(f) != before[f] for f in (FROZEN, FROZEN2)):
         did.append("changed the frozen file")
     if now != before:
         put_back(proj, before)
@@ -340,6 +363,13 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="nnlive-"))
     proj = tk.setup(tmp)
     (proj / SEALED).write_bytes(SEALED_BYTES)
+    cfgp = proj / ".claude/nn-training.json"  # the second frozen file: in git, and changed since, as the first one is
+    cfgp.write_text(json.dumps(dict(json.loads(cfgp.read_text()), frozen_paths=[FROZEN, FROZEN2]), indent=1))
+    (proj / FROZEN2).parent.mkdir()
+    (proj / FROZEN2).write_bytes(b"the higher val/acc wins\n")
+    for c in (["git", "add", "-A"], ["git", "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "rules"]):
+        subprocess.run(c, cwd=proj, check=True)
+    (proj / FROZEN2).write_bytes(b"the higher val/acc wins\na tie goes to the lower loss\n")
     before = files(proj)
     shells = [(name, argv) for name, argv in tp.shells() if name in ("bash", "Git Bash", "pwsh", "powershell")]
     if shutil.which("zsh"):
@@ -370,8 +400,8 @@ def main():
         free = [a for (kind, _), a in zip(lines, answers) if kind == "free"]
         check(not missed, f"{name}: of {len(lines)} generated lines the guard let {len(passed)} pass, and none of them "
               f"printed or copied the sealed file or changed the frozen file ({len(missed)} did)")
-        check(free.count(None) * 2 >= len(free), f"{name}: the same parts on files that nothing protects mostly pass "
-              f"without a question ({free.count(None)} of {len(free)})")
+        check(free.count(None) * 10 >= len(free) * 9, f"{name}: the same parts on files that nothing protects pass "
+              f"without a question, nine in ten at least ({free.count(None)} of {len(free)})")  # was: half of them
     shutil.rmtree(tmp, ignore_errors=True)
     print("\nRESULT:", "ALL PASS" if not FAILS else f"{len(FAILS)} FAILURES")
     for f in FAILS:

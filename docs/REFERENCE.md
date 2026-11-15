@@ -172,6 +172,7 @@ $E stop <run> --wait 5m                             # graceful: checkpoint, then
 $E resume <run>                                     # a new run from the old run's checkpoint
 $E final-eval -- --ckpt runs/<run>/ckpt/best.pt     # once, with a receipt and a journal entry
 $E audit-splits                                     # how many records the splits share: counts only, never a row
+$E hash                                             # the hash of the frozen files now; each run's manifest holds its own
 $E env --python .venv/bin/python --probe            # hardware and versions; --probe tries the GPU features there
 $E selftest                                         # are the hooks, the guard and the protocol wired up
 ```
@@ -264,46 +265,73 @@ neither kit was shown to beat running the agent with no kit.
 - A shell command that names a frozen or harness file is asked about where the line holds a write that the
   guard knows. Since 14 November 2026 these are: a redirect, also behind a descriptor (`2> file`, `&> file`,
   `>& file`; not `2>&1`, not one to `/dev/null`); `tee`, `cp`, `mv`, `rm`, `ln`, `dd`, `rsync`, `truncate`,
-  `touch`, `patch`, `install`; `sed -i` and `--in-place` wherever the option stands, `perl -i`; `find -delete`;
-  `git checkout <rev> <path>` and `git restore <path>`; a formatter or fixer that rewrites files (`black`,
-  `isort`, `ruff format`, `ruff --fix`; not with `--check` or `--diff`); the word behind an output option (`-o`,
-  `-O`, `--out…`, PowerShell's `-OutFile`, so `sort -o`, `curl -o` and `wget -O` count); Python's file calls in
-  code on the line (`open(…, 'w')`, `write_text`, `os.replace`, pathlib's `.rename(`, `.touch(` and the link
-  calls); and the PowerShell and cmd forms of all these. Three kinds of line are asked about although they name
+  `touch`, `patch`, `install`; `sed -i` and `--in-place` wherever the option stands, BSD sed's `-I`, perl's and
+  ruby's `-i` alone or in a group of letters (`perl -p -i -e`, `ruby -pi -e`); `find -delete`;
+  `git checkout` with a path, also behind options and as `.`, `./`, `:/` or a wildcard, `git checkout --force`,
+  and `git restore <path>` unless `--staged` stands alone; a formatter or fixer that rewrites files (`black`,
+  `isort`, `ruff format`, `ruff --fix`; not with `--check`, `--diff`, `--version` or `--help`), also behind the
+  runner that starts it (`uvx`, `pipx run`, `uv tool run`, `conda run -n env`, `python -m`, `black@24.1.0`); the
+  word behind an output option (`-o`, `-O`, `--out…`, PowerShell's `-OutFile`, so `sort -o`, `curl -o` and
+  `wget -O` count, also where the letter ends a group: `sort -uo`, `curl -sSLo`, `wget -qO`; a wildcard there
+  counts as what it names on disk, and where it is a variable or a command's output, as in
+  ``sort -o `echo f` ``, every path of the line may be the one written);
+  Python's file calls in code on the line (`open(…, 'w')`, `write_text`, `os.replace`, pathlib's `.rename(`,
+  `.touch(` and the link calls); and the PowerShell and cmd forms of all these, a file object's own calls among
+  them (`(Get-Item f).Delete()`, `.MoveTo(`, `.CopyTo(`). A program's name counts in any case (`RM`, `SED`,
+  `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so. Three kinds of line are asked about although they name
   no such file. A line that changes a folder holding such files as a whole: `mv eval old`, `rm -r eval`,
   `git checkout HEAD eval`, `Remove-Item eval -Recurse`, and `cp -r` or `rsync` with such a folder on either
   side, because the guard does not tell a source from a target. A line that deletes or edits the files which a
-  search of the same line finds in such a folder: `find … -delete`, `find … -exec rm`, `… | xargs sed -i`,
-  `sed -i … $(git ls-files '*.py')`, `gci -r -Filter *.py | Remove-Item`; the search's own file filter is
+  search of the same line finds in such a folder: `find … -delete`, `find … -exec rm` (or `cp`),
+  `… | xargs sed -i`, `sed -i … $(git ls-files '*.py')`, a loop that reads the names
+  (`… | while read f; do sed -i … "$f"; done`, `done < <(…)`, also where the loop writes by a redirect into its
+  variable), `gci -r -Filter *.py | Remove-Item`, PowerShell's block with the write anywhere in it
+  (`| % { $t = gc $_; Set-Content $_ $t }`) and `foreach (…) { … }`; the search's own file filter is
   respected, so `find . -name '*.pyc' -delete` passes. And a formatter that is given such a folder, or none
   (`black .`, `ruff check --fix`), where a frozen or harness `.py`, `.pyi` or `.ipynb` file lies below.
-  Text that runs counts wherever it stands: the text of a `trap`, a command inside `$(…)` or backticks (inside
-  a string in double quotes too), the word of `${name:-word}`, a text that the line keeps in a variable and may
-  run from there (`c='rm x'; $c`, `$c = 'del x'; iex $c`), the text that PowerShell makes a script block of
-  (`[scriptblock]::Create('…')`) or runs inside a block (`&{iex '…'}`), and a shell inside a shell three levels
-  deep; a fourth level is asked about, because the guard does not read it. A message in a here-document that no program
-  runs (`git commit -m "$(cat <<'EOF' … EOF)"`) stays unread.
+  Text that runs counts wherever it stands: the text behind a code flag, also where the flag stands in a group
+  of letters, is cut short or has options behind it (`sh -ce '…'`, `bash -c -- '…'`, `bash -c -o pipefail '…'`,
+  `powershell -com "…"`), every word of an `eval`, the text of a `trap`, a command inside `$(…)` or backticks
+  (inside a string in double quotes too, and closed where a shell closes it: a bracket in quotes, a pattern of
+  `case` and a command behind a here-document do not end it), the word of `${name:-word}` and `${@:-word}`, a
+  text that the line keeps in a variable and may run from there (`c='rm x'; $c`, `d=$c; $d`, `c=rm; $c file`,
+  zsh's `${=c}` and `${(e)c}`, `$c = 'del x'; iex $c`), the text that PowerShell makes a script block of
+  (`[scriptblock]::Create('…')`, the engine's `InvokeScript('…')`) or runs inside a block (`&{iex '…'}`), a
+  command that program text hands to a shell (`os.system('…')`, `subprocess.run([…])`), and a shell inside a
+  shell three levels deep; a fourth level is asked about, because the guard does not read it. A message in a
+  here-document that no program runs (`git commit -m "$(cat <<'EOF' … EOF)"`) stays unread.
   Limits. Not seen as a write of a frozen file: a git command that replaces the working tree as a whole
   (`git stash`, a change of branch, `pull`, `merge`, `rebase`; `git reset --hard` is asked about as destructive,
   and a change of branch while a run executes from the working tree); an archive unpacked over the file
   (`tar x`, `unzip`); `git apply`; a download that names only its address (`curl -O`, `wget URL`); a formatter
-  the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`) or one started as `python -m black`;
+  the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`);
   the whole project removed under another spelling of its folder (`rm -rf ../proj`); a frozen pattern that
-  starts with a wildcard, which counts for the project folder but not for a named folder below it; and any
-  program or script that puts the path together while it runs. For these, every run's record holds one hash
-  over the frozen files (`frozen_hash`; `expctl hash` prints the current one, `expctl status` warns when ranked
+  starts with a wildcard, which counts for the project folder but not for a named folder below it; `tee`
+  behind a search (`… | xargs tee`) and a PowerShell block with a block inside it; and any program or script
+  that puts the path together while it runs, a script that a loop over a search starts among them. The same
+  holds for reading sealed data: a wildcard that program text applies below a folder which it names apart from
+  it passes (`Path('data').glob('*/*.csv')`, `os.chdir('data')` before `glob.glob('*/*.csv')`,
+  `[IO.Directory]::GetFiles("$PWD\data", '*', 1)`). For the frozen files, every run's record holds one hash
+  over them (`frozen_hash`; `expctl hash` prints the current one, `expctl status` warns when ranked
   runs were made under other frozen files, and the final evaluation's receipt carries it), the loop compares
   the checksums of its protected files at every iteration, and `git status` shows the change where git tracks
-  the file. The edit tools are asked about. The other way round, harmless lines are asked about when they hold
+  the file. In that hash a text file counts with LF line ends, so that a checkout with CRLF on another machine
+  gives the same value, and a file of more than 64 MB counts by its size alone. The edit tools are asked
+  about. The other way round, harmless lines are asked about when they hold
   such a write anywhere: `python eval/metrics.py > out.txt`, `python eval/metrics.py 2> err.txt`,
-  `cp -r eval sub/copy`, `ruff check --fix .`, `ls *.py | xargs black`, and a line whose variable holds a
-  harmful-looking text beside a runner (`note='rm -rf runs/old'; python -c "print(1)"`).
-  `tests/test_guard_live.py` is the check behind this list: it builds command lines from parts (a verb, a way
-  to write the path, a wrapper), asks the guard, and gives every line that passes to a real shell in a
-  temporary project (bash, zsh where it is installed, PowerShell on Windows). A line that passed must not have
-  printed or copied the sealed file or changed the frozen file.
+  `cp -r eval sub/copy`, `ruff check --fix .`, `ls *.py | xargs black`, a line that names such a file beside a
+  word in capitals that is a program's name (`RM`, `CP`, `DD`, `TEE`) or beside a restore of another file, and
+  a line whose variable holds a harmful-looking text beside a runner
+  (`note='rm -rf runs/old'; python -c "print(1)"`).
+  `tests/test_guard_live.py` checks a sample of this list at every test run: it builds command lines from parts
+  (a verb, a way to write the path, a wrapper), asks the guard, and gives every line that passes to a real
+  shell in a temporary project (bash, zsh where it is installed, PowerShell on Windows). A line that passed
+  must not have printed or copied the sealed file or changed a frozen file. It finds what its parts can build
+  and nothing else: an independent review on 15 November 2026 found forms that the parts did not hold, which
+  the guard now reads and the parts now build.
 - Recursive commands over the project root (`grep -r`, `rgrep`, `find`, `ls -R`, `tree`, `du -a`, `tar`, `zip`, `cp -r`,
-  `cp -a`, `rsync`, a path with `**` in it such as `cat **/*.csv`; in PowerShell and cmd.exe `Get-ChildItem -Recurse` with
+  `cp -a`, `rsync`, `diff -r`, `git diff --no-index` with two folders, each in any case of its name, a path with `**`
+  in it such as `cat **/*.csv`; in PowerShell and cmd.exe `Get-ChildItem -Recurse` with
   its short forms, `dir /s`, `findstr /s`, `tree /f`, cmd's `for /r`, `Copy-Item -Recurse`, `Compress-Archive`, `robocopy`, `xcopy`,
   a .NET call with `AllDirectories`) are asked about when sealed files lie below it on disk, as in every folder
   below the root. So is a move or a rename of a folder that holds sealed files (`mv`, `git mv`, `Move-Item`,
@@ -432,14 +460,19 @@ neither kit was shown to beat running the agent with no kit.
   `expctl selftest` after changes.
   The two subagents' own hook carries the same setting. Claude Code runs a project subagent's own hooks only in a
   folder whose trust dialog was accepted, and never in a `-p` session; the project-wide guard applies the
-  read-only rule to their calls either way. Checked live with the two agents passed through `--agents` (Claude
+  read-only rule to their calls either way. That rule refuses the write verbs, redirects, formatters and code
+  that writes; it does not read output options, so `sort -o notes.txt notes.txt` passes it (a frozen or harness
+  file there is asked about by the guard's own rule). Checked live with the two agents passed through `--agents` (Claude
   Code 2.1.322, native Windows, 12 November 2026): a hook that cannot run blocks the call with the setting and
   lets it through without. Not checked live: the agent files themselves in a trusted folder.
 - The receipt of the final evaluation is a record, not a seal: it counts the uses that went through
   `expctl final-eval` in this checkout and in every worktree that git has registered, and a copy of its rows in
   git's common folder (`.git/nn-training-final-eval.jsonl`) keeps the uses of a worktree that was removed.
   Deleting `.claude/state/final-eval/` and that copy resets the count (the guard asks before a command or an edit
-  touches either; the journal entry of each use remains).
+  touches either; the journal entry of each use remains). Of two that are started at the same moment, one runs:
+  the other finds the first one's row ahead of its own in the record, gives way before it starts the command,
+  and stays in the receipt as an attempt, which counts as a use afterwards (since 15 November 2026; both ran
+  before).
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.
 - What counts as a run's source, since 14 November 2026: agent configuration (`AGENTS.md`, `.mcp.json`, `.codex/`,

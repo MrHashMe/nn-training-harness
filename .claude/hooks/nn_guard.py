@@ -93,22 +93,28 @@ PATCH_FILE = re.compile(r"^\*\*\* (Add|Update|Delete) File: (.+?)\s*$|^\*\*\* Mo
 QUOTED = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"")
 # A redirection writes its target, also behind a descriptor or an & (2> f, &> f) unless that target is the null
 # device, and as >& f, which is no copy of a descriptor (>&2, >&-). sed's in-place option counts wherever it stands
-# in the command, git's checkout and restore put a file back as a commit has it, and find deletes with -delete
-_INPLACE = r"\bsed\b[^;&|]*?\s(?:-[a-zA-Z]*i|--in-place)|\bperl\s+-[a-zA-Z]*i"
+# in the command (perl's and ruby's too: perl -p -i -e), git's checkout and restore put a file back as a commit has
+# it, and find deletes with -delete. A program's name counts in any case: Windows and a Mac find RM and Sed as well.
+_INPLACE = (r"\b(?i:sed)\b[^;&|]*?\s(?:-[a-zA-Z]*[iI]|--in-place)|"
+            r"\b(?i:perl|ruby)\b[^;&|]*?\s-[a-zA-Z0-9]*i\b")
+# git restore --staged alone changes the index, not the files
+_GIT_BACK = (r"\bgit\s+(?:checkout\b|restore\b(?:(?![^;&|]*\s--staged\b)|"
+             r"(?=[^;&|]*\s(?:--worktree\b|-[a-zA-Z]*W))))")
 WRITE_VERBS = re.compile(
     r"(?<![0-9&])>{1,2}(?!&)|(?<=[0-9&])>(?![>&])(?!\s*(?:/dev/null\b|(?i:\$null|nul)\b))|>&(?!\s*[0-9-])|"
-    r"\b(?:tee|mv|cp|rm|rmdir|unlink|chmod|chown|truncate|ln|dd|rsync)\b|" + _INPLACE +
-    r"|\bgit\s+(?:checkout|restore)\b|\bfind\b[^;&|]*?\s-delete\b|open\([^)]*['\"][wax+]|write_text|write_bytes|"
+    r"\b(?i:tee|mv|cp|rm|rmdir|unlink|chmod|chown|truncate|ln|dd|rsync)\b|" + _INPLACE +
+    r"|" + _GIT_BACK + r"|\b(?i:find)\b[^;&|]*?\s-delete\b|open\([^)]*['\"][wax+]|write_text|write_bytes|"
     r"shutil\.(?:rmtree|move|copy)|os\.(?:remove|unlink|rename|replace)")
 KILL = re.compile(
     r"(?:^|[\s;&|(`])(?:sudo\s+)?(?:kill|pkill|killall|taskkill)\b|Stop-Process|"
     r"tmux\s+kill-(?:session|server|window|pane)|tmux\s+send-keys\b[^;&|]{0,200}?\bC-[cd]\b|"
     r"screen\s+[^;&|]{0,200}?-X\s+quit|nvidia-smi\s+[^;&|]{0,200}?(?:--gpu-reset|\s-r\b)|\bfuser\b[^;&|]{0,200}?\s-k\b|"
     r"systemctl\s+(?:stop|kill|restart)|docker\s+(?:stop|kill|rm)\b|podman\s+(?:stop|kill|rm)\b|\bscancel\b|"
-    r"\bqdel\b|\bbkill\b|\bray\s+stop\b|expctl(?:\.py)?\s+stop\b")
+    r"\bqdel\b|\bbkill\b|\bray\s+stop\b|expctl(?:\.py)?\s+stop\b", re.I)
 # git's own options, which stand between `git` and its subcommand: those with a value (which may hold a quoted
 # blank), then any other one (-P, --no-pager, --bare, --no-advice ...), so that none hides the subcommand
 _GV = r"(?:\"[^\"]*\"|'[^']*'|[^\s'\"])+"
+GIT_WORD = re.compile(r"\bgit(?:\.exe)?(?=\s)", re.I)  # GIT and git.exe are git: plain() writes them so
 GIT_GLOBAL = re.compile(
     r"\bgit((?:\s+(?:-[Cc]\s+" + _GV + r"|--(?:git-dir|work-tree|namespace|super-prefix|attr-source|config-env|"
     r"exec-path)(?:=|\s+)" + _GV + r"|--?[A-Za-z][\w-]*))+)(?=\s)")
@@ -129,10 +135,14 @@ GIT_CONFIG_READ = {"--get", "--get-all", "--get-regexp", "--get-urlmatch", "--ge
 GIT_CONFIG_FLAG = re.compile(  # git config's options that take no value and leave the file it writes alone
     r"--(?:global|local|system|worktree|add|replace-all|append|all|bool|int|bool-or-int|path|expiry-date|no-type|null|"
     r"fixed-value|show-origin|show-scope|name-only|(?:no-)?includes|unset|unset-all|type=[\w-]+)$|-z$")
+# A checkout discards work where it is forced, where -- ends its options, and where a path of it stands for the
+# tree or a part of it (., ./, :/, '*.py', which git matches in every folder), wherever its options stand
 GIT_DESTRUCTIVE = re.compile(
     r"\bgit\s+(?:reset\s+--hard|clean\s+-[a-zA-Z]*f|"
-    r"checkout\s+(?:-f\b|--\s|(?:(?!-)\S+\s+)?\.(?:\s|$|[;&|)}\"'`])|(?!-)\S+\s+--\s)|"
-    r"restore\b(?![^;&|]*--staged)|stash\s+(?:drop|clear)\b|switch\s+(?:-f\b|--discard-changes)|"
+    r"checkout\b(?=[^;&|]*?\s(?:-[a-zA-Z]*f[a-zA-Z]*(?=[\s;&|)]|$)|--force\b|--(?=[\s;&|)]|$)|"
+    r"['\"]?(?:\.\.?/?|:[/(!^][^\s'\"]*|[^\s;&|'\"]*[*?\[][^\s;&|'\"]*)['\"]?(?=\s|$|[;&|)}\"'`])))|"
+    r"restore\b(?:(?![^;&|]*\s--staged\b)|(?=[^;&|]*\s(?:--worktree\b|-[a-zA-Z]*W)))|"
+    r"stash\s+(?:drop|clear)\b|switch\s+(?:-f\b|--discard-changes)|"
     r"push\b[^;&|]*(?:--force\b|--force-with-lease\b|\s-f\b)|branch\s+-D\b)")
 GIT_PUSH = re.compile(r"\bgit\s+push\b")
 GIT_TREE_CHANGE = re.compile(
@@ -147,8 +157,8 @@ DEP_CHANGE = re.compile(
     r"\b(?:conda|mamba|micromamba)\s+(?:install|update|remove|upgrade|env\s+(?:update|create|remove))\b|"
     r"\bpixi\s+(?:add|remove|update|install)\b|\bpoetry\s+(?:add|remove|update|install|lock)\b")
 UV_RUN_SYNCING = re.compile(r"\buv\s+run\b(?![^;&|]*\s--(?:frozen|no-sync|locked|offline)\b)")
-RM_ANY = re.compile(r"(?:^|[\s;&|(])(?:sudo\s+)?rm\s")
-FIND_DELETE = re.compile(r"\bfind\b[^;&|]*\s-delete\b|\bshutil\.rmtree\b|\bos\.(?:remove|unlink)\b")
+RM_ANY = re.compile(r"(?:^|[\s;&|(])(?:sudo\s+)?(?i:rm)\s")
+FIND_DELETE = re.compile(r"\b(?i:find)\b[^;&|]*\s-delete\b|\bshutil\.rmtree\b|\bos\.(?:remove|unlink)\b")
 CKPT_HINT = re.compile(r"checkpoint|ckpt|\.pth?\b|\.safetensors\b", re.I)
 def recursive_re(posix):
     """The commands that walk a whole folder tree. posix: the line surely runs in a POSIX shell, where `ls -r` and
@@ -163,12 +173,14 @@ def recursive_re(posix):
         r"(?<![\w/.-])(?:dir|findstr)\b[^;|&]{0,200}?\s/s(?=[\s;|&)/]|$)|\btree\b[^;|&]{0,200}?\s/[af](?=[\s;|&)/]|$)|"
         r"(?<![\w/.-])for\s+/r(?=\s)|"  # cmd's loop over every file of a tree: for /r data %f in (*) do type %f
         r"\b(?:Compress-Archive|robocopy|xcopy|AllDirectories)\b))|"  # AllDirectories: .NET's word for the whole tree
-        r"\b(?:find|tree|tar|zip|rsync|rg|ag|rgrep)\b|"
-        r"\b(?:grep|egrep|fgrep|cp|scp)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*[rR][a-zA-Z]*|--recursive)(?=[\s;|&)]|$)|"
-        r"\bcp\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--archive)(?=[\s;|&)]|$)|"  # cp -a copies the tree as well
+        # a program's name in any case (GREP -r), which Windows and a Mac find as well
+        r"\b(?i:find|tree|tar|zip|rsync|rg|ag|rgrep)\b|"
+        r"\b(?i:grep|egrep|fgrep|cp|scp|diff)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*[rR][a-zA-Z]*|--recursive)(?=[\s;|&)]|$)|"
+        r"\bgit\s+diff\b[^;|&]{0,200}?\s--no-index\b|"  # compares two folders, whatever git ignores
+        r"\b(?i:cp)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--archive)(?=[\s;|&)]|$)|"  # cp -a copies the tree as well
         # ls -ltr sorts in reverse and chmod -r takes a permission away: there only -R recurses
-        r"\b(?:ls|dir|chmod|chown)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*R[a-zA-Z]*|--recursive)(?=[\s;|&)]|$)|"
-        r"\bdu\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--all)(?=[\s;|&)]|$)")  # du -a lists every file of the tree
+        r"\b(?i:ls|dir|chmod|chown)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*R[a-zA-Z]*|--recursive)(?=[\s;|&)]|$)|"
+        r"\b(?i:du)\b[^;|&]{0,200}?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--all)(?=[\s;|&)]|$)")  # du -a lists every file of the tree
 
 
 RECURSIVE, RECURSIVE_POSIX = recursive_re(False), recursive_re(True)
@@ -211,6 +223,7 @@ _AT = r"(?:^|[;&|({`]|\s/[ck]\s)\s*"
 PS_WRITE = re.compile(
     r"\b(?:(?:Set|Add|Clear)-Content|Out-File|Tee-Object|(?:Copy|Move|Remove|New|Rename|Set|Clear)-Item(?:Property)?|"
     r"Export-(?:Csv|Clixml)|Expand-Archive|xcopy|robocopy)\b|::(?:Write|Append|Delete|Move|Copy|Create|Replace)\w*\(|"
+    r"\.(?:Delete|MoveTo|CopyTo)\(|"  # a file object's own calls: (Get-Item f).Delete()
     + _AT + r"(?:sc|ac|clc|ri|del|erase|rd|copy|move|ren|rename|cpi|mi|ni|rni)\b", re.I | re.M)
 PS_DELETE = re.compile(r"\b(?:Remove-Item|Clear-Content)\b|::Delete\(|" + _AT + r"(?:ri|del|erase|rd|rmdir|clc)\b",
                        re.I | re.M)
@@ -220,13 +233,21 @@ PS_KILL = re.compile(r"\b(?:Stop-Process|spps|taskkill)\b|\bwmic\b[^;&|]{0,200}?
 SHELLS = re.compile(r"\b(?:(?:ba|z|da|k)?sh|cmd|powershell|pwsh|python[0-9.]*|py|node|perl|ruby|eval|trap|iex|"
                     r"Invoke-Expression|scriptblock|wsl|ssh)\b", re.I)
 POSIX_SHELL = re.compile(r"\b(?:(?:ba|z|da|k)?sh|eval|trap|wsl|ssh)\b", re.I)
-# the word behind which the text stands: a flag, or the command itself (eval "...", trap '...' EXIT)
-CODE_FLAG = re.compile(r"^(?:-[a-z]*c|-e|-command|--command|--eval|/c|/k|eval|trap|iex|invoke-expression)$", re.I)
+# the word behind which the text stands: a flag, also in a group of letters (sh -ce, bash -xc, perl -ne) and cut
+# short as PowerShell allows (-com), or the command itself (eval "...", trap '...' EXIT)
+CODE_FLAG = re.compile(r"^(?:-[a-z]{0,4}c[a-z]{0,6}|-[a-z]{0,4}e|-commandwithargs|--command|--eval|/c|/k|eval|trap|iex|"
+                       r"invoke-expression)$", re.I)
 # a command whose output the line takes in: $(cat f), `cat f`. Its text is read as a command of its own, because
 # quoting starts anew inside it: in "$(cat dat""a/x)" the two quotes are an empty string, not the end of one
-SPLICED = re.compile(r"\$\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*)\)|`([^`]*)`")
-# ${name:-word}, ${name-word}, ${name:=word}, ${name:+word}: the shell may read the word in the name's place
-PARAM_WORD = re.compile(r"\$\{\w+:?[-+=]([^{}]*)\}")
+SPLICED = re.compile(r"\$\(|`([^`]*)`")
+# A call in program text that hands its arguments to a shell or starts them as a program, with the arguments up to
+# the bracket that closes the call, past string literals and one pair of brackets inside
+_PY_LIT = r"(?:'(?:[^'\\]|\\.)*'|\"(?:[^\"\\]|\\.)*\")"
+PY_CALL = re.compile(r"\b(?:system|popen|Popen|run|call|check_call|check_output|getoutput|exec[lv]p?e?|spawn\w*)\s*\("
+                     r"((?:" + _PY_LIT + r"|[^()'\"]|\((?:" + _PY_LIT + r"|[^()'\"])*\))*)", re.S)
+# ${name:-word}, ${name-word}, ${name:=word}, ${name:+word}: the shell may read the word in the name's place. The
+# name may be a sign (${@:-word}, ${1-word}), and zsh takes none at all (${:-word})
+PARAM_WORD = re.compile(r"\$\{[\w@*#?!$\[\]]*?:?[-+=]([^{}]*)\}")
 # the same flag with its text attached (bash -c"echo x > f", cmd /c"type f"): what follows it is no plain option value
 ATTACHED = re.compile(r"^(?:-[a-z]*?c|/[ck])(?=.*[^\w.=:,/@%+-])(.+)$", re.I | re.S)
 ENCODED = re.compile(r"^[-/]e[a-z]*$", re.I)  # PowerShell's -EncodedCommand, which may be cut short (-enc, -e)
@@ -279,8 +300,10 @@ ENV_C = re.compile(r"(\benv(?:\s+(?:-u\s+\S+|-[^C\s]\S*|[A-Za-z_]\w*=\S*))*)\s+(
 # find's -exec ... \; ends at an escaped or quoted semicolon, which is no separator of commands
 FIND_END = re.compile(r"(\s-(?:exec|execdir|ok|okdir)\s(?:[^;&|\n'\"]|'[^']*'|\"[^\"]*\")*?\s)(?:/;|';'|\";\")")
 # what may stand between the start of a command (or of a $(...) in it) and the tool that it runs
-_WRAP = "sudo|time|timeout|nice|command|exec|env|nohup|if|then|else|elif|while|until|do|!"
-_LEAD = r"\s*(?:(?:(?:%s)(?:\s+-\S+|\s+\d\S*)*|[A-Za-z_]\w*=\s?\S*)\s+)*"
+_WRAP = "sudo|time|timeout|nice|command|exec|env|nohup|setsid|caffeinate|if|then|else|elif|while|until|do|!"
+# a wrapper's options, of which some take a value (conda run -n ml, uv run --with black, sudo -u me, xargs -I {})
+_LEAD = (r"\s*(?:(?:(?:%s)(?:\s+(?:-[npuI]|--(?:name|prefix|with|from|python|project|directory))\s+[^\s;&|]+|"
+         r"\s+-\S+|\s+\d\S*)*|[A-Za-z_]\w*=\s?\S*)\s+)*")
 COMMAND_START = re.compile(r"(?:^|.*[({`])" + _LEAD % _WRAP + r"(?:\S*/)?$", re.S)
 # a command word in quotes ("grep" -r x ., $'grep', behind xargs too) is the same command. Not one with a blank in
 # it: unquoted it would be two
@@ -298,7 +321,8 @@ _NOTE = _W1 + "*" + NOTES + r"(?![\w.-])"
 # where a runner takes its script, a wildcard too that may name such a file (peek.*, pee*), but not run_*.py
 _SCRIPT = r"(?:" + _NOTE + r"|(?!" + _W1 + r"*\.\w+(?=[\s;&|<>()]|$))(?=" + _W1 + r"*[*?\[])" + _W1 + "+)"
 _START = r"(?:^|[;&|({`]|\s/[ck]\s)"
-_LEADS = _LEAD % (_WRAP + r"|xargs|builtin|winpty|stdbuf|wsl|(?:uv|conda|poetry|pipenv|pixi)\s+run")
+_LEADS = _LEAD % (_WRAP + r"|xargs|builtin|winpty|stdbuf|wsl|uvx|(?:uv|conda|mamba|micromamba|poetry|pipenv|pixi|"
+                  r"pipx|pdm|hatch|rye)\s+run|uv\s+tool\s+run|(?:python[0-9.]*|py)\s+-m")
 _GO = _START + _LEADS + r"(?:" + _W1 + "*/)?"
 _PROG = (r"(?:(?:ba|z|da|k|c|tc|fi)?sh|cmd|python[0-9.]*|pypy[0-9.]*|py|node|deno|bun|perl|ruby|php|lua|Rscript|julia|"
          r"pwsh|powershell)(?:\.exe)?")
@@ -322,32 +346,42 @@ SPLICES_NOTES = re.compile(
     _GO + r"(?:(?:eval|iex|Invoke-Expression)(?![\w.-])[^;&>\n]*?|" + _RUNNER + _DASH
     + r"[ \t]*(?:[<=]\(|\"[^\"\n]*?(?:\$\(|`)|'?(?:\$\(|`)|\()[^)`\n]*?)(?<!" + _W1 + ")" + _NOTE, re.I | re.M)
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
-# formatters, which rewrite a file unless they are told to check only
-WRITE_CMDS = re.compile(_GO + r"(?:touch|patch|install)(?=\s|$)", re.M)
-FORMATS = re.compile(_GO + r"(?:(?:black|isort|ruff\s+format)(?=\s|$)(?![^;&|\n]*\s--(?:check|diff)\b)|"
-                     r"ruff(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)(?![^;&|\n]*\s--diff\b))", re.M)
+# formatters, which rewrite a file unless they are told to check only, to print, or to say what they are
+WRITE_CMDS = re.compile(_GO + r"(?i:touch|patch|install)(?=\s|$)", re.M)
+_NO_WRITE = r"(?![^;&|\n]*\s(?:--(?:check(?:-only)?|diff|version|help)|(?-i:-[cdhV]))(?=[\s;&|)]|$))"
+FORMATS = re.compile(_GO + r"(?:(?:(?:black|isort)(?:@[\w.]+)?|ruff(?:@[\w.]+)?\s+format)(?=\s|$)" + _NO_WRITE +
+                     r"|ruff(?:@[\w.]+)?(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)"
+                     r"(?![^;&|\n]*\s--(?:diff|help)\b))", re.I | re.M)
 PY_FILES = ("*.py", "*.pyi", "*.ipynb")  # what they rewrite below a folder
 # Commands that change a folder as a whole when they are given one: a move, a removal, a copy onto it, a link,
 # git's checkout of it. PowerShell's and cmd's follow, the short names where a command starts
 TREE_VERBS = re.compile(
-    r"\b(?:mv|cp|rm|rmdir|rsync|ln)\b|\bgit\s+(?:checkout|restore)\b|shutil\.(?:rmtree|move|copy)|"
+    r"\b(?i:mv|cp|rm|rmdir|rsync|ln)\b|" + _GIT_BACK + r"|shutil\.(?:rmtree|move|copy)|"
     r"os\.(?:rename|replace|removedirs|rmdir)|\.(?:rename|replace)\(|(?i:\b(?:Remove|Move|Rename|Copy)-Item\b|"
     r"\b(?:xcopy|robocopy)\b)|" + _AT + r"(?i:ri|del|erase|rd|copy|move|ren|rename|cpi|mi|rni)\b", re.M)
 # Commands that change the files they find themselves: find with -delete, and an edit whose list of files a search
-# of the same line makes (find ... -exec, a pipe into xargs, a command's output put into the line)
-FIND_DELETES = re.compile(r"\bfind\b[^;&|]*?\s-delete\b")
-FED = re.compile(r"\bfind\b[^;&|]*?\s-(?:exec|execdir|ok|okdir)\s|\|\s*xargs\b|\$\(|`")
-# PowerShell's way: a pipe hands the files that a search found to the command that changes them
-PS_FED = re.compile(r"\|\s*(?:(?:%|foreach(?:-object)?)\s*\{\s*)?(?:Remove-Item|Clear-Content|Set-Content|Add-Content|Out-File|"
-                    r"Move-Item|Rename-Item|ri|rm|del|erase|clc|sc|ac|mi|mv|rni|ren)(?=[\s;|})]|$)", re.I)
-MASS_EDIT = re.compile(r"\b(?:rm|mv|truncate|unlink|black|isort)\b|\bruff\s+(?:format\b|(?:check\s[^;&|\n]*)?--fix\b)|"
-                       + _INPLACE)
+# of the same line makes (find ... -exec, a pipe into xargs or into a loop that reads names, a command's output put
+# into the line)
+FIND_DELETES = re.compile(r"\b(?i:find)\b[^;&|]*?\s-delete\b")
+FED = re.compile(r"\b(?i:find)\b[^;&|]*?\s-(?:exec|execdir|ok|okdir)\s|\|\s*(?:xargs|while)\b|\$\(|<\(|`")
+# PowerShell's way: a pipe hands the files that a search found to the command that changes them, which may stand
+# anywhere in the block that takes them (| % { $t = gc $_; Set-Content $_ $t }), and foreach (...) { } does the same
+_PS_EDIT = (r"(?:Remove-Item|Clear-Content|Set-Content|Add-Content|Out-File|Move-Item|Rename-Item|Copy-Item|ri|rm|del|"
+            r"erase|clc|sc|ac|mi|mv|rni|ren|cp|cpi|copy)(?=[\s;|})]|$)")
+PS_FED = re.compile(r"(?:\|\s*(?:(?:%|foreach(?:-object)?)\s*\{(?:[^}]*?[\s;{(])?)?|"
+                    r"\bforeach\s*\([^)]*\)\s*\{(?:[^}]*?[\s;{(])?)(?:" + _PS_EDIT + r"|>\s*\$(?!null\b))", re.I)
+MASS_EDIT = re.compile(r"\b(?i:rm|mv|cp|dd|truncate|unlink|black|isort)\b|"
+                       r"\b(?i:ruff)\s+(?:format\b|(?:check\s[^;&|\n]*)?--fix\b)|" + _INPLACE)
+# A loop over such a list writes by a redirect into its variable too: | while read f; do echo x > "$f"; done
+LOOP_OUT = re.compile(r"(?:\|\s*while|\bfor\s+\w+\s+in)\b[^\n]*?>\s*[\"']?\$\{?\w")
 # The word that an output option names is written, whatever the program is called: sort -o FILE, curl -o FILE,
-# wget -O FILE, --output FILE, --out=FILE, -oFILE, PowerShell's -OutFile FILE
-OUT_FLAG = re.compile(r"^(?:-o|--out[\w-]*|-OutFile)$", re.I)
+# wget -O FILE, --output FILE, --out=FILE, -oFILE, PowerShell's -OutFile FILE, also where the letter ends a group
+# of them (sort -uo FILE, curl -sSLo FILE, wget -qO FILE). Behind python and ls the letter is another option
+OUT_FLAG = re.compile(r"^(?:-[a-z]{0,5}o|--out[\w-]*|-OutFile)$", re.I)
 OUT_JOINED = re.compile(r"^(?:--out[\w-]*=|-OutFile:|-o)(.+)$", re.I)
+NO_OUT = re.compile(r"(?:^|/)(?:python[\d.]*|pypy[\d.]*|py|ls)(?:\.exe)?$", re.I)
 # zsh runs the text of the glob qualifier e as a command: ls *(e:'rm -rf runs':), ls *(e:rm\ -rf\ runs:)
-ZSH_E = re.compile(r"\((?:#q)?[^()\s'\"]*?e([^\w\s()'\"\\])(?:(['\"])(.*?)\2|((?:[^\s'\"()\\]|\\.)*\\.(?:[^\s'\"()\\]|\\.)*))")
+ZSH_E = re.compile(r"\((?:#q)?[^()\s'\"]*?e([^\s()'\"\\])(?:(['\"])(.*?)\2|((?:[^\s'\"()\\]|\\.)*\\.(?:[^\s'\"()\\]|\\.)*))")
 # the file as the command itself (./notes.md with a first line that names its interpreter)
 NOTES_CMD = re.compile(_START + _LEADS + _W1 + "*/" + _NOTE + r"(?=\s|$|[;&|)])", re.I | re.M)
 # in program text, a call that executes text or a file, on a line that also holds a literal with such a file's name
@@ -980,7 +1014,7 @@ def wild(text: str, lists) -> str:
         if "|" in inside or op == "!":
             near = near or re.match(r"[./*?\[-]", after) or re.match(r"[\w./\0*?\]-]", before)
         elif before == "/" or (after == "/" and not op):
-            near = near or plain
+            near = near or plain or re.search(r"[*?\[]", inside)  # a folder as a pattern: dat?/(tes?)/lab*
         if not near:
             return m.group()
         if op in ("", "@") and plain:
@@ -1090,54 +1124,146 @@ def decoded(t: str):
     return s if s.strip() and all(ch.isprintable() or ch in "\r\n\t" for ch in s) else None
 
 
+def out_words(lx):
+    """The words that an output option names among the words of a line."""
+    return [after for before, t, after in zip([""] + lx, lx, lx[1:]) if OUT_FLAG.match(t) and not NO_OUT.search(before)] \
+        + [m.group(1) for m in map(OUT_JOINED.match, lx) if m]
+
+
+def closes(s: str, i: int) -> int:
+    """Where the $( ends whose text starts at s[i]: the index of its closing bracket as a POSIX shell finds it, past
+    quoted text, an escaped character and the brackets in between. len(s) where nothing closes it."""
+    depth = 1
+    while i < len(s):
+        ch = s[i]
+        if ch == "\\":
+            i += 1
+        elif ch == "'":
+            i = s.find("'", i + 1)
+            if i < 0:
+                break
+        elif ch == '"':
+            i += 1
+            while i < len(s) and s[i] != '"':  # a $( in it has quotes of its own
+                i = closes(s, i + 2) if s.startswith("$(", i) else i + (s[i] == "\\")
+                i += 1
+        else:
+            depth += (ch == "(") - (ch == ")")
+            if not depth:
+                return i
+        i += 1
+    return len(s)
+
+
 def spliced(text: str):
     """The commands whose output a text takes in: $(...) and `...`. A here-document that no runner reads is data
-    (git commit -m "$(cat <<'EOF' ... EOF)"): of such a command the part in front of the document counts, and,
-    where the delimiter has no quotes, the commands that the document takes in itself."""
+    (git commit -m "$(cat <<'EOF' ... EOF)"): of such a command there count the part in front of the document with
+    the rest of that line (a pipe, a redirection), where the delimiter has no quotes the commands that the document
+    takes in itself, and what follows the document's last line, which is a command again."""
+    def commands(s):
+        if not re.search(r"<<(?!<)", s) or HERE_RUN.search(s) or PIPED.search(QUOTED.sub(" '' ", s)):
+            return [s] if s.strip() else []
+        head, body = re.split(r"<<(?!<)", s, 1)
+        m = re.match(r"-?[ \t]*([/\\'\"]*)([\w.-]+)['\"]?([^\n]*)\n?(.*)$", body, re.S)
+        if not m:  # no delimiter that this reads: all of it may be commands
+            return [s]
+        quoted, word, line, below = m.groups()
+        doc = re.split(r"^[ \t]*" + re.escape(word) + r"[ \t]*$", below, 1, flags=re.M)
+        return [x for x in [head + " " + line] if x.strip()] + ([] if quoted else list(spliced(doc[0]))) \
+            + commands("".join(doc[1:]))
+
+    # What single quotes make plain text, as a shell pairs them: not those inside "..." or inside a $(...), whose
+    # words the nested command needs as they are (echo "$(python -c "open('f', 'w')")")
+    lit, i, dq = [], 0, False
+    while i < len(text):
+        if text[i] == "\\":
+            i += 1
+        elif text.startswith("$(", i):
+            i = closes(text, i + 2)
+        elif text[i] == '"':
+            dq = not dq
+        elif text[i] == "'" and not dq:
+            j = text.find("'", i + 1)
+            if j < 0:  # an apostrophe: nothing is taken for plain text behind it
+                break
+            lit.append((i, j))
+            i = j
+        i += 1
+    pos = 0
     for m in SPLICED.finditer(text):
-        s = m.group(1) or m.group(2) or ""
-        if re.search(r"<<(?!<)", s) and not (HERE_RUN.search(s) or PIPED.search(QUOTED.sub(" '' ", s))):
-            head, body = re.split(r"<<(?!<)", s, 1)
-            yield head
-            if re.match(r"-?\s*\w", body):
-                yield from spliced(body)
-        elif s.strip():
-            yield s
+        # inside a text that is read as a whole (the check of that text finds it), or inside plain text
+        if m.start() < pos or any(a < m.start() < b for a, b in lit):
+            continue
+        s, pos = m.group(1), m.end()
+        if s is None:
+            pos = closes(text, m.end())
+            if re.search(r"\bcase\s", text[m.end():pos]):  # a pattern of case ends with a bracket of its own
+                pos = max(pos, text.rfind(")"))
+            s = text[m.end():pos]
+        yield from commands(s)
 
 
 def inner_code(c: str):
     """Text a command hands to a nested shell or an interpreter as one argument (bash -c '...', python -c "...",
-    cmd /c "...", powershell -Command "...", eval "...", trap '...' EXIT), also where it is attached to its flag
+    cmd /c "...", powershell -Command "...", eval "...", trap '...' EXIT), also where its flag stands in a group of
+    letters or options come first (sh -ec '...', bash -c -- '...'), where it is attached to its flag
     (bash -c"...") or encoded (powershell -EncodedCommand <base64>), where PowerShell makes a script block of it
-    ([scriptblock]::Create('...')), the text of a zsh glob qualifier e, and a
+    ([scriptblock]::Create('...')) or program text hands it to a shell (os.system('...')), the text of a zsh glob
+    qualifier e, and a
     command whose output the line takes in ($(...), `...`), unless single quotes make it plain text, and a text
     that the line keeps in a variable and may run from there (c='rm x'; $c  and  $c = 'del x'; iex $c). The caller
     checks it like a command of its own. Not read: a qualifier e whose text is one bare word or a variable, and
     (+name), which run what the line does not show, as a script does."""
     out = [m.group(3) if m.group(2) else re.sub(r"\\(.)", r"\1", m.group(4)).rstrip(m.group(1) + "]}>")
            for m in ZSH_E.finditer(c)]
-    out += spliced(QUOTED.sub(lambda q: q.group() if q.group()[0] == '"' else " '' ", c))
+    out += spliced(c)
     toks, run = lex(c), SHELLS.search(c)
-    # a text that the line keeps in a variable (c='rm x'; $c = 'del x') counts where the line may run it: it has a
-    # runner (eval "$c", iex $c, $c | sh), or the variable stands where a command starts
+    # a text that the line keeps in a variable (c='rm x'; $c = 'del x') counts where the line may run it: the
+    # variable stands where a command starts, also as zsh splits it (${=c}), or the text has more than one word and
+    # the line has a runner (eval "$c", iex $c, $c | sh). A variable set from another one has its text: d=$c
+    kept = {}
     for i, t in enumerate(toks):
         m = re.match(r"\$?(\w+)=(.+)", t, re.S)
         name, text = m.groups() if m else ("", "")
         if t == "=" and 0 < i < len(toks) - 1 and re.search(r"\$\w+$", toks[i - 1]):  # PowerShell's: $c = '...'
             name, text = toks[i - 1].rpartition("$")[2], toks[i + 1]
-        if re.search(r"\s", text) and (run or re.search(_GO + r"[\"']?\$\{?" + name + r"\b", c, re.M)):
+        if not name:
+            continue
+        text = kept[name] = re.sub(r"\$\{?(\w+)\}?", lambda v: kept.get(v.group(1), v.group()), text)
+        if text and (re.search(_GO + r"[\"']?\$\{?(?:\([^)]*\))?[=~^]*" + name + r"\b", c, re.M)
+                     or re.search(r"\$\{\([^)]*\)[=~^]*" + name + r"\b", c)  # zsh's flags, of which (e) runs the text
+                     or (run and re.search(r"\s", text))):
             out.append(text)
+    # PowerShell makes code of a text: [scriptblock]::Create('...'), with its namespace too, and so do the engine's
+    # own calls. Program text hands a command to a shell: os.system('...'), subprocess.run(['rm', 'x'])
+    out += [t for m in re.finditer(r"(?:scriptblock\]\s*::\s*create|\.(?:InvokeScript|NewScriptBlock|AddScript))\s*\(\s*(.+)",
+                                   c, re.I | re.S) for t in lex(m.group(1))[:1]]
+    for m in PY_CALL.finditer(c):  # the literals are Python's: a backslash escapes a quote and itself, \n ends a line
+        lits = [q.group()[1:-1] for q in re.finditer(_PY_LIT, m.group(1), re.S)]
+        read = " ".join(re.sub(r"\\(.)", lambda e: {"n": "\n", "t": "\t"}.get(e.group(1), e.group(1)), x, flags=re.S)
+                        for x in lits)
+        out += [x for x in dict.fromkeys([read, " ".join(lits)]) if x]  # and as they stand, which a raw string means
     if not run:
         return out
-    for t, after in zip(toks, toks[1:] + [""]):
+    for i, t in enumerate(toks):
+        after = "".join(toks[i + 1:i + 2])
         m = ATTACHED.match(t)
         out += [m.group(1)] if m else []
         flag = re.split(r"[{(]", t)[-1]  # PowerShell's block may hold the runner: &{iex '...'}, try{iex '...'}catch{}
-        text = after if flag == t else re.sub(r"[})][^\s'\"]*$", "", after)
-        out += [text] if text and CODE_FLAG.match(flag) else []
+        if CODE_FLAG.match(flag):
+            # The text is the flag's next word. A shell takes the first word that is no option (sh -c -- '...',
+            # trap -- '...' EXIT), before which an option's value may stand (bash -c -o pipefail '...'), and eval
+            # runs all its words as one line, unless eval is the folder that an option names (env -C eval ls)
+            args = list(itertools.takewhile(lambda x: not re.fullmatch(r"[;&|<>()]+", x), toks[i + 1:]))
+            texts = [after if flag == t else re.sub(r"[})][^\s'\"]*$", "", after)]
+            if flag.lower() == "eval" and not re.fullmatch(r"-C|--(?:chdir|directory|cwd)", "".join(toks[max(i - 1, 0):i])):
+                # a separator that the line escapes is one of eval's words (eval : \; 'rm x'), and lex shows no
+                # difference: there all that follows counts
+                texts = [" ".join(toks[i + 1:] if re.search(r"\\[;&|<>()]", c) else args)]
+            elif after[:1] in ("-", "+"):
+                texts += [x for x in args if x[:1] not in ("-", "+", "")][:3]
+            out += [x for x in texts if x]
         out += [decoded(after)] if ENCODED.match(t) and decoded(after) else []
-    # PowerShell makes code of a text: [scriptblock]::Create('...')
-    out += [t for m in re.finditer(r"\[scriptblock\]\s*::\s*create\s*\(\s*(.+)", c, re.I | re.S) for t in lex(m.group(1))[:1]]
     # a runner without a script takes its code from standard input (echo "..." | sh, bash <<< "..."): there every
     # argument of the line that is more than a plain word or path may be that code
     bare = QUOTED.sub(" '' ", c)
@@ -1713,7 +1839,7 @@ def plain(cmd: str) -> str:
     of a command are one, a command word in quotes is the same command, and .NET's AllDirectories, which mostly
     comes as a string, stands bare."""
     raw = FIND_END.sub(r"\1+", cmd.replace("\\", "/"))
-    return re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", QUOTED_COMMAND.sub(r"\1\3", raw))
+    return GIT_WORD.sub("git", re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", QUOTED_COMMAND.sub(r"\1\3", raw)))
 
 
 def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
@@ -1756,11 +1882,11 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
         cur = dirs[-1] if cd else cur
     dirs = list(dict.fromkeys(dirs))
     resolved, outs, lx = [], [], lex(c)  # lx: the line's words with its options, which toks leaves out
-    outw = [after for t, after in zip(lx, lx[1:]) if OUT_FLAG.match(t)] + \
-           [m.group(1) for m in map(OUT_JOINED.match, lx) if m]
+    outw = out_words(lx)
     for d in dirs:
         ctx.cwd = d
         outs += [(t, ctx.resolve_token(t)) for t in outw if len(t) < 4096]
+        outs += [(t, r) for t in outw if any(ch in t for ch in "*?[") for r in ctx.expand(t)]  # sort -o ev*/m.py
         for t in toks:
             resolved.append((t, ctx.resolve_token(t)))
             if any(ch in t for ch in "*?["):  # a wildcard: also what it names on disk now
@@ -1988,18 +2114,25 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                                      f"them."))
     # The text that the line hands to a shell counts with it: in f=eval/metrics.py sh -c 'rm "$f"' the verb stands
     # in the text and the path in front of it. cmd: a quoted word behind a bracket lost its quotes above, .open('w')
-    flat = c_noq + "".join(" ; " + QUOTED.sub(" '' ", plain(s)) for s in inner_code(c))
+    inner = inner_code(c)
+    flat = c_noq + "".join(" ; " + QUOTED.sub(" '' ", plain(s)) for s in inner)
+    # an output option whose word is a variable or a command's output (sort -o "$f", curl -o `echo f`) may write any
+    # path that the line names, as a verb does
     verb = bool(WRITE_VERBS.search(flat) or PS_WRITE.search(flat) or WRITE_CMDS.search(flat)
-                or FORMATS.search(flat) or (code and (PY_WRITES.search(c) or PY_WRITES.search(cmd))))
+                or FORMATS.search(flat) or (code and (PY_WRITES.search(c) or PY_WRITES.search(cmd)))
+                or any(re.search(r"[$`]", w) for s in [c] + inner for w in out_words(lex(s))))
     # A command that changes a folder as a whole (mv eval old, rm -r .claude, git checkout HEAD eval), and one that
     # picks the files it changes itself: find with -delete, an edit of the files that a search of the line lists
     # (find -exec, | xargs, $(...)), a formatter given a folder
     kept, whole = [*ctx.frozen(), *(cfg.get("harness_paths") or [])], []
     went = {d for _, cd, ds in moves if cd for d in ds}  # where a cd goes is no folder that the line changes
     if TREE_VERBS.search(flat):
+        own = len(re.findall(_GO + r"eval(?=\s)", c_noq, re.M))  # the shell's own eval is no folder of that name
         whole += [(rel, (), None) for t, rel in resolved
-                  if rel and rel != "." and rel[:1] != "/" and ":" not in rel and t not in went]
-    if FIND_DELETES.search(c_noq) or (FED.search(c_noq) and MASS_EDIT.search(flat)) or PS_FED.search(c_noq):
+                  if rel and rel != "." and rel[:1] != "/" and ":" not in rel and t not in went
+                  and not (t == "eval" and lx.count("eval") <= own)]
+    if FIND_DELETES.search(c_noq) or (FED.search(c_noq) and (MASS_EDIT.search(flat) or LOOP_OUT.search(c))) \
+            or PS_FED.search(c_noq):
         whole += [(ctx.rel(b), globs, typ) for b, globs, typ in walked]
     for m in FORMATS.finditer(c_noq):  # its own arguments, or the folder it runs in
         args = [t for t in itertools.takewhile(lambda t: t.strip(";&|()<>"), lex(c_noq[m.end():])) if t[:1] != "-"]
@@ -2167,7 +2300,7 @@ def check_readonly(tool, ti):
         return []
     why = None
     for cmd in [ti["command"]] + readings(ti["command"])[0]:  # r\m is rm to a POSIX shell
-        c = GIT_GLOBAL.sub("git", cmd)
+        c = GIT_GLOBAL.sub("git", GIT_WORD.sub("git", cmd))
         texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c)]
         if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) or WRITE_CMDS.search(t) or FORMATS.search(t)
                for t in texts) or PY_WRITES.search(c):

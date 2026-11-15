@@ -181,6 +181,15 @@ def main():
         ("git checkout rev -- path", "Bash", {"command": "git checkout HEAD -- train.py"}, None, None, "ask"),
         ("a change of branch writes no file that the guard keeps", "Bash",
          {"command": "git checkout main; git checkout -b eval-fix; git restore --staged train.py"}, None, None, None),
+        # were None: the checkout of every file with an option in front or by another spelling of "all of them",
+        # git by its other names, and restore where --staged does not stand alone
+        *[(f"git puts files back: {c}", "Bash", {"command": c}, None, None, "ask") for c in (
+            "git checkout -q .", "git checkout -q HEAD -- .", "git checkout ./", "git checkout HEAD '*.py'",
+            "git checkout HEAD :/", "git checkout --force", "GIT checkout .", "git.exe reset --hard",
+            "git restore -SW eval/metrics.py")],
+        ("a branch in brackets and behind an option, a branch that follows another", "Bash",
+         {"command": "(git checkout main); git checkout -q main; git checkout -t origin/feature"}, None, None, None),
+        ("the index alone", "Bash", {"command": "git restore --staged eval/metrics.py"}, None, None, None),
         ("chained command is not the final eval", "Bash",
          {"command": "NN_UNSEAL_TEST=1 python eval/final.py && cat data/test/labels.csv"}, None, None, "deny"),
         ("quoted note with -> is not a write", "Bash",
@@ -229,7 +238,15 @@ def main():
                       ("find . -name '*.pyc' -delete", "deny"), ("black .", "deny"), ("trap 'rm x.txt' EXIT", "deny"),
                       ("ls 2>/dev/null; python3 x.py 2>&1 | tail -n 3", None),
                       ("grep -n \"\\.replace(\" train.py", None), ("black --check .", None),
-                      ("pip list | grep -o install", None)]:
+                      ("pip list | grep -o install", None),
+                      # were None (the review of round 7): a program's name in capitals, perl's -i apart from its
+                      # letters, a formatter behind a runner, the code flag in a group, a command that program text
+                      # hands to a shell, git's checkout with an option in front
+                      ("RM x.txt", "deny"), ("perl -p -i -e 's/a/b/' train.py", "deny"), ("uvx ruff format .", "deny"),
+                      ("python3 -m black .", "deny"), ("bash -ce 'rm x.txt'", "deny"),
+                      ("python3 -c \"import os; os.system('rm x.txt')\"", "deny"), ("git checkout -q .", "deny"),
+                      ("black --version; isort -c .; python3 -O x.py; ls -lo train.py", None),
+                      ("git diff --no-index a b; perl -ne 'print if /acc/' train.py", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
 

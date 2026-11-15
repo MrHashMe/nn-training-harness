@@ -266,8 +266,10 @@ def shells():
     out = []
     if os.name == "nt":
         git = shutil.which("git")  # Git Bash is what Claude Code uses on Windows; System32\bash.exe would be WSL
-        bash = Path(git).resolve().parents[1] / "bin" / "bash.exe" if git else None
-        if bash and bash.exists():
+        # git.exe lies in Git\cmd, or in Git\mingw64\bin where the tests themselves are started from Git Bash
+        bash = next((b for b in (Path(git).resolve().parents[i] / "bin" / "bash.exe" for i in (1, 2)) if b.exists()),
+                    None) if git else None
+        if bash:
             out.append(("Git Bash", [str(bash), "-c"]))
         for name in ("pwsh", "powershell"):
             if shutil.which(name):

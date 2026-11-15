@@ -62,8 +62,8 @@
  {
   "file": "round7",
   "candidate": "Generated guard cases judged by a live shell: a canary in the sealed file, command lines built from a grammar, and what the guard allows is run and must neither print the canary nor change a frozen file (kit-native)",
-  "status": "unfinished",
-  "where": "not built at this commit"
+  "status": "finished",
+  "where": "tests/test_guard_live.py, the eighth test file, and the guard changes that its first runs led to (.claude/hooks/nn_guard.py, with a hand-written case for each in tests/test_kit.py). Run with bash in WSL and in an Alpine container, zsh 5.9 in that container, Git's bash and PowerShell on Windows; not on macOS, where the workflow will run it at the first push. Before any fix, 185 of 901 lines that passed in bash did harm. Limits: a sample from a fixed seed, not a proof; the forms that the guard does not claim to stop are left out of the generator and named in docs/REFERENCE.md, \"Notes and limits\"; live runs are not judged"
  },
  {
   "file": "round7",

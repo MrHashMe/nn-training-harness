@@ -179,6 +179,8 @@ def main():
         ("git -C push --force", "Bash", {"command": "git -C . push --force origin main"}, None, None, "ask"),
         ("any git push asks", "Bash", {"command": "git push origin main"}, None, None, "ask"),
         ("git checkout rev -- path", "Bash", {"command": "git checkout HEAD -- train.py"}, None, None, "ask"),
+        ("a change of branch writes no file that the guard keeps", "Bash",
+         {"command": "git checkout main; git checkout -b eval-fix; git restore --staged train.py"}, None, None, None),
         ("chained command is not the final eval", "Bash",
          {"command": "NN_UNSEAL_TEST=1 python eval/final.py && cat data/test/labels.csv"}, None, None, "deny"),
         ("quoted note with -> is not a write", "Bash",
@@ -221,6 +223,11 @@ def main():
                       ("touch notes.md", "deny"), ("patch train.py fix.diff", "deny"),
                       ("python3 -c \"from pathlib import Path; Path('a').replace('b')\"", "deny"),
                       ("ls *(e:'rm x.txt':)", "deny"),
+                      # were None (found by tests/test_guard_live.py): a redirection behind a descriptor, sed's long
+                      # option, find's -delete, a formatter, the text of a trap
+                      ("ls 2> err.txt", "deny"), ("sed --in-place s/a/b/ train.py", "deny"),
+                      ("find . -name '*.pyc' -delete", "deny"), ("black .", "deny"), ("trap 'rm x.txt' EXIT", "deny"),
+                      ("ls 2>/dev/null; python3 x.py 2>&1 | tail -n 3", None),
                       ("grep -n \"\\.replace(\" train.py", None), ("black --check .", None),
                       ("pip list | grep -o install", None)]:
         got = readonly(proj, cmd)

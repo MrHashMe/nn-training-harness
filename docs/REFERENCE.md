@@ -137,7 +137,7 @@ protected file. The guard reads zsh's patterns ("Notes and limits"). Not built: 
 table above), and the `mps` device in `expctl env --probe`, in the memory figures of a run's heartbeat and in the
 two benchmark tasks, which train on the CPU there. The loop refuses `--max-gpu-hours` on a Mac, because it
 measures them with `nvidia-smi`. Training on the Apple GPU: `references/performance.md`, section 9.
-`.github/workflows/tests.yml` runs the seven test files on GitHub's Ubuntu, Windows and macOS runners when a
+`.github/workflows/tests.yml` runs the eight test files on GitHub's Ubuntu, Windows and macOS runners when a
 commit is pushed; it had not run when this was written.
 
 Slurm: there is no Slurm target type; an ssh target to a login node with your own `srun` line is the route, and it
@@ -186,13 +186,15 @@ matching `Read(...)`/`Edit(...)` deny rules for the sealed paths in `.claude/set
 
 ## Testing the kit
 ```bash
-for t in test_runlog_units test_kit test_review_fixes test_ports test_loop test_remote test_benchmarks; do python3 tests/$t.py; done
+for t in test_runlog_units test_kit test_review_fixes test_ports test_loop test_remote test_benchmarks test_guard_live; do python3 tests/$t.py; done
 ```
 Ten to fifteen minutes, CPU-only fake runs in temporary projects, no network, no accounts, no GPU. Each file prints
 `PASS`/`FAIL` lines and `RESULT: ALL PASS`. `test_ports` covers the installer (install, upgrade over the 23 October
 version, uninstall) and the guard's answers for each agent; `test_loop` the loop with a stand-in agent;
 `test_remote` the remote module with stand-in `ssh` and `hf` commands; `test_benchmarks` the two benchmark tasks'
-data and their project creator. `benchmarks/pilot.py` compares an agent with
+data and their project creator; `test_guard_live` asks the guard about command lines that it builds from parts
+and runs those that pass in a real shell ("Notes and limits"; another sample:
+`python3 tests/test_guard_live.py SEED COUNT`). `benchmarks/pilot.py` compares an agent with
 this kit, with the 23 October kit and with no kit on the benchmark task (it uses your agent subscription, and
 stops when the agent reports that further usage would be billed per use). Two pilots, with two and with five runs
 per arm, on one task, one machine and one model, are in `docs/upgrade/REPORT.md`, section 2: this kit's edge over the
@@ -259,18 +261,50 @@ neither kit was shown to beat running the agent with no kit.
   (repeats), a `^name` that is a whole word or stands inside a name (`te^x`), a group without `|` at the end of a
   word (`data/te(st)`), and a pattern under an option that ignores case. The other way round, a flag makes the
   guard refuse more than the shell would match: `cat data/(#i)TRAIN.csv` is read as `cat data/*`.
-- A shell command that names a frozen or harness file is asked about only where the line holds a write that the
-  guard knows: a redirect, `tee`, `cp`, `mv`, `rm`, `sed -i`, `truncate`, `dd` and a few more, with their
-  PowerShell forms. A write by another program passes without a question (asked on 14 November 2026; the limit
-  is older): `sort -o eval/metrics.py data/train.csv`, `curl -o`, `wget -O`, `touch`, `patch`, PowerShell's
-  `-OutFile`, and any program that names no file, such as a formatter run over a folder or a script of your
-  own. The edit tools are asked about, and the loop compares the checksums of its protected files at every
-  iteration. In a session of your own, `git status` shows such a change where git tracks the file. The other
-  way round, a harmless line is asked about when it holds such a write anywhere:
-  `python eval/metrics.py > out.txt`.
+- A shell command that names a frozen or harness file is asked about where the line holds a write that the
+  guard knows. Since 14 November 2026 these are: a redirect, also behind a descriptor (`2> file`, `&> file`,
+  `>& file`; not `2>&1`, not one to `/dev/null`); `tee`, `cp`, `mv`, `rm`, `ln`, `dd`, `rsync`, `truncate`,
+  `touch`, `patch`, `install`; `sed -i` and `--in-place` wherever the option stands, `perl -i`; `find -delete`;
+  `git checkout <rev> <path>` and `git restore <path>`; a formatter or fixer that rewrites files (`black`,
+  `isort`, `ruff format`, `ruff --fix`; not with `--check` or `--diff`); the word behind an output option (`-o`,
+  `-O`, `--out…`, PowerShell's `-OutFile`, so `sort -o`, `curl -o` and `wget -O` count); Python's file calls in
+  code on the line (`open(…, 'w')`, `write_text`, `os.replace`, pathlib's `.rename(`, `.touch(` and the link
+  calls); and the PowerShell and cmd forms of all these. Three kinds of line are asked about although they name
+  no such file. A line that changes a folder holding such files as a whole: `mv eval old`, `rm -r eval`,
+  `git checkout HEAD eval`, `Remove-Item eval -Recurse`, and `cp -r` or `rsync` with such a folder on either
+  side, because the guard does not tell a source from a target. A line that deletes or edits the files which a
+  search of the same line finds in such a folder: `find … -delete`, `find … -exec rm`, `… | xargs sed -i`,
+  `sed -i … $(git ls-files '*.py')`, `gci -r -Filter *.py | Remove-Item`; the search's own file filter is
+  respected, so `find . -name '*.pyc' -delete` passes. And a formatter that is given such a folder, or none
+  (`black .`, `ruff check --fix`), where a frozen or harness `.py`, `.pyi` or `.ipynb` file lies below.
+  Text that runs counts wherever it stands: the text of a `trap`, a command inside `$(…)` or backticks (inside
+  a string in double quotes too), the word of `${name:-word}`, a text that the line keeps in a variable and may
+  run from there (`c='rm x'; $c`, `$c = 'del x'; iex $c`), the text that PowerShell makes a script block of
+  (`[scriptblock]::Create('…')`) or runs inside a block (`&{iex '…'}`), and a shell inside a shell three levels
+  deep; a fourth level is asked about, because the guard does not read it. A message in a here-document that no program
+  runs (`git commit -m "$(cat <<'EOF' … EOF)"`) stays unread.
+  Limits. Not seen as a write of a frozen file: a git command that replaces the working tree as a whole
+  (`git stash`, a change of branch, `pull`, `merge`, `rebase`; `git reset --hard` is asked about as destructive,
+  and a change of branch while a run executes from the working tree); an archive unpacked over the file
+  (`tar x`, `unzip`); `git apply`; a download that names only its address (`curl -O`, `wget URL`); a formatter
+  the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`) or one started as `python -m black`;
+  the whole project removed under another spelling of its folder (`rm -rf ../proj`); a frozen pattern that
+  starts with a wildcard, which counts for the project folder but not for a named folder below it; and any
+  program or script that puts the path together while it runs. For these, every run's record holds one hash
+  over the frozen files (`frozen_hash`; `expctl hash` prints the current one, `expctl status` warns when ranked
+  runs were made under other frozen files, and the final evaluation's receipt carries it), the loop compares
+  the checksums of its protected files at every iteration, and `git status` shows the change where git tracks
+  the file. The edit tools are asked about. The other way round, harmless lines are asked about when they hold
+  such a write anywhere: `python eval/metrics.py > out.txt`, `python eval/metrics.py 2> err.txt`,
+  `cp -r eval sub/copy`, `ruff check --fix .`, `ls *.py | xargs black`, and a line whose variable holds a
+  harmful-looking text beside a runner (`note='rm -rf runs/old'; python -c "print(1)"`).
+  `tests/test_guard_live.py` is the check behind this list: it builds command lines from parts (a verb, a way
+  to write the path, a wrapper), asks the guard, and gives every line that passes to a real shell in a
+  temporary project (bash, zsh where it is installed, PowerShell on Windows). A line that passed must not have
+  printed or copied the sealed file or changed the frozen file.
 - Recursive commands over the project root (`grep -r`, `rgrep`, `find`, `ls -R`, `tree`, `du -a`, `tar`, `zip`, `cp -r`,
   `cp -a`, `rsync`, a path with `**` in it such as `cat **/*.csv`; in PowerShell and cmd.exe `Get-ChildItem -Recurse` with
-  its short forms, `dir /s`, `findstr /s`, `tree /f`, `Copy-Item -Recurse`, `Compress-Archive`, `robocopy`, `xcopy`,
+  its short forms, `dir /s`, `findstr /s`, `tree /f`, cmd's `for /r`, `Copy-Item -Recurse`, `Compress-Archive`, `robocopy`, `xcopy`,
   a .NET call with `AllDirectories`) are asked about when sealed files lie below it on disk, as in every folder
   below the root. So is a move or a rename of a folder that holds sealed files (`mv`, `git mv`, `Move-Item`,
   `Rename-Item`, `ren`): under another name nothing would seal them. A recursive command passes when it names the folders it needs

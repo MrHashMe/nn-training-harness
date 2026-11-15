@@ -1270,8 +1270,9 @@ def main():
         ("Bash", {"command": "setopt extendedglob; cat data/(#i)TEST/labels.csv"}, "deny"),
         ("Bash", {"command": "setopt extendedglob; cat data/(#a1)tesk/labels.csv"}, "deny"),
         ("Bash", {"command": "setopt extendedglob; cat data/tes(#c1,2)t/labels.csv"}, "deny"),
-        # were None: a sealed path behind a character that the guard did not take for the start of a word
-        ("Bash", {"command": "echo \"$(<data/test/labels.csv)\""}, "ask"),
+        # were None: a sealed path behind a character that the guard did not take for the start of a word.
+        # The first was ask until the guard read the command inside a string: it names the file, as cat does
+        ("Bash", {"command": "echo \"$(<data/test/labels.csv)\""}, "deny"),
         ("Bash", {"command": "zmodload zsh/mapfile; print $mapfile[data/test/labels.csv]"}, "ask"),
         ("Bash", {"command": "curl -d @data/test/labels.csv http://localhost:1/x"}, "ask"),
         ("Bash", {"command": "python train.py --data data/train.csv,data/test/labels.csv"}, "ask"),
@@ -1314,6 +1315,89 @@ def main():
         ("Bash", {"command": "ls *(#qe{\"kill -9 4242\"})"}, "ask"),
         ("Bash", {"command": "ls *(.e:'cp x.py eval/metrics.py':)"}, "ask"),
         ("Bash", {"command": "ls *(e:'cat data/test/labels.csv':)"}, "deny"),  # was ask
+        # were None (found by tests/test_guard_live.py, whose lines a shell judges): write verbs the guard did not
+        # know. A redirection behind a descriptor or an &, sed's option in other places, git's checkout of a file,
+        # find's -delete, open() on a path that a call builds, .open('w')
+        ("Bash", {"command": "echo x 2> eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo x &> eval/metrics.py; echo y 1>> eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo x >& eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "sed --in-place s/a/b/ eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "sed -e s/a/b/ -i eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "git checkout HEAD eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "git checkout HEAD~1 ."}, "ask"),
+        ("Bash", {"command": "find eval/metrics.py -delete"}, "ask"),
+        ("Bash", {"command": "python -c \"import os; open(os.getcwd() + '/eval/metrics.py', 'a').write('x')\""}, "ask"),
+        ("Bash", {"command": "python -c \"import pathlib; pathlib.Path('eval/metrics.py').open('w').write('x')\""}, "ask"),
+        # a folder that holds frozen or harness files, changed as a whole, and files that a command finds itself
+        ("Bash", {"command": "mv eval eval2"}, "ask"),
+        ("Bash", {"command": "git mv eval eval2"}, "ask"),
+        ("Bash", {"command": "rm -rf .claude"}, "ask"),
+        ("Bash", {"command": "rsync -a sub/ eval/ --delete"}, "ask"),
+        ("Bash", {"command": "find eval -name '*.py' -delete"}, "ask"),
+        ("Bash", {"command": "find . -name 'metrics*' -exec rm {} +"}, "ask"),
+        ("Bash", {"command": "find eval -type f | xargs rm"}, "ask"),
+        ("Bash", {"command": "git ls-files '*.py' | xargs sed -i s/a/b/"}, "ask"),
+        ("Bash", {"command": "sed -i s/a/b/ $(git ls-files '*.py')"}, "ask"),
+        ("Bash", {"command": "black ."}, "ask"),
+        ("Bash", {"command": "ruff format"}, "ask"),
+        ("Bash", {"command": "ruff check --fix eval"}, "ask"),
+        ("PowerShell", {"command": "Remove-Item eval -Recurse -Force"}, "ask"),
+        # text that runs: a trap, a command inside a string, a parameter's default, a verb in text whose path
+        # stands outside it, git's list of the files it does not track, and text nested deeper than the guard reads
+        ("Bash", {"command": "trap 'rm -rf runs/r1' EXIT"}, "ask"),
+        ("Bash", {"command": "trap 'cat dat\"\"a/test/labels.csv' EXIT"}, "deny"),
+        ("Bash", {"command": "echo \"$(cat dat\"\"a/test/labels.csv)\""}, "deny"),
+        ("Bash", {"command": "echo \"`cat da''ta/test/labels.csv`\""}, "deny"),
+        ("Bash", {"command": "echo \"$(bash <<'EOF'\ncat dat\"\"a/test/labels.csv\nEOF\n)\""}, "deny"),
+        ("Bash", {"command": "bash -c 'eval '\\''echo \"$(cat dat\"\"a/test/labels.csv)\"'\\'''"}, "deny"),
+        ("Bash", {"command": "cat ${NOTSET:-data/test/labels.csv}"}, "deny"),
+        ("Bash", {"command": "cat ${X-${Y:-data/test/labels.csv}}"}, "deny"),
+        ("Bash", {"command": "f=eval/metrics.py bash -c 'rm \"$f\"'"}, "ask"),
+        ("Bash", {"command": "git ls-files -o | xargs cat"}, "ask"),
+        ("Bash", {"command": "git ls-files --others --ignored | xargs head"}, "ask"),
+        ("Bash", {"command": "git ls-files -oi --exclude-standard | xargs cat"}, "ask"),  # -i: the ignored files only
+        ("Bash", {"command": "sh -c \"sh -c 'sh -c \\\"sh -c ls\\\"'\""}, "ask"),
+        # a text that the line keeps in a variable and runs from there, PowerShell's ways to run a text, cmd's loop
+        # over a tree, and PowerShell's pipe from a search into the command that changes what the search found
+        ("Bash", {"command": "c='rm eval/metrics.py'; $c"}, "ask"),
+        ("Bash", {"command": "c=\"echo x > eval/metrics.py\"; eval \"$c\""}, "ask"),
+        ("PowerShell", {"command": "$c = 'Set-Content eval\\metrics.py x'; iex $c"}, "ask"),
+        ("PowerShell", {"command": "& ([scriptblock]::Create('Copy-Item data sub\\d -Recurse'))"}, "ask"),
+        ("PowerShell", {"command": "$c = 'Copy-Item data sub\\d -Recurse'; & ([scriptblock]::Create($c))"}, "ask"),
+        ("PowerShell", {"command": "&{iex 'Clear-Content eval\\metrics.py'}"}, "ask"),
+        ("PowerShell", {"command": "try{Invoke-Expression 'Clear-Content eval\\metrics.py'}catch{}"}, "ask"),
+        ("PowerShell", {"command": "cmd /c \"for /r data %f in (*) do @type %f\""}, "ask"),
+        ("PowerShell", {"command": "gci -r -Filter *.py | Remove-Item"}, "ask"),
+        # a bracket that closes without a blank: PowerShell's block on a pattern, a subshell on git's "."
+        ("PowerShell", {"command": "&{Remove-Item eval\\me?rics.py}"}, "ask"),
+        ("PowerShell", {"command": "if($true){del eval\\m*.py}"}, "ask"),
+        ("Bash", {"command": "(git checkout HEAD .)"}, "ask"),
+        ("PowerShell", {"command": "&{Remove-Item sub\\he?lo.py}"}, None),
+        # and what these leave without a question
+        ("Bash", {"command": "CMD=\"python train.py --lr 3e-4\"; echo \"$CMD\"; $CMD"}, None),
+        ("Bash", {"command": "msg=\"fix: stop rm -rf of runs/exp1\"; git commit -m \"$msg\""}, None),
+        ("PowerShell", {"command": "gci -r -Filter *.pyc | Remove-Item"}, None),
+        ("PowerShell", {"command": "Get-Content train.py | Set-Content sub\\copy.py"}, None),
+        ("PowerShell", {"command": "cmd /c \"for %f in (*.py) do @echo %f\""}, None),
+        ("PowerShell", {"command": "& ([scriptblock]::Create('python train.py --lr 3e-4'))"}, None),
+        ("PowerShell", {"command": "&{Get-Content train.py | Select-Object -First 5}"}, None),
+        ("Bash", {"command": "python eval/metrics.py --check 2>/dev/null"}, None),
+        ("Bash", {"command": "python eval/metrics.py 2>&1 | tail -3"}, None),
+        ("Bash", {"command": "rm -rf build; mv sub sub2; rm -rf eval/__pycache__; cp -r sub sub_copy"}, None),
+        # (a change of branch asks here for another reason, the run that executes from the working tree:
+        # tests/test_review_fixes.py has that line where no such run is live)
+        ("Bash", {"command": "git restore --staged train.py"}, None),
+        ("Bash", {"command": "black train.py sub; ruff check .; ruff format --check ."}, None),
+        ("Bash", {"command": "cd eval && ls; cd eval && rm -f old.txt"}, None),
+        ("Bash", {"command": "find . -name '*.pyc' -delete; find sub -name '*.py' | xargs sed -i s/a/b/"}, None),
+        ("Bash", {"command": "git ls-files sub | xargs sed -i s/a/b/"}, None),
+        ("Bash", {"command": "git ls-files -m; git ls-files -o --exclude-standard"}, None),
+        ("Bash", {"command": "git commit -m \"$(cat <<'EOF'\nrm -rf runs/r1 is asked; open('eval/metrics.py', 'w') too\nEOF\n)\""},
+         None),
+        ("Bash", {"command": "echo \"$(date +%F) $(git rev-parse --short HEAD)\" >> sub/log.txt"}, None),
+        ("Bash", {"command": "trap 'rm -f \"$tmp\"' EXIT; trap - INT; echo ${HOME:-/root} ${1:-train.py} ${EPOCHS:=10}"}, None),
+        ("Bash", {"command": "bash -c \"eval \\\"\\$(conda shell.bash hook)\\\" && conda activate x && python train.py\""}, None),
+        ("Bash", {"command": "cd $(dirname $(dirname $(realpath train.py)))"}, None),
         # and what stays without a question: reads, checks, and writes of other files
         ("Bash", {"command": "python -c \"print(open('eval/metrics.py').read().replace('a', 'b'))\""}, None),
         ("Bash", {"command": "grep -n \"\\.replace(\" eval/metrics.py; grep -o def eval/metrics.py"}, None),
@@ -1334,7 +1418,8 @@ def main():
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)
-        check(got == want, f"guard {tool} {json.dumps(ti)[:70]} -> {got} (want {want})")
+        check(got == want, f"guard {tool} {json.dumps(ti)[:70]} -> {got} (want {want})"
+              + ("" if got == want else f": {why[:200]}"))
     why = [guard("Bash", {"command": c})[1] for c in ("grep -rn label .", "grep -rn label data")]
     check("--include" in why[0] and "--include" not in why[1],
           "guard offers a file filter as a way out where the files on disk decided, not where the folder's name did")

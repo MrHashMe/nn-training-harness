@@ -40,7 +40,7 @@ jobs:
           git config --global user.email test@localhost
           "$py" --version
           rc=0
-          for t in test_runlog_units test_kit test_review_fixes test_ports test_loop test_remote test_benchmarks; do
+          for t in test_runlog_units test_kit test_review_fixes test_ports test_loop test_remote test_benchmarks test_guard_live; do
             echo "::group::$t"
             "$py" tests/$t.py || rc=1
             echo "::endgroup::"

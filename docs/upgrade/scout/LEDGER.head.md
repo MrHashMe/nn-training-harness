@@ -247,7 +247,12 @@ one repository's state, both on 14 November.
 - Not confirmed, each by a run or a source: code run through a pickle entry of a model file (36 files, none ran; a
   test now asks the installed PyTorch), a project reached through a link escaping the guard (run in WSL; a test
   keeps asking), TorchAO retired, and a paper cited for what it does not say.
-- Adopt, unfinished at this commit (1): generated guard cases judged by a live shell.
+- Built from the review's proposals, second: generated guard cases judged by a live shell
+  (`tests/test_guard_live.py`). Command lines are built from parts, the guard is asked about each, and every
+  line it lets pass runs in a real shell (bash, zsh, PowerShell), where it must not print or copy the sealed
+  file or change the frozen file. Before any fix, 185 of 901 lines that passed in bash did one of the three.
+  Each kind is closed in the guard with a hand-written case, or named as a limit in `docs/REFERENCE.md` and
+  left out of the generator. Not run on macOS.
 - Corrected in an earlier round's record: five rows of the note `user-reports` said "finished" beside "enabling
   step not run". The step has now run for four (TRL, PEFT, Transformers, scikit-learn: WSL2, CPU build of torch).
   PyTorch's row is unfinished, because the pinned cu132 build crashed on this machine's GPU on 11 November.

@@ -3912,8 +3912,8 @@ No check was removed.
 1. **`main`.** Answered on 15 November ("Push main") and done: "`main`" below. Open from it: whether the
    test branch goes now, which is a deletion in the public repository and waits for your word.
 2. **A seventh installer run on your real install**, as in "Round 7". Answered on 15 November ("Yes, run
-   it") and done: "The seventh installer run on the real install" below. Open from it: whether the thirteen
-   files it changed are committed in that repository, as after the runs before.
+   it") and done: "The seventh installer run on the real install" below. The thirteen files it changed are
+   committed in that repository, on your "Yes, commit there" of the same day.
 3. **Money, accounts, hardware**, only if you want what waits for them: a Mac for one agent session and one
    training run on the Apple GPU; a rented machine; agent sessions for a powered benchmark.
 
@@ -3993,11 +3993,18 @@ it change records only.
   The record has 40 more lines: 4 from the self-test's own probes and 36 from my calls, marked
   `upgrade-check` (3 on the final-evaluation rule, 13 from the 28 calls before the run and 20 from those
   after it; an allowed call leaves no line).
-- **Not done there.** The thirteen files are not committed: that needs your word, as after the runs before.
-  Its two registered scripts, a launch and a final evaluation were not run, no agent session was started,
-  `install.py --worktrees` was not run and its files were not counted, as before. I did not compare what
-  scripts bind to between the two kits (`runlog.py`'s public names, `expctl.py`'s subcommands), which the
-  sixth run's commit did.
+- **Committed there, on your word.** On 15 November you said "Yes, commit there". The thirteen files are
+  one local commit in that repository: exactly those paths, by that repository's own identity, its parent
+  the commit that was newest before, not pushed (its branch has no upstream). Right before it the thirteen
+  changed entries were the paths of the installer's backup folder, and the eleven kit files had the hashes
+  of the kit's manifest. After it that repository's other status entries number 418 as before, nothing is
+  staged, and of the 302 files I list in the install none changed on disk. The commit's message says what
+  the guard decides differently there, what else the files bring, what was checked and what was not done.
+  For its line that your scripts bind to nothing new, I compared the kits of the sixth and the seventh
+  run: `runlog.py` has the same public names and call signatures, and `expctl.py` the same twelve
+  subcommands. To undo the commit while it is the newest one there: `git reset --soft HEAD~1`.
+- **Not done there.** Its two registered scripts, a launch and a final evaluation were not run, no agent
+  session was started, `install.py --worktrees` was not run and its files were not counted, as before.
 - **To know.** The guard there is the new one from the next tool call on. A session in that project now
   meets a question where it writes a frozen file by a command the guard did not read before (`touch`,
   `sort -o`, a copy onto it), where it copies a folder that holds one, and at a formatter or fixer run over

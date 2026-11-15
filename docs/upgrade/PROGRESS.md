@@ -1507,13 +1507,17 @@ Done (REPORT.md, "The seventh installer run on the real install", has it in full
   new ones, a sealed file behind a zsh group goes from allowed to refused, and behind `[^z]`, `touch`,
   `sort -o` and `Path.touch()` on a frozen file, `black .` and `cp -r` of the frozen file's folder go from
   allowed to a question.
-- Left there: thirteen files changed and not committed, 418 other status entries untouched, nothing staged,
-  the backup folder, 40 more lines in the guard's record (36 marked `upgrade-check`).
-- Not done there: a commit, its scripts, a launch, a final evaluation, an agent session,
-  `install.py --worktrees`.
+- Left there by the run: thirteen files changed, 418 other status entries untouched, nothing staged, the
+  backup folder, 40 more lines in the guard's record (36 marked `upgrade-check`).
+- Committed there on the user's "Yes, commit there" of 15 Nov: the thirteen files, one local commit,
+  exactly those paths, not pushed; 418 other status entries as before, nothing staged, no file of the
+  install changed on disk. Before it `kit_api.py 2666faf fb101a7`: runlog's public names and signatures
+  and expctl's twelve subcommands are the same. The message is `real9-commit-msg.txt` in the helpers'
+  folder.
+- Not done there: its scripts, a launch, a final evaluation, an agent session, `install.py --worktrees`.
 
-Next: whether the thirteen files are committed in that repository, whether this record is pushed, and
-whether the test branch is deleted. Each is a separate word of the user's.
+Next: whether these records are pushed, and whether the test branch is deleted. Each is a separate word
+of the user's.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1769,8 +1773,9 @@ whether the test branch is deleted. Each is a separate word of the user's.
 - Answered on 15 Nov ("Yes, run it"), from round 7: the seventh installer run on the real install, which
   brought it rounds 6 and 7. The entry "The seventh installer run on the real install" above. The word
   covers the run and its checks. It is not a word for a commit in that repository or for a push.
-- Open, from the seventh run: whether the thirteen files it changed are committed in that repository, and
-  whether the record of the run is pushed to the public `main`.
+- Answered on 15 Nov ("Yes, commit there"), from the seventh run: the thirteen files are committed in that
+  repository. The word covers that commit; it is not a word for a push of either repository.
+- Open, from the seventh run: whether the records of the run are pushed to the public `main`.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented
   machine for a stop on the machine itself, agent sessions for a powered benchmark, a Mac).
 
@@ -1859,7 +1864,7 @@ whether the test branch is deleted. Each is a separate word of the user's.
 - The seventh installer run's helpers are in the same folder, made from the sixth run's by renaming:
   `real9.sh STEP`, `real9_pre.py`, `real9_clone.sh`, `real9_calls.py` (the twenty calls and eight for
   rounds 6 and 7, with sealed and frozen paths from the install's config) and `real9_commit.py check |
-  commit MSGFILE` for its thirteen files (`check` only reads; `commit` was not run). The results are
+  commit MSGFILE` for its thirteen files (`check` only reads). The results are
   `real9-*.json` and `real9-*.log`, the copy from before the run is
   `real-install-before-20261115-seventh`, and the kit clone is `kit-fb101a7`.
 - A session that ends on an error leaves its last exchange only in its saved transcript, under

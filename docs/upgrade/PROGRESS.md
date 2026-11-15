@@ -13,10 +13,14 @@ locally and not published. The entry after the publication is the fifth installe
 by claim, and what was built from it. Its last entries are the sixth installer run on the real install,
 which brought the round there, and the commit of the files that run changed in that repository.
 "Round 6" below is the work on the user's "Mac readiness" of the same day: fixes for a Mac, built and
-tested on Windows and in WSL, not run on a Mac and not pushed.
+tested on Windows and in WSL, and at the end of that round not run on a Mac and not pushed.
 "Round 7" below is the work on the request of 14 November that followed: a second reviewer's report on the
 public version, checked claim by claim, what was built from it, and the independent review of that work with
-its fifteen findings, all fixed. It is committed locally and not pushed.
+its fifteen findings, all fixed.
+"The test branch" below is the work on the user's "Push test branch" of 15 November: rounds 6 and 7 are in
+the public repository as the branch `test/rounds-6-7`, the workflow ran there on GitHub's Ubuntu, macOS and
+Windows machines, three commits repaired what its first run showed, and its second run passes in all six
+jobs. `main` there is as it was (`bc96015`).
 
 # Upgrade progress
 
@@ -1262,7 +1266,7 @@ on both platforms, REPORT.md, the ledger rows. One commit per idea, each with it
   `2666faf`): 17 names, none added, removed or changed; no subcommand removed, `audit-splits` added. Undo
   while it is the newest commit there: `git reset --soft HEAD~1`.
 
-## Round 6 (Mac readiness, 14 November): built and tested on this machine; not run on a Mac, not pushed
+## Round 6 (Mac readiness, 14 November): built and tested on this machine; its tests ran on GitHub's Mac on 15 November ("The test branch")
 
 After round 5 was public the user asked, with nothing to be changed, for a comparison of the kit's versions
 with scores, a check for a Mac Pro and a ranked list of improvements (answered in the session; REPORT.md,
@@ -1309,7 +1313,7 @@ so every statement about macOS is code reading or documentation.
   the kit's block of its `.gitignore`; it needs the user's word.
 - Left on this machine: the container image `alpine:3` in WSL's Docker (`docker rmi alpine:3` removes it).
 
-## Round 7 (second review, 14 and 15 November): done, nothing pushed
+## Round 7 (second review, 14 and 15 November): done; on the public test branch since 15 November
 
 Request of 14 November: review a second reviewer's report on the public version (`bc96015`), plan from it and
 carry the plan out. The report is kept out of git at `docs/upgrade/scout/scouts/user-review-1114b.md`. Rule of
@@ -1411,20 +1415,72 @@ psutil and PyTorch), 1,459 (clean 3.8.20), 1,460 (clean 3.15.0rc3). The one sent
 The table is in REPORT.md, "Round 7", "Tests".
 
 Open questions for the user (REPORT.md, "Round 7", "What needs your decision"): a push, with a test branch
-recommended so that the workflow runs on GitHub's three systems before `main` moves; a seventh installer run
-on the real install; money, accounts and hardware for the rows that wait for them.
+recommended so that the workflow runs on GitHub's three systems before `main` moves (answered on 15
+November: the next section); a seventh installer run on the real install; money, accounts and hardware for
+the rows that wait for them.
+
+## The test branch (15 November): pushed, the workflow passes in all six jobs; `main` not moved
+
+The user's word, 15 November: "Push test branch", to the question whether to push rounds 6 and 7 to a test
+branch so that the tests run on GitHub's macOS, Linux and Windows. What it covers, as said before it was
+given: the push of this work to the public repository under a test name, follow-up pushes to that branch to
+repair what fails, and the six jobs each push starts. Not covered: `main`, a pull request, a force-push, a
+deletion, anything on the real install.
+
+Done:
+- Before the push: fetched, `main` there unchanged at `bc96015`, this branch 20 commits ahead of it and none
+  behind, every commit with a UTC date and the no-reply address, the scan for private names clean.
+- First push: `9d2ff12` as `test/rounds-6-7`. First run of the workflow: both Ubuntu jobs passed, the two
+  Windows and the two Mac jobs failed. Three causes, each read from a job's log:
+  - the kit: `expctl`'s snapshot made a relative link to a folder again as a link to a file on Windows (the
+    runner's account may create symlinks, this machine's may not, so the code had never run on Windows); on
+    Python 3.8, in a project that is not a git repository, the launch then ended with "Access is denied";
+  - a test: `tests/test_review_fixes.py` compared the project folder that `expctl` resolves with the
+    unresolved name of its temporary folder (two checks, four jobs);
+  - a test: `tests/test_ports.py` found files in its stand-in home directory under macOS's own Python 3.9.6
+    and did not say which.
+- Three commits: `bd8350e` (the snapshot: the link gets the kind of its original, and the name test does not
+  follow links; the check in `tests/test_loop.py` opens a file through the link), `70b137e` (the two tests;
+  shell versions in `tests/test_guard_live.py`; the reason in the skip line of the sandbox checks),
+  `97b3211` (the workflow: tmux from Homebrew for one of the two Mac jobs).
+- Local tests before the second push, all pass: Windows 3.11.7 (`test_review_fixes` 74, `test_ports` 131,
+  `test_guard_live` 6, `test_kit` 855, `test_loop` 241), WSL 3.12.3 (76, 129, 3, 861, 247).
+- Second push, `97b3211`. Second run: all six jobs pass. Checks: ubuntu-26.04 with Python 3.15.2 1,469;
+  ubuntu-24.04 with 3.8.18 1,462; macos-26-arm64 with 3.14.10 1,470 and with the system's 3.9.6 1,463;
+  windows-2025 with 3.8.10 1,460 and with 3.15.2 1,461. The generated guard test: no harmful line in any
+  shell, macOS's bash 3.2.57 and zsh 5.9 among them. The table per file is in REPORT.md, "The test branch".
+- After the second run, `1578bd0`: section 9 of `references/performance.md` no longer says that nothing in
+  it ran on a Mac (the kit's own code ran in the tests on GitHub's macOS runner; what it says about PyTorch,
+  MLX and macOS itself is still read from pages). `tests/test_kit.py` on Windows with it: 855 checks, passed.
+- Records: `docs/REFERENCE.md` ("By platform": a row for the runners, the Mac column, the paragraph on
+  macOS), `docs/GUIDE.md` (one line), REPORT.md (the section "The test branch", point 17 of "Read this
+  first", notes at the top of "Round 6" and "Round 7", section 5), the ledger (`built-test-branch.json`:
+  three rows finished, one Assess row decided, five with new text; 1,650 rows, 494 Adopt, 352 finished and
+  142 unfinished), this file. Both commits pushed to the same branch, which starts a third run.
+
+Behaviour of existing features: a snapshot's link on Windows (REPORT.md, "The test branch", "Changes in the
+behaviour of existing features"). The guard and the installer are not touched. Existing tests changed: five
+places in four files, listed there with reasons; no check removed.
+
+Next: the user's word on `main` (it can take the branch without a merge commit). Then the seventh installer
+run, which is a separate word.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
   signed in).
-- Round 6 on a Mac: nothing ran there. Unrun: the workflow (it runs when it is pushed), the four checks of
-  `caffeinate` and the check of chip and memory (macOS only), the `ps` route under macOS's own `ps`, the
-  guard and the loop where `/tmp` and `/var` are links into `/private`, all seven test files, and Python
-  3.15 on any system. Not built: the Seatbelt box, the `mps` device in the probe, the heartbeat and the two
-  benchmark tasks, a device field in run records, mlx-lm. No reviewer without the working context looked at
-  the round's guard change.
-- Round 7: nothing ran on macOS, and the workflow has not run. No second reader has seen the two commits
+- On a Mac, after the test branch: the kit's tests ran on GitHub's macOS runner and pass, the checks for
+  macOS only and Python 3.15 on Ubuntu and Windows among them. Not run on a Mac: an agent session, training
+  and anything with PyTorch (so nothing on the Apple GPU, and the nine benchmark checks that need PyTorch
+  ran on no runner), sleep and a closed lid, Python 3.8. Not built: the Seatbelt box, the `mps` device in
+  the probe, the heartbeat and the two benchmark tasks, a device field in run records, mlx-lm. No reviewer
+  without the working context looked at round 6's guard change.
+- The test branch: no second reader has seen its three commits. What the stand-in home directory held in
+  the first run under macOS's own Python is an explanation from memory, which the second run fits. The
+  sandbox checks ran on one Linux job only, because the Ubuntu 24.04 image has no bubblewrap. The clean
+  interpreters of this machine did not repeat their full passes after the three commits. `main` is not
+  moved.
+- Round 7: no second reader has seen the two commits
   that fixed the review's findings (`0aafe9a`, `439ab60`). The generated test finds what its parts build and
   nothing else; a path that a program builds while it runs stays outside the guard. The time of the frozen
   hash was measured on a machine under load only. Not built, each with a ledger row: the report's design,
@@ -1432,9 +1488,10 @@ on the real install; money, accounts and hardware for the rows that wait for the
 - The guard's list of write verbs (found in round 6, older than it): built in round 7 (`644b2c9`). Still
   unseen by any list: an archive unpacked over a file, a download named by its URL, `git apply`, a formatter
   started through another program. The hash of the frozen files is the answer to those.
-- 145 adopted rows are unfinished (144 before round 7: PyTorch's pinned GPU build moved there because it
-  crashed here; round 7's own twelve are built; 142 before round 6, whose two new ones are built and wait
-  for a run on macOS; 134 before round 5, whose check of the ledger moved eight rows there),
+- 142 adopted rows are unfinished (145 before the test branch, whose runs finished the test matrix and round
+  6's two rows that waited for a run on macOS; 144 before round 7: PyTorch's pinned GPU build moved there
+  because it crashed here; round 7's own twelve are built; 142 before round 6; 134 before round 5, whose
+  check of the ledger moved eight rows there),
   and of the Trial and Assess rows only round 2's three built items were tried (usage limit). ROUND2.md gave
   the go-ahead for all of them; what was built first is what the live campaign and the review pointed at.
   The first three items of my order are built (round 3), and the first four of the ranked list of 12
@@ -1642,9 +1699,10 @@ on the real install; money, accounts and hardware for the rows that wait for the
 - Answered on 14 Nov ("Mac readiness", to the question which improvement to build first): "Round 6" above.
   The word covers changes in this folder and local commits. It is not a word for a push or for anything on
   the real install.
-- Open, from round 6: a push. It also starts the workflow on GitHub's runners (six jobs, free for a public
-  repository). Recommended: a branch first, on which the workflow runs and what fails on macOS or on Python
-  3.15 is repaired before `main` moves; one word would have to cover the follow-up pushes.
+- Answered on 15 Nov (the entry "Push test branch" below), from round 6: a push. It also starts the workflow
+  on GitHub's runners (six jobs, free for a public repository). Recommended: a branch first, on which the
+  workflow runs and what fails on macOS or on Python 3.15 is repaired before `main` moves; one word would
+  have to cover the follow-up pushes.
 - Open, from round 6: a seventh installer run on the real install, for the guard's fix.
 - Settled by round 7: whether to close the guard's write-verb gap (more verbs, with more questions about
   harmless lines), to build the hash of the frozen files in run records, or to leave both. Both are built.
@@ -1652,8 +1710,11 @@ on the real install; money, accounts and hardware for the rows that wait for the
 - Answered on 14 Nov (the request to review a second reviewer's report, plan from it and carry the plan out):
   "Round 7" above. The word covers changes in this folder and local commits. It is not a word for a push or
   for anything on the real install.
-- Open, from round 7: the push, as from round 6. It now also takes the generated test to macOS's zsh and
-  bash 3.2 for the first time, so a test branch first is recommended all the more.
+- Answered on 15 Nov ("Push test branch"), from rounds 6 and 7: the push, to a test branch. "The test
+  branch" above. The word covers that branch and follow-up pushes to it. It is not a word for `main`, a pull
+  request, a deletion or anything on the real install.
+- Open, from the test branch: `main`. It has not moved since `bc96015` and can take the test branch as it
+  is. After that, whether the test branch is deleted in the public repository.
 - Open, from round 7: the seventh installer run on the real install. It would now bring the guard changes of
   rounds 6 and 7 (the guard asks in more cases), the stop and lock fixes and the hash of the frozen files.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented

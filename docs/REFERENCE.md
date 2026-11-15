@@ -116,18 +116,24 @@ OpenCode are not ported.
 ### By platform
 | | Linux | WSL2 | macOS | native Windows |
 |---|---|---|---|---|
-| Tests of 14 Nov 2026 | not run on bare Linux; WSL2 Ubuntu 24.04 stands in | all pass: Python 3.8, 3.14 and 3.15.0b3 without third-party packages, 3.12 with psutil | not run | all pass: Python 3.8 and 3.15.0rc3 without third-party packages, 3.11 with psutil |
-| Run contract, guard, installer, session status | works | works | expected to work | works |
-| `launch --via tmux` | works | works | expected to work | missing (no tmux): runs are detached processes |
+| Tests of 14 Nov 2026, on one machine | not run on bare Linux; WSL2 Ubuntu 24.04 stands in | all pass: Python 3.8, 3.14 and 3.15.0b3 without third-party packages, 3.12 with psutil | not run | all pass: Python 3.8 and 3.15.0rc3 without third-party packages, 3.11 with psutil |
+| Tests of 15 Nov 2026, on GitHub's runners, without third-party packages | all pass: Ubuntu 26.04 with Python 3.15.2, Ubuntu 24.04 with 3.8.18 (that image has no bubblewrap, so the loop's sandbox checks ran on 26.04 only) | not a runner | all pass: macOS 26 on arm64, with Python 3.14.10 and with the system's own 3.9.6 | all pass: Windows Server 2025 with Python 3.8.10 and 3.15.2 |
+| Run contract, guard, installer, session status | works | works | the tests pass; no agent session has run on a Mac | works |
+| `launch --via tmux` | works | works | the tests pass, with tmux 3.8 from Homebrew | missing (no tmux): runs are detached processes |
 | Graceful stop | SIGTERM and `stop.json` | same | same | `stop.json` only: a loop that does not poll `RunLog.should_stop()` is killed after `kill_after_s` |
-| Source snapshot | symlinks | symlinks | symlinks | junctions and hard links when the account lacks the symlink privilege (local NTFS) |
+| Source snapshot | symlinks | symlinks | symlinks | symlinks where the account may create them; junctions and hard links where it lacks that privilege (local NTFS) |
 | Loop: no network for the run, project read-only for the run, sealed data hidden from the run | enforced with bubblewrap | enforced with bubblewrap | missing: offline variables and a scan of the change only | missing: same |
 | Loop: the evaluator cannot write into the project, apart from the run folder it scores and `loop.eval_writable` | enforced with bubblewrap | enforced with bubblewrap | missing | missing |
 | Loop: harness-side score, keep rule, limits, fresh worktree, ledger | enforced | enforced | enforced | enforced |
 | Loop: evaluator, data and harness files unchanged by a run | enforced with bubblewrap (the project is read-only for the run), and checksummed | same | checked after the fact: a run is not confined, so a changed protected file is caught at the next checksum, and a change to something the evaluator imports from outside the protected paths (an installed package) is not caught | same as macOS; `link_paths` are junctions or hard links there, so a run can write the project's own data through them |
-| Remote runs | works | works | expected to work | works as the controller; an ssh target needs a POSIX shell on the remote side |
+| Remote runs | works | works | the tests pass, against stand-in `ssh` and `hf` commands; not run from a Mac against a real machine | works as the controller; an ssh target needs a POSIX shell on the remote side |
 
-macOS: nothing in that column has run on a Mac, because none was at hand. What a reading of the code found
+macOS: what has run on a Mac is the kit's tests, on GitHub's macOS runner on 15 November 2026 (the second row
+of the table). They include the checks that only a Mac can run (`caffeinate` beside a live run, the chip and
+memory in `expctl env`), a process's start time from `ps`, the generated guard test under macOS's bash 3.2.57
+and zsh 5.9, and `launch --via tmux`. Nothing else has run there: no agent session, no training (the runners
+have no PyTorch, so nothing ran on the Apple GPU and the nine benchmark checks that need PyTorch were skipped
+on every system), no sleep and no closed lid. No Mac was at hand: what a reading of the code found
 missing was built on 14 November 2026. A process's start time comes from `ps` where there is no `/proc`; without
 psutil, a process number that had gone to another process counted as the run before. A live run, the loop and
 the controller of a remote run hold off idle sleep with the system's `caffeinate`; a closed lid still puts a Mac
@@ -138,7 +144,10 @@ table above), and the `mps` device in `expctl env --probe`, in the memory figure
 two benchmark tasks, which train on the CPU there. The loop refuses `--max-gpu-hours` on a Mac, because it
 measures them with `nvidia-smi`. Training on the Apple GPU: `references/performance.md`, section 9.
 `.github/workflows/tests.yml` runs the eight test files on GitHub's Ubuntu, Windows and macOS runners when a
-commit is pushed; it had not run when this was written.
+commit is pushed. Its first run, on 15 November 2026, failed in four of six jobs: a snapshot made a link to a
+folder again as a link to a file on a Windows account that may create symlinks, which is fixed, and two tests
+compared paths in a way that holds only where a temporary folder has one name. The second run is the row
+above.
 
 Slurm: there is no Slurm target type; an ssh target to a login node with your own `srun` line is the route, and it
 is not tested. Containers: no image ships with the kit; `--in-container` is your statement that the loop already
@@ -257,7 +266,9 @@ neither kit was shown to beat running the agent with no kit.
   counts as mentioned behind `<`, `[`, `@`, a comma and an option's letter (`"$(<data/test/labels.csv)"`,
   `curl -d @data/test/labels.csv`, `--data a.csv,data/test/labels.csv`), which is asked about, and so does a
   frozen or harness path in a command with a write that the guard knows (the next point). What each pattern
-  does was run in zsh 5.9 and bash 5.3.9 on Linux; nothing was run on macOS.
+  does was run in zsh 5.9 and bash 5.3.9 on Linux, not in a Mac's shell. There the generated test
+  (`tests/test_guard_live.py`) ran, under bash 3.2.57 and zsh 5.9 on GitHub's runner on 15 November 2026: none
+  of the lines that the guard let pass did harm (150 of 450 in bash, 148 of 450 in zsh).
   Limits, each behind a shell option that the line or your shell settings would have to switch on: zsh's `x#`
   (repeats), a `^name` that is a whole word or stands inside a name (`te^x`), a group without `|` at the end of a
   word (`data/te(st)`), and a pattern under an option that ignores case. The other way round, a flag makes the
@@ -487,7 +498,8 @@ neither kit was shown to beat running the agent with no kit.
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
-  (it needs your account and a paid canary: `references/remote.md`); macOS and bare Linux.
+  (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but
+  the kit's tests ("By platform").
 - A campaign's best score is selected among many tries on one validation split, so it is biased upward. A campaign
   that kept something therefore ends with a confirmation: the loop trains the start and the kept version on fresh
   seeds and reports whether the gain holds. Once a change is kept, the loop holds back the runs for that from the

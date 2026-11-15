@@ -488,8 +488,8 @@ settings, and backs up every kit file it replaces under `.claude/backups/`. To r
 
 ### Limits to keep in mind
 - The guard is a seatbelt, not a sandbox. [REFERENCE.md](REFERENCE.md#notes-and-limits) lists what it misses.
-- Not verified live: Codex and Cursor sessions, the Hugging Face Jobs route, the loop on Linux, macOS and bare
-  Linux.
+- Not verified live: Codex and Cursor sessions, the Hugging Face Jobs route, the loop on Linux, and on macOS
+  and bare Linux everything but the kit's tests.
 - The loop's keep rule and confirmation have run with a real agent once. Set `loop.min_margin` from what you know
   about your task's run-to-run noise: the first few runs can understate it.
 - The recommended PyTorch build (2.15.0, CUDA 13.2) crashed at its first GPU call on the test machine in WSL2.

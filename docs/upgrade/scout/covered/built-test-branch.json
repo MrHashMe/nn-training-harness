@@ -1,0 +1,56 @@
+[
+ {
+  "file": "round6",
+  "candidate": "Process start time where there is no /proc and no psutil, read from `ps -o lstart=` (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/expctl.py and runlog.py; tests/test_kit.py. Commit 49f7373. The branch for a system without /proc is the one a Mac uses: its checks ran on GitHub's macOS runner on 15 Nov 2026 (Python 3.14.10 and the system's 3.9.6) and pass"
+ },
+ {
+  "file": "round6",
+  "candidate": "Keep a Mac from idle sleep while a run, the loop or a remote run's controller lives (`caffeinate -i -w <pid>`), with no option (kit-native)",
+  "status": "finished",
+  "where": "expctl.py (a run's supervisor), nnloop.py, nnremote.py; references/performance.md section 9. Commit ecacd2b. Its four macOS-only checks in tests/test_kit.py ran on GitHub's macOS runner on 15 Nov 2026 and pass. Not watched: whether a Mac then stays awake; the loop's and the remote controller's guards"
+ },
+ {
+  "file": "round6",
+  "candidate": "`expctl env` reports a Mac's chip and memory, RunLog records whether torch's mps device is available, and the loop's note to its worker names the Apple GPU (kit-native)",
+  "status": "finished",
+  "where": "expctl.py, runlog.py, nnloop.py gpu_label; references/performance.md section 9. Commit 93029a2. The check of chip and memory ran on GitHub's macOS runner on 15 Nov 2026 (7.0 GB, \"Apple M1 (Virtual)\"). No PyTorch there: `torch.mps_available` was never written on a Mac"
+ },
+ {
+  "file": "round6",
+  "candidate": "The guard reads the patterns of zsh and ksh (groups, [^a], ^name in a path, pattern~other, flags) and counts a sealed path behind < [ @ , and an option's letter (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py wild, readings, fragments; tests/test_kit.py; references/performance.md section 9 and docs/REFERENCE.md. Commit 1f62c2f. Each pattern was run in zsh 5.9 and bash 5.3.9 on Linux, not in a Mac's shell; the guard's cases pass on GitHub's macOS runner (15 Nov 2026)"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Platform test matrix for the kit itself (floor and ceiling interpreter on Windows, Linux, macOS)",
+  "status": "finished",
+  "where": ".github/workflows/tests.yml (8cb9743): eight test files on GitHub's Ubuntu, macOS and Windows runners, oldest and newest Python. First run 15 Nov 2026, branch test/rounds-6-7: four of six jobs failed (fixes bd8350e, 70b137e). Second run (97b3211): all six pass. docs/REFERENCE.md \"By platform\". Not on main"
+ },
+ {
+  "file": "platforms",
+  "candidate": "Minimum-version claim: Python 3.9+ tested, 3.11+ recommended",
+  "status": "unfinished",
+  "where": "The kit states Python 3.8+ and names no recommended 3.11+. Since 15 Nov 2026 the tests pass on 3.8 on GitHub's Ubuntu and Windows runners and on macOS's own 3.9.6 (docs/REFERENCE.md, \"By platform\")"
+ },
+ {
+  "file": "round7",
+  "candidate": "A project reached through a link gets the same answers from the guard (a test)",
+  "status": "finished",
+  "where": "tests/test_kit.py (POSIX only). Commit 644b2c9. Ran on GitHub's Ubuntu and macOS runners on 15 Nov 2026 and passes; on macOS the test's own temporary folder is already reached through a link"
+ },
+ {
+  "file": "round7",
+  "candidate": "Generated guard cases judged by a live shell: a canary in the sealed file, command lines built from a grammar, and what the guard allows is run and must neither print the canary nor change a frozen file (kit-native)",
+  "status": "finished",
+  "where": "tests/test_guard_live.py and the guard changes its first runs led to (nn_guard.py, a case for each in tests/test_kit.py). Run in bash, zsh, Git's bash and PowerShell; on 15 Nov 2026 also under macOS's bash 3.2.57 and zsh 5.9 (GitHub's runner): no line that passed did harm. A sample from one seed, no proof"
+ },
+ {
+  "file": "round6",
+  "candidate": "The guard's and the loop's path comparisons on macOS, where /tmp and /var are links into /private (kit-native)",
+  "status": "finished",
+  "where": "No change to the kit. The eight test files ran on GitHub's macOS runner on 15 Nov 2026 in temporary folders under /var/folders, a link into /private, and pass in both Mac jobs. The first run failed two checks there by a test's fault: it compared a path that expctl resolves with its unresolved name (70b137e)"
+ }
+]

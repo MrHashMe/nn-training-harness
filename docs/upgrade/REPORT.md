@@ -24,8 +24,10 @@ platforms that it places in the README is now in `docs/REFERENCE.md`. You then a
 the kit's versions, a check for the Mac and a ranked list of improvements, with nothing changed, and to my
 question what to build first you answered "Mac readiness": its section, "Round 6", follows "Round 5".
 You then gave me a second reviewer's report and asked for the best plan from it and for the plan's
-execution: its section, "Round 7", follows "Round 6". Nothing of rounds 6 and 7 is pushed, and nothing of
-them has run on a Mac. Decision record:
+execution: its section, "Round 7", follows "Round 6". On your "Push test branch" of 15 November both rounds
+are in the public repository as the branch `test/rounds-6-7`, where the kit's tests ran for the first time
+on GitHub's macOS, Linux and Windows machines: its section, "The test branch", follows "Round 7". `main`
+there is as it was. Decision record:
 `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -61,10 +63,11 @@ them has run on a Mac. Decision record:
    (section 4), and those of rounds 2 to 4 since the third and fourth installer runs (12 and 13 November).
 4. **The work was cut down on 11 November** on your instruction (usage limit): no second verification round of the
    research, no outside scouts, no trial runs for undecided candidates, one independent reviewer instead of the
-   deep-sweep skill. Of 480 adopted ledger rows, 336 are finished and 144 are listed as unfinished, not built
+   deep-sweep skill. Of 494 adopted ledger rows, 352 are finished and 142 are listed as unfinished, not built
    (399, 261 and 138 before round 2; 415, 277 and 138 before round 3; 418, 280 and 138 before round 4; 422,
    288 and 134 before round 5, whose check of the ledger moved eight rows from finished to unfinished; 474,
-   332 and 142 before round 6, whose two new unfinished rows are built and wait for a run on macOS).
+   332 and 142 before round 6; 480, 336 and 144 before round 7; 493, 348 and 145 before the test branch of
+   15 November, whose runs on a Mac finished three rows and decided one).
 5. **Not verified live:** the Codex and Cursor ports in a real session, and the loop with either; the loop with
    Claude Code on Linux; the Hugging Face Jobs route, which is the internet GPU path. All are built and pass tests
    against stand-ins. Each waits for something only you can do (section 9).
@@ -173,19 +176,21 @@ them has run on a Mac. Decision record:
     in a sealed folder, one allowed until then and one asked about, are refused ("Round 5", "The sixth
     installer run on the real install").
 15. **Round 6 prepared the kit for a Mac without a Mac, and found that the guard did not read zsh's
-    patterns** (14 November, on your "Mac readiness"; "Round 6"). Nothing of it has run on macOS. A review
+    patterns** (14 November, on your "Mac readiness"; "Round 6"). Nothing of it had run on macOS when the
+    round ended; its tests did on 15 November (point 17). A review
     of the code had named eight findings: six have a fix, one is a test workflow for GitHub's Linux, Windows
     and macOS runners, which runs when it is pushed, and one, a box for the loop's runs on a Mac, is not
     built, because it could only have been written blind. Run in a real zsh and a real bash, lines such as
     `cat data/(test|x)/labels.csv` and `cat data/[^r]est/labels.csv` printed a sealed file, and the guard
     had let them pass. It reads these patterns now, and it asks about a sealed path behind `<`, `@`, a
-    comma or an option's letter. Several of those lines need neither zsh nor a Mac, so the public version
-    and your real install keep the hole until a push and a seventh installer run, each on your word. An
+    comma or an option's letter. Several of those lines need neither zsh nor a Mac, so the public `main`
+    and your real install keep the hole until a push of `main` and a seventh installer run, each on your
+    word. An
     older limit was found in passing and not changed: a frozen or harness file that a program outside the
     guard's list of write verbs writes (`sort -o`, `curl -o`, `touch`) passes without a question (round 7
     closed it). All seven test files pass in seven
-    interpreters on Windows and in WSL, Python 3.8 to 3.15 ("Round 6", "Tests"); none ran on a Mac.
-    Nothing is pushed.
+    interpreters on Windows and in WSL, Python 3.8 to 3.15 ("Round 6", "Tests"); none ran on a Mac in that
+    round. Since 15 November it is on the public test branch (point 17), not on `main`.
 16. **Round 7 checked a second review claim by claim, fixed what held, and gave the guard a test that looks
     for holes by itself** (14 and 15 November; "Round 7"). The review's claim that the benchmark's evaluator
     runs code from a model file is wrong, by a run (36 files, none ran). Its findings about the guard (four
@@ -202,8 +207,20 @@ them has run on a Mac. Decision record:
     now build those forms: on the final state none of 15,600 generated lines in five shells did harm. That
     is a sample, not a proof, and a path that a program builds while it runs stays outside what a guard
     over command lines can read. All eight test files pass in six interpreters on Windows and in WSL, Python
-    3.8 to 3.15 ("Round 7", "Tests"). Nothing is pushed, nothing ran on a Mac, and your real install has none
-    of it until a seventh installer run, on your word.
+    3.8 to 3.15 ("Round 7", "Tests"). Since 15 November the round is on the public test branch (point 17),
+    not on `main`, and your real install has none of it until a seventh installer run, on your word.
+17. **The kit's tests pass on a Mac, on bare Linux and on Windows on GitHub's machines, and the first run
+    there found one real fault in the kit** (15 November, on your "Push test branch"; "The test branch").
+    Rounds 6 and 7 are public as the branch `test/rounds-6-7`; `main` is as it was. The first run of the
+    workflow failed in four of six jobs. One cause was the kit's: on a Windows account that may create
+    symlinks, which this machine's account may not, a snapshot made a link to a folder again as a link to a
+    file, and on Python 3.8 a launch in a project without git then ended with "Access is denied". It is
+    fixed. The other two causes lay in tests, which compared paths in a way that holds only where a
+    temporary folder has one name. The second run passes in all six jobs: Ubuntu 26.04 and 24.04, macOS 26
+    on Apple silicon with Python 3.14 and with the system's own 3.9, Windows Server 2025; Python 3.8 to
+    3.15; 1,460 to 1,470 checks each, with no third-party package. The generated guard test ran under
+    macOS's bash 3.2 and zsh for the first time, and no line that the guard let pass did harm. Still not
+    run on a Mac: an agent session, training, anything on the Apple GPU, sleep.
 
 ## Round 2 (12 November 2026)
 
@@ -2956,6 +2973,11 @@ push, and I said so before I started. This section is that work: nine commits, `
 on top of the public commit `bc96015`, and the commit of these records. Nothing is pushed. Nothing was run,
 read or changed on your real install.
 
+Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`,
+and its tests have run on GitHub's macOS runner. Where this section says that nothing is pushed, that
+nothing ran on a Mac or that the workflow has not run, "The test branch" (after "Round 7") has what is true
+now. The rest of the section stands as it was written.
+
 **Nothing of this round has run on macOS.** What the section says about a Mac rests on reading the code and
 on documentation, named where it is used. The first run on a Mac will be the workflow's, and a workflow runs
 when it is pushed, which waits for your word ("What needs your decision").
@@ -3261,6 +3283,11 @@ check that finds such defects without a reviewer; then the proposals. The scores
 goal. This section is that work: nine commits, `e777e0b` to `4d0d543`, on top of round 6's, and the commit of
 these records. Nothing is pushed. Nothing was run, read or changed on your real install. **Nothing of this
 round has run on macOS.**
+
+Since then: on your "Push test branch" of 15 November this round is on the public branch `test/rounds-6-7`,
+and its tests have run on GitHub's macOS, Linux and Windows runners. Where this section says that nothing is
+pushed, that nothing ran on a Mac or that the workflow has never run, "The test branch" (the next section)
+has what is true now. The rest of the section stands as it was written.
 
 ### In short
 1. **The report's claim about the evaluator is wrong, and its findings about the guard and the controller are
@@ -3684,7 +3711,8 @@ and the reference before its line 180: no second reader has seen them.
 1. **A push.** I recommend a test branch first, not `main`: the workflow then runs the eight test files on
    GitHub's macOS, Linux and Windows runners (free for a public repository), and the generated test meets
    macOS's zsh and bash 3.2 for the first time. What fails there can be repaired before `main` moves. One
-   word would have to cover the follow-up pushes to that branch.
+   word would have to cover the follow-up pushes to that branch. Answered on 15 November ("Push test
+   branch") and done: "The test branch".
 2. **A seventh installer run on your real install.** It would bring the guard fixes of rounds 6 and 7, the
    stop and lock fixes, the frozen-file hash and one line in the kit's block of `.gitignore`. Know before you
    say yes: the guard there will ask in more cases (point 5 of "In short").
@@ -3692,7 +3720,7 @@ and the reference before its line 180: no second reader has seen them.
    remote-side stop; agent sessions for a powered benchmark; a Mac.
 
 ### Most valuable next steps
-1. Push to a test branch and repair what the three systems show.
+1. Push to a test branch and repair what the three systems show. Done on 15 November ("The test branch").
 2. The seventh installer run, then one ordinary working session there to see which of the new questions get
    in the way.
 3. The powered benchmark: two campaigns per arm showed no difference between the kits, and only more
@@ -3703,6 +3731,191 @@ and the reference before its line 180: no second reader has seen them.
 - PyTorch 2.9.1 as installed here, for the pickle test; zsh 5.9 and bash 5.3.9 in `alpine:3`.
 - arXiv:2603.24647 through arXiv's API and its HTML page, read on 14 November 2026.
 - GitHub's API, `repos/pytorch/ao` (last push), read on 14 November 2026.
+
+## The test branch (15 November 2026): the tests on GitHub's Linux, macOS and Windows machines
+
+After round 7 I asked whether to push rounds 6 and 7 to a test branch, so that the workflow runs the tests on
+GitHub's macOS, Linux and Windows machines, and you answered "Push test branch". I had said what a yes
+covers: the push of this work to the public repository under a test name, follow-up pushes to that branch to
+repair what fails, and the six jobs that each push starts there (free for a public repository), while `main`
+stays. This section is that work: the push of round 7's last commit, `9d2ff12`, as the branch
+`test/rounds-6-7`; three commits for what the first run showed (`bd8350e`, `70b137e`, `97b3211`) and their
+push; and, after the second run, a correction of one page of the kit (`1578bd0`) and the commit of these
+records, pushed to the same branch. `main` is unchanged at `bc96015`. There is no pull request. Nothing was
+run, read or changed on your real install.
+
+### In short
+1. **The kit's tests pass on a Mac, on bare Linux and on a Windows that may create symlinks.** Second run of
+   the workflow, commit `97b3211`: all six jobs pass, 1,460 to 1,470 checks each, with no third-party
+   package. Until this day the tests had run on one machine, on native Windows and in WSL2.
+2. **The first run failed in four of six jobs, and one of its three causes was a fault of the kit.** A
+   project may hold a relative link to one of its own folders. A snapshot makes such a link again, and on
+   Windows it made it as a link to a file, because Windows fixes a link's kind when the link is made and the
+   folder it names is copied after it. The link then opened nothing. In a project that is not a git
+   repository the next step asked whether that name exists, which on Python 3.8 ended the launch with "Access
+   is denied"; on Python 3.15 nothing was reported and the link stayed wrong. It did not show on this machine,
+   whose Windows account may not create symlinks, so that a snapshot here holds junctions and hard links and
+   this code had never run on Windows. Fixed in `bd8350e`, with the check that found it extended.
+3. **The other two causes lay in tests.** One test compared the project folder that `expctl` hands to a run,
+   which `expctl` resolves, with the unresolved name of its temporary folder; GitHub's Windows names that
+   folder in a short form and macOS reaches it through a link, so two checks failed in all four jobs. Another
+   found files in a stand-in home directory after the installer's runs, under macOS's own Python only. The
+   kit was right in both cases (`70b137e`).
+4. **The generated guard test met macOS's own shells for the first time**: bash 3.2.57 and zsh 5.9. Of 450
+   generated lines the guard let 150 and 148 pass, and none of them printed or copied the sealed file or
+   changed the frozen file. The same holds for the other shells of the six jobs.
+5. **What has still not run on a Mac:** an agent session; training, because the runners have no PyTorch, so
+   nothing ran on the Apple GPU; sleep and a closed lid; a box for the loop's runs, which is not built. The
+   runner is a virtual machine (`expctl env` read 7 GB and "Apple M1 (Virtual)"), not a Mac that a person
+   uses.
+6. **`main` does not have rounds 6 and 7.** The guard's holes that those rounds closed are open in the public
+   `main` and on your real install until you say so ("What needs your decision").
+
+### The first run (commit `9d2ff12`)
+| Job | Result | What failed |
+|---|---|---|
+| ubuntu-latest, Python 3.x | passed | |
+| ubuntu-24.04, Python 3.8 | passed | |
+| windows-latest, Python 3.8 | failed | 2 checks of `tests/test_review_fixes.py`; `tests/test_loop.py` ended with an error |
+| windows-latest, Python 3.x | failed | 2 checks of `tests/test_review_fixes.py` |
+| macos-latest, Python 3.x | failed | 2 checks of `tests/test_review_fixes.py` |
+| macos-latest, the system's Python | failed | 2 checks of `tests/test_review_fixes.py`, 1 of `tests/test_ports.py` |
+
+The three causes, each read from the job's log:
+
+1. **The kit, `expctl`'s snapshot** (the error in `tests/test_loop.py`): point 2 above. The check that
+   stumbled over it makes a link to a folder inside a project, which this machine's Windows account cannot
+   do, so the check had only ever run in WSL.
+2. **A test, `tests/test_review_fixes.py`** (two checks, four jobs): point 3 above. `expctl` resolves the
+   project folder before it hands it to a run in `EXP_PROJECT_ROOT` and on the module path, and the test
+   compared those with the name Python gave its temporary folder.
+3. **A test, `tests/test_ports.py`** (one check, one job): after the installer's runs the test's stand-in
+   home directory was not empty under macOS's own Python 3.9.6. The check did not say what it found. From
+   memory, not from a log: that Python keeps its compiled files below the home directory, whatever script it
+   runs. The check now sets compiled files aside and names anything else it finds. The second run passes
+   there, so nothing else was written.
+
+### What changed
+- **`bd8350e`, the kit** (`.claude/skills/nn-training/scripts/expctl.py`, `make_snapshot`). A link from the
+  project is made again in the snapshot with the kind its original has (`target_is_directory`), and whether a
+  name is taken in the snapshot is asked without following a link. `tests/test_loop.py`: the check of such a
+  link now opens a file through it.
+- **`70b137e`, tests only.** `tests/test_review_fixes.py` resolves its temporary folder, as `expctl` does.
+  `tests/test_ports.py`: cause 3 above. Two tests say more about the machine they ran on:
+  `tests/test_guard_live.py` prints each shell's version ("bash" alone did not show that macOS's is 3.2), and
+  `tests/test_loop.py` gives the reason when it skips the sandbox checks. On the Ubuntu 24.04 runner it had
+  said "it is Linux-only", which is wrong there; it now says that bubblewrap is not installed.
+- **`97b3211`, the workflow.** GitHub's macOS image has no tmux, so both Mac jobs skipped the checks of
+  `launch --via tmux`. The job with the newest Python installs tmux with Homebrew; the job with macOS's own
+  Python stays a Mac with nothing installed.
+- **`1578bd0`, one page of the kit**, after the second run. Section 9 of `references/performance.md` (Apple
+  silicon) began "Nothing in this section was run on a Mac", which the two runs made untrue for the kit's own
+  code. It now says that this code has run in the kit's tests on GitHub's macOS runner, which has no PyTorch,
+  that the rest of the section is still read from the pages it names, and that the guard's answers for zsh's
+  patterns were tested on macOS as well. No code and no test changed.
+
+### The second run (commit `97b3211`)
+All six jobs pass. Checks per test file, as each job's log has them:
+
+| Job | Image | Python | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All | Minutes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, 3.x | ubuntu-26.04 | 3.15.2 | 42 | 3 | 861 | 247 | 129 | 92 | 76 | 19 | 1,469 | 10 |
+| ubuntu-24.04, 3.8 | ubuntu-24.04 | 3.8.18 | 42 | 3 | 861 | 241 | 128 | 92 | 76 | 19 | 1,462 | 8 |
+| macos-latest, 3.x | macos-26-arm64 | 3.14.10 | 42 | 6 | 865 | 241 | 129 | 92 | 76 | 19 | 1,470 | 11 |
+| macos-latest, system | macos-26-arm64 | 3.9.6 | 42 | 6 | 861 | 241 | 128 | 92 | 74 | 19 | 1,463 | 12 |
+| windows-latest, 3.8 | windows-2025-vs2026 | 3.8.10 | 42 | 6 | 855 | 242 | 130 | 92 | 74 | 19 | 1,460 | 12 |
+| windows-latest, 3.x | windows-2025-vs2026 | 3.15.2 | 42 | 6 | 855 | 242 | 131 | 92 | 74 | 19 | 1,461 | 17 |
+
+Why the numbers differ, which is what was skipped where:
+
+- **Every job:** the nine benchmark checks that need PyTorch (no job has it).
+- **The loop's sandbox checks** ran on the Ubuntu 26.04 job only (247). They are for Linux, and the Ubuntu
+  24.04 image has no bubblewrap.
+- **The tmux checks** (four in `tests/test_kit.py`, two in `tests/test_review_fixes.py`) ran on both Ubuntu
+  jobs and on the Mac job with tmux 3.8 from Homebrew, and pass there. Windows has no tmux.
+- **Python 3.8 and 3.9:** one check of the Codex agent file, which reads TOML and needs a newer Python.
+- **Checks for a Mac only** ran on both Mac jobs and pass: `caffeinate -i -w <pid>` runs beside a live run
+  and ends when the run is stopped, when its supervisor is killed and with its own parent (four checks), and
+  `expctl env` reports the chip and the memory. A process's start time comes from `ps` there, and the project
+  reached through a link gets the guard's answers of its real path.
+- **The check of a link to a folder in a snapshot** (the first run's fault) ran in all six jobs: on GitHub's
+  Windows the account may create symlinks.
+
+The generated guard test in that run (seed 7; a line counts as harmful when it prints or copies the sealed
+file or changes the frozen file):
+
+| Shell | Jobs | Lines generated | The guard let pass | Harmful |
+|---|---|---|---|---|
+| bash 5.3.9, 5.2.21 | the two Ubuntu jobs | 450 | 149 | 0 |
+| bash 3.2.57 | the two Mac jobs | 450 | 150 | 0 |
+| zsh 5.9 | the two Mac jobs | 450 | 148 | 0 |
+| Git's bash 5.3.15 | the two Windows jobs | 450 | 149 | 0 |
+| PowerShell 7.6.9 | the two Windows jobs | 224 | 76 | 0 |
+
+It is a sample from one seed, as before, not a proof.
+
+### Changes in the behaviour of existing features
+- **A snapshot** (`expctl launch`). A relative link in the
+  project is made again in the snapshot as a link of the same kind. On Windows with the right to create
+  symlinks, a link to a folder therefore works in the snapshot (before: it opened nothing, and on Python 3.8
+  a launch in a project without git ended with an error). A name that is in the snapshot only as a link that
+  cannot be followed counts as taken (before: as free). On Linux and macOS, and on a Windows account without
+  that right, a snapshot is what it was.
+- **The guard, the installer, the sealed test set, the frozen evaluator and the protection of live runs:**
+  not touched.
+- **The workflow** installs tmux on one of its two Mac jobs, from Homebrew, at whatever version Homebrew has
+  that day. It is the only thing a job fetches besides the pinned actions and Python; if it fails, the tmux
+  checks are skipped as before.
+
+Existing tests that changed, each with its reason:
+
+| Test | Change | Reason |
+|---|---|---|
+| `tests/test_review_fixes.py`, setup | its temporary folder is resolved | the two checks compared a path that `expctl` resolves with an unresolved one; they fail wherever a temporary folder has two names |
+| `tests/test_ports.py`, "the installer wrote nothing into the home directory" | compiled files (`.pyc`) do not count; a failure names what was found | they are the interpreter's doing, not the installer's; the check could not say what it had found |
+| `tests/test_loop.py`, the link to a folder that stays inside a snapshot | it also opens a file through the link | reading the link's text passed while the link opened nothing |
+| `tests/test_loop.py`, the skip line of the sandbox checks | it gives the reason: not Linux, not installed, or bubblewrap's own message | "it is Linux-only" was printed on a Linux runner |
+| `tests/test_guard_live.py`, its first line | it names each shell's version | a record of a run did not show which bash judged the lines |
+
+No check was removed.
+
+### What was verified, and how
+- **By running, on GitHub's machines:** both runs above, read from the six job logs of each.
+- **By running, here**, before the second push: the five test files that the three commits touch or that use
+  the changed code, on Windows (Python 3.11.7: `test_review_fixes` 74 checks, `test_ports` 131,
+  `test_guard_live` 6, `test_kit` 855, `test_loop` 241) and in WSL (3.12.3: 76, 129, 3, 861, 247). All pass.
+  The new skip line was run by itself for its three cases.
+- **Not verified:** what the stand-in home directory held in the first run (cause 3 is an explanation from
+  memory that the second run fits). Whether bubblewrap works on a stock Ubuntu 24.04 once it is installed.
+  Python 3.8 on a Mac: the Mac jobs use 3.14.10 and the system's 3.9.6. The clean interpreters of this
+  machine did not repeat their full passes after the three commits; the six jobs are such interpreters. No
+  second reader looked at the three commits. The two commits after the second run change no code and no
+  test: `tests/test_kit.py`, which reads the corrected page, passes with it on Windows (855 checks). Their
+  push starts a third run, whose result is not in this section.
+- **Still unverified on a Mac:** point 5 of "In short".
+
+### What needs your decision
+1. **`main`.** Rounds 6 and 7 and this section's commits are on the test branch only. `main` has not
+   moved since `bc96015`, so it can take them as they are, without a merge commit. Until then the public
+   front page stands for a version without the guard fixes of rounds 6 and 7. The test branch can go after
+   that, which is a deletion in the public repository and waits for your word like the push.
+2. **A seventh installer run on your real install**, as in "Round 7": it brings the guard fixes of rounds 6
+   and 7, and the guard there will ask in more cases.
+3. **Money, accounts, hardware**, only if you want what waits for them: a Mac for one agent session and one
+   training run on the Apple GPU; a rented machine; agent sessions for a powered benchmark.
+
+### Most valuable next steps
+1. `main`, then the seventh installer run.
+2. A seventh job in the workflow: a Mac with PyTorch, so that the nine benchmark checks and a run's record of
+   the `mps` device run on a Mac. It would be the first job that installs a package, so the six others stay as
+   they are. Whether GitHub's virtual Mac offers the Apple GPU to PyTorch is not known.
+3. The powered benchmark, as in "Round 7".
+
+### Sources
+- The two runs of the workflow `tests` on the branch `test/rounds-6-7` of the public repository, 15 November
+  2026 (GitHub Actions runs 43674556212 and 43677359859), their job logs read through GitHub's API that day.
+  Runner images: ubuntu-26.04 and ubuntu-24.04 (20261103.629), macos-26-arm64 (20261028.624),
+  windows-2025-vs2026 (20261103.629).
 
 ## 1. What changed and why
 
@@ -4337,7 +4550,7 @@ leaves the metric unset on purpose.
   bytecode cache was written there.
 
 ## 5. The ledger in summary
-`docs/upgrade/LEDGER.md` has one row per candidate (1,620 rows from 33 notes), a coverage map with one
+`docs/upgrade/LEDGER.md` has one row per candidate (1,650 rows from 34 notes), a coverage map with one
 entry per gap and per "Find the rest" item, the recommended combination, and a table of the points where notes
 disagree and which side the kit follows. The 26th note, `scout/draft/second-look.md`, was written after the live
 runs: it ranks the open rows, adds ten, and holds what the pilot's own data says about the loop's keep rule.
@@ -4346,13 +4559,14 @@ Round 2 added four notes with 82 rows: `census-loops` (15), `census-harnesses` (
 89 claims of the review of 14 November, 13 rows for the fixes that followed the round's independent review
 and two for the faults that the round's last full test run found. Round 6 added one, `round6`, with 11 rows:
 six for what was built for the Mac, four for what waits for a Mac, and one for a limit of the guard that the
-round found and did not change.
+round found and did not change. Round 7 added one, `round7`, with 30 rows: the claims and proposals of the
+second review. The test branch of 15 November added none.
 
 | Decision | Rows | Before round 2 | |
 |---|---|---|---|
-| Adopt | 480 | 399 | 336 finished, 144 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474 |
-| Trial, Assess | 237, 325 | 221, 293 | undecided: each names the test it needs; none of these tests was run (usage limit; of round 6's five, four need a Mac and one is put to you); before round 5: 224 and 314; before round 6: 233 and 324 |
-| Hold, Reject | 324, 254 | 310, 193 | with the reason; before round 5: 320 and 225 |
+| Adopt | 494 | 399 | 352 finished, 142 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493 |
+| Trial, Assess | 239, 326 | 221, 293 | undecided: each names the test it needs. Two of these tests have been run, and both rows are Adopt now: round 7 ran the one for the guard's write verbs, the test branch the one for the path comparisons on a Mac. The others were not run (usage limit; some need a Mac, money or agent sessions); before round 5: 224 and 314; before round 6: 233 and 324; before round 7: 237 and 325; before the test branch: 239 and 327 |
+| Hold, Reject | 328, 263 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254 |
 
 - What "Trustworthy decisions" (section 1) changed here: eight adopted rows became finished. Six more are built
   in part and stay unfinished, each saying which part: the confirmation outside the loop, a third data tier
@@ -4386,7 +4600,16 @@ round found and did not change.
   list of write verbs. One is Assess: the path comparisons where `/tmp` and `/var` are links into
   `/private`. Two rows of the note `platforms` stay unfinished with new text: the notes on Apple silicon
   exist while the device field in run records does not, and the test matrix is a workflow that has not run
-  ("Round 6").
+  ("Round 6"). That is the state round 6 left; the next two points say what changed since.
+- What round 7 changed here: the note `round7` has 30 rows. Twelve are adopted and finished, 9 are Reject, 4
+  Hold, 3 Trial and 2 Assess. Round 6's Trial row about the guard's list of write verbs is Adopt and
+  finished: round 7 ran its test and built the change. One row went from finished to unfinished: PyTorch's
+  pinned GPU build, whose enabling step had crashed on this machine's GPU on 11 November ("Round 7").
+- What the test branch changed here (15 November): no new row. Three adopted rows are finished that were
+  not: the test matrix, which has run on GitHub's Ubuntu, macOS and Windows machines, and round 6's two rows
+  whose checks run on macOS only (`caffeinate`, the report of a Mac's chip and memory). The Assess row about
+  the path comparisons is Adopt and finished: the test it named has run on a Mac, and the one fault it
+  showed lay in a test. Five rows that keep their decision have new text ("The test branch").
 - Added on 12 November, at the user's question whether other projects would do better: four rows for candidates
   no note held. Fine-tuning a small model on a stronger agent's solved traces before RL (a TRL example): Trial.
   Harness adapters (one LoRA per model and agent harness, trained by RL inside the harness): Hold. The safeagents

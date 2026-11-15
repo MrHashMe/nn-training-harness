@@ -38,7 +38,7 @@ evaluator trusted first, and what a campaign keeps is a candidate that still goe
 | `seeds` | The seed panel, at least two whole numbers. Every kept change was trained on all of them. A near-miss is also trained on the seeds that follow the largest one (with 1, 2, 3: on 4, 5, 6). |
 | `run_budget_s` | Wall-clock budget of one run, start-up and saving included; a run that exceeds it is cut off and its iteration is invalid. |
 | `editable_paths` | Globs the agent may change. They may not overlap frozen, sealed or harness paths. |
-| `min_margin`, `noise_mult` | Keep rule: the mean improvement over the seed panel must exceed `max(min_margin, t × sd × sqrt(1/c + 1/b))`, with `c` runs of the change and `b` runs of the best so far (both the panel's size until a near-miss doubles them). `sd` is the run-to-run deviation pooled over every full seed panel of the campaign, the change's own included (they can raise it, not lower it, and a change whose scores vary far more is tested with its own variance: "The keep rule" below). `t` is the multiplier of Student's t-test that keeps a change without effect as rarely as `noise_mult` (default 2: about 2 %) would with a known deviation; see "The keep rule" below. |
+| `min_margin`, `noise_mult` | Keep rule: the mean improvement over the seed panel must exceed `max(min_margin, t × sd × sqrt(1/c + 1/b))`, with `c` runs of the change and `b` runs of the best so far (both the panel's size; twice that at a near-miss's second look). `sd` is the run-to-run deviation pooled over every full seed panel of the campaign, the change's own included (they can raise it, not lower it, and a change whose scores vary far more is tested with its own variance: "The keep rule" below). `t` is the multiplier of Student's t-test that keeps a change without effect as rarely as `noise_mult` (default 2: about 2 %) would with a known deviation; see "The keep rule" below. |
 | `confirm` | `false` turns off the confirmation on fresh seeds at the campaign's end (step 4 below) and the share of the limits held back for it. Default: on. |
 | `search_trials` | A whole number of at least 2: a change may then leave numeric settings to the harness, which trains up to that many versions of it and tests the best one (see "A search by the harness" below). Left out: no search, and the worker is not told of one. |
 | `restart_after` | A whole number of at least 1: after that many iterations in a row without a keep, the campaign goes back to the commit before its last keep and looks in another direction from there (see "A restart when the campaign stalls" below). Left out: no restart. |
@@ -225,7 +225,9 @@ is then taken on all seeds of both, with `noise_mult` raised by a tenth because 
 one panel for the change and, the first time, one for the best so far; when the run, time or GPU-hour limits
 have no room for that, each run counted at its cut-off, the change stays `inconclusive` and nothing is trained.
 The ledger row keeps the first look (`first`), and later changes are compared
-with the best so far's mean over all of its runs. A second look late in a campaign can use the runs the
+with the best so far's mean over all of its runs. The margin at their first look counts the best so far as one
+seed panel all the same (since 15 November 2026; before, as all of its runs, a margin 13 % smaller: "The margin
+after a second look" below). A second look late in a campaign can use the runs the
 confirmation needs: the confirmation is then `not_run` until a `resume` with a higher run limit. A stop that
 arrives while the best so far is trained on the second panel loses those runs: the next near-miss trains them
 again.
@@ -267,6 +269,20 @@ that variance brought the 7.5 % down to 5.7 % but cost 1 to 2 more points of pow
 two seeds, mean a multiplier of 13.9 that no change passes; they were not adopted. Testing a change before its
 runs join the pool, the simpler repair, was worse on both counts (15 % for the noisy change, 44 % power at the
 first change). The whole-campaign simulation of 12 November was not repeated with the new rules.
+
+The margin after a second look. Once a near-miss has put the best so far on two panels, its mean leans to the
+poor side: a near-miss comes more often when the best so far's own panel turned out poorly. Simulated on
+15 November 2026 with the rule as built (campaigns of 34 runs, three seeds, normal noise, the seed carrying 0,
+0.3 or 0.5 of the variance; 100,000 campaigns per case of ideas without effect; one test's nominal rate is
+2.3 %): a later change without effect was kept in 2.96 %, 2.35 % and 2.14 % of cases with the margin for six
+runs, and in 1.85 %, 1.36 % and 1.22 % with the margin for three, which is the rule since that day. Campaigns
+with at least one such keep fell from 12.5 to 11.3 %, from 7.2 to 6.5 % and from 4.7 to 4.2 %. With the mix
+of harmful, neutral and helpful ideas of 12 November (60,000 campaigns per case) the true gain of the commit a
+campaign ended on stayed where it was (3.86 to 4.04 deviations; differences of 0.02 or less at an error of
+0.015 per figure). The other remedy, comparing the change with the best so far's mean on the change's own three
+seeds, kept more changes without effect where the seed carries little of the variance (3.83 % and 2.71 % at 0
+and 0.3, 2.02 % at 0.5) and was not adopted. Not simulated: noise that is not normal, a change that alters the
+noise, a campaign with restarts.
 
 Runs are not compared seed by seed. Measured on the benchmark on 12 November 2026 (two commits, eight seeds,
 two repeats each): the seed means of the two commits correlated at r = 0.3, no more than runs of unrelated

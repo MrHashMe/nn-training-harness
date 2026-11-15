@@ -1037,16 +1037,18 @@ class Campaign:
     def margin(self, ahead=0, nc=None, nb=None, mult=1.0, rest=None, own=0.0):
         """What the mean must gain for a keep: a t-test on the pooled run-to-run deviation, at the false-keep rate
         that noise_mult would give if the deviation were known. ahead: the degrees of freedom the next panel adds
-        before its decision, for the margin that is shown beforehand. nc, nb: the runs behind the change's mean (one
-        seed panel unless given) and behind the mean it is compared with (the best so far's unless given). mult: a
+        before its decision, for the margin that is shown beforehand. nc, nb: the runs behind the change's mean and
+        behind the mean it is compared with, each one seed panel unless given. A best so far that a second look put
+        on two panels counts as one at a later change's first look all the same: a near-miss comes more often when
+        the best so far's own panel turned out poorly, so its mean leans that way, and with the margin for all of
+        its runs changes without effect were kept more often than the rule's rate (references/loop.md). mult: a
         factor on noise_mult. rest: the noise estimate without the change's own panels, which may raise the variance
         its gain is tested against and never lower it. own: the variance of the change's scores, which stands for
         the pooled one in the change's mean where it is more than OWN times as large."""
         L, z, n = self.L, self.st["noise"], len(self.L["seeds"])
         t = t_mult(mult * float(L.get("noise_mult") or 2), z["df"] + ahead)
-        nb = nb or len((self.st.get("baseline") or {}).get("scores") or L["seeds"])
         v = max(z["ss"] / z["df"], rest["ss"] / rest["df"] if rest and rest["df"] else 0.0)
-        return max(float(L.get("min_margin") or 0), t * math.sqrt((own if own > OWN * v else v) / (nc or n) + v / nb))
+        return max(float(L.get("min_margin") or 0), t * math.sqrt((own if own > OWN * v else v) / (nc or n) + v / (nb or n)))
 
     def unpool(self, scores, rest):
         """Take a change's panels out of the noise estimate again where one of its runs went astray: a score farther
@@ -1498,7 +1500,8 @@ class Campaign:
                 while status is None:  # at most twice: a near-miss is decided again, on more seeds
                     mean = statistics.mean(scores.values())
                     entry["delta"] = delta = sign * (mean - base["mean"])
-                    entry["margin"] = m = self.margin(nc=len(scores), mult=STRICTER if again else 1.0, rest=rest,
+                    entry["margin"] = m = self.margin(nc=len(scores), nb=len(base["scores"]) if again else None,
+                                                      mult=STRICTER if again else 1.0, rest=rest,
                                                       own=statistics.variance(scores.values()))
                     on = f" on {len(scores)} seeds" if again else ""
                     if delta > m:

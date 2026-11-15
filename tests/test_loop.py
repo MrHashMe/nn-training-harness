@@ -971,15 +971,17 @@ def second_panel(tmp, proj, exe):
                                                            ("baseline", 3), ("baseline", 4)]
           and [e["type"] for e in led[5:]] == ["iteration"] * 4 + ["confirm", "stop"] and st["counters"]["runs"] == 16,
           "the best so far is trained on the second panel once: the next near-miss reuses those runs")
-    check(near(b["first"]["margin"], tm(2, 4) * root(0.000632, 4, 0.75)) and near(b["delta"], 0.03) and b["why"] == "on 4 seeds"
+    check(near(b["first"]["margin"], tm(2, 4) * root(0.000632, 4, 1.0)) and near(b["delta"], 0.03) and b["why"] == "on 4 seeds"
           and near(b["margin"], tm(2.2, 5) * root(0.000432, 3, 0.5)) and len(b["runs"]) == 4
           and b["commit"] == st["kept_commit"] == git(proj, "rev-parse", "nnloop/p"),
-          "against a best so far that has four runs the margin is smaller, and a near-miss that holds on four seeds is "
-          "kept; its own two panels, which vary less than the three before them, do not lower the variance it is "
-          "tested against (was: 0.000664 / 5 with them, now 0.000432 / 3 without)")
+          "a best so far that has four runs counts as one seed panel at the next change's first look (was: as its four "
+          "runs, a margin 13 % smaller, with which changes without effect were kept too often), and a near-miss that "
+          "holds on four seeds is kept, there against all four; its own two panels, which vary less than the three "
+          "before them, do not lower the variance it is tested against (was: 0.000664 / 5 with them, now 0.000432 / 3 "
+          "without)")
     check(near(z.get("ss"), 0.000664) and z.get("df") == 5 and len(st["baseline"]["scores"]) == 4
           and near(st["baseline"]["mean"], 1.04) and near(st["start_mean"], 1.01)
-          and near(st["margin"], tm(2, 6) * root(0.000664, 5, 0.75)),
+          and near(st["margin"], tm(2, 6) * root(0.000664, 5, 1.0)),
           "each second panel with spread enters the noise as its own group, and the kept change's four runs are the new "
           "baseline")
     check(cf.get("status") == "not_reproduced" and len(cf.get("seeds") or []) == 2 and not set(cf["seeds"]) & {1, 2, 3, 4}

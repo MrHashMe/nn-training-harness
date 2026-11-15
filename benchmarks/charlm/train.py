@@ -65,6 +65,13 @@ class LM(nn.Module):
         return self.head(self.ln(x))
 
 
+def uncompiled(model):
+    """The module to trace for the model file. What torch.compile returns cannot be traced; the module it wraps
+    (_orig_mod) can, and holds the same weights. Only torch's own wrapper is taken off: a module of a change's own
+    that keeps another one under that name is saved whole."""
+    return model._orig_mod if type(model).__module__.startswith("torch._dynamo") else model
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--seed", type=int, default=int(os.environ.get("EXP_SEED") or 1))
@@ -121,9 +128,8 @@ def main():
             rl.log(step, **{"dev/loss": dl})
         model.eval()
         example = torch.zeros(EVAL_BATCH, BLOCK, dtype=torch.long, device=dev)
-        # What torch.compile returns cannot be traced; the module it wraps (_orig_mod) can, and holds the same
-        # weights. Nor can a forward that calls a hand-written torch.autograd.Function be saved (README.md)
-        torch.jit.trace(getattr(model, "_orig_mod", model), example).save(str(out / "model.ts"))
+        # after model.eval(): a forward that calls a hand-written torch.autograd.Function cannot be saved (README.md)
+        torch.jit.trace(uncompiled(model), example).save(str(out / "model.ts"))
         if rl:  # names the saved model as the run's result: without it `expctl status` lists no best run
             rl.checkpoint(out / "model.ts", step=step, value=dl, is_best=True)
         print(json.dumps({"dev_loss": dl, "steps": step, "seconds": round(time.time() - t0, 1)}), flush=True)

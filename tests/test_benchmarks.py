@@ -246,9 +246,10 @@ else:
     woke = answer("Wakes", buf.getvalue())
     by_evaluator = mark.exists()
     torch.jit.load(io.BytesIO(buf.getvalue()))
-    check(woke[0] == 3 and "reads or writes files" in woke[1].get("error", "") and not by_evaluator,
+    check(woke[0] == 3 and "reads or writes files" in woke[1].get("error", "") and not by_evaluator and mark.exists(),
           "a model file whose code writes a file while it is loaded (__setstate__) is refused before the evaluator "
-          f"loads it, and nothing is written ({woke}; a plain torch.jit.load of the same file wrote it: {mark.exists()})")
+          f"loads it, and nothing is written, while a plain torch.jit.load of the same file writes it ({woke}; written "
+          f"by the evaluator: {by_evaluator}, by the plain load: {mark.exists()})")
 
     # A hand-written torch.autograd.Function, as a faster kernel has one, cannot be saved in a model file. Used
     # while the model trains only, with the same arithmetic in plain operations otherwise, it can: train.py traces
@@ -282,10 +283,48 @@ else:
     except Exception as e:  # noqa: BLE001
         training = type(e).__name__
     both, plain = answer("Both", traced(Both().eval())), answer("Plain", traced(Plain().eval()))
-    check(both[0] == plain[0] == 0 and abs(both[1].get("score", 0) - plain[1].get("score", 1)) < 1e-9,
+    check(both[0] == plain[0] == 0 and abs(both[1].get("score", 0) - plain[1].get("score", 1)) < 1e-9
+          and training != "saved",
           "a model that calls a hand-written autograd function while it trains, and plain operations otherwise, is "
-          f"saved after model.eval() and scored like the same model in plain code ({both}, {plain}; saving it in "
-          f"training mode: {training})")
+          f"saved after model.eval() and scored like the same model in plain code, while saving it in training mode "
+          f"fails ({both}, {plain}; in training mode: {training})")
+
+    # train.py's own choice of the module it traces: the one that torch.compile wraps, and nothing else that keeps a
+    # module under the name torch.compile uses
+    path = list(sys.path)
+    spec = importlib.util.spec_from_file_location("charlm_train", TASK / "train.py")
+    charlm_train = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(charlm_train)
+    sys.path[:] = path  # train.py puts its own folder first
+
+    class Wraps(torch.nn.Module):  # a module of a change's own that keeps another one as _orig_mod
+        def __init__(self):
+            super().__init__()
+            self._orig_mod = Plain()
+
+        def forward(self, idx):
+            return self._orig_mod(idx) * 2
+
+    inner, own = Plain().eval(), Wraps().eval()
+    try:
+        compiled = torch.compile(inner)
+    except Exception as e:  # noqa: BLE001
+        print(f"SKIP saving a model that was trained under torch.compile: torch.compile does not start here "
+              f"({type(e).__name__}: {str(e)[:150]})")
+    else:
+        try:
+            traced(compiled)
+            direct = "saved"
+        except Exception as e:  # noqa: BLE001
+            direct = type(e).__name__
+        got = answer("Compiled", traced(charlm_train.uncompiled(compiled)))
+        check(charlm_train.uncompiled(compiled) is inner and charlm_train.uncompiled(inner) is inner
+              and charlm_train.uncompiled(own) is own and direct != "saved"
+              and got[0] == 0 and abs(got[1].get("score", 0) - plain[1].get("score", 1)) < 1e-9,
+              "train.py saves the module that torch.compile wraps, which scores like the same model never compiled, "
+              "while what torch.compile returns cannot be traced; a module of a change's own that keeps another one as "
+              "_orig_mod is saved whole (was: taken apart, and only the inner one saved) "
+              f"({got}; tracing what torch.compile returned: {direct})")
 
 # 2. a project with the kit
 p = tmp / "with-kit"

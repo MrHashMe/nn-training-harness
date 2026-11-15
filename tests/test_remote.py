@@ -171,25 +171,53 @@ def unit_tests(tmp):
         booked = [{"run": str(e)}]
     check(ends == [0] * 8 and len({r["run"] for r in booked}) == 800 and abs(nnremote.committed(booked) - 8) < 1e-6,
           f"ledger rows that eight processes book at the same moment all survive ({len(booked)} of 800, {booked[0]['run'][:60]})")
-    # Two launches reserve at the same moment, and together they exceed the cap: the one whose row came first
-    # holds, the later one gives way. Here the rival's row lands just before, or just after, this launch's own
-    real_book, got = nnremote.book, []
-    for where in ("before", "after"):
-        def racing(root, **row):
-            for turn in ("before", "mine", "after"):
-                if turn == "mine":
-                    real_book(root, **row)
-                elif turn == where and row.get("event") == "reserve":
-                    real_book(root, event="reserve", run="rival", usd=0.8)
-        nnremote.book = racing
+    # Two launches reserve at the same moment, and together they exceed the cap. A launch holds the ledger's lock
+    # from its read to its write, so the rival here is a writer that got no lock (expctl.locked gives up after
+    # about 3 s on Windows, and not every file system has one): its row lands behind this launch's read, or behind
+    # its write. The ledger's order decides: the earlier row holds, the later launch gives way. In the third case
+    # this launch's own row is not in the ledger when it looks again
+    real_ledger, got = nnremote.ledger, []
+    rival = (json.dumps({"event": "reserve", "run": "rival", "usd": 0.8}) + "\n").encode()
+    for where in ("before", "after", "lost"):
+        looks = []
+
+        def racing(root):
+            looks.append(root)  # a launch looks three times: before the lock, under it, and after its own row
+            at = (len(looks), where)
+            if at == (3, "after"):
+                with open(nnremote.ledger_path(root), "ab") as f:
+                    f.write(rival)
+            rows = [] if at == (3, "lost") else real_ledger(root)
+            if at == (2, "before"):
+                with open(nnremote.ledger_path(root), "ab") as f:
+                    f.write(rival)
+            return rows
+        nnremote.ledger = racing
         try:
             got.append(nnremote.reserve(tmp / ("race-" + where), {"cap_usd": 1.0}, "mine", "t", 0.8, 1))
-        except nnremote.Refuse:
-            got.append("refused")
-        nnremote.book = real_book
-    left = nnremote.committed(nnremote.ledger(tmp / "race-before"))
-    check(got == ["refused", 0.8] and abs(left - 0.8) < 1e-9,  # was: both refused, and nothing started
-          f"of two reservations at the same moment the earlier row holds and the later gives way ({got}, {left})")
+        except nnremote.Refuse as e:
+            got.append("gave way" if "same moment" in str(e) else "not booked" if "did not reach" in str(e) else str(e))
+        nnremote.ledger = real_ledger
+    left = [nnremote.committed(nnremote.ledger(tmp / ("race-" + where))) for where in ("before", "lost")]
+    check(got == ["gave way", 0.8, "not booked"] and abs(left[0] - 0.8) < 1e-9 and left[1] == 0,
+          f"of two reservations at the same moment the earlier row holds and the later gives way, and a launch whose "
+          f"own row is missing from the ledger starts nothing (was: it went on) ({got}, {left})")
+    # Three launches at the same moment, $4, $4 and $1 against a cap of $5. Each one's look at the ledger takes
+    # 0.3 s, so that without the lock all three have read before one writes
+    code = ("import sys, time; sys.path.insert(0, sys.argv[1]); import nnremote; from pathlib import Path\n"
+            "read = nnremote.ledger\n"
+            "def slow(root):\n    rows = read(root)\n    time.sleep(0.3)\n    return rows\n"
+            "nnremote.ledger = slow\n"
+            "try:\n    nnremote.reserve(Path(sys.argv[2]), {'cap_usd': 5.0}, sys.argv[3], 't', float(sys.argv[4]), 1)\n"
+            "except nnremote.Refuse:\n    sys.exit(3)")
+    ps = [subprocess.Popen([PY, "-c", code, str(KIT / SCRIPTS), str(tmp / "three"), run, usd])
+          for run, usd in (("a", "4"), ("b", "4"), ("c", "1"))]
+    ends = [p.wait() for p in ps]
+    three = nnremote.ledger(tmp / "three")
+    check(sorted(ends[:2]) == [0, 3] and ends[2] == 0 and abs(nnremote.committed(three) - 5) < 1e-9
+          and [r["event"] for r in three] == ["reserve", "reserve"],
+          f"of three launches at the same moment one large one reserves and the small one beside it (was: the small "
+          f"one was refused in three rounds of four, although it fitted) ({ends}, {three})")
     counted = type("Drv", (), {"since": nnremote.time.monotonic() - 36})  # its controller has counted 36 s
     check(nnremote.used_s({"started_ts": 2000.0}, counted, 1000.0) >= 36 and nnremote.used_s({}, counted, 1000.0) == 0
           and nnremote.used_s({"started_ts": 964.0}, object(), 1000.0) == 36,

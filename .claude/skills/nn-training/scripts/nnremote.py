@@ -17,6 +17,7 @@ paid starts without a cap that covers it. Read references/remote.md before the f
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import io
 import json
@@ -137,27 +138,26 @@ def committed(rows):
     return sum(per.values())
 
 
-def book(root, **row):
-    """Append a row to the ledger. Launches and controllers book at the same moment, and on Windows two appends
-    can land on one offset, where one line destroys the other: a lost reservation would leave the cap
-    under-counted. So the writer first locks one byte far beyond the end of the file, where no reader meets it
-    (the guard's log is written the same way); closing the file ends the lock."""
+@contextlib.contextmanager
+def booking(root):
+    """The ledger under its lock (expctl.locked); gives a function that appends a row. Launches and controllers
+    book at the same moment. On Windows two appends can land on one offset, where one line destroys the other: a
+    lost reservation would leave the cap under-counted. And two launches that both read the ledger before either
+    wrote would each see room that only one of them has, so a launch holds the lock from its read to its write."""
     p = ledger_path(root)
     p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, "a", encoding="utf-8") as f:
-        if os.name == "nt":
-            import msvcrt
-            for _ in range(300):  # about 3 s; after that it writes unlocked rather than lose the row
-                try:
-                    os.lseek(f.fileno(), 1 << 40, 0)
-                    msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
-                    break
-                except OSError as e:
-                    if e.errno != 13:  # 13 (EACCES): another writer holds the lock; anything else: no locking here
-                        break
-                    time.sleep(0.01)
-            os.lseek(f.fileno(), 0, 2)
-        f.write(json.dumps({"ts": round(time.time(), 1), **row}) + "\n")
+    with expctl.locked(p) as f:
+        def put(**row):
+            f.seek(0, 2)
+            f.write((json.dumps({"ts": round(time.time(), 1), **row}) + "\n").encode("utf-8"))
+            f.flush()
+        yield put
+
+
+def book(root, **row):
+    """Append a row to the ledger."""
+    with booking(root) as put:
+        put(**row)
 
 
 def hourly_rate(target, tgt, st):
@@ -192,19 +192,31 @@ def reserve(root, st, run_id, target, rate, hours):
         raise Refuse(f'no spending cap is set: nothing paid starts until the user has put "cap_usd" into the '
                      f'"remote" section of {expctl.CONFIG_REL}')
     usd = round(hours * rate, 4)
-    before = committed(ledger(root))
-    if before + usd > cap + 1e-9:
-        raise Refuse(f"the cap does not cover this run: ${usd:.4g} to reserve ({hours:g} h x ${rate:.4g}/h), "
-                     f"${before:.4g} already committed, cap ${cap:.4g}")
-    book(root, event="reserve", run=run_id, target=target, usd=usd, hours=hours, rate=rate)
-    # Another launch may have reserved at the same moment. The ledger's order decides: the launch whose row came
-    # first keeps its reservation, the later one gives way. (Until 14 November 2026 both gave way.)
+
+    def room():
+        before = committed(ledger(root))
+        if before + usd > cap + 1e-9:
+            raise Refuse(f"the cap does not cover this run: ${usd:.4g} to reserve ({hours:g} h x ${rate:.4g}/h), "
+                         f"${before:.4g} already committed, cap ${cap:.4g}")
+
+    room()  # first without the lock, which creates the file: a refusal here leaves no ledger behind
+    with booking(root) as put:  # launches at the same moment take turns from this read to the write
+        room()
+        put(event="reserve", run=run_id, target=target, usd=usd, hours=hours, rate=rate)
+    # Where no lock was to be had (expctl.locked) another launch may still have reserved at the same moment. Then
+    # the ledger's order decides: the launch whose row came first keeps its reservation, the later one gives way.
+    # (Until 14 November 2026 both gave way. Until 15 November nothing was held from the read to the write: of
+    # three launches at once, one that fitted beside the first was refused, and a launch whose own row was
+    # missing from the ledger went on.)
     rows = ledger(root)
-    mine = max((i for i, r in enumerate(rows) if r.get("event") == "reserve" and r.get("run") == run_id),
-               default=len(rows) - 1)
-    if committed(rows[:mine + 1]) > cap + 1e-9:
-        book(root, event="settle", run=run_id, usd=0.0, why="lost the race for the rest of the cap")
-        raise Refuse("another launch reserved the rest of the cap at the same moment")
+    mine = max((i for i, r in enumerate(rows) if r.get("event") == "reserve" and r.get("run") == run_id), default=None)
+    if mine is None or committed(rows[:mine + 1]) > cap + 1e-9:
+        raced = mine is not None
+        book(root, event="settle", run=run_id, usd=0.0,
+             why="lost the race for the rest of the cap" if raced else "the reservation did not reach the ledger")
+        raise Refuse("another launch reserved the rest of the cap at the same moment" if raced else
+                     f"this launch's reservation did not reach {expctl.rel_to(root, ledger_path(root))}; nothing "
+                     f"paid starts without it")
     return usd
 
 

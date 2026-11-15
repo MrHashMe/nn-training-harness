@@ -68,6 +68,7 @@ from __future__ import annotations
 
 import argparse
 import calendar
+import contextlib
 import csv
 import hashlib
 import itertools
@@ -2236,11 +2237,12 @@ FINAL_DIR = ".claude/state/final-eval"
 FINAL_SHARED = "nn-training-final-eval.jsonl"  # in git's common folder, which outlives a removed worktree
 
 
-def chained(path: Path, row):
-    """Append a row to a record of the kind ledger_rows() reads. Two writers at the same moment would both read
-    the same last line and the chain would break, so the writer holds a lock from its read to its write: on
-    Windows one byte far beyond the end of the file, where no reader meets it (as nnremote.book() does),
-    elsewhere flock. Where no lock is to be had it writes without one rather than lose the row."""
+@contextlib.contextmanager
+def locked(path: Path):
+    """The file, open to read and to append bytes, under a lock that other writers of it wait for: on Windows one
+    byte far beyond the end of the file, where no reader meets it, elsewhere flock. Where no lock is to be had
+    (after about 3 s on Windows, or on a file system without one) the caller goes on without it rather than lose
+    its row. Not to be taken a second time inside: flock would wait for itself."""
     with open(path, "ab+") as f:
         if os.name == "nt":
             import msvcrt
@@ -2259,6 +2261,13 @@ def chained(path: Path, row):
                 fcntl.flock(f.fileno(), fcntl.LOCK_EX)
             except (ImportError, OSError):
                 pass
+        yield f
+
+
+def chained(path: Path, row):
+    """Append a row to a record of the kind ledger_rows() reads. Two writers at the same moment would both read
+    the same last line and the chain would break, so the writer holds the file's lock from its read to its write."""
+    with locked(path) as f:
         f.seek(0)
         lines = f.read().splitlines()
         prev = hashlib.sha256(lines[-1]).hexdigest() if lines else ""

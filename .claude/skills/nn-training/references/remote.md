@@ -64,7 +64,9 @@ where `nnremote` can call it, sign in with `hf auth login` on an account that ma
 ## Money
 - A target with a price needs `--hours`. Before anything starts, hours × price is reserved in
   `.claude/state/remote-ledger.jsonl` (a guarded file). If the cap does not cover what is already committed plus
-  the reservation, nothing starts and the refusal gives the numbers.
+  the reservation, nothing starts and the refusal gives the numbers. Launches at the same moment take turns: each
+  holds the ledger's lock from its read to its write. Where no lock is to be had, the ledger's order decides and
+  the later launch gives way.
 - The job cannot outlive its hours: a Hugging Face job is started with the provider's own `--timeout` of that
   length, the run gets a deadline a little earlier so that it can save, and the controller cancels what is left.
   A run can therefore never cost more than its reservation, and the sum of reservations never passes the cap.

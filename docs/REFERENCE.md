@@ -211,7 +211,9 @@ this kit, with the 23 October kit and with no kit on the benchmark task (it uses
 stops when the agent reports that further usage would be billed per use). Two pilots, with two and with five runs
 per arm, on one task, one machine and one model, are in `docs/upgrade/REPORT.md`, section 2: this kit's edge over the
 23 October kit (0.0044 in test loss with five runs per arm, p = 0.54) is not more than the run-to-run noise, and
-neither kit was shown to beat running the agent with no kit.
+neither kit was shown to beat running the agent with no kit. Since 15 November 2026 `references/optimization.md`
+holds an optimizer result measured on this very task, so the kit's arm of a later pilot starts with knowledge of
+the task that the other arms lack: read its edge with that in mind, or run the pilot on another task.
 
 ## Notes and limits
 - The guard is a seatbelt, not a sandbox: a program can still build a path at run time. For hard isolation keep

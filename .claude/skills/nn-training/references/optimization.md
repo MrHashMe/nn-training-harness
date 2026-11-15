@@ -1,6 +1,7 @@
 # Optimization: optimizers, schedules, warmup, weight decay and scaling rules
 
-Checked: 2026-11-11 (gradient clipping: 2026-11-12; cautious weight decay and the two Muon variants: 2026-11-14)
+Checked: 2026-11-11 (gradient clipping: 2026-11-12; cautious weight decay and the two Muon variants: 2026-11-14;
+Muon measured on the kit's benchmark: 2026-11-15)
 Refresh: re-read the cited papers and the PyTorch optimizer docs of the installed version; scout the AlgoPerf rolling
 leaderboard (https://github.com/mlcommons/algorithmic-efficiency) for newer optimizer results.
 
@@ -40,19 +41,33 @@ adaptive schemes are candidates below.
   that control removed Muon's gain in agentic RL. In AlgoPerf, LR and momentum were the most influential settings.
   Cost: more runs per claim. (source: https://arxiv.org/abs/2609.23055, 19 Sep 2026;
   https://arxiv.org/abs/2607.16169, 2 Aug 2026)
+- Muon as the first challenger. When: a transformer trained from scratch, once the AdamW baseline is tuned. How:
+  `torch.optim.Muon` (PyTorch 2.9+; bf16 momentum-aliasing fix in 2.15.0, scope inferred) for the 2-D weights inside
+  the blocks only, AdamW for embeddings, head, norms and biases; one warmup-and-decay factor on both optimizers; tune
+  both peak rates over a wide range. The best Muon rate here was 20 times PyTorch's default:
+  `Muon(hidden, lr=0.02, weight_decay=0, adjust_lr_fn="original")` beside AdamW at 1e-3 (the signature's defaults:
+  `lr=0.001, weight_decay=0.1, momentum=0.95, ns_steps=5, adjust_lr_fn=None`). Measured here, 2026-11-15
+  (`benchmarks/charlm`: a 1.8M-parameter character model, 30 s runs on one RTX 5090, PyTorch 2.9.1, seeds 11 to 13,
+  held-out loss in nats per character): Muon with AdamW 1.6483 (sd 0.0077) against 1.6748 (sd 0.0102) for AdamW
+  alone at its best rate under the same schedule, a difference of 0.0265 or 3.6 standard errors. A step cost 1.84
+  times as much (2717 steps against 4999), so Muon won by loss per step, not by speed. Both peak rates were
+  bracketed on a development seed, seven settings per family. Published: about 1.4x with correct width scaling of
+  LR and weight decay (190M to 1.4B), vanishing under wrong scaling; vendor-measured at 8B to 72B; kept 47% of its
+  per-workload score under one fixed configuration in AlgoPerf; convolution weights did better with AdamW. Risk:
+  one small task, one machine and three seeds here; AdamW's loss was still falling when the budget ended and
+  Muon's was flat, so the gap may narrow in a longer run; the AdamW run with matched update RMS (the rule above)
+  was not made; weight decay was not tuned (0 for Muon, 0.01 for AdamW); `"match_rms_adamw"`, which eases LR
+  transfer, was not ranked, because its best tried rate was the highest tried; FSDP2 use is undocumented
+  (unverified). Cost: a second optimizer and, at this size, almost twice the time per step.
+  (source: `benchmarks/charlm`, measured 2026-11-15; https://arxiv.org/abs/2512.05620, 18 Jan 2026;
+  https://arxiv.org/abs/2607.20548, 13 Jul 2026; https://docs.pytorch.org/docs/2.15/generated/torch.optim.Muon.html)
 - AlgoPerf rolling leaderboard. When: scouting only. How: read it, no dependency; current entries were not checked.
   (source: https://github.com/mlcommons/algorithmic-efficiency, checked 2026-11-11)
 
 ## Candidates to test, not adopted
 Run each as one change under the protocol above.
-- Muon, `torch.optim.Muon` (PyTorch 2.9+; bf16 momentum-aliasing fix in 2.15.0, scope inferred): 2-D hidden weights
-  only, AdamW for embeddings, heads, norms, biases. About 1.4x with correct width scaling of LR and weight decay
-  (190M to 1.4B), vanishes under wrong scaling; vendor-measured at 8B to 72B; kept 47% of its per-workload score under
-  one fixed configuration in AlgoPerf; convolution weights did better with AdamW. FSDP2 use is undocumented
-  (unverified). `Muon(params, lr=0.001, weight_decay=0.1, momentum=0.95, ns_steps=5, adjust_lr_fn=None)`;
-  `"match_rms_adamw"` eases LR transfer. (source: https://arxiv.org/abs/2512.05620, 18 Jan 2026;
-  https://arxiv.org/abs/2607.20548, 13 Jul 2026; https://docs.pytorch.org/docs/2.15/generated/torch.optim.Muon.html)
-- Muon variants, each its authors' result with no replication found. Polar Express replaces the fixed Newton-Schulz
+- Muon variants, each its authors' result with no replication found, and each a change to the Muon arm among the
+  adopted practices: test it against that arm, not against AdamW alone. Polar Express replaces the fixed Newton-Schulz
   coefficients with ones chosen per step (GPT-2 on 1B to 10B tokens, lower validation loss across learning rates).
   NorMuon normalises each row after the orthogonalisation with a second-moment estimate (at 1.1B: 21.74 % better
   training efficiency than Adam and 11.31 % than Muon, by its abstract). `torch.optim.Muon` has neither: in 2.9.1

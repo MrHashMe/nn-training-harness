@@ -89,7 +89,8 @@ project's own training environment and store its output with the run. Risk: fals
   (source: https://github.com/Saivineeth147/lora-speedrun, 2026-08-04)
 - Short-example pruning with one high-rate epoch: one task
   (source: https://github.com/Saivineeth147/lora-speedrun, 2026-08-04)
-- Muon via `torch.optim.Muon` for pretraining 2D weights only; embeddings and heads stay on AdamW
+- Muon via `torch.optim.Muon` for pretraining 2D weights only; embeddings and heads stay on AdamW. Measured on the
+  kit's small benchmark on 2026-11-15: `optimization.md`, "Muon as the first challenger"
   (source: https://docs.pytorch.org/docs/2.15/generated/torch.optim.Muon.html, 2026-11-11)
 - Pretraining optimizer reused when fine-tuning (source: https://arxiv.org/abs/2605.06654, 2026-05-07; preprint)
 - inspect-ai 0.3.289 for generative and agentic evaluations (source: https://pypi.org/project/inspect-ai/, 2026-11-10)

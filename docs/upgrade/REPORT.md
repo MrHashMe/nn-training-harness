@@ -3891,7 +3891,9 @@ No check was removed.
   machine did not repeat their full passes after the three commits; the six jobs are such interpreters. No
   second reader looked at the three commits. The two commits after the second run change no code and no
   test: `tests/test_kit.py`, which reads the corrected page, passes with it on Windows (855 checks). Their
-  push starts a third run, whose result is not in this section.
+  push started a third run (commit `edd61c8`): all six jobs pass, on the same images and Python versions,
+  each with the number of checks it had in the second run, and the generated guard test with the same
+  numbers. That sentence was added after the run, in a commit of records that the run did not test.
 - **Still unverified on a Mac:** point 5 of "In short".
 
 ### What needs your decision
@@ -3912,8 +3914,9 @@ No check was removed.
 3. The powered benchmark, as in "Round 7".
 
 ### Sources
-- The two runs of the workflow `tests` on the branch `test/rounds-6-7` of the public repository, 15 November
-  2026 (GitHub Actions runs 43674556212 and 43677359859), their job logs read through GitHub's API that day.
+- The three runs of the workflow `tests` on the branch `test/rounds-6-7` of the public repository, 15
+  November 2026 (GitHub Actions runs 43674556212, 43677359859 and 43680648612), their job logs read through
+  GitHub's API that day.
   Runner images: ubuntu-26.04 and ubuntu-24.04 (20261103.629), macos-26-arm64 (20261028.624),
   windows-2025-vs2026 (20261103.629).
 

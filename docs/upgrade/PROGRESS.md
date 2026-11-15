@@ -1456,7 +1456,10 @@ Done:
   macOS), `docs/GUIDE.md` (one line), REPORT.md (the section "The test branch", point 17 of "Read this
   first", notes at the top of "Round 6" and "Round 7", section 5), the ledger (`built-test-branch.json`:
   three rows finished, one Assess row decided, five with new text; 1,650 rows, 494 Adopt, 352 finished and
-  142 unfinished), this file. Both commits pushed to the same branch, which starts a third run.
+  142 unfinished), this file. Both commits pushed to the same branch (`edd61c8`), which started a third run.
+- Third run (`edd61c8`): all six jobs pass, with the checks per job of the second run (1,469, 1,462, 1,470,
+  1,463, 1,460, 1,461) and the same numbers in the generated guard test. This line is in a commit that is
+  not pushed, so that it starts no fourth run: the local branch is one commit ahead of the test branch.
 
 Behaviour of existing features: a snapshot's link on Windows (REPORT.md, "The test branch", "Changes in the
 behaviour of existing features"). The guard and the installer are not touched. Existing tests changed: five

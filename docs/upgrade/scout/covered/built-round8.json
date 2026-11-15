@@ -1,0 +1,80 @@
+[
+ {
+  "file": "round8",
+  "candidate": "A routine refusal (a git undo, a formatter given a folder with kept files) does not void a loop iteration or bar its change (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`routine` in the guard's record, a formatter's own reason), scripts/nnloop.py; tests/test_loop.py (a campaign with a refused `git restore train.py`), tests/fake_agent.py; references/loop.md (\"Routine refusals\"). Commit d7265c8"
+ },
+ {
+  "file": "round8",
+  "candidate": "The guard reads the target of a redirection or a tee as the written file, not every path of the line (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; cases in tests/test_kit.py, run with test_guard_live, test_review_fixes and test_ports on Windows and with test_guard_live in WSL. Changed case: `cat .git/config > gitconfig.txt` passes now. Commit 703f074"
+ },
+ {
+  "file": "round8",
+  "candidate": "Three gaps in the guard's reading of a written file: a path it cannot place in the project, `#` inside a word, a quote inside a comment (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py; cases in tests/test_kit.py. Commit 703f074"
+ },
+ {
+  "file": "round8",
+  "candidate": "A remote launch holds the spending ledger's lock from its read of what is committed to its write (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`locked()`), nnremote.py (`reserve`); tests/test_remote.py (the cap-race test rewritten; new: three processes at the same moment); references/remote.md. Ledger rows have LF on Windows too, and every ledger write waits for flock on Linux and macOS. Commit 6450d1c"
+ },
+ {
+  "file": "round8",
+  "candidate": "Every frozen file counts with its content: a file beyond the first 64 MB is read in full once and again when it changes (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py, nnloop.py (`file_sha`, `Campaign.verify`); `.claude/state/frozen-hashes.json` is a new harness path; tests/test_kit.py, test_loop.py, test_ports.py. Commit 6cd4ee3. Left: a large file changed with its times set back passes a launch on Windows until `expctl hash` reads it"
+ },
+ {
+  "file": "round8",
+  "candidate": "The charlm benchmark saves a model trained under torch.compile, and its README says what the model file allows (kit-native)",
+  "status": "finished",
+  "where": "benchmarks/charlm/train.py, benchmarks/charlm/README.md (\"Faster training code and the model file\"); two new checks in tests/test_benchmarks.py, run on Windows and in WSL. Commit 1afc9d1"
+ },
+ {
+  "file": "round8",
+  "candidate": "The margin at a change's first look counts the best so far as one seed panel (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (`margin`); tests/test_loop.py (`second_panel` expected the smaller margin in two places, now the larger); references/loop.md. Commit 1fe37fd. Not simulated: noise that is not normal, a change that alters the noise, a campaign with restarts"
+ },
+ {
+  "file": "round8",
+  "candidate": "The loop's worker reads where the last run of a change that was not kept ended (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (`Campaign.logged`, `worker_prompt`); tests/test_loop.py (the line of a discarded change, with names and steps that try to carry text into the prompt); references/loop.md. Commit 1933688"
+ },
+ {
+  "file": "round8",
+  "candidate": "Sealed data in a folder outside the project, named from the project or by its full path (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`path_matches`, `files_matching`); tests/test_kit.py and tests/test_loop.py; references/validity.md (section 5), loop.md, docs/REFERENCE.md. Commit 53838a6. Not tested: a snapshot of a project with a link into such a folder named by its full path"
+ },
+ {
+  "file": "round8",
+  "candidate": "A smoke run before RL post-training: sampling on, several completions per group, rewards that differ within a group, one chat template (docs)",
+  "status": "finished",
+  "where": "references/finetuning.md (RL post-training). Commit 2947666. No run of TRL was made for it"
+ },
+ {
+  "file": "round5",
+  "candidate": "Process namespace for the training box (bubblewrap --unshare-pid)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (sandbox; a scan for os.kill where a run has no namespace), expctl.py (`load_run`); tests/test_loop.py, tests/test_kit.py; run live in WSL. Commit c858226. shortcut: only bubblewrap's flag is recognised. Not tried: bare Linux, a container"
+ },
+ {
+  "file": "optimization-performance",
+  "candidate": "Muon (torch.optim.Muon, PyTorch 2.9+, bf16 fix in 2.15.0)",
+  "status": "finished",
+  "where": "references/optimization.md (\"Muon as the first challenger\": when, how, the measurement and its limits), llm.md. Commit 6f4769e. Not run: AdamW with matched update RMS, tuned weight decay, a larger model or a longer run"
+ },
+ {
+  "file": "sweep-llm-training",
+  "candidate": "Muon optimizer via torch.optim.Muon (present in the PyTorch 2.9 and 2.15 docs)",
+  "status": "finished",
+  "where": "references/optimization.md (\"Muon as the first challenger\": when, how, the measurement and its limits), llm.md. Commit 6f4769e. Not run: AdamW with matched update RMS, tuned weight decay, a larger model or a longer run"
+ }
+]

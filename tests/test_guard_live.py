@@ -374,7 +374,16 @@ def main():
     shells = [(name, argv) for name, argv in tp.shells() if name in ("bash", "Git Bash", "pwsh", "powershell")]
     if shutil.which("zsh"):
         shells.append(("zsh", ["zsh", "-f", "-c"]))
-    print("project:", proj, "seed", seed, "shells:", ", ".join(name for name, _ in shells))
+
+    def version(name, argv):  # which shell judged: a record of a run names it (macOS has bash 3.2, Linux bash 5)
+        ask = "$PSVersionTable.PSVersion.ToString()" if name in ("pwsh", "powershell") else "echo $BASH_VERSION$ZSH_VERSION"
+        try:
+            return subprocess.run(argv + [ask], capture_output=True, text=True, stdin=subprocess.DEVNULL,
+                                  timeout=30).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            return ""
+
+    print("project:", proj, "seed", seed, "shells:", ", ".join(f"{name} {version(name, argv)}".strip() for name, argv in shells))
     for name, argv in shells:
         ps = name in ("pwsh", "powershell")
         if ps and os.name != "nt":

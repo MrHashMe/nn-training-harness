@@ -636,7 +636,10 @@ def install_tests(tmp: Path):
           "removal takes the kit's hook entries out and leaves the user's, an event in a form of their own included")
     check((a / "CLAUDE.md").read_text(encoding="utf-8").strip() == "# My project\n\nMy own rules." and "AGENTS.md" not in left,
           "removal strips the kit's block and leaves the user's instructions")
-    check(not listing(home), "the installer wrote nothing into the home directory (no ~/.claude, ~/.codex or ~/.cursor)")
+    # compiled files are the interpreter's own doing, whatever script it runs: the Python that comes with macOS keeps
+    # them below ~/Library/Caches
+    wrote = [f for f in listing(home) if not f.endswith(".pyc")]
+    check(not wrote, f"the installer wrote nothing into the home directory (no ~/.claude, ~/.codex or ~/.cursor) ({wrote[:5]})")
 
 
 def main():

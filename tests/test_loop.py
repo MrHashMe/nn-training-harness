@@ -1566,7 +1566,11 @@ def sandbox_tests(tmp, proj):
     check(got == before, "Finder's file in the main project is not a change to it: the kit's lines in .gitignore name "
           f"it (was: a campaign on a Mac stopped) ({got})")
     if not C.box_train:
-        print("SKIP sandbox checks: bubblewrap is not usable here (it is Linux-only), so a run is not confined on this platform")
+        bw = shutil.which("bwrap")  # the reason, in the words of the loop's own trial of it: a Linux may have it and refuse it
+        why = ("it is Linux-only" if not sys.platform.startswith("linux") else "it is not installed" if not bw else
+               "it does not start: " + " ".join(subprocess.run([bw, "--unshare-net", "--dev-bind", "/", "/", "true"],
+                                                               capture_output=True, text=True).stderr.split())[:200])
+        print(f"SKIP sandbox checks: bubblewrap is not usable here ({why}), so a run is not confined on this platform")
         return
     C.fresh_worktree("HEAD")
     put(tmp / "probe.py", PROBE)

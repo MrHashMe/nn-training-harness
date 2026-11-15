@@ -86,7 +86,9 @@ def readonly(proj, cmd):
 
 
 def main():
-    tmp = Path(tempfile.mkdtemp(prefix="nnfix-"))
+    # resolved, as expctl resolves the project folder: a temporary folder may be named in a short form (Windows) or
+    # through a link (macOS), and the checks below compare paths that expctl hands to a run
+    tmp = Path(tempfile.mkdtemp(prefix="nnfix-")).resolve()
     proj = tk.setup(tmp)
     (proj / "worker_train.py").write_text(WORKER_TRAIN)
     (proj / "study.py").write_text(STUDY)

@@ -402,10 +402,11 @@ def unit_tests():
             os.symlink("other", root / "near")
             got, src = source_snapshot("s2", ["alias", "near", "other/x.txt"]), root / "runs/s2/src"
             check(got[:2] == ([], ["alias/train/x.csv", "other/x.txt"]) and not os.path.islink(src / "alias")
-                  and os.readlink(src / "near") == "other",
+                  and os.readlink(src / "near") == "other" and (src / "near/x.txt").is_file(),
                   f"a link to a folder that would lead out of the snapshot is linked without the sealed paths below it "
                   f"(was: made again as it is, so the sealed files were there under its name), and one that stays "
-                  f"inside is made again as it is ({got})")
+                  f"inside is made again as it is and leads to its folder (was: on Windows a link to a file, made "
+                  f"before the folder was there, which opened nothing and ended the launch on Python 3.8) ({got})")
             os.unlink(root / "near")
         else:
             print("SKIP a source link that leads out of the snapshot: this account cannot make a link to a folder, and git "

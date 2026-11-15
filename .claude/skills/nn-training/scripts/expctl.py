@@ -956,8 +956,8 @@ def make_snapshot(root: Path, run_dir: Path, files, is_git, cfg):
             to = Path(os.path.realpath(d.parent / os.readlink(s))) if sealed and s.is_symlink() and s.is_dir() else here
             if here not in (to, *to.parents):  # a link to a folder that would lead out of the snapshot (an absolute
                 to_link.append(rel)  # one): linked below, as a git-ignored one is, without the sealed paths under it
-            elif s.is_symlink():
-                os.symlink(os.readlink(s), d)
+            elif s.is_symlink():  # Windows keeps a link to a folder and one to a file apart, and judges by what is there now
+                os.symlink(os.readlink(s), d, target_is_directory=s.is_dir())
             elif s.stat().st_size > max_bytes or SECRETISH.search(rel):
                 to_link.append(rel)  # too large, or named like a credential: the runs folder gets no second copy of it
             else:
@@ -979,7 +979,7 @@ def make_snapshot(root: Path, run_dir: Path, files, is_git, cfg):
     else:
         for entry in sorted(root.iterdir()):
             name = entry.name
-            if name in (runs_rel, ".git") or (src / name).exists() or excluded_from_provenance(name, cfg):
+            if name in (runs_rel, ".git") or os.path.lexists(src / name) or excluded_from_provenance(name, cfg):
                 continue
             to_link.append(name)
     linked = []

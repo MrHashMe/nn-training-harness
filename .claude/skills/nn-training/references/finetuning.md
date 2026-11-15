@@ -1,7 +1,8 @@
 # Pretrained-model adaptation (base model, fine-tuning, PEFT, post-training, distillation, export)
 
 Checked: 2026-11-11 (RL precision candidates, the runnable example and the bitsandbytes note: 2026-11-12; the
-objectives after GRPO and the LoRA scale in a rank sweep: 2026-11-14)
+objectives after GRPO and the LoRA scale in a rank sweep: 2026-11-14; the smoke run before RL post-training:
+2026-11-15)
 Refresh: compare the release notes of transformers, TRL, PEFT, bitsandbytes, lm-eval with installed versions; redo
 the hub licence read for each model in use; scout (`scouting.md`) before choosing a base model or an adaptation method.
 
@@ -102,6 +103,14 @@ installed version before using an API.
 
 ## RL post-training
 - Applies: GRPO-style runs (TRL 1.17.1). Fast rollouts need vLLM, which has no native Windows support (WSL2).
+- Before the first long run, a smoke run of minutes on a handful of prompts. Sampling is on and a group holds
+  several completions: `temperature` above 0 and `num_generations` above 1 (1.0 and 8 by default in TRL 1.17.1; the
+  effective batch size must be divisible by `num_generations`). `frac_reward_zero_std` is well below 1: a group
+  whose rewards are all equal gives every completion an advantage of zero and trains nothing, and then the reward
+  function, its parsing of the answer or the task's difficulty is at fault before any setting is. The rollout
+  engine, the trainer and the frozen evaluator apply the same chat template to the same messages, and the
+  template, end-token and pad rows of the table in `llm.md` hold for rollouts too. The defaults are from the config
+  file cited below, read 2026-11-15; the check list is reasoning from the objective, not a measured result.
 - Log and read: `reward_std`, `frac_reward_zero_std` (groups with no signal), `completions/clipped_ratio`, `entropy`,
   `clip_ratio/*`, `sampling_logp_difference` (rollout engine vs trainer). Defaults: `beta=0.0`; `entropy_target=0.2`
   almost never triggers. Read high-reward samples by hand for reward exploitation; keep the frozen evaluator apart from

@@ -31,6 +31,11 @@ jobs:
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
         with:
           python-version: ${{ matrix.python }}
+      # The macOS image has no tmux, so the checks of `launch --via tmux` would be skipped on every Mac job. One of the
+      # two gets it; the other stays a Mac with nothing installed. Without it (no network) those checks are skipped
+      - if: runner.os == 'macOS' && matrix.python != 'system'
+        name: tmux for the Mac job
+        run: HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install tmux || true
       - name: Run the tests
         shell: bash
         run: |

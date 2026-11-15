@@ -503,9 +503,12 @@ Large protected files. A protected file over 64 MB is read in full once in a cam
 its size, one of its times or its first or last MiB has changed. Before every keep and before a confirmation's
 verdict all of them are read in full, whatever those say: 1 GiB took 0.65 s on Windows and 0.44 s in WSL on
 15 November 2026, from the system's file cache, and a first read takes as long as the disk needs. (Until that
-day only the size and those two MiB counted, so that a change in the middle of such a file passed.) What remains: on Windows, where a file has
-no change time, a run that changes the middle of such a file and sets its modification time back is caught
-before the keep or the verdict, not at the next check. A campaign begun before that day is resumed with the
+day only the size and those two MiB counted, so that a change in the middle of such a file passed.) On Windows a
+file has no change time, so a run could change the middle of such a file and set its modification time back
+without the next check seeing it. There the check after every evaluation reads these files in full as well.
+(Before, only the read before the keep or the verdict did, and a run that undid its change in time passed every
+check.) What remains on Windows: nothing confines a run's processes there, so one that a run left behind can still
+undo the change between the evaluator's read and that check. A campaign begun before that day is resumed with the
 hashes it kept: its first check takes the older fingerprint for the same file and keeps the full hash from then
 on. The hashes that `expctl` keeps of large frozen files (`.claude/state/frozen-hashes.json`) are no protected
 file of a campaign, because every launch may write them.

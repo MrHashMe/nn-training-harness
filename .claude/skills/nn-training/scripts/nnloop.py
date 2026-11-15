@@ -323,9 +323,10 @@ def file_sha(p: Path, again=False):
     """The file's SHA-256. A file over BIG is read in full once in a process, and again when its size, one of its
     times or its first or last MiB is no longer what it was then; with again, now in any case.
     shortcut: a program that changes the middle of such a file and sets its times back is seen only by the next
-    full read, which verify() asks for before every keep and every confirmation's verdict. On POSIX the change time
-    gives it away at once; on Windows that field is the creation time. Read in full at every check where that is
-    too late.
+    full read. On POSIX the change time gives it away at once. On Windows that field is the creation time, so there
+    verify() asks for the full read after every evaluation, and everywhere before every keep and every
+    confirmation's verdict. A process that a run left behind on Windows can still undo the change between the
+    evaluator's read and that check; confine a run's processes there (a job object) where that matters.
     shortcut: every protected file is read at every check, which is slow beyond a few thousand files; cache by
     size and modification time when a project protects that many"""
     st, at = p.stat(), time.time()
@@ -671,9 +672,13 @@ class Campaign:
             return None
         return lim - self.reserve().get(k, 0) if self.st.get("hold") and not self.confirming else lim
 
-    def verify(self, again=False):
+    def verify(self, again=False, scored=False):
         """The evaluator, the data, the harness files and the dependency pins must be what they were at the start.
-        again: the files over BIG are read in full now, whatever their size and times say (file_sha)."""
+        again: the files over BIG are read in full now, whatever their size and times say (file_sha). scored: an
+        evaluation has just read the files. Where a file has no change time (Windows) that asks for the full read
+        too: a run could change the middle of such a file for the evaluation, set its times back and undo the change
+        before the keep, and so pass every check."""
+        again = again or (scored and os.name == "nt")
         if self.ledger_tip() != self.tip:
             raise Stop("safeguard: the campaign's ledger was changed by something other than the loop")
         now = {r: file_sha(self.root / r, again) for r in protected_files(self.root, self.pats, self.runs_rel)}
@@ -904,7 +909,7 @@ class Campaign:
                            f"{c['floor']:.6g} by more than the margin {margin:.3g}. A run that cannot have learned the "
                            f"task must not score like one that did: the evaluator rewards something else, held-out "
                            f"data reaches training, or the floor in loop.controls is wrong")
-        self.verify()
+        self.verify(scored=True)
         self.record(type="selftest", status="ok", first=first, again=again)
 
     def train(self, seed, tag, values="", command=None):
@@ -977,7 +982,7 @@ class Campaign:
         e = self.evaluate(run_dir)
         if e is None:
             return "crash", "the evaluator timed out", rid
-        self.verify()
+        self.verify(scored=True)
         res = last_json(e.stdout) or {}
         expctl.write_json_atomic(run_dir / "loop_eval.json", {"command": L["eval_command"], "returncode": e.returncode,
                                                               "result": res, "stderr": e.stderr[-2000:]})

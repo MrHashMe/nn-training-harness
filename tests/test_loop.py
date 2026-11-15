@@ -534,12 +534,13 @@ def unit_tests():
             poke(b"x")
             os.utime(big, (1e9, 1e9))  # the times set back: only a system without a change time lets that pass
             quiet = big.stat().st_ctime_ns == born
-            seen += [verify(), verify(again=True)]
-            check(seen == ["same", True, "changed", "same", "same" if quiet else "changed", "changed"],
+            seen += [verify(), verify(scored=True), verify(again=True)]
+            check(seen == ["same", True, "changed", "same", "same" if quiet else "changed", "changed", "changed"],
                   f"a campaign begun with the older fingerprint of such a file goes on, and keeps the full hash from "
                   f"then on; a change in the middle of the file stops it (was: not seen); where a file has no change "
-                  f"time (here: {quiet}) one whose times were set back passes a check, and never the full read that "
-                  f"comes before a keep ({seen})")
+                  f"time (here: {quiet}) one whose times were set back passes a check, but not the check that follows "
+                  f"an evaluation (was: that one too, so a run could change such a file for the evaluation and undo "
+                  f"the change before the keep), and never the full read that comes before a keep ({seen})")
         finally:
             nnloop.BIG = real
             nnloop.WHOLE.clear()

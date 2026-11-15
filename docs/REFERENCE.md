@@ -357,8 +357,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   latest. A run made before that day holds the older hash, which `status` still takes for the same frozen
   files. The loop reads its protected files by a rule of its own:
   one over 64 MB in full once in a campaign's process, again when its size, its times or its first or last MiB
-  have changed (before, only the size and those two MiB counted), and in full before every keep and before a
-  confirmation's verdict (`references/loop.md`, "Large protected files"). A full read of 1 GiB took 0.65 s on
+  have changed (before, only the size and those two MiB counted), and in full before every keep, before a
+  confirmation's verdict and, on Windows, where a file has no change time, after every evaluation
+  (`references/loop.md`, "Large protected files"). A full read of 1 GiB took 0.65 s on
   Windows and 0.44 s in WSL on 15 November 2026, from the system's file cache; a first read takes as long as the
   disk needs. The time grows with the number of frozen files, not only with their bytes: on Windows, measured
   on 15 November 2026 with the tests running beside it, 64 MB in 64 files took 0.1 s, 5,000 small files 2 s and

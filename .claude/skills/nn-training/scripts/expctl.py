@@ -47,7 +47,8 @@ Commands
         a row, and appends each audit to .claude/state/final-eval/split-audits.jsonl. Exit
         code 1 when two splits share a record. Where the config seals anything, running it
         needs the user's explicit approval.
-  hash  Source hash of the working tree (tracked + untracked, not ignored).
+  hash  Source hash of the working tree (tracked + untracked, not ignored), and one hash
+        over the frozen files, each of them read in full for it.
   env [--python PATH]
         Environment report (OS/WSL, GPUs, driver, disk, tools, git) and, with
         --python, the framework/package versions of that interpreter.
@@ -122,6 +123,7 @@ DEFAULT_CONFIG = {
         ".agents/skills/nn-training/**",
         ".claude/state/remote-ledger.jsonl",
         ".claude/state/final-eval/**",
+        ".claude/state/frozen-hashes.json",
     ],
     "python": None,
     "external_jobs": [],
@@ -845,10 +847,26 @@ def finder_file(p: Path) -> bool:
         return False
 
 
-def hash_files(root: Path, files, max_bytes, by_size=(), follow=False, eol=False):
+def file_digest(p: Path, eol=False):
+    """A file's SHA-256. With eol a text file (no NUL byte at its start, as git tells) counts with LF line ends, so
+    that a checkout with CRLF gives the same hash."""
+    fh, cr, text = hashlib.sha256(), b"", None
+    with open(p, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            text = eol and b"\0" not in chunk if text is None else text
+            if text:  # a \r that ends a chunk waits for the next one, whose \n it may belong to
+                chunk = cr + chunk
+                cr = chunk[-1:] if chunk.endswith(b"\r") else b""
+                chunk = chunk[:len(chunk) - len(cr)].replace(b"\r\n", b"\n")
+            fh.update(chunk)
+    fh.update(cr)
+    return fh.hexdigest()
+
+
+def hash_files(root: Path, files, max_bytes, by_size=(), follow=False, eol=False, known=None):
     """One hash over the files. A file over max_bytes, or one named in by_size, counts by its size alone; a link
-    counts by where it points, or with follow by the file behind it. With eol a text file (no NUL byte at its
-    start, as git tells) counts with LF line ends, so that a checkout with CRLF gives the same hash."""
+    counts by where it points, or with follow by the file behind it. eol: as file_digest has it. known: by name,
+    the digests of files that are not to be read again."""
     h = hashlib.sha256()
     hashed, size_only = 0, []
     for rel in files:
@@ -862,17 +880,8 @@ def hash_files(root: Path, files, max_bytes, by_size=(), follow=False, eol=False
                 size_only.append(rel)
                 h.update(b"S\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + str(size).encode() + b"\0")
                 continue
-            fh, cr, text = hashlib.sha256(), b"", None
-            with open(p, "rb") as f:
-                for chunk in iter(lambda: f.read(1 << 20), b""):
-                    text = eol and b"\0" not in chunk if text is None else text
-                    if text:  # a \r that ends a chunk waits for the next one, whose \n it may belong to
-                        chunk = cr + chunk
-                        cr = chunk[-1:] if chunk.endswith(b"\r") else b""
-                        chunk = chunk[:len(chunk) - len(cr)].replace(b"\r\n", b"\n")
-                    fh.update(chunk)
-            fh.update(cr)
-            h.update(b"F\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + fh.hexdigest().encode() + b"\0")
+            digest = (known or {}).get(rel) or file_digest(p, eol)
+            h.update(b"F\0" + rel.encode("utf-8", "surrogateescape") + b"\0" + digest.encode() + b"\0")
             hashed += 1
         except OSError:
             size_only.append(rel)
@@ -899,32 +908,58 @@ def provenance(root: Path, cfg):
 
 
 FROZEN_READ = 64 << 20
+FROZEN_KEPT = ".claude/state/frozen-hashes.json"
 
 
-def frozen_state(root: Path, cfg):
+def frozen_state(root: Path, cfg, big="kept"):
     """The files that match frozen_paths as one hash, or None where nothing is frozen. A run's record keeps it, so
     that a later look can tell whether two runs were made under the same evaluator. The guard asks about a write to
     such a file only where it can name the write; the hash changes whatever made the change. Text counts with LF
     line ends: the same evaluator checked out with CRLF on another machine is no other evaluator.
-    shortcut: at most FROZEN_READ bytes are read, the smallest files first, so that code is always read in full and
-    large data counts by its size; read everything if frozen data can change without changing its size."""
+    Every file counts with its content. The smallest are read at every call, FROZEN_READ bytes of them, so that code
+    is always read. A file beyond those is read once, and again when its size or one of its times has changed;
+    meanwhile its hash is taken from FROZEN_KEPT (big="kept"). big="read" reads it now whatever is kept there, as
+    `expctl hash` and the final evaluation do. big="size" counts it by its size alone, which was the rule until
+    15 November 2026: the hash that the records of older runs hold.
+    shortcut: with big="kept" a program that changes a file beyond FROZEN_READ and sets its times back is not seen;
+    on POSIX the change time gives it away, on Windows that field is the creation time. Read everything at every
+    call if a launch must not miss that."""
     pats = cfg.get("frozen_paths") or []
     files = files_matching(root, pats, cfg["runs_dir"].strip("/")) if pats else []
     if not files:
         return None
-    def size_of(rel):
+    stats = {}
+    for rel in files:
         try:
-            return (root / rel).stat().st_size
+            stats[rel] = (root / rel).stat()
         except OSError:  # gone since it was listed, or a link to nothing: hash_files counts it as unread
-            return 0
-
-    left, by_size = FROZEN_READ, set()
-    for size, rel in sorted((size_of(f), f) for f in files):
+            pass
+    left, beyond, known = FROZEN_READ, [], {}
+    for size, rel in sorted((stats[f].st_size if f in stats else 0, f) for f in files):
         if size > left:
-            by_size.add(rel)
+            beyond.append(rel)
         else:
             left -= size
-    digest, _hashed, size_only = hash_files(root, files, float("inf"), by_size, follow=True, eol=True)
+    if beyond and big != "size":
+        kept, keep = read_json(root / FROZEN_KEPT), {}
+        for rel in beyond:
+            st = stats[rel]
+            key, was = [st.st_size, st.st_mtime_ns, st.st_ctime_ns], (kept if isinstance(kept, dict) else {}).get(rel)
+            try:
+                known[rel] = (was[1] if big == "kept" and isinstance(was, list) and len(was) == 2 and was[0] == key
+                              and isinstance(was[1], str) else file_digest(root / rel, True))
+            except OSError:
+                continue  # hash_files counts it as unread
+            if time.time() - st.st_mtime > 2:  # a file written this moment may change again under the same time stamp
+                keep[rel] = [key, known[rel]]
+        if keep != (kept or {}):
+            try:
+                (root / FROZEN_KEPT).parent.mkdir(parents=True, exist_ok=True)
+                write_json_atomic(root / FROZEN_KEPT, keep)
+            except OSError:
+                pass  # nothing is kept then, and the next call reads the files again
+    digest, _hashed, size_only = hash_files(root, files, float("inf"), beyond if big == "size" else (), follow=True,
+                                            eol=True, known=known)
     return {"frozen_hash": digest, "frozen_files": len(files), "frozen_size_only": len(size_only)}
 
 
@@ -1509,8 +1544,13 @@ def build_status(root: Path, cfg, with_gpu=True):
                 "frozen_hash": r.get("frozen_hash"),
                 "note": r.get("note"), "dir": r["dir"]} for r in top[: int(lim.get("top_k", 5))]]
     if any(r["frozen_hash"] for r in top_out):  # a score compares only with scores made under the same frozen files
-        cur = ((frozen_state(root, cfg) or {}).get("frozen_hash") or "")[:12]
-        other = [r["run_id"] for r in top_out if r["frozen_hash"] and r["frozen_hash"] != cur]
+        def current(big):
+            return ((frozen_state(root, cfg, big) or {}).get("frozen_hash") or "")[:12]
+
+        cur = {current("kept")}
+        if any(r["frozen_hash"] not in cur for r in top_out if r["frozen_hash"]):
+            cur.add(current("size"))  # what a run made before 15 November 2026 holds for the same frozen files
+        other = [r["run_id"] for r in top_out if r["frozen_hash"] and r["frozen_hash"] not in cur]
         if other:  # first, so that the cap on alerts below never cuts it
             alerts.insert(0, f"{len(other)} of the top runs (e.g. {other[0]}) were made under other frozen files than "
                              "the project holds now: their scores do not compare with new runs "
@@ -2228,7 +2268,7 @@ def cmd_hash(args):
     _files, is_git, prov = provenance(root, cfg)
     prov["root"] = str(root)
     prov["git_repo"] = is_git
-    prov.update(frozen_state(root, cfg) or {"frozen_hash": None})
+    prov.update(frozen_state(root, cfg, "read") or {"frozen_hash": None})
     print(json.dumps(clean(prov), indent=1))
     return 0
 
@@ -2352,7 +2392,7 @@ def cmd_final_eval(args):
         if shared:
             chained(shared, dict(row, sub=sub))
 
-    use, prov, fz = len(before) + 1, provenance(root, cfg)[2], (frozen_state(root, cfg) or {}).get("frozen_hash")
+    use, prov, fz = len(before) + 1, provenance(root, cfg)[2], (frozen_state(root, cfg, "read") or {}).get("frozen_hash")
     git, log = prov.get("git") or {}, d / f"{time.strftime('%Y%m%d-%H%M%S')}-use{use}.log"
     nonce = os.urandom(8).hex()
     note(event="start", use=use, nonce=nonce, configured=configured, args=extra, reason=args.again,

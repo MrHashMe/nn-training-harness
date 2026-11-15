@@ -183,6 +183,38 @@ def main():
         ends.append(jout(expctl(proj, "hash"))["frozen_hash"])
     fzf.write_bytes(as_is)
     check(ends == [h["frozen_hash"]] * 2, f"the frozen files' hash is the same with LF and with CRLF line ends ({ends})")  # was: two
+    # frozen files beyond the bytes that every call reads: read in full too, once and again after a change. (Was:
+    # counted by their size alone, so that a change inside one left the hash as it was.) The count of those bytes is
+    # lowered here; the folder is the snippet's own
+    code = ("import sys, json, os; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
+            "root, cfg, out = Path(sys.argv[2]), {'frozen_paths': ['eval/**'], 'runs_dir': 'runs'}, {}\n"
+            "expctl.FROZEN_READ = 1 << 16\n"
+            "big, kept = root / 'eval/val.bin', root / expctl.FROZEN_KEPT\n"
+            "def fz(how='kept'): return expctl.frozen_state(root, cfg, how)['frozen_hash']\n"
+            "def names(): return sorted(json.loads(kept.read_text())) if kept.exists() else None\n"
+            "def poke(byte, long_ago):\n"
+            "    with open(big, 'r+b') as f:\n        f.seek(100000)\n        f.write(byte)\n"
+            "    if long_ago: os.utime(big, (1e9, 1e9))\n"
+            "(root / 'eval').mkdir(parents=True)\n(root / 'eval/metrics.py').write_text('x = 1\\n')\n"
+            "big.write_bytes(bytes(200000))\nos.utime(big, (1e9, 1e9))\n"
+            "out['size'], out['first'], out['kept'] = fz('size'), fz(), names()\n"
+            "poke(b'x', False)\n"
+            "out['size2'], out['changed'], out['kept2'] = fz('size'), fz(), names()\n"
+            "poke(b'\\0', True)\n"
+            "out['back'] = fz()\n"
+            "k = json.loads(kept.read_text()); k['eval/val.bin'][1] = '0' * 64; kept.write_text(json.dumps(k))\n"
+            "out['planted'], out['read'], out['after'] = fz(), fz('read'), fz()\n"
+            "print(json.dumps(out))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "frozen-big")], cwd=proj)
+    fb = json.loads(r.stdout) if r.returncode == 0 else {}
+    check(fb and fb["first"] not in (fb["size"], fb["changed"]) and fb["size2"] == fb["size"] and fb["back"] == fb["first"],
+          f"a change inside a frozen file beyond the bytes that every call reads changes the hash, and the file as it "
+          f"was gives the first hash again (was: the hash by size, which such a change leaves as it is) ({fb}, {r.stderr[-300:]})")
+    check(fb and fb["kept"] == ["eval/val.bin"] and fb["kept2"] == [] and fb["planted"] != fb["first"]
+          and fb["read"] == fb["after"] == fb["first"],
+          f"such a file's hash is kept while its size and times stand, and not for a file written this moment; a "
+          f"hash planted there is used by a launch, which is why the file is a harness file, and never by `expctl "
+          f"hash` or the final evaluation, whose read also puts it right ({fb})")
     made = [proj / n for n in ("AGENTS.md", ".mcp.json", ".codex/hooks.json", ".cursor/cli.json",
                                ".agents/skills/x/SKILL.md", "experiments/JOURNAL.md")]
     for p in made:
@@ -497,6 +529,25 @@ def main():
           and not any(other in a for a in jout(expctl(proj, "status", "--no-gpu"))["alerts"]),
           "a changed frozen file changes the hash, and status says first that the ranked run was made under other "
           f"frozen files, until the file is as it was ({stc['alerts'][:1]})")
+    # a run made before 15 November 2026 holds the hash that counted a frozen file beyond the bytes read at every
+    # call by its size alone. status takes that hash for the same frozen files, as it did then. The count of those
+    # bytes is lowered in the first of the two calls, so that the evaluator is such a file there and not in the second
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import expctl\nfrom pathlib import Path\n"
+            "root = Path(sys.argv[2]); expctl.FROZEN_READ = 8\n"
+            "if sys.argv[3] == 'size': print(expctl.frozen_state(root, expctl.load_config(root), 'size')['frozen_hash'])\n"
+            "else: sys.exit(expctl.main(['--root', str(root), 'status', '--no-gpu']))\n")
+    scripts, man_path = str(proj / ".claude/skills/nn-training/scripts"), proj / st["top"][0]["dir"] / "manifest.json"
+    man_was = man_path.read_text()
+    by_size = sh([PY, "-c", code, scripts, str(proj), "size"], cwd=proj).stdout.strip()
+    man_path.write_text(json.dumps(dict(json.loads(man_was), frozen_hash=by_size)))
+    low, usual = (jout(r)["alerts"] for r in (sh([PY, "-c", code, scripts, str(proj), "status"], cwd=proj),
+                                               expctl(proj, "status", "--no-gpu")))
+    man_path.write_text(man_was)
+    (proj / ".claude/state/frozen-hashes.json").unlink(missing_ok=True)
+    check(len(by_size) == 64 and by_size != h["frozen_hash"] and not any(other in a for a in low)
+          and any(other in a for a in usual[:1]),
+          f"status takes an older run's hash, which counted a large frozen file by its size, for the same frozen "
+          f"files, and only where the file is that large ({low[:1]}, {usual[:1]})")
     cv = jout(expctl(proj, "curve", rid_ok, "--points", "10"))
     check("val/acc" in cv["series"] and len(cv["series"]["val/acc"]["points"]) <= 11 and cv["series"]["train/loss"]["last20pct_trend"],
           "curve downsamples and reports trend")
@@ -702,6 +753,9 @@ def main():
         ("Bash", {"command": "Remove-Item .claude\\state\\final-eval\\receipt.jsonl"}, "ask"),
         ("Bash", {"command": "python -c \"open('.claude/state/final-eval/receipt.jsonl','w').close()\""}, "ask"),
         ("Edit", {"file_path": str(proj / ".claude/state/final-eval/receipt.jsonl"), "old_string": "a", "new_string": "b"}, "ask"),
+        # new: the hashes that expctl keeps of large frozen files, which a launch takes for the files' content
+        ("Write", {"file_path": str(proj / ".claude/state/frozen-hashes.json"), "content": "{}"}, "ask"),
+        ("Bash", {"command": "python -c \"open('.claude/state/frozen-hashes.json','w').write('{}')\""}, "ask"),
         # the copy of the receipt's rows that every checkout shares
         ("Bash", {"command": "rm .git/nn-training-final-eval.jsonl"}, "ask"),
         ("Bash", {"command": "python -c \"open('.git/nn-training-final-eval.jsonl','w').close()\""}, "ask"),

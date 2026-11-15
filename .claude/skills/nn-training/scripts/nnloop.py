@@ -271,8 +271,13 @@ def literal(pattern):
     return re.split(r"[*?\[]", str(pattern).replace("\\", "/"))[0].rstrip("/")
 
 
-# both live in expctl, which hashes the frozen files with them
-protected_files, finder_file = expctl.files_matching, expctl.finder_file
+finder_file = expctl.finder_file
+
+
+def protected_files(root, pats, runs_rel):
+    """The files that the patterns name, found as expctl finds the frozen files for its hash; without the hashes
+    that expctl keeps of large frozen files, a harness file that a launch may write."""
+    return [f for f in expctl.files_matching(root, pats, runs_rel) if f != expctl.FROZEN_KEPT]
 
 
 def tool_inputs(text):
@@ -297,21 +302,40 @@ def tool_inputs(text):
     return "\n".join(found).replace("\\\\", "/")
 
 
-def file_sha(p: Path):
-    # shortcut: every protected file is read at every check, which is slow beyond a few thousand files; cache by
-    # size and modification time when a project protects that many
-    h, size = hashlib.sha256(), p.stat().st_size
+BIG = 64 << 20
+WHOLE = {}  # path -> (what told that the file was the same, its SHA-256), for the files over BIG read in this process
+
+
+def ends_sha(p: Path, size):
+    """A file's size with its first and last MiB: what stood for a file over BIG until 15 November 2026, and since
+    then what tells, with the file's times, whether it must be read again."""
+    h = hashlib.sha256(str(size).encode())
     with open(p, "rb") as f:
-        if size > 64 << 20:
-            # shortcut: files over 64 MB are fingerprinted by size, first and last MiB; hash them fully if your
-            # data can change in the middle without changing size
-            h.update(str(size).encode())
-            h.update(f.read(1 << 20))
-            f.seek(-(1 << 20), 2)
-            h.update(f.read())
-        else:
-            for chunk in iter(lambda: f.read(1 << 20), b""):
-                h.update(chunk)
+        h.update(f.read(1 << 20))
+        f.seek(-(1 << 20), 2)
+        h.update(f.read())
+    return h.hexdigest()
+
+
+def file_sha(p: Path, again=False):
+    """The file's SHA-256. A file over BIG is read in full once in a process, and again when its size, one of its
+    times or its first or last MiB is no longer what it was then; with again, now in any case.
+    shortcut: a program that changes the middle of such a file and sets its times back is seen only by the next
+    full read, which verify() asks for before every keep and every confirmation's verdict. On POSIX the change time
+    gives it away at once; on Windows that field is the creation time. Read in full at every check where that is
+    too late.
+    shortcut: every protected file is read at every check, which is slow beyond a few thousand files; cache by
+    size and modification time when a project protects that many"""
+    st = p.stat()
+    key = (ends_sha(p, st.st_size), st.st_mtime_ns, st.st_ctime_ns) if st.st_size > BIG else None
+    if key and not again and WHOLE.get(str(p), (None,))[0] == key:
+        return WHOLE[str(p)][1]
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    if key and time.time() - st.st_mtime > 2:  # a file written this moment may change again under the same time stamp
+        WHOLE[str(p)] = (key, h.hexdigest())
     return h.hexdigest()
 
 
@@ -645,12 +669,17 @@ class Campaign:
             return None
         return lim - self.reserve().get(k, 0) if self.st.get("hold") and not self.confirming else lim
 
-    def verify(self):
-        """The evaluator, the data, the harness files and the dependency pins must be what they were at the start."""
+    def verify(self, again=False):
+        """The evaluator, the data, the harness files and the dependency pins must be what they were at the start.
+        again: the files over BIG are read in full now, whatever their size and times say (file_sha)."""
         if self.ledger_tip() != self.tip:
             raise Stop("safeguard: the campaign's ledger was changed by something other than the loop")
-        now = {r: file_sha(self.root / r) for r in protected_files(self.root, self.pats, self.runs_rel)}
+        now = {r: file_sha(self.root / r, again) for r in protected_files(self.root, self.pats, self.runs_rel)}
         old = self.st["hashes"]
+        for r, sha in now.items():  # a campaign begun before 15 November 2026 kept less of a file over BIG
+            p = self.root / r
+            if old.get(r) not in (None, sha) and p.stat().st_size > BIG and old[r] == ends_sha(p, p.stat().st_size):
+                old[r] = sha
         changed = sorted(r for r in set(old) | set(now) if old.get(r) != now.get(r))
         if changed:
             raise Stop(f"safeguard: protected file(s) changed since the campaign started: {', '.join(changed[:6])}")
@@ -1505,6 +1534,7 @@ class Campaign:
                                                       own=statistics.variance(scores.values()))
                     on = f" on {len(scores)} seeds" if again else ""
                     if delta > m:
+                        self.verify(again=True)  # before a keep the files over BIG are read in full
                         status, why = "keep", on.strip()
                         # the branch is the campaign's best commit: this line's tip, unless a restart set a better
                         # one aside. Lines are compared on the seed panel, the runs every commit of them has
@@ -1640,6 +1670,7 @@ class Campaign:
                                    "while the starting commit's scores differ between them: the change seems to take "
                                    "the seed's effect away, and a panel without spread cannot be tested against noise")
                     else:
+                        self.verify(again=True)  # before the verdict the files over BIG are read in full
                         for panel in (a, b):
                             if len(set(panel)) > 1:  # a panel without spread says nothing about noise
                                 self.pool(panel)

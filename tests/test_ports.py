@@ -572,7 +572,8 @@ def install_tests(tmp: Path):
     new = json.loads((u / ".claude/nn-training.json").read_text(encoding="utf-8"))
     check(r.returncode == 0 and all(new[k] == cfg[k] for k in ("runs_dir", "sealed_paths", "snapshot", "journal", "metric")),
           "upgrade keeps the values in .claude/nn-training.json")
-    check("my/guarded/**" in new["harness_paths"] and {".codex/**", ".cursor/**", "AGENTS.md"} <= set(new["harness_paths"])
+    check("my/guarded/**" in new["harness_paths"]
+          and {".codex/**", ".cursor/**", "AGENTS.md", ".claude/state/frozen-hashes.json"} <= set(new["harness_paths"])
           and new["python"] == exe and "harness_paths gained" in r.stdout,
           "upgrade adds the new protected paths and the interpreter to the config, and says so")
     check((u / "experiments/JOURNAL.md").read_text(encoding="utf-8").endswith("## E1 my entry\n")

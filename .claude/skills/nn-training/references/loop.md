@@ -473,6 +473,17 @@ denies every file tool aimed outside the project, reads included.
 Not enforced anywhere: that the agent's one change tests one hypothesis; that scouting notes are accurate.
 Leave the project folder alone while a campaign runs: a changed file stops it.
 
+Large protected files. A protected file over 64 MB is read in full once in a campaign's process, and again when
+its size, one of its times or its first or last MiB has changed. Before every keep and before a confirmation's
+verdict all of them are read in full, whatever those say: 1 GiB took 0.65 s on Windows and 0.44 s in WSL on
+15 November 2026, from the system's file cache, and a first read takes as long as the disk needs. (Until that
+day only the size and those two MiB counted, so that a change in the middle of such a file passed.) What remains: on Windows, where a file has
+no change time, a run that changes the middle of such a file and sets its modification time back is caught
+before the keep or the verdict, not at the next check. A campaign begun before that day is resumed with the
+hashes it kept: its first check takes the older fingerprint for the same file and keeps the full hash from then
+on. The hashes that `expctl` keeps of large frozen files (`.claude/state/frozen-hashes.json`) are no protected
+file of a campaign, because every launch may write them.
+
 ## Records
 `experiments/loop/NAME/`: `state.json`, `ledger.jsonl` (every baseline run, control, the self-test, scout, iteration, restart, confirmation and stop; each row
 names the hash of the one before), `loop.log`, and per iteration the prompt, transcript, guard record and

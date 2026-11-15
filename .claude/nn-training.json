@@ -34,7 +34,8 @@
     ".cursor/**",
     ".agents/skills/nn-training/**",
     ".claude/state/remote-ledger.jsonl",
-    ".claude/state/final-eval/**"
+    ".claude/state/final-eval/**",
+    ".claude/state/frozen-hashes.json"
   ],
   "optuna": {
     "storage": null,

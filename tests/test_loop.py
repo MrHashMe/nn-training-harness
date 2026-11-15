@@ -438,6 +438,60 @@ def unit_tests():
               f"first link or to the sealed folder brings no sealed file into a snapshot, as source files or as a "
               f"git-ignored folder (was: copied, or linked whole, because the storage has no name in the project) ({got})")
 
+    # a protected file too large to read at every check; what counts as large is lowered for the test
+    with tempfile.TemporaryDirectory() as d:
+        root, data, real, opened = Path(d), bytes(4 << 20), nnloop.BIG, []
+        big, sha = root / "val.bin", nnloop.hashlib.sha256
+        put(root / ".claude/state/frozen-hashes.json", "{}")
+        put(root / ".claude/state/remote-ledger.jsonl", "")
+        got = nnloop.protected_files(root, [".claude/state/*"], "runs")
+        check(got == [".claude/state/remote-ledger.jsonl"],
+              f"protected files: the hashes that expctl keeps of large frozen files, which a launch may write, are "
+              f"not among them ({got})")
+        nnloop.BIG = 3 << 20
+        try:
+            big.write_bytes(data)
+            os.utime(big, (1e9, 1e9))  # long ago: of a file written this moment nothing is kept
+            nnloop.open = lambda *a, **k: opened.append(a[0]) or open(*a, **k)
+            got = [nnloop.file_sha(big), nnloop.file_sha(big)]
+            del nnloop.open
+            check(got == [sha(data).hexdigest()] * 2 and len(opened) == 3,
+                  f"a protected file over the size is read in full (was: its size and its first and last MiB), and at "
+                  f"the next check only its ends are read while its size and times stand ({len(opened)} opens)")
+            fake = argparse.Namespace(ledger_tip=lambda: 0, tip=0, root=root, pats=["val.bin"], runs_rel="runs", st={
+                "hashes": {"val.bin": sha(b"%d" % len(data) + data[:1 << 20] + data[-(1 << 20):]).hexdigest()}})
+
+            def verify(**how):
+                try:
+                    nnloop.Campaign.verify(fake, **how)
+                    return "same"
+                except nnloop.Stop as e:
+                    return "changed" if "protected file(s) changed" in str(e) else str(e)
+
+            def poke(byte):  # the same size, the same first and last MiB
+                with open(big, "r+b") as f:
+                    f.seek(2 << 20)
+                    f.write(byte)
+
+            seen = [verify(), fake.st["hashes"]["val.bin"] == got[0]]
+            poke(b"x")
+            seen.append(verify())
+            poke(b"\0")
+            os.utime(big, (1e9, 1e9))
+            seen, born = seen + [verify()], big.stat().st_ctime_ns
+            poke(b"x")
+            os.utime(big, (1e9, 1e9))  # the times set back: only a system without a change time lets that pass
+            quiet = big.stat().st_ctime_ns == born
+            seen += [verify(), verify(again=True)]
+            check(seen == ["same", True, "changed", "same", "same" if quiet else "changed", "changed"],
+                  f"a campaign begun with the older fingerprint of such a file goes on, and keeps the full hash from "
+                  f"then on; a change in the middle of the file stops it (was: not seen); where a file has no change "
+                  f"time (here: {quiet}) one whose times were set back passes a check, and never the full read that "
+                  f"comes before a keep ({seen})")
+        finally:
+            nnloop.BIG = real
+            nnloop.WHOLE.clear()
+
 
 # ---------------------------------------------------------------- the test project
 

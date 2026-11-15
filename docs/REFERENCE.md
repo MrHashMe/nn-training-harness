@@ -189,7 +189,8 @@ $E selftest                                         # are the hooks, the guard a
 
 ## Configure the protocol (Phase 2 does this with your approval)
 Edit `.claude/nn-training.json`: `metric` (`name`, `direction`, `select`), `sealed_paths` (e.g. `"data/test/**"`;
-test data kept outside the project as `"../NAME/**"` or by its full path),
+test data kept outside the project as `"../NAME/**"`, by its full path or under `~`; in `sealed_paths`,
+`frozen_paths` and `harness_paths` a full path that leads into the project counts as the name it has there),
 `sealed_tokens` (e.g. `"NN_UNSEAL_TEST"`), `frozen_paths` (evaluation, metric and split code),
 `final_eval_commands` (e.g. `"NN_UNSEAL_TEST=1 python -m eval.final"`: one program call without shell syntax, which
 `expctl final-eval` runs once and records in `.claude/state/final-eval/`), `splits` (name and path of each split,

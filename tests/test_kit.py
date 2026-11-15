@@ -1954,6 +1954,24 @@ def main():
           f"sealed data in a folder outside the project, named from the project or by its full path: the guard refuses "
           f"the calls that read it, and expctl finds its files under either name (was: with a full path the search "
           f"ended with an error, and on Linux and macOS the pattern matched no path) ({got} {found})")
+    # The same with `~`, and a folder of the project named by its full path: the config's readers get one form of
+    # the pattern, so the guard refuses the read and `expctl selftest` asks the guard about the place itself
+    home = (proj.parent / "home").resolve()
+    (home / "held.home").mkdir(parents=True)
+    (home / "held.home/labels.csv").write_text("id,label\n1,1\n")
+    env, got = {"HOME": str(home), "USERPROFILE": str(home)}, []
+    for pat, at, short in (("~/held.home/**", home / "held.home/labels.csv", None),
+                           ((proj / "data/test").as_posix() + "/**", proj / "data/test/labels.csv", "data/test/labels.csv")):
+        cfgp.write_text(json.dumps(dict(json.loads(kept), sealed_paths=[pat])))
+        probe = [c for c in jout(expctl(proj, "selftest", env=env))["checks"] if c["check"].startswith("guard denies reading")]
+        got.append([guard("Read", {"file_path": str(at)}, env)[0], guard("Bash", {"command": f"cat {short or at.as_posix()}"}, env)[0],
+                    [c["ok"] for c in probe]])
+    cfgp.write_text(kept)
+    shutil.rmtree(home)
+    check(got == [["deny", "deny", [True]]] * 2,
+          f"sealed data named with `~`, and a folder of the project sealed by its full path: the guard refuses what reads "
+          f"it, and `expctl selftest` asks the guard about the place itself (was: with `~` it asked about a folder `~` in "
+          f"the project, so the check failed and a campaign of the loop did not start) ({got})")
     if os.name != "nt":  # the project reached through a link, as under /tmp on macOS: the answers of its real path
         link = proj.parent / "by-link"
         link.symlink_to(proj, target_is_directory=True)

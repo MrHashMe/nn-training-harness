@@ -451,6 +451,45 @@ def unit_tests():
               f"first link or to the sealed folder brings no sealed file into a snapshot, as source files or as a "
               f"git-ignored folder (was: copied, or linked whole, because the storage has no name in the project) ({got})")
 
+        # folders of the project sealed by their full path: every reader gets the name they have in the project
+        put(root / E.CONFIG_REL, json.dumps({"sealed_paths": [root.as_posix() + "/data/a/test/**",
+                                                               str(root / "data" / "deep") + os.sep + "**", "data/b/**"]}))
+        cfg, files = E.load_config(root), ["data/a/test/secret.csv", "data/a/train/x.csv"]
+        info, src = E.make_snapshot(root, root / "runs/full", files, False, cfg), root / "runs/full/src"
+        got = (cfg["sealed_paths"], nnloop.protected_files(root, cfg["sealed_paths"][:2], "runs"),
+               [f for f in files + [deep, "data/b/train/x.csv"] if (src / f).exists()], files[0] in info["sealed_kept_out"])
+        check(got == (["data/a/test/**", "data/deep/**", "data/b/**"], [files[0], deep], [files[1]], True),
+              f"a folder of the project that is sealed by its full path is sealed as by its name in the project: the "
+              f"config's readers get that name, a snapshot holds none of its files as source file or below a "
+              f"git-ignored folder, and the loop lists its files by their names in the project (was: the run tools "
+              f"took the full path for a place outside the project, and the snapshot held the files) ({got})")
+        # the hashes that expctl keeps of large frozen files are no protected file, however a harness pattern names them
+        put(root / E.FROZEN_KEPT, "{}")
+        other = ".CLAUDE" if (root / ".CLAUDE").is_dir() else ".claude"  # another case, where the filesystem ignores it
+        full = E.in_project(root, root.as_posix() + "/.claude/**")
+        got = [nnloop.protected_files(root, [p], "runs") for p in (full, other + "/**")]
+        check(full == ".claude/**" and got == [[E.CONFIG_REL], [other + "/nn-training.json"]],
+              f"the kept hashes of large frozen files are not among the loop's protected files when a harness pattern "
+              f"names them by a full path or in other case (was: they were, so a launch that wrote them would have "
+              f"stopped the campaign) ({full}, {got})")
+        # sealed data outside the project, named by its full path, and a git-ignored link in the project that leads to it
+        with tempfile.TemporaryDirectory() as d2:
+            store, got = Path(os.path.realpath(d2)), []
+            for f in ("held/secret.csv", "open/x.csv"):
+                put(store / f, "x")
+            cfg = dict(cfg, sealed_paths=[store.as_posix() + "/held/**"])
+            for n, to in enumerate((store / "held", store)):  # a link to the sealed folder, and one to the folder above it
+                E._link(to, root / "peek")
+                info, src = E.make_snapshot(root, root / "runs" / f"v{n}", [], False, cfg), root / "runs" / f"v{n}" / "src"
+                got.append((info["failures"], [f for f in ("peek/secret.csv", "peek/held/secret.csv", "peek/open/x.csv")
+                                               if (src / f).exists()], [k for k in info["sealed_kept_out"] if k.startswith("peek")]))
+                os.unlink(root / "peek") if os.path.islink(root / "peek") else os.rmdir(root / "peek")
+        check(got == [([], [], ["peek"]), ([], ["peek/open/x.csv"], ["peek/held"])],
+              f"a git-ignored link that leads to data outside the project which is sealed by its full path, or to the "
+              f"folder above that data, brings no sealed file into a snapshot, and what lies beside the data stays "
+              f"reachable (was: the link was linked whole, because a place outside the project was judged by no "
+              f"pattern) ({got})")
+
     # a protected file too large to read at every check; what counts as large is lowered for the test
     with tempfile.TemporaryDirectory() as d:
         root, data, real, opened = Path(d), bytes(4 << 20), nnloop.BIG, []
@@ -1725,7 +1764,7 @@ def sandbox_tests(tmp, proj):
     r = tk.sh(wild + [PY, "-c", "import os, sys; print([os.path.exists(p) for p in sys.argv[1:]])",
                       str(proj / "blobs/test/secret.bin"), str(proj / "blobs/test/more"), str(proj / "blobs/x.bin")], cwd=C.wt)
     tmpfs = [wild[i + 1] for i, a in enumerate(wild) if a == "--tmpfs"]
-    check(r.stdout.strip() == "[False, False, True]" and str(proj / "blobs/test") in tmpfs and "/dev/null" not in wild,
+    check(r.stdout.strip() == "[False, False, True]" and os.path.realpath(proj / "blobs/test") in tmpfs and "/dev/null" not in wild,
           f"a training run cannot see files that a pattern with a leading wildcard seals, and each sealed folder is hidden "
           f"as one (was: visible) ({r.stdout.strip()} {r.stderr[-200:]} {tmpfs})")
     # sealed data in a folder outside the project, named from the project or by its full path, as a folder and as files.
@@ -1740,16 +1779,37 @@ def sandbox_tests(tmp, proj):
     for pat in (rel + "/**", vault.as_posix() + "/**", rel + "/*.csv", vault.as_posix() + "/*.csv"):
         C.cfg["sealed_paths"] = [pat]
         got.append(tk.sh(C.sandbox(True) + [PY, "-c", show] + files, cwd=C.wt).stdout.split())
-    # and from the loop's evaluator, when only the final evaluation's command names it
-    C.cfg["final_eval_commands"] = [f"{PY} eval.py --final --data={vault.as_posix()}/labels.csv"]
-    got.append(tk.sh(C.eval_box(proj / "runs") + [PY, "-c", show] + files, cwd=proj).stdout.split())
+    # and from the loop's evaluator, when only the final evaluation's command names it: by the pattern's spelling or by
+    # another one (from the project, by its full path, with `~`)
+    boxes, home = [], os.environ.get("HOME")
+    os.environ["HOME"] = str(vault.parent)
+    try:
+        for pat, at in ((vault.as_posix() + "/*.csv", vault.as_posix()), (rel + "/**", vault.as_posix()),
+                        (vault.as_posix() + "/**", rel), ("~/held.vault/**", "~/held.vault")):
+            C.cfg["sealed_paths"], C.cfg["final_eval_commands"] = [pat], [f"{PY} eval.py --final --data={at}/labels.csv"]
+            boxes.append(C.eval_box(proj / "runs"))
+    finally:
+        os.environ.pop("HOME") if home is None else os.environ.update(HOME=home)
+    got += [tk.sh(b + [PY, "-c", show] + files, cwd=proj).stdout.split() for b in boxes]
     C.cfg["final_eval_commands"] = []
+    # a pattern that reaches the sealed data through a link in the project: the place the link leads to is hidden
+    os.symlink(vault, proj / "blobs/far")
+    far = []
+    for pat in ("blobs/far/**", "blobs/far/*.csv"):
+        C.cfg["sealed_paths"] = [pat]
+        r = tk.sh(C.sandbox(True) + [PY, "-c", show, str(proj / "blobs/far/labels.csv")] + files, cwd=C.wt)
+        far.append(r.stdout.split() or r.stderr[-200:])
+    os.unlink(proj / "blobs/far")
     shutil.rmtree(vault.parent)
-    check(got == [["hidden", "hidden"]] * 2 + [["hidden", "sealed"]] * 3,
+    check(got == [["hidden", "hidden"]] * 2 + [["hidden", "sealed"]] * 6,
           "sealed data in a folder outside the project is hidden from a training run, as a folder or file by file, "
           "whether the pattern names it from the project or by its full path, and from the loop's evaluator when only "
-          f"the final evaluation names it (was: with a full path, an error for a pattern of files and no hiding from "
-          f"the evaluator) ({got})")
+          "the final evaluation names it, in the pattern's spelling or in another (was: with a full path, an error for a "
+          "pattern of files and no hiding from the evaluator; and no hiding where the pattern named the data from the "
+          f"project and the command by its full path, or the other way round, or both with `~`) ({got})")
+    check(far == [["hidden"] * 3, ["hidden", "hidden", "sealed"]],
+          "sealed data that a pattern reaches through a link in the project is hidden from a training run under the "
+          f"link's name and at its real place, as a folder or file by file (was: the box did not start, so no run did) ({far})")
     C.cfg["sealed_paths"] = ["data/test/**"]
     shutil.rmtree(proj / "blobs/test")
     def seen():  # what the evaluator's box lets a program do, when the folder it scores is the runs folder

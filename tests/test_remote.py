@@ -446,6 +446,23 @@ def refusals(tmp, proj):
         (proj / n).unlink()
     (proj / "keys").rmdir()
     set_remote(proj, tmp)
+    # A folder of the project sealed by its full path, whose files git lists as source: they stay at home all the same
+    cfgp = proj / ".claude/nn-training.json"
+    kept = cfgp.read_text(encoding="utf-8")
+    (proj / "held").mkdir()
+    (proj / "held/labels.csv").write_text("id,label\n1,1\n")
+    (proj / "heldout.txt").write_text("a source file beside the sealed folder\n")
+    cfgp.write_text(json.dumps(dict(json.loads(kept), sealed_paths=[(proj / "held").as_posix() + "/**"])), encoding="utf-8")
+    cfg = nnremote.expctl.load_config(proj)
+    got = nnremote.bundle(proj, cfg, nnremote.settings(cfg))
+    went, sent = sorted(n for n in got if n.startswith("held")), json.loads(got[nnremote.expctl.CONFIG_REL])["sealed_paths"]
+    cfgp.write_text(kept, encoding="utf-8")
+    shutil.rmtree(proj / "held")
+    (proj / "heldout.txt").unlink()
+    check(cfg["sealed_paths"] == ["held/**"] and went == ["heldout.txt"] and sent == [(proj / "held").as_posix() + "/**"],
+          f"a folder of the project that is sealed by its full path stays out of a remote run's archive (was: its files "
+          f"travelled, because the full path was taken for a place outside the project), a source file beside it "
+          f"travels, and the config that travels is the file as written ({went})")
     # The archive holds what a link leads to. A link into sealed data (where Windows gives no privilege for links:
     # a junction, which git lists file by file) or to a credentials file must not carry it along under another name.
     nnremote.expctl._link(proj / "data/test", proj / "peek")

@@ -276,8 +276,10 @@ finder_file = expctl.finder_file
 
 def protected_files(root, pats, runs_rel):
     """The files that the patterns name, found as expctl finds the frozen files for its hash; without the hashes
-    that expctl keeps of large frozen files, a harness file that a launch may write."""
-    return [f for f in expctl.files_matching(root, pats, runs_rel) if f != expctl.FROZEN_KEPT]
+    that expctl keeps of large frozen files, a harness file that a launch may write (by the filesystem's rule for
+    case: a pattern `.CLAUDE/**` names it so)."""
+    return [f for f in expctl.files_matching(root, pats, runs_rel)
+            if (f.lower() if expctl.NOCASE else f) != expctl.FROZEN_KEPT]
 
 
 def tool_inputs(text):
@@ -704,10 +706,12 @@ class Campaign:
                     if bw and subprocess.run(p + ["true"], capture_output=True).returncode == 0), [])
         if train and pre:
             pre += ["--ro-bind", str(self.root), str(self.root)]
+            # Each sealed place is covered where it really lies: bubblewrap mounts on no link, so a pattern that reaches
+            # its data through one (data -> storage elsewhere) kept the box from starting, and with it every run
             for p in self.cfg.get("sealed_paths") or []:
                 lit, base = literal(p), self.root / literal(p)
                 if lit and str(p).replace("\\", "/").rstrip("/") in (lit, lit + "/**") and base.is_dir():
-                    pre += ["--tmpfs", str(base)]
+                    pre += ["--tmpfs", os.path.realpath(base)]
                     continue
                 # A pattern that seals folders wherever they lie (**/test/**) hides each of them as one: the highest
                 # folder in which every name matches. Any other pattern hides its files one by one
@@ -718,9 +722,9 @@ class Campaign:
                         tops["/".join(q)] = next((d for d in ("/".join(q[:i]) for i in range(1, len(q) + 1))
                                                   if whole and expctl.path_matches(d + "/x", [p])), None)
                     if not tops["/".join(q)]:
-                        pre += ["--ro-bind", "/dev/null", str(self.root / f)]
+                        pre += ["--ro-bind", "/dev/null", os.path.realpath(self.root / f)]
                 for d in sorted(set(filter(None, tops.values()))):
-                    pre += ["--tmpfs", str(self.root / d)]
+                    pre += ["--tmpfs", os.path.realpath(self.root / d)]
             pre += ["--bind", str(self.wt), str(self.wt)]
         return pre
 
@@ -784,20 +788,26 @@ class Campaign:
 
     def eval_box(self, run_dir):
         """The evaluator's box where bubblewrap works: no network, and the project read-only except the folder it
-        scores and loop.eval_writable. Sealed data that only a final evaluation command names is hidden from it."""
+        scores and loop.eval_writable. Sealed data that only a final evaluation command names is hidden from it: the
+        place it really lies in decides, by whatever spelling the command and the sealed pattern name it (`../held`, a
+        full path, `~`, a link). Until 15 November 2026 the two spellings were compared, so data that the pattern named
+        from the project and the command by its full path, or the other way round, or both with `~`, was not hidden."""
         if not self.box_eval:
             return []
+        top, sealed = os.path.realpath(self.root), self.cfg.get("sealed_paths") or []
 
-        def named(texts):  # the project paths that argument lists or command lines name
-            return {re.sub(r"^\./", "", t.strip("\"'").replace("\\", "/")).rstrip("/")
-                    for x in texts for t in re.split(r"[\s=]+", str(x))}
+        def named(texts):  # (real place, name as written) of what argument lists or command lines name, read as paths
+            words = {t.strip("\"'").replace("\\", "/") for x in texts for t in re.split(r"[\s=]+", str(x))}
+            return sorted((os.path.realpath(os.path.join(top, os.path.expanduser(w))), re.sub(r"^\./", "", w).rstrip("/"))
+                          for w in words if w)
 
-        mine, pre = named(self.L["eval_command"]), self.box_eval + ["--ro-bind", str(self.root), str(self.root)]
-        for t in sorted(named(self.cfg.get("final_eval_commands") or [])):
-            p = self.root / t
-            if (expctl.path_matches(t, self.cfg.get("sealed_paths")) and p.exists()
-                    and not any(e == t or e.startswith(t + "/") or t.startswith(e + "/") for e in mine if e)):
-                pre += ["--tmpfs", str(p)] if p.is_dir() else ["--ro-bind", "/dev/null", str(p)]
+        # what the loop's own evaluator names stays readable; the project folder, or one above it, names nothing
+        mine = [e for e, _ in named(self.L["eval_command"]) if not (top + "/").startswith(e.rstrip("/") + "/")]
+        pre, links = self.box_eval + ["--ro-bind", str(self.root), str(self.root)], expctl.sealed_links(self.root, sealed)
+        for p, t in named(self.cfg.get("final_eval_commands") or []):
+            if (os.path.exists(p) and any(expctl.path_matches(n, sealed) for n in expctl.places(self.root, p, t, links))
+                    and not any((p + "/").startswith(e + "/") or (e + "/").startswith(p + "/") for e in mine)):
+                pre += ["--tmpfs", p] if os.path.isdir(p) else ["--ro-bind", "/dev/null", p]
         for w in [run_dir] + [self.root / x for x in self.L.get("eval_writable") or []]:
             if os.path.exists(w):
                 pre += ["--bind", str(w), str(w)]

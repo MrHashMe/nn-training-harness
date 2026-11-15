@@ -292,7 +292,11 @@ def load_config(root: Path):
         cfg = deep_merge(DEFAULT_CONFIG, {})
         cfg["_config_error"] = raw["_error"]
         return cfg
-    return deep_merge(DEFAULT_CONFIG, raw or {})
+    cfg = deep_merge(DEFAULT_CONFIG, raw or {})
+    for k in ("sealed_paths", "frozen_paths", "harness_paths"):  # one form of them for every reader: in_project()
+        if isinstance(cfg.get(k), list):
+            cfg[k] = [in_project(root, p) if isinstance(p, str) else p for p in cfg[k]]
+    return cfg
 
 
 def rel_to(root: Path, p) -> str:
@@ -722,6 +726,30 @@ def path_matches(rel: str, patterns):
     return None
 
 
+def in_project(root, pattern):
+    """A path pattern of the config in the one form that every reader takes: `~` written out, and a full path that
+    leads into the project as the name it has there (the project's folder by whatever spelling: a link, another
+    case, macOS's /private). A full path to another place stays one, and a name in the project stays as written.
+    Before, each reader had its own reading: a snapshot, a campaign's worktree and a remote run's archive took a
+    folder of the project that was sealed by its full path for another place and held its files, and some readers
+    did not write `~` out."""
+    s = os.path.expanduser(str(pattern).strip()).replace("\\", "/")
+    if not Path(s).anchor:
+        return pattern
+    head = re.split(r"[*?\[]", s)[0]
+    a = (s if head == s else head.rpartition("/")[0]).rstrip("/")
+    while True:
+        try:
+            if os.path.samefile(a + "/", root):
+                return s[len(a):].lstrip("/") or pattern
+        except (OSError, ValueError):
+            pass  # no such folder (yet): the folders above it are asked
+        up = os.path.dirname(a).rstrip("/")
+        if up == a:
+            return s
+        a = up
+
+
 def sealed_links(root, patterns):
     """(real place, name in the project) of each folder on a sealed pattern's way that is, or lies behind, a link to
     another place (data -> a folder on another drive). What lies at the real place is the sealed data, by whatever
@@ -753,12 +781,16 @@ def places(root, p, rel, links=()):
 def sealed_inside(rel: str, patterns, target=None) -> bool:
     """True if some sealed pattern names a path strictly below directory `rel`. A pattern whose wildcard stands at
     or above that directory (**/test/**, data/*/test/x.csv) is answered from the names below `target`, the
-    directory on disk; without a target the answer for such a pattern is True."""
+    directory on disk; without a target the answer for such a pattern is True. A full path (the place outside the
+    project that a link leads to) is asked about the patterns that are full paths, as path_matches() reads them."""
+    full = bool(Path(rel).anchor)
     rel, wild = rel.strip("/"), []
     rel = rel.lower() if NOCASE else rel
     for p in patterns or []:
-        p2 = str(p).strip().replace("\\", "/")
-        p2 = p2[2:] if p2.startswith("./") else p2
+        p2 = os.path.expanduser(str(p).strip()).replace("\\", "/")
+        if full and not Path(p2).anchor:
+            continue
+        p2 = p2[2:] if p2.startswith("./") else p2.lstrip("/") if full else p2
         p2 = p2.lower() if NOCASE else p2
         head = re.split(r"[*?\[]", p2)[0]
         if head.rstrip("/").startswith(rel + "/"):
@@ -1104,10 +1136,12 @@ def _link_tree(target: Path, link: Path, rel: str, linked, failures, depth=0, se
             failures.append(f"link {rel}: it leads to the project folder or above it, so it would bring the sealed "
                             f"paths into the snapshot under another name")
             return
-        # names in the project only: a wildcard pattern would seal a link whose storage merely lies below a `test` folder
-        real = tuple(n for n in places(top, to, rel, sealed_links(top, sealed)) - {rel} if not Path(n).anchor)
-    names = [rel, *(real or ())]
-    if any(path_matches(n, sealed) for n in names):
+        real = tuple(places(top, to, rel, sealed_links(top, sealed)) - {rel})
+    # A full path (a link's place outside the project) is judged by the patterns that are full paths: a wildcard pattern
+    # of the project would seal a link whose storage merely lies below a `test` folder. Until 15 November 2026 such a
+    # place was judged by no pattern, so a git-ignored link into data sealed by its full path was linked whole
+    names, full = [rel, *(real or ())], [p for p in sealed if Path(os.path.expanduser(str(p).strip())).anchor]
+    if any(path_matches(n, full if Path(n).anchor else sealed) for n in names):
         if kept_out is not None:
             kept_out.append(rel)
         return

@@ -39,7 +39,9 @@ the round and found two regressions and an older gap of the same cause, all fixe
 the guard's changes of round 8", after "The test branch of round 8"). On your second "Push test branch" of
 that day the fixes went to the same branch, where all six jobs pass again ("The fixes of the second
 reading on the test branch", after it). On your "Push main" of that day `main` took the round with the
-fixes, with no merge commit ("`main` takes round 8", the section after that one).
+fixes, with no merge commit ("`main` takes round 8", the section after that one). On your "Read the fixes"
+of that day a fresh reader read them: six findings, fixed or answered in a local commit, and beside them a
+regression of round 8 that both readings had missed ("The reading of the fixes", after it).
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -281,6 +283,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     (1,572, 1,559 and 1,560 checks in WSL, 1,557, 1,544 and 1,545 on Windows). Open: the fixes are mine
     and no independent reader has read them; `main` is unchanged. When this point was written the commits
     were local, so GitHub's machines and a Mac had not run them: point 21 is what followed.
+    (Added with point 23: the fixes have been read since. "Every fix makes the guard ask or refuse more"
+    left out a cost that the reading found: a read-only subagent was refused harmless programs.)
 21. **The fixes of the second reading pass on GitHub's Linux, macOS and Windows machines, and `main` still
     does not have round 8** (16 November; "The fixes of the second reading on the test branch"). On your
     second "Push test branch" the four commits that were local went to `test/round-8`. All six jobs pass
@@ -296,7 +300,22 @@ Decision record: `docs/upgrade/LEDGER.md`.
     and no force. All six of GitHub's jobs pass on `main` as well, with the counts of point 21 in every
     test file. Open: the fixes have had no independent reading, and the public `main` now holds them;
     your real install does not have round 8, which an eighth installer run would bring, on your word; the
-    two public test branches still exist.
+    two public test branches still exist. (Added with point 23: the fixes have been read since.)
+23. **The fixes have had their independent reading, and a regression of round 8 turned up beside its
+    findings; all of it is fixed locally, and the public `main` still has it** (16 November; "The reading
+    of the fixes"). On your "Read the fixes" a fresh agent on another model read the fix `332fd85`. It
+    found no crash and nothing that takes a question or a refusal away, and six defects. The main one:
+    since that fix a read-only subagent was refused harmless programs given in a here-document, and the
+    main session was asked about commit messages that quote a command. While fixing these I found that
+    round 8 itself lets a write of a frozen file pass behind a `cd` that the guard does not follow
+    (`case x in x) cd ..;; esac; echo x > proj/eval/metrics.py`); the guard asked about that before
+    round 8, and neither reading had seen it. Both are fixed: the guard asks wherever it cannot follow a
+    `cd`. The tests pass on Windows under three interpreters. In WSL, where this machine's clock was
+    being set back by more than 5 s a minute (measured), two runs failed in three and in four checks of
+    elapsed time, none of them the guard's, and a run on the commit before the fix failed in six. Open:
+    these fixes are mine and unread, two of my first forms were wrong before running lines caught them,
+    and nothing is pushed: the public `main` keeps the false refusals and the regression until you say
+    "push". Your real install has neither.
 
 ## Round 2 (12 November 2026)
 
@@ -4835,6 +4854,9 @@ its sentence "Run on WSL2 only" to make room.
 
 ## The second reading of the guard's changes of round 8 (16 November 2026): two regressions found and fixed
 
+(Added with "The reading of the fixes", further down: the fixes of this section have been read since. That
+reading corrects what is marked here as added with it, and it found one more regression of round 8.)
+
 With round 8 on its test branch I asked whether `main` should take it, and you answered "Second reading
 first". This section is that reading and what followed from it. Its commits are `332fd85` (the guard and
 its tests, and the two pages of the kit that describe the rules) and the commit of this record. Both were
@@ -4875,7 +4897,8 @@ or that GitHub's machines and a Mac have not run these commits, that section is 
    and whose text names the evaluator's file, is a question again, and a refusal where nobody can be asked;
    it passed between `703f074` and this fix. The line that round 8 was after still passes
    (`python eval/metrics.py > score.json`). Every change of this section makes the guard ask or refuse
-   more; none makes it ask less.
+   more; none makes it ask less. (Added with "The reading of the fixes": this left out a cost. The extra
+   reading also refused harmless programs to a read-only subagent, until the fix of that section.)
 7. **Tests.** All eight test files pass on the commit of the fix under six interpreters:
    1,572, 1,559 and 1,560 checks in WSL and 1,557, 1,544 and 1,545 on Windows. That is 13 more in every
    run than before: the 13 new lines of the guard's table.
@@ -4932,7 +4955,9 @@ fourth.
   names the frozen file (with a plain closing word, with a quoted one, and with an apostrophe in the text),
   a here-document beside an evaluator run with and without saved output, and a Python program from a
   here-document that reads the frozen file and saves what it prints. Not asked about in any of the three:
-  a here-document that names no kept file, one that is only printed, a commit message from one.
+  a here-document that names no kept file, one that is only printed, a commit message from one. (Added
+  with "The reading of the fixes": the last was wrong for a message that quotes a command with a kept file
+  in it, `"rm eval/metrics.py"`. `332fd85` asked about that; with the fix of that section it passes again.)
 - **A `cd`, `pushd`, `chdir`, `sl`, `Set-Location` or `Push-Location` with no folder, a `pushd +1` or `-1`,
   and a `cd` with only a redirection behind it** take the older rule too. Reason: finding 2.
 - **One more reading of every line**, without the quote characters inside its here-documents. Any rule may
@@ -4942,7 +4967,8 @@ fourth.
   always was. A `<<` inside quoted text counts as a document's start, and then the quoted texts below it
   are read as words. A closing word that starts with a digit or a sign, or is quoted in part (`<<1`,
   `<<E"O"F`), is not read as one: such a document keeps its quotes, and the gap of point 3 stays open for
-  it. The reference names that limit. Reason: the gap noted under finding 1.
+  it. The reference names that limit. (Added with "The reading of the fixes": a word quoted in part is
+  read now; the limit is a word that starts with a digit or a sign.) Reason: the gap noted under finding 1.
 - **A forced `git clean` with `-x` or `-X`** is asked about with two reasons. Attended, nothing else
   changes. In the unattended loop its refusal makes the iteration `invalid`; it was routine since
   `d7265c8`. Reason: finding 4.
@@ -5172,17 +5198,210 @@ there for the record of it and for a repair if a job fails. It was done like thi
   macos-26-arm64 20261102.0473.1 (the "Python 3.x" job) and 20261112.0504.1 (the system's Python).
 - The commit that holds this section went to `main` with a second push, which your word covers. That push
   starts another run of the workflow. Its result is not in this report; GitHub's list of runs for `main`
-  has it.
+  has it. (Added with the section after this one: run 43905412818, all six jobs pass.)
 - The local `main`, which the main checkout has checked out, was moved to the public one.
 - Not done, because the word does not cover it: the branches `test/rounds-6-7` and `test/round-8` are
   still in the public repository, and nothing was run, read or changed on your real install. It has rounds
   6 and 7 and not round 8; an eighth installer run would bring the round there, on your word.
 - Still open: the fixes of the second reading, 50 added and 10 removed lines of the guard, have had no
-  independent reading, and the public `main` now holds them.
+  independent reading, and the public `main` now holds them. (Read since: the section after this one.)
 - The repository's front page (README) is the work of another session of yours and was not changed here.
 
 Source: GitHub Actions, workflow run 43879249837 of the public repository (branch `main`, commit
 `9e09606`), and the logs of its six jobs, read on 16 November 2026.
+
+## The reading of the fixes (16 November 2026): six findings fixed, and a regression of round 8 found
+
+To the question whether the fixes get an independent reading before round 8 reaches your real install, you
+answered "Read the fixes". I took the word to cover what "Second reading first" covered: a fresh reader
+with no access to this session, every finding it keeps checked by running it, fixed or answered, tested,
+recorded and committed locally. Nothing was pushed, and nothing was run, read or changed on your real
+install.
+
+In short:
+
+1. **The reader** was a fresh agent on another model (Opus 5.5) with read access only and a plain
+   correctness brief: read the fix `332fd85` and say what it breaks. It was not stopped and changed
+   nothing. It found no crash and no change that takes away a question or a refusal that the guard gave
+   before the fix, and it kept six findings, all marked certain.
+2. **All six are fixed or answered.** The one that matters most: the extra reading that the fix added took
+   every quote character out of a here-document, so a read-only subagent was refused a harmless program
+   (`print('loss -> 1')` held a "redirection"), and the main session was asked about a commit message that
+   quotes a command and names a kept file. The public `main` has that since the push of point 22.
+3. **While fixing I found a regression of round 8 itself, which both readings had missed and which the
+   public `main` has.** Round 8 reads a line's writes target by target, from the folders the line goes to.
+   A `cd` that the guard did not follow left the targets read from the folder the line started in:
+   `case x in x) cd ..;; esac; echo x > proj/eval/metrics.py` passed, and so did the same behind `time -p`
+   or zsh's `noglob`, and with an option that the guard does not know (`cd -q ..`). The guard asked about
+   each of them before round 8. It asks again: wherever it sees a `cd` that it cannot follow, the rule
+   from before round 8 holds for the line.
+4. **Two first forms of my own fixes were wrong, and only running lines caught them.** One let a
+   here-document that nothing closes pass with an apostrophe and a `cp` behind it; one lost `popd` and
+   `cd -` behind a `case` pattern. Neither was committed.
+5. **What the guard does differently**, against `332fd85`, on 87 lines put to both: 15 harmless lines
+   pass again that it refused or asked about (each passed in round 8 before that fix too), 14 lines are
+   asked about that passed, 3 get the routine mark back, 55 are answered as before. No line that
+   `332fd85` asked about or refused passes now unless it is one of those 15.
+6. **Tests.** On `4e2bec4` the eight test files pass on Windows under three interpreters (1,589, 1,576
+   and 1,577 checks, 32 more each than on `332fd85`). In WSL they did not pass in one run: two full runs
+   failed in three and in four checks of elapsed time, different ones each time, none a row of the
+   guard's table, and each passed in the other run. A run on the commit before the fix failed in six of
+   the same kind. Meanwhile this machine's WSL clock was being set back by more than 5 s a minute, which
+   I measured. So I cannot show you one clean WSL run today; GitHub's machines would after a push.
+7. **Open.** These fixes are mine again, and no independent reader has read them. They are local: until a
+   push, which needs your word, the public `main` keeps the false alarms of point 2 and the regression of
+   point 3. Your real install has neither, because it does not have round 8.
+
+### The reader, and what it did not do
+
+The brief gave the commit, the files it changed and the rule that a reading may only add questions, and it
+asked for defects of correctness: wrong answers, crashes, slow paths, harmless lines refused. Like the
+brief of the second reading it did not ask for ways past the guard (the reader of 15 November that was
+briefed so was stopped by the model's safeguards; this one was not). The reader read the code and called
+the guard's functions in memory, with one frozen pattern. It ran no command line, no hook from end to end
+and no test file, and it checked nothing on macOS or Linux, nor what PowerShell or cmd do with a
+redirection. Its list of branches that had no test is covered by the lines added below, except `sl` and
+`chdir` alone and `pushd -N`: one pattern reads them and the words that do have a line.
+
+### The six findings
+
+| # | What the reader found | What was done | Test |
+|---|---|---|---|
+| 1 | The extra reading took every quote character out of a here-document, so paired quotes became bare text: `>` and `->` counted as a redirection, and `rm`, `cp` and `tee` as write verbs. A read-only subagent was refused a harmless program from a here-document; the main session was asked where the text also named a kept file | Only the quote characters that pair with nothing in the document are taken out (the apostrophe of `don't`). PowerShell's here-string loses all of them, as before, and so does a document that nothing on the line closes | `tests/test_kit.py`: 7 lines; `tests/test_ports.py`: 2 checks |
+| 2 | A bare word `cd`, `sl`, `chdir` or `pushd`, in any letter case and anywhere on the line, in front of a redirection or the command's end brought the rule for any path back: `python eval/metrics.py --model sl > score.json` was asked about | Such a word counts where a command starts. `cd -`, `popd` and `pushd +1` count anywhere on the line, as before | `tests/test_kit.py`: 6 lines, with finding 3 |
+| 3 | `cd --`, `cd -P` and `cd -L` go home and were read as staying, so a write below them passed. Older than `332fd85`; by my lines a regression of round 8, which the guard asked about before | A `cd` with options alone counts as one with no folder, and so does `Set-Location -PassThru` | with finding 2 |
+| 4 | The `-x` of a forced `git clean` was looked for past a line break: `git clean -f -d` with `chmod -x run.sh` on the next line lost the routine mark, so the unattended loop would count that refusal as an invalid iteration | The `-x` is read on the clean's own line and on the lines that continue it (a backslash, a backtick or `^` before the line's end) | `tests/test_loop.py`: the check of the routine mark, three more commands |
+| 5 | A here-document's closing word stopped at the first character outside letters, digits, `.` and `-`: for `<<EOF+` a text line `EOF` ended the document early for the guard, and a `cp` behind an apostrophe below it passed | The closing word is put together as a shell does (`<<'EOF'`, `<<E"O"F`, `<<EOF+`). Limit, in the reference: a word that starts with a digit or a sign (`<<1`, `<<+x`) | `tests/test_kit.py`: 5 lines, with finding 6 |
+| 6 | With Windows line ends no closing line matched. And a PowerShell here-string does not send its line to the rule for any path: only the extra reading covers it | The first is fixed. The second is left so and said in `docs/REFERENCE.md`; a line of the table holds that the extra reading covers it | with finding 5 |
+
+### What I found while fixing
+
+None of these is the reader's. Each was found by putting lines to the guard of each version.
+
+- **A regression of round 8 (`703f074`), on the public `main` since the push of point 22**: point 3 above.
+  Six lines of this kind, and the five of finding 3, were asked about before round 8, passed in round 8
+  and with the fixes of the second reading, and are asked about now. The fix has two parts. A `cd` is
+  followed at more places where a command starts: behind the `)` of a `case` pattern, behind zsh's
+  `noglob` and `nocorrect`, and behind a redirection that stands first. And anywhere else a `cd` with a
+  word behind it (`time -p cd ..`), or one whose option the guard does not know (zsh's `cd -q data`),
+  brings back the rule from before round 8 for that line: every path that it names counts as written. So
+  the guard need not know every place where a shell starts a command. The cost: a line that holds the
+  words `cd data` or `cd -P` as arguments, a write and a kept file is asked about, as before round 8.
+- **A here-document that nothing on the line closes** passed in my first form of fix 1 with an apostrophe
+  and a `cp` behind it, where `332fd85` asked. Kept strict: such a document loses all of its quote
+  characters. The cost: a read-only subagent's program from a document left open is still refused.
+- **My first form of fix 2** tied `popd`, `Pop-Location` and `cd -` to the places where a command starts
+  and lost them behind a `case` pattern and as arguments. They count anywhere on the line, as before.
+- **Left as it is, stricter than needed:** a comment with `-x` on the clean's own line
+  (`git clean -fd # not -x`) still takes the routine mark away.
+- **Three kinds of line take seconds to read.** A here-document with 4,000 escaped quotes on one line:
+  3.8 s. One open quote in front of 4,000 backslash pairs: 6.0 s. 5,000 continued lines of
+  `git clean -f`: 6.3 s. All three are older than round 8 (2.9 s, 2.9 s and 6.3 s on `3d7a4a7`); the
+  extra reading of `332fd85` added 0.8 s and 3.2 s to the first two, and this fix at most 0.2 s. Of
+  eleven other long lines one takes 0.7 s on every version (4,000 backslashes) and ten take 0.1 s or
+  less, the new rules for `cd` among them. Not changed: the reader looked for slow paths and named none,
+  and I know no way for such a line to come from an agent at work. It stays a known weakness.
+
+### Every change in what the guard asks, refuses or allows
+
+Against `332fd85`, which is what the public `main` has. Each has its reason above, and its test in the
+guard's table of `tests/test_kit.py` unless another file is named.
+
+- Passes again, as in round 8 before `332fd85`: a line with a here-document whose quotes all pair, for the
+  main session and for a read-only subagent (`tests/test_ports.py`); an argument named `sl` or `cd` in
+  front of a redirection; a harmless line behind `<<EOF+`, `<<E"O"F` or a closing word with a Windows
+  line end.
+- Asked about now: a write behind `cd --`, `cd -P`, `cd -L` or `Set-Location -PassThru`; a write behind
+  an apostrophe in a document opened with `<<EOF+` that holds a text line `EOF`; a write behind a `cd`
+  that the guard does not follow (the `)` of a `case` pattern, `noglob`, `time -p`, an option it does not
+  know); and, as the cost, a line with the words `cd data` as arguments, a write and a kept file.
+- The routine mark is back for a forced `git clean` whose next line holds the `-x` of another command
+  (`tests/test_loop.py`), so the unattended loop does not count that refusal as an invalid iteration.
+- Not weaker: the sealed test set, the frozen evaluator and the protection of live runs. On the 87 lines
+  none that `332fd85` asked about or refused passes now, except the 15 harmless ones of point 5.
+- Limits that stay, in `docs/REFERENCE.md`: a here-document's closing word that starts with a digit or a
+  sign, and a `cd` with no folder where the guard knows no command to start (`time -p cd`).
+
+### Verified, and how
+
+- By running: 87 lines put to the guard of four versions (`3d7a4a7` before round 8, `47f07a6` with round 8,
+  `332fd85` with its fixes, and this fix), each through the guard's own entry in a throwaway project with
+  one frozen and one sealed pattern, for the main session, a read-only subagent and the PowerShell tool.
+  The lines are checks that the guard asks or refuses, and harmless lines that must pass. Also the
+  timing above, and the tests below.
+- Not verified: no shell ran any of these lines, so what zsh, macOS's bash 3.2, cmd and PowerShell do
+  with them is taken from their documentation and from memory, as before. What PowerShell does with
+  `Set-Location` and options alone is treated as unknown, on the strict side. GitHub's machines and a Mac
+  have not run this fix, which is local. No agent session was run.
+- Not looked for, by the reader or by me: ways past the guard.
+- GitHub's run on the record commit of the section before this one (`62ae1da` on `main`, run
+  43905412818) passed in all six jobs. Read from the run's list of jobs at 16:36 UTC on 16 November; the
+  counts per test file were not read from the logs this time.
+
+### Tests
+
+The eight test files on the commit `4e2bec4`, on six interpreters. Windows passed in one run. WSL did
+not: two full runs failed in three and in four checks, and a control run on the commit before the fix
+(`62ae1da`) failed in six.
+
+| Interpreter | Platform | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All | Failed |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 3.12.3 with psutil and PyTorch | WSL, run 1 | 54 | 3 | 949 | 268 | 131 | 98 | 81 | 19 | 1,603 | remote: 1 |
+| 3.12.3 with psutil and PyTorch | WSL, run 2 | 54 | 3 | 949 | 267 | 131 | 99 | 81 | 19 | 1,603 | loop: 1 |
+| 3.8.20, clean | WSL, run 1 | 42 | 3 | 949 | 162 | 130 | 99 | 81 | 19 | 1,485 | loop: 1; 105 checks behind it did not run |
+| 3.8.20, clean | WSL, run 2 | 42 | 3 | 949 | 268 | 130 | 98 | 81 | 19 | 1,590 | remote: 1 |
+| 3.15.0b3, clean | WSL, run 1 | 42 | 3 | 949 | 267 | 131 | 99 | 81 | 19 | 1,591 | loop: 1 |
+| 3.15.0b3, clean | WSL, run 2 | 42 | 3 | 948 | 268 | 131 | 98 | 81 | 19 | 1,590 | kit: 1; remote: 1 |
+| 3.11.7 with psutil and PyTorch | Windows | 54 | 6 | 941 | 258 | 133 | 99 | 79 | 19 | 1,589 | none |
+| 3.8.20, clean | Windows | 42 | 6 | 941 | 258 | 132 | 99 | 79 | 19 | 1,576 | none |
+| 3.15.0rc3, clean | Windows | 42 | 6 | 941 | 258 | 133 | 99 | 79 | 19 | 1,577 | none |
+
+What failed in WSL on `4e2bec4`, all of it checks of elapsed time and none a row of the guard's table:
+
+- run 1: a job that the provider ends at its time limit was resumed (remote, 3.12); the campaign of six
+  iterations ended early, its third as "no change" (loop, 3.8); the wall-clock limit did not end an agent
+  session in flight (loop, 3.15);
+- run 2: a wall-clock limit did not stop the campaign before the next run (loop, 3.12); `nnremote attach`
+  did not take control again (remote, 3.8); the stalled alert was not raised, and the time limit again
+  (kit and remote, 3.15).
+
+Each of these passed in the other run under the same interpreter, so every file has passed under every
+interpreter, and where all pass the counts are 1,604, 1,591 and 1,592: 32 more than on `332fd85`, as on
+Windows. What I measured: against the time since boot, the WSL wall clock was set back by 150 s in the
+27.5 minutes of run 2 and by 143 s in the 27.6 minutes of the control run (on 14 November it was 2.7 to
+4.5 s a minute). The control run, on the commit before the fix, failed in six checks: a run past its
+deadline was not killed (twice), the time limit (twice), the wall-clock limit, and once the guard asked
+about a harmless file because its five seconds for looking up paths ran out. A clock that is set back
+explains the checks that compare times. It does not by itself explain the guard's budget running out,
+which I did not look into; that one is on the strict side and on the older commit.
+
+So the failures do not come from this fix, and I cannot show one clean WSL run of it today. The runs
+earlier this day passed there in one go; I did not measure the clock then. GitHub's Ubuntu machines would
+give a clean answer after a push.
+
+Changed, none removed: in `tests/test_loop.py` the check of the routine mark has three more commands and
+a reworded message. Added: 30 lines of the guard's table in `tests/test_kit.py` and 2 checks in
+`tests/test_ports.py`.
+
+### The ledger
+
+Six rows in the note `round8`: five adopted and finished, one for each kind of fix, and one rejected
+(paired quotes kept in a document that nothing closes). The three rows of the second reading's fixes
+that said "no independent reading" name this reading now. The ledger has 1,693 rows: Adopt 524 (382
+finished, 142 not), Trial 237, Assess 328, Hold 331, Reject 273.
+
+### What needs your decision
+
+- **A push.** Until then the public `main` keeps the two false alarms and the regression. My advice is
+  the order used before: the test branch first, so that GitHub's six machines run the fix, then `main`.
+- **A further reading.** These fixes are mine. This reading found six defects in fixes of about this
+  size, and I got two forms wrong here before running lines caught them. Another reading would cost
+  about what this one did.
+- Unchanged: an eighth installer run on your real install, and the two public test branches.
+
+Sources: the reader's report (in this session, not in the repository); the 87 lines and their answers
+under four versions of the guard, run on 16 November 2026 on Windows 11 under Python 3.11.7; GitHub
+Actions, workflow run 43905412818 of the public repository.
 
 ## 1. What changed and why
 
@@ -5817,7 +6036,7 @@ leaves the metric unset on purpose.
   bytecode cache was written there.
 
 ## 5. The ledger in summary
-`docs/upgrade/LEDGER.md` has one row per candidate (1,687 rows from 35 notes), a coverage map with one
+`docs/upgrade/LEDGER.md` has one row per candidate (1,693 rows from 35 notes), a coverage map with one
 entry per gap and per "Find the rest" item, the recommended combination, and a table of the points where notes
 disagree and which side the kit follows. The 26th note, `scout/draft/second-look.md`, was written after the live
 runs: it ranks the open rows, adds ten, and holds what the pilot's own data says about the loop's keep rule.
@@ -5830,13 +6049,14 @@ round found and did not change. Round 7 added one, `round7`, with 30 rows: the c
 second review. The test branch of 15 November added none. Round 8 added one, `round8`, with 33 rows: 21 from the
 third review and 12 from the round's own test runs and its independent review. The second reading of the
 guard's changes, on 16 November, added four rows to that note: three for its fixes and one, on hold, for the
-more exact reading that the fix gave up.
+more exact reading that the fix gave up. The reading of the fixes, later that day, added six rows to it:
+five for what it led to and one, rejected, for a form of the fix that was tried and let a line pass.
 
 | Decision | Rows | Before round 2 | |
 |---|---|---|---|
-| Adopt | 519 | 399 | 377 finished, 142 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493; before round 8: 352 and 142, of 494; before the second reading of round 8: 374 and 142, of 516 |
+| Adopt | 524 | 399 | 382 finished, 142 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493; before round 8: 352 and 142, of 494; before the second reading of round 8: 374 and 142, of 516; before the reading of the fixes: 377 and 142, of 519 |
 | Trial, Assess | 237, 328 | 221, 293 | undecided: each names the test it needs. Five of these tests have been run, and the rows are Adopt now: round 7 ran the one for the guard's write verbs, the test branch the one for the path comparisons on a Mac, round 8 the one for a process namespace in the loop's sandbox and, for two rows on Muon, a trial smaller than the ones the rows had named ("Round 8"). The others were not run (usage limit; some need a Mac, money or agent sessions); before round 5: 224 and 314; before round 6: 233 and 324; before round 7: 237 and 325; before the test branch: 239 and 327; before round 8: 239 and 326 |
-| Hold, Reject | 331, 272 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254; before round 8: 328 and 263; before the second reading of round 8: 330 and 272 |
+| Hold, Reject | 331, 273 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254; before round 8: 328 and 263; before the second reading of round 8: 330 and 272; before the reading of the fixes: 331 and 272 |
 
 - What "Trustworthy decisions" (section 1) changed here: eight adopted rows became finished. Six more are built
   in part and stay unfinished, each saying which part: the confirmation outside the loop, a third data tier

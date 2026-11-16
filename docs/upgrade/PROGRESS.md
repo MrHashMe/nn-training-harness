@@ -30,6 +30,9 @@ reader went through the guard's changes of round 8, and the two regressions and 
 are fixed. On the user's second "Push test branch" of that day those commits are on `test/round-8` too,
 and all six jobs pass on them (the entry after it). On the user's "Push main" of that day the public
 `main` has round 8 with the fixes, and all six jobs pass there too ("`main` takes round 8" below).
+"The reading of the fixes" below is the work on the user's "Read the fixes" of that day: an independent
+reader went through those fixes, and its six findings and a regression of round 8 found beside them are
+fixed in local commits, which nothing has pushed.
 
 # Upgrade progress
 
@@ -1738,6 +1741,63 @@ Done:
 Next: an independent reading of the fixes of the second reading, which `main` now holds unread by anyone
 but their author; an eighth installer run on the real install; whether the test branches are deleted.
 Each is a separate word of the user's.
+(Added later on 16 November: that reading is done, the entry below. GitHub's run 43905412818 on the
+record commit `62ae1da` on `main` passed in all six jobs; its counts per test file were not read.)
+
+## The reading of the fixes (16 November): six findings fixed, and a regression of round 8 found
+
+The user's word, 16 November: "Read the fixes", to the question whether the fixes of the second reading
+are read independently before round 8 reaches the real install. Taken to cover: the reading, the check of
+each finding by running it, the fixes with their tests, the record, local commits. Not covered: any push,
+deleting a branch, anything on the real install.
+
+Done:
+- The reader: a fresh agent on another model, with read access only and a plain correctness brief on the
+  fix `332fd85`. It was not stopped and changed nothing; it called the guard's functions in memory and ran
+  no test file. It found no crash and no change that takes a question or a refusal away, and six defects,
+  all marked certain.
+- Each finding checked by putting lines to the guard of four versions (`3d7a4a7` before round 8, `47f07a6`
+  with round 8, `332fd85`, and the fix): 87 lines. All six are real. Fixed in `4e2bec4`: (1) paired quotes
+  in a here-document stay in the extra reading, so a read-only subagent's harmless program passes again;
+  (2) a bare `cd`, `sl`, `chdir` or `pushd` counts only where a command starts; (3) `cd --`, `cd -P` and
+  `cd -L` count as a `cd` with no folder; (4) the `-x` of a forced `git clean` is read on the clean's own
+  line and the lines that continue it; (5) a here-document's closing word is put together as a shell does;
+  (6) a Windows line end behind the closing word counts. Answered, not changed: a PowerShell here-string
+  does not send its line to the rule for any path (the reference says so).
+- Found while fixing, not by the reader: a regression of round 8 (`703f074`) that both readings missed. A
+  `cd` that the guard did not follow (behind the `)` of a `case` pattern, behind `time -p` or zsh's
+  `noglob`, or with an option it does not know) left a line's targets read from the folder it started in,
+  so a write of a frozen file by its name from the other folder passed; the guard asked about it before
+  round 8. Now a `cd` is followed at more places where a command starts, and anywhere else a `cd` with a
+  word behind it, or one with an unknown option, brings the rule for any path back. Cost: a line with the
+  words `cd data` as arguments, a write and a kept file is asked about, as before round 8.
+- Against `332fd85` on the 87 lines: 15 harmless lines pass again (each passed in round 8), 14 are asked
+  about that passed, 3 get the routine mark back, 55 are answered as before.
+- Two first forms of these fixes were wrong and were caught only by running lines: one let a here-document
+  that nothing closes pass with an apostrophe and a `cp` behind it, one lost `popd` and `cd -` behind a
+  `case` pattern. Neither is in the commit.
+- Left as they are: three kinds of line that take seconds to read (all older than round 8; `332fd85` added
+  0.8 s and 3.2 s to two of them, this fix at most 0.2 s); a comment with `-x` on the clean's own line
+  takes the routine mark away; a read-only subagent's program from a here-document left open is refused.
+  Limits in `docs/REFERENCE.md`: a closing word that starts with a digit or a sign, and a `cd` with no
+  folder where the guard knows no command to start.
+- Tests: 30 more lines of the guard's table in `tests/test_kit.py`, 2 more checks in `tests/test_ports.py`,
+  the check of the routine mark in `tests/test_loop.py` changed (three more commands).
+- The eight test files on `4e2bec4`: Windows passes under three interpreters (1,589, 1,576 and 1,577
+  checks). WSL did not pass in one run: two full runs failed in three and in four checks of elapsed time
+  (different ones each time, none a row of the guard's table, each passed in the other run; where all
+  pass: 1,604, 1,591 and 1,592), and a control run on `62ae1da` failed in six of the same kind. Measured
+  meanwhile: the WSL wall clock set back by 150 s in 27.5 minutes and by 143 s in 27.6. No clean WSL run
+  today; GitHub's Ubuntu machines would give one after a push.
+- The ledger: six rows (five adopted and finished, one rejected); 1,693 rows now. REPORT.md has the
+  section "The reading of the fixes" and point 23 of "Read this first".
+
+Not done: nothing is pushed, so the public `main` keeps the false alarms of `332fd85` and the regression
+of round 8; GitHub's machines and a Mac have not run `4e2bec4`; no shell ran the 87 lines; these fixes
+are read by nobody but their author.
+
+Next, each a separate word of the user's: a push (the test branch first, then `main`); a further reading;
+an eighth installer run on the real install; whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2013,8 +2073,10 @@ Each is a separate word of the user's.
 - Answered on 16 Nov ("Push main"), from the second run on the test branch: `main` takes round 8 with the
   fixes. "`main` takes round 8" above. The word covers the push of the 30 commits and one more push for
   the record of it. It is not a word for deleting a branch or for anything on the real install.
-- Open, from round 8: whether the fixes of the second reading get an independent reading of their own
-  (`main` holds them since 16 November); whether the public branch `test/round-8` is deleted; whether the
+- Open, from round 8: whether the two local commits of the reading of the fixes are pushed (the test
+  branch first, then `main`); whether those fixes get a reading of their own (the question before it,
+  whether the fixes of the second reading are read, was answered on 16 November: "Read the fixes", done,
+  its entry above); whether the public branch `test/round-8` is deleted; whether the
   installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison
   of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity
   CLI is installed for a port.

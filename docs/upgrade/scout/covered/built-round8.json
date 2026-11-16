@@ -135,18 +135,48 @@
   "file": "round8",
   "candidate": "A line with a here-document, or with a `cd` or `pushd` that names no folder, is not read target by target (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`saves`); tests/test_kit.py (nine lines of the guard's table, `popd` and `Pop-Location` among them, which had no test); docs/REFERENCE.md. Commit 332fd85. The fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`saves`); tests/test_kit.py (nine lines of the guard's table, `popd` and `Pop-Location` among them, which had no test); docs/REFERENCE.md. Commit 332fd85. Read independently on 16 Nov 2026: the rows of the reading of the fixes"
  },
  {
   "file": "round8",
   "candidate": "The guard reads every line once more without the quote characters inside its here-documents (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`unquoted_bodies`, `readings`); tests/test_kit.py (four lines of the guard's table: POSIX, a quoted and indented closing word, PowerShell, and one line that still passes); docs/REFERENCE.md. Commit 332fd85. The fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`unquoted_bodies`, `readings`); tests/test_kit.py (four lines of the guard's table: POSIX, a quoted and indented closing word, PowerShell, and one line that still passes); docs/REFERENCE.md. Commit 332fd85. Read independently on 16 Nov 2026: the rows of the reading of the fixes"
  },
  {
   "file": "round8",
   "candidate": "A forced `git clean` that takes ignored files along (`-x`, `-X`) is no routine refusal (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`GIT_CLEAN_IGNORED`, the comment at `ROUTINE`); tests/test_loop.py (the check of the routine mark, changed: two more commands, two more conditions); references/loop.md. Commit 332fd85. The fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`GIT_CLEAN_IGNORED`, the comment at `ROUTINE`); tests/test_loop.py (the check of the routine mark, changed: two more commands, two more conditions); references/loop.md. Commit 332fd85. Read independently on 16 Nov 2026: the rows of the reading of the fixes"
+ },
+ {
+  "file": "round8",
+  "candidate": "Quote characters that pair inside a here-document stay in the guard's extra reading (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`unquoted_bodies`, `LONE_QUOTE`); tests/test_kit.py (seven lines of the guard's table, three of them forms that had no line), tests/test_ports.py (two checks for a read-only subagent); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "A change of folder counts where a command starts, and one with options alone as one with no folder (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`_CD_AT`, `CD`, `saves`); tests/test_kit.py (six lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "The `-x` of a forced `git clean` is read on the command's own line and the lines that continue it (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`GIT_CLEAN_IGNORED`); tests/test_loop.py (the check of the routine mark, changed: three more commands); references/loop.md. Commit 4e2bec4. This fix has had no independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "A here-document's closing word is read as a shell puts it together, and a Windows line end behind it counts (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`HEREDOC`, `unquoted_bodies`); tests/test_kit.py (five lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "Where the guard cannot follow a change of folder, the rule for any path of the line comes back (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`_CD_AT`, `saves`); tests/test_kit.py (twelve lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
  }
 ]

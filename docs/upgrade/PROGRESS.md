@@ -26,10 +26,13 @@ after it is the seventh installer run on the real install, which brought rounds 
 was built from it, and the independent review at its end. On the user's "Push test branch" of 16 November
 it is on the public branch `test/round-8`, where all six of GitHub's jobs pass (the entry after it);
 `main` does not have it, and the records of that push are committed locally only.
+"The second reading" below is the work on the user's "Second reading first" of 16 November: an independent
+reader went through the guard's changes of round 8, and the two regressions and the older gap it led to
+are fixed. Those commits are local too.
 
 # Upgrade progress
 
-Last updated: 15 November 2026.
+Last updated: 16 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -1570,7 +1573,7 @@ The independent review, three readers without the working context:
   Transformer Engine).
 - **The reader of the guard was stopped by the model's safeguards before it reported, and its work was not
   redone in the working session. The guard's changes of this round have had no independent reading of
-  their own.**
+  their own.** (Read on 16 November by a reader with another brief: "The second reading" below.)
 
 Not built, ledger rows with reasons: six starter packs, a second archive slot, coordinate refinement and
 TPE with pruning inside the loop's search, `vault-init` with the guard eased, a comment naming a sealed path
@@ -1596,8 +1599,9 @@ folder in the WSL home was refused by the environment's safety check and not wor
 what is left behind.
 
 Open questions for the user (REPORT.md, "Round 8", "What needs your decision"): a push (answered for a test
-branch on 16 November, the next entry; open for `main`); a second reading of the guard's changes; an eighth
-installer run on the real install; whether the public branches `test/rounds-6-7` and `test/round-8` are
+branch on 16 November, the next entry; open for `main`); a second reading of the guard's changes (answered
+and made on 16 November: "The second reading" below); an eighth installer run on the real install;
+whether the public branches `test/rounds-6-7` and `test/round-8` are
 deleted; agent sessions for a comparison of the history lines and for a pilot on the fine-tuning task; a
 Gemini or Antigravity CLI for a port.
 
@@ -1613,16 +1617,62 @@ pull request. GitHub's workflow run 43786289405 on that commit passed in all six
 3.14.10 and the system's 3.9.6. No check failed, so nothing was repaired. New with this run: round 8 has
 run on a Mac, and on bare Linux the loop's read-only sandbox, its process namespace and the stop that
 signals only a proven process have run and pass (Ubuntu 26.04; the 24.04 image has no bubblewrap). Not
-shown by it: the guard's changes still have no independent reading; the jobs have no PyTorch, so nothing
-trained there; no agent session.
+shown by it: the guard's changes still have no independent reading (made later that day: the next entry);
+the jobs have no PyTorch, so nothing trained there; no agent session.
 
 After the run: `references/loop.md` and `docs/REFERENCE.md` say where the sandbox has run, two ledger rows
 of round 8 say the same (no row added, no decision changed), and REPORT.md has the section "The test
 branch of round 8". These two commits are local: the user's word covered the push of the round, and a
 further push to the branch would start another run. `test/round-8` ends at `47f07a6`.
 
-Next: the user's decision whether `main` takes round 8 (my recommendation: a second reading of the guard's
-changes first), and whether the public branches `test/rounds-6-7` and `test/round-8` are deleted.
+Next, when this entry was written: the user's decision whether `main` takes round 8 (my recommendation: a
+second reading of the guard's changes first; the answer was "Second reading first", the next entry), and
+whether the public branches `test/rounds-6-7` and `test/round-8` are deleted.
+
+## The second reading of the guard's changes of round 8 (16 November): two regressions fixed, nothing pushed
+
+Asked after the test branch whether `main` takes round 8, the user answered "Second reading first". One
+fresh agent on another model (Opus 5.5), with read access only and no access to the working session, read
+the guard's three changes of the round (`703f074`, `d7265c8`, `f429101`). Its brief asked whether each
+changed rule does what its comment, its tests and the report say, and which branches have no test. It did
+not ask for ways past the guard, and the reader was not stopped. It kept six findings.
+
+- Two regressions of `703f074`, both fixed in `332fd85`: an apostrophe in a here-document paired with a
+  quote further down and hid a redirection to a frozen file; a `cd` or `pushd` with no folder was read as
+  staying in the session's folder. `saves()` gives no reading for either line now, so the rule from before
+  the round decides.
+- An older gap of the same cause, fixed there too: a write verb behind a here-document's apostrophe passed
+  before the round as well. `readings()` gives one more text, the line without the quote characters inside
+  its here-documents (POSIX and PowerShell).
+- `git clean -fdx` was a routine refusal for the loop although `-x` deletes ignored data: it carries a
+  second reason now. `git clean -fd` keeps the mark.
+- Answered without a change to what the guard asks: an archive unpacked over a frozen file (a named limit),
+  a forced clean recognised across a line break (it adds a question), a second pass over lines with a
+  comment (cost accepted; `uncommented()` no longer copies the text for every comment). Two descriptions
+  are corrected: what a redirection's targets are matched against, and how far the routine mark reaches.
+- Cost, chosen: a line with a here-document is judged as before round 8, so a note written by one whose
+  text names a kept file is asked about again. `python eval/metrics.py > score.json` still passes.
+
+Changed tests: `tests/test_kit.py` has 13 more lines in the guard's table (the message of `332fd85` says
+14, a miscount); the check of the routine mark in `tests/test_loop.py` has two more commands and two more
+conditions, and the same count.
+
+Ledger: four new rows in `round8` (three Adopt and finished, one Hold: a line with a here-document read
+target by target). 1,687 rows: Adopt 519 (377 finished, 142 not), Trial 237, Assess 328, Hold 331, Reject
+272.
+
+Tests on `332fd85`, all eight files, every file passing: in WSL
+1,572 checks under the default Python 3.12.3, 1,559 under a clean 3.8.20 and 1,560 under a clean 3.15.0b3;
+on Windows 1,557 under the default 3.11.7, 1,544 under a clean 3.8.20 and 1,545 under a clean 3.15.0rc3.
+That is 13 more than on `8fbec1c` in every run.
+
+Not done: the fixes have had no independent reading (not started, to stay inside the usage limit; a
+question for the user); nothing is pushed, so GitHub's machines and a Mac have not run `3c2a91e`,
+`fbb129a`, `332fd85` and the commit of this record; no agent session; nothing on the real install. Each
+run of the probes left a small throwaway folder (`nnprobe-*`) in the Windows temporary folder.
+
+Next: the user's decision where round 8 goes with these commits (my recommendation: the test branch first,
+then `main`), and whether the fixes get a reading of their own.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1885,11 +1935,18 @@ changes first), and whether the public branches `test/rounds-6-7` and `test/roun
   repository.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented
   machine for a stop on the machine itself, agent sessions for a powered benchmark, a Mac).
-- Open, from round 8: whether the round is pushed, to a test branch first or to `main` (only a push runs
-  it on GitHub's macOS and Linux machines); whether the guard's changes of the round get a second
-  reading, since their reader was stopped; whether the installer runs on the real install an eighth
-  time; whether agent sessions may be spent on a comparison of the worker's history lines and on a pilot
-  on the fine-tuning task; whether a Gemini or Antigravity CLI is installed for a port.
+- Answered on 16 Nov ("Push test branch"), from round 8: the push, to the test branch `test/round-8`. "The
+  test branch of round 8" above. The word covers that push. It is not a word for `main`, a deletion or
+  anything on the real install.
+- Answered on 16 Nov ("Second reading first"), from the test branch of round 8: an independent reading of
+  the guard's changes before `main` takes the round. "The second reading" above. The word covers the
+  reading, the fixes it led to and local commits. It is not a word for a push.
+- Open, from round 8: whether `main` takes the round with the fixes of the second reading, directly or
+  after a run on the test branch (GitHub's machines have not run the fixes); whether those fixes get an
+  independent reading of their own; whether the public branch `test/round-8` is deleted; whether the
+  installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison
+  of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity
+  CLI is installed for a port.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

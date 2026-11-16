@@ -38,7 +38,8 @@ should, you answered "Second reading first": an independent reader went through 
 the round and found two regressions and an older gap of the same cause, all fixed ("The second reading of
 the guard's changes of round 8", after "The test branch of round 8"). On your second "Push test branch" of
 that day the fixes went to the same branch, where all six jobs pass again ("The fixes of the second
-reading on the test branch", after it). `main` still does not have the round.
+reading on the test branch", after it). On your "Push main" of that day `main` took the round with the
+fixes, with no merge commit ("`main` takes round 8", the section after that one).
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -288,7 +289,14 @@ Decision record: `docs/upgrade/LEDGER.md`.
     lines have now passed on a Mac under two interpreters and on bare Linux. Not shown by it: the fixes
     still have no independent reading, and six passing jobs do not replace one (the run of point 19 had
     passed with both regressions in the code); the jobs have no PyTorch, so nothing trained there; no
-    agent session. The commit that records this is local and not on the branch.
+    agent session. The commit that records this was local then and is not on the test branch; it went to
+    `main` with the push of point 22.
+22. **`main` has round 8, with the fixes of the second reading** (16 November; "`main` takes round 8"). On
+    your "Push main" the public `main` moved from `3d7a4a7` to `9e09606`: 30 commits, with no merge commit
+    and no force. All six of GitHub's jobs pass on `main` as well, with the counts of point 21 in every
+    test file. Open: the fixes have had no independent reading, and the public `main` now holds them;
+    your real install does not have round 8, which an eighth installer run would bring, on your word; the
+    two public test branches still exist.
 
 ## Round 2 (12 November 2026)
 
@@ -4830,7 +4838,7 @@ its sentence "Run on WSL2 only" to make room.
 With round 8 on its test branch I asked whether `main` should take it, and you answered "Second reading
 first". This section is that reading and what followed from it. Its commits are `332fd85` (the guard and
 its tests, and the two pages of the kit that describe the rules) and the commit of this record. Both were
-local when this section was written, and `main` is unchanged. On your "Push test branch" of the same day
+local when this section was written, and `main` was unchanged. On your "Push test branch" of the same day
 they went to the test branch, where all six of GitHub's jobs pass on them: "The fixes of the second
 reading on the test branch", the section after this one. Where this section says that nothing is pushed,
 or that GitHub's machines and a Mac have not run these commits, that section is the later word.
@@ -5029,7 +5037,9 @@ and checked that every commit carries the account's no-reply address and dates i
 `3d7a4a7`. Nothing was run, read or changed on your real install, and no agent session was started.
 
 No job failed, so nothing was repaired and nothing more was pushed. The commit that holds this section is
-local, and the branch's copy of this report still says that the fixes are not pushed.
+local, and the branch's copy of this report still says that the fixes are not pushed. (On your "Push main"
+of the same day `main` took the round, that commit included: "`main` takes round 8", the section after
+this one. Where this section says that `main` does not have the round, that section is the later word.)
 
 ### In short
 1. **All six jobs pass at the first run.** Workflow run 43873478603 on `d227df2`, from about 13:11 to
@@ -5116,6 +5126,7 @@ No row was added and no decision changed: 1,687 rows, Adopt 519, Trial 237, Asse
   speaks for the branch: today's `main` still has the older gap that the fix closes, the round's changes to
   the guard have had their independent reading, and what it found is fixed and tested in six jobs. What
   speaks against it is that only I have read the fixes: 50 added and 10 removed lines of the guard.
+  Answered on 16 November with "Push main": the next section.
 - Whether those fixes get an independent reading of their own, before `main` or after it. It would be one
   reader on another model, as on 16 November, and whatever it finds would cost further work and usage.
 - Whether the public test branches `test/rounds-6-7` and `test/round-8` are deleted.
@@ -5135,6 +5146,43 @@ No row was added and no decision changed: 1,687 rows, Adopt 519, Trial 237, Asse
 - GitHub Actions, workflow run 43873478603 of the public repository (branch `test/round-8`, commit
   `d227df2`), and the logs of its six jobs, read on 16 November 2026; the logs of run 43786289405, read
   again that day for the image versions.
+
+## `main` takes round 8 (16 November 2026)
+
+To the question whether `main` takes round 8 with the fixes now, you answered "Push main". I had said what
+a yes covers: the push of the 30 commits to `main` as a fast-forward with no force, and one more push
+there for the record of it and for a repair if a job fails. It was done like this:
+
+- Fetched first: `main` in the public repository had not moved since `3d7a4a7`, and this branch was 30
+  commits ahead of it and none behind. Every added line and every commit message of the 30 commits was
+  searched for private details (none found), and every commit carries the account's no-reply address and
+  dates in UTC. `main` took the branch as it was, from `3d7a4a7` to `9e09606`: no merge commit, no force,
+  no pull request.
+- The 30 commits are the round's 25 (`703f074` to `47f07a6`), the two made after its first run on the test
+  branch (`3c2a91e`, `fbb129a`), the fix of the second reading (`332fd85`), its record (`d227df2`) and the
+  record of the second run on the test branch (`9e09606`). Beyond `d227df2`, which GitHub's machines had
+  tested on the test branch, `main` took that one commit of records only.
+- GitHub's workflow ran on `main` at `9e09606` (run 43879249837, about 13:47 to 14:13 UTC on 16 November):
+  all six jobs pass, and every test file has the same number of passed and skipped checks in every job
+  as on `d227df2`, 1,545 to 1,560 per job. So nothing was repaired. Read from each job's log, as for the
+  runs before.
+- The Mac job with "Python 3.x" got the older of two macOS images this time and ran under 3.14.10 again:
+  the three runs of the day have run that job under 3.14.10 and under 3.15.2. Images of this run:
+  ubuntu-26.04 20261111.82.6, ubuntu-24.04 20261111.127.1, windows-2025-vs2026 20261103.298.1,
+  macos-26-arm64 20261102.0473.1 (the "Python 3.x" job) and 20261112.0504.1 (the system's Python).
+- The commit that holds this section went to `main` with a second push, which your word covers. That push
+  starts another run of the workflow. Its result is not in this report; GitHub's list of runs for `main`
+  has it.
+- The local `main`, which the main checkout has checked out, was moved to the public one.
+- Not done, because the word does not cover it: the branches `test/rounds-6-7` and `test/round-8` are
+  still in the public repository, and nothing was run, read or changed on your real install. It has rounds
+  6 and 7 and not round 8; an eighth installer run would bring the round there, on your word.
+- Still open: the fixes of the second reading, 50 added and 10 removed lines of the guard, have had no
+  independent reading, and the public `main` now holds them.
+- The repository's front page (README) is the work of another session of yours and was not changed here.
+
+Source: GitHub Actions, workflow run 43879249837 of the public repository (branch `main`, commit
+`9e09606`), and the logs of its six jobs, read on 16 November 2026.
 
 ## 1. What changed and why
 

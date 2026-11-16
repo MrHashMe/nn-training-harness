@@ -24,13 +24,12 @@ jobs. "`main`" below is the user's "Push main" of the same day: `main` took the 
 after it is the seventh installer run on the real install, which brought rounds 6 and 7 there.
 "Round 8" below is the work on the request of 15 November: a third review, checked claim by claim, what
 was built from it, and the independent review at its end. On the user's "Push test branch" of 16 November
-it is on the public branch `test/round-8`, where all six of GitHub's jobs pass (the entry after it);
-`main` does not have it.
+it is on the public branch `test/round-8`, where all six of GitHub's jobs pass (the entry after it).
 "The second reading" below is the work on the user's "Second reading first" of 16 November: an independent
 reader went through the guard's changes of round 8, and the two regressions and the older gap it led to
 are fixed. On the user's second "Push test branch" of that day those commits are on `test/round-8` too,
-and all six jobs pass on them (the entry after it); `main` does not have round 8, and the record of that
-push is committed locally only.
+and all six jobs pass on them (the entry after it). On the user's "Push main" of that day the public
+`main` has round 8 with the fixes, and all six jobs pass there too ("`main` takes round 8" below).
 
 # Upgrade progress
 
@@ -1706,9 +1705,39 @@ of round 8" is corrected (it gave the versions of GitHub's compute agent as the 
 and no ledger row changed. This commit is local: no job failed, so the user's word does not cover another
 push.
 
-Next: the user's decision whether `main` takes round 8 now (my recommendation: yes; 30 commits with this
-one), whether the fixes get an independent reading of their own, before `main` or after it, and whether
-the public branches `test/rounds-6-7` and `test/round-8` are deleted.
+Next, when this entry was written: the user's decision whether `main` takes round 8 now (my
+recommendation: yes; 30 commits with this one; the answer was "Push main", the next entry), whether the
+fixes get an independent reading of their own, before `main` or after it, and whether the public branches
+`test/rounds-6-7` and `test/round-8` are deleted.
+
+## `main` takes round 8 (16 November): pushed, all six jobs pass
+
+The user's word, 16 November: "Push main", to the question whether `main` takes round 8 with the fixes
+now. It covers the push of the 30 commits as a fast-forward with no force, and one more push for the
+record of it and for a repair if a job fails. Not covered: deleting a test branch, a pull request, a
+force-push, anything on the real install.
+
+Done:
+- Fetched: `main` in the public repository unchanged at `3d7a4a7`; this branch 30 commits ahead of it and
+  none behind. The 30 commits searched for private details (none), all with the no-reply address and UTC
+  dates. `main` took the branch as it was, `3d7a4a7` to `9e09606`: no merge commit, no force.
+- The 30: the round's 25, the two after its first run on the test branch, the fix of the second reading,
+  its record, and the record of the second run on the test branch. Beyond `d227df2`, which the runners had
+  tested, that last commit of records only.
+- GitHub's workflow run 43879249837 on `main` at `9e09606` (about 13:47 to 14:13 UTC): all six jobs pass,
+  every test file with the counts of the run on `d227df2` (1,549 on Ubuntu 24.04, 1,560 on Ubuntu 26.04,
+  1,545 and 1,546 on Windows, 1,555 and 1,548 on macOS). Nothing repaired. The Mac job with "Python 3.x"
+  ran under 3.14.10 again, on the older of two macOS images.
+- REPORT.md has the section "`main` takes round 8" and point 22 of "Read this first". The commit of this
+  entry went to `main` with a second push; the run it starts is not in this file (`gh run list --branch
+  main` shows it).
+- The local `main`, which the main checkout has checked out, was moved to the public one.
+- Left as it is: the branches `test/rounds-6-7` and `test/round-8` in the public repository; the README
+  (another session's work); the real install, which has rounds 6 and 7 and not round 8.
+
+Next: an independent reading of the fixes of the second reading, which `main` now holds unread by anyone
+but their author; an eighth installer run on the real install; whether the test branches are deleted.
+Each is a separate word of the user's.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1981,9 +2010,11 @@ the public branches `test/rounds-6-7` and `test/round-8` are deleted.
   `test/round-8`. "The fixes of the second reading on the test branch" above. The word covers that push,
   and would have covered pushes there for repairs and their records had a job failed; none did. It is not
   a word for `main`, a deletion or anything on the real install.
-- Open, from round 8: whether `main` takes the round with the fixes of the second reading, on which all
-  six of GitHub's jobs pass; whether those fixes get an independent reading of their own, before `main`
-  or after it; whether the public branch `test/round-8` is deleted; whether the
+- Answered on 16 Nov ("Push main"), from the second run on the test branch: `main` takes round 8 with the
+  fixes. "`main` takes round 8" above. The word covers the push of the 30 commits and one more push for
+  the record of it. It is not a word for deleting a branch or for anything on the real install.
+- Open, from round 8: whether the fixes of the second reading get an independent reading of their own
+  (`main` holds them since 16 November); whether the public branch `test/round-8` is deleted; whether the
   installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison
   of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity
   CLI is installed for a port.

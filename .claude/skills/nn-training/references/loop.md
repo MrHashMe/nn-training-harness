@@ -169,7 +169,9 @@ An agent with a shell reaches for both as a matter of habit, and neither aims at
 guard refuses them as before where nobody can be asked, nothing of them is carried out, and they count in the
 ledger's `guard_denials`. It marks a refusal as routine only when it had no other reason: a formatter aimed at
 a frozen folder, an undo or a forced `git clean` that names a frozen file or a folder with frozen files, a
-forced push, a stopped run or a read of sealed data make the iteration `invalid` as they did. The mark goes by
+forced `git clean` that takes along what git ignores (`-x`, `-X`; since 16 November 2026, because data and run
+folders usually lie there), a forced push, a stopped run or a read of sealed data make the iteration `invalid`
+as they did. The mark goes by
 the guard's reasons, not by what else the line holds: a second command on the line takes the mark away only
 where the guard refuses that command too (`git checkout -- train.py; echo x > eval.py` does,
 `git checkout -- train.py; ls` does not). Nothing of a refused line runs either way; the mark decides only

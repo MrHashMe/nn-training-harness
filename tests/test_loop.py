@@ -2022,19 +2022,22 @@ def guard_tests(tmp, proj):
             "git clean -fd": True, "git checkout -- train.py; echo done": True,
             "git push --force origin HEAD": None, "git checkout HEAD -- eval.py": None, "black eval.py": None,
             "rm -r .claude": None, "git checkout -- train.py; echo x > eval.py": None, "pkill python": None,
-            "git clean -fd data": None, "git clean -f eval.py": None}
+            "git clean -fd data": None, "git clean -f eval.py": None, "git clean -fdx": None, "git clean -f -X": None}
     for cmd in cmds:
         call("Bash", {"command": cmd}, env)
     lines = [json.loads(x) for x in b.read_text(encoding="utf-8").splitlines()][2:]
     got = {x.get("input"): x.get("routine") for x in lines}
     asked = bash("git clean -fd data")
     check(got == cmds and all(x.get("decision") == "deny" for x in lines) and "routine" not in json.dumps(lines[6:])
-          and asked[1] == "ask" and "Destructive git operation" in asked[2] and "whole folder" in asked[2],
+          and asked[1] == "ask" and "Destructive git operation" in asked[2] and "whole folder" in asked[2]
+          and "git ignores" in bash("git clean -fdx")[2] and bash("git clean -ndx")[1] is None,
           f"it marks a refusal as routine where every reason is git that discards the session's own work or a formatter "
           f"over a whole folder, and no refusal that also names a kept file, publishes or stops. A second command on "
           f"the line takes the mark away only where the guard refuses that command too, and a forced git clean that "
           f"names a frozen file or a folder with frozen files is no routine undo: it asks for both reasons (was: marked "
-          f"routine, with the one reason) (got {got}; {asked[2][:200]})")
+          f"routine, with the one reason). Neither is a forced clean that takes along what git ignores (-x, -X), where "
+          f"data and run folders lie: it says so (was: marked routine); a dry run of one is not asked about "
+          f"(got {got}; {asked[2][:200]})")
     check(bash("black .")[1] == "ask" and "A formatter would rewrite" in bash("black .")[2]
           and bash("git push -f")[2].count(" | ") == 1, "a formatter's ask says so, and a forced push asks for both reasons")
     start = "python .claude/skills/nn-training/scripts/nnloop.py start --campaign z --agent claude --max-runs 3"

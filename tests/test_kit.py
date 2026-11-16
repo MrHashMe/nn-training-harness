@@ -1570,6 +1570,27 @@ def main():
         ("Bash", {"command": "echo a # it's\ncp train.py eval/metrics.py # it's"}, "ask"),
         ("Bash", {"command": "echo a # \"q\necho y > eval/metrics.py # \""}, "ask"),
         ("Bash", {"command": "echo a; (# it's\ncp train.py eval/metrics.py # it's\n)"}, "ask"),
+        # asked again (the second reading of round 8): a here-document is text, and an apostrophe in it paired with a
+        # quote further down and hid the redirection between them; a cd or pushd with no folder goes to one that the
+        # line does not name. Both take the rule from before round 8, so a here-document beside an evaluator run
+        # whose output is saved is asked about as it was then
+        ("Bash", {"command": "cat > notes.txt <<EOF\ndon't\nEOF\necho done > eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "cat > notes.txt <<EOF\nhello\nEOF\npython eval/metrics.py > score.json"}, "ask"),
+        ("Bash", {"command": "cd && echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "pushd; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd 2>/dev/null && echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "pushd +1 && echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "popd; cat eval/metrics.py > out.txt"}, "ask"),
+        ("PowerShell", {"command": "Pop-Location; cat eval/metrics.py > out.txt"}, "ask"),
+        # still read target by target: a here-string, whose word is an ordinary one
+        ("Bash", {"command": "python eval/metrics.py <<< 'x' > score.json"}, None),
+        # were None, and older than round 8: a write verb behind the apostrophe of a here-document, of one whose
+        # closing word is quoted and indented, and of PowerShell's here-string
+        ("Bash", {"command": "cat <<EOF\ndon't\nEOF\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "cat <<-'EOF'\n\tdon't\n\tEOF\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("PowerShell", {"command": "@'\nit's\n'@ | Out-Null; cp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        # and still None: a here-document with an apostrophe beside commands that touch no kept file
+        ("Bash", {"command": "cat > notes.md <<EOF\nWe don't train twice.\nEOF\necho 'done' > done.txt"}, None),
         # a written word that the guard cannot place inside the project is searched by name, as the whole line was:
         # the frozen file in a mounted drive's or Git Bash's spelling (was None behind an output option)
         ("Bash", {"command": "(cat sub/hello.py > /mnt/c/x/proj/eval/metrics.py)"}, "ask"),

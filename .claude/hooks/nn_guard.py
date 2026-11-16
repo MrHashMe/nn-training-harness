@@ -155,6 +155,9 @@ GIT_DESTRUCTIVE = re.compile(
     r"restore\b(?:(?![^;&|]*\s--staged\b)|(?=[^;&|]*\s(?:--worktree\b|-[a-zA-Z]*W)))|"
     r"stash\s+(?:drop|clear)\b|switch\s+(?:-f\b|--discard-changes)|"
     r"push\b[^;&|]*(?:--force\b|--force-with-lease\b|\s-f\b)|branch\s+-D\b)")
+# a forced clean that takes along what git ignores: data, run folders and checkpoints are usually ignored, so this
+# is more than an undo of the session's own work (see ROUTINE)
+GIT_CLEAN_IGNORED = re.compile(_GIT_CLEAN + r"(?=[^;&|]*?\s-[a-zA-Z]*[xX])")
 GIT_PUSH = re.compile(r"\bgit\s+push\b")
 GIT_TREE_CHANGE = re.compile(
     r"\bgit\s+(?:checkout|switch|pull|merge|rebase|am|cherry-pick|revert|stash(?!\s+(?:list|show)\b))\b")
@@ -1056,11 +1059,39 @@ def uncommented(text: str) -> str:
                 j += 2 if text[j] == "\\" else 1
             j += 1
         elif ch == "#" and (i == 0 or text[i - 1] in " \t\n;&|()<>"):
-            i = text.find("\n", i) if "\n" in text[i:] else n
+            i = text.find("\n", i)
+            if i < 0:
+                break
             continue
         out.append(text[i:j])
         i = j
     return "".join(out)
+
+
+# where a here-document starts, with the word that ends it (<<EOF, <<-'EOF', << "EOF"; not <<<, a here-string, whose
+# word is an ordinary one), and PowerShell's here-string (@' or @" at the end of a line, closed by '@ or "@)
+HEREDOC = re.compile(r"(?<!<)<<(?!<)(-?)[ \t]*(?:\\?([A-Za-z_][\w.-]*)|'([^'\n]*)'|\"([^\"\n]*)\")|@(['\"])\s*$")
+
+
+def unquoted_bodies(text: str) -> str:
+    """A line with the quote characters taken out of its here-documents. What stands in a document is text, in which
+    an apostrophe pairs with nothing (don't). The rules pair quotes over the whole line, so that one paired with a
+    quote further down and hid the commands in between (cat <<EOF <newline> don't <newline> EOF <newline>
+    cp x.py eval/metrics.py; echo 'done'). Like every reading this may name more than the shell would: a << in
+    quoted text counts as a document's start, and then the quoted texts below it are read as words.
+    shortcut: a closing word that starts with a digit or a sign, or is quoted in part (<<1, <<E"O"F), is not read
+    as one, so such a document keeps its quotes; that takes the shell's own reading of words"""
+    lines, ends = text.split("\n"), []
+    for k, ln in enumerate(lines):
+        if not ends:  # what closes each document that this line opens, in their order: the word alone, behind tabs
+            # for <<-, as strictly as a shell takes it, so that no document ends here before the shell ends it
+            ends = [m.group(5) + "@" if m.group(5) else ("\t*" if m.group(1) else "") + re.escape(
+                m.group(2) or m.group(3) or m.group(4) or "") + "$" for m in HEREDOC.finditer(ln)]
+        elif re.match(ends[0], ln):
+            del ends[0]
+        else:
+            lines[k] = re.sub(r"['\"]", "", ln)
+    return "\n".join(lines)
 
 
 def readings(cmd: str):
@@ -1098,8 +1129,9 @@ def readings(cmd: str):
         return " ".join(names or [m.group()])
 
     text, out = cmd.replace("\0", ""), []
-    # with its comments and without: what stands behind a # may be a zsh pattern (data/(#i)TEST), and no comment
-    for posix in dict.fromkeys((text, uncommented(text))):
+    # with its comments and without: what stands behind a # may be a zsh pattern (data/(#i)TEST), and no comment.
+    # And without the quotes of its here-documents, which pair with nothing
+    for posix in dict.fromkeys((text, uncommented(text), uncommented(unquoted_bodies(text)))):
         for _ in range(4):  # a default inside a default
             posix = PARAM_WORD.sub(r"\1", posix)
         posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), posix)
@@ -1169,10 +1201,13 @@ def out_words(lx):
 def saves(cmd: str, c: str):
     """The files that a line writes by its redirections and by tee, where each one names its file in plain letters.
     None where the line cannot be read so: a variable, a command's output, a backslash or a ~ stands in it (each
-    can splice a name or a folder that this does not see), it goes back to a folder that it does not name (cd -,
-    popd), a target is missing or is a pattern, or a tee stands where no command starts."""
-    if re.search(r"[$`\\~]", cmd) or re.search(r"(?:^|[\s;&|({])(?:popd|Pop-Location|" + _CD_WORD + r"\s+-)(?=[\s;&|)}]|$)",
-                                               c, re.I | re.M):
+    can splice a name or a folder that this does not see), it holds a here-document (text, in which a quote pairs
+    with nothing, so that the quoted words after it cannot be told), it goes to a folder that it does not name
+    (cd -, popd, pushd +1, and a cd or pushd with no folder, which goes home or to the folder before), a target is
+    missing or is a pattern, or a tee stands where no command starts."""
+    if re.search(r"[$`\\~]|(?<!<)<<(?!<)", cmd) or re.search(
+            r"(?:^|[\s;&|({])(?:(?:popd|Pop-Location|" + _CD_WORD + r"\s+[-+]\d*)(?=[\s;&|)}]|$)|"
+            + _CD_WORD + r"(?=[ \t]*(?:[;&|)}<>]|\d+[<>]|$)))", c, re.I | re.M):
         return None
     quoted, out = [], []
     masked = QUOTED.sub(lambda q: quoted.append(q.group()[1:-1]) or "\0%d\0" % (len(quoted) - 1), c)
@@ -2253,6 +2288,9 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     if GIT_DESTRUCTIVE.search(c):
         results.append((ASK, "Destructive git operation (may discard uncommitted work or rewrite history). Needs the "
                              "user's explicit approval."))
+    if GIT_CLEAN_IGNORED.search(c):  # a reason of its own: with it the refusal is not marked routine
+        results.append((ASK, "A forced git clean with -x or -X also deletes what git ignores, and data, run folders "
+                             "and checkpoints are usually among that."))
     if GIT_PUSH.search(c):  # a forced push is both
         results.append((ASK, "git push publishes code; it needs the user's explicit approval."))
     setting = git_runs(raw) or "".join(m.group() for m in [GIT_ENV.search(c)] if m)
@@ -2401,9 +2439,11 @@ def nobody_to_ask(payload, agent):
     return f"{mode} is active" if mode in ("bypassPermissions", "dontAsk") else None
 
 
-# Asks about a session's own work and nothing else: git that discards uncommitted work, and a formatter given a
-# folder in which kept files lie. Where nobody can be asked they are refused like every ask. The unattended loop
-# takes a refused call as a sign of tampering and drops the session's change; not these, which the beacon marks
+# Asks about a session's own work and nothing else: git that discards work or rewrites history (all of
+# GIT_DESTRUCTIVE: a hard reset, a forced checkout or clean, a dropped stash, a deleted branch, also of committed
+# work), and a formatter given a folder in which kept files lie. A forced clean that takes ignored files along has
+# a second reason and is not among them. Where nobody can be asked they are refused like every ask. The unattended
+# loop takes a refused call as a sign of tampering and drops the session's change; not these, which the beacon marks
 ROUTINE = ("Destructive git operation", "A formatter would rewrite")
 
 

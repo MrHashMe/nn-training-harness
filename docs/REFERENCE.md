@@ -301,7 +301,12 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   targets are read as words with their quotes taken off, from every folder the line goes to. The older rule,
   any path of the line, stays wherever a target cannot be read that way: a variable, a command's output, a
   backslash or a home sign in the line, a target that is a pattern or is missing, `cd -` or `popd`, a second
-  write verb, a `tee` that starts no command, a line inside `bash -c`. A written word that the guard cannot
+  write verb that the guard lists, a `tee` that starts no command, a line inside `bash -c`; and since
+  16 November 2026, when an independent reading found both passing, a line with a here-document (an apostrophe
+  in its text paired with a quote further down and hid what stood between them) and a `cd` or `pushd` with no
+  folder, which goes home or to the folder before. Since that day the guard also reads every line once more
+  without the quote characters inside its here-documents and PowerShell's here-strings, so that a `cp` or an
+  `rm` behind such an apostrophe is seen. A written word that the guard cannot
   place inside the project (Git Bash's `/c/Users/…`, a mounted drive) is searched by name, an output option's
   word among them. Three kinds of line are asked about although they name
   no such file. A line that changes a folder holding such files as a whole: `mv eval old`, `rm -r eval`,
@@ -336,7 +341,10 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   (`git stash`, a change of branch, `pull`, `merge`, `rebase`; `git reset --hard` is asked about as destructive,
   and a change of branch while a run executes from the working tree); an archive unpacked over the file
   (`tar x`, `unzip`); `git apply`; a download that names only its address (`curl -O`, `wget URL`); a formatter
-  the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`);
+  the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`); a `git clean` without `-f` in a
+  repository whose `clean.requireForce` is switched off; a `cd` that `CDPATH` sends to another folder than the
+  one below the session's; a write behind an apostrophe in a here-document whose closing word starts with a
+  digit or a sign or is quoted in part (`<<1`, `<<E"O"F`);
   the whole project removed under another spelling of its folder (`rm -rf ../proj`); a frozen pattern that
   starts with a wildcard, which counts for the project folder but not for a named folder below it; `tee`
   behind a search (`… | xargs tee`) and a PowerShell block with a block inside it; and any program or script

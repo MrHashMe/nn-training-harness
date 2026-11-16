@@ -304,9 +304,24 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   write verb that the guard lists, a `tee` that starts no command, a line inside `bash -c`; and since
   16 November 2026, when an independent reading found both passing, a line with a here-document (an apostrophe
   in its text paired with a quote further down and hid what stood between them) and a `cd` or `pushd` with no
-  folder, which goes home or to the folder before. Since that day the guard also reads every line once more
-  without the quote characters inside its here-documents and PowerShell's here-strings, so that a `cp` or an
-  `rm` behind such an apostrophe is seen. A written word that the guard cannot
+  folder or with options alone (`cd --`, `cd -P`), which goes home or to the folder before; such a word counts
+  where a command starts, so an argument named `sl` or `cd` is none. A command starts, for the guard, at a
+  line's start, behind `;`, `&`, `|` or a bracket (the `)` of a `case` pattern among them), and there behind a
+  shell keyword, `time`, `command`, `builtin`, zsh's `noglob`, an assignment or a redirection that stands
+  first. A `cd` with a word behind it that stands anywhere else (`time -p cd ..`, or the words `cd data` as
+  arguments), and one with an option that the guard does not know (zsh's `cd -q data`), bring the rule for
+  any path back as well, since the line may go where the guard does not follow it: from round 8 until the
+  reading of its fixes such a line was read target by target from the folder it started in, and a write of a
+  kept file by its name from the other folder passed. Since that day the guard also reads
+  every line once more without the quote characters of its here-documents that pair with nothing there (the
+  apostrophe of `don't`), so that a `cp` or an `rm` behind such an apostrophe is seen. Quotes that pair inside
+  the document stay, so that a program or a message in one is read as on the line as it came:
+  `print('loss -> 1')` holds no redirection and `"rm x"` no deletion (the first form of this reading, on `main`
+  for some hours of that day, took those out too and refused such a program to a read-only subagent).
+  PowerShell's here-string loses all of its quote characters, and only this extra reading covers it; a
+  here-document that nothing on the line closes loses them all too. A
+  here-document ends where a shell ends it: the closing word is put together as a shell does (`<<'EOF'`,
+  `<<E"O"F`, `<<EOF+`), and a Windows line end behind it counts. A written word that the guard cannot
   place inside the project (Git Bash's `/c/Users/…`, a mounted drive) is searched by name, an output option's
   word among them. Three kinds of line are asked about although they name
   no such file. A line that changes a folder holding such files as a whole: `mv eval old`, `rm -r eval`,
@@ -343,8 +358,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   (`tar x`, `unzip`); `git apply`; a download that names only its address (`curl -O`, `wget URL`); a formatter
   the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`); a `git clean` without `-f` in a
   repository whose `clean.requireForce` is switched off; a `cd` that `CDPATH` sends to another folder than the
-  one below the session's; a write behind an apostrophe in a here-document whose closing word starts with a
-  digit or a sign or is quoted in part (`<<1`, `<<E"O"F`);
+  one below the session's; a `cd` with no folder that stands where the guard knows no command to start
+  (`time -p cd`); a write behind an apostrophe in a here-document whose closing word starts with a
+  digit or a sign (`<<1`, `<<+x`);
   the whole project removed under another spelling of its folder (`rm -rf ../proj`); a frozen pattern that
   starts with a wildcard, which counts for the project folder but not for a named folder below it; `tee`
   behind a search (`… | xargs tee`) and a PowerShell block with a block inside it; and any program or script

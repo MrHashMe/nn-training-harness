@@ -208,6 +208,12 @@ def guard_tests(tmp: Path):
         check(guard(proj, cl(cmd, agent_type="run-analyst"))[1] == "deny", f"Claude: {label} by a read-only subagent is denied")
     check(guard(proj, cl("python -c \"print(open('train.py').read())\"", agent_type="run-analyst"))[2] == "",
           "Claude: python -c that only reads passes for a read-only subagent")
+    for label, cmd in (("that prints a quoted ->", "python - <<'EOF'\nprint('loss -> 1')\nEOF"),
+                       ("with a quoted text over several lines and the word rm",
+                        "python - <<'EOF'\nq = \"\"\"\nselect * from runs where loss > 1\n\"\"\"\nprint(\"rm\", q)\nEOF")):
+        check(guard(proj, cl(cmd, agent_type="run-analyst"))[2] == "",
+              f"Claude: a program in a here-document {label} passes for a read-only subagent (was denied between the "
+              f"fix of 16 November 2026 and its reading: the quotes that pair inside a here-document were taken out too)")
     check(guard(proj, cx("Remove-Item -Recurse runs"), "--agent", "codex")[0] == 2
           and guard(proj, cx("Set-Content eval/metrics.py x"), "--agent", "codex")[0] == 2,
           "Codex: PowerShell forms of deleting runs and of writing the frozen evaluator are refused")

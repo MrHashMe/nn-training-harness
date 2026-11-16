@@ -156,8 +156,9 @@ GIT_DESTRUCTIVE = re.compile(
     r"stash\s+(?:drop|clear)\b|switch\s+(?:-f\b|--discard-changes)|"
     r"push\b[^;&|]*(?:--force\b|--force-with-lease\b|\s-f\b)|branch\s+-D\b)")
 # a forced clean that takes along what git ignores: data, run folders and checkpoints are usually ignored, so this
-# is more than an undo of the session's own work (see ROUTINE)
-GIT_CLEAN_IGNORED = re.compile(_GIT_CLEAN + r"(?=[^;&|]*?\s-[a-zA-Z]*[xX])")
+# is more than an undo of the session's own work (see ROUTINE). Its -x is read on the command's own line and on the
+# lines that continue it (a \, ` or ^ before the line's end): chmod -x on the next line is no option of the clean
+GIT_CLEAN_IGNORED = re.compile(_GIT_CLEAN + r"(?=(?:[^;&|\n]|(?<=[\\`^])\r?\n)*?(?<=\s)-[a-zA-Z]*[xX])")
 GIT_PUSH = re.compile(r"\bgit\s+push\b")
 GIT_TREE_CHANGE = re.compile(
     r"\bgit\s+(?:checkout|switch|pull|merge|rebase|am|cherry-pick|revert|stash(?!\s+(?:list|show)\b))\b")
@@ -296,12 +297,14 @@ JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
 WALK, WALK_S = 20000, 5  # files a walk looks at for sure, and the seconds a hook call may spend on the files beyond
 GLOB = 200  # matches of a wildcard that are looked up one by one; each one behind them costs a look at its folder
-# a change of folder: where a command starts (after blanks too), or behind a shell keyword, a wrapper such as `time`
-# or an assignment (X=1 cd data). PowerShell takes -Path:data and a parameter's name cut short
+# a change of folder: where a command starts (after blanks too): behind a separator, the ) of a case pattern, a
+# shell keyword, a wrapper such as `time` or zsh's noglob, an assignment (X=1 cd data) or a redirection that stands
+# first (>log cd data). PowerShell takes -Path:data and a parameter's name cut short
 _CD_WORD = r"(?:cd|pushd|chdir|sl|Set-Location|Push-Location)"
+_CD_AT = (r"(?:^|[;&|({)])\s*(?:(?:if|then|else|elif|while|until|do|time|command|builtin|eval|noglob|nocorrect|!"
+          r"|[a-z_]\w*=\S*|\d*[<>][<>&|]*\s*[^\s;&|()<>]+)\s+)*")
 # The folder ends at a redirection (cd data</dev/null), and a shell lets one splice it from pieces (d"at"a, 'da'ta)
-CD = re.compile(r"(?:^|[;&|({])\s*(?:(?:if|then|else|elif|while|until|do|time|command|builtin|eval|!|[a-z_]\w*=\S*)\s+)*"
-                + _CD_WORD + r"\s+(?:-[lpe]\w*(?::|\s+)|(?:/d|--)\s+)*((?:\"[^\"]*\"|'[^']*'|[^\s;&|)<>'\"]+)+)",
+CD = re.compile(_CD_AT + _CD_WORD + r"\s+(?:-[lpe]\w*(?::|\s+)|(?:/d|--)\s+)*((?:\"[^\"]*\"|'[^']*'|[^\s;&|)<>'\"]+)+)",
                 re.I | re.M)
 ASSIGN = re.compile(r"^[A-Za-z_]\w*=")  # NAME=value in front of a command
 # file filters of search commands, each tool's own: rg -g/--glob/-t, grep --include/--exclude/--exclude-dir, find -name
@@ -1068,29 +1071,41 @@ def uncommented(text: str) -> str:
     return "".join(out)
 
 
-# where a here-document starts, with the word that ends it (<<EOF, <<-'EOF', << "EOF"; not <<<, a here-string, whose
-# word is an ordinary one), and PowerShell's here-string (@' or @" at the end of a line, closed by '@ or "@)
-HEREDOC = re.compile(r"(?<!<)<<(?!<)(-?)[ \t]*(?:\\?([A-Za-z_][\w.-]*)|'([^'\n]*)'|\"([^\"\n]*)\")|@(['\"])\s*$")
+# where a here-document starts, with the word that ends it as a shell puts it together (<<EOF, <<-'EOF', << "EOF",
+# <<\EOF, <<E"O"F, <<EOF+; not <<<, a here-string, whose word is an ordinary one), and PowerShell's here-string (@' or
+# @" at the end of a line, closed by '@ or "@)
+HEREDOC = re.compile(r"(?<!<)<<(?!<)(-?)[ \t]*((?=[A-Za-z_'\"\\])(?:[^\s;&|<>()'\"\\`]|\\.|'[^'\n]*'|\"[^\"\n]*\")+)"
+                     r"|@(['\"])\s*$")
+LONE_QUOTE = re.compile(QUOTED.pattern + r"|(['\"])")  # a quoted text as the rules pair it, or a quote left over
 
 
 def unquoted_bodies(text: str) -> str:
-    """A line with the quote characters taken out of its here-documents. What stands in a document is text, in which
-    an apostrophe pairs with nothing (don't). The rules pair quotes over the whole line, so that one paired with a
-    quote further down and hid the commands in between (cat <<EOF <newline> don't <newline> EOF <newline>
-    cp x.py eval/metrics.py; echo 'done'). Like every reading this may name more than the shell would: a << in
-    quoted text counts as a document's start, and then the quoted texts below it are read as words.
-    shortcut: a closing word that starts with a digit or a sign, or is quoted in part (<<1, <<E"O"F), is not read
-    as one, so such a document keeps its quotes; that takes the shell's own reading of words"""
-    lines, ends = text.split("\n"), []
-    for k, ln in enumerate(lines):
+    """A line without the quote characters of its here-documents that pair with nothing there. What stands in a
+    document is text, in which an apostrophe pairs with nothing (don't). The rules pair quotes over the whole line,
+    so that one paired with a quote further down and hid the commands in between (cat <<EOF <newline> don't <newline>
+    EOF <newline> cp x.py eval/metrics.py; echo 'done'). Quotes that pair inside the document stay, so that a program
+    in it is read as on the line as it came: print('a -> b') holds no redirection. PowerShell's here-string loses
+    all of them, because its text then stands between the quotes of its own @' and '@. So does a document that
+    nothing on the line closes: a closing word that the guard reads otherwise than the shell looks the same.
+    Like every reading this may name more than the shell would: a << in quoted text counts as a document's start,
+    and then a quote left over in the lines below it is taken out.
+    shortcut: a closing word that starts with a digit or a sign (<<1, <<+x) is not read as one, so such a document
+    keeps its quotes; that takes the shell's own reading of words"""
+    lines, ends, first = text.split("\n"), [], 0
+    for k, ln in enumerate(lines + [None]):  # None: the text's end, which closes a document left open
         if not ends:  # what closes each document that this line opens, in their order: the word alone, behind tabs
             # for <<-, as strictly as a shell takes it, so that no document ends here before the shell ends it
-            ends = [m.group(5) + "@" if m.group(5) else ("\t*" if m.group(1) else "") + re.escape(
-                m.group(2) or m.group(3) or m.group(4) or "") + "$" for m in HEREDOC.finditer(ln)]
-        elif re.match(ends[0], ln):
+            ends = [(m.group(3) + "@", True) if m.group(3) else (("\t*" if m.group(1) else "") + re.escape(re.sub(
+                r"\\(.)|'([^']*)'|\"([^\"]*)\"", lambda q: q.group(1) or q.group(2) or q.group(3) or "", m.group(2)))
+                + r"\r?$", False) for m in HEREDOC.finditer(ln or "")]
+            first = k + 1
+        elif ln is None or re.match(ends[0][0], ln):
+            if first < k:
+                body = "\n".join(lines[first:k])
+                lines[first:k] = (re.sub(r"['\"]", "", body) if ends[0][1] or ln is None else LONE_QUOTE.sub(
+                    lambda q: "" if q.group(1) else q.group(), body)).split("\n")
             del ends[0]
-        else:
-            lines[k] = re.sub(r"['\"]", "", ln)
+            first = k + 1
     return "\n".join(lines)
 
 
@@ -1130,7 +1145,7 @@ def readings(cmd: str):
 
     text, out = cmd.replace("\0", ""), []
     # with its comments and without: what stands behind a # may be a zsh pattern (data/(#i)TEST), and no comment.
-    # And without the quotes of its here-documents, which pair with nothing
+    # And without the quotes of its here-documents that pair with nothing there
     for posix in dict.fromkeys((text, uncommented(text), uncommented(unquoted_bodies(text)))):
         for _ in range(4):  # a default inside a default
             posix = PARAM_WORD.sub(r"\1", posix)
@@ -1203,11 +1218,16 @@ def saves(cmd: str, c: str):
     None where the line cannot be read so: a variable, a command's output, a backslash or a ~ stands in it (each
     can splice a name or a folder that this does not see), it holds a here-document (text, in which a quote pairs
     with nothing, so that the quoted words after it cannot be told), it goes to a folder that it does not name
-    (cd -, popd, pushd +1, and a cd or pushd with no folder, which goes home or to the folder before), a target is
-    missing or is a pattern, or a tee stands where no command starts."""
+    (cd -, popd, pushd +1 anywhere on the line; a cd or pushd with no folder or with options alone, cd -P, which
+    goes home or to the folder before, where a command starts, so that an argument named sl is none), or it may go
+    where CD does not follow it: what CD takes for the folder is an option that it does not know (zsh's cd -q data),
+    or a cd with a word behind it stands where CD finds none (time -p cd .., and the same words as arguments). Also
+    None where a target is missing or is a pattern, or a tee stands where no command starts."""
     if re.search(r"[$`\\~]|(?<!<)<<(?!<)", cmd) or re.search(
-            r"(?:^|[\s;&|({])(?:(?:popd|Pop-Location|" + _CD_WORD + r"\s+[-+]\d*)(?=[\s;&|)}]|$)|"
-            + _CD_WORD + r"(?=[ \t]*(?:[;&|)}<>]|\d+[<>]|$)))", c, re.I | re.M):
+            r"(?:^|[\s;&|({])(?:popd|Pop-Location|" + _CD_WORD + r"\s+[-+]\d*)(?=[\s;&|)}]|$)|" + _CD_AT
+            + _CD_WORD + r"(?:[ \t]+-[^\s;&|)}<>:]*)*(?=[ \t]*(?:[;&|)}<>]|\d+[<>]|$))", c, re.I | re.M) \
+            or any(m.group(1)[:1] in "-+" for m in CD.finditer(c)) \
+            or re.search(r"(?<![\w./-])" + _CD_WORD + r"[ \t]+[^\s;&|)}<>]", CD.sub(";", c), re.I):
         return None
     quoted, out = [], []
     masked = QUOTED.sub(lambda q: quoted.append(q.group()[1:-1]) or "\0%d\0" % (len(quoted) - 1), c)

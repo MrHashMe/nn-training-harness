@@ -2019,16 +2019,17 @@ def guard_tests(tmp, proj):
     check([(x.get("tool"), x.get("decision")) for x in lines] == [("Read", "allow"), ("Write", "deny")]
           and "frozen" in str(lines[-1].get("reason")), "the guard records every checked call, allowed ones included, for the loop")
     cmds = {"git checkout -- train.py": True, "git reset --hard": True, "black .": True, "ruff check --fix .": True,
-            "git clean -fd": True, "git checkout -- train.py; echo done": True,
+            "git clean -fd": True, "git checkout -- train.py; echo done": True, "git clean -f -d\necho -x": True,
             "git push --force origin HEAD": None, "git checkout HEAD -- eval.py": None, "black eval.py": None,
             "rm -r .claude": None, "git checkout -- train.py; echo x > eval.py": None, "pkill python": None,
-            "git clean -fd data": None, "git clean -f eval.py": None, "git clean -fdx": None, "git clean -f -X": None}
+            "git clean -fd data": None, "git clean -f eval.py": None, "git clean -fdx": None, "git clean -f -X": None,
+            "git clean -f \\\n -x": None, "git clean -f `\n -x": None}
     for cmd in cmds:
         call("Bash", {"command": cmd}, env)
     lines = [json.loads(x) for x in b.read_text(encoding="utf-8").splitlines()][2:]
     got = {x.get("input"): x.get("routine") for x in lines}
     asked = bash("git clean -fd data")
-    check(got == cmds and all(x.get("decision") == "deny" for x in lines) and "routine" not in json.dumps(lines[6:])
+    check(got == cmds and all(x.get("decision") == "deny" for x in lines) and "routine" not in json.dumps(lines[7:])
           and asked[1] == "ask" and "Destructive git operation" in asked[2] and "whole folder" in asked[2]
           and "git ignores" in bash("git clean -fdx")[2] and bash("git clean -ndx")[1] is None,
           f"it marks a refusal as routine where every reason is git that discards the session's own work or a formatter "
@@ -2036,7 +2037,9 @@ def guard_tests(tmp, proj):
           f"the line takes the mark away only where the guard refuses that command too, and a forced git clean that "
           f"names a frozen file or a folder with frozen files is no routine undo: it asks for both reasons (was: marked "
           f"routine, with the one reason). Neither is a forced clean that takes along what git ignores (-x, -X), where "
-          f"data and run folders lie: it says so (was: marked routine); a dry run of one is not asked about "
+          f"data and run folders lie: it says so (was: marked routine); a dry run of one is not asked about. The -x "
+          f"is read on the clean's own line and the lines that continue it: one on the next line belongs to another "
+          f"command and leaves the mark (was: took it away, between the fix of 16 November 2026 and its reading) "
           f"(got {got}; {asked[2][:200]})")
     check(bash("black .")[1] == "ask" and "A formatter would rewrite" in bash("black .")[2]
           and bash("git push -f")[2].count(" | ") == 1, "a formatter's ask says so, and a forced push asks for both reasons")

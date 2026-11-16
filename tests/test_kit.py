@@ -1591,6 +1591,54 @@ def main():
         ("PowerShell", {"command": "@'\nit's\n'@ | Out-Null; cp train.py eval/metrics.py; echo 'end'"}, "ask"),
         # and still None: a here-document with an apostrophe beside commands that touch no kept file
         ("Bash", {"command": "cat > notes.md <<EOF\nWe don't train twice.\nEOF\necho 'done' > done.txt"}, None),
+        # the reading of those fixes (16 November 2026). Quotes that pair inside a here-document stay, so a program or
+        # a message in one is read as on the line as it came (were asked about since the fix: a quoted -> counted as a
+        # redirection and a quoted rm as a deletion, beside the name of a kept file)
+        ("Bash", {"command": "python - <<'EOF'\nimport json\nd = json.load(open('eval/ref.json'))\n"
+                             "print('best -> %s' % d)\nEOF"}, None),
+        ("Bash", {"command": "git commit -F - <<'EOF'\nGuard: ask before \"rm eval/metrics.py\"\nEOF"}, None),
+        # a quote left over is still taken out, also where others in the document pair, and all of them in a
+        # document that nothing on the line closes (the guard may have read its closing word otherwise than the shell)
+        ("Bash", {"command": "cat <<EOF\ndon't and can't, it's\nEOF\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "cat <<EOF\ndon't\nEOF \ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        # forms that no row took before: a here-string in double quotes, two documents opened on one line, and
+        # the closing word '' (an empty line ends that document)
+        ("PowerShell", {"command": "@\"\nsay \"hi\n\"@ | Out-Null; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("Bash", {"command": "cat <<A <<B\none\nA\nit's\nB\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "cat <<''\ndon't\n\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        # the closing word as a shell puts it together, and Windows line ends: the document ends where the shell ends
+        # it (EOF+ with a line EOF in the text was None; the two harmless lines were asked about since the fix)
+        ("Bash", {"command": "cat <<EOF+\nEOF\nWe don't\nEOF+\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "cat <<E\"O\"F\nWe don't\nEOF\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "cat <<EOF\r\nWe don't\r\nEOF\r\ncp train.py eval/metrics.py; echo 'end'\r\n"}, "ask"),
+        ("Bash", {"command": "cat <<EOF+\nhello\nEOF+\necho \"a > b\" eval/metrics.py"}, None),
+        ("Bash", {"command": "cat <<EOF\r\nhello\r\nEOF\r\necho \"a > b\" eval/metrics.py\r\n"}, None),
+        # a change of folder counts where a command starts: an argument named sl is none (was asked about since the
+        # fix), a cd behind a keyword is one, and a cd with options alone goes home too (those three were None)
+        ("Bash", {"command": "python eval/metrics.py --model sl > score.json"}, None),
+        ("Bash", {"command": "if true; then cd; fi; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd -- && echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd -P && echo x > proj/eval/metrics.py"}, "ask"),
+        ("PowerShell", {"command": "Set-Location -PassThru; echo x > proj/eval/metrics.py"}, "ask"),
+        ("PowerShell", {"command": "Push-Location; echo x > proj/eval/metrics.py"}, "ask"),
+        # a change of folder starts a command also behind the ) of a case pattern, behind zsh's noglob and behind a
+        # redirection that stands first, and a cd with a folder that stands where the guard knows no command to start
+        # (time -p cd ..) brings back the rule for any path of the line. The first four passed since round 8: the cd
+        # was not followed, so the write of the frozen file by its name from there was not seen (found while fixing
+        # the argument named sl). The cost, as before round 8: the same words as arguments are asked about
+        ("Bash", {"command": "case x in x) cd ..;; esac; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "noglob cd ..; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "time -p cd ..; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd -q ..; echo x > proj/eval/metrics.py"}, "ask"),  # an option the guard does not know
+        ("Bash", {"command": "case x in x) cd;; esac; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "case x in x) popd;; esac; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": ">/dev/null cd; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo cd data > notes.txt; python eval/metrics.py > score.json"}, "ask"),
+        # and a harmless line of each kind passes
+        ("Bash", {"command": "case x in x) cd sub;; esac; echo x > out.txt"}, None),
+        ("Bash", {"command": "time -p cd sub; echo x > out.txt"}, None),
+        ("Bash", {"command": "cd -q sub; echo x > out.txt"}, None),
+        ("Bash", {"command": "cat eval/metrics.py | grep cd > hits.txt"}, None),
         # a written word that the guard cannot place inside the project is searched by name, as the whole line was:
         # the frozen file in a mounted drive's or Git Bash's spelling (was None behind an output option)
         ("Bash", {"command": "(cat sub/hello.py > /mnt/c/x/proj/eval/metrics.py)"}, "ask"),

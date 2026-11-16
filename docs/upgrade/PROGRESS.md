@@ -25,10 +25,12 @@ after it is the seventh installer run on the real install, which brought rounds 
 "Round 8" below is the work on the request of 15 November: a third review, checked claim by claim, what
 was built from it, and the independent review at its end. On the user's "Push test branch" of 16 November
 it is on the public branch `test/round-8`, where all six of GitHub's jobs pass (the entry after it);
-`main` does not have it, and the records of that push are committed locally only.
+`main` does not have it.
 "The second reading" below is the work on the user's "Second reading first" of 16 November: an independent
 reader went through the guard's changes of round 8, and the two regressions and the older gap it led to
-are fixed. Those commits are local too.
+are fixed. On the user's second "Push test branch" of that day those commits are on `test/round-8` too,
+and all six jobs pass on them (the entry after it); `main` does not have round 8, and the record of that
+push is committed locally only.
 
 # Upgrade progress
 
@@ -1623,7 +1625,9 @@ the jobs have no PyTorch, so nothing trained there; no agent session.
 After the run: `references/loop.md` and `docs/REFERENCE.md` say where the sandbox has run, two ledger rows
 of round 8 say the same (no row added, no decision changed), and REPORT.md has the section "The test
 branch of round 8". These two commits are local: the user's word covered the push of the round, and a
-further push to the branch would start another run. `test/round-8` ends at `47f07a6`.
+further push to the branch would start another run. `test/round-8` ends at `47f07a6`. (Both went to the
+branch with the second push of 16 November, which moved it to `d227df2`: "The fixes of the second reading
+on the test branch" below.)
 
 Next, when this entry was written: the user's decision whether `main` takes round 8 (my recommendation: a
 second reading of the guard's changes first; the answer was "Second reading first", the next entry), and
@@ -1671,8 +1675,40 @@ question for the user); nothing is pushed, so GitHub's machines and a Mac have n
 `fbb129a`, `332fd85` and the commit of this record; no agent session; nothing on the real install. Each
 run of the probes left a small throwaway folder (`nnprobe-*`) in the Windows temporary folder.
 
-Next: the user's decision where round 8 goes with these commits (my recommendation: the test branch first,
-then `main`), and whether the fixes get a reading of their own.
+Next, when this entry was written: the user's decision where round 8 goes with these commits (my
+recommendation: the test branch first, then `main`; the answer was "Push test branch", the next entry,
+which is the later word where this one says that nothing is pushed), and whether the fixes get a reading
+of their own.
+
+## The fixes of the second reading on the test branch (16 November): all six jobs pass, `main` unchanged
+
+Asked after the second reading whether its commits go to the test branch before `main`, and told what a
+yes would cover (the push of the four local commits, and further pushes there for repairs and their
+records if a job failed), the user answered "Push test branch". Before the push: a fetch (the branch at
+`47f07a6` and `main` at `3d7a4a7`, both unchanged), a search of every added line and commit message of the
+four commits for private details (none), and a check that every commit carries the no-reply address and
+UTC dates. Pushed: `3c2a91e`, `fbb129a`, `332fd85` and `d227df2`, which moved `test/round-8` from `47f07a6`
+to `d227df2`; one push, no force, no pull request. GitHub's workflow run 43873478603 on that commit passed
+in all six jobs at the first run (about 13:11 to 13:31 UTC): 1,549 checks on Ubuntu 24.04 with Python
+3.8.18, 1,560 on Ubuntu 26.04 with 3.15.2, 1,545 and 1,546 on Windows Server 2025 with 3.8.10 and 3.15.2,
+1,555 and 1,548 on macOS 26 with 3.15.2 and the system's 3.9.6. No check failed, so nothing was repaired
+and nothing more was pushed.
+
+Against the run on `47f07a6`: every job has 13 more checks, all in `tests/test_kit.py` (the lines of the
+fix in the guard's table), and the same count in every other file; the generated guard test has the same
+figures in every shell; the Mac job with "Python 3.x" got 3.15.2 instead of 3.14.10. Not shown by it: the
+fixes still have no independent reading; what the fix takes for granted about a shell has not run in zsh
+or macOS's bash 3.2; the jobs have no PyTorch, so nothing trained there; no agent session.
+
+After the run: REPORT.md has the section "The fixes of the second reading on the test branch", points 19
+to 21 of "Read this first" and the older sections say what followed, and one sentence of "The test branch
+of round 8" is corrected (it gave the versions of GitHub's compute agent as the images'). No code, no test
+and no ledger row changed. This commit is local: no job failed, so the user's word does not cover another
+push.
+
+Next: the user's decision whether `main` takes round 8 now (my recommendation: yes; 30 commits with this
+one), whether the fixes get an independent reading of their own, before `main` or after it, and whether
+the public branches `test/rounds-6-7` and `test/round-8` are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1941,9 +1977,13 @@ then `main`), and whether the fixes get a reading of their own.
 - Answered on 16 Nov ("Second reading first"), from the test branch of round 8: an independent reading of
   the guard's changes before `main` takes the round. "The second reading" above. The word covers the
   reading, the fixes it led to and local commits. It is not a word for a push.
-- Open, from round 8: whether `main` takes the round with the fixes of the second reading, directly or
-  after a run on the test branch (GitHub's machines have not run the fixes); whether those fixes get an
-  independent reading of their own; whether the public branch `test/round-8` is deleted; whether the
+- Answered on 16 Nov ("Push test branch"), from the second reading: the push of the four local commits to
+  `test/round-8`. "The fixes of the second reading on the test branch" above. The word covers that push,
+  and would have covered pushes there for repairs and their records had a job failed; none did. It is not
+  a word for `main`, a deletion or anything on the real install.
+- Open, from round 8: whether `main` takes the round with the fixes of the second reading, on which all
+  six of GitHub's jobs pass; whether those fixes get an independent reading of their own, before `main`
+  or after it; whether the public branch `test/round-8` is deleted; whether the
   installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison
   of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity
   CLI is installed for a port.

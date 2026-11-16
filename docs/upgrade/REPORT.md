@@ -35,8 +35,10 @@ recommendations: its section, "Round 8", follows "The test branch". On your "Pus
 16 November that round went to the public branch `test/round-8`, where all six of GitHub's jobs pass at
 the first run ("The test branch of round 8", after "Round 8"). `main` does not have it. Asked whether it
 should, you answered "Second reading first": an independent reader went through the guard's changes of
-the round and found two regressions and an older gap of the same cause, all fixed in local commits ("The
-second reading of the guard's changes of round 8", after "The test branch of round 8").
+the round and found two regressions and an older gap of the same cause, all fixed ("The second reading of
+the guard's changes of round 8", after "The test branch of round 8"). On your second "Push test branch" of
+that day the fixes went to the same branch, where all six jobs pass again ("The fixes of the second
+reading on the test branch", after it). `main` still does not have the round.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -263,8 +265,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     proven process have run, which until then had run on WSL2 only. Not shown by it: the guard's
     changes of the round still have no independent reading, which I recommend before `main` takes the
     round (made the same day: point 20); the jobs have no PyTorch, so nothing trained there; no agent
-    session. The commits that record this, and that correct two pages of the kit, are local and not on
-    the branch.
+    session. The commits that record this, and that correct two pages of the kit, were local then; they
+    are on the branch since the push of point 21.
 20. **The guard's changes of round 8 have had their independent reading: it found two regressions, and
     they are fixed** (16 November; "The second reading of the guard's changes of round 8"). On your
     "Second reading first" a fresh agent on another model read the three changes, with read access only
@@ -276,8 +278,17 @@ Decision record: `docs/upgrade/LEDGER.md`.
     makes the guard ask or refuse more; the cost is that a line with a here-document is asked about as it
     was before round 8. All eight test files pass on the fix under six interpreters
     (1,572, 1,559 and 1,560 checks in WSL, 1,557, 1,544 and 1,545 on Windows). Open: the fixes are mine
-    and no independent reader has read them; the commits are local, so GitHub's machines and a Mac have
-    not run them; `main` is unchanged.
+    and no independent reader has read them; `main` is unchanged. When this point was written the commits
+    were local, so GitHub's machines and a Mac had not run them: point 21 is what followed.
+21. **The fixes of the second reading pass on GitHub's Linux, macOS and Windows machines, and `main` still
+    does not have round 8** (16 November; "The fixes of the second reading on the test branch"). On your
+    second "Push test branch" the four commits that were local went to `test/round-8`. All six jobs pass
+    at the first run, 1,545 to 1,560 checks each, so nothing was repaired. Every job has 13 more checks
+    than in the run of point 19, all of them the lines that the fix added to the guard's table: those
+    lines have now passed on a Mac under two interpreters and on bare Linux. Not shown by it: the fixes
+    still have no independent reading, and six passing jobs do not replace one (the run of point 19 had
+    passed with both regressions in the code); the jobs have no PyTorch, so nothing trained there; no
+    agent session. The commit that records this is local and not on the branch.
 
 ## Round 2 (12 November 2026)
 
@@ -4694,7 +4705,9 @@ or changed on your real install, and no agent session was started.
 The commits made after the run are local: the one that holds this section, and one that corrects two pages
 of the kit. This time I had not said beforehand that a yes covers further pushes, and each push to the
 branch starts another run of six jobs. So `test/round-8` ends at `47f07a6`, and its copy of this report
-still says that nothing is pushed.
+still says that nothing is pushed. (Both commits went to the branch with the second push of 16 November,
+which moved it to `d227df2`: "The fixes of the second reading on the test branch", two sections on. Where
+this section calls them local, that section is the later word.)
 
 ### In short
 1. **All six jobs pass at the first run, so nothing was repaired.** Workflow run 43786289405 on `47f07a6`,
@@ -4734,8 +4747,10 @@ Checks passed, per test file. Every file ended with "RESULT: ALL PASS" in every 
 | windows-latest, 3.8 | windows-2025-vs2026 | 3.8.10 | 42 | 6 | 898 | 259 | 130 | 99 | 79 | 19 | 1,532 |
 | windows-latest, 3.x | windows-2025-vs2026 | 3.15.2 | 42 | 6 | 898 | 259 | 131 | 99 | 79 | 19 | 1,533 |
 
-Image versions: 20261103.629 for both Ubuntu images and for Windows, 20261028.624 for macOS. The whole run
-took about 20 minutes.
+Image versions: 20261111.196.1 for Ubuntu 26.04, 20261111.370.1 for Ubuntu 24.04, 20261103.298.1 for
+Windows, 20261102.0473.1 for macOS. (Corrected on 16 November: this sentence first gave the versions of
+GitHub's compute agent, 20261103.629 and 20261028.624, as the images'.) The whole run took about 20
+minutes.
 
 Against this machine's last runs ("Round 8", "Tests"):
 - Ubuntu 26.04 has the same number of checks in every file as WSL2's clean Python 3.15.
@@ -4814,8 +4829,11 @@ its sentence "Run on WSL2 only" to make room.
 
 With round 8 on its test branch I asked whether `main` should take it, and you answered "Second reading
 first". This section is that reading and what followed from it. Its commits are `332fd85` (the guard and
-its tests, and the two pages of the kit that describe the rules) and the commit of this record. Both are
-local: nothing of this section is pushed, and `main` is unchanged.
+its tests, and the two pages of the kit that describe the rules) and the commit of this record. Both were
+local when this section was written, and `main` is unchanged. On your "Push test branch" of the same day
+they went to the test branch, where all six of GitHub's jobs pass on them: "The fixes of the second
+reading on the test branch", the section after this one. Where this section says that nothing is pushed,
+or that GitHub's machines and a Mac have not run these commits, that section is the later word.
 
 ### In short
 
@@ -4974,7 +4992,8 @@ none changed. The message of `332fd85` says 14: I miscounted, and the table and 
 
 - Where round 8 goes now, with this section's commits. A push to the test branch first would put them
   before GitHub's six jobs, a Mac among them, before `main` takes them. Four commits are local: the two of
-  "The test branch of round 8", the fix and this record.
+  "The test branch of round 8", the fix and this record. Answered on 16 November with "Push test branch";
+  the question of `main` stands again in the next section.
 - Whether the fixes get a reading of their own before that: 50 added and 10 removed lines of the guard. I
   did not start one, to stay inside the usage limit, and because your word was for a reading of the
   round's changes.
@@ -4984,7 +5003,8 @@ none changed. The message of `332fd85` says 14: I miscounted, and the table and 
 ### Most valuable next steps
 
 1. The test branch, then `main`, on your word; after `main`, an eighth installer run on your real install:
-   only there do the round's changes to the guard, with these fixes, reach your own training.
+   only there do the round's changes to the guard, with these fixes, reach your own training. The test
+   branch: done on 16 November, the next section.
 2. An independent reading of the fixes.
 3. A line with a here-document read target by target again (the ledger's Hold row). Until then such lines
    are asked about more often than a shell's own reading would need.
@@ -4995,6 +5015,126 @@ none changed. The message of `332fd85` says 14: I miscounted, and the table and 
 - Bash Reference Manual, "Here Documents" and "Here Strings" (gnu.org/software/bash/manual), and PowerShell's
   about_Quoting_Rules, "Here-strings" (learn.microsoft.com): not fetched on 16 November 2026. What the fix
   relies on from them was run instead, in the two shells named above.
+
+## The fixes of the second reading on the test branch (16 November 2026): all six of GitHub's jobs pass
+
+After the second reading I asked whether its commits should go to the test branch before `main`, and said
+what a yes would cover: the push of the four local commits to `test/round-8`, and further pushes there for
+repairs and their records if a job failed. You answered "Push test branch". This section is that work: the
+push of `3c2a91e`, `fbb129a`, `332fd85` and `d227df2`, which moved the public branch from `47f07a6` to
+`d227df2` with no force and no pull request, and what the workflow's run on that commit showed. Before the
+push I fetched the public repository (the branch at `47f07a6` and `main` at `3d7a4a7`, both unchanged),
+searched every added line and every commit message of the four commits for private details (none found),
+and checked that every commit carries the account's no-reply address and dates in UTC. `main` stays at
+`3d7a4a7`. Nothing was run, read or changed on your real install, and no agent session was started.
+
+No job failed, so nothing was repaired and nothing more was pushed. The commit that holds this section is
+local, and the branch's copy of this report still says that the fixes are not pushed.
+
+### In short
+1. **All six jobs pass at the first run.** Workflow run 43873478603 on `d227df2`, from about 13:11 to
+   13:31 UTC on 16 November: 1,545 to 1,560 checks per job, none failed, with no third-party package.
+2. **Every job has 13 more checks than in the run before, all in `tests/test_kit.py`.** They are the 13
+   lines that the fix added to the guard's table: the two regressions, the older gap, and the lines that
+   must still pass. Every other test file has the same count in every job as on `47f07a6`. Until this run
+   the fixes' tests had run on one machine; they have now passed on a Mac under two interpreters, on
+   Ubuntu 24.04 and 26.04 and on GitHub's Windows.
+3. **The changed check of the routine mark passes in every job** (`tests/test_loop.py`): a forced
+   `git clean` with `-x` or `-X` is no routine refusal there either.
+4. **The generated guard test has the figures of the run before in every shell**, macOS's bash 3.2.57 and
+   zsh 5.9 among them: no line that the guard let pass printed or copied the sealed file or changed the
+   frozen file, and the guard let as many lines pass as before the fix.
+5. **The Mac job with "Python 3.x" ran under 3.15.2 this time**, not 3.14.10: its image is a newer one. Its
+   counts per file are those of the run before plus the 13.
+6. **What this run does not show.** The fixes have had no independent reading: GitHub's machines run the
+   kit's own tests, and the run before had passed with both regressions in the code. What the fix takes
+   for granted about a shell has still run in Git's bash and PowerShell only: the tests put lines to the
+   guard and do not run them, except the generated guard test, whose templates hold neither kind of line.
+   The jobs install no PyTorch, so the twelve benchmark checks that need it were skipped and nothing
+   trained. The Ubuntu 24.04 image has no bubblewrap, so the sandbox checks ran in one job. No agent
+   session ran anywhere.
+7. **`main` does not have round 8.** Whether it takes the round now is yours to decide ("What needs your
+   decision" below).
+
+### The run (commit `d227df2`)
+Checks passed, per test file. Every file ended with "RESULT: ALL PASS" in every job.
+
+| Job | Image | Python | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, 3.x | ubuntu-26.04 | 3.15.2 | 42 | 3 | 919 | 268 | 129 | 99 | 81 | 19 | 1,560 |
+| ubuntu-24.04, 3.8 | ubuntu-24.04 | 3.8.18 | 42 | 3 | 919 | 258 | 128 | 99 | 81 | 19 | 1,549 |
+| macos-latest, 3.x | macos-26-arm64 | 3.15.2 | 42 | 6 | 921 | 258 | 129 | 99 | 81 | 19 | 1,555 |
+| macos-latest, system | macos-26-arm64 | 3.9.6 | 42 | 6 | 917 | 258 | 128 | 99 | 79 | 19 | 1,548 |
+| windows-latest, 3.8 | windows-2025-vs2026 | 3.8.10 | 42 | 6 | 911 | 259 | 130 | 99 | 79 | 19 | 1,545 |
+| windows-latest, 3.x | windows-2025-vs2026 | 3.15.2 | 42 | 6 | 911 | 259 | 131 | 99 | 79 | 19 | 1,546 |
+
+Image versions: 20261111.196.1 for Ubuntu 26.04, 20261111.127.1 for Ubuntu 24.04, 20261103.298.1 for
+Windows, 20261112.0504.1 for macOS. The Ubuntu 26.04 and Windows images are those of the run before; the
+Ubuntu 24.04 image is another build of the same day, and the macOS image is ten days newer. The whole run
+took about 20 minutes.
+
+Against the run on `47f07a6` and against this machine's runs of `332fd85` ("The second reading", "Tests"):
+- Every job has 13 more checks in `tests/test_kit.py` than on `47f07a6`, and the same count in every other
+  file.
+- Ubuntu 26.04 has the same number of checks in every file as WSL2's clean Python 3.15 (1,560 in all).
+- Ubuntu 24.04 has ten fewer than WSL2's clean Python 3.8 (1,549 against 1,559), all in
+  `tests/test_loop.py`: the sandbox checks, which its image cannot run.
+- GitHub's Windows has one more than Windows here under both clean interpreters (1,545 and 1,546 against
+  1,544 and 1,545), in `tests/test_loop.py`: its account may create symlinks, which this machine's may not.
+
+The jobs skipped what "The test branch of round 8" lists under "What the jobs skipped", with the same
+number of skip lines in every test file. The generated guard test ran with the default sample and seed 7:
+450 lines generated in each POSIX shell and 148 to 150 let pass, 224 and 76 in PowerShell 7.6.9, none of
+them harmful, shell by shell the figures of that section's table.
+
+### Changes in the behaviour of existing features
+None since `332fd85`: `d227df2` and the commit of this section change records only, and no test was changed
+or removed. What this run tested is listed in the section before this one.
+
+### The ledger
+No row was added and no decision changed: 1,687 rows, Adopt 519, Trial 237, Assess 328, Hold 331, Reject
+272.
+
+### What was verified, and how
+- **By running, on GitHub's machines:** the eight test files in six jobs. I downloaded each job's log; a
+  script counted the PASS, FAIL and SKIP lines per test file and read each file's result line. Three logs
+  hold the word "Traceback" once, as in the run before: the benchmark's evaluator has no PyTorch there
+  ("No module named 'torch'"), and a passed check quotes its output. That check asks that
+  `expctl final-eval` starts the evaluation and records the use.
+- **Not run again here:** no code and no test changed after `332fd85`, so this machine's runs in the
+  section before this one stand.
+- **Unverified, as before:** the fixes by an independent reader; what the fix takes for granted about a
+  shell, in zsh and in macOS's bash 3.2; PowerShell's and cmd's reading of a redirection beyond the tests'
+  lines; anything with PyTorch on GitHub's machines or on a Mac; an agent session.
+- **A correction to "The test branch of round 8":** its sentence on image versions gave the versions of
+  GitHub's compute agent as the images'. It now gives the images' versions, read again from that run's
+  logs.
+
+### What needs your decision
+- Whether `main` takes round 8 now. It would take 30 commits: the round's 25, the two made after its first
+  run on the test branch, the fix, its record and the record of this run. I recommend it. What I know of
+  speaks for the branch: today's `main` still has the older gap that the fix closes, the round's changes to
+  the guard have had their independent reading, and what it found is fixed and tested in six jobs. What
+  speaks against it is that only I have read the fixes: 50 added and 10 removed lines of the guard.
+- Whether those fixes get an independent reading of their own, before `main` or after it. It would be one
+  reader on another model, as on 16 November, and whatever it finds would cost further work and usage.
+- Whether the public test branches `test/rounds-6-7` and `test/round-8` are deleted.
+- Unchanged from "Round 8": an eighth installer run on your real install; agent sessions for a comparison
+  of the worker's history lines and for a pilot on the fine-tuning task; a Gemini or Antigravity CLI for a
+  port; money, accounts and hardware for the ledger rows that wait for them.
+
+### Most valuable next steps
+1. `main`, on your word; after it an eighth installer run on your real install: only there do the round's
+   changes to the guard and to `expctl stop`, with these fixes, reach your own training.
+2. An independent reading of the fixes.
+3. A line with a here-document read target by target again (the ledger's Hold row).
+4. From "Round 8": Muon's missing control and a second, larger task; the seed × item formula against the
+   kit's keep rule; the comparison of the worker's history lines.
+
+### Sources
+- GitHub Actions, workflow run 43873478603 of the public repository (branch `test/round-8`, commit
+  `d227df2`), and the logs of its six jobs, read on 16 November 2026; the logs of run 43786289405, read
+  again that day for the image versions.
 
 ## 1. What changed and why
 

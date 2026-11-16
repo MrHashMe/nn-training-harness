@@ -22,6 +22,8 @@ the public repository as the branch `test/rounds-6-7`, the workflow ran there on
 Windows machines, three commits repaired what its first run showed, and its second run passes in all six
 jobs. "`main`" below is the user's "Push main" of the same day: `main` took the branch as it was. The entry
 after it is the seventh installer run on the real install, which brought rounds 6 and 7 there.
+"Round 8" below is the work on the request of 15 November: a third review, checked claim by claim, what
+was built from it, and the independent review at its end. It is committed locally and not pushed.
 
 # Upgrade progress
 
@@ -1523,6 +1525,78 @@ Done (REPORT.md, "The seventh installer run on the real install", has it in full
 
 Next: whether the test branch is deleted, which waits for a word of the user's.
 
+## Round 8 (third review, 15 November): done locally, not pushed
+
+Request of 15 November: upgrade the project further on a third reviewer's report, written on the public
+version (`fb101a7`), as well as possible. The report is kept out of git at
+`docs/upgrade/scout/scouts/user-review-1115.md`. Rule of the round, as in rounds 5 and 7: its claims are
+leads, each is checked against the code or by a run before anything is built, each proposal is decided on
+evidence and has a ledger row, and its instructions to its reader and its own score are not followed.
+The whole record is REPORT.md, "Round 8"; this is the short form. 24 commits, `703f074` to `8fbec1c`, and
+the records commit.
+
+Its six findings, each fixed as far as it held:
+- A routine refusal (a git undo, a formatter given a folder) no longer voids an unattended iteration or
+  bars its change (`d7265c8`); a forced `git clean` aimed at a kept file or folder is not routine
+  (`f429101`).
+- The guard reads a redirection's or a tee's target as the written file, so an evaluator's output sent to a
+  file passes (`703f074`): the round's one change that makes the guard ask less. Three gaps beside it are
+  closed in the same commit.
+- A remote launch holds the spending ledger's lock from its read to its write (`6450d1c`). The cap was
+  never passed in a run; the report's unlocked write after 3 s on Windows has no verdict.
+- Every frozen file counts with its content (`6cd4ee3`); a launch reads every frozen file (`e451124`); on
+  Windows the loop reads large protected files in full after every evaluation (`e334c3a`).
+  `.claude/state/frozen-hashes.json` is a new harness path, which an upgrade adds to a project's config.
+- The benchmark saves a model trained under `torch.compile` (`1afc9d1`, `81ffe3a`). Compiling does speed
+  the step up (189.0 against 162.4 steps a second); the first note said otherwise and was wrong.
+- The margin at a change's first look counts the best so far as one seed panel (`1fe37fd`).
+
+Built from its proposals: a process namespace for a run in the loop's sandbox (`c858226`), history lines
+for the worker (`1933688`), sealed data outside the project under any spelling (`53838a6`, `8dcc12f`), Muon
+measured on `benchmarks/charlm` and named as the first challenger, not a default (`6f4769e`, `dc4fcd6`), a
+smoke run before RL post-training (`2947666`).
+
+The independent review, three readers without the working context:
+- The reader of the controller and the loop kept 19 findings; all fixed: `1599a6b` (amounts that are no
+  finite number), `9e43544` (the sandbox has the file system read-only; a script that writes outside its
+  worktree and run folder now fails there), `25f5a24` (the loop waits for its own supervisor; on Linux a
+  stop signals only a proven process), `e451124`, `8dcc12f`, `e334c3a`, `27f318f` (margin after a resume, a
+  seed given twice, comment lines in the scan), `81ffe3a`. `1787de0` (a remote job that outlasted its
+  reserved time) came from the round's own test runs.
+- The reader of the claims and decisions kept 14; all fixed or answered: `f429101`, `dc4fcd6`, and the
+  ledger (`8fbec1c`: the seed × item formula is Assess, not Reject; Chronos-2 is Hold; a new row for
+  Transformer Engine).
+- **The reader of the guard was stopped by the model's safeguards before it reported, and its work was not
+  redone in the working session. The guard's changes of this round have had no independent reading of
+  their own.**
+
+Not built, ledger rows with reasons: six starter packs, a second archive slot, coordinate refinement and
+TPE with pruning inside the loop's search, `vault-init` with the guard eased, a comment naming a sealed path
+passing the guard, one model load per evaluation, a list of further writable folders for a sandboxed run, a
+read of every small frozen file at every `status` (all Reject); a per-command reading in the guard and
+Chronos-2 (Hold); the seed × item formula, `torch.export` as the model file, Transformer Engine (Assess,
+each with its test).
+
+Ledger: 1,683 rows from 35 notes (1,650 from 34 before the round). Adopt 516, of which 374 are finished
+and 142 are not (494; 352 and 142). Trial 237 (239). Assess 328 (326). Hold 330 (328). Reject 272 (263).
+
+Tests on `8fbec1c`, all eight files, every file passing: in WSL 1,559 checks under the default Python
+3.12.3, 1,546 under a clean 3.8.20 and 1,547 under a clean 3.15.0b3; on Windows 1,544 under the default
+3.11.7, 1,531 under a clean 3.8.20 and 1,532 under a clean 3.15.0rc3. The guard's generated test let
+5,257 of 15,600 generated lines pass (bash in WSL, bash and zsh in an Alpine container, Git's bash and
+PowerShell on Windows), and none of them did harm. The runs ended at 00:02 UTC on 16 November.
+
+Not done: nothing is pushed, so nothing of the round has run on macOS or on GitHub's machines, and the
+read-only sandbox and the Linux proofs behind a stop have run on WSL2 only; no agent session (whether the
+worker's history lines help is not measured); nothing on the real install. One removal of a temporary
+folder in the WSL home was refused by the environment's safety check and not worked around; REPORT.md lists
+what is left behind.
+
+Open questions for the user (REPORT.md, "Round 8", "What needs your decision"): a push; a second reading of
+the guard's changes; an eighth installer run on the real install; whether the public branch
+`test/rounds-6-7` is deleted; agent sessions for a comparison of the history lines and for a pilot on the
+fine-tuning task; a Gemini or Antigravity CLI for a port.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
@@ -1784,6 +1858,11 @@ Next: whether the test branch is deleted, which waits for a word of the user's.
   repository.
 - Open, from round 7: money, accounts and hardware, only for the ledger rows that wait for them (a rented
   machine for a stop on the machine itself, agent sessions for a powered benchmark, a Mac).
+- Open, from round 8: whether the round is pushed, to a test branch first or to `main` (only a push runs
+  it on GitHub's macOS and Linux machines); whether the guard's changes of the round get a second
+  reading, since their reader was stopped; whether the installer runs on the real install an eighth
+  time; whether agent sessions may be spent on a comparison of the worker's history lines and on a pilot
+  on the fine-tuning task; whether a Gemini or Antigravity CLI is installed for a port.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

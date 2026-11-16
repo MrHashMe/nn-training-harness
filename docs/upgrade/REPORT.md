@@ -315,7 +315,13 @@ Decision record: `docs/upgrade/LEDGER.md`.
     elapsed time, none of them the guard's, and a run on the commit before the fix failed in six. Open:
     these fixes are mine and unread, two of my first forms were wrong before running lines caught them,
     and nothing is pushed: the public `main` keeps the false refusals and the regression until you say
-    "push". Your real install has neither.
+    "push". Your real install has neither. (Added with point 24: they are on the test branch now.)
+24. **The reading's fixes are on the public test branch, and all six of GitHub's jobs pass on them**
+    (16 November; "The reading of the fixes on the test branch"). On your "Push test branch" the branch
+    `test/round-8` moved from `d227df2` to `18bb966`. Both Ubuntu jobs pass, which is the clean Linux
+    run that WSL on this machine could not give; every job has 32 checks more than before, as expected.
+    Open: `main` does not have the fixes yet, so it keeps the false refusals and the regression of round
+    8 until you say "push main"; the fixes are still unread by anyone but me.
 
 ## Round 2 (12 November 2026)
 
@@ -5251,6 +5257,8 @@ In short:
 7. **Open.** These fixes are mine again, and no independent reader has read them. They are local: until a
    push, which needs your word, the public `main` keeps the false alarms of point 2 and the regression of
    point 3. Your real install has neither, because it does not have round 8.
+   (Added later that day: on your "Push test branch" they are on the public test branch, where all six
+   of GitHub's jobs pass, both Ubuntu jobs among them; `main` still waits. The section after this one.)
 
 ### The reader, and what it did not do
 
@@ -5402,6 +5410,41 @@ finished, 142 not), Trial 237, Assess 328, Hold 331, Reject 273.
 Sources: the reader's report (in this session, not in the repository); the 87 lines and their answers
 under four versions of the guard, run on 16 November 2026 on Windows 11 under Python 3.11.7; GitHub
 Actions, workflow run 43905412818 of the public repository.
+
+## The reading of the fixes on the test branch (16 November 2026): all six jobs pass
+
+Your word: "Push test branch", to the question whether the two local commits go to the public test
+branch so that GitHub's machines run them. I took it to cover that push as a fast-forward with no force,
+the wait for the run and its record. Not covered: `main`, your real install, deleting a branch.
+
+- Before the push: fetched; the public `main` at `62ae1da` and the test branch at `d227df2`, as I had
+  left them; this branch a fast-forward of both; the two new commits searched for private details
+  (none), both with the no-reply address and UTC dates.
+- The push: `test/round-8` moved from `d227df2` to `18bb966`. Four commits: two that `main` already had
+  (the records of the push to `main`), and `4e2bec4`, the fix, and `18bb966`, its record.
+- GitHub's workflow run 43933527133 on `18bb966` (18:53 to 19:15 UTC): all six jobs pass, each with all
+  eight test files, and each with 32 checks more than on `d227df2`, which is what the fix added.
+
+| Job | Interpreter | Checks passed | Failed | Skip lines |
+|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 1,592 | 0 | 2 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 1,581 | 0 | 3 |
+| windows-latest, Python 3.x | 3.15.2 | 1,578 | 0 | 5 |
+| windows-latest, Python 3.8 | 3.8.10 | 1,577 | 0 | 5 |
+| macos-latest, Python 3.x | 3.15.2 | 1,587 | 0 | 3 |
+| macos-latest, Python system | 3.9.6 | 1,580 | 0 | 5 |
+
+The two Ubuntu jobs are the clean Linux run that WSL on this machine could not give that day. The
+interpreter is the first version line of each job's log; the image versions were not read this time.
+
+Not changed by this: the fixes are still read by nobody but their author; no shell ran the 87 lines;
+`main` does not have the fixes.
+
+What needs your decision: whether `main` takes the commits (a fast-forward, on your word); a further
+reading; and, unchanged, an eighth installer run on your real install and the two public test branches.
+
+Sources: GitHub Actions, workflow run 43933527133 of the public repository, read on 16 November 2026
+from the run's list of jobs and from each job's log.
 
 ## 1. What changed and why
 

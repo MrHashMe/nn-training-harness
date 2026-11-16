@@ -32,7 +32,8 @@ and all six jobs pass on them (the entry after it). On the user's "Push main" of
 `main` has round 8 with the fixes, and all six jobs pass there too ("`main` takes round 8" below).
 "The reading of the fixes" below is the work on the user's "Read the fixes" of that day: an independent
 reader went through those fixes, and its six findings and a regression of round 8 found beside them are
-fixed in local commits, which nothing has pushed.
+fixed in two commits. On the user's third "Push test branch" of that day they are on `test/round-8`,
+where all six jobs pass (the entry after it); `main` does not have them.
 
 # Upgrade progress
 
@@ -1798,6 +1799,29 @@ are read by nobody but their author.
 
 Next, each a separate word of the user's: a push (the test branch first, then `main`); a further reading;
 an eighth installer run on the real install; whether the test branches are deleted.
+(Added later that day: pushed to the test branch on the user's word; the next entry.)
+
+## The reading of the fixes on the test branch (16 November): pushed, all six jobs pass
+
+The user's word, 16 November: "Push test branch", to the question whether the two local commits go to
+the public test branch so that GitHub's machines run them. It covers the push as a fast-forward with no
+force, the wait for the run and its record. Not covered: `main`, the real install, deleting a branch.
+
+Done:
+- Fetched: `main` in the public repository unchanged at `62ae1da`, `test/round-8` at `d227df2`; this
+  branch a fast-forward of both. The two new commits searched for private details (none), both with the
+  no-reply address and UTC dates.
+- Pushed: `test/round-8` from `d227df2` to `18bb966`. Four commits: two that `main` already had, and
+  `4e2bec4` (the fix) and `18bb966` (its record). `main` was not touched.
+- GitHub's workflow run 43933527133 on `18bb966` (18:53 to 19:15 UTC): all six jobs pass, every test file
+  in each, 32 checks more per job than on `d227df2`: 1,592 on ubuntu-latest (Python 3.15.2), 1,581 on
+  Ubuntu 24.04 (3.8.18), 1,578 and 1,577 on Windows (3.15.2 and 3.8.10), 1,587 and 1,580 on macOS (3.15.2
+  and the system's 3.9.6). The two Ubuntu jobs are the clean Linux run that WSL here could not give.
+- REPORT.md has the section "The reading of the fixes on the test branch" and point 24 of "Read this
+  first". This entry's commit is local.
+
+Next, each a separate word of the user's: `main` takes the commits; a further reading of the fixes; an
+eighth installer run on the real install; whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2073,8 +2097,9 @@ an eighth installer run on the real install; whether the test branches are delet
 - Answered on 16 Nov ("Push main"), from the second run on the test branch: `main` takes round 8 with the
   fixes. "`main` takes round 8" above. The word covers the push of the 30 commits and one more push for
   the record of it. It is not a word for deleting a branch or for anything on the real install.
-- Open, from round 8: whether the two local commits of the reading of the fixes are pushed (the test
-  branch first, then `main`); whether those fixes get a reading of their own (the question before it,
+- Open, from round 8: whether `main` takes the commits of the reading of the fixes (they are on
+  `test/round-8` since 16 November, and all six jobs pass there); whether those fixes get a reading of
+  their own (the question before it,
   whether the fixes of the second reading are read, was answered on 16 November: "Read the fixes", done,
   its entry above); whether the public branch `test/round-8` is deleted; whether the
   installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison

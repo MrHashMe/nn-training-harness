@@ -63,7 +63,7 @@
   "file": "round5",
   "candidate": "Process namespace for the training box (bubblewrap --unshare-pid)",
   "status": "finished",
-  "where": "scripts/nnloop.py (sandbox; a scan for os.kill where a run has no namespace), expctl.py (`load_run`); tests/test_loop.py, tests/test_kit.py; run live in WSL. Commit c858226. shortcut: only bubblewrap's flag is recognised. Not tried: bare Linux, a container"
+  "where": "scripts/nnloop.py (sandbox; a scan for os.kill where a run has no namespace), expctl.py (`load_run`); tests/test_loop.py, tests/test_kit.py; run live in WSL. Commit c858226. shortcut: only bubblewrap's flag is recognised. Ran on bare Linux on 16 Nov 2026 (GitHub's Ubuntu 26.04 runner). Not tried: a container"
  },
  {
   "file": "optimization-performance",
@@ -93,7 +93,7 @@
   "file": "round8",
   "candidate": "The loop's sandbox has the file system read-only: a run writes its worktree and its own run folder (kit-native)",
   "status": "finished",
-  "where": "scripts/nnloop.py (`sandbox`, `eval_box`), expctl.py (`{run_dir}`); tests/test_loop.py (own run folder, another run's, a file outside, /tmp, WSL's second mount, `cmd.exe`), tests/test_kit.py; references/loop.md (\"What a sandboxed run can write\"), resume.md. Commit 9e43544. Not run on bare Linux"
+  "where": "scripts/nnloop.py (`sandbox`, `eval_box`), expctl.py (`{run_dir}`); tests/test_loop.py (own run folder, another run's, a file outside, /tmp, WSL's second mount, `cmd.exe`), tests/test_kit.py; references/loop.md (\"What a sandboxed run can write\"), resume.md. Commit 9e43544. Ran on bare Linux on 16 Nov 2026"
  },
  {
   "file": "round8",

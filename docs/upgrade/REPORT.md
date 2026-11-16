@@ -31,8 +31,9 @@ on GitHub's macOS, Linux and Windows machines: its section, "The test branch", f
 section, "`main`"). On your "Yes, run it" of that day the installer ran on your real install a seventh
 time, which brought it rounds 6 and 7 ("The seventh installer run on the real install", after "`main`").
 You then gave me a third reviewer's report and asked for the project to be upgraded further on its
-recommendations: its section, "Round 8", follows "The test branch". That round is committed locally and
-not pushed.
+recommendations: its section, "Round 8", follows "The test branch". On your "Push test branch" of
+16 November that round went to the public branch `test/round-8`, where all six of GitHub's jobs pass at
+the first run ("The test branch of round 8", after "Round 8"). `main` does not have it.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -229,7 +230,7 @@ Decision record: `docs/upgrade/LEDGER.md`.
     3.15; 1,460 to 1,470 checks each, with no third-party package. The generated guard test ran under
     macOS's bash 3.2 and zsh for the first time, and no line that the guard let pass did harm. Still not
     run on a Mac: an agent session, training, anything on the Apple GPU, sleep.
-18. **A third review was checked claim by claim, and what held of it is fixed; none of this is pushed**
+18. **A third review was checked claim by claim, and what held of it is fixed; none of this is on `main`**
     (15 and 16 November; "Round 8"). All six of its findings held at least in part, and most more narrowly: a
     routine refusal no longer costs an unattended iteration, the guard no longer asks about a line that
     only sends an evaluator's output to a file (the round's one change that makes the guard ask less),
@@ -249,8 +250,17 @@ Decision record: `docs/upgrade/LEDGER.md`.
     mine. All 33 are fixed or answered. **The third reader, for the guard, was stopped by the model's
     safeguards before it reported: the guard's changes of this round have had no independent reading
     of their own.**
-    Not run on a Mac or on GitHub's machines, because nothing is pushed; no agent session; nothing on
-    your real install.
+    When the round ended it had not run on a Mac or on GitHub's machines, because nothing was pushed;
+    point 19 is what followed. No agent session; nothing on your real install.
+19. **Round 8 passes on GitHub's Linux, macOS and Windows machines, and `main` does not have it**
+    (16 November; "The test branch of round 8"). On your "Push test branch" the round's 25 commits went
+    to the public branch `test/round-8`. All six jobs of the workflow pass at the first run, 1,532 to
+    1,547 checks each, so nothing was repaired. New with this run: the round has run on a Mac, and on
+    bare Linux the loop's read-only sandbox, its process namespace and the stop that signals only a
+    proven process have run, which until then had run on WSL2 only. Not shown by it: the guard's
+    changes of the round still have no independent reading, which I recommend before `main` takes the
+    round; the jobs have no PyTorch, so nothing trained there; no agent session. The commits that
+    record this, and that correct two pages of the kit, are local and not on the branch.
 
 ## Round 2 (12 November 2026)
 
@@ -4062,8 +4072,11 @@ the code, and by a run where a run was cheap, before anything was changed; each 
 evidence and has a ledger row; its instructions were not followed, and its score was not a goal. The result
 then went to readers without my working context, and what they found is fixed or answered below. This
 section is that work: 24 commits from `703f074` to `8fbec1c`, and the commit that holds this section.
-Nothing is pushed. Nothing was run, read or changed on your real install. **Nothing of this round has run on
-macOS or on GitHub's machines**, and no agent session was started.
+Nothing was pushed when the round ended, and nothing of it had run on macOS or on GitHub's machines. On
+your "Push test branch" of 16 November it went to a public test branch, where all six jobs pass: "The test
+branch of round 8", the section after this one. Where this section says that nothing is pushed, or that
+something has run on WSL2 only, that section is the later word. Nothing was run, read or changed on your
+real install, and no agent session was started.
 
 ### In short
 1. **All six of the report's findings held at least in part.** Most were narrower than stated; the one on
@@ -4124,7 +4137,8 @@ macOS or on GitHub's machines**, and no agent session was started.
 6. **What this round cannot show.** Whether the worker's new history lines make campaigns end better: that
    needs agent sessions for both arms. Whether anything new holds on a Mac or on bare Linux: nothing was
    pushed, so GitHub's machines have not run it, and the read-only sandbox and the Linux proofs behind a
-   stop have run on WSL2 only. Whether Muon's edge holds beyond one small task.
+   stop have run on WSL2 only (answered on 16 November: GitHub's machines ran it, and all of it passes;
+   "The test branch of round 8"). Whether Muon's edge holds beyond one small task.
 
 ### The report's findings, one by one
 "By a run" means that I ran it here; "by reading" means the code only.
@@ -4546,7 +4560,8 @@ existing tests that changed are listed above, at the end of "Changes in the beha
   summaries and not in the paper's own table; the release notes of Transformer Engine 2.21.0. No row rests
   on the paper's figures.
 - **Unverified:** everything new on macOS and on bare Linux, the read-only sandbox and the proofs behind a
-  stop among it (WSL2 only); a process namespace in a container; the benchmark and TorchScript's status
+  stop among it (WSL2 only; since 16 November the tests have run there and pass, "The test branch of
+  round 8"); a process namespace in a container; the benchmark and TorchScript's status
   under PyTorch 2.15; the report's version pins for its packs; Chronos-2's release and license; Transformer
   Engine's license and build; whether the history lines change what campaigns reach; the ledger's lock
   under real contention on Windows; a real campaign whose run forges its records (the unit and controller
@@ -4596,7 +4611,8 @@ existing tests that changed are listed above, at the end of "Changes in the beha
 - A with-and-without comparison of the worker's history lines, and a pilot on a second task: both need
   agent sessions, which draw on your subscriptions beyond what the three uses of the original brief cover.
 - A push, and with it the first run of this round's code on macOS and on GitHub's Linux and Windows
-  machines: it needs your word.
+  machines: it needs your word. Answered on 16 November ("Push test branch") and done for a test branch:
+  "The test branch of round 8".
 - An eighth installer run on your real install: it needs your word. It would bring the guard's new reading
   of redirections and of a forced `git clean`, the routine mark, the hash of large frozen files (that
   install's `frozen_hash` changes once if it has frozen files beyond 64 MB), a launch that reads every
@@ -4604,11 +4620,13 @@ existing tests that changed are listed above, at the end of "Changes in the beha
 
 ### What needs your decision
 - Whether round 8 is pushed, to a test branch first or to `main`. Only a push runs it on a Mac and on bare
-  Linux.
+  Linux. Answered on 16 November for a test branch ("Push test branch"); open for `main` ("The test branch
+  of round 8").
 - Whether the guard's changes of this round get a second reading, by another session or another model.
 - Whether the installer runs on your real install an eighth time, and whether its files are then committed
   there.
-- Whether the public branch `test/rounds-6-7` is deleted (open since the test branch).
+- Whether the public branch `test/rounds-6-7` is deleted (open since the test branch). Since 16 November
+  the same is open for `test/round-8`.
 - Whether agent sessions may be spent on a comparison of the worker's history lines and on a pilot on the
   fine-tuning task.
 - Whether a Gemini or Antigravity CLI is installed for a port (round 5's rows wait for it).
@@ -4616,7 +4634,8 @@ existing tests that changed are listed above, at the end of "Changes in the beha
 
 ### Most valuable next steps
 1. Push to a test branch, so that the workflow runs the round on macOS and on bare Linux, where the
-   read-only sandbox and the proofs behind a stop have not run.
+   read-only sandbox and the proofs behind a stop have not run. Done on 16 November: all six jobs pass
+   ("The test branch of round 8").
 2. A second reading of the guard's changes.
 3. Muon's missing control (AdamW with matched update size) and a second, larger task, before anyone reads
    the result as general.
@@ -4631,6 +4650,134 @@ existing tests that changed are listed above, at the end of "Changes in the beha
 - Transformer Engine 2.21.0, release notes (github.com/NVIDIA/TransformerEngine/releases/tag/v2.21.0), read
   on 15 November 2026.
 - Muon's sources are in `references/optimization.md` and in the two ledger rows.
+
+## The test branch of round 8 (16 November 2026): the round on GitHub's Linux, macOS and Windows machines
+
+After round 8 I asked whether to push it to a test branch, which would run the round on GitHub's macOS and
+bare-Linux machines for the first time, and you answered "Push test branch". This section is that work:
+the push of the round's 25 commits, `703f074` to `47f07a6`, as the public branch `test/round-8`, and what
+the workflow's run on that commit showed. Before the push I fetched the public repository (unchanged,
+`main` at `3d7a4a7`), searched every added line and every commit message of the 25 commits for private
+details (none found), and checked that every commit carries the account's no-reply address and dates in
+UTC. It was one push, with no force and no pull request. `main` stays at `3d7a4a7`. Nothing was run, read
+or changed on your real install, and no agent session was started.
+
+The commits made after the run are local: the one that holds this section, and one that corrects two pages
+of the kit. This time I had not said beforehand that a yes covers further pushes, and each push to the
+branch starts another run of six jobs. So `test/round-8` ends at `47f07a6`, and its copy of this report
+still says that nothing is pushed.
+
+### In short
+1. **All six jobs pass at the first run, so nothing was repaired.** Workflow run 43786289405 on `47f07a6`,
+   from about 01:22 to 01:43 UTC on 16 November: 1,532 to 1,547 checks per job, none failed, with no
+   third-party package.
+2. **Round 8 has now run on a Mac.** macOS 26 on Apple silicon, under Python 3.14.10 and under the
+   system's own 3.9.6: 1,542 and 1,535 checks. Until this run the round's code had run on one machine, on
+   native Windows and in WSL2.
+3. **The round's sandbox and its stop have now run on bare Linux.** The Ubuntu 26.04 job has the same
+   number of checks in every test file as WSL2's clean Python 3.15 here (1,547 in all). Read in its log,
+   each as a passed check: a training run "can write only its worktree and its own run folder"; a failure
+   that the read-only file system caused is reported with the places a run may write; a run and the
+   evaluator cannot signal a process outside their sandbox, with the process namespace "given" there; and
+   a stop "signals no program that only the run's own records name". "Round 8" lists all of these as run
+   on WSL2 only.
+4. **The generated guard test passed in every job's shells**, macOS's bash 3.2.57 and zsh 5.9 among them:
+   no line that the guard let pass printed or copied the sealed file or changed the frozen file.
+5. **What this run does not show.** The guard's changes of round 8 still have no independent reading:
+   GitHub's machines run the kit's own tests, and that is no second reader. The jobs install no PyTorch,
+   so the twelve benchmark checks that need it were skipped in every job, nothing trained, and Muon's
+   measurement rests on this machine alone. The Ubuntu 24.04 image has no bubblewrap, so the sandbox
+   checks ran in one job. No agent session ran anywhere, and a process namespace in a container is
+   untried.
+6. **`main` does not have round 8.** Whether it takes the round is yours to decide; I recommend a second
+   reading of the guard's changes first ("What needs your decision" below).
+
+### The run (commit `47f07a6`)
+Checks passed, per test file. Every file ended with "RESULT: ALL PASS" in every job.
+
+| Job | Image | Python | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, 3.x | ubuntu-26.04 | 3.15.2 | 42 | 3 | 906 | 268 | 129 | 99 | 81 | 19 | 1,547 |
+| ubuntu-24.04, 3.8 | ubuntu-24.04 | 3.8.18 | 42 | 3 | 906 | 258 | 128 | 99 | 81 | 19 | 1,536 |
+| macos-latest, 3.x | macos-26-arm64 | 3.14.10 | 42 | 6 | 908 | 258 | 129 | 99 | 81 | 19 | 1,542 |
+| macos-latest, system | macos-26-arm64 | 3.9.6 | 42 | 6 | 904 | 258 | 128 | 99 | 79 | 19 | 1,535 |
+| windows-latest, 3.8 | windows-2025-vs2026 | 3.8.10 | 42 | 6 | 898 | 259 | 130 | 99 | 79 | 19 | 1,532 |
+| windows-latest, 3.x | windows-2025-vs2026 | 3.15.2 | 42 | 6 | 898 | 259 | 131 | 99 | 79 | 19 | 1,533 |
+
+Image versions: 20261103.629 for both Ubuntu images and for Windows, 20261028.624 for macOS. The whole run
+took about 20 minutes.
+
+Against this machine's last runs ("Round 8", "Tests"):
+- Ubuntu 26.04 has the same number of checks in every file as WSL2's clean Python 3.15.
+- Ubuntu 24.04 has ten fewer than WSL2's clean Python 3.8 (1,536 against 1,546), all in
+  `tests/test_loop.py`: the sandbox checks, which its image cannot run.
+- GitHub's Windows has one more than Windows here under both interpreters (1,532 and 1,533 against 1,531
+  and 1,532), in `tests/test_loop.py`: its account may create symlinks, which this machine's may not.
+
+### What the jobs skipped
+- All six: the two benchmark groups that need PyTorch (twelve checks); no job installs it.
+- `ubuntu-24.04`: the loop's sandbox checks ("bubblewrap is not usable here (it is not installed)"). The
+  Mac and Windows jobs skip them as Linux-only.
+- Both Windows jobs and the Mac job under the system's Python: the tmux checks of `tests/test_kit.py` and
+  `tests/test_review_fixes.py`. The Mac job under Python 3.x installs tmux and runs them.
+
+### The generated guard test in the jobs
+Default sample and seed 7 in every job, with the same figures as in the run of 15 November:
+
+| Shell | Jobs | Lines generated | The guard let pass | Harmful |
+|---|---|---|---|---|
+| bash 5.3.9, 5.2.21 | the two Ubuntu jobs | 450 | 149 | 0 |
+| bash 3.2.57 | the two Mac jobs | 450 | 150 | 0 |
+| zsh 5.9 | the two Mac jobs | 450 | 148 | 0 |
+| Git's bash 5.3.15 | the two Windows jobs | 450 | 149 | 0 |
+| PowerShell 7.6.9 | the two Windows jobs | 224 | 76 | 0 |
+
+"Harmful" counts lines that the guard let pass and that printed or copied the sealed file or changed the
+frozen file. The larger samples of the round ran on this machine ("Round 8", "Tests").
+
+### Changes in the behaviour of existing features
+None. No commit after `47f07a6` touches the kit's code or a test, and no test was changed or removed. Two
+pages of the kit said that the round's sandbox had not run on bare Linux and say now where it has run:
+`references/loop.md` (the table of what the loop enforces, and "What a sandboxed run can write") and
+`docs/REFERENCE.md` ("By platform": the rows of the loop's sandbox, and the two rows of tests, which now
+give the runs of 15 and 16 November). That commit is local, like this section.
+
+### The ledger
+No row was added and no decision changed: 1,683 rows, Adopt 516, Trial 237, Assess 328, Hold 330, Reject
+272. Two rows of round 8, the read-only file system of the loop's sandbox and its process namespace, said
+that they had not run on bare Linux; they now say that they ran there on 16 November. A process namespace
+in a container stays untried. The ledger cuts a cell at a fixed length, so the first of the two rows lost
+its sentence "Run on WSL2 only" to make room.
+
+### What was verified, and how
+- **By running, on GitHub's machines:** the eight test files in six jobs. I downloaded each job's log; a
+  script counted the PASS, FAIL and SKIP lines per test file and read each file's result line, and the
+  checks quoted in "In short" were read in the Ubuntu 26.04 job's log.
+- **Not run again here:** no code and no test changed after `47f07a6`, so this machine's runs in "Round 8"
+  stand. No test was run after the two pages were corrected: they are text.
+- **Unverified, as before:** the guard's changes by a second reader; anything with PyTorch on GitHub's
+  machines or on a Mac; an agent session on a Mac or on Linux; a process namespace in a container; sleep
+  and a closed lid on a Mac.
+
+### What needs your decision
+- Whether `main` takes round 8. I recommend a second reading of the guard's changes first, by another
+  session or another model: their reader was stopped ("Round 8", "The independent review"), and six
+  passing jobs do not replace a reader. The push to `main` would take this section's local commits along.
+- Whether the public test branches `test/rounds-6-7` and `test/round-8` are deleted.
+- Unchanged from "Round 8": an eighth installer run on your real install; agent sessions for a comparison
+  of the worker's history lines and for a pilot on the fine-tuning task; a Gemini or Antigravity CLI for a
+  port; money, accounts and hardware for the ledger rows that wait for them.
+
+### Most valuable next steps
+1. A second reading of the guard's changes of round 8.
+2. Then `main`, and after it an eighth installer run on your real install: only there do the round's
+   changes to the guard and to `expctl stop` reach your own training.
+3. From "Round 8": Muon's missing control and a second, larger task; the seed × item formula against the
+   kit's keep rule; the comparison of the worker's history lines.
+
+### Sources
+- GitHub Actions, workflow run 43786289405 of the public repository (branch `test/round-8`, commit
+  `47f07a6`), and the logs of its six jobs, read on 16 November 2026.
 
 ## 1. What changed and why
 

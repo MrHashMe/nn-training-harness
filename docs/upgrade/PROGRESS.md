@@ -23,7 +23,9 @@ Windows machines, three commits repaired what its first run showed, and its seco
 jobs. "`main`" below is the user's "Push main" of the same day: `main` took the branch as it was. The entry
 after it is the seventh installer run on the real install, which brought rounds 6 and 7 there.
 "Round 8" below is the work on the request of 15 November: a third review, checked claim by claim, what
-was built from it, and the independent review at its end. It is committed locally and not pushed.
+was built from it, and the independent review at its end. On the user's "Push test branch" of 16 November
+it is on the public branch `test/round-8`, where all six of GitHub's jobs pass (the entry after it);
+`main` does not have it, and the records of that push are committed locally only.
 
 # Upgrade progress
 
@@ -1525,7 +1527,7 @@ Done (REPORT.md, "The seventh installer run on the real install", has it in full
 
 Next: whether the test branch is deleted, which waits for a word of the user's.
 
-## Round 8 (third review, 15 November): done locally, not pushed
+## Round 8 (third review, 15 November): done; on a test branch since 16 November
 
 Request of 15 November: upgrade the project further on a third reviewer's report, written on the public
 version (`fb101a7`), as well as possible. The report is kept out of git at
@@ -1586,16 +1588,41 @@ Tests on `8fbec1c`, all eight files, every file passing: in WSL 1,559 checks und
 5,257 of 15,600 generated lines pass (bash in WSL, bash and zsh in an Alpine container, Git's bash and
 PowerShell on Windows), and none of them did harm. The runs ended at 00:02 UTC on 16 November.
 
-Not done: nothing is pushed, so nothing of the round has run on macOS or on GitHub's machines, and the
-read-only sandbox and the Linux proofs behind a stop have run on WSL2 only; no agent session (whether the
-worker's history lines help is not measured); nothing on the real install. One removal of a temporary
+Not done when the round ended: nothing was pushed, so nothing of the round had run on macOS or on GitHub's
+machines, and the read-only sandbox and the Linux proofs behind a stop had run on WSL2 only (answered on
+16 November: the next entry). Not done still: no agent session (whether the worker's history lines help
+is not measured); nothing on the real install. One removal of a temporary
 folder in the WSL home was refused by the environment's safety check and not worked around; REPORT.md lists
 what is left behind.
 
-Open questions for the user (REPORT.md, "Round 8", "What needs your decision"): a push; a second reading of
-the guard's changes; an eighth installer run on the real install; whether the public branch
-`test/rounds-6-7` is deleted; agent sessions for a comparison of the history lines and for a pilot on the
-fine-tuning task; a Gemini or Antigravity CLI for a port.
+Open questions for the user (REPORT.md, "Round 8", "What needs your decision"): a push (answered for a test
+branch on 16 November, the next entry; open for `main`); a second reading of the guard's changes; an eighth
+installer run on the real install; whether the public branches `test/rounds-6-7` and `test/round-8` are
+deleted; agent sessions for a comparison of the history lines and for a pilot on the fine-tuning task; a
+Gemini or Antigravity CLI for a port.
+
+## The test branch of round 8 (16 November): all six jobs pass, `main` unchanged
+
+Asked after round 8 whether to push it to a test branch, the user answered "Push test branch". Before the
+push: a fetch (the public repository was unchanged, `main` at `3d7a4a7`), a search of every added line and
+commit message of the 25 commits for private details (none), and a check that every commit carries the
+no-reply address and UTC dates. Pushed: `47f07a6` as the new public branch `test/round-8`, one push, no
+pull request. GitHub's workflow run 43786289405 on that commit passed in all six jobs at the first run
+(about 01:22 to 01:43 UTC): 1,536 checks on Ubuntu 24.04 with Python 3.8.18, 1,547 on Ubuntu 26.04 with
+3.15.2, 1,532 and 1,533 on Windows Server 2025 with 3.8.10 and 3.15.2, 1,542 and 1,535 on macOS 26 with
+3.14.10 and the system's 3.9.6. No check failed, so nothing was repaired. New with this run: round 8 has
+run on a Mac, and on bare Linux the loop's read-only sandbox, its process namespace and the stop that
+signals only a proven process have run and pass (Ubuntu 26.04; the 24.04 image has no bubblewrap). Not
+shown by it: the guard's changes still have no independent reading; the jobs have no PyTorch, so nothing
+trained there; no agent session.
+
+After the run: `references/loop.md` and `docs/REFERENCE.md` say where the sandbox has run, two ledger rows
+of round 8 say the same (no row added, no decision changed), and REPORT.md has the section "The test
+branch of round 8". These two commits are local: the user's word covered the push of the round, and a
+further push to the branch would start another run. `test/round-8` ends at `47f07a6`.
+
+Next: the user's decision whether `main` takes round 8 (my recommendation: a second reading of the guard's
+changes first), and whether the public branches `test/rounds-6-7` and `test/round-8` are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

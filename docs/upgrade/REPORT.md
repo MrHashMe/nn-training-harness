@@ -321,7 +321,14 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `test/round-8` moved from `d227df2` to `18bb966`. Both Ubuntu jobs pass, which is the clean Linux
     run that WSL on this machine could not give; every job has 32 checks more than before, as expected.
     Open: `main` does not have the fixes yet, so it keeps the false refusals and the regression of round
-    8 until you say "push main"; the fixes are still unread by anyone but me.
+    8 until you say "push main"; the fixes are still unread by anyone but me. (Added with point 25:
+    `main` has them.)
+25. **`main` has the reading's fixes** (16 November; "`main` takes the reading's fixes"). On your "Push
+    main" the public `main` moved from `62ae1da` to `7462b7b`: three commits, with no merge commit and no
+    force. All six of GitHub's jobs pass on `main` too, with the counts of point 24's run in every job.
+    So the public `main` no longer has the false refusals of the second reading's fix or the regression
+    of round 8. Open: the fixes are still unread by anyone but me; your real install does not have round
+    8, which an eighth installer run would bring, on your word; the two public test branches still exist.
 
 ## Round 2 (12 November 2026)
 
@@ -5438,12 +5445,38 @@ The two Ubuntu jobs are the clean Linux run that WSL on this machine could not g
 interpreter is the first version line of each job's log; the image versions were not read this time.
 
 Not changed by this: the fixes are still read by nobody but their author; no shell ran the 87 lines;
-`main` does not have the fixes.
+`main` does not have the fixes. (Added later that day: `main` has them; the section after this one.)
 
 What needs your decision: whether `main` takes the commits (a fast-forward, on your word); a further
 reading; and, unchanged, an eighth installer run on your real install and the two public test branches.
 
 Sources: GitHub Actions, workflow run 43933527133 of the public repository, read on 16 November 2026
+from the run's list of jobs and from each job's log.
+
+## `main` takes the reading's fixes (16 November 2026): pushed, all six jobs pass
+
+Your word: "Push main", to the question whether `main` takes the fixes now. I took it to cover the push
+of the three commits as a fast-forward with no force, the wait for GitHub's run and a local record of it.
+Not covered: your real install, deleting a branch.
+
+- Before the push: fetched; the public `main` unchanged at `62ae1da`; this branch three commits ahead of
+  it and none behind; the three searched for private details (none), all with the no-reply address and
+  UTC dates.
+- The push: `main` moved from `62ae1da` to `7462b7b`: `4e2bec4` (the fix), `18bb966` (its record) and
+  `7462b7b` (the record of the run on the test branch). GitHub's machines had run the first two on the
+  test branch; the third changes records only. The local `main` was moved to the public one.
+- GitHub's workflow run 43938140817 on `main` at `7462b7b` (19:19 to 19:38 UTC): all six jobs pass, each
+  with all eight test files and with the counts of the run on the test branch: 1,592 and 1,581 on Ubuntu,
+  1,578 and 1,577 on Windows, 1,587 and 1,580 on macOS. The Mac job with "Python 3.x" ran under 3.14.10
+  this time (3.15.2 on the test branch); the other interpreters were the same.
+- Left as it is: the branches `test/rounds-6-7` and `test/round-8` in the public repository; the README
+  (another session's work); your real install, which has rounds 6 and 7 and not round 8.
+
+What needs your decision: a further reading of these fixes, which `main` now holds unread by anyone but
+their author; an eighth installer run on your real install; whether the test branches are deleted. The
+commit of this section is local.
+
+Sources: GitHub Actions, workflow run 43938140817 of the public repository, read on 16 November 2026
 from the run's list of jobs and from each job's log.
 
 ## 1. What changed and why

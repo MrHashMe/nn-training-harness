@@ -33,7 +33,8 @@ and all six jobs pass on them (the entry after it). On the user's "Push main" of
 "The reading of the fixes" below is the work on the user's "Read the fixes" of that day: an independent
 reader went through those fixes, and its six findings and a regression of round 8 found beside them are
 fixed in two commits. On the user's third "Push test branch" of that day they are on `test/round-8`,
-where all six jobs pass (the entry after it); `main` does not have them.
+where all six jobs pass (the entry after it). On the user's "Push main" of that day the public `main` has
+them as well, and all six jobs pass there ("`main` takes the reading's fixes" below).
 
 # Upgrade progress
 
@@ -1822,6 +1823,32 @@ Done:
 
 Next, each a separate word of the user's: `main` takes the commits; a further reading of the fixes; an
 eighth installer run on the real install; whether the test branches are deleted.
+(Added later that day: `main` took them on the user's word; the next entry.)
+
+## `main` takes the reading's fixes (16 November): pushed, all six jobs pass
+
+The user's word, 16 November: "Push main", to the question whether `main` takes the fixes now. It covers
+the push of the three commits as a fast-forward with no force, the wait for GitHub's run and a local
+record of it. Not covered: the real install, deleting a branch.
+
+Done:
+- Fetched: `main` in the public repository unchanged at `62ae1da`; this branch three commits ahead of it
+  and none behind. The three searched for private details (none), all with the no-reply address and UTC
+  dates. `main` took the branch as it was, `62ae1da` to `7462b7b`: no merge commit, no force.
+- The three: `4e2bec4` (the fix), `18bb966` (its record), `7462b7b` (the record of the run on the test
+  branch, which GitHub's machines had not run: records only).
+- GitHub's workflow run 43938140817 on `main` at `7462b7b` (19:19 to 19:38 UTC): all six jobs pass, every
+  test file with the counts of the run on the test branch (1,592 and 1,581 on Ubuntu, 1,578 and 1,577 on
+  Windows, 1,587 and 1,580 on macOS). The Mac job with "Python 3.x" ran under 3.14.10 this time.
+- The local `main`, which the main checkout has checked out, was moved to the public one.
+- REPORT.md has the section "`main` takes the reading's fixes" and point 25 of "Read this first". This
+  entry's commit is local.
+- Left as it is: the branches `test/rounds-6-7` and `test/round-8` in the public repository; the README
+  (another session's work); the real install, which has rounds 6 and 7 and not round 8.
+
+Next, each a separate word of the user's: a further reading of these fixes, which `main` holds unread by
+anyone but their author; an eighth installer run on the real install; whether the test branches are
+deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2097,9 +2124,8 @@ eighth installer run on the real install; whether the test branches are deleted.
 - Answered on 16 Nov ("Push main"), from the second run on the test branch: `main` takes round 8 with the
   fixes. "`main` takes round 8" above. The word covers the push of the 30 commits and one more push for
   the record of it. It is not a word for deleting a branch or for anything on the real install.
-- Open, from round 8: whether `main` takes the commits of the reading of the fixes (they are on
-  `test/round-8` since 16 November, and all six jobs pass there); whether those fixes get a reading of
-  their own (the question before it,
+- Open, from round 8: whether the fixes that the reading of the fixes led to get a reading of their own
+  (`main` holds them since 16 November, and all six jobs pass there; the question before it,
   whether the fixes of the second reading are read, was answered on 16 November: "Read the fixes", done,
   its entry above); whether the public branch `test/round-8` is deleted; whether the
   installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison

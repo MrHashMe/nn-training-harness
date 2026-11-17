@@ -35,10 +35,13 @@ reader went through those fixes, and its six findings and a regression of round 
 fixed in two commits. On the user's third "Push test branch" of that day they are on `test/round-8`,
 where all six jobs pass (the entry after it). On the user's "Push main" of that day the public `main` has
 them as well, and all six jobs pass there ("`main` takes the reading's fixes" below).
+"The second reading of the fixes" below is the work on the user's "Read again first" of 17 November: an
+independent reader went through the fix `4e2bec4` and found that it brought a regression; that and three
+older gaps of the same kind, found beside it, are fixed in two local commits. Nothing of it is pushed.
 
 # Upgrade progress
 
-Last updated: 16 November 2026.
+Last updated: 17 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -1848,7 +1851,51 @@ Done:
 
 Next, each a separate word of the user's: a further reading of these fixes, which `main` holds unread by
 anyone but their author; an eighth installer run on the real install; whether the test branches are
-deleted.
+deleted. (Added on 17 November: read once more, on the user's word; the next entry.)
+
+## The second reading of the fixes (17 November): a regression of the last fix, and three older gaps
+
+The user's word, 17 November: "Read again first", to the question whether the fixes are read once more
+before round 8 reaches the real install. It covers a fresh reader with read access only for the fix
+`4e2bec4`, the check of each finding by running it, the fixes, the tests and local commits. Not covered:
+a push, the real install, deleting a branch.
+
+Done:
+- The reader: a fresh agent on another model, read access only, a correctness brief; not stopped by the
+  safeguards. Six points. It ran pieces of the guard, not the whole guard; I put its lines to the whole.
+- Its main finding holds: since `4e2bec4`, which the public `main` holds, a here-document with an escaped
+  quote lets a write of a frozen file behind it pass; `332fd85` asked. Fixed in `63bfdf6`, with the same
+  gap in a quoted text with no here-document, which I found beside it and which every version had.
+- Its other five points, in `63bfdf6`: test rows for the forms that had none, three sentences of the
+  reference and a comment made exact, a dead member of a pattern removed; two points left, with the reason.
+- Found by me while checking that fix, in every version put to them: on PowerShell an escaped quote
+  inside a string and a quote inside a comment `<# #>` hid a write. Fixed in `25aa674`: the guard reads
+  every line once more as PowerShell pairs its quotes.
+- `25aa674` was incomplete: below a comment line that holds an apostrophe it still let the write pass
+  (found when I re-read the commit). Completed in `5dcd2ec`: PowerShell's comments to the line end are
+  found by PowerShell's own pairing, in one pass with its quoted texts.
+- Found and left as a named limit: text handed to `cmd /c`, where an apostrophe quotes nothing. The
+  ledger holds the reading that would close it as adopted and unfinished.
+- The costs, each with its test: two refusals of a read-only subagent and one question to the main
+  session, on harmless lines of rare forms.
+- What the shells do with this quoting was run, with harmless lines: PowerShell 7.7.0, Windows PowerShell
+  5.1, cmd and bash 5.2.
+- Tests: on the final commit `5dcd2ec`, Windows all pass under three interpreters (1,624, 1,611 and
+  1,612 checks). WSL: all 1,626 pass under Python 3.8; under 3.12 and 3.15 the same two checks fail
+  (one of the loop's wall-clock limit, one of a remote job's cost; 1,637 and 1,625 pass), both
+  comparisons of times of day, with the clock set back 149 s within 1,644 s. Not rerun (the rule for
+  that clock). `63bfdf6` and `25aa674` were run in full too; REPORT.md has the numbers.
+- Ledger: 1,699 rows, six more, all in the note `round8`: Adopt 528 (385 finished, 143 unfinished), Trial
+  237, Assess 328, Hold 331, Reject 275.
+- REPORT.md has the section "The second reading of the fixes" and point 26 of "Read this first".
+
+Not done: a push, so the public `main` keeps the regression; a reading of the three new fixes by anyone but
+their author; the reading of text handed to `cmd /c`; a search for further forms of the same root, which
+this session does not do (the safeguard stop of 15 November).
+
+Next, each a separate word of the user's: a push of the test branch and of `main`; a reading of the new
+fixes; the reading for `cmd /c`; an eighth installer run on the real install; whether the test branches
+are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2124,13 +2171,17 @@ deleted.
 - Answered on 16 Nov ("Push main"), from the second run on the test branch: `main` takes round 8 with the
   fixes. "`main` takes round 8" above. The word covers the push of the 30 commits and one more push for
   the record of it. It is not a word for deleting a branch or for anything on the real install.
-- Open, from round 8: whether the fixes that the reading of the fixes led to get a reading of their own
-  (`main` holds them since 16 November, and all six jobs pass there; the question before it,
-  whether the fixes of the second reading are read, was answered on 16 November: "Read the fixes", done,
-  its entry above); whether the public branch `test/round-8` is deleted; whether the
-  installer runs on the real install an eighth time; whether agent sessions may be spent on a comparison
-  of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity
-  CLI is installed for a port.
+- Answered on 17 November: whether the fixes that the reading of the fixes led to get a reading of their
+  own (`main` holds them since 16 November): "Read again first", done, "The second reading of the fixes"
+  above. The word covers a reader with read access only, the fixes, the tests and local commits. It is
+  not a word for a push or for anything on the real install. (The question before it, whether the fixes
+  of the second reading are read, was answered on 16 November: "Read the fixes", done, its entry above.)
+- Open, from round 8: whether the two local fixes of 17 November are pushed, first to `test/round-8` and
+  then to `main`, which holds a regression until then; whether they get a reading of their own; whether
+  the reading of text handed to `cmd /c` is built; whether the public branch `test/round-8` is deleted;
+  whether the installer runs on the real install an eighth time; whether agent sessions may be spent on
+  a comparison of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or
+  Antigravity CLI is installed for a port.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

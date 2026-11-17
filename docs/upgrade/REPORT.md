@@ -329,6 +329,24 @@ Decision record: `docs/upgrade/LEDGER.md`.
     So the public `main` no longer has the false refusals of the second reading's fix or the regression
     of round 8. Open: the fixes are still unread by anyone but me; your real install does not have round
     8, which an eighth installer run would bring, on your word; the two public test branches still exist.
+    (Added with point 26: they were read once more, and that reading found a regression in them.)
+26. **A second reading found that my last fix, which the public `main` holds, brought a regression, and
+    I found three older gaps of the same kind beside it** (17 November; "The second reading of the
+    fixes"). On your "Read again first" a fresh agent on another model read the fix `4e2bec4`. Its main
+    finding holds: since that fix, a here-document with an escaped quote in it (`print("a \" b")`) lets
+    a write of a frozen file behind it pass, which the commit before asked about. Checking my fix of
+    that, I put its sibling lines to the guard and found that every version, back to the one before
+    round 8, let such a write pass behind an escaped quote in a quoted text, and on PowerShell behind a
+    string with `` `" `` in it or behind a comment `<# it's #>`. All four are fixed in three local
+    commits: the third completes my PowerShell fix, which had missed one form, as I found when I re-read
+    it. A fifth of the kind, text handed to `cmd /c`, is left as a named limit. The costs are three false
+    alarms on rare forms of harmless lines. On the final commit all tests pass on Windows under three
+    interpreters (1,624, 1,611 and 1,612 checks); in WSL all pass under one, and under the two others
+    the same two checks of the loop and of the remote runs fail, both comparisons of times of day, while
+    the clock there was set back 149 s within 1,644 s. Open: nothing is pushed, so the public `main`
+    keeps the regression until you say "push"; these fixes are again unread by anyone but me; the older
+    gaps were found while fixing, not by a search, so more of the kind may exist; your real install has
+    the three older gaps, as every version before 17 November has, and not the regression.
 
 ## Round 2 (12 November 2026)
 
@@ -5449,6 +5467,7 @@ Not changed by this: the fixes are still read by nobody but their author; no she
 
 What needs your decision: whether `main` takes the commits (a fast-forward, on your word); a further
 reading; and, unchanged, an eighth installer run on your real install and the two public test branches.
+(Added on 17 November: the further reading was done; "The second reading of the fixes".)
 
 Sources: GitHub Actions, workflow run 43933527133 of the public repository, read on 16 November 2026
 from the run's list of jobs and from each job's log.
@@ -5474,10 +5493,243 @@ Not covered: your real install, deleting a branch.
 
 What needs your decision: a further reading of these fixes, which `main` now holds unread by anyone but
 their author; an eighth installer run on your real install; whether the test branches are deleted. The
-commit of this section is local.
+commit of this section is local. (Added on 17 November: the fixes were read once more, on your word, and
+the reading found a regression in them; the section after this one.)
 
 Sources: GitHub Actions, workflow run 43938140817 of the public repository, read on 16 November 2026
 from the run's list of jobs and from each job's log.
+
+## The second reading of the fixes (17 November 2026): a regression of my last fix, and three older gaps
+
+To the question whether the fixes get one more reading before round 8 reaches your real install, you
+answered "Read again first". I took the word to cover what I had said it would: a fresh reader with read
+access only goes through the fix `4e2bec4`; I check each finding by running it, fix or answer it, test,
+and commit locally. Not covered: a push, your real install, deleting a branch.
+
+In short:
+
+1. **The fix that the public `main` holds brought a regression.** `4e2bec4` kept the quotes that pair
+   inside a here-document. With a backslash in front of a quote in the document (`print("a \" b")`, or
+   JSON with `"5\" screen"`) the rules paired that quote with one behind the document, and a write of a
+   frozen file between the two passed without a question. The commit before it, `332fd85`, asked. The
+   reader found it in the guard's helpers; I confirmed it on the whole guard. Fixed in `63bfdf6`.
+2. **Three older gaps of the same kind, in every version put to them, back to the one before round 8.**
+   I found them while checking that fix, by putting its sibling lines to the guard: the same escaped
+   quote in a quoted text with no here-document (`echo "a \" b"; cp train.py eval/metrics.py; echo
+   "end"`); on PowerShell an escaped quote inside a string (``echo "a `" b"; cp ...``); and on
+   PowerShell a quote inside a comment (`<# it's #> cp train.py eval/metrics.py; echo 'x'`). Each let a
+   write of a frozen file pass. Fixed in `63bfdf6` (the first) and `25aa674` (the two of PowerShell).
+   My fix of PowerShell's escaped quote was incomplete at first: below a comment line that holds an
+   apostrophe (`# don't`), `25aa674` still let the write pass. I found that when I re-read the commit,
+   and completed it in `5dcd2ec`.
+3. **One more of the kind is found and left, as a named limit**: text handed to `cmd /c`. An apostrophe
+   quotes nothing in cmd, so two apostrophes hide what stands between them from the rules. The reference
+   names the limit, and the ledger holds the reading that would close it as adopted and unfinished.
+4. **The root is one**: an escape character in front of a quote. The rules pair quotes with no escape in
+   effect, and each shell has one. The guard now reads every line once more as a POSIX shell pairs its
+   quotes and once more as PowerShell does. A reading only adds questions: the line as it came is still
+   read as before, so no answer got weaker (by construction, and on the lines put to the guards).
+5. **Three costs, all on the strict side.** A read-only subagent is refused again a here-document that
+   holds an escaped quote and a quoted `->` or `rm` (as before `4e2bec4`). And behind a command in
+   backticks right before a closing quote (``"`date`"``), text quoted on the same line is read as
+   commands: the main session is asked about a commit message there that quotes a command, and a
+   read-only subagent is refused a quoted `->`. With `$( )` in place of the backticks nothing changes.
+   A fourth may arise and showed on none of the lines put to the guard: PowerShell's reading takes
+   every `#` outside a quoted text for a comment, inside a word too, which adds a question where a
+   quoted text opens behind such a `#` and closes on a later line.
+6. **The reader's five other points are answered**: one is on the strict side and known, one (speed)
+   did not show in my timing, one is meant and is now described exactly, one got its test rows, and one
+   was three sentences of the reference and a comment.
+7. **Tests.** On the final commit, `5dcd2ec`: Windows, all pass under three interpreters (1,624, 1,611
+   and 1,612 checks). WSL: all 1,626 pass under Python 3.8; under 3.12 and 3.15 the same two checks
+   fail (1,637 and 1,625 pass), one of the loop's wall-clock limit and one of a remote job's cost, both
+   comparisons of times of day, while the clock there was set back 149 s within 1,644 s. The guard's
+   own test files pass everywhere. I did not rerun: the rule for that clock is to measure, run the
+   control and report both, and the controls are Windows and the third interpreter.
+8. **Nothing is pushed, and your real install is untouched.** The public `main` keeps the regression of
+   point 1 until you say "push". Your real install has rounds 6 and 7: not the regression, but the three
+   older gaps of point 2, like every version before 17 November. These fixes are mine and unread by
+   anyone else, and the second was incomplete until I re-read it. And the three older gaps were found by
+   their author while fixing, not by a search: more of the kind may exist that nobody has looked for.
+
+### The reader, and what it did not do
+
+A fresh agent on another model (Opus 5.5) with read access only, briefed as a reader with no context to
+check the commit `4e2bec4` for correctness. It was not asked to look for ways past the guard. It ran
+pieces of the guard of both commits in memory (the helpers `saves`, `unquoted_bodies` and `readings`, and
+the pattern `GIT_CLEAN_IGNORED`) and not the whole guard, so the final answers, in its words, "are
+inferred from those helpers, never seen". It used 19 tool calls in about five minutes, and the model's
+safeguards did not stop it. It named what it had not checked: whole answers of the guard, the other
+effects of following a `cd`, and PowerShell's here-strings beyond the test rows. I put the lines of its
+report to the whole guard of each version.
+
+### The reader's six points
+
+| # | What the reader found | What was done | Test |
+|---|---|---|---|
+| 1 | A here-document that holds an escaped double quote hides a later write (certain of the readings, likely of the final answer) | Confirmed on the whole guard: `4e2bec4` lets the line pass, `332fd85` asks. Fixed in `63bfdf6`: a document with a backslash in front of a quote loses all its quote characters in the extra reading, as every document did before `4e2bec4` | four rows of the guard's table, one check for a read-only subagent |
+| 2 | The force flag of `git clean` is still read past a line break: `git clean -ndx` with `rm -f build.log` on the next line counts as a forced clean that takes ignored files. Not a regression; unsure whether intended | Confirmed. It is on the strict side (the line is asked about as destructive) and known since the second reading of round 8 (its finding 5). Left | none new |
+| 3 | Speed: nothing slow at ordinary size. 2,000 continued lines of `git clean -f` took 0.82 s against 0.28 s on the commit before, in its own harness on the helpers | Timed: one `git clean -f` with 2,000 continued lines takes 0.92, 0.95 and 0.96 s to read on `332fd85`, `4e2bec4` and `63bfdf6`. Its difference did not show | none |
+| 4 | Ordinary lines whose answer changed from the commit before: two pass now (`--model sl > score.json`, `git log --grep cd > log.txt`), four are asked about (among them `grep -c sl eval/metrics.py > n.txt`), and a comment that names `cd` is asked about where a kept file is named too, which nothing described | Confirmed by running. Meant: the guard asks wherever it cannot follow a `cd`. An argument named `sl` or `cd` passes as the last word before a redirection or the line's end; with a word behind it the line is asked about. No change of code; the reference now says so | two rows |
+| 5 | Changed code that no test row exercised: zsh's `nocorrect`, `chdir`, `cd -L`, a redirection in front of a `cd`, the closing words `<<\EOF` and `<<-'E'OF`, `pushd` and `Set-Location` as arguments, `git clean` continued by `^` or in front of a Windows line end | Rows added for each. One member of the `git clean` pattern was dead (a backslash in front of a Windows line end: the rules never see a backslash); it is gone, and the comment says what continues a line where | eight rows, four lines of the routine-mark check |
+| 6 | Reference against code: an argument named `sl` or `cd` (likely), quotes that pair inside a document (certain), the closing words that are not read (unsure); nothing found in `loop.md` | Three sentences of the reference and one `shortcut:` comment made exact, with no change of code | none |
+
+### What I found while fixing
+
+None of these is the reader's. Each was found by putting lines to the guard of each version: the one
+before round 8, round 8's, `332fd85`, `4e2bec4` and, for PowerShell's and cmd's, `63bfdf6`.
+
+- **An escaped quote in a quoted text, with no here-document** (a POSIX shell). `echo "a \" b"; cp
+  train.py eval/metrics.py; echo "end"` passed on every version: an odd number of `\"` inside double
+  quotes shifts the pairs that the rules see. The reading of a POSIX shell now writes an escaped quote
+  as the shell's own splice (`"a "'"'" b"`), which every pairing reads alike. In `63bfdf6`; four rows.
+- **PowerShell's escape character** is the backtick: `` `" `` is a quote that ends nothing, inside a
+  string too, and a quote inside `<# #>` belongs to the comment. Both lines of point 2 passed on every
+  version, with a line comment or a here-string beside them too. The guard now reads every line once
+  more as PowerShell pairs its quotes: its quoted texts, its comment and its escape are one pattern, a
+  comment becomes a blank and an escaped quote is taken out. In `25aa674`; eleven rows, one check.
+- **What `25aa674` missed.** Re-reading that commit against its own comment, I saw that it paired
+  PowerShell's quotes first and looked for the comments to the line end afterwards, with the stripper
+  of a POSIX shell. So a comment line that holds an apostrophe above the escaped quote still hid the
+  write: `# don't`, and below it ``echo "a `" b"; cp train.py eval/metrics.py; echo "end" 'x'``,
+  passed on `25aa674` as on every version before. And a comment behind a text that ends in a backslash
+  (`"C:\out\" # don't`) was not found as one; that line was asked about, but by the POSIX reading
+  alone. One more reading now takes PowerShell's quoted texts, both kinds of comment and the escape in
+  one pass. The reading with the POSIX stripper stays, because a `#` inside a word starts no comment
+  there, as in PowerShell's arguments. In `5dcd2ec`; four rows.
+- **Why every line, and not only the PowerShell tool's**: a POSIX line may hand text to PowerShell, and
+  Codex and Cursor do not say which shell runs a line. The cost with the backticks comes from that; the
+  ledger holds the narrower form as rejected, with this reason.
+- **cmd, left.** `cmd /c "echo it's & copy train.py eval\metrics.py & echo don't"` passes on every
+  version and now; without the apostrophes it is asked about. Read so for every line, apostrophes as
+  plain characters would ask about every quoted write verb, so that reading belongs where the guard
+  hands text to `cmd /c`. I did not open that part under the usage limit. The reference names the limit.
+- **Seen and left**, both false alarms on the strict side and both in every version: on PowerShell a
+  commit message with an escaped quote in front of a command name (``git commit -m "fix `"rm`" of
+  eval/metrics.py"``) is asked about, and a read-only subagent is refused `echo "5\" screen"; ls; echo
+  "end"`.
+
+### Every change in what the guard asks, refuses or allows
+
+- **Asked about now**, each because the shell runs the write: a write of a kept file behind a
+  here-document that holds an escaped quote (passed since `4e2bec4`); behind a quoted text with an
+  escaped quote; on PowerShell behind a string with `` `" `` in it, or behind a comment `<# #>` with a
+  quote in it (these three passed in every version); and on PowerShell below a comment line that holds
+  an apostrophe, where an escaped quote follows (it passed in every version, `25aa674` included).
+  Tests: ten rows of the guard's table in `tests/test_kit.py`.
+- **Refused to a read-only subagent now** (two costs): a here-document with an escaped quote and a quoted
+  `->` or `rm` in it (it passed since `4e2bec4` only); a quoted `->` behind a command in backticks right
+  before a closing quote. The readings that close the gaps cannot tell these from the lines they are
+  for. Tests: two checks in `tests/test_ports.py`.
+- **Asked of the main session now** (the third cost): a commit message that quotes a command, behind a
+  command in backticks right before a closing quote. Test: one row, and one for `$( )`, which passes.
+- **A cost that may arise, seen on no line put to the guard**: PowerShell's reading takes every `#`
+  outside a quoted text for the start of a comment, inside a word too (`${#a[@]}`). Where a quoted text
+  opens behind such a `#` and closes on a later line, that adds a question, or a refusal of a read-only
+  subagent. The reference names it. Test: one row with `${#a[@]}` in it, which passes.
+- **The routine mark** of the loop's own lines: unchanged. Its check has four more lines: a `git clean`
+  continued by `^`, or by a backtick or `^` in front of a Windows line end, loses the mark as before; a
+  backslash in front of a Windows line end continues a line in no shell and leaves the mark.
+- **Not weaker**: no line that was asked about or refused passes now. By construction: each new reading
+  is checked in addition to the line as it came. By running: `63bfdf6` against `4e2bec4` on 130 lines
+  (four answers differ), `25aa674` against `63bfdf6` on 158 (eight differ) and `5dcd2ec` against
+  `25aa674` on 167 (one differs); each of the thirteen went from a pass to a question or a refusal:
+  ten writes of a frozen file, and the three costs.
+- **Limits that stay**, each named in the reference: text handed to `cmd /c`; the closing words of a
+  here-document that are not read (`<<$EOF`, `<<.end`); the force flag of `git clean` read past a line
+  break, which is strict.
+
+### Verified, and how
+
+- **By running**: the lines named here on the whole guard of each version; the tests below; the time the
+  guard takes on twenty long or awkward lines (as before: the slowest takes just under a second on
+  `4e2bec4`, `63bfdf6`, `25aa674` and `5dcd2ec`); and what the shells themselves do with this quoting,
+  with harmless lines (`Write-Output` and `echo` only): PowerShell 7.7.0 and Windows PowerShell 5.1
+  print ``"a `" b"`` as one text, run the command behind `<# it's #>` and run the line below a comment
+  that holds an apostrophe; cmd prints `it's` and `don't` as plain words; bash 5.2 (Git for Windows)
+  reads `\"` in a quoted text and in a here-document as the fix assumes.
+- **Not verified**: zsh and the shells of a Mac; GitHub's machines and a Mac, which have not run these
+  commits because nothing is pushed; a real agent session.
+- **Not looked for**: ways past the guard. A reader briefed for that was stopped by the model's
+  safeguards on 15 November, and I do not retry it. The three older gaps came from checking the sibling
+  of a line that was being fixed, one per shell, and I stopped there; what `25aa674` missed came from
+  re-reading that commit against its own comment. So the root of point 4 may have
+  further forms that nobody has looked for; cmd's is the one that is known.
+
+### Tests
+
+The final commit, `5dcd2ec`, in a clone at that commit: eight test files under three interpreters on
+each platform.
+
+| Interpreter | Platform | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All | Failed |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 3.12.3 with psutil and PyTorch | WSL | 54 | 3 | 982 | 267 | 133 | 98 | 81 | 19 | 1,637 | loop: exit 1, 1 failed; remote: exit 1, 1 failed |
+| 3.8.20, clean | WSL | 42 | 3 | 982 | 268 | 132 | 99 | 81 | 19 | 1,626 | none |
+| 3.15.0b3, clean | WSL | 42 | 3 | 982 | 267 | 133 | 98 | 81 | 19 | 1,625 | loop: exit 1, 1 failed; remote: exit 1, 1 failed |
+| 3.11.7 with psutil and PyTorch | Windows | 54 | 6 | 974 | 258 | 135 | 99 | 79 | 19 | 1,624 | none |
+| 3.8.20, clean | Windows | 42 | 6 | 974 | 258 | 134 | 99 | 79 | 19 | 1,611 | none |
+| 3.15.0rc3, clean | Windows | 42 | 6 | 974 | 258 | 135 | 99 | 79 | 19 | 1,612 | none |
+
+The four failures in WSL are two checks, each under Python 3.12 and under 3.15 and neither under 3.8:
+"the wall-clock limit also ends an agent session in flight, and is named as the reason"
+(`tests/test_loop.py`) and "a job the provider ends at its time limit is not resumed, and costs its
+reservation at most" (`tests/test_remote.py`). Both compare times of day, and the clock in WSL was set
+back 149.3 s within 1,644 s during the run (the duration of one test file reads -3 s there). Both pass
+under the third interpreter in the same run and under all three on Windows, and these commits do not
+touch the code that they exercise. By the rule for that clock (measure, run the control once, report
+both) I did not rerun.
+
+The two commits before it, each in a clone as well:
+
+- `63bfdf6`. Windows: all pass (1,608, 1,595 and 1,596 checks). WSL: four checks failed, each under one
+  interpreter, with the clock set back 150.3 s within 1,652 s: the check of the remote job named above
+  (Python 3.12); "session hook injects status after compaction" of `tests/test_kit.py` (3.8), where the
+  status called both of the test's live runs stalled ("heartbeat 7s old (> 3s)"), a comparison of
+  times of day across processes; and the two wall-clock checks of `tests/test_loop.py` (3.15): the one
+  named above and "a wall-clock limit stops the campaign before the next run".
+- `25aa674`. WSL only, because `5dcd2ec` followed before a Windows run was started: one check failed
+  under Python 3.12 and one under 3.8, the two wall-clock checks of `tests/test_loop.py`, with the clock
+  set back 153.3 s within 1,682 s; under 3.15 all 1,623 pass. The checks of the session hook and of the
+  remote job passed there under every interpreter.
+
+So no WSL run of this day passed under all three interpreters: four checks failed at one time or
+another. What speaks for the clock and against a fault of these commits: the failing set changes from
+run to run, each check passes under another interpreter in the same run, Windows passes all of them in
+both of its runs, and the commits do not touch the code behind them. GitHub's Linux machines, which
+passed these test files for the commits before, have not run these commits.
+
+Before each commit, from the working tree: `tests/test_kit.py` and `tests/test_ports.py` on Windows
+(Python 3.11) and in WSL (3.12), all pass (for `5dcd2ec`: 974 and 135 checks, and 982 and 133).
+
+Changed, none removed: the routine-mark check of `tests/test_loop.py` gets four lines and a reworded
+message.
+
+### The ledger
+
+`docs/upgrade/LEDGER.md` has 1,699 rows now (1,693 before this reading). The six new rows are in the
+note `round8`. Three are adopted and built: a here-document with an escaped quote loses its quote
+characters in the extra reading; an escaped quote inside double quotes is read as a POSIX shell reads
+it; every line is read once more as PowerShell pairs its quotes. One is adopted and not built: the
+reading of text handed to cmd, with what is missing. Two are rejected, each with the reason: paired
+quotes kept in a here-document that holds an escaped quote, which is the form that brought the
+regression, and PowerShell's reading only for the lines of the PowerShell tool. Five built entries of
+`4e2bec4` now say that they were read. The decisions: Adopt 528 (385 finished, 143 unfinished), Trial
+237, Assess 328, Hold 331, Reject 275.
+
+### What needs your decision
+
+- **A push.** Nothing of this is public, so the public `main` keeps the regression of point 1. "Push
+  test branch" would move `test/round-8` from `18bb966` to this branch's head and let GitHub's six jobs
+  run the fixes; "push main" would move `main` from `7462b7b`. Each is a fast-forward with no force.
+- **A reading of these three fixes** by a fresh reader, before or after a push. They are mine and
+  unread, and the second was incomplete until I re-read it.
+- **The reading of text handed to `cmd /c`**: say so and I build it.
+- Unchanged: an eighth installer run on your real install; whether the two public test branches are
+  deleted.
+
+Sources: the reader's report of 17 November 2026 and the lines put to the guards with their answers,
+both in this session's records and not in the repository; the commits `63bfdf6`, `25aa674` and
+`5dcd2ec`.
 
 ## 1. What changed and why
 
@@ -6112,7 +6364,7 @@ leaves the metric unset on purpose.
   bytecode cache was written there.
 
 ## 5. The ledger in summary
-`docs/upgrade/LEDGER.md` has one row per candidate (1,693 rows from 35 notes), a coverage map with one
+`docs/upgrade/LEDGER.md` has one row per candidate (1,699 rows from 35 notes), a coverage map with one
 entry per gap and per "Find the rest" item, the recommended combination, and a table of the points where notes
 disagree and which side the kit follows. The 26th note, `scout/draft/second-look.md`, was written after the live
 runs: it ranks the open rows, adds ten, and holds what the pilot's own data says about the loop's keep rule.
@@ -6126,13 +6378,16 @@ second review. The test branch of 15 November added none. Round 8 added one, `ro
 third review and 12 from the round's own test runs and its independent review. The second reading of the
 guard's changes, on 16 November, added four rows to that note: three for its fixes and one, on hold, for the
 more exact reading that the fix gave up. The reading of the fixes, later that day, added six rows to it:
-five for what it led to and one, rejected, for a form of the fix that was tried and let a line pass.
+five for what it led to and one, rejected, for a form of the fix that was tried and let a line pass. The
+second reading of the fixes, on 17 November, added six more: three for the readings of an escaped quote
+that were built, one for the reading of text handed to cmd, which is adopted and not built, and two
+rejected, for the form of the last fix that brought a regression and for a narrower form of the new one.
 
 | Decision | Rows | Before round 2 | |
 |---|---|---|---|
-| Adopt | 524 | 399 | 382 finished, 142 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493; before round 8: 352 and 142, of 494; before the second reading of round 8: 374 and 142, of 516; before the reading of the fixes: 377 and 142, of 519 |
+| Adopt | 528 | 399 | 385 finished, 143 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493; before round 8: 352 and 142, of 494; before the second reading of round 8: 374 and 142, of 516; before the reading of the fixes: 377 and 142, of 519; before the second reading of the fixes: 382 and 142, of 524 |
 | Trial, Assess | 237, 328 | 221, 293 | undecided: each names the test it needs. Five of these tests have been run, and the rows are Adopt now: round 7 ran the one for the guard's write verbs, the test branch the one for the path comparisons on a Mac, round 8 the one for a process namespace in the loop's sandbox and, for two rows on Muon, a trial smaller than the ones the rows had named ("Round 8"). The others were not run (usage limit; some need a Mac, money or agent sessions); before round 5: 224 and 314; before round 6: 233 and 324; before round 7: 237 and 325; before the test branch: 239 and 327; before round 8: 239 and 326 |
-| Hold, Reject | 331, 273 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254; before round 8: 328 and 263; before the second reading of round 8: 330 and 272; before the reading of the fixes: 331 and 272 |
+| Hold, Reject | 331, 275 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254; before round 8: 328 and 263; before the second reading of round 8: 330 and 272; before the reading of the fixes: 331 and 272; before the second reading of the fixes: 331 and 273 |
 
 - What "Trustworthy decisions" (section 1) changed here: eight adopted rows became finished. Six more are built
   in part and stay unfinished, each saying which part: the confirmation outside the loop, a third data tier

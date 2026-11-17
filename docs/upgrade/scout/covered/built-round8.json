@@ -153,30 +153,54 @@
   "file": "round8",
   "candidate": "Quote characters that pair inside a here-document stay in the guard's extra reading (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`unquoted_bodies`, `LONE_QUOTE`); tests/test_kit.py (seven lines of the guard's table, three of them forms that had no line), tests/test_ports.py (two checks for a read-only subagent); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`unquoted_bodies`, `LONE_QUOTE`); tests/test_kit.py (seven lines of the guard's table, three of them forms that had no line), tests/test_ports.py (two checks for a read-only subagent); docs/REFERENCE.md. Commit 4e2bec4. Read independently on 17 Nov 2026: the rows of that reading"
  },
  {
   "file": "round8",
   "candidate": "A change of folder counts where a command starts, and one with options alone as one with no folder (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`_CD_AT`, `CD`, `saves`); tests/test_kit.py (six lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`_CD_AT`, `CD`, `saves`); tests/test_kit.py (six lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. Read independently on 17 Nov 2026: the rows of that reading"
  },
  {
   "file": "round8",
   "candidate": "The `-x` of a forced `git clean` is read on the command's own line and the lines that continue it (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`GIT_CLEAN_IGNORED`); tests/test_loop.py (the check of the routine mark, changed: three more commands); references/loop.md. Commit 4e2bec4. This fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`GIT_CLEAN_IGNORED`); tests/test_loop.py (the check of the routine mark, changed: three more commands); references/loop.md. Commit 4e2bec4. Read independently on 17 Nov 2026: the rows of that reading"
  },
  {
   "file": "round8",
   "candidate": "A here-document's closing word is read as a shell puts it together, and a Windows line end behind it counts (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`HEREDOC`, `unquoted_bodies`); tests/test_kit.py (five lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`HEREDOC`, `unquoted_bodies`); tests/test_kit.py (five lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. Read independently on 17 Nov 2026: the rows of that reading"
  },
  {
   "file": "round8",
   "candidate": "Where the guard cannot follow a change of folder, the rule for any path of the line comes back (kit-native)",
   "status": "finished",
-  "where": ".claude/hooks/nn_guard.py (`_CD_AT`, `saves`); tests/test_kit.py (twelve lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. This fix has had no independent reading"
+  "where": ".claude/hooks/nn_guard.py (`_CD_AT`, `saves`); tests/test_kit.py (twelve lines of the guard's table); docs/REFERENCE.md. Commit 4e2bec4. Read independently on 17 Nov 2026: the rows of that reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "A here-document with a backslash in front of a quote loses all its quote characters in the guard's extra reading (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`unquoted_bodies`); tests/test_kit.py (four lines of the guard's table), tests/test_ports.py (one check for a read-only subagent); docs/REFERENCE.md. Commit 63bfdf6. This fix has had no independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "The guard reads an escaped quote inside double quotes as a POSIX shell does, in a reading of its own (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`readings`); tests/test_kit.py (four lines of the guard's table); docs/REFERENCE.md. Commit 63bfdf6. This fix has had no independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "The guard reads a line once more as PowerShell pairs its quotes (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`PS_PART`, `PS_LINE`, `readings`); tests/test_kit.py (fifteen lines of the guard's table), tests/test_ports.py (one check for a read-only subagent); docs/REFERENCE.md. Commits 25aa674 and 5dcd2ec (its comments to the line end). Neither has had an independent reading"
+ },
+ {
+  "file": "round8",
+  "candidate": "A reading of text handed to cmd as cmd pairs its quotes (kit-native)",
+  "status": "unfinished",
+  "where": "Not built. docs/REFERENCE.md names the limit (a line as cmd reads it is not read). Missing: a reading as cmd pairs its quotes (an apostrophe is a plain character there) for the text that a line hands to `cmd /c`, with lines of the guard's table for it"
  }
 ]

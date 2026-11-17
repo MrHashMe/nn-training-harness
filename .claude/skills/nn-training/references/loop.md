@@ -59,7 +59,10 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
   `--max-tokens` needs Claude Code or Codex, `--max-gpu-hours` needs `nvidia-smi`. Cursor's terminal agent
   reports neither cost nor tokens. Limits are totals of the whole campaign; it stops at the first one reached.
   They are checked between steps (a session, a run). The wall-clock limit also cuts off a run or a session in
-  flight; tokens, money and GPU-hours can overshoot by the one step that was under way.
+  flight; tokens, money and GPU-hours can overshoot by the one step that was under way. The time is counted on
+  the wall clock and on a clock that cannot be set back (the monotonic clock), and the larger count holds: a
+  wall clock that is set back while a campaign runs (WSL's is, on some machines) does not put the limit off,
+  and where the two clocks differ the campaign ends by the one that is ahead.
 - GPU-hours are the time the loop itself counts from each run's launch to its end, whether the run finished, was
   stopped or did not end, times the number of GPUs `nvidia-smi` lists. A duration that the run's records state is
   not used. The loop cannot see how many of the GPUs a command uses, so it counts the machine it holds: where a

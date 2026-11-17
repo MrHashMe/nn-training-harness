@@ -1207,6 +1207,46 @@ def campaign_b(tmp, proj, exe):
                  "the wall-clock limit also ends an agent session in flight, and is named as the reason"):
         show(r)
 
+    # The same with the loop's clocks moved by hand, which no machine does twice alike. 7.52 s are left of the limit
+    # when the session starts and a poll takes 0.26 s, so the session is ended at 7.54 s, and the count of the time
+    # used is then rounded to 0.1 s: to below the limit. And once more with a wall clock that was set back 5 s before
+    # the session, as WSL's is on some machines.
+    class Clocks:
+        wall, mono = 1e9, 500.0
+
+        def time(self):
+            return self.wall
+
+        def monotonic(self):
+            return self.mono
+
+        def sleep(self, s):
+            self.wall, self.mono = self.wall + s + 0.01, self.mono + s + 0.01
+
+    def ended(back):
+        plan(tmp, [{"sleep": 60}])
+        clocks, old = Clocks(), os.environ.get("FAKE_PLAN")
+        nnloop.time, os.environ["FAKE_PLAN"] = clocks, str(tmp / "plan.json")
+        try:
+            C = nnloop.Campaign(proj, nnloop.expctl.load_config(proj), "zz", argparse.Namespace())
+            C.dir, C.wt, C.exe = tmp / "clocks", tmp, exe
+            C.st = {"agent": "claude", "limits": {"hours": 107.52 / 3600},
+                    "counters": {"runs": 0, "elapsed_s": 100.0, "gpu_s": 0.0, "usd": 0.0, "tokens": 0, "sessions": 0}}
+            clocks.wall -= back
+            try:
+                C.session("worker", "wait", C.dir)
+            except nnloop.Stop as e:
+                return str(e)[:20], round(clocks.mono - 500, 2), C.st["counters"]["elapsed_s"]
+        finally:
+            nnloop.time = time
+            os.environ.pop("FAKE_PLAN") if old is None else os.environ.update(FAKE_PLAN=old)
+
+    got = [ended(0), ended(5)]
+    check(got == [("limit reached: hours", 7.54, 107.5)] * 2,
+          "a session that the wall-clock limit ends is not called hung because the count of the time used was rounded to "
+          "below the limit, nor because the wall clock was set back: the limit ends it at its moment, is the reason, and "
+          f"the time is counted in full (was: a hang, and with the clock set back after the hang's 10 s) ({got})")
+
     plan(tmp, [edit("SLEEP = 0", "SLEEP = 30", title="slow")])
     before = {d.name for d in (proj / "runs").glob("*")}
     r = loop(proj, "resume", "--campaign", "b", "--agent-exe", exe, "--max-runs", "20", "--detach")

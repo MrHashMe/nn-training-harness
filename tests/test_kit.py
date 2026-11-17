@@ -1632,6 +1632,14 @@ def main():
         # commands, so a commit message that quotes one is asked about (None before 17 November 2026; with $( ) it passes)
         ("Bash", {"command": "echo \"`date`\"; git commit -m \"why cp train.py eval/metrics.py was wrong\""}, "ask"),
         ("Bash", {"command": "echo \"$(date)\"; git commit -m \"why cp train.py eval/metrics.py was wrong\""}, None),
+        # PowerShell's comment to the line end, found by PowerShell's own pairing: above an escaped quote its
+        # apostrophe paired first and hid the commands below (None in every version); behind a text that ends in a
+        # backslash, which ends the text there, it was found by the POSIX reading alone. Harmless lines pass, also
+        # with a # inside a word, which that reading takes for a comment
+        ("PowerShell", {"command": "# don't\necho \"a `\" b\"; cp train.py eval/metrics.py; echo \"end\" 'x'"}, "ask"),
+        ("PowerShell", {"command": "Write-Output \"C:\\out\\\" # don't\ncp train.py eval/metrics.py; echo 'x'"}, "ask"),
+        ("PowerShell", {"command": "# don't\necho \"a `\" b\"; cp train.py out.py; echo \"end\" 'x'"}, None),
+        ("Bash", {"command": "n=${#a[@]}; echo \"$n files, don't stop\""}, None),
         # the closing word behind a backslash, and one quoted in part behind tabs (no row took these forms)
         ("Bash", {"command": "cat <<\\EOF\ndon't\nEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),
         ("Bash", {"command": "cat <<-'E'OF\n\tdon't\n\tEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),

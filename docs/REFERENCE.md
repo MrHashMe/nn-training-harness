@@ -331,10 +331,15 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   commands up to the next quote; no version before 17 November 2026 read that. And it reads every line once
   more as PowerShell pairs its quotes: there a backtick in front of a quote makes it end nothing, inside double
   quotes too (``echo "5`" wide"``), and a quote inside a comment `<# #>` belongs to the comment (`<# it's #>`);
-  the rules paired both, in every version before that day. The cost: on a POSIX line with a command in backticks
+  the rules paired both, in every version before that day. In that reading a comment to the end of the line
+  is found by the same pairing, so that an apostrophe in one (`# don't`) misleads nothing behind it. The cost: on a
+  POSIX line with a command in backticks
   right before a closing quote (``"`date`"``), that reading takes the backtick for an escape and reads text
   quoted behind it as commands: the main session is asked about a commit message there that quotes a command, and
-  a read-only subagent is refused a quoted `->`. With `$( )` in place of the backticks nothing changes. Not read: a line as cmd reads it, where an apostrophe quotes nothing, so two
+  a read-only subagent is refused a quoted `->`. With `$( )` in place of the backticks nothing changes.
+  It also takes every `#` outside a quoted text for the start of a comment, inside a word too (`${#a[@]}`); that
+  can only add a question or, for a read-only subagent, a refusal, where a quoted text opens behind such a `#`
+  and closes on a later line. Not read: a line as cmd reads it, where an apostrophe quotes nothing, so two
   apostrophes in text handed to `cmd /c` hide what stands between them from the rules. A
   here-document ends where a shell ends it: the closing word is put together as a shell does (`<<'EOF'`,
   `<<E"O"F`, `<<EOF+`), and a Windows line end behind it counts. A written word that the guard cannot

@@ -290,6 +290,7 @@ BRACE_WORD = re.compile(r"[^\s;&|<>()]*\{[^{}\s]*,[^{}\s]*\}[^\s;&|<>()]*")
 WIN_ESCAPE = re.compile(r"[`^](?=[\w./\\:-])")
 # PowerShell's quoted texts, its comment that ends on the line, and its escape character with what it escapes
 PS_PART = re.compile(r"'[^']*'|\"(?:`.|[^\"`])*\"|<#.*?#>|`.", re.S)
+PS_LINE = re.compile(PS_PART.pattern + r"|#[^\n]*", re.S)  # and, in the same pass, a comment to the end of the line
 # patterns of zsh and ksh that no rule here knows: see wild(). $(..), <(..) and =(..) are no groups: they run commands
 GLOB_GROUP = re.compile(r"(?<![$<>=])([@!+?*]?)\(([^()\s]*)\)")
 GLOB_FLAG = re.compile(r"\(#[^()\s]*\)[^\s;&|<>()]*")
@@ -1161,7 +1162,7 @@ def readings(cmd: str):
 
     def ps_part(m):  # a comment is a blank, 'text' stays, and an escaped quote, in "text" too, is taken out
         t = m.group()
-        return " " if t[0] == "<" else t if t[0] == "'" else re.sub(
+        return " " if t[0] in "<#" else t if t[0] == "'" else re.sub(
             r"`(.)", lambda e: "" if e.group(1) in "\"'" else e.group(), t, flags=re.S)
 
     text, out = cmd.replace("\0", ""), []
@@ -1175,9 +1176,12 @@ def readings(cmd: str):
         posix = POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix))
         out += [re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], t)
                 for t in (BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t)))]
-    # PowerShell and cmd: the line as it came, the line as PowerShell pairs its quotes, and that one without its
-    # comments and without the quotes of its here-documents that pair with nothing there
-    for win in dict.fromkeys((text, PS_PART.sub(ps_part, text), uncommented(PS_PART.sub(ps_part, bodies)))):
+    # PowerShell and cmd: the line as it came, the line as PowerShell pairs its quotes, and that one without the
+    # quotes of its here-documents that pair with nothing there and without its comments to the line end: once where
+    # a POSIX shell starts one (no # inside a word), once from every # that PowerShell's own pairing leaves outside
+    # a text, so that a quote in a comment misleads neither the pairing behind it nor the search for the comment
+    for win in dict.fromkeys((text, PS_PART.sub(ps_part, text), uncommented(PS_PART.sub(ps_part, bodies)),
+                              PS_LINE.sub(ps_part, bodies))):
         win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), win)
         out.append(WIN_ESCAPE.sub("", win).replace("\0", ""))
     return [t for t in dict.fromkeys(out) if t != cmd], any(long)

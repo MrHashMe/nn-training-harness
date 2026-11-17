@@ -392,7 +392,10 @@ Decision record: `docs/upgrade/LEDGER.md`.
     the Mac job ran on another image and interpreter this time, so that pass alone shows little. Open:
     `main` has neither the three guard fixes of point 26 nor the repair. It keeps that point's
     regression and the loop's defect until you say "push main". The clock of this machine's WSL is as
-    it was, and no machine was put to sleep during a session.
+    it was, and no machine was put to sleep during a session. (Added later that day: GitHub lists the
+    run on the record's own commit as failed, because it did not start one of the two Mac jobs for
+    want of a machine. The five jobs that ran pass, and nothing in the kit failed. The section's part
+    "The run on this record's commit".)
 
 ## Round 2 (12 November 2026)
 
@@ -6204,6 +6207,8 @@ In short:
    ran on another image and interpreter this time, so that pass alone shows little.
 3. **No repair was called for.** What follows the run is this record alone, pushed to the same branch
    as your word covers. That push starts one more run of the six jobs, which this record cannot hold.
+   (Added later that day: in that run five jobs pass, and GitHub did not start the sixth, a Mac job,
+   for want of a machine. "The run on this record's commit", below.)
 4. **`main` is as it was**, at `7462b7b`: it has neither the three guard fixes of 17 November nor the
    loop's repair, so it keeps the regression of `4e2bec4` and the loop's defect. Your real install is
    untouched.
@@ -6254,6 +6259,27 @@ Not shown by this run: a machine put to sleep during a session, which rests on P
 check's third case; a campaign with a real agent; anything about the clock of this machine's WSL, where
 one check that the repair does not touch failed in the last local run ("Tests" of the section before).
 
+### The run on this record's commit: five jobs pass, and GitHub did not start the sixth
+
+Added later on 17 November. The push of this record at 19:45 UTC (`8ce7ed0` to `c0dd4cf`) started
+GitHub's workflow run 44161954913 (19:45 to 20:07 UTC). GitHub lists that run as failed. Nothing in
+the kit failed in it:
+
+- **Five jobs ran, and all five pass**, with the counts of the table above: 1,628 on ubuntu-latest,
+  1,617 on Ubuntu 24.04, 1,614 and 1,613 on Windows, and 1,616 on macOS under the system's Python
+  3.9.6. No check failed, and the three checks named above pass in each of the five logs.
+- **"macos-latest, Python 3.x" did not start.** GitHub cancelled it after fifteen minutes in its
+  queue, with the note "The job was not acquired by Runner of type hosted even after multiple
+  attempts" and three notices that its macOS arm64 machines were short ("Due to capacity constraints
+  ..."). The job has no machine, no step and no log, so no test ran in it. The other Mac job waited
+  ten minutes for its machine, and got the older image, 20261102.0473.1.
+- **What that leaves.** `c0dd4cf` differs from `8ce7ed0` in records only: files under `docs/upgrade/`,
+  which no test, installer, kit script or workflow reads. On `8ce7ed0` that Mac job passes (the table
+  above). So the job that did not start takes nothing from that result and adds nothing to it, and no
+  repair was called for.
+- **Not done.** I did not ask GitHub to run the job again. The push of this addition starts all six
+  jobs once more; a job that GitHub ends in this way there would mean the same and no more.
+
 ### What needs your decision
 
 - **`main`.** "Push main" would move it from `7462b7b` to the head of `test/round-8`, as a fast-forward
@@ -6265,7 +6291,8 @@ one check that the repair does not touch failed in the last local run ("Tests" o
   handed to `cmd /c`; an eighth installer run on your real install; the two public test branches.
 
 Sources: GitHub Actions, workflow run 44158183103 of the public repository, read on 17 November 2026
-from the run's list of jobs and from each job's log.
+from the run's list of jobs and from each job's log; workflow run 44161954913, read the same day from
+its list of jobs, from the five logs and from the annotations of the job that did not start.
 
 ## 1. What changed and why
 

@@ -2024,6 +2024,15 @@ Done:
   before). REPORT.md has the section of this entry's name and point 28 of "Read this first".
 - This record is pushed to the test branch, as the word covers. That push starts one more run of the
   six jobs, which this entry cannot hold.
+- (Added later that day.) The run that this record's push started, 44161954913 on `c0dd4cf` (19:45 to
+  20:07 UTC), is listed as failed, and nothing in the kit failed in it. Five jobs ran and pass with the
+  counts above: 1,628, 1,617, 1,614, 1,613 and, on macOS under 3.9.6, 1,616. GitHub did not start
+  "macos-latest, Python 3.x": it cancelled the job after fifteen minutes in its queue ("The job was not
+  acquired by Runner of type hosted even after multiple attempts", with notices that its macOS arm64
+  machines were short). No machine, no step, no log. `c0dd4cf` differs from `8ce7ed0` in records only,
+  and on `8ce7ed0` that job passes, so no repair was called for. I did not ask GitHub to run the job
+  again; the push of this addition starts all six once more. Such a job is read from
+  `gh api repos/OWNER/REPO/check-runs/JOB_ID/annotations`, since it has no log.
 
 Not done: `main`, which keeps the regression of `4e2bec4` and the loop's defect; anything on WSL's
 clock; a machine put to sleep during a session; a campaign with a real agent on the repaired loop.

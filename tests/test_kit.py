@@ -1615,6 +1615,23 @@ def main():
         ("Bash", {"command": "echo \"a \\\" b\"; cp train.py out.py; echo \"end\""}, None),
         ("Bash", {"command": "python -c \"print(\\\"x\\\")\""}, None),
         ("Bash", {"command": "git commit -m \"say \\\"hi\\\" > all\""}, None),
+        # PowerShell's own escape character: `" inside "..." is a quote that ends nothing, and an apostrophe in a
+        # comment <# #> pairs with nothing (the first five were None in every version: the rules paired that quote
+        # and hid the commands up to the next one). The line is read once more as PowerShell pairs its quotes, also
+        # without its other comments and the lone quotes of a here-string; a harmless line of each kind passes
+        ("PowerShell", {"command": "echo \"a `\" b\"; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("PowerShell", {"command": "Write-Output \"5`\" wide\"; Copy-Item train.py eval/metrics.py; Write-Output \"end\""}, "ask"),
+        ("PowerShell", {"command": "<# it's #> cp train.py eval/metrics.py; echo 'x'"}, "ask"),
+        ("PowerShell", {"command": "echo \"a `\" b\" # don't\ncp train.py eval/metrics.py; echo 'x'"}, "ask"),
+        ("PowerShell", {"command": "$x = @\"\ndon't\n\"@\necho \"a `\" b\"; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("PowerShell", {"command": "echo \"a `\" b\"; cp train.py out.py; echo \"end\""}, None),
+        ("PowerShell", {"command": "Write-Output \"say `\"hi`\" > all\""}, None),
+        ("PowerShell", {"command": "<# note #> cp train.py out.py"}, None),
+        ("Bash", {"command": "echo \"`date`\"; cp train.py out.py; echo \"end\""}, None),
+        # the cost: behind a command in backticks right before a closing quote, that reading takes quoted text for
+        # commands, so a commit message that quotes one is asked about (None before 17 November 2026; with $( ) it passes)
+        ("Bash", {"command": "echo \"`date`\"; git commit -m \"why cp train.py eval/metrics.py was wrong\""}, "ask"),
+        ("Bash", {"command": "echo \"$(date)\"; git commit -m \"why cp train.py eval/metrics.py was wrong\""}, None),
         # the closing word behind a backslash, and one quoted in part behind tabs (no row took these forms)
         ("Bash", {"command": "cat <<\\EOF\ndon't\nEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),
         ("Bash", {"command": "cat <<-'E'OF\n\tdon't\n\tEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),

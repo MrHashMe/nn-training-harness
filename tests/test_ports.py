@@ -219,6 +219,11 @@ def guard_tests(tmp: Path):
           "Claude: a here-document with a backslash in front of a quote loses all its quotes again, since the rules "
           "pair that quote: a program in one passes for a read-only subagent, and one with a quoted -> besides is "
           "denied (the cost; it passed while such a quote hid the commands behind the document)")
+    check(guard(proj, cl("echo \"`date`\"; ls", agent_type="run-analyst"))[2] == ""
+          and guard(proj, cl("echo \"`date`\"; grep -n \"a -> b\" notes.txt", agent_type="run-analyst"))[1] == "deny",
+          "Claude: a command in backticks right before a closing quote passes for a read-only subagent, and one with "
+          "a quoted -> behind it is denied (the cost of reading a line once more as PowerShell pairs its quotes, "
+          "where a backtick before a quote makes it end nothing; it passed before 17 November 2026)")
     check(guard(proj, cx("Remove-Item -Recurse runs"), "--agent", "codex")[0] == 2
           and guard(proj, cx("Set-Content eval/metrics.py x"), "--agent", "codex")[0] == 2,
           "Codex: PowerShell forms of deleting runs and of writing the frozen evaluator are refused")

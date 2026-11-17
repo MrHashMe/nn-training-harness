@@ -288,6 +288,8 @@ C_ESCAPE = re.compile(r"\\(x[0-9a-fA-F]{1,2}|u[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{1,8}
 POSIX_PART = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"|\\(.)", re.S)
 BRACE_WORD = re.compile(r"[^\s;&|<>()]*\{[^{}\s]*,[^{}\s]*\}[^\s;&|<>()]*")
 WIN_ESCAPE = re.compile(r"[`^](?=[\w./\\:-])")
+# PowerShell's quoted texts, its comment that ends on the line, and its escape character with what it escapes
+PS_PART = re.compile(r"'[^']*'|\"(?:`.|[^\"`])*\"|<#.*?#>|`.", re.S)
 # patterns of zsh and ksh that no rule here knows: see wild(). $(..), <(..) and =(..) are no groups: they run commands
 GLOB_GROUP = re.compile(r"(?<![$<>=])([@!+?*]?)\(([^()\s]*)\)")
 GLOB_FLAG = re.compile(r"\(#[^()\s]*\)[^\s;&|<>()]*")
@@ -1123,8 +1125,12 @@ def readings(cmd: str):
     test, may put the word of ${name:-word} in the name's place, and writes a word with {a,b} out; zsh and ksh have
     patterns of their own, which wild() writes as plain
     wildcards in a reading of its own; PowerShell and cmd take their own escape characters off (te`st, te^st).
+    PowerShell reads `" as a quote that opens and ends nothing, inside "..." too, and a quote inside <# #> as a part
+    of that comment (echo "a `" b"; <# it's #>): the rules would pair both, so the line is read once more as
+    PowerShell pairs its quotes, also without its other comments and the lone quotes of its here-documents.
     Each reading may name more than the shell would (an escape that stands for a control character is read as its
-    letter): it is checked in addition to the line as it came.
+    letter; a POSIX line with a command in backticks right before a closing quote, "`date`", is paired otherwise
+    in PowerShell's reading): it is checked in addition to the line as it came.
     shortcut: text only, so a name put together from variables, {a..b} or a command's output passes; that takes
     running the line in a sandbox"""
     held, long = [], []
@@ -1153,19 +1159,28 @@ def readings(cmd: str):
         long.append(names is None)
         return " ".join(names or [m.group()])
 
+    def ps_part(m):  # a comment is a blank, 'text' stays, and an escaped quote, in "text" too, is taken out
+        t = m.group()
+        return " " if t[0] == "<" else t if t[0] == "'" else re.sub(
+            r"`(.)", lambda e: "" if e.group(1) in "\"'" else e.group(), t, flags=re.S)
+
     text, out = cmd.replace("\0", ""), []
+    bodies = unquoted_bodies(text)
     # with its comments and without: what stands behind a # may be a zsh pattern (data/(#i)TEST), and no comment.
     # And without the quotes of its here-documents that pair with nothing there
-    for posix in dict.fromkeys((text, uncommented(text), uncommented(unquoted_bodies(text)))):
+    for posix in dict.fromkeys((text, uncommented(text), uncommented(bodies))):
         for _ in range(4):  # a default inside a default
             posix = PARAM_WORD.sub(r"\1", posix)
         posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), posix)
         posix = POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix))
         out += [re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], t)
                 for t in (BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t)))]
-    win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), text)
-    win = WIN_ESCAPE.sub("", win).replace("\0", "")
-    return [t for t in dict.fromkeys((*out, win)) if t != cmd], any(long)
+    # PowerShell and cmd: the line as it came, the line as PowerShell pairs its quotes, and that one without its
+    # comments and without the quotes of its here-documents that pair with nothing there
+    for win in dict.fromkeys((text, PS_PART.sub(ps_part, text), uncommented(PS_PART.sub(ps_part, bodies)))):
+        win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), win)
+        out.append(WIN_ESCAPE.sub("", win).replace("\0", ""))
+    return [t for t in dict.fromkeys(out) if t != cmd], any(long)
 
 
 def runs_notes(c: str, cmd: bool, code: bool) -> bool:

@@ -130,13 +130,14 @@ def job_main(job):
     with open(d / "log.txt", "ab") as log:
         child = subprocess.Popen(rec["cmd"], cwd=rec["work"], stdin=subprocess.DEVNULL, stdout=log,
                                  stderr=subprocess.STDOUT, **NOWIN)
-        t_end, stage = time.time() + rec["timeout_s"], None
+        # by the monotonic clock: a wall clock that is stepped forward (WSL's is, on some machines) ended the job early
+        t_end, stage = time.monotonic() + rec["timeout_s"], None
         while stage is None:
             try:
                 stage = "COMPLETED" if child.wait(timeout=0.2) == 0 else "ERROR"
             except subprocess.TimeoutExpired:
                 stage = "CANCELED" if (d / "cancel").exists() else "ERROR" if (d / "preempt").exists() else \
-                    "TIMEOUT" if time.time() > t_end else None
+                    "TIMEOUT" if time.monotonic() > t_end else None
                 if stage:
                     kill_tree(child.pid)
     rec["stage"] = stage

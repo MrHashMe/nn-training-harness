@@ -1,6 +1,6 @@
 # Upgrade report: nn-training harness kit
 
-Work of 10 to 16 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
+Work of 10 to 17 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
 who has not seen the work. Requirements: `docs/upgrade/PROMPT.md`, and `docs/upgrade/ROUND2.md` for the second
 round of 12 November, which has its own section right after "Read this first". A third stretch of work on the
 same day built three items that round 2 had left open, and on 13 November repaired three small faults it had
@@ -41,7 +41,15 @@ that day the fixes went to the same branch, where all six jobs pass again ("The 
 reading on the test branch", after it). On your "Push main" of that day `main` took the round with the
 fixes, with no merge commit ("`main` takes round 8", the section after that one). On your "Read the fixes"
 of that day a fresh reader read them: six findings, fixed or answered in a local commit, and beside them a
-regression of round 8 that both readings had missed ("The reading of the fixes", after it).
+regression of round 8 that both readings had missed ("The reading of the fixes", after it). On your "Push
+test branch" and "Push main" of that day that commit went to the test branch and to `main`, all six jobs
+passing on each (the two sections after it). On your "Read again first" of 17 November a fresh reader
+found a regression in it, and I found three older gaps of the same kind beside it, all fixed in local
+commits ("The second reading of the fixes"). On your "Push test branch" of that day they went to the test
+branch, where five of GitHub's six jobs pass. The sixth showed a defect of the loop's count of time, which
+is repaired in a local commit and not pushed, and the same work measured what the clock of WSL on this
+machine does ("The second reading's fixes on the test branch", the last section before "1. What changed
+and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -346,7 +354,34 @@ Decision record: `docs/upgrade/LEDGER.md`.
     the clock there was set back 149 s within 1,644 s. Open: nothing is pushed, so the public `main`
     keeps the regression until you say "push"; these fixes are again unread by anyone but me; the older
     gaps were found while fixing, not by a search, so more of the kind may exist; your real install has
-    the three older gaps, as every version before 17 November has, and not the regression.
+    the three older gaps, as every version before 17 November has, and not the regression. (Added with
+    point 27: they are on the test branch, where GitHub's Linux jobs pass them; the two failing checks
+    are traced, one to a defect of the loop and to that clock, the other to a stand-in of the tests
+    under that clock; and "set back" was the net of what the clock does.)
+27. **The second reading's fixes pass on GitHub's machines, and the run found a defect of the loop**
+    (17 November; "The second reading's fixes on the test branch"). On your "Push test branch" the
+    branch `test/round-8` moved from `18bb966` to `36a4857`. Five of GitHub's six jobs pass, each with
+    the 35 checks that the three guard fixes added, both Linux jobs among them. The sixth, macOS under
+    Python 3.14, failed in one check of the loop: a campaign whose wall-clock limit ended an agent
+    session stopped with "the agent session hung" and exit code 1. The cause is the loop's own count of
+    time, which it rounded before it asked whether the limit was reached. Every version with that
+    limit has it, the public `main` included. It costs a wrong stop reason and exit code, and the
+    confirmation of a kept change waits for a resume; it costs no time and no data. I had put the same
+    check's failures in WSL down to the clock there, which was half of it.
+    What that clock does is measured now: two time services set it against each other every five
+    seconds, by nine seconds, and its kernel's tick length is set 10 % too long, so its clocks run
+    10 % fast. Neither is the kit's, and both are yours to mend ("What needs your decision" there).
+    The loop is repaired in two local commits (`cb7ee1b`, `053cd8c`), and a stand-in of the remote
+    tests, which that clock misled, in a third (`463275d`). The first form of the repair brought a
+    regression of its own: a session in flight on a machine that sleeps would no longer have been
+    ended at the limit on waking. A fresh agent on another model, reading the commits before any push,
+    found it, and the second commit fixes it and a fault of the same kind in the stop of a training
+    run. The second commit was read by another fresh agent before it was made, which found nothing
+    wrong in it; neither reader ran anything. On that commit all eight test files pass on Windows
+    under three interpreters. In WSL they pass under two; under the third, one check failed that the
+    repair does not touch, of the kind that WSL's clock fails, and I did not rerun it. Open: none of
+    the three commits is pushed, so the test branch's run stays red, and `main` has neither the guard
+    fixes nor the repair: it keeps the regression of point 26 until you say "push main".
 
 ## Round 2 (12 November 2026)
 
@@ -5501,6 +5536,11 @@ from the run's list of jobs and from each job's log.
 
 ## The second reading of the fixes (17 November 2026): a regression of my last fix, and three older gaps
 
+(Added with "The second reading's fixes on the test branch", the section after this one: on your "Push test
+branch" these commits went to the test branch, where five of GitHub's six jobs pass on them. That section
+is the later word wherever this one says that nothing is pushed, that GitHub's machines have not run these
+commits, or that the clock of WSL alone made the two checks fail.)
+
 To the question whether the fixes get one more reading before round 8 reaches your real install, you
 answered "Read again first". I took the word to cover what I had said it would: a fresh reader with read
 access only goes through the fix `4e2bec4`; I check each finding by running it, fix or answer it, test,
@@ -5545,12 +5585,17 @@ In short:
    fail (1,637 and 1,625 pass), one of the loop's wall-clock limit and one of a remote job's cost, both
    comparisons of times of day, while the clock there was set back 149 s within 1,644 s. The guard's
    own test files pass everywhere. I did not rerun: the rule for that clock is to measure, run the
-   control and report both, and the controls are Windows and the third interpreter.
+   control and report both, and the controls are Windows and the third interpreter. (Added with the
+   next section: GitHub's two Linux jobs pass all of it. The loop's check also fails on a sound clock,
+   by a defect of the loop that is repaired there; the remote check failed by the tests' stand-in for
+   the provider under that clock; and "set back" is the net of steps of nine seconds, forward and
+   back, every five.)
 8. **Nothing is pushed, and your real install is untouched.** The public `main` keeps the regression of
    point 1 until you say "push". Your real install has rounds 6 and 7: not the regression, but the three
    older gaps of point 2, like every version before 17 November. These fixes are mine and unread by
    anyone else, and the second was incomplete until I re-read it. And the three older gaps were found by
    their author while fixing, not by a search: more of the kind may exist that nobody has looked for.
+   (Added with the next section: pushed to the test branch on your word; `main` not.)
 
 ### The reader, and what it did not do
 
@@ -5698,6 +5743,11 @@ run to run, each check passes under another interpreter in the same run, Windows
 both of its runs, and the commits do not touch the code behind them. GitHub's Linux machines, which
 passed these test files for the commits before, have not run these commits.
 
+(Added with the next section: they have now, and both Linux jobs pass every file. The loop's check failed
+there on macOS, by a defect of the loop that the clock had hidden here. The remote check's failures came
+from the tests' stand-in for the provider under that clock. So the clock was the cause here, and not the
+whole of it.)
+
 Before each commit, from the working tree: `tests/test_kit.py` and `tests/test_ports.py` on Windows
 (Python 3.11) and in WSL (3.12), all pass (for `5dcd2ec`: 974 and 135 checks, and 982 and 133).
 
@@ -5721,6 +5771,7 @@ regression, and PowerShell's reading only for the lines of the PowerShell tool. 
 - **A push.** Nothing of this is public, so the public `main` keeps the regression of point 1. "Push
   test branch" would move `test/round-8` from `18bb966` to this branch's head and let GitHub's six jobs
   run the fixes; "push main" would move `main` from `7462b7b`. Each is a fast-forward with no force.
+  (Added with the next section: pushed to the test branch; `main` not.)
 - **A reading of these three fixes** by a fresh reader, before or after a push. They are mine and
   unread, and the second was incomplete until I re-read it.
 - **The reading of text handed to `cmd /c`**: say so and I build it.
@@ -5730,6 +5781,395 @@ regression, and PowerShell's reading only for the lines of the PowerShell tool. 
 Sources: the reader's report of 17 November 2026 and the lines put to the guards with their answers,
 both in this session's records and not in the repository; the commits `63bfdf6`, `25aa674` and
 `5dcd2ec`.
+
+## The second reading's fixes on the test branch (17 November 2026): five of six jobs pass, a defect of the loop
+
+Your word: "Push test branch", to the question whether the local commits go to the public test branch.
+Before you answered I had said what a yes covers: `test/round-8` moves from `18bb966` to `36a4857` as a
+fast-forward with no force, and I read GitHub's six jobs on it. That is all it covers, so what the
+failed job led to is local, and its push needs a word of yours. Not covered either: `main`, your real
+install, deleting a branch.
+
+In short:
+
+1. **The three guard fixes pass on GitHub's machines.** Both Ubuntu jobs, both Windows jobs and the macOS
+   job on the system's Python pass every test file, each with 35 checks more than on `18bb966`, which is
+   what the fixes added; the sixth job passes the guard's test files too. The two Ubuntu jobs are the
+   clean Linux run that WSL on this machine could not give.
+2. **The sixth job, macOS under Python 3.14, failed in one check, and the check is the loop's.** "the
+   wall-clock limit also ends an agent session in flight, and is named as the reason": the campaign
+   stopped with "the agent session hung: no result within 5.47706 s, so it was ended" and exit code 1,
+   where the reason is the limit and the exit code 0.
+3. **The cause is a defect in the loop's own count of time, in every version that has the limit, the
+   public `main` included.** The guard's fixes do not touch that code. The loop ended the session at
+   the limit, as it should: 5.477 s were left of it. Then it rounded its count of the time used to
+   0.1 s and asked the rounded count whether the limit was reached. Rounded down, by up to 0.05 s, the
+   count said "not yet", and the stop was put down to a hang. That takes a kill that returns within
+   0.05 s, which a POSIX kill does and `taskkill` on Windows does not, and a rounding that goes down,
+   which is chance: so Windows never showed it, and Linux and macOS showed it once in the runs so far.
+   What it costs a user: a campaign that reaches its wall-clock limit during a session can end with
+   the wrong reason and exit code 1, and the confirmation of a kept change on fresh seeds, which runs
+   when a campaign ends for a limit, does not run at such a stop: it waits for a resume. Nothing runs
+   longer for it and nothing is lost.
+4. **I had put this check's failures in WSL down to the clock there, and that was half of it.** The
+   check failed in WSL six times on 16 and 17 November. The logs I kept show "no result within 10 s"
+   each time, which is the bound of a hang and not the limit's, so in WSL the clock was the cause
+   (point 5). But the check can fail with a sound clock too, as GitHub's Mac shows, and my reports of
+   those days named the clock alone. And a count of time that a clock's steps can throw off is a
+   weakness of the loop, not only of that machine.
+5. **What WSL's clock does on this machine is measured now, and it is two faults of the machine's
+   setup, not of the kit.** The Windows clock was 9.1 s ahead of internet time. Hyper-V's time sync
+   sets WSL's clock to the Windows time every 5 s, a step of +8.6 s, and WSL's own time service sets
+   it back to internet time about 0.2 s later, a step of -9.1 s. And WSL's clocks tick 10 % fast,
+   because the tick length of its kernel stands at 11,000 µs where 10,000 is the norm: 60 s asked of
+   `sleep` took 54.6 s on a stopwatch in Windows. So a time of day read in WSL is 8.6 s ahead for
+   0.2 s of every 5.5 s, and what I reported as "the clock set back 149 s within 1,644 s" is the net
+   of those steps against a clock that runs fast. This explains the checks that failed there at
+   random (below). Ubuntu's documentation describes the conflict of the two services and advises
+   turning one off; mending it is yours to decide (below).
+6. **The loop is repaired in two local commits, `cb7ee1b` and `053cd8c`.** A session or a training run
+   that the limit ends stops the campaign for the limit, whatever a second count of the time says, and
+   the time used is counted on the wall clock and on the monotonic clock, the larger count holding,
+   as the remote runs already count. A new check moves the loop's clocks by hand: the loop of
+   `36a4857` fails its first two cases, and that of `cb7ee1b` its other two. The cost, in that WSL
+   only: a campaign's wall-clock limit comes about 9 % early there, because the monotonic clock is the
+   one that runs fast.
+7. **One stand-in of the tests is mended in a second local commit, `463275d`.** The provider that the
+   remote tests put in the place of Hugging Face ended a job by the wall clock, so one of WSL's steps
+   forward ended the job early, and the check "a job the provider ends at its time limit is not
+   resumed" failed for it in 8 of the 29 WSL logs I kept since 15 November. It times a job on the
+   monotonic clock now. Measured in WSL: of 40 such limits of 5 s, 25 ended early on the wall clock
+   and none on the monotonic clock. The controller of the remote runs is not changed.
+8. **My first form of the repair brought a regression, which an independent reading found before
+   anything was pushed.** `cb7ee1b` timed a session in flight on the monotonic clock alone. A machine
+   that sleeps during a session would then not have had the session ended at the limit when it woke,
+   which the loop before it did: on Linux and macOS that clock stops while a machine is suspended
+   (PEP 418; not tried here). A fresh agent on another model, with read access only, found it. The
+   second commit ends a session by the campaign's own count of the time, which has both clocks, as a
+   run is ended; it also repairs the same fault in the stop of a training run, which the reader
+   pointed to, and corrects a sentence of the reference page that said more than the code did. This is
+   the fourth fix in a row of mine that a second reading found incomplete. So the second commit was
+   read too, by another fresh agent, before it was committed: it found nothing wrong in it. Neither
+   reader ran anything.
+9. **Tests.** On `053cd8c`, in a clone, the eight test files under three interpreters on each
+   platform. Windows: all pass (1,625, 1,612 and 1,613 checks). WSL: all pass under Python 3.12 and
+   3.15 (1,640 and 1,628 checks); under 3.8, 1,626 pass and one fails, "study runner reported running
+   while trials log elsewhere (got stalled)" of `tests/test_review_fixes.py`. That check asks one
+   status call whether a run's heartbeat is younger than 3 s, in code that the repair does not touch:
+   the kind that this WSL's clock fails at random, and this file's first failure in the 93 WSL logs I
+   kept of it. Not rerun. The commit before it, `463275d`, passed under all three in WSL an hour
+   earlier, under the same clock. The table and the rest are under "Tests" below.
+10. **Not pushed, and `main` is as it was.** The test branch's run stays red until the repair is pushed.
+    `main` has neither the three guard fixes nor the repair: it keeps the regression of `4e2bec4`, and
+    the loop's defect, which it always had. Your real install has rounds 6 and 7: the loop's defect and
+    the three older gaps of the guard, and not the regression.
+
+### The push, and GitHub's run
+
+- Before the push: fetched; the public `main` at `7462b7b` and the test branch at `18bb966`, as I had
+  left them; this branch a fast-forward of both; the commits searched for private details (none), all
+  with the no-reply address and UTC dates.
+- The push: `test/round-8` moved from `18bb966` to `36a4857`. Six commits, where I had said five: one
+  that `main` already had (`7462b7b`, the record of the last push to `main`), and the five local ones:
+  `cd01579` (a record), `63bfdf6`, `25aa674` and `5dcd2ec` (the three fixes) and `36a4857` (their
+  record). `main` was not touched.
+- GitHub's workflow run 44119390145 on `36a4857` (15:52 to 16:17 UTC): five jobs pass, one fails.
+
+| Job | Interpreter | Checks passed | Failed | Skip lines |
+|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 1,627 | 0 | 2 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 1,616 | 0 | 3 |
+| windows-latest, Python 3.x | 3.15.2 | 1,613 | 0 | 5 |
+| windows-latest, Python 3.8 | 3.8.10 | 1,612 | 0 | 5 |
+| macos-latest, Python 3.x | 3.14.10 | 1,621 | 1, in `tests/test_loop.py` | 3 |
+| macos-latest, Python system | 3.9.6 | 1,615 | 0 | 5 |
+
+Every job ran 35 checks more than on `18bb966`: 33 in `tests/test_kit.py` and two in
+`tests/test_ports.py`. The checks that put generated lines to real shells ran in bash 3.2.57 and zsh 5.9
+on macOS, bash 5.2.21 and 5.3.9 on Ubuntu, and Git Bash 5.3.15 and PowerShell 7.6.9 on Windows. They are
+not the probe lines of the three fixes, which no shell of GitHub's has run.
+
+### The failed check, and its cause
+
+The check resumes a campaign with a wall-clock limit seven seconds ahead and an agent that does not
+answer for a minute; the test project ends a session that hangs after ten seconds. Expected: the limit
+ends the session, and the campaign stops with "limit reached: hours" and exit code 0.
+
+The job's log has the stop reason "the agent session hung: no result within 5.47706 s, so it was ended".
+5.477 s is what was left of the limit when the session began, so the session was ended at the limit.
+In the loop of `36a4857`, `session()` then saved the counters, which rounds the time used to 0.1 s, and
+called `check()`, which measured again from the rounded count. Where the rounding had gone down, the
+limit was "not reached" by up to 0.05 s, and the next line called the stop a hang.
+
+Shown without a Mac: the new check (below) sets the loop's clocks by hand so that the session is ended
+0.02 s after the limit and the count rounds down. The loop of `36a4857` answers "the agent session
+hung" there.
+
+### What WSL's clock does on this machine
+
+Measured on 17 November 2026, each by running it, with nothing changed on the machine (WSL 2.7.11,
+kernel 6.18.33, clock source `tsc`):
+
+- `time.sleep(60)` in WSL took 54.6 s on a stopwatch in Windows; WSL's monotonic clock counted 60.0 s
+  for it and its wall clock 54.5 s. Over 180 s of the monotonic clock the stopwatch counted 163.8 s.
+  So WSL's monotonic clock runs 10 % fast, and its wall clock does too between two steps.
+- Why it runs fast, read from the kernel without changing it (`adjtimex` with no mode set): the tick
+  length is 11,000 µs, the most the kernel allows, where 10,000 is the norm. The raw clock, which
+  that setting does not touch, counted 18.19 s for a sleep of 20 s, as the Windows stopwatch did. I
+  do not know what set it: nothing in the kit calls `adjtimex`, and no test runs with the right to.
+- Sampled every 20 ms for 180 s, the wall clock was stepped 31 times forward and 31 times back against
+  the monotonic clock: about every 5.5 s (5 s of true time) a step of +8.6 s, and 0.15 to 0.4 s later
+  a step of -9.1 s; once the step back came 15 s late. The net was -16.5 s: the 9 % that I had measured
+  on the days before as "the clock set back". A second sample of twelve pairs, an hour later: +8.7 s,
+  and -9.2 s after 0.14 to 0.26 s.
+- The Windows clock was 9.1 s ahead of an internet time server (`w32tm`, against time.windows.com), and
+  the Windows time service was not running when I looked (stopped, start type Manual). WSL's time
+  service (`systemd-timesyncd`, against Ubuntu's server) reported an offset of -9.1 s and 20,003
+  packets. So the steps are two services at odds: Hyper-V's time sync sets WSL's clock to the
+  Windows time, and WSL's own service sets it back to internet time, every 5 s.
+- Ubuntu's documentation for WSL describes this setup: WSL's kernel is always started with
+  `hv_utils.timesync_implicit=1` (it is, here), under which each time sample from Hyper-V sets the
+  guest's clock; Ubuntu 24.04 and earlier (this one is 24.04) have `systemd-timesyncd` enabled, as it
+  is here; and it advises disabling that unit "to avoid conflicts with the Hyper-V implicit time
+  synchronization". It says nothing of a tick length.
+
+What it explains, each a check that failed in WSL in some runs and passed in others:
+
+- **The loop's two wall-clock checks.** The loop counted on the wall clock alone. A count that began or
+  ended inside a step forward was off by about nine seconds: a limit seven seconds ahead then seemed
+  sixteen ahead, so the hang's ten seconds came first ("no result within 10 s", in all six logs); and
+  a limit of 0.036 s was not reached in a whole campaign.
+- **"a job the provider ends at its time limit is not resumed"** (`tests/test_remote.py`), in 8 of the
+  29 WSL logs kept since 15 November. The stand-in for the provider ended a job when the wall clock
+  had passed the job's limit, and asked five times a second: where it met a step forward in the job's
+  first second or two, the job was killed, and the controller found it ended 1.4 to 3.1 s after its
+  start, where its limit is 5 s. The controller then did what it should with a job that ends before
+  its reserved time is used up: it took the job for taken away from outside and resumed it. The fault
+  was the stand-in's (point 7). Shown apart from the tests: of 40 limits of 5 s, polled five times a
+  second in WSL, 25 ended early on the wall clock, 9 of them within 1.5 s, and none on the monotonic
+  clock. The remote tests themselves, run four times with each stand-in, passed all eight times: at
+  one failure in four runs that shows nothing either way.
+- **"a run past its deadline is killed after kill_after_s ..."** (`tests/test_kit.py`), in two WSL logs
+  of 16 November and once on 17 November, each time "stopped for None". The check gives a run a
+  deadline two seconds ahead, and a run compares its deadline with the wall clock (`runlog.py`). Read
+  inside a step forward the deadline has passed, and the run ends by itself before the test's part
+  begins: "after 8.9 s" is the step and a third of a second. That is read from the code and the
+  numbers; no rerun shows it. A real deadline lies hours ahead and loses nine seconds. Left as it is.
+- **"session hook injects status after compaction"** (`tests/test_kit.py`), on 17 November, and once on
+  14 November, which I cannot place. A status call reads a heartbeat's age across such steps, seconds
+  older or younger than it is, and the test project calls a run stalled after 3 s. A project's own
+  setting is 900 s unless it is changed, which no such step reaches. Left as it is: the comparison is
+  between two processes, which share only the wall clock. "stalled alert raised", once on 16 November
+  and once on 17 November ("Tests" below), is of the same kind by its subject: the check before it
+  waits for a status call that names a hanging run stalled, and this one asks a second status call for
+  the alert. I have not traced it further.
+- **"study runner reported running while trials log elsewhere"** (`tests/test_review_fixes.py`), once,
+  on 17 November, in the full run of the repair ("Tests" below): one status call six seconds after a
+  launch, against the same threshold of 3 s. Left as it is, for the same reason.
+
+### The repair of the loop
+
+As it stands after both commits (`cb7ee1b`, `053cd8c`):
+
+- While a session or a training run is in flight, the loop asks its own count of the time used four
+  times a second and ends the session or the run when the count has reached the limit. It hands to
+  `check()` that the limit was the bound: the campaign then stops for the limit, whatever a second
+  count says. A second count can say "not yet" for two reasons: the count is rounded to 0.1 s when the
+  state is saved in between, and a wall clock that was ahead may have been set back.
+- The time used is the larger of two counts since the last save, the wall clock's and the monotonic
+  clock's; `nnremote.py` has counted a job's time so since 15 November. A wall clock that is set back
+  cannot put the limit off, and time that the monotonic clock may leave out (a machine asleep) still
+  counts, as it did, for a session and a run in flight too.
+- The bound of a session that hangs (`agent_timeout_s`) and the wait for a run that does not end are
+  measured on the monotonic clock (before: on the wall clock).
+- A limit, named in a `shortcut:` comment: a wall clock that is stepped forward and back again adds the
+  step forward at each save that meets it, and a look at a session or a run in flight that meets it
+  finds the limit reached when less than the step is left of it. So in that WSL a campaign can also end
+  early by up to nine seconds for each such save or look, on top of the 9 %, and the stop's line can
+  then name a count that is below the limit.
+- Weighed and not taken: the monotonic clock alone, under which the time that a machine spends asleep
+  would not count on Linux and macOS; and a count from the process's start, which would not add such
+  steps and needs more state, for a gain of seconds on a machine whose clock is at fault.
+- `references/loop.md` says in one sentence how the time is counted.
+
+Every change in the behaviour of an existing feature, against the loop of `36a4857`:
+
+- A campaign that the wall-clock limit ends during a session always stops with "limit reached: hours"
+  and exit code 0, and runs the confirmation of a kept change (before: at times "the agent session
+  hung", exit code 1 and no confirmation).
+- A campaign that the wall-clock limit ends during a training run always stops for the limit (before:
+  where the wall clock was set back between the loop's look and its second count, it stopped with
+  "stop requested: the training run ... was stopped from outside the loop", with exit code 0 and
+  without the confirmation). No machine has shown this; it is read from the code and shown by the new
+  check.
+- Where the wall clock is set back during a campaign, the limit comes when the monotonic clock says so
+  (before: later by the step).
+- Where the monotonic clock runs fast, the limit, the bound of a session that hangs and the wait for a
+  run that does not end come early by as much (before: on time by the wall clock). In that WSL an
+  `agent_timeout_s` of 900 s is about 818 s.
+- A session that starts with less than a second left of the limit is ended when the limit is reached
+  (before: one second after its start).
+- A session in flight on a machine that is suspended for longer than `agent_timeout_s` is not ended as
+  a hang on waking where the monotonic clock stops during the suspension, which PEP 418 says of Linux
+  and macOS (before: it was, with "the agent session hung" and exit code 1). The wall-clock limit counts
+  the suspension as before and ends the session if it is used up. The second reader pointed to this.
+
+The guard is not touched.
+
+### The independent reading of the repair
+
+On my own initiative, before any push: a fresh agent on another model (Opus 5.5), with read access only
+and no context of mine, briefed to check the two commits `cb7ee1b` and `463275d` for correctness. It ran
+no test and was not stopped by a safeguard. Its points, most serious first, each with my answer:
+
+1. **A session in flight was no longer cut off by the wall clock where that clock is ahead, as after
+   a machine's sleep** (it called this likely; of medium weight). `cb7ee1b` worked out a session's
+   bound when the session began and timed it on the monotonic clock alone. With ten minutes left of
+   the limit and a machine that sleeps for an hour one minute in, the loop of `36a4857` ended the
+   session within a quarter of a second of waking; that of `cb7ee1b` would have let it run nine minutes
+   more. True, and a regression of mine for one commit, which was never pushed. Fixed in `053cd8c`:
+   the bound is gone, and the loop asks its count, which has both clocks, at each look.
+2. **The reference page said more than the code did** (certain; low). "Where the two clocks differ the
+   campaign ends by the one that is ahead" was not so for a session in flight, and the larger count is
+   taken from one save to the next, so the total can exceed what either clock counted in all. Fixed:
+   the sentence now says "from one save of the state to the next" and "no later than by the one that
+   is ahead", and the comment in the code says the same.
+3. **A step forward of the wall clock at the wrong moment can end a campaign a few seconds early, with
+   a count below the limit in the stop's line** (likely; low; partly by design). True in that WSL.
+   Accepted as the limit that the `shortcut:` comment names, which now names this path too.
+4. **The bound of a hang and the wait for a run that does not end now follow a clock that runs 10 %
+   fast in that WSL** (certain; low). True. Accepted, and listed among the changes above.
+5. **The new check is sound, and narrow** (likely; low): both of its cases fail on the old loop and
+   pass on the new, but it is tied to exact numbers, and it had no case of a wall clock that runs
+   ahead. Answered with two more cases: a machine that sleeps during a session, and a run in flight.
+   The numbers stay: the clocks are the test's own, so they are the same on every machine. A hang with
+   no limit near is what the older check "a session that hangs is ended after agent_timeout_s" asks.
+6. **Not a regression, but still there** (unsure, by reading): a training run that the limit ends is
+   reported as stopped from outside the loop where the wall clock is set back between the loop's look
+   and its second count. True, and not only for that WSL: a clock that is corrected after a machine
+   wakes does the same. I had weighed handing the bound to `check()` there too and had left it. Fixed
+   in `053cd8c`, with the first check that this path has had.
+
+It checked and found sound: that no time is counted twice between a save and the count; that the two
+marks are always set together; resuming, a detached start and the replacement of the state; the exit
+codes; the GPU time of a run; and that the change to the tests' stand-in alters no check's question.
+
+**The reading of the answer.** Because the first form had a gap, the change that became `053cd8c` was
+read before its commit by a second fresh agent of the same kind (Opus 5.5, read access only, no
+context of mine, a brief on correctness; it ran nothing and was not stopped by a safeguard). It found
+nothing wrong. It traced a session and a run by hand for the limit reached in flight, a hang with the
+limit far off, a stop request, a stop for paid usage, no wall-clock limit, the confirmation and a run
+that does not end: each gives the intended reason and exit code, saves the state once and counts no
+time twice. It traced the check's four cases against this loop and against that of `cb7ee1b` and got
+the values that the runs gave (under "Tests"). It named three things that are not defects, all listed
+above: the early end in that WSL, the second that a session no longer gets past the limit, and the
+hang's bound across a machine's suspension. It did not read the stand-in agent of the tests or the two
+helpers that end a session's processes and look for paid usage.
+
+From documentation only: which monotonic clocks count the time a machine is suspended. PEP 418's table
+of clocks, read on 17 November 2026: Linux's `CLOCK_MONOTONIC` and macOS's `mach_absolute_time` do not,
+Windows's `GetTickCount64` does, and Windows's `QueryPerformanceCounter` has a question mark there. No
+machine was put to sleep. The count does not depend on the answer, since the larger of the two holds.
+
+### Tests
+
+New, in `tests/test_loop.py`: "a session that the wall-clock limit ends is not called hung ...", one check
+of four cases. It gives the loop two clocks that the test moves by hand. Three cases are a session with
+7.52 s left of the limit and a look every 0.26 s: as it is; with the wall clock set back 5 s before the
+session; and with a machine that sleeps for an hour two seconds in, which the wall clock alone counts.
+Expected: the limit is the reason each time; the session is ended 7.54 s in, and in the third case at
+the first look after the hour; and the time is counted in full. The fourth case is a training run in
+flight, with the wall clock 10 s ahead when the loop looks and set right while the run is stopped:
+expected, the limit is the reason.
+
+Against older code, each run in WSL: the loop of `36a4857` with the first two cases answered "the agent
+session hung" both times, the second after 10.14 s and with 5 s missing from the count; its other 268
+checks passed. The loop of `cb7ee1b` with all four cases: the first two as expected; the third ended
+7.54 s in, when the monotonic clock had counted the limit, with 3,707.5 s counted (expected: 2.08 s in,
+with 3,702.1 s); the fourth "stop requested: the training run ..."; its other 268 checks passed. The
+second reader had worked out the same values by hand.
+
+Changed: `tests/fake_hf.py`, the stand-in for the provider, times a job on the monotonic clock (point 7).
+No check is removed and none asks less.
+
+The second commit of the repair, `053cd8c`, in a clone at that commit: eight test files under three
+interpreters on each platform.
+
+| Interpreter | Platform | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All | Failed |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 3.12.3 with psutil and PyTorch | WSL | 54 | 3 | 982 | 269 | 133 | 99 | 81 | 19 | 1,640 | none |
+| 3.8.20, clean | WSL | 42 | 3 | 982 | 269 | 132 | 99 | 80 | 19 | 1,626 | review_fixes: exit 1, 1 failed |
+| 3.15.0b3, clean | WSL | 42 | 3 | 982 | 269 | 133 | 99 | 81 | 19 | 1,628 | none |
+| 3.11.7 with psutil and PyTorch | Windows | 54 | 6 | 974 | 259 | 135 | 99 | 79 | 19 | 1,625 | none |
+| 3.8.20, clean | Windows | 42 | 6 | 974 | 259 | 134 | 99 | 79 | 19 | 1,612 | none |
+| 3.15.0rc3, clean | Windows | 42 | 6 | 974 | 259 | 135 | 99 | 79 | 19 | 1,613 | none |
+
+Against `5dcd2ec` ("The second reading of the fixes", "Tests") every run has one check more, the new one
+of `tests/test_loop.py`.
+
+The one failure in WSL, under Python 3.8: "study runner reported running while trials log elsewhere
+(got stalled)" of `tests/test_review_fixes.py`. The check launches a run whose trials write the
+heartbeats, waits six seconds and asks one status call for the run's state. The test project calls a
+run stalled when its newest heartbeat is older than 3 s, and a status call works that age out from the
+wall clock: made inside one of that clock's steps forward, it reads every heartbeat 8.6 s older than it
+is. During the run the clock was set back 155.8 s within 1,711 s. That is read from the code and the
+numbers. No rerun shows it, and the log does not tell it from a run that was slow to start while the
+runs of both platforms loaded the machine. The file does not use the loop, and the commit changes
+`nnloop.py`, `references/loop.md` and `tests/test_loop.py` only. It is this file's first failure in
+the 93 WSL logs kept of it since 10 November, 27 of them from 16 and 17 November, when the step was
+longer than those 3 s. The file passed under the two other interpreters in this run and under all
+three on `463275d` an hour before. By the rule for that clock (measure, run the control once, report
+both) I did not rerun.
+
+Before it:
+
+- `463275d`, in a clone. WSL: all pass under the three interpreters (1,640, 1,627 and 1,628 checks),
+  with the clock set back 161.9 s within 1,784 s: the same clock, and no check met a step. Windows: all
+  1,625 pass under Python 3.11 with psutil and PyTorch. I stopped the run there, before the two clean
+  interpreters: the reading had found the regression, and the commit was to be followed by another.
+- The change that became `053cd8c`, before its commit, in the working folder: `tests/test_loop.py`
+  passed in WSL under Python 3.12 (269 checks) and on Windows under 3.11 (259). `tests/test_kit.py` in
+  WSL: 981 of 982, the failure "stalled alert raised" (above), with the clock set back 28.8 s within
+  445 s.
+- `cb7ee1b` had no full run of its own: `tests/test_loop.py` and `tests/test_kit.py` on both platforms,
+  with one failure in WSL, "a run past its deadline is killed after kill_after_s ..." (above).
+
+### The ledger
+
+`docs/upgrade/LEDGER.md` has 1,703 rows now (1,699 before). The four new rows are in the note `round8`.
+One is adopted and built: the loop counts its time on two clocks and names the bound that ended a
+session. Three are rejected, each with the reason: the monotonic clock alone, under which a machine's
+time asleep would not count; a count from the process's start; and run deadlines and heartbeat ages on
+a clock that cannot be stepped. The decisions: Adopt 529 (386 finished, 143 unfinished), Trial 237,
+Assess 328, Hold 331, Reject 278.
+
+### What needs your decision
+
+- **A push of the repair.** "Push test branch" would move `test/round-8` from `36a4857` to this branch's
+  head, as a fast-forward with no force, and GitHub's six jobs would run the repair. This time I take a
+  yes to cover that push, the reading of the jobs, and further pushes to that branch for a repair that a
+  failed job calls for and for the records of the result. Not `main`, and nothing on your real install.
+- **`main`**, after that: it keeps the regression of `4e2bec4` until it takes the guard fixes.
+- **WSL's clock on this machine.** Not mine to change: it is configuration outside this folder, and
+  none of this is tried. (a) In WSL, `sudo systemctl disable --now systemd-timesyncd.service` leaves
+  Hyper-V's sync as the only one that sets the clock: Ubuntu's advice for 24.04 on WSL, and the lasting
+  remedy for the steps. WSL's clock then follows the Windows clock. (b) In Windows, Settings, "Time &
+  language", "Date & time", "Sync now" brings the Windows clock back to internet time. Alone it helps
+  for a while: by the numbers of the failed checks the Windows clock gains about 3 s a day (a step of
+  5.8 s on 16 November, 8.6 s on 17 November). (c) The tick length of 11,000 µs is a third thing, and
+  I do not know what set it. `wsl --shutdown` starts WSL's kernel afresh, and ends everything that runs
+  in WSL; whether the setting comes back I can measure in twenty seconds, reading only. Until then a
+  WSL run of the tests can fail in the checks named above, and whatever is timed in WSL reads 10 %
+  longer than it took.
+- Unchanged: a reading of the three guard fixes by someone other than their author; the reading of text
+  handed to `cmd /c`; an eighth installer run on your real install; the two public test branches.
+
+Sources: GitHub Actions, workflow run 44119390145 of the public repository, read on 17 November 2026
+from the run's list of jobs and from each job's log; the measurements of WSL's clock, run on that day on
+this machine; the logs of the WSL test runs of 14 to 17 November, kept outside the repository; Ubuntu's
+documentation for WSL, page "Time synchronization for Ubuntu on WSL" (ubuntu.com/wsl/docs), read on
+17 November 2026; PEP 418, "Add monotonic time, performance counter, and process time functions"
+(peps.python.org/pep-0418), its table of monotonic clocks, read on 17 November 2026.
 
 ## 1. What changed and why
 
@@ -6364,7 +6804,7 @@ leaves the metric unset on purpose.
   bytecode cache was written there.
 
 ## 5. The ledger in summary
-`docs/upgrade/LEDGER.md` has one row per candidate (1,699 rows from 35 notes), a coverage map with one
+`docs/upgrade/LEDGER.md` has one row per candidate (1,703 rows from 35 notes), a coverage map with one
 entry per gap and per "Find the rest" item, the recommended combination, and a table of the points where notes
 disagree and which side the kit follows. The 26th note, `scout/draft/second-look.md`, was written after the live
 runs: it ranks the open rows, adds ten, and holds what the pilot's own data says about the loop's keep rule.
@@ -6382,12 +6822,15 @@ five for what it led to and one, rejected, for a form of the fix that was tried 
 second reading of the fixes, on 17 November, added six more: three for the readings of an escaped quote
 that were built, one for the reading of text handed to cmd, which is adopted and not built, and two
 rejected, for the form of the last fix that brought a regression and for a narrower form of the new one.
+The test branch of 17 November added four: one for the loop's count of time on two clocks, built, and
+three rejected, for the monotonic clock alone, for a count from the process's start, and for run
+deadlines and heartbeat ages on a clock that cannot be stepped.
 
 | Decision | Rows | Before round 2 | |
 |---|---|---|---|
-| Adopt | 528 | 399 | 385 finished, 143 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493; before round 8: 352 and 142, of 494; before the second reading of round 8: 374 and 142, of 516; before the reading of the fixes: 377 and 142, of 519; before the second reading of the fixes: 382 and 142, of 524 |
+| Adopt | 529 | 399 | 386 finished, 143 unfinished (each says what is missing); before round 2: 261 and 138; before round 3: 277 and 138; before round 4: 280 and 138; before round 5: 288 and 134, of 422; before round 6: 332 and 142, of 474; before round 7: 336 and 144, of 480; before the test branch: 348 and 145, of 493; before round 8: 352 and 142, of 494; before the second reading of round 8: 374 and 142, of 516; before the reading of the fixes: 377 and 142, of 519; before the second reading of the fixes: 382 and 142, of 524; before the test branch of 17 November: 385 and 143, of 528 |
 | Trial, Assess | 237, 328 | 221, 293 | undecided: each names the test it needs. Five of these tests have been run, and the rows are Adopt now: round 7 ran the one for the guard's write verbs, the test branch the one for the path comparisons on a Mac, round 8 the one for a process namespace in the loop's sandbox and, for two rows on Muon, a trial smaller than the ones the rows had named ("Round 8"). The others were not run (usage limit; some need a Mac, money or agent sessions); before round 5: 224 and 314; before round 6: 233 and 324; before round 7: 237 and 325; before the test branch: 239 and 327; before round 8: 239 and 326 |
-| Hold, Reject | 331, 275 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254; before round 8: 328 and 263; before the second reading of round 8: 330 and 272; before the reading of the fixes: 331 and 272; before the second reading of the fixes: 331 and 273 |
+| Hold, Reject | 331, 278 | 310, 193 | with the reason; before round 5: 320 and 225; before round 7: 324 and 254; before round 8: 328 and 263; before the second reading of round 8: 330 and 272; before the reading of the fixes: 331 and 272; before the second reading of the fixes: 331 and 273; before the test branch of 17 November: 331 and 275 |
 
 - What "Trustworthy decisions" (section 1) changed here: eight adopted rows became finished. Six more are built
   in part and stay unfinished, each saying which part: the confirmation outside the loop, a third data tier

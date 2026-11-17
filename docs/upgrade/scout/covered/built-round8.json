@@ -202,5 +202,11 @@
   "candidate": "A reading of text handed to cmd as cmd pairs its quotes (kit-native)",
   "status": "unfinished",
   "where": "Not built. docs/REFERENCE.md names the limit (a line as cmd reads it is not read). Missing: a reading as cmd pairs its quotes (an apostrophe is a plain character there) for the text that a line hands to `cmd /c`, with lines of the guard's table for it"
+ },
+ {
+  "file": "round8",
+  "candidate": "The loop counts its time on two clocks and names the bound that ended a session (kit-native)",
+  "status": "finished",
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (`save`, `used`, `check`, `session`, `train`); references/loop.md (one sentence); tests/test_loop.py (one check of four cases, clocks moved by hand). Commits cb7ee1b, 053cd8c. Read by two fresh agents, the first's finding fixed. Not yet run on GitHub's machines"
  }
 ]

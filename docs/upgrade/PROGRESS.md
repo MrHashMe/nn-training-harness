@@ -37,7 +37,12 @@ where all six jobs pass (the entry after it). On the user's "Push main" of that 
 them as well, and all six jobs pass there ("`main` takes the reading's fixes" below).
 "The second reading of the fixes" below is the work on the user's "Read again first" of 17 November: an
 independent reader went through the fix `4e2bec4` and found that it brought a regression; that and three
-older gaps of the same kind, found beside it, are fixed in two local commits. Nothing of it is pushed.
+older gaps of the same kind, found beside it, are fixed in three commits. On the user's "Push test
+branch" of that day they are on `test/round-8`, where five of GitHub's six jobs pass (the entry after
+it). The sixth showed a defect of the loop's count of time. It is repaired in two local commits, the
+second after an independent reading found a regression in the first, and a stand-in of the tests is
+mended in a third; none is pushed, and `main` is as it was. The same entry says what the clock of this
+machine's WSL does, which is measured now.
 
 # Upgrade progress
 
@@ -1895,7 +1900,98 @@ this session does not do (the safeguard stop of 15 November).
 
 Next, each a separate word of the user's: a push of the test branch and of `main`; a reading of the new
 fixes; the reading for `cmd /c`; an eighth installer run on the real install; whether the test branches
-are deleted.
+are deleted. (Added later that day: pushed to the test branch on the user's word; the next entry.)
+
+## The second reading's fixes on the test branch (17 November): five of six jobs pass, a defect of the loop
+
+The user's word, 17 November: "Push test branch", to the question whether the local commits go to the
+public test branch. Before the answer I had said what a yes covers: `test/round-8` moves from `18bb966`
+to `36a4857` as a fast-forward with no force, and I read GitHub's six jobs on it. So what the failed job
+led to is local, and its push needs a further word. Not covered either: `main`, the real install,
+deleting a branch.
+
+Done:
+- Fetched: the public `main` unchanged at `7462b7b`, `test/round-8` at `18bb966`; this branch a
+  fast-forward of both. The commits searched for private details (none), all with the no-reply address
+  and UTC dates.
+- Pushed: `test/round-8` from `18bb966` to `36a4857`. Six commits, where I had said five: one that `main`
+  already had (`7462b7b`), and `cd01579`, `63bfdf6`, `25aa674`, `5dcd2ec` and `36a4857`. `main` was not
+  touched.
+- GitHub's workflow run 44119390145 on `36a4857` (15:52 to 16:17 UTC): five jobs pass, each with the 35
+  checks that the three guard fixes added: 1,627 on ubuntu-latest (Python 3.15.2), 1,616 on Ubuntu 24.04
+  (3.8.18), 1,613 and 1,612 on Windows (3.15.2 and 3.8.10), 1,615 on macOS under the system's 3.9.6. The
+  sixth, macOS under 3.14.10, passes 1,621 and fails one, in `tests/test_loop.py`.
+- The failed check: a campaign whose wall-clock limit ended an agent session stopped with "the agent
+  session hung" and exit code 1. The cause: the loop rounded its count of the time used before it asked
+  whether the limit was reached. Every version that has the limit has it, `main` included. It costs a
+  wrong stop reason and exit code, and the confirmation of a kept change waits for a resume; nothing
+  runs longer and nothing is lost.
+- A correction of my records of 16 and 17 November, which put this check's failures in WSL down to the
+  clock there alone: in WSL the clock was the cause (each log shows the hang's bound, not the limit's),
+  and the check also fails on a sound clock.
+- Repaired in `cb7ee1b` and `053cd8c`, local: a session or a training run that the limit ends stops the
+  campaign for the limit, whatever a second count says, and the loop counts its time on the wall clock
+  and on the monotonic clock, the larger count holding, as `nnremote.py` counts a job's. One new check
+  of four cases, which moves the loop's clocks by hand. The cost: where the monotonic clock runs fast,
+  as in this machine's WSL, a wall-clock limit, the bound of a session that hangs and the wait for a
+  run that does not end come early by as much.
+- `463275d`, local: `tests/fake_hf.py`, the tests' stand-in for the provider, times a job on the
+  monotonic clock. Under WSL's clock it had ended jobs early, which failed one check of
+  `tests/test_remote.py` in 8 of the 29 WSL logs kept since 15 November. No check asks less.
+- What the clock of this machine's WSL does, measured with nothing changed: every 5 s it is stepped
+  forward by 8.6 s and about 0.2 s later back by 9.1 s (Hyper-V's time sync sets it to the Windows time,
+  which was 9.1 s ahead of internet time, and WSL's `systemd-timesyncd` sets it back); and its clocks run
+  10 % fast, because the kernel's tick length stands at 11,000 µs (`adjtimex`, read only), set by I do
+  not know what. Ubuntu's documentation for WSL describes the conflict of the two services and advises
+  disabling `systemd-timesyncd`. Mending either is the user's: configuration outside this folder.
+- Checks that this clock fails at random, beside the two above, all in `tests/test_kit.py`: "a run past
+  its deadline is killed after kill_after_s ..." (a deadline of 2 s against a step of 8.6 s), "session
+  hook injects status after compaction" and "stalled alert raised" (a stall threshold of 3 s); and in
+  `tests/test_review_fixes.py` "study runner reported running while trials log elsewhere" (the same
+  threshold; seen once, in the full run of the repair). Left as they are: these times cross processes,
+  which share only the time of day (a rejected ledger row).
+- An independent reading of `cb7ee1b` and `463275d`, before any push: a fresh agent on Opus 5.5 with
+  read access only; it ran no test and was not stopped by a safeguard. It found a regression of
+  `cb7ee1b`: a session in flight was timed on the monotonic clock alone, so a machine that sleeps during
+  a session would not have had it ended at the limit on waking, which the loop of `36a4857` did. Fixed in
+  `053cd8c`: a session is ended by the campaign's own count at each look, as a run is. Its other points:
+  a sentence of `references/loop.md` that said more than the code (reworded); a run that the limit ends
+  called "stopped from outside the loop" where the wall clock is set back meanwhile, older than my
+  repair (fixed in the same commit, with the first check of that path); a campaign that a step of the
+  clock ends a few seconds early, and bounds that follow a clock which runs fast in that WSL (both
+  accepted and stated); the new check narrow (two cases added). The fourth fix in a row of mine with a
+  gap that a second reading found.
+- So the change that became `053cd8c` was read before its commit by a second fresh agent of the same
+  kind: nothing wrong found; it ran nothing either. It pointed to one more change since `cb7ee1b`, now
+  in REPORT.md's list: a session on a machine that is suspended for longer than `agent_timeout_s` is not
+  called hung on waking where the monotonic clock stops meanwhile (Linux and macOS, by PEP 418).
+- Tests on `053cd8c`, in a clone, eight test files under three interpreters per platform. Windows:
+  all pass (1,625, 1,612 and 1,613 checks). WSL: all pass under Python 3.12 and 3.15 (1,640 and 1,628
+  checks); under 3.8, 1,626 pass and one fails: "study runner reported running while trials log
+  elsewhere (got stalled)" of `tests/test_review_fixes.py`, one status call that reads a heartbeat's
+  age against 3 s, in code that the repair does not touch. The clock was set back 155.8 s within
+  1,711 s. The file's first failure in 93 kept WSL logs. Not rerun.
+- Tests before that. `463275d` in a clone: WSL passed under all three interpreters (1,640, 1,627 and
+  1,628); Windows passed under Python 3.11 (1,625), and I stopped the run before the two clean
+  interpreters, the commit being about to be followed by the fix. The fix before its commit:
+  `tests/test_loop.py` passed in WSL (269) and on Windows (259); `tests/test_kit.py` in WSL had 981 of
+  982, the failure "stalled alert raised". The new test file against the loop of `cb7ee1b`, in WSL:
+  the new check fails in its third and fourth case, with the values worked out beforehand, and the
+  other 268 pass.
+- Ledger: 1,703 rows, four more, all in the note `round8`: Adopt 529 (386 finished, 143 unfinished),
+  Trial 237, Assess 328, Hold 331, Reject 278.
+- REPORT.md has the section "The second reading's fixes on the test branch" and point 27 of "Read this
+  first". This entry's commit is local.
+
+Not done: a push of the repair, so the test branch's last run stays red; `main`, which keeps the
+regression of `4e2bec4` and the loop's defect; anything on WSL's clock; a run of the repair on GitHub's
+machines; a machine put to sleep during a session, which no test here does.
+
+Next, each a separate word of the user's: a push of the repair to `test/round-8`, asked with what a yes
+covers (that push, the reading of the jobs, and pushes there for a repair that a failed job calls for
+and for the record of the result); then `main`; WSL's clock; a reading of the three guard fixes; the
+reading for `cmd /c`; an eighth installer run on the real install; whether the test branches are
+deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -1942,7 +2038,9 @@ are deleted.
   (`d857607`, `9d6f876`, `827c35c`). Not tried: a clock that is set forward, and a Linux machine other
   than this WSL. Left as they are, and not tried under a clock that is set: the age of a heartbeat and the
   guard's five seconds for its own searches, which both read the wall clock; what else in the kit reads it
-  was not looked at.
+  was not looked at. (Added on 17 November: that WSL's clock is set forward too, by 8.6 s every five
+  seconds, and the age of a heartbeat and a run's deadline are among the checks that it fails at random:
+  "The second reading's fixes on the test branch" above.)
 - Round 5, not opened (usage limit), seven Assess rows of the note `round5`: further RL objectives, parity
   between trainer and generator, distillation and preference objectives, adapter options, further
   optimizers, low-precision and kernel items, architectures. The papers behind the new reference text were
@@ -2176,9 +2274,17 @@ are deleted.
   above. The word covers a reader with read access only, the fixes, the tests and local commits. It is
   not a word for a push or for anything on the real install. (The question before it, whether the fixes
   of the second reading are read, was answered on 16 November: "Read the fixes", done, its entry above.)
-- Open, from round 8: whether the two local fixes of 17 November are pushed, first to `test/round-8` and
-  then to `main`, which holds a regression until then; whether they get a reading of their own; whether
-  the reading of text handed to `cmd /c` is built; whether the public branch `test/round-8` is deleted;
+- Answered on 17 November ("Push test branch"), from the second reading of the fixes: the push of the
+  local commits to `test/round-8`. "The second reading's fixes on the test branch" above. The word covers
+  that push and the reading of GitHub's jobs, as I had said before it. It is not a word for a push of
+  what the failed job led to, for `main`, a deletion or anything on the real install.
+- Open, from round 8: whether the loop's repair and the stand-in's change (`cb7ee1b`, `463275d`,
+  `053cd8c`) are pushed to `test/round-8`, and whether `main` then takes them with the three guard fixes
+  of 17 November: it holds a regression until then; whether the clock of this machine's WSL is mended,
+  which is configuration outside this folder (the remedies are in REPORT.md, "What needs your decision"
+  of the last section before section 1); whether the three guard fixes get a reading of their own;
+  whether the reading of text handed to `cmd /c` is built; whether the public branch `test/round-8` is
+  deleted;
   whether the installer runs on the real install an eighth time; whether agent sessions may be spent on
   a comparison of the worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or
   Antigravity CLI is installed for a port.
@@ -2195,6 +2301,14 @@ are deleted.
   and by about two seconds (my reading: the virtual machine corrects its clock a few minutes after it
   starts). Two faults in `nnremote` showed only there. Read a failure in WSL's first interpreter with that in
   mind, and do not dismiss it: both were real.
+  (Added on 17 November: measured since, and that reading was wrong. The clock is stepped forward by 8.6 s
+  and back by 9.1 s every five seconds, and it runs 10 % fast; only the raw clock,
+  `CLOCK_MONOTONIC_RAW`, is right there. "The second reading's fixes on the test branch" above. To
+  measure again, reading only, with the scripts in `%TEMP%\nnkit-upgrade\clock\`, each run with WSL's
+  `python3`: `clk3.py SECONDS` samples the wall clock against the monotonic clock and prints the steps;
+  `clk4.py SECONDS` reads the kernel's tick length and compares the raw clock with the monotonic one;
+  `clk5.py` times limits of 5 s on each clock. And read the failing line before the clock is blamed: one
+  check that failed there by the clock also failed on GitHub's Mac by a defect of the loop.)
 - Fine-tuning task: the system Python cannot import Transformers (see the questions above), so its runs use a
   temporary environment (Python 3.11, PyTorch from the system, Transformers 5.22.2, PEFT 0.21.2). Windows
   clears `%TEMP%`, and the one under `%TEMP%\nnkit-upgrade\ft-venv` had lost files by 13 Nov. To build it

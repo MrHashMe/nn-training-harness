@@ -1601,6 +1601,23 @@ def main():
         # document that nothing on the line closes (the guard may have read its closing word otherwise than the shell)
         ("Bash", {"command": "cat <<EOF\ndon't and can't, it's\nEOF\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
         ("Bash", {"command": "cat <<EOF\ndon't\nEOF \ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        # a backslash in front of a quote in a document: the rules, for which a backslash is a folder separator, pair
+        # that quote, while the reading above kept it as a part of a quoted text, so the commands up to the next quote
+        # were hidden (the first two were None from the reading of the fixes until that fix was read itself; the fix
+        # before it asked). Such a document loses all its quote characters again; a harmless one still passes
+        ("Bash", {"command": "python - <<'EOF'\nprint(\"a \\\" b\")\nEOF\ncp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("Bash", {"command": "python - <<'EOF'\nprint(\"a \\\" b\")\nEOF\necho x > eval/metrics.py; echo \"end\""}, "ask"),
+        ("Bash", {"command": "python - <<'EOF'\nprint(\"a \\\" b\")\nEOF\necho \"end\""}, None),
+        ("Bash", {"command": "python - <<'EOF'\nprint(\"a \\\" b -> c\")\nEOF"}, None),
+        # the same with no document: a POSIX shell reads \" inside "..." as a quote that ends nothing (the first was
+        # None in every version: the rules ended the string there and hid the commands up to the next quote)
+        ("Bash", {"command": "echo \"a \\\" b\"; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("Bash", {"command": "echo \"a \\\" b\"; cp train.py out.py; echo \"end\""}, None),
+        ("Bash", {"command": "python -c \"print(\\\"x\\\")\""}, None),
+        ("Bash", {"command": "git commit -m \"say \\\"hi\\\" > all\""}, None),
+        # the closing word behind a backslash, and one quoted in part behind tabs (no row took these forms)
+        ("Bash", {"command": "cat <<\\EOF\ndon't\nEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),
+        ("Bash", {"command": "cat <<-'E'OF\n\tdon't\n\tEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),
         # forms that no row took before: a here-string in double quotes, two documents opened on one line, and
         # the closing word '' (an empty line ends that document)
         ("PowerShell", {"command": "@\"\nsay \"hi\n\"@ | Out-Null; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
@@ -1634,6 +1651,18 @@ def main():
         ("Bash", {"command": "case x in x) popd;; esac; echo x > proj/eval/metrics.py"}, "ask"),
         ("Bash", {"command": ">/dev/null cd; echo x > proj/eval/metrics.py"}, "ask"),
         ("Bash", {"command": "echo cd data > notes.txt; python eval/metrics.py > score.json"}, "ask"),
+        # forms of these rules that no row took: zsh's nocorrect, chdir, cd -L, a redirection that stands first before
+        # a cd with a folder, and pushd or Set-Location with a word behind it as arguments
+        ("Bash", {"command": "nocorrect cd ..; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "chdir ..; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cd -L ..; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "2>err cd ..; echo x > proj/eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "grep -c pushd eval/metrics.py > n.txt"}, "ask"),
+        ("PowerShell", {"command": "Select-String Set-Location eval/metrics.py > n.txt"}, "ask"),
+        # the cost, put exactly: an argument named sl or cd passes as the last word before a redirection or the line's
+        # end (the row with --model sl above); with a word behind it, in a comment too, the line is asked about
+        ("Bash", {"command": "grep -c sl eval/metrics.py > n.txt"}, "ask"),
+        ("Bash", {"command": "python eval/metrics.py > o.txt # cd later"}, "ask"),
         # and a harmless line of each kind passes
         ("Bash", {"command": "case x in x) cd sub;; esac; echo x > out.txt"}, None),
         ("Bash", {"command": "time -p cd sub; echo x > out.txt"}, None),

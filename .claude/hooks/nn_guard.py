@@ -157,8 +157,10 @@ GIT_DESTRUCTIVE = re.compile(
     r"push\b[^;&|]*(?:--force\b|--force-with-lease\b|\s-f\b)|branch\s+-D\b)")
 # a forced clean that takes along what git ignores: data, run folders and checkpoints are usually ignored, so this
 # is more than an undo of the session's own work (see ROUTINE). Its -x is read on the command's own line and on the
-# lines that continue it (a \, ` or ^ before the line's end): chmod -x on the next line is no option of the clean
-GIT_CLEAN_IGNORED = re.compile(_GIT_CLEAN + r"(?=(?:[^;&|\n]|(?<=[\\`^])\r?\n)*?(?<=\s)-[a-zA-Z]*[xX])")
+# lines that continue it: chmod -x on the next line is no option of the clean. A ` or ^ before the line's end
+# continues it here; a backslash does in the reading that joins such lines (readings), and none stands in the form
+# that the rules read. A backslash before \r\n continues a line in no shell
+GIT_CLEAN_IGNORED = re.compile(_GIT_CLEAN + r"(?=(?:[^;&|\n]|(?<=[`^])\r?\n)*?(?<=\s)-[a-zA-Z]*[xX])")
 GIT_PUSH = re.compile(r"\bgit\s+push\b")
 GIT_TREE_CHANGE = re.compile(
     r"\bgit\s+(?:checkout|switch|pull|merge|rebase|am|cherry-pick|revert|stash(?!\s+(?:list|show)\b))\b")
@@ -1086,11 +1088,14 @@ def unquoted_bodies(text: str) -> str:
     EOF <newline> cp x.py eval/metrics.py; echo 'done'). Quotes that pair inside the document stay, so that a program
     in it is read as on the line as it came: print('a -> b') holds no redirection. PowerShell's here-string loses
     all of them, because its text then stands between the quotes of its own @' and '@. So does a document that
-    nothing on the line closes: a closing word that the guard reads otherwise than the shell looks the same.
+    nothing on the line closes: a closing word that the guard reads otherwise than the shell looks the same. And so
+    does a document with a backslash in front of a quote (print("a \\" b")): the rules, for which a backslash is a
+    folder separator, pair that quote, and LONE_QUOTE and the readings of a POSIX shell do not, so that no pairing
+    of such a text holds for all of them.
     Like every reading this may name more than the shell would: a << in quoted text counts as a document's start,
     and then a quote left over in the lines below it is taken out.
-    shortcut: a closing word that starts with a digit or a sign (<<1, <<+x) is not read as one, so such a document
-    keeps its quotes; that takes the shell's own reading of words"""
+    shortcut: a closing word that starts with anything but a letter, _, a quote or a backslash (<<1, <<+x, <<$x) is
+    not read as one, so such a document keeps its quotes; that takes the shell's own reading of words"""
     lines, ends, first = text.split("\n"), [], 0
     for k, ln in enumerate(lines + [None]):  # None: the text's end, which closes a document left open
         if not ends:  # what closes each document that this line opens, in their order: the word alone, behind tabs
@@ -1102,8 +1107,8 @@ def unquoted_bodies(text: str) -> str:
         elif ln is None or re.match(ends[0][0], ln):
             if first < k:
                 body = "\n".join(lines[first:k])
-                lines[first:k] = (re.sub(r"['\"]", "", body) if ends[0][1] or ln is None else LONE_QUOTE.sub(
-                    lambda q: "" if q.group(1) else q.group(), body)).split("\n")
+                lines[first:k] = (re.sub(r"['\"]", "", body) if ends[0][1] or ln is None or re.search(r"\\['\"]", body)
+                                  else LONE_QUOTE.sub(lambda q: "" if q.group(1) else q.group(), body)).split("\n")
             del ends[0]
             first = k + 1
     return "\n".join(lines)
@@ -1113,7 +1118,8 @@ def readings(cmd: str):
     """The line as another shell reads it, where that is another text, and whether a word of it was too long to
     write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell leaves
     its comments out (read here both ways), takes a backslash
-    off the character behind it (te\\st is test, also across the end of a line), reads $'te\\x73t' and $"test" as
+    off the character behind it (te\\st is test, also across the end of a line), reads \\" inside "..." as a quote
+    that ends nothing (echo "a \\" b"; the rules would end the string there), reads $'te\\x73t' and $"test" as
     test, may put the word of ${name:-word} in the name's place, and writes a word with {a,b} out; zsh and ksh have
     patterns of their own, which wild() writes as plain
     wildcards in a reading of its own; PowerShell and cmd take their own escape characters off (te`st, te^st).
@@ -1134,8 +1140,12 @@ def readings(cmd: str):
 
     def part(m):
         x = m.group(1)
-        if x is None or not re.match(r"[\w./:@%+=~^-]", x):  # a quoted string, or a character that stays quoted
-            return hold(m.group() if x is None else "" if x == "\n" else shlex.quote(x))
+        if x is None:  # a quoted string. In "..." an escaped quote ends nothing, and the rules, for which a backslash
+            # is a folder separator, would end the string there: written as the shell's own splice, "a "'"'" b"
+            return hold(re.sub(r"\\(.)", lambda e: "\"'\"'\"" if e.group(1) == '"' else e.group(), m.group(), flags=re.S)
+                        if m.group()[0] == '"' else m.group())
+        if not re.match(r"[\w./:@%+=~^-]", x):  # a character that stays quoted
+            return hold("" if x == "\n" else shlex.quote(x))
         return x
 
     def written_out(m):

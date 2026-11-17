@@ -47,9 +47,10 @@ passing on each (the two sections after it). On your "Read again first" of 17 No
 found a regression in it, and I found three older gaps of the same kind beside it, all fixed in local
 commits ("The second reading of the fixes"). On your "Push test branch" of that day they went to the test
 branch, where five of GitHub's six jobs pass. The sixth showed a defect of the loop's count of time, which
-is repaired in a local commit and not pushed, and the same work measured what the clock of WSL on this
-machine does ("The second reading's fixes on the test branch", the last section before "1. What changed
-and why").
+is repaired in two commits, and the same work measured what the clock of WSL on this machine does ("The
+second reading's fixes on the test branch"). On your third "Push test branch" of that day the repair went
+to the test branch, where all six jobs pass; `main` does not have it ("The loop's repair on the test
+branch", the last section before "1. What changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -381,7 +382,17 @@ Decision record: `docs/upgrade/LEDGER.md`.
     under three interpreters. In WSL they pass under two; under the third, one check failed that the
     repair does not touch, of the kind that WSL's clock fails, and I did not rerun it. Open: none of
     the three commits is pushed, so the test branch's run stays red, and `main` has neither the guard
-    fixes nor the repair: it keeps the regression of point 26 until you say "push main".
+    fixes nor the repair: it keeps the regression of point 26 until you say "push main". (Added later
+    that day: pushed on your word, and all six jobs pass; point 28.)
+28. **The loop's repair passes on GitHub's machines** (17 November; "The loop's repair on the test
+    branch"). On your "Push test branch" the branch `test/round-8` moved from `36a4857` to `8ce7ed0`,
+    and all six of GitHub's jobs pass there. What shows the repair is the loop's new check, which sets
+    the loop's clocks by hand, does not depend on chance, fails on the loop before the repair and
+    passes on all six machines. The check that had failed passes too, but it had failed by chance, and
+    the Mac job ran on another image and interpreter this time, so that pass alone shows little. Open:
+    `main` has neither the three guard fixes of point 26 nor the repair. It keeps that point's
+    regression and the loop's defect until you say "push main". The clock of this machine's WSL is as
+    it was, and no machine was put to sleep during a session.
 
 ## Round 2 (12 November 2026)
 
@@ -5862,7 +5873,9 @@ In short:
 10. **Not pushed, and `main` is as it was.** The test branch's run stays red until the repair is pushed.
     `main` has neither the three guard fixes nor the repair: it keeps the regression of `4e2bec4`, and
     the loop's defect, which it always had. Your real install has rounds 6 and 7: the loop's defect and
-    the three older gaps of the guard, and not the regression.
+    the three older gaps of the guard, and not the regression. (Added later that day: the repair is
+    pushed to the test branch on your word, and all six jobs pass there; the next section. `main` and
+    your real install are as this point says.)
 
 ### The push, and GitHub's run
 
@@ -6149,6 +6162,7 @@ Assess 328, Hold 331, Reject 278.
   head, as a fast-forward with no force, and GitHub's six jobs would run the repair. This time I take a
   yes to cover that push, the reading of the jobs, and further pushes to that branch for a repair that a
   failed job calls for and for the records of the result. Not `main`, and nothing on your real install.
+  (Added later that day: answered, "Push test branch"; the next section.)
 - **`main`**, after that: it keeps the regression of `4e2bec4` until it takes the guard fixes.
 - **WSL's clock on this machine.** Not mine to change: it is configuration outside this folder, and
   none of this is tried. (a) In WSL, `sudo systemctl disable --now systemd-timesyncd.service` leaves
@@ -6170,6 +6184,88 @@ this machine; the logs of the WSL test runs of 14 to 17 November, kept outside t
 documentation for WSL, page "Time synchronization for Ubuntu on WSL" (ubuntu.com/wsl/docs), read on
 17 November 2026; PEP 418, "Add monotonic time, performance counter, and process time functions"
 (peps.python.org/pep-0418), its table of monotonic clocks, read on 17 November 2026.
+
+## The loop's repair on the test branch (17 November 2026): all six jobs pass
+
+Your word: "Push test branch", to the question whether the four local commits go to the public test
+branch. Before you answered I had said what a yes covers: `test/round-8` moves from `36a4857` to
+`8ce7ed0` as a fast-forward with no force; I read GitHub's six jobs on it; and I push to that branch
+again for a repair that a failed job calls for and for the record of the result. Not covered: `main`,
+your real install, deleting a branch.
+
+In short:
+
+1. **All six of GitHub's jobs pass on `8ce7ed0`**, each with one check more than on `36a4857`: the
+   loop's new check.
+2. **What shows the repair is that new check, and less the one that had failed.** The new check sets
+   the loop's clocks by hand, so it asks the same of every machine and does not depend on chance. It
+   fails on the loop before the repair (shown in WSL) and passes on GitHub's Linux, macOS and Windows
+   machines. The check that failed on `36a4857` passes too. It had failed by chance, and the Mac job
+   ran on another image and interpreter this time, so that pass alone shows little.
+3. **No repair was called for.** What follows the run is this record alone, pushed to the same branch
+   as your word covers. That push starts one more run of the six jobs, which this record cannot hold.
+4. **`main` is as it was**, at `7462b7b`: it has neither the three guard fixes of 17 November nor the
+   loop's repair, so it keeps the regression of `4e2bec4` and the loop's defect. Your real install is
+   untouched.
+
+### The push, and GitHub's run
+
+- Before the push: fetched; the public `main` at `7462b7b` and the test branch at `36a4857`, as I had
+  left them; this branch a fast-forward of both, four commits ahead of the test branch; the four
+  commits searched for private details (none), all with the no-reply address and UTC dates.
+- The push, at 19:24 UTC: `test/round-8` moved from `36a4857` to `8ce7ed0`. Four commits: `cb7ee1b` and
+  `053cd8c` (the loop's repair), `463275d` (the stand-in of the remote tests) and `8ce7ed0` (their
+  record). `main` was not touched.
+- GitHub's workflow run 44158183103 on `8ce7ed0` (19:24 to 19:41 UTC): six of six jobs pass.
+
+| Job | Interpreter | Checks passed | Failed | Skip lines |
+|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 1,628 | 0 | 2 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 1,617 | 0 | 3 |
+| windows-latest, Python 3.x | 3.15.2 | 1,614 | 0 | 5 |
+| windows-latest, Python 3.8 | 3.8.10 | 1,613 | 0 | 5 |
+| macos-latest, Python 3.x | 3.15.2 | 1,623 | 0 | 3 |
+| macos-latest, Python system | 3.9.6 | 1,616 | 0 | 5 |
+
+Every job ran one check more than on `36a4857`, in `tests/test_loop.py`. The images: ubuntu-26.04
+20261111.196.1, ubuntu-24.04 20261111.127.1, windows-2025-vs2026 20261103.298.1 and, for both macOS
+jobs, macos-26-arm64 20261112.0504.1. The checks that put generated lines to real shells ran in bash
+3.2.57 and zsh 5.9 on macOS, bash 5.2.21 and 5.3.9 on Ubuntu, and Git Bash 5.3.15 and PowerShell 7.6.9
+on Windows.
+
+### What the run shows of the repair, and what it does not
+
+Read in each of the six logs:
+
+- **"a session that the wall-clock limit ends is not called hung ..."**, the new check of four cases,
+  passes in all six. It gives the loop two clocks that the test moves, so the count rounds down, the
+  wall clock is set back, a machine sleeps and a clock runs ahead in the same way on every machine.
+  The loop of `36a4857` fails its first two cases and that of `cb7ee1b` its other two ("Tests" of the
+  section before this one; both shown in WSL). This is the run's evidence for the repair.
+- **"the wall-clock limit also ends an agent session in flight, and is named as the reason"**, which
+  failed on `36a4857` under macOS, passes in all six. It failed by chance: a kill that returns within
+  0.05 s and a rounding that goes down. So one pass shows little. And the job that failed has not run
+  again as it was: "macos-latest, Python 3.x" was the image 20261102.0473.1 with Python 3.14.10 then,
+  and is 20261112.0504.1 with Python 3.15.2 now.
+- **"a job the provider ends at its time limit is not resumed"**, whose stand-in `463275d` mended,
+  passes in all six, as it did on GitHub's machines before: its fault showed under WSL's clock only.
+
+Not shown by this run: a machine put to sleep during a session, which rests on PEP 418 and on the new
+check's third case; a campaign with a real agent; anything about the clock of this machine's WSL, where
+one check that the repair does not touch failed in the last local run ("Tests" of the section before).
+
+### What needs your decision
+
+- **`main`.** "Push main" would move it from `7462b7b` to the head of `test/round-8`, as a fast-forward
+  with no force, and GitHub's six jobs would run there. I would take a yes to cover that push, the
+  reading of the jobs, and the push of the record of the result to `main` and to the test branch. Not
+  your real install, and no deletion.
+- **WSL's clock on this machine**: as in the section before this one, (a) to (c). Nothing is changed.
+- Unchanged: a reading of the three guard fixes by someone other than their author; the reading of text
+  handed to `cmd /c`; an eighth installer run on your real install; the two public test branches.
+
+Sources: GitHub Actions, workflow run 44158183103 of the public repository, read on 17 November 2026
+from the run's list of jobs and from each job's log.
 
 ## 1. What changed and why
 

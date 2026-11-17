@@ -207,6 +207,6 @@
   "file": "round8",
   "candidate": "The loop counts its time on two clocks and names the bound that ended a session (kit-native)",
   "status": "finished",
-  "where": ".claude/skills/nn-training/scripts/nnloop.py (`save`, `used`, `check`, `session`, `train`); references/loop.md (one sentence); tests/test_loop.py (one check of four cases, clocks moved by hand). Commits cb7ee1b, 053cd8c. Read by two fresh agents, the first's finding fixed. Not yet run on GitHub's machines"
+  "where": ".claude/skills/nn-training/scripts/nnloop.py (`save`, `used`, `check`, `session`, `train`); references/loop.md (one sentence); tests/test_loop.py (one check of four cases, clocks moved by hand). Commits cb7ee1b, 053cd8c. Read by two fresh agents, the first's finding fixed. Passes in GitHub's six jobs"
  }
 ]

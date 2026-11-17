@@ -1210,9 +1210,10 @@ def campaign_b(tmp, proj, exe):
     # The same with the loop's clocks moved by hand, which no machine does twice alike. 7.52 s are left of the limit
     # when the session starts and a poll takes 0.26 s, so the session is ended at 7.54 s, and the count of the time
     # used is then rounded to 0.1 s: to below the limit. And once more with a wall clock that was set back 5 s before
-    # the session, as WSL's is on some machines.
+    # the session, as WSL's is on some machines; and with a machine that sleeps for an hour two seconds into the
+    # session, which the wall clock alone counts.
     class Clocks:
-        wall, mono = 1e9, 500.0
+        wall, mono, nap = 1e9, 500.0, 0
 
         def time(self):
             return self.wall
@@ -1222,17 +1223,23 @@ def campaign_b(tmp, proj, exe):
 
         def sleep(self, s):
             self.wall, self.mono = self.wall + s + 0.01, self.mono + s + 0.01
+            if self.nap and self.mono >= 502:
+                self.wall, self.nap = self.wall + self.nap, 0
 
-    def ended(back):
+    def campaign():
+        C = nnloop.Campaign(proj, nnloop.expctl.load_config(proj), "zz", argparse.Namespace())
+        C.dir, C.exe = tmp / "clocks", exe
+        C.st = {"agent": "claude", "limits": {"hours": 107.52 / 3600}, "conditions": {"gpus": C.gpus},
+                "counters": {"runs": 0, "elapsed_s": 100.0, "gpu_s": 0.0, "usd": 0.0, "tokens": 0, "sessions": 0}}
+        return C
+
+    def ended(back, nap=0):
         plan(tmp, [{"sleep": 60}])
         clocks, old = Clocks(), os.environ.get("FAKE_PLAN")
         nnloop.time, os.environ["FAKE_PLAN"] = clocks, str(tmp / "plan.json")
         try:
-            C = nnloop.Campaign(proj, nnloop.expctl.load_config(proj), "zz", argparse.Namespace())
-            C.dir, C.wt, C.exe = tmp / "clocks", tmp, exe
-            C.st = {"agent": "claude", "limits": {"hours": 107.52 / 3600},
-                    "counters": {"runs": 0, "elapsed_s": 100.0, "gpu_s": 0.0, "usd": 0.0, "tokens": 0, "sessions": 0}}
-            clocks.wall -= back
+            C = campaign()
+            C.wt, clocks.wall, clocks.nap = tmp, clocks.wall - back, nap
             try:
                 C.session("worker", "wait", C.dir)
             except nnloop.Stop as e:
@@ -1241,11 +1248,37 @@ def campaign_b(tmp, proj, exe):
             nnloop.time = time
             os.environ.pop("FAKE_PLAN") if old is None else os.environ.update(FAKE_PLAN=old)
 
-    got = [ended(0), ended(5)]
-    check(got == [("limit reached: hours", 7.54, 107.5)] * 2,
+    def run_ended():  # a run in flight: the wall clock is 10 s ahead when the loop looks, and is set right during the stop
+        clocks, run = Clocks(), tmp / "clocks" / "run"
+        nnloop.time = clocks
+        try:
+            C = campaign()
+            C.wt, C.verify = proj, lambda **kw: None
+
+            def expctl(verb, *a, **kw):
+                if verb == "stop":  # the run obeys, as its exit record says
+                    run.mkdir(exist_ok=True)
+                    (run / "exit.json").write_text('{"returncode": 0, "stopped_for": "stop request"}', encoding="utf-8")
+                clocks.wall += 10 if verb == "launch" else -10
+                return argparse.Namespace(stderr="", stdout=json.dumps(
+                    {"ok": True, "run_id": "r", "run_dir": str(run), "supervisor_pid": 0}))
+
+            C.expctl = expctl
+            try:
+                return C.train(1, "x")
+            except nnloop.Stop as e:
+                return str(e)[:20]
+        finally:
+            nnloop.time = time
+
+    got = [ended(0), ended(5), ended(0, 3600), run_ended()]
+    check(got == [("limit reached: hours", 7.54, 107.5)] * 2 + [("limit reached: hours", 2.08, 3702.1), "limit reached: hours"],
           "a session that the wall-clock limit ends is not called hung because the count of the time used was rounded to "
           "below the limit, nor because the wall clock was set back: the limit ends it at its moment, is the reason, and "
-          f"the time is counted in full (was: a hang, and with the clock set back after the hang's 10 s) ({got})")
+          "the time is counted in full (was: a hang, and with the clock set back after the hang's 10 s); time that only "
+          "the wall clock counts, a machine asleep, ends a session at the next look (was, for one commit: when the "
+          "monotonic clock had counted as much); and a run that the limit ends is not called stopped from outside the "
+          f"loop because the wall clock was set back meanwhile ({got})")
 
     plan(tmp, [edit("SLEEP = 0", "SLEEP = 30", title="slow")])
     before = {d.name for d in (proj / "runs").glob("*")}

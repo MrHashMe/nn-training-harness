@@ -606,8 +606,9 @@ class Campaign:
 
     def save(self):
         # shortcut: a wall clock that is stepped forward and back again (two time services at odds: seen in WSL, 9 s
-        # for 0.2 s of every 5 s) adds the step at each save that meets it, which ends a campaign early by as much;
-        # count from the process's start instead of from the last save when that matters
+        # for 0.2 s of every 5 s) adds the step at each save that meets it, and a look at a session or a run in flight
+        # that meets it finds the limit reached when less than the step is left of it: either ends a campaign early
+        # by as much; count from the process's start instead of from the last save when that matters
         t, m, c = time.time(), time.monotonic(), self.st["counters"]
         c["elapsed_s"] = round(c["elapsed_s"] + max(t - self.mark, m - self.tick), 1)
         self.mark, self.tick = t, m
@@ -633,9 +634,11 @@ class Campaign:
 
     def check(self, runs=0, hours_up=False):
         """Raise Stop at the first limit reached, or when a stop was requested. runs: training runs the next step
-        needs, so that no session is spent on an iteration whose seed panel no longer fits. hours_up: a session was
-        ended at the wall-clock limit, which is reached then, whatever the count says that save() has just rounded
-        (was: rounded down by up to 0.05 s it said "not yet", and the stop was called a hang)."""
+        needs, so that no session is spent on an iteration whose seed panel no longer fits. hours_up: the caller has
+        just ended a session or a run because the count of the time used had reached the wall-clock limit. The limit
+        is the reason then, whatever a second count says: save() may have rounded it down by up to 0.05 s, and a wall
+        clock that was ahead may have been set back since (was: such a session's end was called a hang, such a
+        run's a stop from outside the loop)."""
         if (self.dir / "stop.request").exists():
             raise Stop("stop requested")
         used = self.used()
@@ -965,12 +968,13 @@ class Campaign:
             while not (run_dir / "exit.json").exists() or supervised():
                 late = time.monotonic() > end
                 lim = self.cap("hours")
-                if late or (self.dir / "stop.request").exists() or (lim is not None and self.used()["hours"] >= lim):
+                up = lim is not None and self.used()["hours"] >= lim
+                if late or (self.dir / "stop.request").exists() or up:
                     # the harness stops its own run, so no approval is involved: a request first, a kill after 20 s
                     self.expctl("stop", rid, "--kill-after", "20s", "--wait", "30s")
                     if late:
                         return "crash", "the run did not end", rid
-                    self.check()
+                    self.check(hours_up=up)
                 time.sleep(0.25)
         finally:
             c["gpu_s"] += (time.monotonic() - t0) * max(1, len(self.gpus))
@@ -1017,10 +1021,8 @@ class Campaign:
             write_text(self.wt / PROMPT_FILE, prompt)
         before = self.main_status()
         kw = {"creationflags": 0x08000200} if os.name == "nt" else {"start_new_session": True}  # own group, no window
-        t0, timeout, hung = time.monotonic(), float(self.L.get("agent_timeout_s") or 900), False
+        t0, timeout, hung, up = time.monotonic(), float(self.L.get("agent_timeout_s") or 900), False, False
         hours = self.cap("hours")  # the wall-clock limit ends a session as it ends a run
-        left = float("inf") if hours is None else max(1.0, (hours - self.used()["hours"]) * 3600)
-        timeout, at_limit = min(timeout, left), left < timeout
         tfile = idir / f"transcript-{role}.jsonl"
         free, paid, seen = st["limits"].get("usd") is None, False, 0  # no money limit: no usage that is billed per use
         # the prompt reaches stdin from its file, not through a pipe: an agent that never reads cannot block the loop
@@ -1031,7 +1033,11 @@ class Campaign:
             except OSError as e:
                 raise Stop(f"the agent could not be started ({self.exe}): {e}")
             while p.poll() is None:
-                hung = time.monotonic() - t0 > timeout
+                # by the campaign's count, as train() asks it, not by a bound worked out when the session began: the
+                # count has both clocks, so time that only the wall clock counts (a machine asleep) ends the session
+                # too (was, for one commit: the bound ran on the monotonic clock alone)
+                up = hours is not None and self.used()["hours"] >= hours
+                hung = up or time.monotonic() - t0 > timeout
                 if free:
                     paid, seen = paid_usage(tfile, seen)
                 if hung or paid or (self.dir / "stop.request").exists():
@@ -1050,7 +1056,7 @@ class Campaign:
         if free and (paid or paid_usage(tfile, seen)[0]):  # the second look covers a session that ended between two
             raise Stop(PAID)
         if hung:
-            self.check(hours_up=at_limit)  # ended by the wall-clock limit: that is the reason to report, not a hang
+            self.check(hours_up=up)  # ended by the wall-clock limit: that is the reason to report, not a hang
             raise Stop(f"the agent session hung: no result within {timeout:g} s, so it was ended")
         if res["stop"] == "refusal":
             raise Stop("the model refused the request (stop_reason refusal); see the transcript")

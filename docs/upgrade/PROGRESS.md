@@ -48,7 +48,9 @@ user's third "Push test branch" of that day the repair is on `test/round-8`, whe
 fixes and the loop's repair" below). "The reading of the three guard fixes" below is the work on the
 user's "Read the fixes" of 18 November: an independent reader went through the three fixes and found two
 faults of them; those, three more found beside them, and what three further readers found in the
-repairs are fixed in one local commit, which is not pushed.
+repairs are fixed in one commit. On the user's "Push test branch" of that day it is on `test/round-8`,
+where five of GitHub's six jobs pass and GitHub did not start the sixth, a Mac job (the entry after
+it). `main` does not have it.
 
 # Upgrade progress
 
@@ -2152,7 +2154,49 @@ Done, all in one commit, `690c91b` (guard, tests, reference):
 
 Next, each a separate word of the user's: the push of this commit and its record to the test branch,
 then to `main`; WSL's clock; the reading for `cmd /c`; an eighth installer run on the real install;
-whether the test branches are deleted.
+whether the test branches are deleted. (Added later that day: the push to the test branch is done, on
+the user's word; the next entry.)
+
+## The repairs of the reading on the test branch (18 November): five jobs pass, one Mac job not started
+
+The user's word, 18 November: "Push test branch", to the question whether the two local commits go to
+the public test branch. Before the answer I had said what a yes covers: the push of the two commits to
+`test/round-8` without force; the reading of GitHub's six jobs; and, if a job fails, the push of a
+repair and of the record to that branch. Not covered: `main`.
+
+Done:
+- Fetched: the public `main` and `test/round-8` both at `c2393da`; this branch two commits ahead of
+  both, none behind. The two commits searched for private details (none), both with the no-reply
+  address and UTC dates.
+- Pushed at 17:53 UTC: `test/round-8` from `c2393da` to `9f9a25e` (`690c91b`, the repairs, and
+  `9f9a25e`, their record). `main` was not touched.
+- GitHub's workflow run 44363620136 on `9f9a25e` (17:53 to 18:14 UTC): five jobs pass, each with 46
+  checks more than on `c2393da` (43 in `test_kit`, three in `test_ports`): 1,674 on ubuntu-latest
+  (Python 3.15.2), 1,663 on Ubuntu 24.04 (3.8.18), 1,660 and 1,659 on Windows (3.15.2 and 3.8.10),
+  1,662 on macOS under the system's 3.9.6.
+- "macos-latest, Python 3.x" was not started: GitHub cancelled it after fifteen minutes in its queue
+  ("The job was not acquired by Runner of type hosted even after multiple attempts", with notices
+  that its macOS arm64 machines were short) and lists the run as failed. No machine, no step, no
+  log; nothing in the kit failed. Unlike on 17 November (run 44161954913, a commit of records), this
+  commit changes the guard, so a result is missing: the repairs have not run on a Mac under
+  Python 3.x.
+- Read in the five logs: the two checks that depend on the guard's own time pass on GitHub's
+  machines (the 120 KB line with unclosed `<#` in one second, in whole seconds, in each job; the
+  JSON body of 2,000 fields within the 12 seconds); the generated lines in real shells give the
+  counts of the run on `c2393da`.
+- No repair was called for. I did not ask GitHub to run the job again, and I did not push this
+  record to start the six jobs once more: the word names that push for a job that fails, and a job
+  that never started is not clearly that. This entry's commit is local.
+- REPORT.md has the section of this entry's name and point 31 of "Read this first". The ledger is
+  unchanged (1,711 rows).
+
+Not done: the Mac job under Python 3.x; `main`, which keeps the two kinds of line that pass and the
+three that are slow.
+
+Next, each a separate word of the user's: the Mac job that did not start (a re-run of that one job on
+GitHub, or a push of this record to the test branch, or `main`, whose run starts it too); `main`;
+whether further readers of my own fixes are wanted without asking; WSL's clock; the reading for
+`cmd /c`; an eighth installer run on the real install; whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2454,12 +2498,19 @@ whether the test branches are deleted.
   above. The word covers one reader with read access only, the fixes, the tests and local commits, as
   I had said before it. It is not a word for a push or for anything on the real install. I started
   three further readers of my own repairs beyond it, which the report names.
+- Answered on 18 November ("Push test branch"), from the reading of the three guard fixes: the push
+  of the two local commits to `test/round-8`. "The repairs of the reading on the test branch" above.
+  The word covers that push, the reading of GitHub's jobs and, if a job fails, the push of a repair
+  and of the record to that branch, as I had said before it. It is not a word for `main`, for a
+  re-run of a job on GitHub, a deletion or anything on the real install. GitHub did not start one
+  job; I did not take that for a job that fails, and pushed nothing more.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
-  second reading's fixes on the test branch"); whether the repairs that the reading of the three
-  guard fixes led to are pushed (the public `main` keeps two kinds of line that pass and three that
-  are slow until then); whether further readers of my own fixes are wanted without asking; whether
-  the reading of text handed to
+  second reading's fixes on the test branch"); how the Mac job that GitHub did not start on the
+  repairs of the reading gets its run (a re-run of the job, a push of the record to the test branch,
+  or `main`); whether `main` takes those repairs (it keeps two kinds of line that pass and three
+  that are slow until then); whether further readers of my own fixes are wanted without asking;
+  whether the reading of text handed to
   `cmd /c` is built; whether the public branch `test/round-8` is deleted; whether the installer runs
   on the real install an eighth time; whether agent sessions may be spent on a comparison of the
   worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity CLI

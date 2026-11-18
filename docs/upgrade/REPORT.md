@@ -53,8 +53,11 @@ to the test branch, where all six jobs pass ("The loop's repair on the test bran
 of 18 November `main` took the three guard fixes and the repair, with no merge commit, and all six jobs
 pass there ("`main` takes the guard fixes and the loop's repair"). On your "Read the fixes" of that day
 a fresh reader went through the three guard fixes: two faults of them, and three kinds of long line
-that took the guard past its own time, are repaired in a local commit that is not pushed ("The reading
-of the three guard fixes", the last section before "1. What changed and why").
+that took the guard past its own time, are repaired in a local commit ("The reading of the three guard
+fixes"). On your "Push test branch" of that day the repairs went to the test branch, where five of
+GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, for want of a machine; `main`
+does not have the repairs ("The repairs of the reading on the test branch", the last section before
+"1. What changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -425,7 +428,18 @@ Decision record: `docs/upgrade/LEDGER.md`.
     One answer of the public `main` changes from refused to asked about, as it was before 17
     November: a sealed file that a text only names between escaped quotes. Open: nothing is pushed,
     so the public `main` keeps all five until you say "push"; one slow case stays and is named; the
-    times are measured on Windows only.
+    times are measured on Windows only. (Added with point 31: the repairs are on the test branch, on
+    your word; `main` is as it was.)
+31. **The repairs are on the test branch: five of GitHub's six jobs pass, and it did not start the
+    sixth** (18 November; "The repairs of the reading on the test branch"). On your "Push test branch"
+    `test/round-8` moved from `c2393da` to `9f9a25e`. Both Ubuntu jobs, both Windows jobs and the Mac
+    job under the system's Python 3.9.6 pass, each with the 46 checks that the repairs added. GitHub
+    cancelled "macos-latest, Python 3.x" after fifteen minutes in its queue, for want of a machine,
+    and lists the run as failed; no test ran in that job and nothing in the kit failed. The same
+    happened once before, on a commit of records. This commit changes the guard, so a result is
+    missing: the repairs have not run on a Mac under Python 3.x. Open: that job, which I did not ask
+    GitHub to run again; `main`, which keeps the two kinds of line that pass and the three that are
+    slow; the record of this run, which is a local commit.
 
 ## Round 2 (12 November 2026)
 
@@ -6450,7 +6464,8 @@ fix of the guard is read by someone else before its full test run, and the fourt
 changes once more. All four had read access only, wrote nothing into the repository and ran on another
 model. By the tool's count they used about 537,000 tokens, about 415,000 of them beyond the one reader
 you named (the 105,068 of the fourth reader's second reading may count its first again). The repairs
-are one local commit, `690c91b`. Nothing is pushed.
+are one local commit, `690c91b`. Nothing is pushed. (Added later that day: `690c91b` and its record
+are on the test branch, on your word; the section after this one.)
 
 In short:
 
@@ -6504,7 +6519,9 @@ In short:
    of line and takes 0.1 to 1.4 seconds for the six long lines named below, 0.1 for the `<#` lines
    and 7.7 for the script of 1,500 lines. The second kind of line passes there as it always did: the
    reading that asks about it came with round 8. The times are measured on Windows only. The last
-   change after the fourth reader's report was read by that reader again, not by a fresh one.
+   change after the fourth reader's report was read by that reader again, not by a fresh one. (Added
+   later that day: the test branch has the repairs, on your word, and `main` does not; the section
+   after this one.)
 
 ### The readers, and what they did not do
 
@@ -6767,7 +6784,8 @@ The ledger has 1,711 rows from 35 notes: Adopt 534 (390 finished, 144 unfinished
 
 - **A push of this commit and its record**, to the test branch first. Until then the public `main`
   keeps the two kinds of line that pass and the three that are slow; of those, the `curl` line and the
-  long here-document are ordinary on Windows.
+  long here-document are ordinary on Windows. (Added later that day: answered for the test branch,
+  "Push test branch", and done; the section after this one. `main` is still open.)
 - **Whether further readers of my own fixes are wanted without asking.** I started three beyond the
   one you named. They are local and read-only, and each found something or confirmed a repair, but
   they draw on your usage.
@@ -6776,6 +6794,108 @@ The ledger has 1,711 rows from 35 notes: Adopt 534 (390 finished, 144 unfinished
 
 Sources: GitHub Actions, workflow runs 44209556664 and 44209556667 of the public repository, read on
 18 November 2026 from each run's list of jobs and from each job's log.
+
+## The repairs of the reading on the test branch (18 November 2026): five jobs pass, one Mac job not started
+
+Your word: "Push test branch", to the question whether the two local commits go to the public test
+branch. Before you answered I had said what a yes covers: the push of the two commits to
+`test/round-8` without force; the reading of GitHub's six jobs; and, if a job fails, the push of a
+repair and of the record to that branch. `main` stays a separate word.
+
+In short:
+
+1. **Five of GitHub's six jobs ran on `9f9a25e`, and all five pass**, each with 46 checks more than on
+   `c2393da`: the 43 in `tests/test_kit.py` and the three in `tests/test_ports.py` that came with the
+   repairs. They are both Ubuntu jobs, both Windows jobs and the Mac job under the system's Python.
+2. **GitHub did not start the sixth, "macos-latest, Python 3.x".** It cancelled the job after fifteen
+   minutes in its queue, for want of a machine, and so lists the whole run as failed. No test ran in
+   that job, and nothing in the kit failed. The same happened on 17 November, on a commit of records,
+   where nothing was missing. This commit changes the guard, so a result is missing now: the repairs
+   have run on a Mac under Python 3.9.6 and not under Python 3.x.
+3. **Nothing else is pushed.** No repair was called for, and this record is a local commit. I did not
+   ask GitHub to run the job again, and I did not push this record to start the six jobs once more:
+   your word names that push for a job that fails, and a job that never started is not clearly that.
+   Which of the two it is to be, or neither, is yours to say.
+4. **`main` is as it was**, at `c2393da`: it keeps the two kinds of line that pass and the three that
+   are slow. Your real install is untouched.
+
+### The push, and GitHub's run
+
+- Before the push: fetched; the public `main` and the test branch both at `c2393da`, as I had left
+  them; this branch two commits ahead of both and none behind; the two commits searched for private
+  details (none), both with the no-reply address and UTC dates.
+- The push, at 17:53 UTC: `test/round-8` moved from `c2393da` to `9f9a25e`. Two commits: `690c91b`
+  (the repairs) and `9f9a25e` (their record). `main` was not touched.
+- GitHub's workflow run 44363620136 on `9f9a25e` (17:53 to 18:14 UTC): five jobs pass, and one was
+  not started. GitHub lists the run as failed.
+
+| Job | Interpreter | Checks passed | Failed | Skip lines |
+|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 1,674 | 0 | 2 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 1,663 | 0 | 3 |
+| windows-latest, Python 3.x | 3.15.2 | 1,660 | 0 | 5 |
+| windows-latest, Python 3.8 | 3.8.10 | 1,659 | 0 | 5 |
+| macos-latest, Python 3.x | not started | none ran | none ran | none ran |
+| macos-latest, Python system | 3.9.6 | 1,662 | 0 | 5 |
+
+Every job that ran has all eight test files and 46 checks more than on `c2393da` (1,628, 1,617,
+1,614, 1,613 and 1,616 there). The images: ubuntu-26.04 20261111.196.1, ubuntu-24.04 20261116.133.1,
+windows-2025-vs2026 20261103.298.1 for both Windows jobs, and macos-26-arm64 20261102.0473.1 for the
+Mac job that ran. The checks that put generated lines to real shells ran in bash 3.2.57 and zsh 5.9
+on macOS, bash 5.2.21 and 5.3.9 on Ubuntu, and Git Bash 5.3.15 and PowerShell 7.6.9 on Windows.
+
+### The job that did not start
+
+"macos-latest, Python 3.x" waited in GitHub's queue from 17:53 to 18:08 UTC and was then cancelled,
+with the note "The job was not acquired by Runner of type hosted even after multiple attempts" and
+three notices that its macOS arm64 machines were short ("Due to capacity constraints ..."). It has no
+machine, no step and no log, so no test ran in it. The other Mac job got its machine within seconds.
+
+On 17 November the same job was not started in run 44161954913. That commit changed records only,
+and the job had passed on the commit before it, so nothing was missing. Here the commit before,
+`c2393da`, does not have the repairs. What stands in for the missing job is less than the job: the
+repairs pass on a Mac under Python 3.9.6, under Python 3.15.2 on Ubuntu and on Windows, and under
+Python 3.15 on this machine. A Mac under Python 3.x has not run them.
+
+### What the run shows of the repairs, and what it does not
+
+Read in each of the five logs:
+
+- **The rows and checks of the repairs pass** on GitHub's Linux, Windows and macOS machines: the 38
+  rows of the guard's table and the eight checks, 46 in all per job.
+- **The two checks that depend on the guard's own time pass on machines other than this one.** A
+  PowerShell line of 120 KB with 60,000 `<#` that nothing closes is answered for what it does and not
+  by the timer; the log gives one second for it, in whole seconds, in all five jobs (27 seconds with
+  the fixes of 17 November on this machine). A `curl -d` with a JSON body of 2,000 fields, 31 KB, is
+  read within the guard's 12 seconds and passes in all five; its time is not printed. So the limit
+  "times measured on Windows only" of the section before this one has a figure from Linux and from
+  macOS now, for one kind of line.
+- **The generated lines in real shells give the counts of the run on `c2393da`**: of 450 lines the
+  guard lets 150 pass in bash and 148 in zsh on macOS, 149 in bash on Ubuntu and in Git Bash, and 76
+  of 224 in PowerShell. None of the lines that pass printed or copied the sealed file or changed the
+  frozen one.
+
+Not shown by this run: anything on a Mac under Python 3.x; the times of the other long lines (the
+check for the here-document with a script of 1,500 lines counts lookups and does not time them, so
+its 8 seconds are this machine's only); the slow case that stays; a place that answers slowly.
+
+### What needs your decision
+
+- **The Mac job that did not start.** Three ways to its result, each on your word: (a) I ask GitHub
+  to run that one job of run 44363620136 again, which changes nothing in the repository; (b) this
+  record goes to the test branch, which starts all six jobs on the same code; (c) `main` takes the
+  three commits, and the run there starts that job too. I would take (a): it is the least, and it
+  leaves `main` alone until all six have run.
+- **`main`.** It would move from `c2393da` to this record's commit as a fast-forward with no force.
+  Until then it keeps the two kinds of line that pass and the three that are slow.
+- **Whether further readers of my own fixes are wanted without asking**: open, as in the section
+  before this one.
+- Unchanged: WSL's clock on this machine; an eighth installer run on your real install; the two
+  public test branches; the reading of text handed to `cmd /c`; the job of run 44161954913.
+
+Sources: GitHub Actions, workflow run 44363620136 of the public repository, read on 18 November 2026
+from the run's list of jobs, from the five logs and from the annotations of the job that did not
+start.
 
 ## 1. What changed and why
 

@@ -51,8 +51,10 @@ is repaired in two commits, and the same work measured what the clock of WSL on 
 second reading's fixes on the test branch"). On your third "Push test branch" of that day the repair went
 to the test branch, where all six jobs pass ("The loop's repair on the test branch"). On your "Push main"
 of 18 November `main` took the three guard fixes and the repair, with no merge commit, and all six jobs
-pass there ("`main` takes the guard fixes and the loop's repair", the last section before "1. What
-changed and why").
+pass there ("`main` takes the guard fixes and the loop's repair"). On your "Read the fixes" of that day
+a fresh reader went through the three guard fixes: two faults of them, and three kinds of long line
+that took the guard past its own time, are repaired in a local commit that is not pushed ("The reading
+of the three guard fixes", the last section before "1. What changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -411,7 +413,19 @@ Decision record: `docs/upgrade/LEDGER.md`.
     fixes are still unread by anyone but me, and `main` holds them now; your real install does not
     have round 8, so it keeps the three older gaps and the loop's defect until an eighth installer
     run, on your word; the clock of this machine's WSL is as it was; the two public test branches
-    still exist.
+    still exist. (Added with point 30: the three fixes are read, on your word, and had two faults.)
+30. **The three guard fixes are read: two faults, and long lines that ran out of the guard's time**
+    (18 November; "The reading of the three guard fixes"). On your "Read the fixes" a fresh reader
+    went through them. Two kinds of line that the guard asked about passed from 17 November on,
+    because a new reading had taken an older one's place. And on Windows three kinds of long line took
+    the guard past its own 12 seconds, which ends as a question or, with nobody to answer, as a
+    refusal; two of them are ordinary lines (a `curl -d` with a JSON body of 1.4 KB, a here-document
+    with a script of 1,500 lines). All five are repaired in one local commit, `690c91b`, with 38 rows
+    and eight checks, after three further readers of the repairs, whom I started beyond your word.
+    One answer of the public `main` changes from refused to asked about, as it was before 17
+    November: a sealed file that a text only names between escaped quotes. Open: nothing is pushed,
+    so the public `main` keeps all five until you say "push"; one slow case stays and is named; the
+    times are measured on Windows only.
 
 ## Round 2 (12 November 2026)
 
@@ -5599,6 +5613,9 @@ In short:
    effect, and each shell has one. The guard now reads every line once more as a POSIX shell pairs its
    quotes and once more as PowerShell does. A reading only adds questions: the line as it came is still
    read as before, so no answer got weaker (by construction, and on the lines put to the guards).
+   (Added on 18 November: that did not hold. Two of the new readings had taken the place of older
+   ones, and two kinds of line that only the older ones asked about passed; "The reading of the three
+   guard fixes".)
 5. **Three costs, all on the strict side.** A read-only subagent is refused again a here-document that
    holds an escaped quote and a quoted `->` or `rm` (as before `4e2bec4`). And behind a command in
    backticks right before a closing quote (``"`date`"``), text quoted on the same line is read as
@@ -5609,7 +5626,9 @@ In short:
    quoted text opens behind such a `#` and closes on a later line.
 6. **The reader's five other points are answered**: one is on the strict side and known, one (speed)
    did not show in my timing, one is meant and is now described exactly, one got its test rows, and one
-   was three sentences of the reference and a comment.
+   was three sentences of the reference and a comment. (Added on 18 November: the fixes written on
+   this reading brought three slow kinds of line of their own, which that timing did not try; "The
+   reading of the three guard fixes".)
 7. **Tests.** On the final commit, `5dcd2ec`: Windows, all pass under three interpreters (1,624, 1,611
    and 1,612 checks). WSL: all 1,626 pass under Python 3.8; under 3.12 and 3.15 the same two checks
    fail (1,637 and 1,625 pass), one of the loop's wall-clock limit and one of a remote job's cost, both
@@ -5709,7 +5728,9 @@ before round 8, round 8's, `332fd85`, `4e2bec4` and, for PowerShell's and cmd's,
   is checked in addition to the line as it came. By running: `63bfdf6` against `4e2bec4` on 130 lines
   (four answers differ), `25aa674` against `63bfdf6` on 158 (eight differ) and `5dcd2ec` against
   `25aa674` on 167 (one differs); each of the thirteen went from a pass to a question or a refusal:
-  ten writes of a frozen file, and the three costs.
+  ten writes of a frozen file, and the three costs. (Added on 18 November: "by construction" was wrong
+  for the two readings that had taken the place of older ones, and the lines put to the guards did not
+  hold the two kinds that passed; "The reading of the three guard fixes".)
 - **Limits that stay**, each named in the reference: text handed to `cmd /c`; the closing words of a
   here-document that are not read (`<<$EOF`, `<<.end`); the force flag of `git clean` read past a line
   break, which is strict.
@@ -6415,6 +6436,346 @@ The push of the last record's addition to the test branch, at 20:14 UTC on 17 No
 Sources: GitHub Actions, workflow run 44206621190 of the public repository, read on 18 November 2026
 from the run's list of jobs and from each job's log; workflow run 44167209349, read on 17 November 2026
 in the same way.
+
+## The reading of the three guard fixes (18 November 2026): two faults of the fixes, three kinds of slow line
+
+Your word: "Read the fixes", to the question whether a fresh reader goes through the three guard fixes
+of 17 November (`63bfdf6`, `25aa674`, `5dcd2ec`), which the public `main` holds since 18 November.
+Before you answered I had said what a yes covers: one reader with read access only, fixes for what it
+finds, the tests and local commits. Not covered: a push, anything on your real install.
+
+One thing went beyond that word: **four readers ran, not one.** The first read the three fixes, as you
+said. Each of the other three read what I had changed on the report before it, by my own rule that a
+fix of the guard is read by someone else before its full test run, and the fourth read my last three
+changes once more. All four had read access only, wrote nothing into the repository and ran on another
+model. By the tool's count they used about 537,000 tokens, about 415,000 of them beyond the one reader
+you named (the 105,068 of the fourth reader's second reading may count its first again). The repairs
+are one local commit, `690c91b`. Nothing is pushed.
+
+In short:
+
+1. **Two kinds of line that the guard asked about passed from 17 November on.** `63bfdf6` put two new
+   readings of a line in the place of two older ones, and its message said that a reading only adds
+   questions. That is not true of a reading that replaces one. The reader found the first kind
+   (`echo it\'s "a \" > eval/metrics.py" 'x'`); I found the second beside it, a here-document with an
+   escaped quote in front of a command with a quoted text. A POSIX shell only prints both lines; the
+   guard asked because its rules end the text at the escaped quote, as cmd does, and I have not run
+   either line in cmd. The older readings are now made beside the newer ones.
+2. **Three kinds of long line took the guard past its own 12 seconds on Windows.** Its timer then
+   asks, which is a refusal where nobody can answer. Nothing passes that way, but the second and third
+   kind are ordinary lines:
+   - a PowerShell line of 120 KB with 60,000 `<#` that nothing closes: 27 seconds (found by the
+     reader);
+   - `curl -d` with a compact JSON body of 100 fields, 1.4 KB: 22 seconds, and 0.1 before 17 November
+     (found by my timing);
+   - a here-document that holds a script of 1,500 lines, 69 KB: 23 seconds, and 10 before 17 November
+     (found by my timing).
+
+   They take 0.3, 0.1 and 8 seconds now.
+3. **Two of my repairs were wrong at first, and both were caught before the commit.** The second
+   reader found that the cheaper spelling of an escaped quote is not the shell's word where a command
+   substitution reaches across the quote. Then my comparison on generated lines found one answer that
+   had gone from refused to allowed for a read-only subagent, on a line that no shell accepts. From
+   the first quoted text on that a substitution reaches out of, the guard keeps the spelling of 17
+   November to the end of the command.
+4. **One answer of the public `main` changes from refused to asked about.** A sealed file that is
+   named between escaped quotes, in a text that the guard does not read as a command of its own (a
+   message, the body of a request, a command for another host), is asked about. Every version before
+   17 November asked, and the public `main` asks about the same word written in apostrophes; its
+   refusal came from the spelling, not from a rule. Text that is handed to a shell or an interpreter
+   on this machine (`sh -c`, `python -c`) is refused as before.
+5. **What stays slow.** A text that a substitution reaches out of (`cd "$(dirname "$0")"`) in front
+   of a text with some hundred escaped quotes ends as the timer's question after 12 seconds, as on
+   the public `main` (0.1 seconds before 17 November). And each reading stays one pass of every rule:
+   about a second for each form of a 69 KB document, so that a script of about 100 KB in a
+   here-document would by that rate still reach the 12 seconds. I have not measured that size.
+6. **"Not weaker" rests on comparisons this time, not on construction.** Every reading that the guard
+   of 16 November made is made again (150,280 texts). Behind a text that a substitution reaches out of,
+   every reading of the public `main` is made (200,000 texts). In front of such a text the spelling
+   differs from the public `main`'s, and there 12,000 generated lines and 376 probe lines show one
+   kind of changed answer, the one of point 4. No answer to a read-only subagent differs.
+7. **Tests.** 38 rows and five checks added to `tests/test_kit.py`, three checks to
+   `tests/test_ports.py`; none changed or removed. In clones of the commit all eight test files pass
+   under three interpreters on Windows (1,671, 1,658 and 1,659 checks) and three in WSL (1,686, 1,673
+   and 1,674); none fails ("Tests" below).
+8. **Open.** Nothing is pushed: the public `main` and the test branch keep the two kinds of point 1
+   and the three of point 2 until you say "push". Your real install has none of the five from these
+   fixes, since it does not have round 8: its guard, the one before round 8, asks about the first kind
+   of line and takes 0.1 to 1.4 seconds for the six long lines named below, 0.1 for the `<#` lines
+   and 7.7 for the script of 1,500 lines. The second kind of line passes there as it always did: the
+   reading that asks about it came with round 8. The times are measured on Windows only. The last
+   change after the fourth reader's report was read by that reader again, not by a fresh one.
+
+### The readers, and what they did not do
+
+All four were fresh agents on another model with read access to the worktree, briefed as before: does
+each changed rule do what its comment and its tests say, and which branches have no test. None was
+asked to find ways past the guard, and I did not look for any. They wrote small scripts into the
+session's scratch folder and nothing into the repository; none ran the test suites.
+
+| Reader | What it read | Tool uses | Tokens | Result |
+|---|---|---|---|---|
+| First | `63bfdf6`, `25aa674`, `5dcd2ec` against `cd01579` | 24 | 122,259 | Seven points, two of them faults; all seven hold when run |
+| Second | The working tree with the first four changes | 21 | 117,462 | Three confirmed; the fourth wrong in one case; twelve branches without a row |
+| Third | The repair of that case (`reaches()`, and the rule for the rest of the command) | 13 | 98,440 | No claim fails; limits, one case and four branches that the texts did not name |
+| Fourth | The kept lookups | 17 | 93,859 | No claim fails; one wording, one case kept too long, five branches without a check |
+
+The fourth reader then read the three changes made on its report: the same agent, taken up again, with
+6 tool uses and 105,068 tokens by the tool's count. They hold. A word whose lookup fails twice and then
+succeeds, asked for four times, is looked up three times: four without the kept lookups, and once in
+the form the reader had seen first, which gave the unresolved path all four times. The check fails
+with a memo that keeps failed lookups and with one that forgets the working folder. One phrase of the
+check's comment was made exact on it.
+
+Not done by them: the first did not test PowerShell's `""` and `''` escapes or curly quotes in depth.
+The third did not time the whole guard and did not read the first two changes. The fourth did not
+check the timings, links, a relative working folder, Linux or macOS.
+
+### The first reader's seven points
+
+| # | What the reader found | What was done | Test |
+|---|---|---|---|
+| 1 | "A reading only adds questions" is false for `63bfdf6`: the line of point 1 above was asked about by every version before and passed from that commit on | Each quoted text is kept in both forms, and every POSIX reading is written out with either; the document with the quotes that pair in it is read again beside the one without | Four rows: the two kinds, each with a harmless twin |
+| 2 | The rule for `git clean` with ignored files, (d) of `63bfdf6`, is right | Nothing | Its rows of 17 November |
+| 3 | The check for a backslash before a quote in a here-document also takes a quote behind an escaped backslash (`"C:\\data\\"`) | Kept, on the strict side; named in the docstring and the reference | Rows, and a check in `test_ports.py` |
+| 4 | The search for the end of a PowerShell comment grows with the square of the line where `<#` is never closed: 120 KB took 27 seconds, later than a hook waits, and the timer cannot answer during one search | Behind the last `#>` of a text no `<#` is closed: those are marked, and no search starts there. 0.3 seconds, and 300,183 texts read the same with and without the mark | Two rows and a time check |
+| 5 | Answers that the fixes changed and nothing described: a write from `python -c` with escaped quotes and a redirection behind PowerShell's escaped quote are refused to a read-only subagent | Described in the reference | Three checks in `test_ports.py` |
+| 6 | Branches of the fixes with no row | Rows | Seven rows |
+| 7 | The reference said that the guard reads such a line "once more", where the code had put one reading in another's place | True as the code stands now | The rows of point 1 |
+
+### What the other readers found
+
+- **The second reader** confirmed the first three changes by reading and with random texts, and found
+  the fourth wrong in one case: where a command substitution reaches across an escaped quote
+  (`"a $(echo \"hi\") b"`), the fewest pieces are not the word a shell makes. `reaches()` now says
+  whether a stretch between two escaped quotes opens a `$( )`, backticks or a `${ }` that it does not
+  close, and such a text keeps the spelling of 17 November. It also named twelve branches without a
+  row; each has a row now, with a harmless twin.
+- **The third reader** found no claim that fails. It named limits of `reaches()` that its comment did
+  not: an escaped `\$(` counts as one that opens, and so does a `${` in quotes inside a `$( )`. Both
+  keep the older spelling where the newer would do, which costs time and no question. It named one
+  case that the comment now states (the word of a default, `${X:-\"d\"}`, stands in the name's place
+  before the text is judged), four branches without a check, which have one now, and four sentences
+  of the reference that said less than the code. The code did not change for it.
+- **The fourth reader** found no claim that fails: it compared every call of the new lookup with the
+  old one on 627 generated lines (`cd`, `pushd`, subshells, `git -C`, here-documents, PowerShell's
+  `Set-Location`): 44,026 calls, no result and no answer differs. Three things were done on its
+  report. The comment said "per call" where one run of the hook may check several files of a patch;
+  it says "per run of the hook" now. A lookup that failed was kept for the run; it is made again now,
+  as before, so that nothing changes where a server answers the second time. And the check takes
+  four of the five branches it named: a path object, a full name, a `~` word and a failed lookup. The
+  fifth, several calls in one run of the hook, has no check of its own: they share the kept lookups,
+  which is right as long as the guard writes nothing between them, and it writes only its audit log,
+  after the checks. Two smaller points are answered and not changed: a full name is kept once for
+  each working folder, which costs a lookup and no answer, and the table has no limit, since it lasts
+  one run of the hook.
+
+### What I found while fixing
+
+- **The second kind of line that passed**: `cat <<'EOF'`, a line `don't print("a \" b")`, `EOF`, and
+  then `echo "x > eval/metrics.py" 'y'`. The reading of 16 November, the document with the quotes
+  that pair in it, asked about it; `63bfdf6` put the document without any of its quotes in that
+  reading's place. Both are made now.
+- **The second slow line, by timing.** The spelling of 17 November makes a piece of every escaped
+  quote, and the guard looks up every run of touching pieces on disk as a path. `curl -s -d` with a
+  compact JSON body of 100 fields (1,425 characters, 400 escaped quotes) took 21.7 seconds on Windows,
+  50 fields 8.8 seconds, and 0.08 seconds before 17 November. **My first estimate of that cost, made
+  without measuring, was too low by a factor of about 35.** The text is now cut at each `\"`, and the
+  stretches without a backslash, a `$`, a backtick or an apostrophe go, with the quotes between them,
+  into one piece in apostrophes (`'a " b'`); a stretch with one of those stays in `"..."` as it came.
+- **A change that proved unnecessary**: an early end, at a blank, of the chains of pieces that are
+  looked up. It made no measurable difference once the spelling had the fewest pieces, and it is taken
+  out again, so that function is as on the public `main`.
+- **The answer that went from refused to allowed** (point 3): where a quoted text leaves a
+  substitution open, the guard pairs the quotes of the texts behind it anew, so their spelling decides
+  what it takes for commands there. Therefore the rule for the rest of the command: from the first
+  text on that a substitution reaches out of, across an escaped quote or past the text's end
+  (`"$(dirname "$0")"`), every `"..."` keeps the spelling of 17 November. From there on each reading
+  is the text which that day's guard made, and in front of it every text is a whole piece. What a
+  substitution runs is read from the line as it came, as in every version.
+- **The third slow line, by timing, and a wrong sentence of mine.** I had written that making the
+  older readings too is what costs time on a long here-document. Timing the public `main` showed
+  that the cost is its own: each reading is one more pass of every rule over the line, and each pass
+  looked every word up on disk again, on Windows about 0.13 ms for a file that is not there. For the
+  script of 1,500 lines that is 138,475 lookups for 3,877 different words. Where the older reading
+  differs from the newer ones my first change did add passes: a document of 88 KB took 15 seconds
+  against 10 on the public `main`. The guard now keeps what a lookup found, by working folder and
+  word, for the run of the hook: 8 seconds for the script and 4 for that document.
+
+### Every change in what the guard asks, refuses or allows
+
+Against the public `main` (`5dcd2ec`), each with its reason and its test:
+
+- **Asked about again**: the two kinds of line of point 1. Reason: the older readings stay. Test: four
+  rows.
+- **Asked about, where the public `main` refuses**: a sealed file named between escaped quotes in a
+  text that the guard does not read as a command of its own, as in `ssh host "cat \"<sealed file>\""`.
+  Reason: the refusal came from a path that the guard made of the name and the quote behind it, an
+  effect of the spelling of 17 November; with the fewest pieces that path is not made. Every version
+  before 17 November asked, and the public `main` asks about the same word written in apostrophes
+  (seven pairs put to it). Where nobody can answer, a question is a refusal, so nothing passes there.
+  Test: rows for a sealed file that a text only names (asked about), for code that reads one in
+  `python -c` and in `sh -c`, and for a file in the sealed folder (refused).
+- **Refused as before**: text handed to a shell or an interpreter on this machine. `sh -c`, `bash -c`,
+  `eval`, `python -c` and `node -e` with a sealed file between escaped quotes are refused by every
+  version put to them, back to the one before round 8. Behind a text that a substitution reaches out
+  of, the refusal of the public `main` stays as it is.
+- **Answered for what they hold, where the public `main` gives the timer's question**: the three kinds
+  of long line of point 2. Test: two time checks (the 120 KB line; a JSON body of 2,000 fields) and a
+  check that counts the lookups of a word. By the code and not measured: so may a call be that names
+  a file on a place which answers slowly, such as a network share, since each word is waited for once
+  and not by every rule and reading. A lookup that fails is made again as before.
+- **No answer to a read-only subagent differs** on the generated lines. On the probe lines the two
+  kinds of point 1 are refused to it again.
+- **Not changed**: what the guard asks or refuses for the line as it came; the routine mark; the
+  audit log.
+
+### What it costs, and the limits that stay
+
+- **The slow case of point 5**: `cd "$(dirname "$0")" && curl -d` with the 100 fields. The code names
+  it as a shortcut with what would lift it: keeping the spelling of 17 November only up to where the
+  reaching substitution ends, which takes finding that end where the guard's pairs and the shell's
+  part ways. The ledger holds it as adopted and unfinished.
+- **Each reading is a pass.** Six long lines of 4.5 to 71 KB (500 and 4,000 texts with an escaped
+  quote, documents of 500 and 4,000 lines, `curl` bodies of 500 and 4,000 escaped fields) take 0.2
+  to 2.2 seconds here, 0.4 to 7.4 seconds and once the timer's question on the public `main`, and 0.1
+  to 1.4 seconds on the guard of 16 November. The script of 1,500 lines takes 7.7 seconds on the
+  guard before round 8 (two readings), 10.0 on that of 16 November (three), 23.1 on the public `main`
+  (seven) and 8.0 here (seven).
+- **`reaches()` counts** backticks and `${` instead of following them. The count leans to the kept
+  spelling, which costs time and no question; on 6,000 generated lines with such pieces in every
+  order no answer differed from the public `main`'s other than the kind of point 4.
+- **Unchanged limits**: text handed to `cmd /c`; the timer cannot answer during one search of a
+  pattern; PowerShell's `""` and `''` escapes and curly quotes were not tested in depth.
+
+### Verified, and how
+
+**By running**, all on Windows, in memory or with the hook as a program:
+
+- 150,280 texts (150,000 random ones and 280 probe lines): every reading that the guard of 16
+  November made (`cd01579`) is made by this one.
+- Behind each of five texts that a substitution reaches out of, 40,000 random tails: every reading of
+  the public `main`'s guard is made by this one.
+- The probe lines, 376 by now in 34 files, put to the guard of each state. Against the public `main`,
+  on the 280 of them that existed before the lookups were kept: 8 answers differ, the two kinds of
+  point 1 (each in two files, and two more lines of the same kind: passed, asked about now) and two
+  lines of the kind of point 4 (refused, asked about now).
+- Generated lines with escaped quotes, pieces of substitutions among them: 6,000 put to the public
+  `main`'s guard and to this one, 34 answers of the main session differ; 6,000 put to the state with
+  the first two changes only, 208 differ. Each of the 242 goes from refused ("resolves to sealed path
+  pattern") to asked about ("Command mentions sealed path pattern"): the kind of point 4. No answer
+  to a read-only subagent differs in the 12,000.
+- Lines that read a sealed file through escaped quotes with a shell or an interpreter on this machine:
+  refused by the guard before round 8, of 16 November, of the public `main` and by this one.
+- The kept lookups: 376 probe lines and 6,000 generated lines put to the guard with and without them,
+  no answer differs. Sixteen lines that name one word from two working folders are answered alike by
+  the guard of 16 November, the public `main`'s and this one. A memo that forgets the working folder,
+  put on from outside, passes five of them that must be asked about or refused; three of those are
+  rows now.
+- The last change (a failed lookup is not kept) against the state before it: the 376 probe lines and
+  6,000 generated lines, no answer differs; the fourth reader's comparison of every call, run again
+  on the final guard: 44,026 calls, no result differs.
+- Real shells: eleven harmless `printf` lines and the guard's first reading of each print the same
+  words in Git Bash 5.2.37 on Windows and in bash 5.2.21 and dash in WSL. For a text that a
+  substitution reaches across, the kept spelling is not the shell's word, as its comment says.
+
+**Not verified**: any of the times on Linux or macOS, where a lookup costs far less; zsh and ksh,
+which are not installed here; a place that answers slowly; the size of here-document at which the 12
+seconds are reached now.
+
+**Not looked for**: ways past the guard. The guard's other patterns and functions were not examined
+for their time beyond the shapes named here.
+
+### Tests
+
+All added; none changed or removed.
+
+In the guard's table of `tests/test_kit.py`, 38 rows: the two restored questions with a harmless twin
+each; seven for forms of the fixes of 17 November that no row took; two for an unclosed `<#`; nine for
+the fewest pieces (a substitution and a handed shell's variable between escaped quotes are still read;
+a sealed file that a text only names is asked about; code that reads one, in `python -c` and in
+`sh -c`, and a file in the sealed folder are refused); twelve for the branches the second reader named,
+each line with a harmless twin; four for one word named from two working folders (a kept file in
+either order, a sealed file in either order, a harmless pair).
+
+Five checks beside the table: the 120 KB line and a JSON body of 2,000 fields are answered within the
+guard's time for what they hold; two put texts to `readings()` and look at the spellings (the fewest
+pieces; the spelling of 17 November where a `$( )`, backticks or a `${ }` reach across the quote and
+in the texts behind; both where one form of the line has such a text and another has not); and one
+counts the lookups of a word that is named thirty times (one; none more for the same file as a path
+object, one by its full name, one from another working folder, and a failed lookup is made again).
+
+In `tests/test_ports.py`, three checks for a read-only subagent, of answers that the first reader
+found described nowhere.
+
+From the worktree, before the commit: on Windows (Python 3.11) 1,017 checks of `test_kit` and 138 of
+`test_ports` pass, in WSL (Python 3.12) 1,025 of `test_kit`; none fails. WSL's clock was set back
+14.0 s within 155 s during that run. One comment of `tests/test_kit.py` was reworded after these runs.
+
+The commit `690c91b` in a clone at that commit: eight test files under three interpreters on each
+platform.
+
+| Interpreter | Platform | benchmarks | guard_live | kit | loop | ports | remote | review_fixes | runlog_units | All | Failed |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 3.12.3 with psutil and PyTorch | WSL | 54 | 3 | 1,025 | 269 | 136 | 99 | 81 | 19 | 1,686 | none |
+| 3.8.20, clean | WSL | 42 | 3 | 1,025 | 269 | 135 | 99 | 81 | 19 | 1,673 | none |
+| 3.15.0b3, clean | WSL | 42 | 3 | 1,025 | 269 | 136 | 99 | 81 | 19 | 1,674 | none |
+| 3.11.7 with psutil and PyTorch | Windows | 54 | 6 | 1,017 | 259 | 138 | 99 | 79 | 19 | 1,671 | none |
+| 3.8.20, clean | Windows | 42 | 6 | 1,017 | 259 | 137 | 99 | 79 | 19 | 1,658 | none |
+| 3.15.0rc3, clean | Windows | 42 | 6 | 1,017 | 259 | 138 | 99 | 79 | 19 | 1,659 | none |
+
+Against `053cd8c` ("The second reading's fixes on the test branch", "Tests") every run has 43 checks
+more in `test_kit`, the 38 rows and five checks, and three more in `test_ports`. The check of
+`tests/test_review_fixes.py` that failed there once, in WSL under Python 3.8, passes here.
+
+WSL's clock was set back 155.8 s within 1,715 s during its run, as in the runs before it. No check
+failed, so there was nothing to rerun. The test files took 77 minutes in all on Windows and 26 in
+WSL, both at the same time on this machine.
+
+### The two runs on the last record's commit
+
+The pushes of the last record, `c2393da`, to `main` and to the test branch started one run each, which
+that record could not hold. Run 44209556664 on `main` and run 44209556667 on `test/round-8` (both
+00:39 to 00:58 UTC on 18 November): all twelve jobs pass, each with the counts of the run before
+(1,628 and 1,617 checks on Ubuntu, 1,614 and 1,613 on Windows, 1,623 and 1,616 on macOS). In the run
+on the test branch "macos-latest, Python 3.x" got the image 20261102.0473.1 with Python 3.14.10 once
+more, so the job that failed on `36a4857` has passed three times as it was, not twice as that record
+says. It still adds little.
+
+### The ledger
+
+Eight rows of 18 November, in `docs/upgrade/scout/draft/round8.candidates.jsonl`:
+
+- **Adopted and finished, four**: the older readings of a line stay beside the newer ones; an escaped
+  quote as the splice of the fewest pieces, with the spelling of 17 November kept behind a
+  substitution that reaches out; no search for a comment's end behind the last `#>` of a text; a path
+  word is looked up once per run of the hook and working folder.
+- **Adopted and unfinished, one**: the spelling of 17 November only up to where the reaching
+  substitution ends, which would lift the slow case of point 5. Not built, because it takes finding
+  that end where the guard's pairs of quotes and the shell's part ways, and a wrong end would lose a
+  reading.
+- **Rejected, three**: an early end, at a blank, of the chains of pieces that are looked up (no
+  measurable gain once the spelling had the fewest pieces); a walk through backticks and `${ }` in
+  `reaches()` in place of its count (the count leans to the kept spelling, which costs time and no
+  question); a memo of `rel()` beside that of the lookups (7.4 against 8.0 seconds on the script of
+  1,500 lines).
+
+The ledger has 1,711 rows from 35 notes: Adopt 534 (390 finished, 144 unfinished), Trial 237, Assess
+328, Hold 331, Reject 281.
+
+### What needs your decision
+
+- **A push of this commit and its record**, to the test branch first. Until then the public `main`
+  keeps the two kinds of line that pass and the three that are slow; of those, the `curl` line and the
+  long here-document are ordinary on Windows.
+- **Whether further readers of my own fixes are wanted without asking.** I started three beyond the
+  one you named. They are local and read-only, and each found something or confirmed a repair, but
+  they draw on your usage.
+- Unchanged: WSL's clock on this machine; an eighth installer run on your real install; the two
+  public test branches; the reading of text handed to `cmd /c`; the job of run 44161954913.
+
+Sources: GitHub Actions, workflow runs 44209556664 and 44209556667 of the public repository, read on
+18 November 2026 from each run's list of jobs and from each job's log.
 
 ## 1. What changed and why
 

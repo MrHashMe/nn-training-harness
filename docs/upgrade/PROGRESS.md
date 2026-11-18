@@ -45,7 +45,10 @@ a third. The same entry says what the clock of this machine's WSL does, which is
 user's third "Push test branch" of that day the repair is on `test/round-8`, where all six jobs pass
 ("The loop's repair on the test branch" below). On the user's "Push main" of 18 November the public
 `main` has the three guard fixes and the repair, and all six jobs pass there ("`main` takes the guard
-fixes and the loop's repair" below).
+fixes and the loop's repair" below). "The reading of the three guard fixes" below is the work on the
+user's "Read the fixes" of 18 November: an independent reader went through the three fixes and found two
+faults of them; those, three more found beside them, and what three further readers found in the
+repairs are fixed in one local commit, which is not pushed.
 
 # Upgrade progress
 
@@ -2087,6 +2090,70 @@ Next, each a separate word of the user's: a reading of the three guard fixes, wh
 unread by anyone but their author; WSL's clock; the reading for `cmd /c`; an eighth installer run on
 the real install; whether the test branches are deleted.
 
+## The reading of the three guard fixes (18 November): two faults and three slow lines repaired, nothing pushed
+
+The user's word, 18 November: "Read the fixes", to the question whether a fresh reader goes through the
+three guard fixes of 17 November (`63bfdf6`, `25aa674`, `5dcd2ec`). Before the answer I had said what a
+yes covers: one reader with read access only, fixes for what it finds, the tests and local commits. Not
+covered: a push, anything on the real install. Beyond the word: three further readers, each of what I
+had changed on the report before it, and a second reading by the fourth (read-only, local, by the rule
+for guard fixes; about 415,000 of about 537,000 tokens). REPORT.md says so in the section's second
+paragraph and asks whether that is wanted.
+
+Done, all in one commit, `690c91b` (guard, tests, reference):
+- **The first reader** (the three fixes against `cd01579`): seven points, two of them faults. A line
+  that every version before `63bfdf6` asked about passed, because a new reading had taken an older
+  one's place; and a PowerShell line of 120 KB with unclosed `<#` took 27 seconds. Repaired: each
+  quoted text is kept in both forms and every POSIX reading is written out with either; no search for
+  a comment's end starts behind the last `#>` of a text. Its other five points: one right as it is,
+  one kept on the strict side and named, one described, rows for one, one sentence true as the code
+  stands now.
+- **Found beside them by me**: a second kind of line that passed (a here-document with an escaped
+  quote in front of a command with a quoted text; both readings of the document are made now), and by
+  timing two more slow lines. `curl -d` with a compact JSON body of 100 fields took 22 seconds on
+  Windows (0.1 before 17 November): the escaped quote is now written as the splice of the fewest
+  pieces. A here-document with a script of 1,500 lines took 23 seconds (10 before): each reading is a
+  pass of every rule, and each pass looked every word up on disk again; `Ctx._abs()` now keeps what a
+  lookup found, by working folder and word, for the run of the hook (8 seconds).
+- **The second reader** (the first four changes): the fewest pieces are not the shell's word where a
+  substitution reaches across an escaped quote. `reaches()` finds such a text, which keeps the
+  spelling of 17 November. Twelve branches without a row have one.
+- **Found by my comparison on generated lines**: after that, one answer of a read-only subagent had
+  gone from refused to allowed, on a line no shell accepts. From the first text on that a
+  substitution reaches out of, every `"..."` to the end of the command keeps the spelling of 17
+  November.
+- **The third reader** (that repair): no claim fails; limits of `reaches()`, one case and four
+  branches named and four sentences of the reference made exact. The code did not change.
+- **The fourth reader** (the kept lookups): no claim fails. On its report the comment says "per run
+  of the hook", a failed lookup is made again and not kept, and the check takes four more branches.
+  The same reader then read those three changes: they hold, and one phrase of a test comment was
+  made exact.
+- **Against the public `main`**: two kinds of line are asked about again; three kinds of long line
+  are answered for what they hold where it gives the timer's question; one answer goes from refused
+  to asked about (a sealed file that a text only names between escaped quotes, as before 17
+  November); no answer to a read-only subagent differs on 12,000 generated lines.
+- **Stays slow**: a text that a substitution reaches out of in front of a text with some hundred
+  escaped quotes (the timer's question, as on the public `main`). Named in a `shortcut:` comment and
+  in the ledger as adopted and unfinished.
+- **Tests**: 38 rows and five checks in `tests/test_kit.py`, three checks in `tests/test_ports.py`,
+  none changed or removed. In clones of `690c91b` all eight test files pass under three interpreters
+  on each platform, none fails: WSL 1,686 (3.12.3), 1,673 (3.8.20) and 1,674 (3.15.0b3) checks,
+  Windows 1,671 (3.11.7), 1,658 (3.8.20) and 1,659 (3.15.0rc3). WSL's clock was set back 155.8 s
+  within 1,715 s during its run.
+- **The two runs on `c2393da`**, which the last entry could not hold: 44209556664 on `main` and
+  44209556667 on `test/round-8`, all twelve jobs pass with the counts of the run before. The Mac job
+  that failed on `36a4857` has now passed three times as it was.
+- REPORT.md has the section of this entry's name, point 30 of "Read this first" and additions at
+  three sentences of "The second reading of the fixes" that did not hold. The ledger has eight rows
+  more (four adopted and finished, one adopted and unfinished, three rejected): 1,711 rows, Adopt 534
+  with 390 finished and 144 not, Trial 237, Assess 328, Hold 331, Reject 281.
+- Left as it is: the public `main` and `test/round-8`, which keep the two kinds of line and the three
+  slow ones; the real install; the clock of this machine's WSL; the README (another session's work).
+
+Next, each a separate word of the user's: the push of this commit and its record to the test branch,
+then to `main`; WSL's clock; the reading for `cmd /c`; an eighth installer run on the real install;
+whether the test branches are deleted.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
@@ -2382,10 +2449,17 @@ the real install; whether the test branches are deleted.
   word covers the push of the eleven commits, the reading of GitHub's jobs, and the push of the record
   of the result to `main` and to the test branch, as I had said before it. It is not a word for
   deleting a branch, for a re-run of a job on GitHub or for anything on the real install.
+- Answered on 18 November ("Read the fixes"), from `main` taking the guard fixes: whether the three
+  guard fixes of 17 November get a reading of their own. Done, "The reading of the three guard fixes"
+  above. The word covers one reader with read access only, the fixes, the tests and local commits, as
+  I had said before it. It is not a word for a push or for anything on the real install. I started
+  three further readers of my own repairs beyond it, which the report names.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
-  second reading's fixes on the test branch"); whether the three guard fixes of 17 November get a
-  reading of their own (`main` holds them since 18 November); whether the reading of text handed to
+  second reading's fixes on the test branch"); whether the repairs that the reading of the three
+  guard fixes led to are pushed (the public `main` keeps two kinds of line that pass and three that
+  are slow until then); whether further readers of my own fixes are wanted without asking; whether
+  the reading of text handed to
   `cmd /c` is built; whether the public branch `test/round-8` is deleted; whether the installer runs
   on the real install an eighth time; whether agent sessions may be spent on a comparison of the
   worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity CLI

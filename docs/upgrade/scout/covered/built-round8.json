@@ -208,5 +208,35 @@
   "candidate": "The loop counts its time on two clocks and names the bound that ended a session (kit-native)",
   "status": "finished",
   "where": ".claude/skills/nn-training/scripts/nnloop.py (`save`, `used`, `check`, `session`, `train`); references/loop.md (one sentence); tests/test_loop.py (one check of four cases, clocks moved by hand). Commits cb7ee1b, 053cd8c. Read by two fresh agents, the first's finding fixed. Passes in GitHub's six jobs"
+ },
+ {
+  "file": "round8",
+  "candidate": "The older readings of a line stay beside the newer ones (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`hold`, `readings`, `unquoted_bodies`); docs/REFERENCE.md; tests/test_kit.py (four rows). Commit 690c91b. Read by a fresh agent"
+ },
+ {
+  "file": "round8",
+  "candidate": "An escaped quote in a quoted text as the shell's splice of the fewest pieces, with the form of 17 November kept behind a substitution that reaches out (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`part`, `reaches`, `readings`); docs/REFERENCE.md; tests/test_kit.py (21 rows, a time check and two checks of the spellings). Commit 690c91b. Read by two fresh agents, the first's finding fixed"
+ },
+ {
+  "file": "round8",
+  "candidate": "No search for a comment's end behind the last #> of a text (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`ps`); docs/REFERENCE.md; tests/test_kit.py (two rows and a time check). Commit 690c91b. Read by a fresh agent"
+ },
+ {
+  "file": "round8",
+  "candidate": "A path word is looked up on disk once per run of the hook and working folder (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`Ctx._abs`); docs/REFERENCE.md; tests/test_kit.py (four rows and a check that counts the lookups). Commit 690c91b. Read by a fresh agent, and its last change by the same one again"
+ },
+ {
+  "file": "round8",
+  "candidate": "The form of 17 November only up to where the reaching substitution ends (kit-native)",
+  "status": "unfinished",
+  "where": "Not built. A `shortcut:` comment in .claude/hooks/nn_guard.py and docs/REFERENCE.md name the limit. Missing: the end of a reaching substitution found as a shell finds it, and the older spelling kept only up to there, with lines of the guard's table for it"
  }
 ]

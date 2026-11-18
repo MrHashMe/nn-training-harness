@@ -1643,6 +1643,69 @@ def main():
         # the closing word behind a backslash, and one quoted in part behind tabs (no row took these forms)
         ("Bash", {"command": "cat <<\\EOF\ndon't\nEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),
         ("Bash", {"command": "cat <<-'E'OF\n\tdon't\n\tEOF\ncp train.py eval/metrics.py; echo 'done'"}, "ask"),
+        # the readings of before 17 November 2026 stay beside the two that the first fix of that day had put in their
+        # place: "..." as it came, and such a document with the quotes that pair in it. Without them these two lines
+        # were no longer asked about (None from 17 November until that fix was read on the 18th; the first asked in
+        # every version before, the second since the reading of 16 November). A POSIX shell only prints their text;
+        # the rules end the first one's text at the escaped quote, as cmd does. With a file that is not frozen they pass
+        ("Bash", {"command": "echo it\\'s \"a \\\" > eval/metrics.py\" 'x'"}, "ask"),
+        ("Bash", {"command": "cat <<'EOF'\ndon't print(\"a \\\" b\")\nEOF\necho \"x > eval/metrics.py\" 'y'"}, "ask"),
+        ("Bash", {"command": "echo it\\'s \"a \\\" > out.txt\" 'x'"}, None),
+        ("Bash", {"command": "cat <<'EOF'\ndon't print(\"a \\\" b\")\nEOF\necho \"x > out.txt\" 'y'"}, None),
+        # forms of those fixes that no row took (named when they were read): PowerShell's escaped quote outside any
+        # text, an escaped apostrophe in a document, and in "..." an escaped backslash, which is no escaped quote, so
+        # that the text ends at the quote behind it
+        ("PowerShell", {"command": "Write-Output it`'s; cp train.py eval/metrics.py; echo 'x'"}, "ask"),
+        ("PowerShell", {"command": "Write-Output 5`\" wide; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("PowerShell", {"command": "Write-Output it`'s; cp train.py out.py; echo 'x'"}, None),
+        ("Bash", {"command": "python - <<'EOF'\nprint('it\\'s')\nEOF\ncp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "python - <<'EOF'\nprint('it\\'s')\nEOF\ncp train.py out.py; echo 'end'"}, None),
+        ("Bash", {"command": "echo \"C:\\\\dir\\\\\"; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
+        ("Bash", {"command": "echo \"C:\\\\dir\\\\\"; echo \"x > eval/metrics.py\""}, None),
+        # a <# that nothing closes is no comment: what stands behind it is read on as PowerShell pairs its quotes
+        ("PowerShell", {"command": "echo <# x; Write-Output it`'s; cp train.py eval/metrics.py; echo 'x'"}, "ask"),
+        ("PowerShell", {"command": "echo <# x; Write-Output it`'s; cp train.py out.py; echo 'x'"}, None),
+        # an escaped quote in "..." is spliced with the fewest pieces ('a " b'), and a text between two such quotes
+        # that "..." would expand stays in "..." as it came: a command substitution there is still read, and so is the
+        # variable of a shell that is handed the text. A sealed file that such a text only names is asked about, as in
+        # every version before 17 November 2026 (that day's form made a piece of each quote and looked up every run
+        # of pieces as a path: denied, for the path with the quote behind it, and a body of 1.4 KB took 22 seconds).
+        # Code that reads one, handed to an interpreter or a shell, and a file in the sealed folder are refused as ever
+        ("Bash", {"command": "python -c \"print(open(\\\"data/test/labels.csv\\\").read())\""}, "deny"),
+        ("Bash", {"command": "sh -c \"cat \\\"data/test/labels.csv\\\"\""}, "deny"),
+        ("Bash", {"command": "cat \"data/test/\\\"x\\\".csv\""}, "deny"),
+        ("Bash", {"command": "echo \"a \\\"$(cp train.py eval/metrics.py)\\\" b\""}, "ask"),
+        ("Bash", {"command": "echo \"a \\\"$(cp train.py out.py)\\\" b\""}, None),
+        ("Bash", {"command": "bash -c \"f=eval/metrics.py; cp train.py \\\"\\$f\\\"\""}, "ask"),
+        ("Bash", {"command": "bash -c \"f=out.py; cp train.py \\\"\\$f\\\"\""}, None),
+        ("Bash", {"command": "curl -s -d \"{\\\"path\\\":\\\"data/test/labels.csv\\\"}\" http://localhost:1/x"}, "ask"),
+        ("Bash", {"command": "curl -s -d \"{\\\"path\\\":\\\"train.py\\\"}\" http://localhost:1/x"}, None),
+        # branches of these readings that no row took (named when that fix was read too): a text between two escaped
+        # quotes that stays in "..." for its apostrophe (in one piece with the rest the apostrophe would end the piece:
+        # None before 17 November 2026) or for its backtick; a command substitution that reaches across an escaped
+        # quote, or past the end of its text, where the splice of 17 November stays, to the line's end: its commands
+        # are read from the line as it came, and what follows such a text is read too; and in PowerShell a <# behind
+        # the last #>, here inside a quoted text (None before 17 November). A harmless line of each kind passes
+        ("Bash", {"command": "echo \"a \\\" it's\"; cp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "echo \"a \\\" it's\"; cp train.py out.py; echo 'end'"}, None),
+        ("Bash", {"command": "echo \"a \\\"`cp train.py eval/metrics.py`\\\" b\""}, "ask"),
+        ("Bash", {"command": "echo \"a \\\"`cp train.py out.py`\\\" b\""}, None),
+        ("Bash", {"command": "echo \"$(echo \\\"x\\\"; cp train.py eval/metrics.py)\""}, "ask"),
+        ("Bash", {"command": "echo \"$(echo \\\"x\\\"; cp train.py out.py)\""}, None),
+        ("Bash", {"command": "echo \"$(echo \\\"x\\\")\" 'y'; cp train.py eval/metrics.py; echo 'end'"}, "ask"),
+        ("Bash", {"command": "echo \"$(echo \\\"x\\\")\" 'y'; cp train.py out.py; echo 'end'"}, None),
+        ("Bash", {"command": "echo \"$(echo \"x\")\" \"a \\\" b\"; cp train.py eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo \"$(echo \"x\")\" \"a \\\" b\"; cp train.py out.py"}, None),
+        ("PowerShell", {"command": "echo <# it's #> a; cp train.py eval/metrics.py; echo '<# b'"}, "ask"),
+        ("PowerShell", {"command": "echo <# it's #> a; cp train.py out.py; echo '<# b'"}, None),
+        # each word is looked up on disk once per run of the hook and working folder, since every reading above names
+        # the words of a line again (found by timing when that fix was read). The same word from two working folders
+        # is two files: the first, which is no kept file, does not answer for the second, in either order; a harmless
+        # pair passes
+        ("Bash", {"command": "python train.py > metrics.py; cd eval; python ../train.py > metrics.py"}, "ask"),
+        ("Bash", {"command": "cat test/labels.csv; cd data; cat test/labels.csv"}, "deny"),
+        ("Bash", {"command": "cd data; cat test/labels.csv; cd ..; cat test/labels.csv"}, "deny"),
+        ("Bash", {"command": "cat metrics.py; cd eval; cat metrics.py"}, None),
         # forms that no row took before: a here-string in double quotes, two documents opened on one line, and
         # the closing word '' (an empty line ends that document)
         ("PowerShell", {"command": "@\"\nsay \"hi\n\"@ | Out-Null; cp train.py eval/metrics.py; echo \"end\""}, "ask"),
@@ -2186,6 +2249,63 @@ def main():
     check('"ask"' in r.stdout and "could not finish" in r.stdout and time.time() - t0 < 30,  # was: no answer at all
           f"guard: a check that takes longer than the guard allows itself ends as a question, instead of running "
           f"into the hook's time limit ({r.stdout[:80]!r} after {time.time() - t0:.0f} s)")
+    t0 = time.time()  # 120 KB. The search for each one's end ran to the text's end: 27 s, and then the timer's answer
+    r = sh([PY, str(proj / ".claude/hooks/nn_guard.py")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}, timeout=300,
+           inp=json.dumps({"tool_name": "PowerShell", "cwd": str(proj), "session_id": "t", "tool_input": {
+               "command": "echo " + "<#" * 60000 + "\ncp train.py eval/metrics.py"}}))
+    check('"ask"' in r.stdout and "frozen" in r.stdout and "could not finish" not in r.stdout,
+          f"guard: a long line with many <# that nothing closes is read within the guard's own time, and what stands "
+          f"behind them is asked about for what it does ({r.stdout[:80]!r} after {time.time() - t0:.0f} s)")
+    # 31 KB. With a piece for every escaped quote, every run of pieces was looked up as a path: the timer's answer
+    got = guard("Bash", {"command": "curl -s -d \"{" + ",".join("\\\"k%d\\\":\\\"v\\\"" % i for i in range(2000))
+                                    + "}\" http://localhost:1/x"})
+    check(got[0] is None, f"guard: a long text with an escaped quote every few characters (a JSON body of 2,000 fields) "
+                          f"is read within the guard's own time and passes ({str(got[1])[:80]!r})")
+    # Each reading of a line looked every word up on disk again: a here-document with a script of 1,500 lines (69 KB)
+    # took 23 s on Windows, the timer's answer (10 s before the readings of 17 November 2026, 8 s with one lookup)
+    # The same file as a path object costs no lookup and by its full name one; a `~` word is the home's file; a lookup
+    # that failed (a server that does not answer) is not kept: it gives the path unresolved and is made again
+    code = ("import json, os, sys, pathlib; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "ctx = nn_guard.Ctx({'tool_name': 'Bash', 'tool_input': {'command': 'x'}, 'cwd': sys.argv[2]})\n"
+            "asked, resolve = [], pathlib.Path.resolve\n"
+            "def counted(p, strict=False):\n"
+            "    asked.append(p.name)\n"
+            "    if p.name == 'gone.py':\n"
+            "        raise OSError('no answer')\n"
+            "    return resolve(p, strict)\n"
+            "pathlib.Path.resolve = counted\n"
+            "first = {str(ctx._abs('metrics.py')) for _ in range(30)}\n"
+            "same = [str(ctx._abs(p)) in first for p in (pathlib.Path('metrics.py'), str(ctx.cwd / 'metrics.py'))]\n"
+            "home = ctx._abs('~/nn-x') == resolve(pathlib.Path(os.path.expanduser('~/nn-x')))\n"
+            "gone = [ctx._abs('gone.py') == ctx.cwd / 'gone.py' for _ in range(2)]\n"
+            "ctx.cwd = ctx.cwd / 'eval'\n"
+            "print(json.dumps([len(first), same, home, gone, str(ctx._abs('metrics.py')) in first, len(asked)]))")
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks"), str(proj)], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check(got == [1, [True, True], True, [True, True], False, 6],
+          f"guard: a word that a line names thirty times is looked up on disk once, and once more from another working "
+          f"folder, where it is another file; a lookup that failed is made again ({got})")
+    # the two spellings of that reading: one piece with the text around it, and a piece of its own, as on 17 November
+    # 2026, from the first text on that a command substitution reaches out of, across the quote or past the text's
+    # end (from there on the pairs of the reading and the shell's may part ways, and neither is the shell's word)
+    # The other ways in which one is found to reach (named when that was read): backticks, a ${ } without its }, one
+    # behind a } that is not its own, an apostrophe that a $( ) leaves open. And the form is kept per form of the line:
+    # with a here-document inside the $( ), the reading without the document's quotes has no such text
+    opens = ['echo "`echo \\"x\\"`"', 'echo "${x#\\"}"', 'echo "a} ${x#\\"}"', 'echo "$(echo it\'s) \\" b"',
+             'echo "$(cat <<EOF\nit\'s \\"x\\"\nEOF\n)"']
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "print(json.dumps([nn_guard.readings(c)[0] for c in %r]))" % (
+                ['echo "a \\" b"', 'echo "$(echo \\"x\\")"', 'echo "a \\" b" "$(echo "x")" "c \\" d"']
+                + [c + ' "p \\" q"' for c in opens],))
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check("echo 'a \" b'" in got[0] and 'echo "$(echo "\'"\'"x"\'"\'")"' in got[1] and "'\"x\")'" not in "".join(got[1])
+          and 'echo \'a " b\' "$(echo "x")" "c "\'"\'" d"' in got[2] and "'c \" d'" not in "".join(got[2]),
+          f"guard: an escaped quote in \"...\" is read as one piece with the text around it, and as a piece of its own "
+          f"where a command substitution reaches across it, and in the texts behind one that it reaches out of ({got})")
+    day17, fewest = [[any(r.endswith(end) for r in g) for g in got[3:]] for end in (' "p "\'"\'" q"', " 'p \" q'")]
+    check(day17 == [True] * 5 and fewest == [False] * 4 + [True],
+          f"guard: backticks, a ${{ }} and a $( ) that an apostrophe leaves open reach across an escaped quote too, and "
+          f"the text behind keeps the form of 17 November; a form of the line in which nothing reaches takes the other "
+          f"({got[3:]})")
 
     # 7. session hook
     r = sh([PY, str(proj / ".claude/hooks/nn_session_status.py")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)},

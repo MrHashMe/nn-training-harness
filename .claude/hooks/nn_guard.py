@@ -1084,7 +1084,7 @@ HEREDOC = re.compile(r"(?<!<)<<(?!<)(-?)[ \t]*((?=[A-Za-z_'\"\\])(?:[^\s;&|<>()'
 LONE_QUOTE = re.compile(QUOTED.pattern + r"|(['\"])")  # a quoted text as the rules pair it, or a quote left over
 
 
-def unquoted_bodies(text: str) -> str:
+def unquoted_bodies(text: str, paired: bool = False) -> str:
     """A line without the quote characters of its here-documents that pair with nothing there. What stands in a
     document is text, in which an apostrophe pairs with nothing (don't). The rules pair quotes over the whole line,
     so that one paired with a quote further down and hid the commands in between (cat <<EOF <newline> don't <newline>
@@ -1092,9 +1092,11 @@ def unquoted_bodies(text: str) -> str:
     in it is read as on the line as it came: print('a -> b') holds no redirection. PowerShell's here-string loses
     all of them, because its text then stands between the quotes of its own @' and '@. So does a document that
     nothing on the line closes: a closing word that the guard reads otherwise than the shell looks the same. And so
-    does a document with a backslash in front of a quote (print("a \\" b")): the rules, for which a backslash is a
-    folder separator, pair that quote, and LONE_QUOTE and the readings of a POSIX shell do not, so that no pairing
-    of such a text holds for all of them.
+    does a document with a backslash in front of a quote, an escaped quote (print("a \\" b")) or a quote behind an
+    escaped backslash ("C:\\\\"): the rules, for which a backslash is a folder separator, pair that quote, and
+    LONE_QUOTE and the readings of a POSIX shell do not, so that no pairing of such a text holds for all of them.
+    With paired, that last kind keeps the quotes that pair in it, as it was read from 16 November 2026 to the 17th:
+    readings() takes the line both ways, so that neither way takes a question of the other away.
     Like every reading this may name more than the shell would: a << in quoted text counts as a document's start,
     and then a quote left over in the lines below it is taken out.
     shortcut: a closing word that starts with anything but a letter, _, a quote or a backslash (<<1, <<+x, <<$x) is
@@ -1110,7 +1112,8 @@ def unquoted_bodies(text: str) -> str:
         elif ln is None or re.match(ends[0][0], ln):
             if first < k:
                 body = "\n".join(lines[first:k])
-                lines[first:k] = (re.sub(r"['\"]", "", body) if ends[0][1] or ln is None or re.search(r"\\['\"]", body)
+                lines[first:k] = (re.sub(r"['\"]", "", body)
+                                  if ends[0][1] or ln is None or not paired and re.search(r"\\['\"]", body)
                                   else LONE_QUOTE.sub(lambda q: "" if q.group(1) else q.group(), body)).split("\n")
             del ends[0]
             first = k + 1
@@ -1122,7 +1125,8 @@ def readings(cmd: str):
     write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell leaves
     its comments out (read here both ways), takes a backslash
     off the character behind it (te\\st is test, also across the end of a line), reads \\" inside "..." as a quote
-    that ends nothing (echo "a \\" b"; the rules would end the string there), reads $'te\\x73t' and $"test" as
+    that ends nothing (echo "a \\" b"; the rules would end the string there, and the reading of before, which
+    keeps "..." as it came, is made beside this one), reads $'te\\x73t' and $"test" as
     test, may put the word of ${name:-word} in the name's place, and writes a word with {a,b} out; zsh and ksh have
     patterns of their own, which wild() writes as plain
     wildcards in a reading of its own; PowerShell and cmd take their own escape characters off (te`st, te^st).
@@ -1134,10 +1138,10 @@ def readings(cmd: str):
     in PowerShell's reading): it is checked in addition to the line as it came.
     shortcut: text only, so a name put together from variables, {a..b} or a command's output passes; that takes
     running the line in a sandbox"""
-    held, long = [], []
+    held, long, loose = [], [], []  # loose: the "..." of this form of the line that a substitution reaches out of
 
-    def hold(s):  # quoted text is no escape and no brace list
-        held.append(s)
+    def hold(s, came=None):  # quoted text is no escape and no brace list; came: as it stood on the line
+        held.append((s, s if came is None else came))
         return "\0%d\0" % (len(held) - 1)
 
     def c_char(m):
@@ -1145,12 +1149,47 @@ def readings(cmd: str):
         return chr(min(int(e[1:], 16), 0x10FFFF)) if e[0] in "xuU" and len(e) > 1 else \
             chr(int(e, 8) % 256) if e[0] in "01234567" else e
 
+    def reaches(s):  # does a $( ), a ` ` or a ${ } that this stretch of a "..." opens go on behind it? (The stretch
+        # as part() gets it: the word of a default, ${X:-\"d\"}, stands in the name's place by then, and is read as such.)
+        # shortcut: ` and ${ are counted, not followed as closes() follows a $( (a ` or a ${ in quotes inside a $( )
+        # counts as one that opens, a } left over in front of a ${ as its end), and an escaped \$( counts as a $(. All
+        # but the } keep the form of 17 November where the other would do; a walk like closes() for each, where it matters
+        i, bare = s.find("$("), re.sub(r"\\.", "", s, flags=re.S)
+        while i >= 0:
+            i = closes(s, i + 2)
+            if i >= len(s):
+                return True
+            i = s.find("$(", i)
+        return bare.count("`") % 2 or bare.count("${") > bare.count("}") or bare.rfind("${") > bare.rfind("}")
+
     def part(m):
-        x = m.group(1)
+        x, t = m.group(1), m.group()
         if x is None:  # a quoted string. In "..." an escaped quote ends nothing, and the rules, for which a backslash
-            # is a folder separator, would end the string there: written as the shell's own splice, "a "'"'" b"
-            return hold(re.sub(r"\\(.)", lambda e: "\"'\"'\"" if e.group(1) == '"' else e.group(), m.group(), flags=re.S)
-                        if m.group()[0] == '"' else m.group())
+            # is a folder separator, would end the string there: written as the shell's own splice of the fewest pieces,
+            # 'a " b'. A text between two such quotes that "..." would expand, or that '...' cannot hold, stays in "..."
+            # as it came: "$x"'" b'. (The form of 17 November 2026 spliced at every such quote, "a "'"'" b": a JSON body
+            # of 1.4 KB was 800 pieces, of which joined() made 170,000 paths to look up on disk, 22 seconds on Windows.)
+            # That form stays from the first "..." on in which a $( ), a ` ` or a ${ } reaches across such a quote
+            # ("$(echo \"x\")") or past the text's end ("$(echo "x")"), to the end of the line: from there on the pairs
+            # of this reading and the shell's may part ways, neither form is the shell's word, what the shell runs is
+            # read from the line as it came, by spliced(), and the other form gave some of those lines another answer
+            # than that day's.
+            # shortcut: such a line keeps that form's cost too (400 escaped quotes in one text from that point on: the
+            # timer's question); that takes finding where the substitution ends and keeping the old form up to there
+            if t[0] == "'":
+                return hold(t)
+            segs = t[1:-1].split('\\"')
+            if loose or any(map(reaches, segs)):
+                loose.append(t)
+                return hold('"%s"' % "\"'\"'\"".join(segs), t)
+            out = run = ""
+            for i, s in enumerate(segs if len(segs) > 1 else ()):
+                run += '"' * (i > 0)
+                if re.search(r"[\\$`']", s):
+                    out, run = out + ("'%s'" % run if run else "") + '"%s"' % s, ""
+                else:
+                    run += s
+            return hold((out + ("'%s'" % run if run else "")) or t, t)
         if not re.match(r"[\w./:@%+=~^-]", x):  # a character that stays quoted
             return hold("" if x == "\n" else shlex.quote(x))
         return x
@@ -1165,23 +1204,32 @@ def readings(cmd: str):
         return " " if t[0] in "<#" else t if t[0] == "'" else re.sub(
             r"`(.)", lambda e: "" if e.group(1) in "\"'" else e.group(), t, flags=re.S)
 
+    def ps(parts, t):  # behind the last #> no <# is closed. Marked there, so that the search for its end, which ran
+        # from each of them to the text's end and took a long line past the guard's time limit, is not made
+        cut = t.rfind("#>") + 1
+        return parts.sub(ps_part, t[:cut] + t[cut:].replace("<#", "<\0#")).replace("\0", "")
+
     text, out = cmd.replace("\0", ""), []
     bodies = unquoted_bodies(text)
     # with its comments and without: what stands behind a # may be a zsh pattern (data/(#i)TEST), and no comment.
-    # And without the quotes of its here-documents that pair with nothing there
-    for posix in dict.fromkeys((text, uncommented(text), uncommented(bodies))):
+    # And without the quotes of its here-documents that pair with nothing there, in both forms of unquoted_bodies().
+    # Each of these twice (k): with an escaped quote in "..." as the splice, and with every "..." as it came. The
+    # second, and the document's second form, are how the versions before 17 November 2026 read the line. They pair
+    # quotes as no shell does, and they stay because they asked about lines that no other reading asks about
+    # (echo it\'s "a \" > eval/metrics.py" 'x'): a reading may add a question, and a change of one could take one away
+    for posix in dict.fromkeys((text, uncommented(text), uncommented(bodies), uncommented(unquoted_bodies(text, True)))):
         for _ in range(4):  # a default inside a default
             posix = PARAM_WORD.sub(r"\1", posix)
         posix = ANSI_C.sub(lambda m: shlex.quote(C_ESCAPE.sub(c_char, m.group(1)).replace("\0", "")), posix)
+        loose.clear()
         posix = POSIX_PART.sub(part, re.sub(r"\$(?=\")", "", posix))
-        out += [re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))], t)
-                for t in (BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t)))]
+        out += [re.sub(r"\0(\d+)\0", lambda m: held[int(m.group(1))][k], t) for t in (
+            BRACE_WORD.sub(written_out, posix), wild(posix, lambda t: BRACE_WORD.sub(written_out, t))) for k in (0, 1)]
     # PowerShell and cmd: the line as it came, the line as PowerShell pairs its quotes, and that one without the
     # quotes of its here-documents that pair with nothing there and without its comments to the line end: once where
     # a POSIX shell starts one (no # inside a word), once from every # that PowerShell's own pairing leaves outside
     # a text, so that a quote in a comment misleads neither the pairing behind it nor the search for the comment
-    for win in dict.fromkeys((text, PS_PART.sub(ps_part, text), uncommented(PS_PART.sub(ps_part, bodies)),
-                              PS_LINE.sub(ps_part, bodies))):
+    for win in dict.fromkeys((text, ps(PS_PART, text), uncommented(ps(PS_PART, bodies)), ps(PS_LINE, bodies))):
         win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), win)
         out.append(WIN_ESCAPE.sub("", win).replace("\0", ""))
     return [t for t in dict.fromkeys(out) if t != cmd], any(long)
@@ -1662,18 +1710,22 @@ class Ctx:
                 if isinstance(theirs, dict) and isinstance(theirs.get(k), list):
                     mine = list(self.cfg.get(k) or [])
                     self.cfg[k] = mine + [x for x in theirs[k] if isinstance(x, str) and x not in mine]
-        self._links, self.searched, self.t0 = None, {}, time.time()
+        self._links, self.searched, self.t0, self._real = None, {}, time.time(), {}
         self.cut, self._globs = None, {}  # the wildcard whose matches expand() could not read to the end; its answers
 
     def _abs(self, p):
-        pp = Path(os.path.expanduser(winpath(p)))  # not Path.expanduser(): that one raises for a user it does not know
-        if not pp.is_absolute():
-            pp = self.cwd / pp
-        try:
-            pp = pp.resolve(strict=False)
-        except (OSError, RuntimeError):
-            pass
-        return pp
+        # Looked up on disk once per run of the hook and working folder. Every reading of a line names the same words
+        # again: a here-document that holds a script of 1,500 lines took 23 s on Windows (the timer's answer), now 8 s
+        key = (str(self.cwd), str(p))
+        if key not in self._real:
+            pp = Path(os.path.expanduser(winpath(p)))  # not Path.expanduser(): it raises for a user it does not know
+            if not pp.is_absolute():
+                pp = self.cwd / pp
+            try:
+                self._real[key] = pp.resolve(strict=False)
+            except (OSError, RuntimeError):
+                return pp  # not kept: a lookup that failed is made again at the next one, as before
+        return self._real[key]
 
     def links(self):
         """(real place, repository name) of each protected folder or file that is, or lies behind, a link (data ->

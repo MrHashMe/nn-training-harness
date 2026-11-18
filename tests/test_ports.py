@@ -224,6 +224,18 @@ def guard_tests(tmp: Path):
           "Claude: a command in backticks right before a closing quote passes for a read-only subagent, and one with "
           "a quoted -> behind it is denied (the cost of reading a line once more as PowerShell pairs its quotes, "
           "where a backtick before a quote makes it end nothing; it passed before 17 November 2026)")
+    check(guard(proj, cl("python -c \"open(\\\"out.txt\\\", \\\"w\\\").write(\\\"x\\\")\"", agent_type="run-analyst"))[1] == "deny"
+          and guard(proj, cl("python -c \"print(open(\\\"train.py\\\").read())\"", agent_type="run-analyst"))[2] == "",
+          "Claude: a write from python -c whose quotes are escaped is denied to a read-only subagent, and one that only "
+          "reads passes (the write passed before 17 November 2026: the rules ended the program at its first escaped quote)")
+    check(guard(proj, cl("echo \"a`\"b\" > out.txt; echo \"it's\"", agent_type="run-analyst"))[1] == "deny",
+          "Claude: a redirection behind a text with PowerShell's escaped quote is denied to a read-only subagent (it "
+          "passed before 17 November 2026: the rules ended the text at that quote and took the redirection for text)")
+    check(guard(proj, cl("cat <<'EOF'\n{\"dir\": \"C:\\\\data\\\\\"}\nEOF", agent_type="run-analyst"))[2] == ""
+          and guard(proj, cl("cat <<'EOF'\n{\"dir\": \"C:\\\\data\\\\\", \"note\": \"a -> b\"}\nEOF",
+                             agent_type="run-analyst"))[1] == "deny",
+          "Claude: a here-document with a quote behind an escaped backslash counts as one with a backslash in front of a "
+          "quote: it passes for a read-only subagent, and with a quoted -> besides it is denied (the same cost)")
     check(guard(proj, cx("Remove-Item -Recurse runs"), "--agent", "codex")[0] == 2
           and guard(proj, cx("Set-Content eval/metrics.py x"), "--agent", "codex")[0] == 2,
           "Codex: PowerShell forms of deleting runs and of writing the frozen evaluator are refused")

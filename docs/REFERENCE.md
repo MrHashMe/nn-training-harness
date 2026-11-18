@@ -322,16 +322,51 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   for some hours of that day, took those out too and refused such a program to a read-only subagent).
   PowerShell's here-string loses all of its quote characters, and only this extra reading covers it; a
   here-document that nothing on the line closes loses them all too, and since 17 November 2026 so does one
-  with a backslash in front of a quote (`print("a \" b")`): the rules read a backslash as a folder separator
+  with a backslash in front of a quote (`print("a \" b")`; a quote behind an escaped backslash, `"C:\\"`,
+  counts as one): the rules read a backslash as a folder separator
   and end the quoted text there, so between 16 November and that day such a quote paired with one behind the
   document and hid the commands in between (found when that fix was read; the cost is that a quoted `->` or
   `rm` beside such a quote is refused to a read-only subagent again). For the same reason the guard reads
   every line once more as a POSIX shell does where `\"` stands inside double quotes (`echo "5\" wide"`): there
   it ends nothing, while the rules ended the quoted text and, with an odd number of such quotes, hid the
-  commands up to the next quote; no version before 17 November 2026 read that. And it reads every line once
+  commands up to the next quote; no version before 17 November 2026 read that, and a read-only subagent's
+  `python -c "open(\"f\", \"w\")"` passed until then, because the program ended for the rules at its first
+  escaped quote. Both readings first took the place of the ones before them (such a document with the quotes
+  that pair in it, and `"..."` as it came), and two kinds of line that only those had asked about passed from
+  17 to 18 November 2026: `echo it\'s "a \" > eval/metrics.py" 'x'` is one, which a POSIX shell only prints
+  and which writes the file where its text reaches cmd. Since the reading of 18 November the older readings
+  are made beside the newer ones, so that a line they asked about is asked about still. Each reading is one
+  more pass of every rule over the line, and each pass looked every word up on disk again: a here-document
+  that holds a script of 1,500 lines (69 KB, eight forms to read) took 23 seconds on Windows, more than the
+  guard allows itself, and 10 before 17 November. Since the same day a word is looked up once per run of the
+  hook and working folder (a lookup that failed, as on a server that does not answer, is not kept and is made
+  again as before), and that document takes 8 seconds: about a second for each form, which is what stays.
+  The text with the escaped quotes is read as the shell's own splice of the fewest pieces (`'5" wide'`; a part
+  between two such quotes that double quotes would expand, or that holds a backslash or an apostrophe, stays
+  in double quotes as it came). The form of
+  17 November made a piece of every escaped quote, and the guard looks up every run of touching pieces on disk
+  as a path: a JSON body of 1.4 KB with a hundred fields (`curl -d "{\"k\":\"v\",…}"`) took 22 seconds on
+  Windows, more than the guard allows itself, so that such a line ended as a question; it passes in a tenth of
+  a second again, as before that day (with the exception below). One answer of that form went with it: a
+  sealed file named in such a text that the guard does not read as a command of its own (a message, the body
+  of a request, a command for another host) was refused, for a path made of its name and the quote character
+  behind it. It is asked about again, as in every version before, and as the same word written with
+  apostrophes was on that day too. A text handed to a shell or an interpreter on this machine is read as a
+  command as before, and a sealed file it reads is refused. The form of 17 November stays from the first text
+  on in which a command substitution or a `${…}` reaches across an escaped quote (`"$(echo \"x\")"`) or past
+  the text's end, as with quotes inside it (`"$(dirname "$0")"`), to the end of the command, its further lines
+  included: from there on the guard's pairs of quotes and the
+  shell's may part ways, and neither form is the word a shell makes of such a text; what the substitution runs
+  is read from the line as it came, as in every version, and the newer form gave some such lines another
+  answer than that day's. Such a line keeps that form's cost too: a text with some hundred escaped quotes
+  behind that point ends as the timer's question, as on 17 November. And the guard reads every line once
   more as PowerShell pairs its quotes: there a backtick in front of a quote makes it end nothing, inside double
   quotes too (``echo "5`" wide"``), and a quote inside a comment `<# #>` belongs to the comment (`<# it's #>`);
-  the rules paired both, in every version before that day. In that reading a comment to the end of the line
+  the rules paired both, in every version before that day, so that a redirection behind such a text passed for
+  a read-only subagent too. A `<#` that nothing closes is no comment, and what stands behind it is read on;
+  until 18 November the search for its end ran from each of them to the line's end, and a line of 120 KB with
+  60,000 of them was answered after 27 seconds, later than an agent's hook waits (now 0.3 seconds). In that
+  reading a comment to the end of the line
   is found by the same pairing, so that an apostrophe in one (`# don't`) misleads nothing behind it. The cost: on a
   POSIX line with a command in backticks
   right before a closing quote (``"`date`"``), that reading takes the backtick for an escape and reads text

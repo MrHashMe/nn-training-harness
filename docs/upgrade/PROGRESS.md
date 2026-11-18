@@ -43,11 +43,13 @@ it). The sixth showed a defect of the loop's count of time. It is repaired in tw
 after an independent reading found a regression in the first, and a stand-in of the tests is mended in
 a third. The same entry says what the clock of this machine's WSL does, which is measured now. On the
 user's third "Push test branch" of that day the repair is on `test/round-8`, where all six jobs pass
-("The loop's repair on the test branch" below); `main` is as it was.
+("The loop's repair on the test branch" below). On the user's "Push main" of 18 November the public
+`main` has the three guard fixes and the repair, and all six jobs pass there ("`main` takes the guard
+fixes and the loop's repair" below).
 
 # Upgrade progress
 
-Last updated: 17 November 2026.
+Last updated: 18 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -2040,7 +2042,50 @@ clock; a machine put to sleep during a session; a campaign with a real agent on 
 Next, each a separate word of the user's: `main` (a yes would cover that push as a fast-forward with no
 force, the reading of the jobs, and the push of the record to `main` and the test branch); WSL's clock;
 a reading of the three guard fixes; the reading for `cmd /c`; an eighth installer run on the real
-install; whether the test branches are deleted.
+install; whether the test branches are deleted. (Added on 18 November: `main` has them, on the user's
+word, and the run that the push of the addition above started passes in all six jobs; the next entry.)
+
+## `main` takes the guard fixes and the loop's repair (18 November): pushed, all six jobs pass
+
+The user's word, 18 November: "Push main", to the question whether the test branch's head goes to
+`main`. Before the answer I had said what a yes covers: `main` moves from `7462b7b` to `413a8c6` as a
+fast-forward with no force; I read GitHub's six jobs there; and I push the record of the result to
+`main` and to the test branch. Not covered: the real install, any deletion.
+
+Done:
+- Fetched: the public `main` unchanged at `7462b7b`; `test/round-8` at `413a8c6`, this branch's head;
+  this branch eleven commits ahead of `main` and none behind. The eleven searched for private details
+  (none), all with the no-reply address and UTC dates.
+- Pushed at 00:17 UTC: `main` from `7462b7b` to `413a8c6`, with no merge commit and no force. Six of
+  the eleven change the kit or its tests: `63bfdf6`, `25aa674`, `5dcd2ec` (the three guard fixes),
+  `cb7ee1b`, `053cd8c` (the loop's repair) and `463275d` (the stand-in of the remote tests). Five
+  change records only: `cd01579`, `36a4857`, `8ce7ed0`, `c0dd4cf`, `413a8c6`.
+- The local `main`, which the main checkout has checked out, was moved to the public one.
+- GitHub's workflow run 44206621190 on `main` at `413a8c6` (00:17 to 00:35 UTC): all six jobs pass,
+  each with the counts of the run on the test branch's head: 1,628 on ubuntu-latest (Python 3.15.2),
+  1,617 on Ubuntu 24.04 (3.8.18), 1,614 and 1,613 on Windows (3.15.2 and 3.8.10), 1,623 on macOS under
+  "Python 3.x" (3.14.10) and 1,616 under the system's 3.9.6. No check failed; the loop's new check, the
+  check that failed on `36a4857` and the remote check of `463275d` pass in each log. The Mac job with
+  "Python 3.x" ran on the image 20261102.0473.1 with Python 3.14.10 here too.
+- The run that the entry above could not hold, 44167209349 on `413a8c6` on the test branch (17
+  November, 20:14 to 20:39 UTC): all six jobs pass, with 1,628, 1,617, 1,614, 1,613, 1,623 and 1,616
+  checks. Its "macos-latest, Python 3.x" job got the image 20261102.0473.1 with Python 3.14.10, the
+  image and interpreter of the job that failed on `36a4857`: the failed job has run again as it was,
+  on the repaired loop, and passes. That adds little, since that check had failed by chance; the
+  loop's new check stays the evidence. REPORT.md's sentence that the job "has not run again as it
+  was" has an addition that says so.
+- REPORT.md has the section of this entry's name and point 29 of "Read this first". The ledger is
+  unchanged (1,703 rows; its built row says that the six jobs pass).
+- This record is pushed to `main` and to the test branch, as the word covers. Each push starts one
+  more run of the six jobs, which this entry cannot hold.
+- Left as it is: the branches `test/rounds-6-7` and `test/round-8` in the public repository; the
+  README (another session's work); the real install, which has rounds 6 and 7 and not round 8; the
+  clock of this machine's WSL; run 44161954913, which stays listed as failed (no re-run asked of
+  GitHub).
+
+Next, each a separate word of the user's: a reading of the three guard fixes, which `main` now holds
+unread by anyone but their author; WSL's clock; the reading for `cmd /c`; an eighth installer run on
+the real install; whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2332,15 +2377,19 @@ install; whether the test branches are deleted.
   covers that push, the reading of GitHub's jobs, and further pushes to that branch for a repair that a
   failed job calls for and for the record of the result, as I had said before it. It is not a word for
   `main`, a deletion or anything on the real install.
-- Open, from round 8: whether `main` takes the loop's repair and the stand-in's change (`cb7ee1b`,
-  `463275d`, `053cd8c`) with the three guard fixes of 17 November, all on `test/round-8` now: it holds
-  a regression until then; whether the clock of this machine's WSL is mended, which is configuration
+- Answered on 18 November ("Push main"), from the loop's repair on the test branch: `main` takes the
+  three guard fixes and the repair. "`main` takes the guard fixes and the loop's repair" above. The
+  word covers the push of the eleven commits, the reading of GitHub's jobs, and the push of the record
+  of the result to `main` and to the test branch, as I had said before it. It is not a word for
+  deleting a branch, for a re-run of a job on GitHub or for anything on the real install.
+- Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
-  second reading's fixes on the test branch"); whether the three guard fixes get a reading of their
-  own; whether the reading of text handed to `cmd /c` is built; whether the public branch
-  `test/round-8` is deleted; whether the installer runs on the real install an eighth time; whether
-  agent sessions may be spent on a comparison of the worker's history lines and on a pilot on the
-  fine-tuning task; whether a Gemini or Antigravity CLI is installed for a port.
+  second reading's fixes on the test branch"); whether the three guard fixes of 17 November get a
+  reading of their own (`main` holds them since 18 November); whether the reading of text handed to
+  `cmd /c` is built; whether the public branch `test/round-8` is deleted; whether the installer runs
+  on the real install an eighth time; whether agent sessions may be spent on a comparison of the
+  worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity CLI
+  is installed for a port.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

@@ -1,6 +1,6 @@
 # Upgrade report: nn-training harness kit
 
-Work of 10 to 17 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
+Work of 10 to 18 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
 who has not seen the work. Requirements: `docs/upgrade/PROMPT.md`, and `docs/upgrade/ROUND2.md` for the second
 round of 12 November, which has its own section right after "Read this first". A third stretch of work on the
 same day built three items that round 2 had left open, and on 13 November repaired three small faults it had
@@ -49,8 +49,10 @@ commits ("The second reading of the fixes"). On your "Push test branch" of that 
 branch, where five of GitHub's six jobs pass. The sixth showed a defect of the loop's count of time, which
 is repaired in two commits, and the same work measured what the clock of WSL on this machine does ("The
 second reading's fixes on the test branch"). On your third "Push test branch" of that day the repair went
-to the test branch, where all six jobs pass; `main` does not have it ("The loop's repair on the test
-branch", the last section before "1. What changed and why").
+to the test branch, where all six jobs pass ("The loop's repair on the test branch"). On your "Push main"
+of 18 November `main` took the three guard fixes and the repair, with no merge commit, and all six jobs
+pass there ("`main` takes the guard fixes and the loop's repair", the last section before "1. What
+changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -395,7 +397,21 @@ Decision record: `docs/upgrade/LEDGER.md`.
     it was, and no machine was put to sleep during a session. (Added later that day: GitHub lists the
     run on the record's own commit as failed, because it did not start one of the two Mac jobs for
     want of a machine. The five jobs that ran pass, and nothing in the kit failed. The section's part
-    "The run on this record's commit".)
+    "The run on this record's commit".) (Added with point 29: `main` has both, on your word, and the
+    Mac job that had failed has run again on the same image and interpreter, and passes.)
+29. **`main` has the three guard fixes and the loop's repair** (18 November; "`main` takes the guard
+    fixes and the loop's repair"). On your "Push main" the public `main` moved from `7462b7b` to
+    `413a8c6`: eleven commits, with no merge commit and no force. All six of GitHub's jobs pass on
+    `main`, each with the counts of point 28's run. So the public `main` no longer has the regression
+    of point 26, the three older gaps found beside it, or the loop's defect of point 27. The Mac job
+    that failed in point 27 has also run again as it was, twice: in the run on the test branch's head
+    on 17 November and in the run on `main`, "macos-latest, Python 3.x" got the image and interpreter
+    of the failed job, and it passes on the repaired loop both times. Passes of a check that had
+    failed by chance show little; the evidence stays the loop's new check. Open: the three guard
+    fixes are still unread by anyone but me, and `main` holds them now; your real install does not
+    have round 8, so it keeps the three older gaps and the loop's defect until an eighth installer
+    run, on your word; the clock of this machine's WSL is as it was; the two public test branches
+    still exist.
 
 ## Round 2 (12 November 2026)
 
@@ -6211,7 +6227,7 @@ In short:
    for want of a machine. "The run on this record's commit", below.)
 4. **`main` is as it was**, at `7462b7b`: it has neither the three guard fixes of 17 November nor the
    loop's repair, so it keeps the regression of `4e2bec4` and the loop's defect. Your real install is
-   untouched.
+   untouched. (Added on 18 November: `main` has both now, on your word; the section after this one.)
 
 ### The push, and GitHub's run
 
@@ -6251,7 +6267,9 @@ Read in each of the six logs:
   failed on `36a4857` under macOS, passes in all six. It failed by chance: a kill that returns within
   0.05 s and a rounding that goes down. So one pass shows little. And the job that failed has not run
   again as it was: "macos-latest, Python 3.x" was the image 20261102.0473.1 with Python 3.14.10 then,
-  and is 20261112.0504.1 with Python 3.15.2 now.
+  and is 20261112.0504.1 with Python 3.15.2 now. (Added on 18 November: it has since run again as it
+  was, in the run on `413a8c6`, and passes; "The run on the test branch's head" in the section after
+  this one.)
 - **"a job the provider ends at its time limit is not resumed"**, whose stand-in `463275d` mended,
   passes in all six, as it did on GitHub's machines before: its fault showed under WSL's clock only.
 
@@ -6278,14 +6296,16 @@ the kit failed in it:
   above). So the job that did not start takes nothing from that result and adds nothing to it, and no
   repair was called for.
 - **Not done.** I did not ask GitHub to run the job again. The push of this addition starts all six
-  jobs once more; a job that GitHub ends in this way there would mean the same and no more.
+  jobs once more; a job that GitHub ends in this way there would mean the same and no more. (Added on
+  18 November: all six jobs pass in that run, 44167209349; the section after this one.)
 
 ### What needs your decision
 
 - **`main`.** "Push main" would move it from `7462b7b` to the head of `test/round-8`, as a fast-forward
   with no force, and GitHub's six jobs would run there. I would take a yes to cover that push, the
   reading of the jobs, and the push of the record of the result to `main` and to the test branch. Not
-  your real install, and no deletion.
+  your real install, and no deletion. (Added on 18 November: answered, "Push main", and done; the
+  section after this one.)
 - **WSL's clock on this machine**: as in the section before this one, (a) to (c). Nothing is changed.
 - Unchanged: a reading of the three guard fixes by someone other than their author; the reading of text
   handed to `cmd /c`; an eighth installer run on your real install; the two public test branches.
@@ -6293,6 +6313,108 @@ the kit failed in it:
 Sources: GitHub Actions, workflow run 44158183103 of the public repository, read on 17 November 2026
 from the run's list of jobs and from each job's log; workflow run 44161954913, read the same day from
 its list of jobs, from the five logs and from the annotations of the job that did not start.
+
+## `main` takes the guard fixes and the loop's repair (18 November 2026): pushed, all six jobs pass
+
+Your word: "Push main", to the question whether the test branch's head goes to `main`. Before you
+answered I had said what a yes covers: `main` moves from `7462b7b` to `413a8c6` as a fast-forward with
+no force; I read GitHub's six jobs there; and I push the record of the result to `main` and to the test
+branch. Not covered: your real install, any deletion.
+
+In short:
+
+1. **The public `main` has the three guard fixes of 17 November and the loop's repair.** It moved from
+   `7462b7b` to `413a8c6`: eleven commits, with no merge commit and no force. So it no longer has the
+   regression of `4e2bec4`, the three older gaps found beside it, or the loop's defect.
+2. **All six of GitHub's jobs pass on `main`**, each with the counts it had on the test branch: 1,628
+   and 1,617 checks on Ubuntu, 1,614 and 1,613 on Windows, 1,623 and 1,616 on macOS. No check failed.
+3. **The Mac job that failed on `36a4857` has run again as it was, twice, and passes.** The run on the
+   test branch's head, which the last record could not hold, and the run on `main` both gave
+   "macos-latest, Python 3.x" the image and interpreter of the failed job. All six jobs pass in both.
+   It adds little: that check had failed by chance, and the evidence for the repair stays the loop's
+   new check.
+4. **Open.** The three guard fixes are unread by anyone but me, and `main` holds them now. Your real
+   install is untouched: it has rounds 6 and 7, so the three older gaps and the loop's defect, and not
+   the regression. The clock of this machine's WSL is as it was.
+
+### The push, and GitHub's run on `main`
+
+- Before the push: fetched; the public `main` unchanged at `7462b7b`, and the test branch at `413a8c6`,
+  which is this branch's head; this branch eleven commits ahead of `main` and none behind; the eleven
+  searched for private details (none), all with the no-reply address and UTC dates.
+- The push, at 00:17 UTC on 18 November: `main` moved from `7462b7b` to `413a8c6`. Six of the eleven
+  commits change the kit or its tests: `63bfdf6`, `25aa674` and `5dcd2ec` (the three guard fixes),
+  `cb7ee1b` and `053cd8c` (the loop's repair) and `463275d` (the stand-in of the remote tests). The
+  other five change records only: `cd01579`, `36a4857`, `8ce7ed0`, `c0dd4cf` and `413a8c6`. The local
+  `main` was moved to the public one.
+- GitHub's workflow run 44206621190 on `main` at `413a8c6` (00:17 to 00:35 UTC): six of six jobs pass.
+
+| Job | Interpreter | Checks passed | Failed | Skip lines |
+|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 1,628 | 0 | 2 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 1,617 | 0 | 3 |
+| windows-latest, Python 3.x | 3.15.2 | 1,614 | 0 | 5 |
+| windows-latest, Python 3.8 | 3.8.10 | 1,613 | 0 | 5 |
+| macos-latest, Python 3.x | 3.14.10 | 1,623 | 0 | 3 |
+| macos-latest, Python system | 3.9.6 | 1,616 | 0 | 5 |
+
+Every count is the one of the run on the test branch's head, and the three checks named in the section
+before this one pass in each of the six logs. The images: ubuntu-26.04 20261111.196.1, ubuntu-24.04
+20261111.127.1, windows-2025-vs2026 20261103.298.1 and, for macOS, macos-26-arm64 20261102.0473.1 under
+"Python 3.x" and 20261112.0504.1 under the system's Python. So "macos-latest, Python 3.x" ran once more
+on the image and interpreter of the job that failed on `36a4857`. The checks that put generated lines
+to real shells ran in bash 3.2.57 and zsh 5.9 on macOS, bash 5.2.21 and 5.3.9 on Ubuntu, and Git Bash
+5.3.15 and PowerShell 7.6.9 on Windows. Neither Mac job waited for a machine this time.
+
+This record is pushed to `main` and to the test branch, as your word covers. Each of the two pushes
+starts one more run of the six jobs, which this record cannot hold.
+
+### The run on the test branch's head, which the last record could not hold
+
+The push of the last record's addition to the test branch, at 20:14 UTC on 17 November (`c0dd4cf` to
+`413a8c6`), started GitHub's workflow run 44167209349 (20:14 to 20:39 UTC). It ran the commit that
+`main` took four hours later.
+
+- **All six jobs pass**: 1,628 checks on ubuntu-latest (Python 3.15.2), 1,617 on Ubuntu 24.04 (3.8.18),
+  1,614 and 1,613 on Windows (3.15.2 and 3.8.10), 1,623 on macOS under "Python 3.x" and 1,616 under the
+  system's 3.9.6. No check failed, and the three checks named in the section before this one pass in
+  each of the six logs.
+- **"macos-latest, Python 3.x" ran on the image 20261102.0473.1 with Python 3.14.10**: the image and
+  interpreter of the job that failed on `36a4857`. So the failed job has now run again as it was, on
+  the repaired loop, and it passes, the check that had failed among its 1,623. The sentence of the
+  section before this one, that it "has not run again as it was", held when it was written and no
+  longer does.
+- **What that adds: little.** That check had failed by chance (a kill that returns within 0.05 s and a
+  rounding that goes down), so one pass on the same image does not show the repair. The loop's new
+  check does, which sets the loop's clocks by hand, and it passes in this job as in the others.
+- Both Mac jobs waited ten minutes for a machine. The other one got the newer image, 20261112.0504.1.
+- The run before it, 44161954913, stays listed as failed in the repository's list of runs. I have not
+  asked GitHub to run its job again: that would be a step of its own, on your word.
+
+### Left as it is
+
+- The branches `test/rounds-6-7` and `test/round-8` in the public repository. With the push of this
+  record, `test/round-8` and `main` are the same commit.
+- The README (another session's work).
+- Your real install, which has rounds 6 and 7 and not round 8.
+- The clock of this machine's WSL.
+
+### What needs your decision
+
+- **A reading of the three guard fixes** (`63bfdf6`, `25aa674`, `5dcd2ec`) by someone other than their
+  author. `main` holds them now, and each of the three readings of 16 and 17 November led to a
+  regression being found in the guard. The loop's repair was read twice before it was pushed.
+- **WSL's clock on this machine**: as in "The second reading's fixes on the test branch", (a) to (c).
+  Nothing is changed.
+- **An eighth installer run on your real install**, which would bring it round 8 with these fixes.
+- **The two public test branches**: whether they are deleted.
+- Unchanged: the reading of text handed to `cmd /c`, a named limit; and whether GitHub runs the job of
+  run 44161954913 again, which would clear the one failed entry in the list of runs and show nothing
+  new.
+
+Sources: GitHub Actions, workflow run 44206621190 of the public repository, read on 18 November 2026
+from the run's list of jobs and from each job's log; workflow run 44167209349, read on 17 November 2026
+in the same way.
 
 ## 1. What changed and why
 

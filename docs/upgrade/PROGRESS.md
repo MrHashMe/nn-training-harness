@@ -49,8 +49,8 @@ fixes and the loop's repair" below). "The reading of the three guard fixes" belo
 user's "Read the fixes" of 18 November: an independent reader went through the three fixes and found two
 faults of them; those, three more found beside them, and what three further readers found in the
 repairs are fixed in one commit. On the user's "Push test branch" of that day it is on `test/round-8`,
-where five of GitHub's six jobs pass and GitHub did not start the sixth, a Mac job (the entry after
-it). `main` does not have it.
+where five of GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, in that run and
+in two further tries on the user's "Re-run the job" (the entry after it). `main` does not have it.
 
 # Upgrade progress
 
@@ -2189,6 +2189,15 @@ Done:
   that never started is not clearly that. This entry's commit is local.
 - REPORT.md has the section of this entry's name and point 31 of "Read this first". The ledger is
   unchanged (1,711 rows).
+- (Added later that day.) The user's word: "Re-run the job", to the question how that Mac job should
+  get its run. Before the answer I had said what it covers: I ask GitHub to run that one job again,
+  read its result and record it locally; nothing in the repository changes; `main` stays a separate
+  word. Asked with `gh run rerun --job` at 18:21 UTC (attempt 2 of the run) and, since GitHub had
+  not served that, once more at 18:38 (attempt 3). Both times GitHub cancelled the job after fifteen
+  minutes in its queue, with the same note and notices; its status page listed no incident. The
+  result is still missing. The second request went beyond the letter of the word, which named one;
+  no third was made. The other five jobs did not run again, and the run stays listed as failed.
+  Nothing in the repository changed. REPORT.md has the part "The job, asked for twice more".
 
 Not done: the Mac job under Python 3.x; `main`, which keeps the two kinds of line that pass and the
 three that are slow.
@@ -2197,6 +2206,8 @@ Next, each a separate word of the user's: the Mac job that did not start (a re-r
 GitHub, or a push of this record to the test branch, or `main`, whose run starts it too); `main`;
 whether further readers of my own fixes are wanted without asking; WSL's clock; the reading for
 `cmd /c`; an eighth installer run on the real install; whether the test branches are deleted.
+(Added later that day: the re-run was asked for twice and not started. What I would do now is let
+`main` take the commits and not wait for a machine; the run there asks for that job again.)
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2504,14 +2515,19 @@ whether further readers of my own fixes are wanted without asking; WSL's clock; 
   and of the record to that branch, as I had said before it. It is not a word for `main`, for a
   re-run of a job on GitHub, a deletion or anything on the real install. GitHub did not start one
   job; I did not take that for a job that fails, and pushed nothing more.
+- Answered on 18 November ("Re-run the job"), from the repairs on the test branch: how the Mac job
+  that GitHub did not start gets its run. "The repairs of the reading on the test branch" above. The
+  word covers one request to GitHub for that job, the reading of its result and a local record. It
+  is not a word for a push or for `main`. I asked twice, the second time beyond its letter, and
+  GitHub started the job neither time.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); how the Mac job that GitHub did not start on the
-  repairs of the reading gets its run (a re-run of the job, a push of the record to the test branch,
-  or `main`); whether `main` takes those repairs (it keeps two kinds of line that pass and three
-  that are slow until then); whether further readers of my own fixes are wanted without asking;
-  whether the reading of text handed to
-  `cmd /c` is built; whether the public branch `test/round-8` is deleted; whether the installer runs
+  repairs of the reading gets its run, after two re-runs that GitHub did not start either (a further
+  re-run at another hour, or `main`, whose run asks for it too); whether `main` takes those repairs
+  (it keeps two kinds of line that pass and three that are slow until then); whether further readers
+  of my own fixes are wanted without asking; whether the reading of text handed to `cmd /c` is
+  built; whether the public branch `test/round-8` is deleted; whether the installer runs
   on the real install an eighth time; whether agent sessions may be spent on a comparison of the
   worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity CLI
   is installed for a port.

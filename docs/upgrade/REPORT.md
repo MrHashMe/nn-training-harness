@@ -55,9 +55,10 @@ pass there ("`main` takes the guard fixes and the loop's repair"). On your "Read
 a fresh reader went through the three guard fixes: two faults of them, and three kinds of long line
 that took the guard past its own time, are repaired in a local commit ("The reading of the three guard
 fixes"). On your "Push test branch" of that day the repairs went to the test branch, where five of
-GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, for want of a machine; `main`
-does not have the repairs ("The repairs of the reading on the test branch", the last section before
-"1. What changed and why").
+GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, for want of a machine. On your
+"Re-run the job" I asked GitHub for that job twice more, and both times it found no machine within
+fifteen minutes; `main` does not have the repairs ("The repairs of the reading on the test branch",
+the last section before "1. What changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -439,7 +440,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     happened once before, on a commit of records. This commit changes the guard, so a result is
     missing: the repairs have not run on a Mac under Python 3.x. Open: that job, which I did not ask
     GitHub to run again; `main`, which keeps the two kinds of line that pass and the three that are
-    slow; the record of this run, which is a local commit.
+    slow; the record of this run, which is a local commit. (Added later that day: on your "Re-run the
+    job" I asked GitHub for that job twice more, at 18:21 and 18:38 UTC. Both times it cancelled the
+    job after fifteen minutes in its queue, with the same note. The result is still missing.)
 
 ## Round 2 (12 November 2026)
 
@@ -6815,7 +6818,9 @@ In short:
 3. **Nothing else is pushed.** No repair was called for, and this record is a local commit. I did not
    ask GitHub to run the job again, and I did not push this record to start the six jobs once more:
    your word names that push for a job that fails, and a job that never started is not clearly that.
-   Which of the two it is to be, or neither, is yours to say.
+   Which of the two it is to be, or neither, is yours to say. (Added later that day: on your "Re-run
+   the job" I asked GitHub for the job twice more, and it did not start it either time; "The job,
+   asked for twice more" below.)
 4. **`main` is as it was**, at `c2393da`: it keeps the two kinds of line that pass and the three that
    are slow. Your real install is untouched.
 
@@ -6857,6 +6862,26 @@ and the job had passed on the commit before it, so nothing was missing. Here the
 repairs pass on a Mac under Python 3.9.6, under Python 3.15.2 on Ubuntu and on Windows, and under
 Python 3.15 on this machine. A Mac under Python 3.x has not run them.
 
+### The job, asked for twice more
+
+Added later on 18 November. Your word: "Re-run the job", to the question how the Mac job that GitHub
+did not start should get its run. Before you answered I had said what it covers: I ask GitHub to run
+that one job again, read its result and record it locally; nothing in the repository changes, and
+`main` stays a separate word.
+
+- **First request, 18:21 UTC** (attempt 2 of run 44363620136): GitHub cancelled the job at 18:36,
+  after fifteen minutes in its queue, with the same note and the same three notices. No machine, no
+  step, no log.
+- **Second request, 18:38 UTC** (attempt 3): the same, cancelled at 18:53.
+- **So the result is still missing.** In three tries within an hour GitHub found no macOS arm64
+  machine for this job. Its status page listed no incident at 18:37 UTC ("All Systems Operational").
+  The five other jobs did not run again: GitHub carries their results of the first attempt into the
+  later ones, and it still lists the run as failed.
+- **The second request went beyond the letter of your word**, which named one. I took it for the same
+  request, since GitHub had not served the first. I did not ask a third time: the shortage is
+  GitHub's, and asking does not shorten it.
+- Nothing in the repository changed: `test/round-8` is at `9f9a25e` and `main` at `c2393da`.
+
 ### What the run shows of the repairs, and what it does not
 
 Read in each of the five logs:
@@ -6885,9 +6910,15 @@ its 8 seconds are this machine's only); the slow case that stays; a place that a
   to run that one job of run 44363620136 again, which changes nothing in the repository; (b) this
   record goes to the test branch, which starts all six jobs on the same code; (c) `main` takes the
   three commits, and the run there starts that job too. I would take (a): it is the least, and it
-  leaves `main` alone until all six have run.
+  leaves `main` alone until all six have run. (Added later that day: you chose (a), and GitHub did
+  not start the job in two further tries; "The job, asked for twice more" above. Open again: a
+  further try at another hour, or (c).)
 - **`main`.** It would move from `c2393da` to this record's commit as a fast-forward with no force.
-  Until then it keeps the two kinds of line that pass and the three that are slow.
+  Until then it keeps the two kinds of line that pass and the three that are slow. (Added later that
+  day: I would let `main` take the commits now and not wait for a machine. That `main` lets two
+  kinds of line pass without a question is certain. What the missing job could still show is a fault
+  that appears on a Mac under Python 3.x alone, and neither on a Mac under 3.9.6 nor under 3.15.2 on
+  Ubuntu and Windows. The run on `main` asks for that job again.)
 - **Whether further readers of my own fixes are wanted without asking**: open, as in the section
   before this one.
 - Unchanged: WSL's clock on this machine; an eighth installer run on your real install; the two

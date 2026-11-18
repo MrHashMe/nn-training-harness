@@ -50,7 +50,9 @@ user's "Read the fixes" of 18 November: an independent reader went through the t
 faults of them; those, three more found beside them, and what three further readers found in the
 repairs are fixed in one commit. On the user's "Push test branch" of that day it is on `test/round-8`,
 where five of GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, in that run and
-in two further tries on the user's "Re-run the job" (the entry after it). `main` does not have it.
+in two further tries on the user's "Re-run the job" (the entry after it). On the user's second "Push
+main" of that day the public `main` has it; all six jobs pass there and on `test/round-8`, and GitHub
+started the Mac job at once this time ("`main` takes the repairs of the reading" below).
 
 # Upgrade progress
 
@@ -2200,7 +2202,7 @@ Done:
   Nothing in the repository changed. REPORT.md has the part "The job, asked for twice more".
 
 Not done: the Mac job under Python 3.x; `main`, which keeps the two kinds of line that pass and the
-three that are slow.
+three that are slow. (Added with the next entry: both are done, on the user's "Push main".)
 
 Next, each a separate word of the user's: the Mac job that did not start (a re-run of that one job on
 GitHub, or a push of this record to the test branch, or `main`, whose run starts it too); `main`;
@@ -2208,6 +2210,51 @@ whether further readers of my own fixes are wanted without asking; WSL's clock; 
 `cmd /c`; an eighth installer run on the real install; whether the test branches are deleted.
 (Added later that day: the re-run was asked for twice and not started. What I would do now is let
 `main` take the commits and not wait for a machine; the run there asks for that job again.)
+(Added with the next entry: the user said "Push main", and the job ran there and passes.)
+
+## `main` takes the repairs of the reading (18 November): pushed, all six jobs pass, the Mac job too
+
+The user's word, 18 November: "Push main" (the second of that day), to the question whether `main`
+takes the repairs without waiting for the Mac job. Before the answer I had said what it covers: `main`
+and the test branch move to `1f76682` without force; I read GitHub's six jobs on `main` and push the
+record of the result to both branches; if GitHub does not start the Mac job there either, I ask for
+it once more and then leave it. Not covered: the real install, any deletion.
+
+Done:
+- Fetched: the public `main` unchanged at `c2393da`, `test/round-8` at `9f9a25e`; this branch four
+  commits ahead of `main`, two ahead of the test branch, behind neither. The four searched for
+  private details (none), all with the no-reply address and UTC dates.
+- Pushed at 18:57 UTC: `main` from `c2393da` to `1f76682`, with no merge commit and no force, and
+  `test/round-8` from `9f9a25e` to the same commit. One of the four changes the kit and its tests:
+  `690c91b` (the repairs). Three change records and the ledger only: `9f9a25e`, `8b79049`, `1f76682`.
+- The local `main`, which the main checkout has checked out, was moved to the public one.
+- GitHub's workflow run 44375346459 on `main` at `1f76682` (18:57 to 19:17 UTC): all six jobs pass,
+  with 1,674 checks on ubuntu-latest (Python 3.15.2), 1,663 on Ubuntu 24.04 (3.8.18), 1,660 and 1,659
+  on Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,662 under the
+  system's 3.9.6. No check failed.
+- Run 44375346402 on `test/round-8` at the same commit (18:57 to 19:23 UTC): all six jobs pass with
+  the same counts; "Python 3.x" on macOS was 3.14.10 there.
+- "macos-latest, Python 3.x", which GitHub had not started in three tries on `9f9a25e`, got a machine
+  within three seconds in both runs and passes with 1,669 checks in each (the 1,623 of `c2393da` and
+  the 46 of the repairs). So the repairs have run on a Mac under Python 3.x, twice, and the one
+  further request to GitHub that the word covers was not made. Whether the shortage had ended, or a
+  new run is served where a further try of an old one is not, I cannot tell.
+- Read in the twelve logs: the two checks that depend on the guard's own time pass (the 120 KB line
+  with unclosed `<#` after zero or one second, in whole seconds; the JSON body of 2,000 fields within
+  the 12 seconds), and the generated lines in real shells give the counts of the run on `9f9a25e`.
+- REPORT.md has the section of this entry's name and point 32 of "Read this first", with additions at
+  the sentences of the two sections before it that no longer hold. The ledger is unchanged (1,711
+  rows).
+- This record is pushed to `main` and to the test branch, as the word covers. Each push starts one
+  more run of the six jobs, which this entry cannot hold.
+- Left as it is: the branches `test/rounds-6-7` and `test/round-8` in the public repository; the
+  README (another session's work); the real install, which has rounds 6 and 7 and not round 8; the
+  clock of this machine's WSL; runs 44161954913 and 44363620136, which stay listed as failed (no
+  further re-run asked of GitHub).
+
+Next, each a separate word of the user's: whether further readers of my own fixes are wanted without
+asking; an eighth installer run on the real install; WSL's clock; the reading for `cmd /c`; whether
+the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2520,17 +2567,20 @@ whether further readers of my own fixes are wanted without asking; WSL's clock; 
   word covers one request to GitHub for that job, the reading of its result and a local record. It
   is not a word for a push or for `main`. I asked twice, the second time beyond its letter, and
   GitHub started the job neither time.
+- Answered on 18 November ("Push main", the second of that day), from the repairs on the test
+  branch: whether `main` takes the repairs without waiting for the Mac job. "`main` takes the
+  repairs of the reading" above. The word covers the push of `main` and the test branch to
+  `1f76682`, the reading of GitHub's jobs on `main`, the push of the record of the result to both
+  branches and one further request to GitHub for the Mac job, as I had said before it. It is not a
+  word for a deletion or for anything on the real install. GitHub started the job, so no request
+  was made.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
-  second reading's fixes on the test branch"); how the Mac job that GitHub did not start on the
-  repairs of the reading gets its run, after two re-runs that GitHub did not start either (a further
-  re-run at another hour, or `main`, whose run asks for it too); whether `main` takes those repairs
-  (it keeps two kinds of line that pass and three that are slow until then); whether further readers
-  of my own fixes are wanted without asking; whether the reading of text handed to `cmd /c` is
-  built; whether the public branch `test/round-8` is deleted; whether the installer runs
-  on the real install an eighth time; whether agent sessions may be spent on a comparison of the
-  worker's history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity CLI
-  is installed for a port.
+  second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
+  without asking; whether the reading of text handed to `cmd /c` is built; whether the public branch
+  `test/round-8` is deleted; whether the installer runs on the real install an eighth time; whether
+  agent sessions may be spent on a comparison of the worker's history lines and on a pilot on the
+  fine-tuning task; whether a Gemini or Antigravity CLI is installed for a port.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the

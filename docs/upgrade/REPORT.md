@@ -64,7 +64,8 @@ the repairs of the reading"). On your "Yes, run it" of 19 November the installer
 install an eighth time, from that `main`: the install has round 8 now and its checks pass. On your
 "Yes, commit there" of the same day its thirteen changed files are one local commit in that
 repository, not pushed ("The eighth installer run on the real install", the last section before "1.
-What changed and why").
+What changed and why"). On your "Yes, push" of that day the two records of it went to `main`, where
+all six jobs pass ("The push of the two records" in that section).
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -490,6 +491,15 @@ Decision record: `docs/upgrade/LEDGER.md`.
     Windows. Open: the push of the two records, of the run and of the
     commit, to the public `main`, which waits for your word; whether further readers of my own
     fixes are wanted without asking; the clock of this machine's WSL; the two public test branches.
+    (Added with point 35: the two records are pushed, on your "Yes, push" of the same day.)
+35. **The two records are on `main`, on your word, and all six jobs pass there** (19 November; "The
+    eighth installer run on the real install", "The push of the two records"). `main` on GitHub
+    moved from `3a2bbc9` to `992f436` with no merge commit and no force, and on your next word the
+    local `main` followed it. The two commits change records only. GitHub's run on them passes in
+    all six jobs with the check counts of the two runs before. Open: the push of the record of
+    this, which is a local commit; whether further readers of my own fixes are wanted without
+    asking; the clock of this machine's WSL; the two public test branches, which do not have the
+    two records.
 
 ## Round 2 (12 November 2026)
 
@@ -7251,6 +7261,31 @@ and 1,662 on macOS. "macos-latest, Python 3.x" ran under Python 3.14.10 in both,
 passed four times on the repaired code, once under 3.15.2 and three times under 3.14.10. The commit
 changes records only. I did not read the image versions of these two runs.
 
+### The push of the two records
+
+Added later on 19 November, on four words of yours: "Yes, push", to the question whether the two
+record commits go to GitHub's `main`; then "Move local main to GitHub's main", "Check GitHub's jobs
+on the pushed commits" and "Record the run's result in the two record files".
+
+- **Before the push.** A fetch showed `main` on GitHub unchanged at `3a2bbc9` and the two commits
+  (`05ca64b`, the record of the run, and `992f436`, the record of the commit) directly on it. They
+  change this file and PROGRESS.md only, carry the no-reply address and UTC dates, and a search of
+  their diff found no local path and no address. I did not re-read their text before the push.
+- **The push**, at 14:50 UTC: `main` from `3a2bbc9` to `992f436`, with no merge commit and no
+  force. The two test branches were not pushed to and stay where they were (`test/round-8` at
+  `3a2bbc9`, `test/rounds-6-7` at `edd61c8`).
+- **The local `main`** was clean and two commits behind. On your word it was moved to the public
+  one by a fast-forward.
+- **The run.** GitHub's workflow run 44548029845 on `main` at `992f436` (14:50 to 15:07 UTC)
+  passes in all six jobs at the first run, with the counts of the runs on `1f76682` and `3a2bbc9`:
+  1,674 checks on ubuntu-latest (Python 3.15.2), 1,663 on Ubuntu 24.04 (3.8.18), 1,660 and 1,659 on
+  Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" and 1,662 under the system's
+  3.9.6. No check failed. "macos-latest, Python 3.x" ran under 3.15.2 this time, so that job has
+  passed five times on the repaired code, twice under 3.15.2 and three times under 3.14.10. The
+  result says nothing new about the kit's code, which these two commits do not change.
+- **Not done.** Nothing on your real install, whose commit stays local there. No reader ran: no
+  code changed. The record of this push is a local commit, not pushed.
+
 ### What needs your decision
 
 - **The commit there.** The thirteen changed files of the install as one local commit in that
@@ -7260,7 +7295,9 @@ changes records only. I did not read the image versions of these two runs.
   above.)
 - **The push of this record** to the public `main`. It waits for your word too, and it changes
   records only. (Added later on 19 November: two local commits now, the record of the run and the
-  record of the commit. `main` on GitHub has neither.)
+  record of the commit. `main` on GitHub has neither. Added later still: pushed on your "Yes,
+  push"; "The push of the two records" above. What waits now is the push of the record of that
+  push, which changes records only.)
 - **Whether further readers of my own fixes are wanted without asking**: open, as in "The reading of
   the three guard fixes". None ran for this step, which changed no code.
 - Unchanged: WSL's clock on this machine; the two public test branches; the reading of text handed
@@ -7269,7 +7306,9 @@ changes records only. I did not read the image versions of these two runs.
 Sources: the installer's output, the checks named above and the checks before and after the commit
 there, run on this machine on 19 November 2026 (UTC); the kit's own files at `3a2bbc9` for the
 corrected sentences; GitHub Actions, workflow runs 44381569549 and 44381569642 of the public
-repository, read on 18 November 2026 from each run's list of jobs and from each job's log.
+repository, read on 18 November 2026 from each run's list of jobs and from each job's log; run
+44548029845, read on 19 November 2026 in the same way, its checks counted in the six logs as the
+lines that begin with `PASS` and `FAIL`.
 
 ## 1. What changed and why
 

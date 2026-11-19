@@ -56,7 +56,8 @@ started the Mac job at once this time ("`main` takes the repairs of the reading"
 "Yes, run it" of 19 November the installer ran on the real install an eighth time: it has round 8 now
 and its checks pass. On the user's "Yes, commit there" of the same day its thirteen changed files are
 one local commit in that repository, not pushed ("The eighth installer run on the real install"
-below). The two records of it are local commits of the kit, not pushed.
+below). On the user's "Yes, push" of that day the two records of it are on the public `main`, where
+all six jobs pass (the same entry).
 
 # Upgrade progress
 
@@ -2317,9 +2318,37 @@ Done (REPORT.md, "The eighth installer run on the real install", has it in full)
   where the real install runs. The commit's message there has the corrected statements.
 - The record of the commit is a second local commit, not pushed. No reader ran: no code changed.
 
-Next, each a separate word of the user's: the push of the two records to the public `main`; whether
-further readers of my own fixes are wanted without asking; WSL's clock; the reading for `cmd /c`;
-whether the test branches are deleted.
+The user's third word, later that day: "Yes, push", to the question whether the two record commits
+go to GitHub's `main`. Before the answer I had said what it covers: `992f436` to the public `main`,
+the local `main` left where it is. Then, each a separate word: "Move local main to GitHub's main",
+"Check GitHub's jobs on the pushed commits" and "Record the run's result in the two record files".
+
+Done on those words:
+- Fetched before the push: the public `main` unchanged at `3a2bbc9`, the two commits (`05ca64b`,
+  `992f436`) directly on it, changing only PROGRESS.md and REPORT.md, both with the no-reply address
+  and UTC dates, their diff searched for local paths and addresses (none). I did not re-read the
+  records' text before the push.
+- Pushed at 14:50 UTC: `main` from `3a2bbc9` to `992f436`, with no merge commit and no force. The
+  test branches were not pushed to.
+- The local `main`, which the main checkout has checked out and which was clean, was moved to the
+  public one by a fast-forward.
+- GitHub's workflow run 44548029845 on `main` at `992f436` (14:50 to 15:07 UTC): all six jobs pass
+  at the first run, with the counts of the runs on `1f76682` and `3a2bbc9`: 1,674 checks on
+  ubuntu-latest (Python 3.15.2), 1,663 on Ubuntu 24.04 (3.8.18), 1,660 and 1,659 on Windows (3.15.2
+  and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,662 under the system's 3.9.6. No
+  check failed. Counted in the six logs as the lines that begin with `PASS` and `FAIL`. The two
+  commits change records only.
+- REPORT.md has "The push of the two records" in the section of this entry's name and point 35 of
+  "Read this first". The ledger is unchanged.
+- This record is a local commit on the branch `claude/kit-commit-verification-e52f2b`, not pushed.
+  No reader ran: no code changed.
+- Left as it is: the real install, whose commit stays local there; the two public test branches,
+  which stay where they were (`test/round-8` at `3a2bbc9`, `test/rounds-6-7` at `edd61c8`) and do
+  not have the two records.
+
+Next, each a separate word of the user's: the push of this record; whether further readers of my own
+fixes are wanted without asking; WSL's clock; the reading for `cmd /c`; whether the test branches
+are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2649,7 +2678,11 @@ whether the test branches are deleted.
   real install" above. The word covers one local commit of exactly those paths, not pushed, and the
   read-only checks around it, as I had said before it. It is not a word for a push, of that
   repository or of the kit's records.
-- Open, from the eighth installer run: whether its two records are pushed to the public `main`.
+- Answered on 19 November ("Yes, push"), from the eighth installer run: whether its two records are
+  pushed to the public `main`. "The eighth installer run on the real install" above. The word
+  covers that push and nothing on the real install. The move of the local `main`, the reading of
+  the jobs and this record each had a word of their own.
+- Open, from the same entry: whether the record of the push and of its run is pushed.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted

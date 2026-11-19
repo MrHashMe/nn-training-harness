@@ -61,9 +61,10 @@ fifteen minutes ("The repairs of the reading on the test branch"). On your secon
 day `main` took the repairs, with no merge commit. All six jobs pass there and on the test branch, and
 GitHub started the Mac job at once this time, so the result that was missing is there ("`main` takes
 the repairs of the reading"). On your "Yes, run it" of 19 November the installer ran on your real
-install an eighth time, from that `main`: the install has round 8 now and its checks pass, and its
-thirteen changed files are not committed there ("The eighth installer run on the real install", the
-last section before "1. What changed and why").
+install an eighth time, from that `main`: the install has round 8 now and its checks pass. On your
+"Yes, commit there" of the same day its thirteen changed files are one local commit in that
+repository, not pushed ("The eighth installer run on the real install", the last section before "1.
+What changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -476,7 +477,19 @@ Decision record: `docs/upgrade/LEDGER.md`.
     a text behind a here-document. One was asked about and passes: a line that only sends a frozen
     file's content to a new file. Open: the commit of the thirteen files in that repository and the
     push of this record, each of which waits for your word; whether further readers of my own fixes
-    are wanted without asking; the clock of this machine's WSL; the two public test branches.
+    are wanted without asking; the clock of this machine's WSL; the two public test branches. (Added
+    with point 34: the commit is made, on your "Yes, commit there" of the same day.)
+34. **The thirteen files are committed in your real install's repository, on your word, and not
+    pushed** (19 November; "The eighth installer run on the real install", the bullet "Committed
+    there, on your word"). One local commit of exactly the thirteen paths, by that repository's own
+    identity, its parent the commit that was newest before. That repository's 418 other status
+    entries are untouched, nothing is staged, and no file of the install changed on disk. Checking
+    the commit's message against the kit's own files found two errors in my record of the run, both
+    corrected in that section before any of it was pushed: how frozen files counted before round 8,
+    and that `expctl stop` proves a process to be a run's only on Linux, while your install runs on
+    Windows. Open: the push of the two records, of the run and of the
+    commit, to the public `main`, which waits for your word; whether further readers of my own
+    fixes are wanted without asking; the clock of this machine's WSL; the two public test branches.
 
 ## Round 2 (12 November 2026)
 
@@ -7090,12 +7103,17 @@ Sources: GitHub Actions, workflow runs 44375346459 and 44375346402 of the public
 18 November 2026 from each run's list of jobs, from each job's log and from GitHub's record of when
 each Mac job was created and when it started.
 
-## The eighth installer run on the real install (19 November 2026): round 8 is there, not committed
+## The eighth installer run on the real install (19 November 2026): round 8 is there, and committed
 
 Your word: "Yes, run it", to the question whether to run the installer on your real install an eighth
 time. Before you answered I had said what it covers: a read-only look that no run is live there, one
 installer run from the kit at `3a2bbc9` with its backup, and the checks afterwards. Not covered: a
 commit there, a push, or opening sealed data.
+
+Your second word, later that day: "Yes, commit there", to the question whether to commit the thirteen
+changed kit files in that repository. Before you answered I had said what it covers: one local commit
+of exactly those paths, not pushed. This section was written after the run and before that word. Its
+title and the sentences marked "Added later" or "Corrected" are from the record of the commit.
 
 In short:
 
@@ -7109,7 +7127,9 @@ In short:
 3. **The guard there answers four of forty made-up calls differently.** Three that passed are asked
    about now. One that was asked about passes: the one case in which round 8 asks less.
 4. **Not committed there, and this record is not pushed.** The thirteen changed files wait in that
-   repository for your word, as after the runs before. Nothing is staged.
+   repository for your word, as after the runs before. Nothing is staged. (Added later on 19
+   November: on your "Yes, commit there" they are one local commit there, not pushed; "Committed
+   there, on your word" below. The records are not pushed.)
 5. **Not done there**: its scripts, a launch, a final evaluation, an agent session. No file below a
    sealed path was opened.
 
@@ -7183,22 +7203,44 @@ records and the ledger only.
   from the checks' own probes and 59 from my calls, marked `upgrade-check` (3 on the final-evaluation
   rule, 27 from the 40 calls before the run and 29 from those after it; an allowed call leaves no
   line).
+- **Committed there, on your word.** Later on 19 November you said "Yes, commit there". The thirteen
+  files are one local commit in that repository, made at 03:32 UTC: exactly those paths, by that
+  repository's own identity, with no hook skipped, its parent the commit that was newest before, not
+  pushed (its branch has no upstream). Right before it the thirteen changed entries were the paths
+  of the installer's backup folder, the eleven kit files had the hashes of the kit's manifest,
+  nothing was staged and no run was live. After it that repository's other status entries number
+  418 as before, nothing is staged, and of the 315 files I list in the install none changed on disk
+  (the 302 from before the run and the thirteen backups). Git counts 983 lines added and 329 removed
+  in the thirteen files. The commit's message says what the guard decides differently there, what
+  else the files bring, what was checked and what was not done. Before the commit I checked the
+  message's statements about the kit against the kit's own files, which found the two errors that
+  "To know" below corrects. To undo the commit while it is the newest one there: `git reset --soft
+  HEAD~1`.
 - **Not done there.** Its two registered scripts, a launch and a final evaluation were not run, no
   agent session was started, `install.py --worktrees` was not run and its files were not counted, as
   before. Nothing was committed or staged in that repository, and it was not pushed. No file below a
-  sealed path was opened.
+  sealed path was opened. (Added later on 19 November: the thirteen files were committed there on
+  your word, as the bullet above says. Nothing else was committed, nothing was staged, and that
+  repository was not pushed.)
 - **To know.** The guard there is the new one from the next tool call on. A session in that project
   now meets a question at a forced `git clean` written as `-d -f` or `--force`, at a write to a frozen
   or harness file whose path is in Git Bash's spelling or on a mounted drive, and at a text that holds
   a redirection onto such a file behind a here-document with an apostrophe; in an unattended session
   each such question is a refusal. It no longer meets one at a line that only sends a command's output
   to a file that is not kept, such as an evaluator's output to a score file. `expctl` now counts every
-  frozen file with its whole content, where a file of more than 64 MB counted with its first 64 MB,
-  and keeps the hashes of large files in `.claude/state/frozen-hashes.json`, which the guard asks
-  about before an agent writes it. So that install's hash of the frozen files changes once if it has
-  frozen files beyond 64 MB, which I did not look up. A launch reads every frozen file, and no launch
-  was made there, so how long one now takes on that install's frozen files is not measured. `expctl
-  stop` signals only a process that it can prove to be the run's.
+  frozen file with its content. Before, it read at most 64 MB, smallest files first, and a file
+  beyond them counted by its size alone. It keeps the hashes of the files beyond those 64 MB in
+  `.claude/state/frozen-hashes.json`, which the guard asks about before an agent writes it. So new
+  runs on that install record another hash of the frozen files than the runs before if its frozen
+  files go beyond 64 MB, which I did not look up; `expctl status` still takes the older hash for
+  the same files. A launch reads every frozen file, and no launch was made there, so how long one
+  now takes on that install's frozen files is not measured. On Linux `expctl stop` signals only a
+  process that the system shows was started for the run. On Windows, where that install runs, the
+  system cannot be asked which program a process is, so that proof is not made there. (Corrected
+  with the record of the commit, before either record was pushed. The first wording said that a
+  file of more than 64 MB had counted with its first 64 MB, and gave the proof of `expctl stop`
+  without saying that it is Linux's alone. The corrected sentences follow the kit's
+  `references/validity.md` and `references/loop.md` and the code of `expctl stop`.)
 
 ### The two runs on the last record's commit
 
@@ -7214,16 +7256,20 @@ changes records only. I did not read the image versions of these two runs.
 - **The commit there.** The thirteen changed files of the install as one local commit in that
   repository, exactly those paths, not pushed: as after the runs before, it waits for your word.
   Without it the files stay changed and uncommitted there, and the install works either way.
+  (Added later on 19 November: made on your "Yes, commit there"; "Committed there, on your word"
+  above.)
 - **The push of this record** to the public `main`. It waits for your word too, and it changes
-  records only.
+  records only. (Added later on 19 November: two local commits now, the record of the run and the
+  record of the commit. `main` on GitHub has neither.)
 - **Whether further readers of my own fixes are wanted without asking**: open, as in "The reading of
   the three guard fixes". None ran for this step, which changed no code.
 - Unchanged: WSL's clock on this machine; the two public test branches; the reading of text handed
   to `cmd /c`; the one slow case that stays; the jobs of runs 44161954913 and 44363620136.
 
-Sources: the installer's output and the checks named above, run on this machine on 19 November 2026
-(UTC); GitHub Actions, workflow runs 44381569549 and 44381569642 of the public repository, read on 18
-November 2026 from each run's list of jobs and from each job's log.
+Sources: the installer's output, the checks named above and the checks before and after the commit
+there, run on this machine on 19 November 2026 (UTC); the kit's own files at `3a2bbc9` for the
+corrected sentences; GitHub Actions, workflow runs 44381569549 and 44381569642 of the public
+repository, read on 18 November 2026 from each run's list of jobs and from each job's log.
 
 ## 1. What changed and why
 

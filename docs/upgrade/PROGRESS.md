@@ -53,9 +53,10 @@ where five of GitHub's six jobs pass and GitHub did not start the sixth, a Mac j
 in two further tries on the user's "Re-run the job" (the entry after it). On the user's second "Push
 main" of that day the public `main` has it; all six jobs pass there and on `test/round-8`, and GitHub
 started the Mac job at once this time ("`main` takes the repairs of the reading" below). On the user's
-"Yes, run it" of 19 November the installer ran on the real install an eighth time: it has round 8 now,
-its checks pass, and its thirteen changed files are not committed there ("The eighth installer run on
-the real install" below).
+"Yes, run it" of 19 November the installer ran on the real install an eighth time: it has round 8 now
+and its checks pass. On the user's "Yes, commit there" of the same day its thirteen changed files are
+one local commit in that repository, not pushed ("The eighth installer run on the real install"
+below). The two records of it are local commits of the kit, not pushed.
 
 # Upgrade progress
 
@@ -2260,12 +2261,17 @@ asking; an eighth installer run on the real install; WSL's clock; the reading fo
 the test branches are deleted. (Added on 19 November: the eighth installer run is done, on the user's
 "Yes, run it"; the next entry. The real install has round 8 since then.)
 
-## The eighth installer run on the real install (19 November): round 8 is there, not committed
+## The eighth installer run on the real install (19 November): round 8 is there, and committed
 
 The user's word, 19 November: "Yes, run it", to the question whether to run the installer on the real
 install an eighth time. Before the answer I had said what it covers: a read-only look that no run is
 live there, one installer run from the kit at `3a2bbc9` with its backup, and the checks afterwards.
 Not covered: a commit there, a push, opening sealed data.
+
+The user's second word, later that day: "Yes, commit there", to the question whether to commit the
+thirteen changed kit files in that repository: one local commit of exactly those paths, not pushed.
+This entry was written before that word. Its title, its last three "Done" bullets, the note in "Not
+done there" and its "Next" are from the record of the commit.
 
 Done (REPORT.md, "The eighth installer run on the real install", has it in full):
 - Read-only look, rehearsal on a fresh copy, dry run, then the run at 03:00 UTC from a clean clone of
@@ -2289,16 +2295,31 @@ Done (REPORT.md, "The eighth installer run on the real install", has it in full)
   1.6 s after the run).
 - Left there by the run: thirteen files changed, 418 other status entries untouched, nothing staged,
   the backup folder, 63 more lines in the guard's record (59 marked `upgrade-check`).
-- Not done there: a commit, its scripts, a launch, a final evaluation, an agent session, `install.py
-  --worktrees`. No file below a sealed path was opened. No reader ran: no code of the kit changed.
+- Not done there: a commit (made later that day on the user's word: below), its scripts, a launch, a
+  final evaluation, an agent session, `install.py --worktrees`. No file below a sealed path was
+  opened. No reader ran: no code of the kit changed.
 - The two runs on the last record's commit `3a2bbc9` (44381569549 on `main`, 44381569642 on
   `test/round-8`): twelve of twelve jobs pass with the counts of the runs on `1f76682`.
 - This record is a local commit, not pushed.
+- Committed there on the user's "Yes, commit there" of 19 November: the thirteen files are one local
+  commit in that repository, made at 03:32 UTC through `real10_commit.py commit` with the message
+  `real10-commit-msg.txt`: exactly those paths, that repository's own identity, no hook skipped, its
+  parent the commit that was newest before, not pushed, no upstream. Before it (`real10.sh
+  precommit`, `real10_commit.py check`, `real10.sh state`): the thirteen entries were the backup
+  folder's paths, the eleven kit files had the manifest's hashes, nothing staged, no run live. After
+  it (`real10.sh postcommit`): 418 status entries, none under `.claude/`, nothing staged, 315 of 315
+  listed files unchanged on disk, the commit's message equal to the message file. To undo while it is
+  the newest commit there: `git reset --soft HEAD~1`.
+- Two statements of the run's record were wrong and are corrected in REPORT.md ("To know" of that
+  section). I found them when I checked the commit's message against the kit's files, before the
+  commit: before round 8 a frozen file beyond the first 64 MB counted by its size alone (not "with
+  its first 64 MB"), and `expctl stop` proves a process to be a run's only on Linux, not on Windows,
+  where the real install runs. The commit's message there has the corrected statements.
+- The record of the commit is a second local commit, not pushed. No reader ran: no code changed.
 
-Next, each a separate word of the user's: the commit of the thirteen files in the real install's
-repository (`real10_commit.py check` reads; `commit MSGFILE` commits exactly those paths); the push of
-this record; whether further readers of my own fixes are wanted without asking; WSL's clock; the
-reading for `cmd /c`; whether the test branches are deleted.
+Next, each a separate word of the user's: the push of the two records to the public `main`; whether
+further readers of my own fixes are wanted without asking; WSL's clock; the reading for `cmd /c`;
+whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2623,8 +2644,12 @@ reading for `cmd /c`; whether the test branches are deleted.
   read-only look, one installer run from the kit at `3a2bbc9` with its backup and the checks
   afterwards, as I had said before it. It is not a word for a commit in that repository, for a push
   or for opening sealed data.
-- Open, from the eighth installer run: whether its thirteen changed files are committed in the real
-  install's repository; whether its record is pushed to the public `main`.
+- Answered on 19 November ("Yes, commit there"), from the eighth installer run: whether its thirteen
+  changed files are committed in the real install's repository. "The eighth installer run on the
+  real install" above. The word covers one local commit of exactly those paths, not pushed, and the
+  read-only checks around it, as I had said before it. It is not a word for a push, of that
+  repository or of the kit's records.
+- Open, from the eighth installer run: whether its two records are pushed to the public `main`.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -2732,7 +2757,9 @@ reading for `cmd /c`; whether the test branches are deleted.
 - The eighth installer run's helpers are in the same folder, made from the seventh run's by renaming:
   `real10.sh STEP`, `real10_pre.py`, `real10_clone.sh`, `real10_calls.py` (the 28 calls and twelve for
   round 8, its readings and their repairs), `real10_commit.py check | commit MSGFILE` for its thirteen
-  files (`check` only reads; `commit` was not run) and `real10_backup_check.py`, which compares the
+  files (`check` only reads; `commit` was run once, on the user's word, with the message
+  `real10-commit-msg.txt`; `real10.sh precommit` and `postcommit` are the checks around it) and
+  `real10_backup_check.py`, which compares the
   installer's backups with the copy from before. The results are `real10-*.json`, `real10-*.log` and
   `real10-rehearse.out`, the copy from before the run is `real-install-before-20261119-eighth`, and
   the kit clone is `kit-3a2bbc9`.

@@ -52,11 +52,14 @@ repairs are fixed in one commit. On the user's "Push test branch" of that day it
 where five of GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, in that run and
 in two further tries on the user's "Re-run the job" (the entry after it). On the user's second "Push
 main" of that day the public `main` has it; all six jobs pass there and on `test/round-8`, and GitHub
-started the Mac job at once this time ("`main` takes the repairs of the reading" below).
+started the Mac job at once this time ("`main` takes the repairs of the reading" below). On the user's
+"Yes, run it" of 19 November the installer ran on the real install an eighth time: it has round 8 now,
+its checks pass, and its thirteen changed files are not committed there ("The eighth installer run on
+the real install" below).
 
 # Upgrade progress
 
-Last updated: 18 November 2026.
+Last updated: 19 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -2254,7 +2257,48 @@ Done:
 
 Next, each a separate word of the user's: whether further readers of my own fixes are wanted without
 asking; an eighth installer run on the real install; WSL's clock; the reading for `cmd /c`; whether
-the test branches are deleted.
+the test branches are deleted. (Added on 19 November: the eighth installer run is done, on the user's
+"Yes, run it"; the next entry. The real install has round 8 since then.)
+
+## The eighth installer run on the real install (19 November): round 8 is there, not committed
+
+The user's word, 19 November: "Yes, run it", to the question whether to run the installer on the real
+install an eighth time. Before the answer I had said what it covers: a read-only look that no run is
+live there, one installer run from the kit at `3a2bbc9` with its backup, and the checks afterwards.
+Not covered: a commit there, a push, opening sealed data.
+
+Done (REPORT.md, "The eighth installer run on the real install", has it in full):
+- Read-only look, rehearsal on a fresh copy, dry run, then the run at 03:00 UTC from a clean clone of
+  the public commit `3a2bbc9`, whose installed files are those of `690c91b`. Before it the install's
+  302 listed files were as the commit after the seventh run had left them, no run was live, and the
+  guard's record had not been written since the seventh run.
+- Replaced, each with a backup under the install's `.claude/backups/`: eleven kit files (the guard,
+  `expctl.py`, `nnloop.py`, `nnremote.py`, seven references), the manifest, and the config, which got
+  one more entry in `harness_paths` (`.claude/state/frozen-hashes.json`, round 8's one migration; its
+  other 18 keys as before). Settings, `CLAUDE.md`, `.gitignore`, journal and runs unchanged. No
+  conflict. The thirteen backups equal my copy from before the run byte for byte.
+- `expctl selftest` passes with the two optional failures of the runs before; `status` is the same
+  with the old and the new `expctl.py`; the logger imports; the registered guard command answers; the
+  27 kit files equal the kit's apart from interpreter lines in five. `kit_api.py fb101a7 3a2bbc9`:
+  runlog's public names and signatures and expctl's twelve subcommands are the same.
+- Guard answers on 40 made-up calls, none carried out: the 28 of the seventh run unchanged. Of the
+  twelve new ones, `git clean -d -f`, `sort -o` onto a frozen file by its path in Git Bash's spelling
+  and a redirection onto a frozen file in a text behind a here-document go from allowed to a question;
+  `cat` of a frozen file with its output sent to a new file goes from a question to allowed (the one
+  case in which round 8 asks less); eight keep their answers, the two long lines among them (0.5 s and
+  1.6 s after the run).
+- Left there by the run: thirteen files changed, 418 other status entries untouched, nothing staged,
+  the backup folder, 63 more lines in the guard's record (59 marked `upgrade-check`).
+- Not done there: a commit, its scripts, a launch, a final evaluation, an agent session, `install.py
+  --worktrees`. No file below a sealed path was opened. No reader ran: no code of the kit changed.
+- The two runs on the last record's commit `3a2bbc9` (44381569549 on `main`, 44381569642 on
+  `test/round-8`): twelve of twelve jobs pass with the counts of the runs on `1f76682`.
+- This record is a local commit, not pushed.
+
+Next, each a separate word of the user's: the commit of the thirteen files in the real install's
+repository (`real10_commit.py check` reads; `commit MSGFILE` commits exactly those paths); the push of
+this record; whether further readers of my own fixes are wanted without asking; WSL's clock; the
+reading for `cmd /c`; whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2574,13 +2618,20 @@ the test branches are deleted.
   branches and one further request to GitHub for the Mac job, as I had said before it. It is not a
   word for a deletion or for anything on the real install. GitHub started the job, so no request
   was made.
+- Answered on 19 November ("Yes, run it"), from round 8: whether the installer runs on the real
+  install an eighth time. "The eighth installer run on the real install" above. The word covers a
+  read-only look, one installer run from the kit at `3a2bbc9` with its backup and the checks
+  afterwards, as I had said before it. It is not a word for a commit in that repository, for a push
+  or for opening sealed data.
+- Open, from the eighth installer run: whether its thirteen changed files are committed in the real
+  install's repository; whether its record is pushed to the public `main`.
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
   without asking; whether the reading of text handed to `cmd /c` is built; whether the public branch
-  `test/round-8` is deleted; whether the installer runs on the real install an eighth time; whether
-  agent sessions may be spent on a comparison of the worker's history lines and on a pilot on the
-  fine-tuning task; whether a Gemini or Antigravity CLI is installed for a port.
+  `test/round-8` is deleted; whether agent sessions may be spent on a comparison of the worker's
+  history lines and on a pilot on the fine-tuning task; whether a Gemini or Antigravity CLI is
+  installed for a port.
 
 ## Working notes
 - Temporary work folder on Windows: `%TEMP%\nnkit-upgrade` (test scripts, clean virtual environments, logs, the
@@ -2678,6 +2729,13 @@ the test branches are deleted.
   commit MSGFILE` for its thirteen files (`check` only reads). The results are
   `real9-*.json` and `real9-*.log`, the copy from before the run is
   `real-install-before-20261115-seventh`, and the kit clone is `kit-fb101a7`.
+- The eighth installer run's helpers are in the same folder, made from the seventh run's by renaming:
+  `real10.sh STEP`, `real10_pre.py`, `real10_clone.sh`, `real10_calls.py` (the 28 calls and twelve for
+  round 8, its readings and their repairs), `real10_commit.py check | commit MSGFILE` for its thirteen
+  files (`check` only reads; `commit` was not run) and `real10_backup_check.py`, which compares the
+  installer's backups with the copy from before. The results are `real10-*.json`, `real10-*.log` and
+  `real10-rehearse.out`, the copy from before the run is `real-install-before-20261119-eighth`, and
+  the kit clone is `kit-3a2bbc9`.
 - A session that ends on an error leaves its last exchange only in its saved transcript, under
   `~/.claude/projects/<this folder's path, with dashes>/<session id>.jsonl`. The first session's is 263 MB:
   read its tail with a script, not whole.

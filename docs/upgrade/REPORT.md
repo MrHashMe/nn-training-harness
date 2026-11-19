@@ -60,7 +60,10 @@ GitHub's six jobs pass and GitHub did not start the sixth, a Mac job, for want o
 fifteen minutes ("The repairs of the reading on the test branch"). On your second "Push main" of that
 day `main` took the repairs, with no merge commit. All six jobs pass there and on the test branch, and
 GitHub started the Mac job at once this time, so the result that was missing is there ("`main` takes
-the repairs of the reading", the last section before "1. What changed and why").
+the repairs of the reading"). On your "Yes, run it" of 19 November the installer ran on your real
+install an eighth time, from that `main`: the install has round 8 now and its checks pass, and its
+thirteen changed files are not committed there ("The eighth installer run on the real install", the
+last section before "1. What changed and why").
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -459,7 +462,21 @@ Decision record: `docs/upgrade/LEDGER.md`.
     about with the repairs, as point 30 says. Open: whether further readers of my own fixes are
     wanted without asking; your real install, which has rounds 6 and 7 and not round 8; the clock of
     this machine's WSL; the two public test branches; run 44363620136, which stays listed as failed
-    although no test failed in it.
+    although no test failed in it. (Added with point 33: on your "Yes, run it" of 19 November the
+    real install got round 8.)
+33. **Your real install has round 8 now, and its checks pass; the changed files are not committed
+    there** (19 November; "The eighth installer run on the real install"). On your "Yes, run it" the
+    installer ran there an eighth time, from a clean clone of the public `main` (`3a2bbc9`): eleven
+    kit files, the manifest and one new entry in the config's `harness_paths`, each file with a
+    backup, and no conflict. `expctl selftest` passes with the two optional failures of the runs
+    before, `expctl status` answers as before, and your scripts bind to nothing new. Of forty
+    made-up calls put to its guard before and after, none carried out, four are answered
+    differently. Three passed and are asked about now: a forced `git clean` written `-d -f`, a write
+    to a frozen file through a path in Git Bash's spelling, and a redirection onto a frozen file in
+    a text behind a here-document. One was asked about and passes: a line that only sends a frozen
+    file's content to a new file. Open: the commit of the thirteen files in that repository and the
+    push of this record, each of which waits for your word; whether further readers of my own fixes
+    are wanted without asking; the clock of this machine's WSL; the two public test branches.
 
 ## Round 2 (12 November 2026)
 
@@ -4826,6 +4843,7 @@ existing tests that changed are listed above, at the end of "Changes in the beha
   of redirections and of a forced `git clean`, the routine mark, the hash of large frozen files (that
   install's `frozen_hash` changes once if it has frozen files beyond 64 MB), a launch that reads every
   frozen file, the stop that signals only a proven process, and one more harness path in its config.
+  Answered on 19 November ("Yes, run it") and done: "The eighth installer run on the real install".
 
 ### What needs your decision
 - Whether round 8 is pushed, to a test branch first or to `main`. Only a push runs it on a Mac and on bare
@@ -6979,6 +6997,7 @@ In short:
    the three guard fixes").
 5. **Open.** Whether further readers of my own fixes are wanted without asking. Your real install is
    untouched: it has rounds 6 and 7 and not round 8. The clock of this machine's WSL is as it was.
+   (Added with the next section: on your "Yes, run it" of 19 November the real install got round 8.)
 
 ### The push, and GitHub's run on `main`
 
@@ -7049,7 +7068,8 @@ there (18:57 to 19:23 UTC): six of six jobs pass, with the counts of the table a
 - The branches `test/rounds-6-7` and `test/round-8` in the public repository. With the push of this
   record, `test/round-8` and `main` are the same commit.
 - The README (another session's work).
-- Your real install, which has rounds 6 and 7 and not round 8.
+- Your real install, which has rounds 6 and 7 and not round 8. (Added with the next section: it has
+  round 8 since 19 November.)
 - The clock of this machine's WSL.
 
 ### What needs your decision
@@ -7057,6 +7077,7 @@ there (18:57 to 19:23 UTC): six of six jobs pass, with the counts of the table a
 - **Whether further readers of my own fixes are wanted without asking**: open, as in "The reading of
   the three guard fixes". None ran for this step, which changed no code.
 - **An eighth installer run on your real install**, which would bring it round 8 with these repairs.
+  (Added with the next section: done on 19 November, on your "Yes, run it".)
 - **WSL's clock on this machine**: as in "The second reading's fixes on the test branch", (a) to (c).
   Nothing is changed.
 - **The two public test branches**: whether they are deleted.
@@ -7068,6 +7089,141 @@ there (18:57 to 19:23 UTC): six of six jobs pass, with the counts of the table a
 Sources: GitHub Actions, workflow runs 44375346459 and 44375346402 of the public repository, read on
 18 November 2026 from each run's list of jobs, from each job's log and from GitHub's record of when
 each Mac job was created and when it started.
+
+## The eighth installer run on the real install (19 November 2026): round 8 is there, not committed
+
+Your word: "Yes, run it", to the question whether to run the installer on your real install an eighth
+time. Before you answered I had said what it covers: a read-only look that no run is live there, one
+installer run from the kit at `3a2bbc9` with its backup, and the checks afterwards. Not covered: a
+commit there, a push, or opening sealed data.
+
+In short:
+
+1. **Your real install has round 8 now, with the fixes of its readings and their repairs.** The
+   installer ran there at 03:00 UTC from a clean clone of the public `main` (`3a2bbc9`) and ended
+   without a conflict: eleven kit files, the manifest and one new entry in the config, each file
+   with a backup.
+2. **Its checks pass.** `expctl selftest` passes with the two optional failures of the runs before,
+   `expctl status` answers as before, the logger imports, and the guard answers through the command
+   that the settings register.
+3. **The guard there answers four of forty made-up calls differently.** Three that passed are asked
+   about now. One that was asked about passes: the one case in which round 8 asks less.
+4. **Not committed there, and this record is not pushed.** The thirteen changed files wait in that
+   repository for your word, as after the runs before. Nothing is staged.
+5. **Not done there**: its scripts, a launch, a final evaluation, an agent session. No file below a
+   sealed path was opened.
+
+### The run
+
+It went as the seventh run did: a read-only look, a rehearsal on a fresh copy of the install's kit
+files, a dry run on the install, then the run. The installer came from a clean clone of the public
+commit `3a2bbc9`, which is `main`. Its installed files are those of `690c91b`, the repairs, which
+GitHub's machines tested in the runs on `1f76682` and `3a2bbc9`; the four commits after it change
+records and the ledger only.
+
+- **Before the run.** The install was as the commit after the seventh run had left it: of the 302
+  files I list there (its `.claude` folder, its experiments, its runs, `CLAUDE.md` and `.gitignore`)
+  none was added, removed or changed. None of its five runs was live. The guard's record was last
+  written about 91 hours before, at the seventh run: no call has been asked about or refused there
+  since. None of that repository's eleven checkouts holds a receipt of a final evaluation, so the
+  self-test had nothing to copy outside the install.
+- **What changed there.** Eleven kit files, the manifest and the config, each with a backup in a new
+  folder under the install's `.claude/backups/`. The installer's other twenty files were up to date.
+  The eleven are what round 8, its readings and their repairs changed in the installed kit: the guard
+  `nn_guard.py`, the scripts `expctl.py`, `nnloop.py` and `nnremote.py`, and the references
+  `finetuning.md`, `llm.md`, `loop.md`, `optimization.md`, `remote.md`, `resume.md` and `validity.md`.
+  None of them had been edited there. The config got one more entry in `harness_paths`,
+  `.claude/state/frozen-hashes.json`, which is round 8's one migration: the installer named it in its
+  output, the list's earlier entries are kept in their order, and the other 18 keys have the values
+  they had. `settings.json` with its permissions and hooks, `CLAUDE.md`, `.gitignore`, journal and
+  runs are byte for byte as before.
+- **Checked by running, there.** `expctl selftest` passes. The two optional checks that fail are those
+  of the runs before: no metric is configured, and 9 of the 10 other checkouts are without the guard.
+  `expctl status` gives the same answer with the old and the new `expctl.py`, key by key: five runs,
+  four completed and one failed, no alert. The logger imports from the skill's folder. Through the
+  command that its settings register, the guard lets a harmless read pass, refuses input it cannot
+  read, refuses both configured final commands typed directly and asks for `expctl final-eval`. The 27
+  files of its skill, hooks and agents folders equal the kit's, apart from lines in five of them that
+  name its interpreter. Between the kits of the seventh and the eighth run `runlog.py` is unchanged,
+  with the same public names and call signatures, and `expctl.py` has the same twelve subcommands, so
+  your scripts bind to nothing new.
+- **What the new guard decides differently there.** I put 40 made-up calls to its guard before and
+  after the run, with that install's own config; none was carried out. The 28 of the seventh run get
+  the answers they got before. Twelve are new, for what round 8, its readings and their repairs
+  changed: each is a row of the kit's tests with a frozen file or a sealed folder of that install's
+  config in it.
+
+  | Made-up call | Before | After |
+  |---|---|---|
+  | `cat` of a frozen file, its output sent to a new file | question | allowed |
+  | `echo x >` onto a frozen file | question | question |
+  | `sort -o` onto a frozen file, its full path in Git Bash's spelling (`/c/…`) | allowed | question |
+  | `echo x#>` with a frozen file behind it | question | question |
+  | `git clean -d -f` | allowed | question |
+  | `git clean -n -d`, which only lists | allowed | allowed |
+  | A text with an escaped quote that holds a redirection onto a frozen file | question | question |
+  | A here-document with an apostrophe, then a text that holds such a redirection | allowed | question |
+  | `curl -d` with a JSON body that names a file in a sealed folder | refused | refused |
+  | `sh -c` with a `cat` of such a file between escaped quotes | refused | refused |
+  | PowerShell: 60,000 `<#` that nothing closes, then `cp` onto a frozen file (120 KB) | question | question |
+  | `curl -d` with a JSON body of 2,000 fields (31 KB) | allowed | allowed |
+
+  The first row is the one case in which round 8 asks less: a line whose only write is a redirection
+  is judged by the file it writes. The third and fifth rows are gaps that round 8 closed. The eighth
+  is the second kind of line of "The reading of the three guard fixes", which the guard of rounds 6
+  and 7 did not ask about. The rehearsal on the copy gave the same answers to these twelve. A call
+  takes the guard 0.2 to 0.3 s there after the run and took 0.3 s before it; the eight calls that look
+  through the whole project took 0.8 to 1.3 s before and 0.8 to 0.9 s after. The 120 KB line took
+  0.5 s before and after, the JSON body 2.6 s before and 1.6 s after. Each was measured once. Not put
+  to the guard there: the script of 1,500 lines in a here-document, the slowest line of that reading.
+- **Left there.** The run left the thirteen files changed and not committed in that repository, its
+  418 other status entries untouched and nothing staged. Git ignores the backup folder and the guard's
+  record there. Each of the thirteen files in the backup folder equals, byte for byte, my copy of that
+  file from before the run, so copying them back would undo the run. The record has 63 more lines: 4
+  from the checks' own probes and 59 from my calls, marked `upgrade-check` (3 on the final-evaluation
+  rule, 27 from the 40 calls before the run and 29 from those after it; an allowed call leaves no
+  line).
+- **Not done there.** Its two registered scripts, a launch and a final evaluation were not run, no
+  agent session was started, `install.py --worktrees` was not run and its files were not counted, as
+  before. Nothing was committed or staged in that repository, and it was not pushed. No file below a
+  sealed path was opened.
+- **To know.** The guard there is the new one from the next tool call on. A session in that project
+  now meets a question at a forced `git clean` written as `-d -f` or `--force`, at a write to a frozen
+  or harness file whose path is in Git Bash's spelling or on a mounted drive, and at a text that holds
+  a redirection onto such a file behind a here-document with an apostrophe; in an unattended session
+  each such question is a refusal. It no longer meets one at a line that only sends a command's output
+  to a file that is not kept, such as an evaluator's output to a score file. `expctl` now counts every
+  frozen file with its whole content, where a file of more than 64 MB counted with its first 64 MB,
+  and keeps the hashes of large files in `.claude/state/frozen-hashes.json`, which the guard asks
+  about before an agent writes it. So that install's hash of the frozen files changes once if it has
+  frozen files beyond 64 MB, which I did not look up. A launch reads every frozen file, and no launch
+  was made there, so how long one now takes on that install's frozen files is not measured. `expctl
+  stop` signals only a process that it can prove to be the run's.
+
+### The two runs on the last record's commit
+
+The push of the record `3a2bbc9` to `main` and to the test branch started GitHub's workflow runs
+44381569549 and 44381569642 (18 November, 19:32 to 19:52 UTC). Twelve of twelve jobs pass, with the
+counts of the runs on `1f76682`: 1,674 and 1,663 checks on Ubuntu, 1,660 and 1,659 on Windows, 1,669
+and 1,662 on macOS. "macos-latest, Python 3.x" ran under Python 3.14.10 in both, so that job has
+passed four times on the repaired code, once under 3.15.2 and three times under 3.14.10. The commit
+changes records only. I did not read the image versions of these two runs.
+
+### What needs your decision
+
+- **The commit there.** The thirteen changed files of the install as one local commit in that
+  repository, exactly those paths, not pushed: as after the runs before, it waits for your word.
+  Without it the files stay changed and uncommitted there, and the install works either way.
+- **The push of this record** to the public `main`. It waits for your word too, and it changes
+  records only.
+- **Whether further readers of my own fixes are wanted without asking**: open, as in "The reading of
+  the three guard fixes". None ran for this step, which changed no code.
+- Unchanged: WSL's clock on this machine; the two public test branches; the reading of text handed
+  to `cmd /c`; the one slow case that stays; the jobs of runs 44161954913 and 44363620136.
+
+Sources: the installer's output and the checks named above, run on this machine on 19 November 2026
+(UTC); GitHub Actions, workflow runs 44381569549 and 44381569642 of the public repository, read on 18
+November 2026 from each run's list of jobs and from each job's log.
 
 ## 1. What changed and why
 

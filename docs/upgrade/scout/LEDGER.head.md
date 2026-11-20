@@ -519,6 +519,10 @@ round are UTC.
   where all six of GitHub's jobs pass at the first run, two of them on macOS, with 1,888 to 1,904 checks a job.
   A run that `nnremote.py` starts on another machine gets its deadline as a duration too since `1fe89eb`, which
   the built list names at the deadline row.)
+  (Added later on 20 November: on the user's "Read first" a fresh reader went through the round's repairs that only
+  their author had read. Four faults are repaired, and an older gap of the guard beside them, a program named with
+  `.exe`; REPORT.md, "The reading of round 9's unread repairs". Those repairs are local commits, and their tests ran
+  on this machine only.)
 
 ## Coverage map
 

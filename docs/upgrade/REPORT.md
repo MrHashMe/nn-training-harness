@@ -71,6 +71,10 @@ beyond it where something better could be found: its section, "Round 9", follows
 on the real install". On your "Push test branch" of 20 November that round went to the new public branch
 `test/round-9`, where all six of GitHub's jobs pass at the first run ("Round 9 on the test branch", after
 "Round 9"). `main` and your real install do not have it.
+Asked whether `main` should take it, you answered "Read first": a fresh reader went through the round's
+repairs that nobody but me had read, and found three faults in them and an older one. All four are repaired
+in a local commit, with an older gap of the guard that my own check of the sibling forms found beside them
+("The reading of round 9's unread repairs", after "Round 9 on the test branch"). Nothing of that is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -535,6 +539,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     (Added with point 37: the round is on the public branch `test/round-9` now, on your "Push test
     branch" of 20 November, and GitHub's six jobs pass on it, two of them on macOS. `main` and your
     real install are as they were.)
+    (Added with point 39: those repairs have had a reader since, on your "Read first" of 20
+    November. It found three faults in them, which are repaired. The repairs of that reading are
+    read by nobody but me.)
 37. **Round 9 is on the public test branch, on your word, and all six of GitHub's jobs pass there.
     `main` and your real install still hold round 8's guard** (20 November; "Round 9 on the test
     branch"). `test/round-9` is a new branch at `86fc3a5`, pushed at 02:50 UTC with no force; `main`
@@ -552,6 +559,35 @@ Decision record: `docs/upgrade/LEDGER.md`.
     install's guard has the tee hole; which large item is built next after the pilot, if any;
     whether further readers of my own fixes are wanted without asking; the clock of this machine's
     WSL; the eleven snapshot branches and the scratch clones; the three public test branches.
+    (Added with point 39: that second run, 44727353913 on `5ccc2d4`, passes in all six jobs at the
+    first attempt, with 1,889 to 1,905 checks a job: one more than the first run in every job, the
+    check of `1fe89eb`. The snapshot branches are thirteen now.)
+39. **A fresh reader went through round 9's unread repairs, on your word, and found three faults in
+    them and an older one. All four are repaired in a local commit, with an older gap of the guard
+    that I found beside them: a program named with `.exe`. Your real install and the public `main`
+    have that gap. Nothing is pushed** (20 November; "The reading of round 9's unread repairs"). The
+    guard's rule for `patch` let `patch --version-control=numbered` apply a patch unasked, because
+    it read the option as a call for the version. `expctl curve` could say "one step went wrong" and
+    "rose again" of the same loss, and it called a steady climb a divergence where the loss was
+    finite again later. `--grace 0s` was read as the 600 s of a run that names no grace, a line as
+    old as the public repository. One of the round's tests would have passed with its change taken
+    out, so a second one stands beside it. My own check of the sibling forms then found that a
+    program named with `.exe`, as a shell on Windows may write it, was unknown to two of the guard's
+    rules of round 5: `touch.exe`, `install.exe` and `black.exe` on a kept file passed unasked, and
+    a read-only agent was let run them. The eight test files pass under three interpreters each on
+    Windows and in WSL (1,922, 1,909 and 1,910 checks on Windows; 1,938, 1,925 and 1,926 in WSL).
+    The repairs of this reading, the guard's among them, are read by nobody but me. `test/round-9`
+    on GitHub stays at `5ccc2d4`, where the second run passes in all six jobs. Open: whether the two
+    commits of this reading go to the test branch; whether a reader goes through them first; whether
+    `main` takes the round; the ninth installer run, until which your install's guard has the tee
+    hole and the `.exe` gap; whether further readers of my own fixes are wanted without asking;
+    whether the proof pilot's branch is merged into this one; which large item is built next after
+    the pilot, if any; the clock of this machine's WSL; the thirteen snapshot branches and the
+    scratch clones; the three public test branches.
+    (Point 38 is the proof pilot's. Its session recorded the pilot on 20 November in the commit
+    `c6ddba2` on the local branch `claude/brave-robinson-27cbd9`, which is not merged into this
+    branch and not pushed. That record and this one add to the same places of this file and of
+    PROGRESS.md, so a merge keeps both by hand.)
 
 ## Round 2 (12 November 2026)
 
@@ -7497,6 +7533,8 @@ Most of the report's design is not built; point 5 below says why, part by part.
    (Added on 20 November: the round's tests have run on GitHub's macOS, Linux and Windows machines
    since, and pass; "Round 9 on the test branch". The check of the stop still puts stand-ins in the
    place of the read of `/proc` and of the signal, on a Mac too.)
+   (Added later on 20 November: those repairs have had a reader since, on your "Read first": "The
+   reading of round 9's unread repairs". It found three faults in them.)
 
 ### The report's checklist and defects, one by one
 "By a run" means that I ran it here; "by reading" means the code only.
@@ -7637,6 +7675,9 @@ order and the sibling forms, timed the guard against the one before it on Window
 new on generated lines with every changed answer explained, and added tests. That is less than a reader,
 and that comparison shows it: it found forms that three readers and my own sibling checks
 had passed over.
+(Added later on 20 November: a fresh reader has read them since, with the repair `1fe89eb`, on your
+"Read first": "The reading of round 9's unread repairs". It found three faults in them, which are
+repaired; those repairs are again read by nobody but me.)
 
 ### What was measured
 All on 19 and 20 November 2026 on this machine.
@@ -7948,6 +7989,7 @@ under Python 3.11.7 on Windows; on `i` the table above.
 - **Cut for the usage limit:** no reader for the later repairs; no agent session and no campaign; no
   build of any of the report's large items; no larger sample of the generated guard test; research only
   where a change needed a fact.
+  (Added later on 20 November: the later repairs have had a reader since, on your "Read first".)
 
 ### Not done, and why
 - The report's large items ("In short", point 5, and "The report's proposals").
@@ -8032,6 +8074,8 @@ In short:
    deadline as a duration too (`1fe89eb`, one line and one check). Nobody but me read it.
 4. **What follows the run is that repair and this record, pushed to the same branch as your word
    covers.** The push starts a second run of the six jobs, which this record cannot hold.
+   (Added later on 20 November: that run, 44727353913 on `5ccc2d4`, passes in all six jobs; "The reading
+   of round 9's unread repairs", "GitHub's second run on the test branch".)
 5. **`main` is as it was**, at `e587b4f`: it holds round 8's guard, with the hole in the tee rule. Your
    real install is untouched and holds the same guard.
 
@@ -8148,6 +8192,8 @@ Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,66
   which does not have this round.
 - A reader for `1fe89eb`, and for the round's later repairs: whether I may start readers of my own fixes
   without asking is open.
+  (Added later on 20 November: you answered it for these with "Read first": one reader, in the section
+  after this one. The question for readers that nobody asked for stays open.)
 - A re-run of a job on GitHub: none was called for, since every job got a machine and passes.
 - The proof pilot: you started it on 20 November as a session of its own, on a branch cut from
   `86fc3a5`. Its budget is yours to give there, and its record is that session's. That record will
@@ -8167,6 +8213,8 @@ Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,66
   kept file unasked.
 - **Whether further readers of my own fixes are wanted without asking.** Open since 18 November.
   `1fe89eb` is one more change that only its author read.
+  (Added later on 20 November: `1fe89eb` has been read since, on your "Read first". The question itself
+  stays open, and the repairs of that reading are the next change that only its author read.)
 - Unchanged: which of the fourth report's large items is built next after the pilot, if any; WSL's clock
   on this machine; the snapshot branches and the scratch clones, kept or deleted; the public test
   branches, three now; the reading of text handed to `cmd /c`; the local `main` of the main checkout,
@@ -8177,6 +8225,307 @@ from the run's list of jobs and from each job's log, its checks counted in the s
 that begin with `PASS` and `FAIL` and split at the `RESULT:` lines; run 44554136667, read on the same
 day in the same way; `tests/test_remote.py` on the state of `1fe89eb`, run on this machine on 20
 November 2026.
+
+## The reading of round 9's unread repairs (20 November 2026): four faults repaired, an older gap beside them
+
+Your word: "Read first", to the question whether the repairs of round 9 that nobody but me had read get
+a reader before `main` takes the round. Before you answered I had said what it would be: one reader with
+read access only, by my estimate 150,000 to 250,000 tokens. I took the word to cover that one reader,
+the check and the repair of what it finds, tests, and local commits with their record. Not covered: a
+push, `main`, your real install, a further reader, a re-run of a job on GitHub, deleting anything. Dates
+and times in this section are UTC.
+
+In short:
+
+1. **The reader found three faults in the repairs it read, and one older fault that the brief had asked
+   about. All four are repaired.** The guard let `patch --version-control=numbered` apply a patch
+   unasked, because it read the option as a call for the version. `expctl curve` could say "one step
+   went wrong" and "rose again" of the same loss, and it called a steady climb a divergence where the
+   loss was finite again later. `--grace 0s` was read as the 600 s of a run that names no grace; that
+   line is as old as the public repository.
+2. **One of the round's tests would have passed with its change taken out.** A second one stands beside
+   it, and fails on a controller that reads the system's clock alone.
+3. **Beside the reader's findings, my own check of the sibling forms found an older gap of the guard,
+   which the public `main` and your real install have too.** A program named with `.exe`, as a shell on
+   Windows may write it, was unknown to two rules of round 5: `touch.exe`, `install.exe`, `black.exe`,
+   `isort.exe` and `ruff.exe` on a kept file passed unasked, and a read-only agent was let run them and
+   `patch.exe`. Repaired.
+4. **The other findings changed no behaviour.** Two forms stay refused to a read-only agent where they
+   could pass, and the guard's comments say so now. `command -v patch`, which only looks the program up,
+   is still asked about: named below, and left.
+5. **The eight test files pass under three interpreters each on Windows and in WSL**, with 1,909 to
+   1,938 checks a pass and none failed. The first passes had one failed check each: a new test row of
+   mine that was wrong, not the repair it tests. It is moved; "The change, and its tests" below.
+6. **The repairs of this reading are read by nobody but me, the guard's among them.** They had what the
+   earlier ones had: a re-read against the comment, the other order and the sibling forms, timings
+   against the guard before, old against new on 3,000 generated lines with no changed answer, and tests
+   that fail with the repair taken out.
+7. **Nothing is pushed.** The code is one local commit, `2da5fee`, and this record a second.
+   `test/round-9` on GitHub stays at `5ccc2d4`, where GitHub's second run passes in all six jobs. `main`
+   stays at `e587b4f`, with round 8's guard, and your real install is untouched.
+
+### The reader and its brief
+
+- One reader: a fresh session of Opus 5.5 with read access only. It built the old and the new modules in
+  memory from their source text and ran them there, and it wrote nothing. 173,515 tokens, 25 tool calls,
+  six minutes.
+- What it read: what changed between the state that round 9's three readers read (`050464f`, the local
+  branch `claude/r9-snap-b`) and `1fe89eb`, outside `docs/upgrade`: eleven files, 441 lines added and
+  147 removed. That is the repairs after the second and the third reading, the clock changes, the
+  repairs that the comparison with round 8's guard led to, and `1fe89eb`.
+- The brief asked about correctness: whether each changed rule and function does what its comment says,
+  in the other order and in the sibling forms; what each replaced mechanism covered; a deadline, a
+  budget and a grace of 0; Python 3.8; long lines; and whether each new test would fail with its change
+  taken out. It did not ask for ways past the guard.
+- It reported eight findings, two of them in two parts, and a list of what it had checked and found
+  right: the timing of each changed rule on lines of 20,000 characters (0.63 s at most), Python 3.8, the
+  exact test's shares, the thinning of a long series, the tail of the t distribution, and the callers of
+  the clock that is never set. Not reached, in its own words: `references/validity.md`, and
+  `tests/test_review_fixes.py` beyond its list of rows; the filter of `curve --since-step` it read and
+  did not run. Those two files I read myself.
+- With it, the readers of this work are seven and one second reading, about 1,080,000 tokens. Beyond
+  your word the count stays at six and one second reading, about 907,000: this one you asked for.
+
+### The findings, each checked
+
+| # | The reader's finding | What I found | Answer |
+|---|---|---|---|
+| 1 | The guard reads `patch --version-control=numbered` as a call for the version, and lets the line apply the patch | Holds: the guard of `5ccc2d4` allows the line | Repaired |
+| 2 | `expctl curve` says "the values before it were ordinary: one step went wrong" and "rose again" of one loss | Holds, with the reader's own curve | Repaired |
+| 3 | A steady climb counts as a blow-up of a few values: about 250 of 300 values are taken out of what the shape reads, and the loss is called diverged though it was finite again later | Holds, with the reader's own curve | Repaired |
+| 4 | `--grace 0s` becomes 600 s. The line is not in what the reader was given; the brief asked about it | Holds: with the grace read as before, a run with a deadline of 1 s and a grace of 0 is not stopped within 120 s | Repaired |
+| 5 | The supervisor's replaced mechanisms: a duration counts from the supervisor's start, and the state keeps when the run was first late | No fault, as the reader says | No change |
+| 6 | `grep --include=*.{php,rb}` is still refused to a read-only agent, where `--include=*.php` passes | Holds: a refusal too many | Left; the comment says it |
+| 7a | An awk program in double quotes, whose `print` to the screen has escaped quotes, is refused to a read-only agent | Holds: a refusal too many | Left; the comment says it |
+| 7b | `command -v patch>/dev/null` went from allowed to asked about | Holds, and agrees with the form with a blank, which the state before asked about too | Left, and named under "Not done" |
+| 8a | The test of a clock that was set back would pass with the system's clock alone | Holds: it does | A second test |
+| 8b | The check of the exact test compares the function with a copy of its own formula | Holds; the fixed values beside it (0.125, 0.0625, 2/252) are the test | No change |
+
+**1. `patch`, and an option that begins like an excepted one.** Round 9's rule asks about a line that
+applies a patch and lets pass a call that applies nothing: `patch` with `--dry-run`, `--check`, `--help`
+or `--version`, `git apply` with `--check`, `--stat`, `--numstat`, `--summary` or `--help`, `git am`
+with `--show-current-patch` or `--help`. The rule ended such a name at a word boundary, and a hyphen is
+one. So GNU patch's `--version-control=numbered`, which applies the patch and says how its backups are
+named, was read as `--version`. Now the name ends where no letter, digit or hyphen follows, for all
+three programs. The reader proposed the ending that the guard uses for a program's name; that one would
+have asked about `git am --show-current-patch=diff`, which only prints. The other side of the change: a
+word that begins like such an option and is none (`git apply --check-x`) is asked about now where it
+passed, and git refuses that line itself. Looked up in the help of git 2.52, GNU patch 2.7.6, black
+25.12.0 and ruff 0.14.10 on this machine: `--version-control` is the only option that begins like an
+excepted one. isort is not installed here and was not looked at.
+
+**2 and 3. What `expctl curve` says of a loss with a value that is not finite.** The finding names the
+first such value, and then says one of three things of the values before it: that the training diverged,
+that they were ordinary and one step went wrong, or nothing. The round's repair had tied that choice to
+whether the loss had climbed before the value, and counted every climb as a blow-up of a few values. The
+reader showed two curves on which that goes wrong:
+
+- A loss that falls for 200 steps and then climbs slowly, with one value that is not finite in the
+  climb. The finding said "the values before it were ordinary (1.284): one step went wrong", and the
+  shape's own finding said "rose again", with 121 % of the gain given back, of the same loss. Now the
+  finding says nothing of the values before, where the loss was finite again later and the shape finds a
+  rise: "train/loss is not finite from step 300, and finite again later", and "rose again" beside it.
+- A loss that climbs steadily from the first step, with one value that is not finite at step 300. About
+  250 of the 300 values before it were taken out of what the shape reads, as a blow-up would be, and the
+  finding said "the training diverged" of a loss that was finite again later. Now a blow-up is a climb
+  in at most three values, or in a tenth of the values before the first that is not finite, where that
+  is more. Only a blow-up is taken out of the shape. And only a blow-up, or a climb in a loss that never
+  became finite again, is called a divergence. This curve now reads "is not finite from step 300, and
+  finite again later, after it had risen from 1 to 3.99", and the shape says "rose from the start" of
+  all of it.
+
+**4. A grace of 0.** `expctl launch --grace 0s` writes a grace of 0 into the run's manifest, and the
+supervisor read the field with "or 600", which takes 0 for a missing value. A run that does not stop by
+itself was then ended ten minutes after its deadline and not at it. The line is in the public
+repository's first commit (`6978b6d`). Now a grace that is a number counts, 0 too, and a manifest with
+none gets 600 s as before. Both writers of the field write a number (`expctl launch`, and `nnremote.py`
+60 s for a run on another machine), and the supervisor is its only reader. `kill_after_s` has the same
+"or 120" and stays: a 0 in the configuration reads as the default at every place that reads it, and a
+stop's own `--kill-after 0s` is honoured, because the supervisor takes a number from the stop's request
+as it is.
+
+**6, 7a and 7b. Left as they are.** The first two are refusals too many for a read-only agent, which
+cost it one command written another way; the other way round a write would pass.
+
+- `grep -rn "save(" --include=*.{php,rb} .` is refused, because `php` and `rb` stand behind a brace and
+  a comma there, and a brace also opens a block of PowerShell, where a program's name stands right
+  behind it. `--include=*.php` passes since the round. The guard's comment now names the form.
+- An awk program in double quotes whose `print` goes to `"/dev/stderr"` with its quotes escaped is
+  refused; the same program in single quotes passes. The comment now names that too.
+- `if command -v patch>/dev/null; then ...` is asked about since the round's rules end a program's name
+  at `>`. The form with a blank, `command -v patch >/dev/null`, was asked about in the state that the
+  round's readers read, so the two agree now. Both are a question too many, and unattended a refusal too
+  many: `command -v` only looks the program up. A repair would be an exception where the guard reads
+  `command` as a word in front of a program, which every rule uses; I left it, because that is a wider
+  change than this reading's findings called for, and it would need the comparison on generated lines of
+  its own.
+
+**8. The tests.** The round's test of a deadline as a duration sets the deadline's time of day an hour
+ahead and expects the run to end after one second. It shows that the duration counts and not the time of
+day; it does not show the steady clock, because the system's clock alone would end that run too. The new
+test starts the supervisor with the controller's reading of the system's clock replaced by one that
+stands still, on a run with a deadline of 1 s and a grace of 0: only the steady clock can end it, and
+the grace must be read as 0. It ends after 8 s on Windows and after 2 s in WSL. With the supervisor
+counting on the system's clock alone, and with the grace read as before, it fails: the run is not
+stopped within 120 s.
+
+### Beside the findings: a program named with `.exe`
+
+Found when I put the rows of the repaired patch rule to the guard in the form that a shell on Windows
+may write, `patch.exe`. It is not the reader's finding and not a fault of round 9.
+
+- **The gap.** Where the guard looks for a write verb it ends the name at a word boundary, so `rm.exe`
+  and `git.exe` have always counted. Two rules of round 5 (`644b2c9`, 14 November) end the name with a
+  look at what follows instead, a blank or the end of the line: the rule for `touch`, `patch` and
+  `install`, whose names are also plain words, and the rule for the formatters black, isort and ruff,
+  whose names may go on with a version (`ruff@0.6`). To them `touch.exe` was another word. On the kept
+  file `eval/metrics.py` of a test project, `touch.exe`, `install.exe -m 644 notes.txt`, `black.exe`,
+  `isort.exe`, `ruff.exe format` and `ruff.exe check --fix` passed unasked in the main session, and
+  unattended, where the plain forms are refused. A read-only agent was let run all of them, and
+  `patch.exe -p1 -i x.patch`.
+- **Who has it.** Every guard since round 5: the public `main` at `e587b4f` and your real install too.
+  Round 9's own rules for a patch and for an archive knew the ending in small letters (`patch.exe`,
+  `tar.exe`, `unzip.exe`, `7z.exe`) and not in capitals.
+- **The repair.** Each of these names counts with `.exe`, in any case of letters (`TOUCH.EXE`,
+  `Patch.Exe`, `TAR.EXE`), as the names that end at a word boundary do. A formatter that is told to
+  check only passes with `.exe` as without (`black.exe --check`, `ruff.exe format --diff`).
+- **Checked.** 49 command lines over a kept file, each put to the guard in the plain form and with
+  `.exe`: 42 pairs answered alike before the repair, and 49 after. `docs/REFERENCE.md` names the change
+  where it lists what counts as a program's name.
+
+### The change, and its tests
+
+- **The commit** (`2da5fee`): five files, 97 lines added and 27 removed. `nn_guard.py` (the patch rule,
+  the `.exe` names, two comments), `expctl.py` (the grace, the curve's finding), `docs/REFERENCE.md`
+  (two sentences), `tests/test_kit.py` and `tests/test_review_fixes.py`.
+- **New checks.** In the kit file sixteen: three curves (the reader's two, and a steady climb that stays
+  not finite, which is still called a divergence), the supervisor where the system's clock stands still,
+  and twelve command lines put to the guard (three for the patch rule, nine for `.exe`). In the
+  review-fixes file five lines put to the guard as a read-only agent.
+- **Each fails with its repair taken out.** With the controller of `5ccc2d4` the three curves fail and
+  no other curve does. With every climb counted as a blow-up again, two of them fail. The supervisor's
+  test fails with the grace read as before, and with the system's clock alone. With the guard of
+  `5ccc2d4` under the new test files (Windows, Python 3.11.7), the nine new rows of the kit file that
+  expect a question fail, and the four of the review-fixes file that expect a refusal. The four new rows
+  that expect no question pass under both guards, and no other check of the two files fails.
+- **One new row of mine was wrong, and the first full passes showed it.** A row of the kit file that
+  expects no question held `git am --show-current-patch=diff`. Where the kit file puts its rows to the
+  guard, a run executes from the working tree of the test project, and an older rule then asks about
+  every `git am` line, whatever its options; the round's own comment a few lines above that row says so,
+  and the round had put its own row of that kind into the review-fixes file for that reason. I had tried
+  the row in a project with no such run. It failed in all four passes of that state (the local branch
+  `claude/r9-snap-l`; Windows under Python 3.11.7 and 3.8.20, WSL under 3.12.3 and 3.8.20), as the one
+  failed check of each. The rule that the row tests answered rightly. The form now stands in the
+  review-fixes file beside the round's, and the passes below are on the state after that.
+- **The full passes**, on the state of the commit (the local branch `claude/r9-snap-m`, whose tree is
+  the commit's): the eight test files under three interpreters each on Windows and in WSL. Every file
+  passes, and no check failed.
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,216 | 125 | 138 | 264 | 100 | 54 | 6 | 1,922 |
+| Windows | 3.8.20 | 19 | 1,216 | 125 | 137 | 264 | 100 | 42 | 6 | 1,909 |
+| Windows | 3.15.0rc3 | 19 | 1,216 | 125 | 138 | 264 | 100 | 42 | 6 | 1,910 |
+| WSL | 3.12.3 | 19 | 1,224 | 127 | 136 | 275 | 100 | 54 | 3 | 1,938 |
+| WSL | 3.8.20 | 19 | 1,224 | 127 | 135 | 275 | 100 | 42 | 3 | 1,925 |
+| WSL | 3.15.0b3 | 19 | 1,224 | 127 | 136 | 275 | 100 | 42 | 3 | 1,926 |
+
+Against the round's commit under the same interpreters that is 22 checks more a pass: sixteen in the kit
+file, five in the review-fixes file and the one of `1fe89eb` in the remote file. Python 3.11.7 on
+Windows and 3.12.3 in WSL have psutil and PyTorch; the other four interpreters have no third-party
+package, and the benchmarks file has 42 checks there in the place of 54, as in the round's own table.
+
+### What was measured, and what it rests on
+
+- **Old against new on generated lines.** 3,000 generated command lines put to the guard of `5ccc2d4`
+  and to the repaired one: no answer changed, for the main session (2,396 allowed, 604 asked about) or
+  for a read-only agent (1,577 allowed, 1,423 refused). The generator does not write `.exe` or
+  `--version-control`, so this shows that nothing else moved, not that the repairs work; the new rows
+  show that.
+- **Time, on Windows under Python 3.11.7, against the guard of `5ccc2d4`.** The seventeen long lines of
+  the round's own timing list: unchanged within 0.04 s. Seven long patch lines: unchanged in time, and
+  changed in their answer only where an option's name goes on with a hyphen. A line of 3,000 formatter
+  calls with `.exe` (84,000 characters) takes 2.89 s where it took 0.87 s: the guard now reads it as the
+  same line without `.exe`, which takes 2.46 s and 2.48 s in the two guards. 3,000 calls of `black.exe
+  --check` take 1.02 s (0.72 s before; 0.91 s without `.exe`), and 3,000 of `touch.exe` 0.84 s (0.75 s
+  before).
+- **Against the released guard**, the one of `e587b4f` that `main` and your install hold: nothing that
+  it asked about passes in the repaired one. It has no rule for a patch, so it lets every patch line
+  pass in the main session and refuses them to a read-only agent; and it has the `.exe` gap.
+- **The sibling forms of the patch lines**: the other order of the options, behind `env`, `command`,
+  `bash -c`, `powershell -c` and `cd sub &&`, joined with `;`, and with `.exe`. All are asked about in
+  the main session, and the forms that only ask for help, the version, a dry run or a check pass.
+- **What it rests on.** That `--version-control` makes GNU patch apply the patch is from its manual and
+  its help; I did not run a patch. The `.exe` forms were put to the guard as text: no `touch.exe` wrote
+  a file in a test. The timings are one machine's, on Windows only.
+
+### GitHub's second run on the test branch
+
+"Round 9 on the test branch" ends with a push of `1fe89eb` and of its record, whose run that record
+could not hold. It is run 44727353913 on `5ccc2d4` (11:24 to 11:42 UTC on 20 November): all six jobs
+pass at the first attempt, and no line begins with `FAIL` in any of the six logs.
+
+| Job | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 19 | 1,208 | 122 | 136 | 275 | 100 | 42 | 3 | 1,905 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 19 | 1,208 | 122 | 135 | 264 | 100 | 42 | 3 | 1,893 |
+| windows-latest, Python 3.x | 3.15.2 | 19 | 1,200 | 120 | 138 | 265 | 100 | 42 | 6 | 1,890 |
+| windows-latest, Python 3.8 | 3.8.10 | 19 | 1,200 | 120 | 137 | 265 | 100 | 42 | 6 | 1,889 |
+| macos-latest, Python 3.x | 3.14.10 | 19 | 1,210 | 122 | 136 | 264 | 100 | 42 | 6 | 1,899 |
+| macos-latest, Python system | 3.9.6 | 19 | 1,206 | 120 | 135 | 264 | 100 | 42 | 6 | 1,892 |
+
+Every job has one check more than in the first run, in the remote file: the check of `1fe89eb`. The
+other seven files have the counts of the first run. That run is on the state before this reading; the
+repairs of the reading have not run on GitHub's machines or on a Mac.
+
+### Not done, and why
+
+- A push of the two commits: it needs your word. "Push test branch" of this morning covered the round's
+  push and what followed that run, and I do not stretch it to a later change.
+- A reader for the repairs of this reading: "Read first" was a word for one reader. The repairs change
+  the guard in 36 lines and the controller in 27.
+- `command -v patch`, which is asked about though it only looks the program up: left, as said at finding
+  7b.
+- The two forms that stay refused to a read-only agent (findings 6 and 7a), and a `kill_after_s` of 0 in
+  the configuration, which reads as the default.
+- `git am -h` and `git am --show-current-patch` while a run executes from the working tree: an older
+  rule asks about them there, which is a question too many. Left; it is the rule that my wrong row met.
+- Anything on a Mac, on bare Linux or under Python 3.15.2 for this state: GitHub's jobs run on a push.
+- `main`, the ninth installer run and every deletion: each needs your word. The public `main` and your
+  install hold round 8's guard, with the hole in the tee rule and the `.exe` gap.
+
+### What needs your decision
+
+- **Whether the two commits of this reading go to `test/round-9`.** GitHub's six jobs would then run the
+  repairs on macOS, on bare Linux and under Python 3.15.2 for the first time. I would take "Push test
+  branch" to cover that push, the reading of the jobs, and a push of the record of the result to that
+  branch.
+- **Whether a reader goes through the repairs of this reading before `main` takes the round.** They are
+  small, and they are the guard's and the supervisor's. Each reading of my own repairs since 16 November
+  has found something, this one too. By my estimate such a reader costs 60,000 to 120,000 tokens.
+- **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
+  with no force.
+- **The ninth installer run on your real install.** Until it, the install's guard lets a `tee` with a
+  redirection of its own, and `touch.exe` or `black.exe`, write a kept file unasked.
+- **Whether the proof pilot's branch is merged into this one.** The pilot ran on 20 November in a
+  session of its own, which you started. Its record is the commit `c6ddba2` on the local branch
+  `claude/brave-robinson-27cbd9`: a section of this file, point 38 of "Read this first" and an entry of
+  PROGRESS.md. It is not merged into this branch and not pushed. Of that commit I read the subject ("the
+  proof pilot ran; on neither task is the kit shown ahead of the bare agent"), the headings and where it
+  adds its text; I checked nothing of it. Its record and this one add to the same places of the two
+  files, so a merge keeps both by hand, and this reading's point is numbered 39 for that reason.
+- Unchanged: whether further readers of my own fixes are wanted without asking; which of the fourth
+  report's large items is built next after the pilot, if any; WSL's clock on this machine; the snapshot
+  branches, thirteen now, and the scratch clones, kept or deleted; the three public test branches; the
+  reading of text handed to `cmd /c`; the local `main` of the main checkout, which stands at `992f436`.
+
+Sources: the reader's report of 20 November 2026, kept in this session's record; the kit's tests on the
+state of `2da5fee`, run on this machine on 20 November 2026 on Windows (Python 3.11.7, 3.8.20 and
+3.15.0rc3) and in WSL (3.12.3, 3.8.20 and 3.15.0b3), their checks counted in the logs as the lines that
+begin with `PASS` and `FAIL`; the guards of `5ccc2d4` and `e587b4f` beside the repaired one in temporary
+projects; the help of git 2.52.0, GNU patch 2.7.6, black 25.12.0 and ruff 0.14.10 on this machine;
+GitHub Actions, workflow run 44727353913 of the public repository, read on 20 November 2026 from its
+list of jobs and from each job's log.
 
 ## 1. What changed and why
 

@@ -62,6 +62,9 @@ all six jobs pass (the same entry).
 built from it, and two commands beyond it. On the user's "Push test branch" of 20 November it is on the new
 public branch `test/round-9`, where all six of GitHub's jobs pass, and one repair made beside that run
 follows it there ("Round 9 on the test branch" below).
+On the user's "Read first" of that day a fresh reader went through the round's repairs that only their
+author had read: four faults are repaired in a local commit, with an older gap of the guard beside them
+("The reading of round 9's unread repairs" below).
 
 # Upgrade progress
 
@@ -2388,6 +2391,8 @@ Done (REPORT.md, "Round 9", has it in full):
   not ask for: 491,974 tokens, 24 findings kept, 21 repaired, one in its main part, one accepted,
   one kept and said in the command's text. Readers beyond the user's word now: six and one second
   reading, about 907,000 tokens. The later repairs had no reader.
+  (Added later on 20 November: a seventh reader read them, on the user's "Read first"; the entry
+  "The reading of round 9's unread repairs" below.)
 - After the readings a comparison of round 8's guard with this one on generated lines found gaps
   in my own new rules that the readers and my checks of sibling forms had missed. Repaired, with
   tests.
@@ -2411,6 +2416,8 @@ Done (REPORT.md, "Round 9", has it in full):
 - Left on this machine: the local branches `claude/r9-snap-a` to `claude/r9-snap-j`, their clones
   on Windows and in WSL, and the scratch folder `%TEMP%\nnkit-upgrade\r9\`.
   (Added later on 20 November: and `claude/r9-snap-k`, the state of `1fe89eb`, with its two clones.)
+  (And `claude/r9-snap-l` and `claude/r9-snap-m`, two states of the repairs of the reading, each with its two
+  clones. The code commit of the reading has the tree of the second.)
 
 Next, each a separate word of the user's: whether this round is pushed, to a test branch first or
 to `main`; the ninth installer run; which large item is built next, if any; whether further
@@ -2473,6 +2480,76 @@ installer run; whether further readers of my own fixes are wanted without asking
 is built next after the pilot, if any; WSL's clock; the snapshot branches and the clones; the
 reading for `cmd /c`; whether the test branches are deleted.
 
+## The reading of round 9's unread repairs (20 November): four faults repaired, an older gap beside them
+
+The user's word, 20 November: "Read first", to the question whether the round's repairs that only
+their author had read get a reader before `main` takes the round. Before the answer I had said what
+it would be: one reader with read access only, 150,000 to 250,000 tokens by my estimate. I took the
+word to cover that reader, the check and the repair of what it finds, tests, and local commits with
+their record. It is not a word for a push, for `main`, for the real install, for a further reader,
+for a re-run of a job on GitHub or for a deletion. Dates and times in this entry are UTC.
+
+Done on that word:
+- The reader: one fresh session of Opus 5.5 with read access only and a brief on correctness, on
+  what changed between the state that the round's three readers read (`claude/r9-snap-b`) and
+  `1fe89eb`, outside `docs/upgrade`: eleven files, 441 lines added and 147 removed. 173,515 tokens,
+  25 tool calls. It wrote nothing. Readers in all now: seven and one second reading, about 1,080,000
+  tokens; beyond the user's word still six and one second reading, about 907,000.
+- Its eight findings, each checked. Repaired: the guard read `patch --version-control=numbered` as a
+  call for the version and let the line apply the patch; `expctl curve` said "one step went wrong"
+  and "rose again" of one loss; it took a steady climb for a blow-up and called a loss diverged that
+  was finite again later; `--grace 0s` was read as 600 s, a line as old as the public repository. A
+  second test stands beside the round's test of a clock that was set back, which passes with the
+  system's clock alone. No change: the supervisor's replaced mechanisms, where the reader found no
+  fault; two forms that stay refused to a read-only agent, which the guard's comments now name;
+  `command -v patch`, asked about though it only looks the program up; the check of the exact test.
+- Found beside them by my own check of the sibling forms, and older than the round: a program named
+  with `.exe` was unknown to round 5's rule for `touch`, `patch` and `install` and to its rule for
+  the formatters. `touch.exe`, `install.exe`, `black.exe`, `isort.exe` and `ruff.exe` on a kept file
+  passed unasked, and a read-only agent was let run them and `patch.exe`. The public `main` and the
+  real install have that gap. Repaired, in any case of letters: of 49 command lines put to the guard
+  in both forms, 42 pairs answered alike before and 49 after.
+- The code commit `2da5fee`: five files, 97 lines added and 27 removed (`nn_guard.py`, `expctl.py`,
+  `docs/REFERENCE.md`, `tests/test_kit.py`, `tests/test_review_fixes.py`). New checks: sixteen in
+  the kit file, five in the review-fixes file.
+- Checked without a reader: the diff re-read against its comments; the other order and the sibling
+  forms of the patch lines; old against new on 3,000 generated lines, with no changed answer for the
+  main session or a read-only agent; timings on Windows against the guard before (no long line of
+  the round's list slower, and a line of `.exe` names now costs what the plain names cost); the
+  released guard of `e587b4f` on the same lines (nothing that it asked about passes now); the help
+  of git 2.52, GNU patch 2.7.6, black 25.12.0 and ruff 0.14.10 for a second option that begins like
+  an excepted one (none). Each new check fails with its repair taken out, but for the four rows that
+  expect no question, which pass before and after.
+- Tests on the state of the code commit (`claude/r9-snap-m`): eight files under three interpreters
+  each on Windows and in WSL, every file passes (1,922, 1,909 and 1,910 checks on Windows; 1,938,
+  1,925 and 1,926 in WSL). The passes on the state before it (`claude/r9-snap-l`) had one failed
+  check each: a new row of mine in the kit file expected no question for a `git am` line, at a place
+  where a run executes from the test project's working tree and an older rule asks about every `git
+  am` line. The row was wrong, not the repair; its `git am` part now stands in the review-fixes
+  file, where no run is live. With the guard of `5ccc2d4` under the new test files, the thirteen new
+  rows that expect a question or a refusal fail, and nothing else.
+- GitHub's second run on the test branch, 44727353913 on `5ccc2d4` (11:24 to 11:42 UTC), which the
+  entry before this one could not hold: all six jobs pass at the first attempt, with 1,889 to 1,905
+  checks a job, one more than the first run in every job (the check of `1fe89eb`).
+- REPORT.md has the section "The reading of round 9's unread repairs", point 39 of "Read this
+  first", and a sentence at each place that this reading puts out of date. The ledger's head has a
+  sentence, and the ledger is built again (1,740 rows from 36 notes, as before).
+- Beside this reading and not part of it: the proof pilot's session recorded its run in the commit
+  `c6ddba2` on the local branch `claude/brave-robinson-27cbd9` (13:37 UTC), with point 38 of "Read
+  this first"; this reading's point is 39 for that reason. That branch is not merged into this one.
+  Both records add to the same places of REPORT.md and PROGRESS.md, so a merge keeps both by hand.
+- Nothing pushed. Nothing on the real install. No further reader: the repairs of this reading, the
+  guard's among them, are read by their author only.
+- Left on this machine: `claude/r9-snap-l` and `claude/r9-snap-m` with two clones each, and the
+  helpers of the reading in `%TEMP%\nnkit-upgrade\r9\rd\`.
+
+Next, each a separate word of the user's: whether the two commits of the reading go to
+`test/round-9`; whether a reader goes through them first; whether `main` takes the round; the ninth
+installer run; whether further readers of my own fixes are wanted without asking; whether the proof
+pilot's branch is merged into this one; which large item is built next after the pilot, if any;
+WSL's clock; the snapshot branches and the clones; the reading for `cmd /c`; whether the test
+branches are deleted.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
@@ -2489,6 +2566,8 @@ reading for `cmd /c`; whether the test branches are deleted.
   (Added on 20 November: the round's tests have run on GitHub's macOS, Linux and Windows machines and pass;
   "Round 9 on the test branch" above. The rest of this bullet stands, and the repair `1fe89eb` had no reader
   either.)
+  (Added later on 20 November: a reader has read those repairs and `1fe89eb` since, on the user's "Read first"; "The
+  reading of round 9's unread repairs" above. The repairs of that reading have no reader.)
 - On a Mac, after the test branch: the kit's tests ran on GitHub's macOS runner and pass, the checks for
   macOS only and Python 3.15 on Ubuntu and Windows among them. Not run on a Mac: an agent session, training
   and anything with PyTorch (so nothing on the Apple GPU, and the nine benchmark checks that need PyTorch
@@ -2830,6 +2909,12 @@ reading for `cmd /c`; whether the test branches are deleted.
   branch `test/round-9`, the reading of GitHub's jobs and further pushes to that branch for a repair
   and for the record, as I had said before it. It is not a word for `main`, for a re-run of a job on
   GitHub, a deletion, anything on the real install or the budget of the pilot session.
+- Answered on 20 November ("Read first"), from round 9: whether the round's repairs that only their
+  author had read get a reader before `main` takes it. "The reading of round 9's unread repairs"
+  above. The word covers one reader with read access only, the check and the repair of what it
+  finds, tests, and local commits with their record, as I had said before it. It is not a word for a
+  push, for `main`, for the real install, for a further reader, for a re-run of a job on GitHub or
+  for a deletion.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -2839,6 +2924,9 @@ reading for `cmd /c`; whether the test branches are deleted.
   (Added on 20 November: the push to a test branch is answered and done. Open in its place: whether
   `main` takes the round. The snapshot branches are eleven now, with `claude/r9-snap-k`. The user
   started the proof pilot on that day as a session of its own, where its budget is answered.)
+  (Added later on 20 November: open beside it: whether the two commits of the reading go to
+  `test/round-9`, and whether a reader goes through them first. The snapshot branches are thirteen,
+  with `claude/r9-snap-l` and `claude/r9-snap-m`.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -2975,3 +3063,15 @@ reading for `cmd /c`; whether the test branches are deleted.
   checks of each test file, then any `FAIL` line and any traceback other than the benchmark's own.
   `win-one.sh NAME LABEL test_x.py` and `wsl-one.sh` run one test file on a snapshot. `apply_push.py
   KIT` wrote the texts of the entry "Round 9 on the test branch".
+- The reading of 20 November: its helpers are in `%TEMP%\nnkit-upgrade\r9\rd\`. `narrow_rd.py KIT`
+  runs the curve rows alone, and with `stands` the supervisor's row where the system's clock stands
+  still; `curve_try.py KIT` prints what `expctl curve` says of the reader's curves; `exe_forms.py
+  LABEL` puts 49 command lines to a probe project's guard in the plain form and with `.exe`;
+  `time_patch.py` and `time_exe.py` time long lines in two guards; `kit-m1` to `kit-m4` are copies
+  of the kit with one repair taken out each; `chain-win.sh NAME` and `chain-wsl.sh NAME` run the
+  eight test files of a snapshot under the three interpreters, one after the other, and on Windows
+  the two changed test files on `kit-m4` after them; `apply_read.py KIT LOGS HASH` wrote the texts
+  of the entry "The reading of round 9's unread repairs". Windows' disk cleanup had deleted the
+  clean Python 3.8 environment under `%TEMP%\nnkit-upgrade\venvs\clean38`; it is made again with `uv
+  venv --no-python-downloads --python 3.8 PATH`, from the interpreter that uv had on this machine,
+  with nothing downloaded and no package installed.

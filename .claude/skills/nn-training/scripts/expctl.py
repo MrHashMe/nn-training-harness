@@ -525,6 +525,18 @@ def same_process(pid, expected_start, key=None) -> bool:
     return abs(actual - expected_start) < 5.0
 
 
+def born_after(pid, ts) -> bool:
+    """Windows: whether the process that holds this number was created after the time `ts`, so that it cannot have
+    written a record of that time. Windows gives a number out again within seconds, sooner than the five that
+    same_process allows. A clock that was set back between a process's start and its record makes the two read the
+    other way round, until a record is written after the clock has caught up. False elsewhere: a number comes back
+    late there, and on Linux the start time is the boot time plus ticks, which moves with the clock."""
+    if os.name != "nt" or not is_num(ts):
+        return False
+    actual = proc_start_time(pid)
+    return actual is not None and actual > ts + 0.1  # time.time() is up to a clock tick (16 ms) behind on Windows
+
+
 def proc_words(pid, what):
     """Linux: the words a process was started with, its command line ("cmdline") or its environment ("environ"). [] when
     they cannot be read, None where there is no /proc to ask (macOS, Windows). A run's records name whatever pid their
@@ -580,6 +592,14 @@ def ancestors(pid, depth=25):
             break
         out.append(cur)
     return out
+
+
+def exit_text(rc) -> str:
+    """An exit code as one looks it up: with the signal's number where a signal ended the process, and in hex where
+    it is a Windows status, such as 0xC000013A for a process that an event of its console ended."""
+    if is_num(rc) and rc < 0:
+        return f"{rc}, signal {-int(rc)}"
+    return f"0x{int(rc):08X}" if is_num(rc) and rc > 0xFFFF else str(rc)
 
 
 def signal_leader(pid, sig) -> bool:
@@ -1272,8 +1292,15 @@ def load_run(root: Path, d: Path, cfg, t: float):
     # shortcut: only bubblewrap's flag in the run's command is recognised, not a namespace from docker or unshare;
     # upgrade when RunLog records the namespace it runs in
     if not alive and hb_ok and hb_age is not None and hb_age <= stale and hb.get("pid") and hb.get("pid") != pid \
-            and not man.get("remote") and "--unshare-pid" not in (man.get("cmd") or []) and pid_alive(hb["pid"]):
-        # a later process (e.g. an in-place resume) owns this run directory now
+            and not man.get("remote") and "--unshare-pid" not in (man.get("cmd") or []) and pid_alive(hb["pid"]) \
+            and same_process(hb["pid"], hb.get("proc_start"), hb.get("proc_key")) and not born_after(hb["pid"], hb["ts"]):
+        # A later process (e.g. an in-place resume) owns this run directory now. Only the process that wrote the
+        # heartbeat: by its start time, which RunLog writes there since 20 November 2026, and on Windows no process
+        # that was created after the heartbeat was written. (Was: whatever process had the number. Where a virtual
+        # environment's python.exe starts a run on Windows, the recorded number is that small program's and the
+        # heartbeat's is the interpreter's, so after a kill a run read as running, for up to heartbeat_stale_seconds,
+        # as soon as another program had the interpreter's number, and `stop` would then have ended that program.)
+        # A heartbeat without a start time, as an older vendored runlog.py writes it, is taken as before elsewhere
         pid, alive = hb["pid"], True
     # The supervisor writes the exit record a moment after the process has gone, so while it is there the run has not
     # ended. Only where its start time shows that the pid is still the supervisor's: a pid is given out again
@@ -1372,6 +1399,17 @@ def load_run(root: Path, d: Path, cfg, t: float):
         state = "running" if hb_age <= stale else "unknown"
     else:
         state = "unknown"
+        # A launched run with a manifest and no record of a process after a minute. Its supervisor writes that record
+        # within a second of its start, so it has most likely ended; its own number is in no record before that one,
+        # so this is read from the records alone. The launch notices a supervisor that ends within its first seconds;
+        # this is for one that the launch did not see end (--via tmux, a start slower than those seconds) and for a
+        # run of before 20 November 2026 (was: unknown with no reason, for good)
+        if man.get("launched_by") == "expctl" and is_num(man.get("created_ts")) and t - man["created_ts"] > 60:
+            reason = (f"launched {fmt_secs(t - man['created_ts'])} ago, and its supervisor left no record of the command's "
+                      "process: " + ("it had opened the run's log, so the command may have run (stdout.log, "
+                                     "supervisor.log)" if (d / "stdout.log").exists() else
+                                     "it had not opened the run's log, which it does before it starts the command "
+                                     "(supervisor.log may say why). Nothing ran; launch it again"))
     run["state"] = state
     if reason:
         run["reason"] = str(reason)[:300]
@@ -1954,15 +1992,30 @@ def cmd_launch(args):
         kw = dict(stdin=subprocess.DEVNULL, stdout=sup_log, stderr=subprocess.STDOUT, cwd=str(cwd), env=env,
                   close_fds=True)
         if os.name == "nt":
-            kw["creationflags"] = 0x00000008 | 0x00000200  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+            # CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP: a console of its own that has no window, apart from the
+            # caller's. (Was DETACHED_PROCESS, no console at all, and Windows gives a console program that such a
+            # process starts a new console with a window. Under a virtual environment's python.exe that program is
+            # the supervisor's interpreter, so a terminal window stood on the screen for the run's whole life; without
+            # an environment one came up at each kill, for taskkill.)
+            kw["creationflags"] = 0x08000000 | 0x00000200
         else:
             kw["start_new_session"] = True
         try:
             sp = subprocess.Popen(sup_cmd, **kw)
         except OSError as e:
             return fail(7, f"could not start supervisor: {e}", run_dir=rel_to(root, run_dir))
-    pid, start_error = None, None
-    for _ in range(50):
+    # The supervisor's first record, looked for during five seconds: the number of the command's process, or why the
+    # command could not start. And whether the supervisor is there at all (was: never asked, so a supervisor that had
+    # ended before it began left a launch that said ok, with no process number, and a run that read as unknown for
+    # good; seen on Windows under a virtual environment's python.exe, in 2 of 650 launches, where one such process
+    # ended after 0.16 s with the status 0xC000013A, the one for an event of its console, having run none of its code).
+    # A supervisor that ended without a record is started once more, when it had not opened the run's log either: it
+    # opens that before it starts the command, so the command has not run and nothing is done twice. One start more
+    # and no error at once, because what was seen comes and goes, and an error would have the caller, a campaign's
+    # loop among them, count a run that never ran as a failed one. The answer and supervisor.log say so
+    pid, start_error, ended, again, left, settled = None, None, [], False, 50, None
+    while True:
+        gone = sp.poll() if sp is not None else None  # asked before the records are read: it writes them, then ends
         pj = read_json(run_dir / "pid.json")
         if isinstance(pj, dict) and pj.get("pid"):
             pid = pj["pid"]
@@ -1971,6 +2024,33 @@ def cmd_launch(args):
         if isinstance(ex, dict):
             if ex.get("returncode") is None:
                 start_error = ex.get("error") or "the command could not start"
+            break
+        if gone is not None and settled is not sp:
+            settled = sp  # the records once more after a moment, for one that could not be read just now
+            time.sleep(0.2)
+            continue
+        if gone is not None:
+            ended.append(exit_text(gone))
+            began, said = (run_dir / "stdout.log").exists(), log_reason(run_dir / "supervisor.log")
+            if not began and len(ended) == 1:
+                try:
+                    sup_log.write(f"expctl launch: the supervisor ended with exit code {ended[0]} before it started the "
+                                  f"command; it is started once more\n".encode())
+                    sup_log.flush()
+                    sp, again, left = subprocess.Popen(sup_cmd, **kw), True, 50
+                    continue
+                except OSError as e:
+                    ended.append(f"no second start: {e}")
+            start_error = (f"the supervisor ended before it recorded the run's process (exit code {', then '.join(ended)}); "
+                           + ("it had opened the run's log, so the command may have started: see stdout.log" if began
+                              else "the command was not started")
+                           + (f"; supervisor.log: {said}" if said and not said.startswith("expctl launch:") else ""))
+            if not began:  # for status: a run that failed to start, with this reason (was: unknown, with none)
+                write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
+                                                          "ended_at": iso(now())})
+            break
+        left -= 1
+        if left <= 0:
             break
         time.sleep(0.1)
     me = Path(os.path.abspath(__file__))
@@ -2000,10 +2080,14 @@ def cmd_launch(args):
     }
     if resume_of:
         out["resume_of"] = resume_of.name
+    warn = [f"the supervisor's first process ended with exit code {ended[0]} before it started the command, and was "
+            "started once more (supervisor.log has the line)"] if again and len(ended) == 1 else []
     if start_error:
         out["error"] = start_error
     elif pid is None:
-        out["warning"] = "child pid not reported yet; check status in a few seconds"
+        warn.append("child pid not reported yet; check status in a few seconds")
+    if warn:
+        out["warning"] = "; ".join(warn)
     if mode == "copy" and optuna_storage_file(cfg):
         out["note"] = ("relative Optuna storage paths resolve inside the snapshot; build the storage URL from "
                        "$EXP_PROJECT_ROOT so every run writes to the shared study")

@@ -119,7 +119,7 @@ OpenCode are not ported.
 | Tests of 15 and 16 Nov 2026, on one machine | not run on bare Linux; WSL2 Ubuntu 24.04 stands in | all pass: Python 3.8 and 3.15.0b3 without third-party packages, 3.12 with psutil | not run | all pass: Python 3.8 and 3.15.0rc3 without third-party packages, 3.11 with psutil |
 | Tests of 16 Nov 2026, on GitHub's runners, without third-party packages | all pass: Ubuntu 26.04 with Python 3.15.2, Ubuntu 24.04 with 3.8.18 (that image has no bubblewrap, so the loop's sandbox checks ran on 26.04 only) | not a runner | all pass: macOS 26 on arm64, with Python 3.14.10 and with the system's own 3.9.6 | all pass: Windows Server 2025 with Python 3.8.10 and 3.15.2 |
 | Run contract, guard, installer, session status | works | works | the tests pass; no agent session has run on a Mac | works |
-| `launch --via tmux` | works | works | the tests pass, with tmux 3.8 from Homebrew | missing (no tmux): runs are detached processes |
+| `launch --via tmux` | works | works | the tests pass, with tmux 3.8 from Homebrew | missing (no tmux): runs are detached processes. Their supervisor has a console of its own without a window (since 20 Nov 2026; before, no console, and where a virtual environment's `python.exe` started it, a terminal window stood on the screen for the run's life) |
 | Graceful stop | SIGTERM and `stop.json`, which the run's supervisor acts on by itself. The signal goes only to a process that `/proc` shows was started for this run, whatever pid the run's own records name (since 15 Nov 2026) | same | SIGTERM and `stop.json`; the signal goes to the pid in the run's records (no `/proc` to ask) | `stop.json` only: a loop that does not poll `RunLog.should_stop()` is killed after `kill_after_s` |
 | Source snapshot | symlinks | symlinks | symlinks | symlinks where the account may create them; junctions and hard links where it lacks that privilege (local NTFS) |
 | Loop: no network for the run, sealed data hidden from the run, and the file system read-only for it apart from its worktree, its own run folder and a `/tmp` of its own | enforced with bubblewrap; the read-only file system (since 15 Nov 2026; before, only the project) ran on bare Linux on 16 Nov 2026, on GitHub's Ubuntu 26.04 runner | enforced with bubblewrap (tried on 15 Nov 2026) | missing: offline variables and a scan of the change only | missing: same |
@@ -672,6 +672,32 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   the other finds the first one's row ahead of its own in the record, gives way before it starts the command,
   and stays in the receipt as an attempt, which counts as a use afterwards (since 15 November 2026; both ran
   before).
+- How a launched run's processes are followed, since 20 November 2026. `expctl launch` looks at the supervisor it
+  started, for five seconds, and five more where it starts a second one. One that ended before it started the command
+  is started once more, and the answer (`warning`) and `supervisor.log` say so; if the second one ends too, the launch
+  answers `ok: false` with both exit codes, its own exit code is 9, and the run reads as `failed` with that reason.
+  One that ended after it had opened the run's log is not started again, because the command may have run: the launch
+  answers with the error and leaves the run's records as they are. (Before, the launch never looked. On Windows under
+  a virtual environment's `python.exe`, 2 of 650 runs never started while their launch said `ok`, and they read as
+  `unknown` for good. Why those supervisors ended is not established, so the launch deals with what follows from it.)
+  For a launched run that has a manifest and no other record after a minute, `expctl status` gives a reason and says
+  whether the command can have run; it reads that from the records alone. A heartbeat names the start time of the
+  process that wrote it (`proc_start`, and `proc_key` on Linux), and the process number in it counts as the run's only
+  while the process that holds the number is that one: not a process with another start time, and on Windows not one
+  that was created after the heartbeat was written. (Before, any live process with that number counted, for
+  `heartbeat_stale_seconds`. Windows gives a number out again within seconds, and where an environment's `python.exe`
+  is the run's command the heartbeat's number is never the recorded one, so a killed run read as `running` as soon as
+  another program had the number; `expctl stop` would then have ended that program after `kill_after_s`, which was
+  read in the code and never run.) A vendored `runlog.py` of before that day writes no start time: on Windows the
+  creation time still protects its heartbeat, elsewhere its number is taken as before, so copy the new file over it.
+  On native Windows the supervisor has a console of its own without a window; `expctl stop`, the deadline's kill, and
+  Ctrl+C, Ctrl+Break and a closed terminal on the caller's side behave as before (tried on Windows 11 under Python
+  3.11.7, and under 3.8.20 and 3.15.0rc3 in an environment). Not repaired: the number in the launch's own record is
+  compared by start time to within five seconds only, so on Windows a run that is killed together with its supervisor
+  within five seconds of its start still reads as alive where another program gets its number within those seconds;
+  `nnloop start --detach` and the controller of a remote run are started as before, without a console, and nothing
+  looks whether they came up. None of this has run on a Mac, where the first heartbeat of a process now asks `ps` once
+  for its start time.
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.
 - What counts as a run's source, since 14 November 2026: agent configuration (`AGENTS.md`, `.mcp.json`, `.codex/`,

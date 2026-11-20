@@ -197,6 +197,20 @@ def _proc_key(pid):
         return None
 
 
+_SELF = {}
+
+
+def _self_ident():
+    """This process's number with its start time and key, read once per process (again in a forked child). Every
+    heartbeat carries them, as pid.json does for a launched command: expctl takes the number in a heartbeat for the
+    run's only while the process that holds it is the one that wrote it (was: the number alone, and on Windows a
+    killed run read as running once its number had gone to another program)."""
+    pid = os.getpid()
+    if _SELF.get("pid") != pid:
+        _SELF.update(pid=pid, proc_start=_proc_start_time(pid), proc_key=_proc_key(pid))
+    return _SELF
+
+
 def _project_root(root=None) -> Path:
     return Path(root or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
 
@@ -475,7 +489,9 @@ class RunLog:
         latest = dict(list(self.latest.items())[:40])
         if self.metric in self.latest:
             latest[self.metric] = self.latest[self.metric]
-        hb = {"ts": round(t, 3), "run_id": self.run_id, "pid": os.getpid(), "started_ts": self.t0,
+        me = _self_ident()
+        hb = {"ts": round(t, 3), "run_id": self.run_id, "pid": me["pid"], "proc_start": me["proc_start"],
+              "proc_key": me["proc_key"], "started_ts": self.t0,
               "step": self.step, "epoch": self.epoch, "total_steps": self.total_steps, "phase": phase or "train",
               "latest": latest, "best": self.best, "best_seen": self.best_seen,
               "last_ckpt": self.last_ckpt, "throughput_steps_per_s": self._throughput(),

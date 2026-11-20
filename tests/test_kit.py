@@ -1139,6 +1139,173 @@ def main():
     check(r.stdout.strip() == '["running", "lost"]',
           "the pid in a fresh heartbeat keeps a run alive whose launched process is gone, but not a run in a process "
           f"namespace of its own, whose heartbeat holds the namespace's pid (was: running) ({r.stdout.strip()} {r.stderr[-200:]})")
+    # ---- a run's processes where a virtual environment's python.exe starts it on Windows (20 November 2026) ----
+    # Whose number that is. There the recorded number is the environment's small program's and the heartbeat's is the
+    # interpreter's, and after a kill Windows gives the interpreter's number to another program within seconds: the
+    # run then read as running. So a heartbeat names its writer's start time as well, and on Linux its key, and its
+    # number stands for the run only while the process that holds it is that writer. `me` holds the number in each
+    # case: as the writer of the heartbeat; as a process whose start time is a minute off the heartbeat's; as one that
+    # was created two seconds after the heartbeat was written and three after its writer, which is within the five
+    # that same_process allows; and the same with no start time in the heartbeat, as an older vendored runlog.py leaves it
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl, runlog\n"
+            "me, base, out = os.getpid(), Path(sys.argv[2]), []\n"
+            "a, k = expctl.proc_start_time(me), expctl.proc_key(me)\n"
+            "rl = runlog.RunLog(str(base / 'own'), name='own', handle_signals=False)\nrl.heartbeat()\n"
+            "own = json.loads((base / 'own' / 'heartbeat.json').read_text())\n"
+            "for hb in (own, dict(own, proc_start=a - 60, proc_key=k and 'another-boot:1'),\n"
+            "           dict(own, ts=a - 2, proc_start=a - 3), {'ts': a - 2, 'pid': me}):\n"
+            "    d = base / str(len(out))\n    d.mkdir(parents=True)\n"
+            "    (d / 'manifest.json').write_text(json.dumps({'cmd': ['python', 'train.py'], 'launched_by': 'expctl'}))\n"
+            "    (d / 'pid.json').write_text(json.dumps({'pid': 2147480000}))\n"
+            "    (d / 'heartbeat.json').write_text(json.dumps(hb))\n"
+            "    out.append(expctl.load_run(d.parent, d, {}, time.time())['state'])\n"
+            "print(json.dumps([own.get('pid') == me, own.get('proc_start'), [a, expctl.proc_start_time(me)],\n"
+            "                  own.get('proc_key') == k, out]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "hbwho")], cwd=proj)
+    try:
+        mine, wrote, a, keyed, states = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        mine, wrote, a, keyed, states = None, None, [], None, r.stderr[-300:]
+    # against the start time as read before the heartbeat and after it: on Linux that time is the boot time plus
+    # ticks, and the boot time moves when the clock is set, which a VM's time sync does every few seconds
+    check(bool(mine and keyed and isinstance(wrote, float)
+               and min((abs(wrote - x) for x in a if isinstance(x, float)), default=9.0) < 1),
+          "a heartbeat names the start time of the process that wrote it, and on Linux its key, as the launch's record does "
+          f"for the launched command (was: the number alone) ({wrote} against {a}, key {keyed})")
+    check(states == ["running", "lost"] + (["lost", "lost"] if os.name == "nt" else ["running", "running"]),
+          "the number in a fresh heartbeat stands for a run whose launched process is gone only while the process that "
+          "holds it is the one that wrote the heartbeat: not one with another start time, and on Windows, where a number "
+          "comes back within seconds, not one that was created after the heartbeat was written, whether the heartbeat "
+          f"names a start time or not (was: running for all four) ({states}, of [the writer, a minute off, created later, "
+          "created later and no start time]; elsewhere the last two are taken as before)")
+    # And `stop` ends nothing for such a run, which is not active. (Was: on Windows the tree of whatever program held
+    # the heartbeat's number was killed after kill_after_s, and where no /proc proves a process the run's own, as on
+    # macOS, that program was signalled at once.) `proc_words` answers as on macOS here, and the two signals are
+    # stand-ins that only count: the process that holds the number is this check's own
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "root, me, calls = Path(sys.argv[2]), os.getpid(), []\n"
+            "d = root / 'runs' / 'gone'\nd.mkdir(parents=True)\n(root / '.claude').mkdir()\n"
+            "(root / '.claude/nn-training.json').write_text(json.dumps({'runs_dir': 'runs', 'kill_after_s': 1,\n"
+            "    'metric': {'name': 'val/acc', 'direction': 'maximize'}}))\n"
+            "expctl.signal_group = expctl.signal_leader = lambda pid, sig: calls.append(pid) or True\n"
+            "expctl.proc_words = lambda pid, what: None\n"
+            "(d / 'manifest.json').write_text(json.dumps({'cmd': ['python', 'train.py'], 'launched_by': 'expctl'}))\n"
+            "(d / 'pid.json').write_text(json.dumps({'pid': 2147480000}))\n"
+            "(d / 'heartbeat.json').write_text(json.dumps({'ts': time.time(), 'pid': me,\n"
+            "                                              'proc_start': expctl.proc_start_time(me) - 60}))\n"
+            "code = expctl.main(['--root', str(root), 'stop', 'gone'])\n"
+            "print(json.dumps([code, len(calls), (d / 'stop.json').exists()]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "stopgone")], cwd=proj)
+    got = r.stdout.strip().splitlines() or [r.stderr[-300:]]
+    check(got[-1] == "[1, 0, false]" and "run is not active" in got[0] and '"lost"' in got[0],
+          "stop ends no process for a killed run whose heartbeat's number another program holds: the run is lost, not "
+          f"active, and no request is left in its folder (was: that program was ended) ({got})")
+    # The launch looks at the supervisor it started. (Was: never. There, in 2 of 650 launches, the supervisor ended
+    # before it ran any of its code; the launch said ok with no process number, and the run read as unknown for good.)
+    # Three launches in a project of their own, so that no later check meets their runs. A stand-in takes the place
+    # of a supervisor's start and ends at once with exit code 3: for the first start; for the first two; and for the
+    # first, after it has opened the run's log as a supervisor does before it starts the command
+    sup_root = tmp / "suplaunch"
+    code = ("import contextlib, io, json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "root, real, starts, out = Path(sys.argv[2]), expctl.subprocess.Popen, [], []\n"
+            "(root / '.claude').mkdir(parents=True)\n"
+            "(root / '.claude/nn-training.json').write_text(json.dumps({'runs_dir': 'runs', 'min_free_disk_gb': 0,\n"
+            "    'metric': {'name': 'val/acc', 'direction': 'maximize'}}))\n"
+            "def start(cmd, **kw):\n"
+            "    if isinstance(cmd, list) and '_supervise' in cmd:\n"
+            "        starts.append(cmd)\n"
+            "        if len(starts) <= ends:\n"
+            "            return real([sys.executable, '-c', prog, cmd[-1]], **kw)\n"
+            "    return real(cmd, **kw)\n"
+            "expctl.subprocess.Popen = start\n"
+            "opens = 'import os, sys; open(os.path.join(sys.argv[1], \"stdout.log\"), \"ab\").close(); sys.exit(3)'\n"
+            "for name, ends, prog in (('once', 1, 'import sys; sys.exit(3)'), ('twice', 2, 'import sys; sys.exit(3)'),\n"
+            "                         ('began', 1, opens)):\n"
+            "    del starts[:]\n    buf = io.StringIO()\n"
+            "    with contextlib.redirect_stdout(buf):\n"
+            "        rc = expctl.main(['--root', str(root), 'launch', '--name', name, '--snapshot', 'none', '--',\n"
+            "                          sys.executable, '-c', 'print(%r)' % name])\n"
+            "    la = json.loads(buf.getvalue())\n    d = root / la['run_dir']\n"
+            "    end = time.monotonic() + 20\n"
+            "    while name == 'once' and time.monotonic() < end and not (d / 'exit.json').exists():\n"
+            "        time.sleep(0.2)\n"
+            "    run = expctl.load_run(root, d, {}, time.time())\n"
+            "    out.append({'rc': rc, 'ok': la.get('ok'), 'pid': la.get('pid'), 'warning': la.get('warning'),\n"
+            "                'error': la.get('error'), 'starts': len(starts), 'exit': expctl.read_json(d / 'exit.json'),\n"
+            "                'log': (d / 'supervisor.log').read_text(errors='replace').strip(),\n"
+            "                'state': run['state'], 'reason': run.get('reason')})\n"
+            "print(json.dumps(out))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(sup_root)], cwd=proj, timeout=120)
+    try:
+        once, twice, began = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        once = twice = began = {"error": (r.stdout + r.stderr)[-300:]}
+    check(once.get("rc") == 0 and once.get("ok") is True and isinstance(once.get("pid"), int) and once.get("starts") == 2
+          and "started once more" in (once.get("warning") or "")
+          and "exit code 3 before it started the command" in (once.get("log") or "") and once.get("state") == "completed",
+          "a launch whose supervisor ended before it started the command starts it once more and says so, in its answer "
+          "and in supervisor.log, and the run completes (was: ok with no process number, and a run that read as unknown "
+          f"for good) ({once})")
+    check(twice.get("rc") == 9 and twice.get("ok") is False and twice.get("starts") == 2
+          and "exit code 3, then 3" in (twice.get("error") or "") and "the command was not started" in twice["error"]
+          and (twice.get("exit") or {"returncode": 0}).get("returncode") is None and twice.get("state") == "failed"
+          and (twice.get("reason") or "").startswith("the supervisor ended before it recorded the run's process"),
+          "a launch whose supervisor ended twice before it started the command answers with an error that names both "
+          f"exit codes, and the run reads as failed with that reason (was: ok, and unknown with no reason) ({twice})")
+    check(began.get("rc") == 9 and began.get("ok") is False and began.get("starts") == 1 and began.get("exit") is None
+          and "the command may have started" in (began.get("error") or ""),
+          "a supervisor that ended after it had opened the run's log is not started again, for the command may have run: "
+          f"the launch answers with an error and leaves the run's records as they are (was: ok) ({began})")
+    # Status says why a launched run has a manifest and nothing else after a minute, and whether its command can have
+    # run: a manifest of two minutes ago, the same beside the run's log, one of twenty seconds ago, and an old one
+    # that no launch wrote. With them, an exit code in the launch's error reads as one looks it up
+    code = ("import json, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "base, t, out = Path(sys.argv[2]), time.time(), []\n"
+            "for man, log in (({'launched_by': 'expctl', 'created_ts': t - 120}, False),\n"
+            "                 ({'launched_by': 'expctl', 'created_ts': t - 120}, True),\n"
+            "                 ({'launched_by': 'expctl', 'created_ts': t - 20}, False), ({'created_ts': t - 120}, False)):\n"
+            "    d = base / str(len(out))\n    d.mkdir(parents=True)\n"
+            "    (d / 'manifest.json').write_text(json.dumps(dict(man, cmd=['python', 'train.py'])))\n"
+            "    if log:\n        (d / 'stdout.log').write_text('')\n"
+            "    run = expctl.load_run(d.parent, d, {}, t)\n    out.append([run['state'], run.get('reason') or ''])\n"
+            "print(json.dumps([out, [expctl.exit_text(c) for c in (3221225786, -15, 3)]]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "nosup")], cwd=proj)
+    try:
+        why, texts = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        why, texts = [["", r.stderr[-300:]]] * 4, []
+    check([w[0] for w in why] == ["unknown"] * 4 and "Nothing ran; launch it again" in why[0][1]
+          and "the command may have run" in why[1][1] and [w[1] for w in why[2:]] == ["", ""],
+          "status says of a launched run with a manifest and no other record after a minute that its supervisor left "
+          "no record of the command's process, and whether the command can have run; not within the first minute, "
+          f"and not of a run that no launch made (was: unknown with no reason) ({why})")
+    check(texts == ["0xC000013A", "-15, signal 15", "3"],
+          f"an exit code reads as one looks it up: a Windows status in hex, a signal by its number ({texts})")
+    if os.name == "nt":
+        # The supervisor's console: one of its own that has no window, for the program the launch started and for the
+        # interpreter that runs the supervisor, which is another process where a virtual environment's python.exe is
+        # the program. (Was: no console. Windows gives a console program that such a process starts a new console with
+        # a window: the interpreter under an environment, for the run's whole life, and taskkill at each kill.)
+        # AttachConsole fails with error 6 for a process that has no console
+        code = ("import ctypes, json, sys\nfrom ctypes import wintypes\n"
+                "k = ctypes.WinDLL('kernel32', use_last_error=True)\nk.GetConsoleWindow.restype = wintypes.HWND\nout = []\n"
+                "for pid in map(int, sys.argv[1:]):\n"
+                "    k.FreeConsole()\n"
+                "    out.append([True, bool(k.GetConsoleWindow())] if k.AttachConsole(pid) else [False, ctypes.get_last_error()])\n"
+                "k.FreeConsole()\nprint(json.dumps(out))\n")
+        con = sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "--root", str(sup_root), "launch", "--name",
+                  "console", "--snapshot", "none", "--", PY, "-c", "import time; time.sleep(8)"], cwd=proj)
+        try:
+            la = json.loads(con.stdout)
+            pids = [la["supervisor_pid"], json.loads((sup_root / la["run_dir"] / "pid.json").read_text())["supervisor_pid"]]
+            seen = json.loads(sh([PY, "-c", code] + [str(p) for p in pids], cwd=proj).stdout.strip() or "null")
+        except (ValueError, KeyError, OSError) as e:
+            seen = f"{type(e).__name__}: {e} {(con.stdout + con.stderr)[-200:]}"
+        check(seen == [[True, False]] * 2,
+              "on Windows a launched run's supervisor has a console of its own without a window, as the program the launch "
+              "started and as the interpreter that runs it (was: no console, [False, 6], and where an environment's "
+              f"python.exe is that program, a console with a window for the interpreter) ({seen}, of [console, window])")
+    # ---- end of that block ----
     # expctl's own writes leave no temporary file beside the record when they give up, whether the replace was refused
     # to the end or the write itself failed (a full disk)
     wdir = tmp / "wjson"

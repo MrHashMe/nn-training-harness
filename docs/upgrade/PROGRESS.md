@@ -2798,6 +2798,104 @@ its `.exe` (I would leave it); whether this branch is merged with `test/round-9`
 `5ccc2d4`; the other session's local branch is two commits after `5ec95c6` now, `05f996f` and
 `fd589b2`, looked at 21:40 and not fetched; the records are joined by hand); and what the second
 reading's entry lists, less the repair.
+(Added with "The reading of the lookup's repair", the next entry: on the user's "Yes, start reader"
+a fresh reader has read both since; with this repair two rare forms of name started the wrong file,
+and both are repaired.)
+
+## The reading of the lookup's repair (20 November): one fresh reader on `7edd37d` and the nine lines of `3784d0c`, two rare forms of name that started the wrong file repaired, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `09bcc5c`. The
+user's word, 20 November: "Yes, start reader", to my question at the end of the lookup's repair,
+"Start one fresh reader on this repair and the second reading's nine lines?" Dates and times in this
+entry are UTC.
+
+Done (REPORT.md, "The reading of the lookup's repair", has it in full):
+- The reader: an agent of this session on Opus 5.5 with read access only and a brief for correctness
+  on `7edd37d` (change A) and on the nine lines of `3784d0c` in `expctl.ancestors` (change B), told
+  not to read `docs/upgrade` and to run nothing. 167,917 tokens, 20 tool calls, about eight minutes.
+  "I found no fault in either change that makes something wrong that worked before"; six findings; a
+  list of what it found right; four things it could not judge. I ran each finding before any change.
+- Finding 4, held as a regression of `7edd37d`, rated harmless by the reader and not so when run:
+  `os.path.abspath` drops a dot or a space from the end of a name, so `in_env` handed over
+  `tools\tool.exe` for `tools\tool.`, which to Windows is the program file `tool` without an ending.
+  With both files in the folder the kit started `tool.exe`, Windows by itself the other, and
+  `startable` said yes. The reader's second case, a folder with a dot in its name, did not hold.
+- My own find, of the same commit, not named by the reader: `abspath` also drops a slash at the end
+  and resolves `.` and `..`, so `tools\`, `tools/`, `tools\.` and `tools\sub\..` were handed over as
+  `tools.exe` beside the folder, and `tools\..` as the `.exe` named like the current folder beside
+  it. Windows by itself starts none of them (error 2 or 5); the kit started the `.exe`, and
+  `startable` said yes.
+- The repair of both, in `in_env`:
+  `if os.path.basename(exe) != os.path.basename(program): return None`. The first attempt,
+  `splitext` of the name as written, covered the dot only. After it none of those names is handed
+  over, the kit starts what Windows starts, and `startable` refuses them all, also `tools\tool.`, a
+  name with a space at its end and `tool.exe.`, which Windows starts: refusals before any use,
+  stated in the reference.
+- Finding 1, held: the hint in `cmd_final_eval`'s refusal is what `shutil.which` finds, not what a
+  shell takes. Up to Python 3.11 `which` adds no ending to a name with a folder and always looks in
+  the current folder; from 3.12 it adds endings and asks Windows about the current folder. Tried
+  with `final-eval` under 3.8.20, 3.11.7, 3.12.9 and 3.14.0 with
+  `NoDefaultCurrentDirectoryInExePath` set: `onlyroot` gets the hint up to 3.11 only, `tools\final`
+  and `.\tools\tool3.11` from 3.12 only. The hint is reworded (an ending may be left out where the
+  name has no dot; the current folder and the variable; "There is ..."); the comment and the
+  reference say that it differs by version. Not made the same under every version.
+- Finding 2, held as a gap of the reference, the behaviour older than both changes: a relative
+  program is read on Windows from the folder of the kit's own process and on Linux from the `cwd`
+  given to the start. Project root on both for `final-eval`, for `on_finish` (`spawn_controller`
+  starts the controller with `cwd=root`) and for the evaluator of a campaign started with
+  `--detach`; the run's folder for a launched run; and for `env --python` and for the evaluator of a
+  campaign started without `--detach` the folder the command was typed in on Windows, the project
+  root on Linux. `env --python` tried typed in a subfolder, on Windows (3.11.7, 3.12.9) and in WSL
+  (3.12.3); the evaluator's mechanism tried with a start of its kind, not with a campaign; the rest
+  by reading. The reference names all five callers. Not repaired. REPORT.md's sentence in "The
+  lookup's repair", "Limits", was wrong for `on_finish` and for `--detach` and has a note.
+- Finding 3, held, test only: a copy of the kit without `born = began or born` gave the check's two
+  chains as the check wanted them. The check has a third chain (30 at 100, its parent 29 at 90, 28
+  at 95): the kit gives `[[9], [19], [29]]` on Windows, the copy `[[9], [19], [29, 28]]` (3.11.7 and
+  3.8.20). In WSL both give the chains whole: the chain pins the line on Windows only.
+- Finding 5, held, older, not repaired: in WSL, `PATH=` in front of the command is refused by
+  `startable` while a start with that environment runs the program from the current folder;
+  `PATH=:/usr/bin` passes and runs. One sentence in the reference.
+- Finding 6, a clock set back: known, three times in REPORT.md's second reading; one sentence more
+  in the docstring of `ancestors` on what `status` then shows. Not run.
+- What the reader could not judge, tried: a quoted folder of the `PATH` (Windows does not start from
+  it, `startable` refuses, `shutil.which` finds nothing); psutil's start time against
+  `_win_proc_start` (460 and 464 processes at two counts, the largest difference 0.0000017 s). Not
+  tried: the Microsoft Store's Python.
+- `tests/test_kit.py`: no check is new. The names' check of `env_tests` has three names more (the
+  environment's interpreter by a relative path with `.`, `/` and `/.` at its end); the walk's check
+  in `main()` has the third chain. The names' check fails on the kit of `09bcc5c` and on the first
+  attempt of the repair; the group alone passes under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0 on
+  Windows (13 checks) with the final code.
+- `docs/REFERENCE.md`: four sentences in the entry on a start without a shell on Windows, as the
+  findings above say.
+- The eight test files on the final state, from 22:55 to 23:46 on Windows and from 22:55 to 23:14 in
+  WSL: Windows, Python 3.11.7, 1,916 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,903; WSL, 3.12.3, 1,927; WSL from a virtual environment, 3.8.20, 1,914. None failed.
+- The code is `c85f96a`, 55 lines added and 34 removed: `expctl.py` 16 and 5, `tests/test_kit.py` 10
+  and 7, `docs/REFERENCE.md` 29 and 22.
+- REPORT.md has the section "The reading of the lookup's repair", point 47 of "Read this first" (46
+  is the other session's, on `test/round-9`), a sentence in the introduction, and a dated note at
+  eighteen places of the earlier sections and at point 45. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no further reader, so
+this reading's repairs are read by nobody but me; GitHub's machines and macOS have run none of this
+branch; findings 2 and 5 are not repaired; no hint that is the same under every Python; no allowance
+for a clock set back; a real campaign's evaluator and a real `on_finish` with a program named by a
+folder, the Microsoft Store's Python, a conda environment, a 32-bit Python and a network path not
+tried.
+
+Next, each a separate word of the user's: whether a relative path to a program is read from the same
+folder on Windows and on Linux for `env --python` and for the evaluator of a campaign started
+without `--detach` (I would: the evaluator's from the project root, the one after `--python` from
+the folder it is typed in, one small change with its own tests); whether a reader goes through this
+reading's repairs (I would not for these lines alone); whether this branch is merged with
+`test/round-9` (eleven commits after `5ccc2d4`; the other session's branch and `origin/test/round-9`
+stand at `409182f`, looked at 23:47 and not fetched; a merge of `c85f96a` with it, tried in memory,
+joins the kit's files and conflicts in the two records; a third local branch,
+`claude/fervent-gould-8d0820`, has `81634a3` after `409182f`, which changes `expctl.py` too and
+joins the same way; the records are joined by hand); and what the lookup's entry lists, less the
+reader.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

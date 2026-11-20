@@ -461,17 +461,7 @@ def draws(space, k, rng):
     return [p for i, p in enumerate(pts) if p not in pts[:i]]
 
 
-def t_tail(x, df):
-    """P(T > x) for Student's t with a whole number of degrees of freedom (the finite series of Abramowitz and
-    Stegun 26.7.3 and 26.7.4)."""
-    th = math.atan(x / math.sqrt(df))
-    c, odd = math.cos(th), df % 2
-    term = total = (c if odd else 1.0) if df > 1 else 0.0
-    for j in range(odd + 2, df - 1, 2):
-        term *= (j - 1) / j * c * c
-        total += term
-    a = math.sin(th) * total
-    return (1 - (2 / math.pi * (th + a) if odd else a)) / 2
+t_tail = expctl.t_tail  # P(T > x) for Student's t: `expctl compare` uses it too, so it lies there
 
 
 def t_mult(z, df):
@@ -593,6 +583,17 @@ class Campaign:
         self.run_env.update(HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", HF_DATASETS_OFFLINE="1",
                             WANDB_MODE="offline", PIP_NO_INDEX="1")
         self.box_train, self.box_eval = self.sandbox(True), self.sandbox(False)
+        if self.box_train and self.box_eval:
+            # The home folder is read-only in the box, and numba's cache=True then stops the program that imports it
+            # ("no locator available"); Matplotlib builds its font list anew in every worker; a Triton kernel written
+            # by hand stops with "Read-only file system" on ~/.triton/cache. Each gets a folder in the box's own /tmp,
+            # which is empty when a run starts and gone when it ends: a cache that outlived a run would carry compiled
+            # code from a training run to the evaluator. What the project set itself stays.
+            # TRITON_HOME and not TRITON_CACHE_DIR: torch.compile keeps the folder by device that it gives Triton
+            # itself, which TRITON_CACHE_DIR would replace (tried on 19 November 2026, Triton 3.5.1, PyTorch 2.9.1)
+            self.run_env.setdefault("NUMBA_CACHE_DIR", "/tmp/nn-cache/numba")
+            self.run_env.setdefault("MPLCONFIGDIR", "/tmp/nn-cache/matplotlib")
+            self.run_env.setdefault("TRITON_HOME", "/tmp/nn-cache")
         self.gpus = gpu_names()
         self.restricted = False  # set by preflight: whether this Claude Code has --restricted
         self.confirming = False  # True while the confirmation runs use what was held back for them
@@ -1188,24 +1189,34 @@ class Campaign:
             {k: env.get(k) for k in ("python", "packages", "torch")} if isinstance(env, dict) else {}))[:1500]
         self.save()
 
-    def logged(self, rid, points):
+    def logged(self, rid, points, finds=None):
         """What a run logged while it trained (RunLog's metrics), for the worker's prompt, because its sessions cannot
-        read run folders: [(series, its points as text, the trend over its last fifth)]. [] when nothing was logged."""
+        read run folders: [(series, its points as text, the trend over its last fifth)]. [] when nothing was logged.
+        finds: a list that takes what expctl reads from the whole curve (overfitting, a loss that never moved), as
+        sentences."""
         try:
-            series = json.loads(self.expctl("curve", rid, "--points", str(points), "--compact").stdout)["series"] if rid else {}
+            out = json.loads(self.expctl("curve", rid, "--points", str(points), "--compact").stdout) if rid else {"series": {}}
             # training code that a change may have written chose these names and steps, and they go into a prompt:
             # plain ASCII characters and rounded numbers only
             got = [(re.sub(r"[^\w./-]", "?", str(k), flags=re.ASCII)[:40],
                     [f"{v:.6g} at step {s:.10g}" for s, v in z["points"] if expctl.is_num(s) and expctl.is_num(v)],
-                    z.get("last20pct_trend")) for k, z in series.items()]
+                    z.get("last20pct_trend")) for k, z in out["series"].items()]
+            # the sentences are expctl's own, with its rounded numbers; the one name in them that the training code
+            # chose is that of its loss, and where that is not a plain name no sentence is passed on
+            if finds is not None and re.fullmatch(r"[\w./-]{1,40}", str(out.get("loss_series") or "-"), flags=re.ASCII):
+                finds += [f for f in out.get("findings") or [] if isinstance(f, str) and re.fullmatch(r"[ -~]{1,700}", f)]
         except (ValueError, KeyError, TypeError, AttributeError, OverflowError):
             return []
         return [x for x in got if x[1]]
 
     def curve(self):
-        """One run of the best so far, a few points per series, as lines of the worker's prompt."""
-        return "".join(f"\n- {k}: " + ", ".join(pts) + f' (over the last fifth of the run: {trend or "too short to say"})'
-                       for k, pts, trend in self.logged(self.st["baseline"].get("run"), 8))
+        """One run of the best so far, a few points per series and what its whole curve shows, as lines of the
+        worker's prompt."""
+        finds = []
+        text = "".join(f"\n- {k}: " + ", ".join(pts) + f' (over the last fifth of the run: {trend or "too short to say"})'
+                       for k, pts, trend in self.logged(self.st["baseline"].get("run"), 8, finds))
+        return text and text + "".join(f"\n- read from the whole curve (a sign to follow up, not a verdict; a run's time "
+                                       f"budget stays as it is): {f}" for f in finds[:4])
 
     def trials(self):
         """How many versions a search may train now: loop.search_trials, or fewer where the run limit would leave
@@ -1862,7 +1873,10 @@ def preflight(C: Campaign, agent, limits, args):
     L.setdefault("direction", (cfg.get("metric") or {}).get("direction"))
     if L["direction"] not in ("minimize", "maximize"):
         fail('loop.direction must be "minimize" or "maximize"')
-    if len(set(L["seeds"])) < max(2, len(L["seeds"])) or not all(isinstance(s, int) for s in L["seeds"]):
+    # the kind is asked first, so that a number or a list of lists gets the message and not a traceback; and `true`
+    # is no whole number here, though Python counts it as one (was: [true, 2] passed and was launched as --seed True)
+    if (not isinstance(L["seeds"], list) or not all(type(s) is int for s in L["seeds"])
+            or len(set(L["seeds"])) < max(2, len(L["seeds"]))):
         fail("loop.seeds needs at least two different seeds, each a whole number and none of them twice: the keep rule "
              "compares against run-to-run noise and counts one run for every entry, and a near-miss is measured on the "
              "seeds that follow the largest one")

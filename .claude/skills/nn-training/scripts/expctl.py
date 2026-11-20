@@ -20,8 +20,10 @@ Commands
         launched process (RunLog turns either into a "save and exit" request), then
         kills the process tree after kill_after_s. The run's supervisor acts on
         stop.json by itself; on Linux the signal goes only to a process that the
-        system says was started for this run, whatever the run's records name.
-        Stopping a run needs the user's explicit approval.
+        system says was started for this run, whatever the run's records name, and
+        elsewhere only to the process that status takes for the run's: the recorded
+        number with the recorded start time, which on Windows is asked again before
+        the kill. Stopping a run needs the user's explicit approval.
   resume RUN [--deadline D]
         Continue an ended run as a new run: same command, seed, GPUs and tags, with
         EXP_RESUME_FROM set to the old run directory (RunLog.resume_from), from which
@@ -32,7 +34,20 @@ Commands
         the configured metric, non-finite alert, periodic progress), then exits.
         Designed for Claude Code's Monitor tool (each line becomes an event).
   curve RUN [--keys a,b] [--points N] [--since-step S]
-        Downsampled metric series + summary stats from RUN/metrics.jsonl.
+        Downsampled metric series + summary stats from RUN/metrics.jsonl, and under
+        "findings" what the whole curve shows of the common faults (non-finite values, a
+        loss that rose or never moved, a metric that peaked early or was still improving
+        at the end, evaluation noise, a slowdown), each with its numbers. With
+        --since-step the findings too read the part from that step on only.
+  compare --a RUNS --b RUNS [--alpha 0.05] [--tried N] [--effect X] [--unpaired]
+        Two groups of ended runs on the configured metric: the difference b - a, its
+        interval and p, and a verdict. RUNS: run ids, name=<launch name> or <tag>=<value>,
+        comma-separated. Paired by seed where both groups ran the same seeds once each
+        (with the differences by seed and how far the two sides move together by seed),
+        otherwise, or with --unpaired, Welch's test. It gives no verdict where the frozen
+        files differ between the runs or each group has one run, and says how many seeds
+        a difference would take. --tried: how many variants were tried before this one
+        was picked. It reads the runs' records and writes nothing.
   final-eval [--again REASON] [--which N] [-- ARGS ...]
         Run the final_eval_commands entry of the config, with ARGS appended, from the
         project root and without a shell. Single-use: every use is a row in the
@@ -71,6 +86,7 @@ from __future__ import annotations
 
 import argparse
 import calendar
+import collections
 import contextlib
 import csv
 import hashlib
@@ -86,6 +102,7 @@ import shutil
 import signal
 import socket
 import stat
+import statistics
 import subprocess
 import sys
 import time
@@ -806,11 +823,11 @@ def _named_below(target, rel: str, patterns, secs=20.0) -> bool:
     """Whether a file or folder below the directory `target` (repo-relative: `rel`) matches a pattern; links to
     folders are followed. True as well where the look goes 40 folders deep (a link that leads back up) or takes
     longer than `secs`: the snapshot then links the folder's children one by one, which costs time, never data."""
-    end = time.time() + secs
+    end = time.monotonic() + secs
     for d, dirs, files in os.walk(target, followlinks=True):
         sub = os.path.relpath(d, target).replace("\\", "/")
         pre = rel if sub == "." else f"{rel}/{sub}"
-        if sub.count("/") >= 40 or time.time() > end or any(path_matches(f"{pre}/{n}", patterns) for n in dirs + files):
+        if sub.count("/") >= 40 or time.monotonic() > end or any(path_matches(f"{pre}/{n}", patterns) for n in dirs + files):
             return True
     return False
 
@@ -1755,16 +1772,17 @@ def cmd_status(args):
 # ----------------------------------------------------------------------------- launch / supervise / stop
 
 def parse_deadline(s):
+    """(the time the deadline falls at, its seconds where it was given as a duration and else None)"""
     if not s:
-        return None
+        return None, None
     s = s.strip()
     m = re.fullmatch(r"(\d+(?:\.\d+)?)\s*([smhd])", s, re.I)
     if m:
-        mult = {"s": 1, "m": 60, "h": 3600, "d": 86400}[m.group(2).lower()]
-        return now() + float(m.group(1)) * mult
+        secs = float(m.group(1)) * {"s": 1, "m": 60, "h": 3600, "d": 86400}[m.group(2).lower()]
+        return now() + secs, secs
     for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M", "%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
         try:
-            return time.mktime(time.strptime(s, fmt))
+            return time.mktime(time.strptime(s, fmt)), None
         except ValueError:
             pass
     raise SystemExit(f"expctl: cannot parse deadline '{s}' (use 90m, 6h, 2d or YYYY-MM-DDTHH:MM local time)")
@@ -1855,7 +1873,7 @@ def cmd_launch(args):
         cwd = run_dir / "src" / (rel_here if rel_here is not None else Path("."))
     else:
         cwd = here
-    deadline = parse_deadline(args.deadline)
+    deadline, deadline_s = parse_deadline(args.deadline)
     grace = parse_duration(args.grace, 600.0)
     t = now()
     manifest = {
@@ -1878,6 +1896,7 @@ def cmd_launch(args):
         "trial": args.trial,
         "deadline": deadline,
         "deadline_at": iso(deadline),
+        "deadline_s": deadline_s,
         "grace_s": grace,
         "kill_after_s": float(cfg.get("kill_after_s") or 120),
         "snapshot": {"mode": mode, **prov, **({"src": snap} if snap else {})},
@@ -2061,7 +2080,7 @@ def cmd_supervise(args):
     # sandbox of its run. The manifest keeps the placeholder, so `resume` fills in the folder of the new run
     cmd = [str(c).replace("{run_dir}", os.path.abspath(run_dir)) for c in cmd]
     log = open(run_dir / "stdout.log", "ab", buffering=0)
-    t0 = now()
+    t0, m0 = now(), time.monotonic()
     env = dict(os.environ, EXP_LAUNCH_TS=repr(t0))  # RunLog ignores a stop.json older than this launch
     kw = dict(stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, cwd=cwd, env=env)
     if os.name == "nt":
@@ -2080,11 +2099,11 @@ def cmd_supervise(args):
                                              "proc_key": proc_key(child.pid), "supervisor_key": proc_key(os.getpid()),
                                              "supervisor_start": proc_start_time(os.getpid()),
                                              **({"keep_awake_pid": awake.pid} if awake else {})})
-    state = {"stop_at": None, "why": None, "killed": False}
+    state = {"stop_at": None, "late_at": None, "why": None, "killed": False}  # the two times: time.monotonic()
 
     def on_signal(signum, _frame):
         if state["stop_at"] is None:
-            state["stop_at"], state["why"] = now(), "stop requested"
+            state["stop_at"], state["why"] = time.monotonic(), "stop requested"
             signal_leader(child.pid, signal.SIGTERM)
 
     for sname in ("SIGTERM", "SIGINT", "SIGHUP"):
@@ -2096,17 +2115,25 @@ def cmd_supervise(args):
                 pass
     deadline, grace = man.get("deadline"), float(man.get("grace_s") or 600)
     kill_after_default = float(man.get("kill_after_s") or 120)
+    # Seconds from this start to the deadline. One given as a duration counts from here, so the launch's own reading
+    # of the clock is not in it; and the time since is what the system's clock says or the one that is never set,
+    # whichever is more, as for a campaign's hours: time asleep still counts, and a clock that was set back gives a
+    # run no more time (was: the system's clock alone, and a run that such a clock gave more time and that then
+    # ended by itself was scored like any other). The seconds that a run has to end in after its stop count on the
+    # clock that is never set alone: one that is set forward does not cut them short while the run saves
+    due = man["deadline_s"] if is_num(man.get("deadline_s")) else deadline - t0 if is_num(deadline) else None
     while True:
         try:
             rc = child.wait(timeout=2)
             break
         except subprocess.TimeoutExpired:
             pass
-        t = now()
-        late = is_num(deadline) and t > deadline + grace
-        if late and state["stop_at"] is None:
-            state["stop_at"], state["why"] = t, "deadline + grace exceeded"
-            signal_leader(child.pid, signal.SIGTERM)
+        m = time.monotonic()
+        if due is not None and state["late_at"] is None and max(now() - t0, m - m0) > due + grace:
+            state["late_at"] = m
+            if state["stop_at"] is None:
+                state["stop_at"], state["why"] = m, "deadline + grace exceeded"
+                signal_leader(child.pid, signal.SIGTERM)
         kill_after = kill_after_default
         req = read_json(run_dir / "stop.json")
         if isinstance(req, dict):
@@ -2117,11 +2144,12 @@ def cmd_supervise(args):
             # this launch's own, so the request's time is not compared with the launch's (was: after a clock that was
             # set back in between, a request that came by the file alone was never taken)
             if state["stop_at"] is None:
-                state["stop_at"], state["why"] = t, "stop requested"
+                state["stop_at"], state["why"] = m, "stop requested"
                 signal_leader(child.pid, signal.SIGTERM)
         # The run can write the request file, so the time that file names does not move the end its deadline sets
         if state["stop_at"] is not None and not state["killed"] and (
-                t > state["stop_at"] + kill_after or late and t > deadline + grace + kill_after_default):
+                m > state["stop_at"] + kill_after
+                or state["late_at"] is not None and m > state["late_at"] + kill_after_default):
             state["killed"] = True
             signal_group(child.pid, getattr(signal, "SIGKILL", signal.SIGTERM))
     if awake:  # it ends with the run by itself; this covers a child that left a process behind under its own pid
@@ -2174,11 +2202,23 @@ def cmd_stop(args):
     via, killed, why = "supervisor", None, None
     if os.name == "nt":
         if not sent:  # no supervisor is left to escalate: give the loop its time to save and exit, then kill the tree
+            # A pid is given out again, on Windows soon. The kill after the wait is for the process that status took
+            # for this run's a moment ago: by the end of the wait its number may be another program's (was: whatever
+            # had the number then, with its whole tree).
+            # shortcut: this tells a number that went to another program, not a run that names another program in its
+            # own records, which only /proc proves; upgrade when a launch on Windows puts its process into a job object
+            born = proc_start_time(pid)
+
+            def still_ours():
+                return bool(r.get("alive")) and pid_alive(pid) and proc_start_time(pid) == born
+
             sent, via = True, "process"
-            t_end = now() + float(req.get("kill_after_s") or cfg.get("kill_after_s") or 120)
-            while pid_alive(pid) and now() < t_end:
+            # these waits count on the clock that is never set, like the supervisor's: one that is set forward does
+            # not cut short the seconds a run has to save in (was: the system's clock)
+            t_end = time.monotonic() + float(req.get("kill_after_s") or cfg.get("kill_after_s") or 120)
+            while still_ours() and time.monotonic() < t_end:
                 time.sleep(0.5)
-            killed = pid_alive(pid) and signal_group(pid, signal.SIGTERM)
+            killed = still_ours() and signal_group(pid, signal.SIGTERM)
     else:
         if sent:
             try:
@@ -2187,8 +2227,10 @@ def cmd_stop(args):
                 sent = False
         if not sent:
             env = proc_words(pid, "environ")
-            if env is None or any(w.startswith("EXP_RUN_DIR=") and names_run(w[12:]) for w in env) \
-                    or holds_open(pid, d / "metrics.jsonl"):
+            # where there is no /proc to ask (macOS), the process is at least the one that status took for the run's
+            # (was: whatever had the recorded number)
+            if (r.get("alive") if env is None else any(w.startswith("EXP_RUN_DIR=") and names_run(w[12:]) for w in env)
+                    or holds_open(pid, d / "metrics.jsonl")):
                 sent, via = signal_leader(pid, signal.SIGTERM), "process"
             else:
                 via, why = "file", ("no process that this run's records name is provably the run's own, so none was "
@@ -2196,8 +2238,8 @@ def cmd_stop(args):
     out = {"ok": sent, "run_id": r["run_id"], "signal": None if os.name == "nt" or why else "SIGTERM", "via": via,
            "killed": killed or None, **({"error": why} if why else {})}
     if args.wait and (sent or why):
-        t_end = now() + parse_duration(args.wait, 300)
-        while now() < t_end:
+        t_end = time.monotonic() + parse_duration(args.wait, 300)
+        while time.monotonic() < t_end:
             if (d / "exit.json").exists() or (d / "result.json").exists() and not pid_alive(r.get("pid")):
                 break
             if via == "process" and not pid_alive(r.get("pid")):
@@ -2284,6 +2326,131 @@ def cmd_watch(args):
 
 # ----------------------------------------------------------------------------- curve / hash / env
 
+def curve_findings(loss, metric, direction, lname, mname):
+    """What a run's whole curve shows of the common faults, each as one sentence with its numbers and what to look at
+    next: signs to follow up, not verdicts. loss, metric: [(step, time, value)] of the training loss and of the
+    selection metric as the run logged them, either of them None."""
+    out, shape = [], []
+
+    def mean(xs):
+        return sum(xs) / len(xs)
+
+    def noise(u):  # the scatter of one value around a smooth trend: a second difference has 6 times its variance
+        d2 = sorted(abs(u[i - 1] - 2 * u[i] + u[i + 1]) for i in range(1, len(u) - 1))
+        return 1.4826 * d2[len(d2) // 2] / math.sqrt(6) if d2 else 0.0
+
+    def at(s, i):
+        return f"step {s[i][0]}" if s[i][0] is not None else f"record {i + 1}"
+
+    def broke(s):  # where a series is not finite for the first time, and its values before that
+        i = next((i for i, x in enumerate(s or []) if not math.isfinite(x[2])), None)
+        return i, [x[2] for x in s[:i]] if i is not None else []
+
+    ok = broke(loss)[1]
+    # A blow-up before the first value that is not finite: far above the lowest value, by the measure of what the loss
+    # had gained or, where it rose from the first step on and had gained nothing, of where it began
+    lo, high = (min(ok), 0.5 * max(ok[0] - min(ok), abs(ok[0]))) if ok else (0, 0)
+    quick = len(ok) > 2 and ok[-1] - lo > high > 0
+    rose = (lo, ok[-1]) if quick else None  # from where to where the loss climbed, where it did
+    L = [x for x in loss or [] if math.isfinite(x[2])]
+    if quick:  # the shape below is that of the run before the blow-up, whose few values would stand for a whole tenth
+        del L[next(i for i in range(len(ok), -1, -1) if not i or ok[i - 1] - lo <= high):len(ok)]
+    n, v = len(L), [x[2] for x in L]
+    if n >= 20:
+        c = [mean(v[i * n // 10:(i + 1) * n // 10]) for i in range(10)]  # tenths of the run: single steps are noisy
+        low, gain, sig = min(c), c[0] - min(c), noise(v)
+        far = 4 * sig / math.sqrt(n / 10)  # what two tenths differ by from the scatter of single steps alone
+        if gain <= max(0.01 * abs(c[0]), far):  # <=: a gain of exactly 0 belongs here, the next branch divides by it
+            up = c[9] - c[0] > max(0.1 * abs(c[0]), far)
+            rose = rose or ((c[0], c[9]) if up else None)
+            shape.append(f"{lname} rose from the start ({c[0]:.4g} to {c[9]:.4g}): the steps make the model worse. The "
+                         "learning rate is far too high, or the sign of the loss or of the update is wrong" if up else
+                         f"{lname} never moved (about {c[0]:.4g} throughout): the model does not learn. Check that the "
+                         "optimizer steps these parameters and gradients reach them, that the learning rate is not 0 or "
+                         "far off, and that inputs and labels line up; a classifier starts near ln(classes)")
+        elif c[9] - low > max(0.5 * gain, far) and c.index(low) < 8:
+            rose = rose or (low, c[9])
+            shape.append(f"{lname} rose again: lowest around {at(L, c.index(low) * n // 10)} ({low:.4g}), {c[9]:.4g} at the "
+                         f"end, which gives back {100 * (c[9] - low) / gain:.0f} % of what it had gained. A learning rate "
+                         "too high for that stage, no decay, or no gradient clipping")
+        jumps = [i for i in range(5, n) for med in [sorted(v[i - 5:i])[2]]
+                 if v[i] - med > max(8 * sig, 0.5 * abs(med), 1e-12)]
+        jumps = [i for k, i in enumerate(jumps) if not k or i - jumps[k - 1] > 1]  # a jump that lasts counts once
+        if jumps and not rose:  # a loss that climbs is said above, and is no single step that went wrong
+            i = jumps[0]
+            shape.append(f"{lname} jumped {len(jumps)} time(s), first at {at(L, i)} ({sorted(v[i - 5:i])[2]:.4g} to "
+                       f"{v[i]:.4g}): single steps that went wrong. Gradient clipping, a lower peak learning rate or a "
+                       "longer warmup; or look at the batches of those steps")
+        tt = [x for x in L if is_num(x[0]) and is_num(x[1])]
+        # the usual pace between two records, so that one long gap (a pause, a sleeping machine) is not a slowdown
+        pace = [(q[0] - p[0]) / (q[1] - p[1]) for p, q in zip(tt, tt[1:]) if q[0] > p[0] and q[1] > p[1]]
+        k = len(pace) // 3
+        if k >= 4:
+            r1, r3 = statistics.median(pace[:k]), statistics.median(pace[-k:])
+            if r3 < 0.7 * r1:
+                shape.append(f"the run slowed down: {r1:.3g} steps/s in its first third, {r3:.3g} in its last. Data "
+                             "loading, memory pressure or swapping, another process on the GPU, or thermal throttling")
+    # Values that are not finite are said first and read last: whether the loss climbed before it broke is what its
+    # shape says too, so the two sentences cannot disagree (was: "one step went wrong" beside "rose again"). A loss
+    # that is finite again later did not end there: only a blow-up just before it is a divergence then
+    first = {}
+    for name, s in ((lname, loss), (mname, metric)) if lname != mname else ((lname, loss),):
+        bad, ok = broke(s)
+        if bad is None:
+            continue
+        first[name], back = s[bad][0], any(math.isfinite(x[2]) for x in s[bad:])
+        when = f"from {at(s, bad)}, and finite again later" if back else f"from {at(s, bad)} on"
+        if name == lname:
+            out.append(f"{name} is not finite {when}" + (
+                f", after it had risen from {rose[0]:.4g} to {rose[1]:.4g}: the training diverged. A lower learning "
+                "rate, a warmup, or gradient clipping" if quick or rose and not back else
+                f"; the values before it were ordinary ({ok[-1]:.4g}): one step went wrong. A bad value in a batch, a log "
+                "or a division of zero in the loss, or an overflow under mixed precision" if ok else ""))
+        else:  # the metric: with a loss that broke no later there is nothing more to say, otherwise the evaluation did it
+            gone = is_num(first.get(lname)) and is_num(first[name]) and first[lname] <= first[name]
+            out.append(f"{name} is not finite {when}" + (
+                f": {lname} was not finite by then" if gone else
+                f"; the values before it were ordinary ({ok[-1]:.4g}). Where the training loss is finite at that point, "
+                "the fault lies in the evaluation: a division by zero where a class or a batch is empty" if ok else ""))
+    out += shape
+    M = [x for x in metric or [] if math.isfinite(x[2])]
+    n = len(M)
+    if n >= 8 and direction in ("maximize", "minimize"):
+        u = [x[2] if direction == "maximize" else -x[2] for x in M]  # higher is better from here on
+        sig, ib, m = noise(u), max(range(n), key=u.__getitem__), n // 3
+        total, last, mid = u[ib] - u[0], mean(u[-m:]), mean(u[-2 * m:-m])
+        own = (lambda x: f"{x:.4g}") if direction == "maximize" else (lambda x: f"{-x:.4g}")  # in the metric's own sign
+        if ib < 0.7 * (n - 1) and mean(u[max(0, ib - 1):ib + 2]) - last > max(2 * sig, 0.02 * abs(total)):
+            after = [x[2] for x in L if is_num(x[0]) and is_num(M[ib][0]) and x[0] >= M[ib][0]]
+            fell = len(after) >= 10 and mean(after[-5:]) < mean(after[:5]) - 0.01 * abs(mean(after[:5]))
+            out.append(f"{mname} peaked at {at(M, ib)} ({own(u[ib])}) and ended at {own(last)}" + (
+                f", while {lname} still fell ({mean(after[:5]):.4g} to {mean(after[-5:]):.4g}): overfitting. Keep that "
+                f"checkpoint; the {100 * (1 - ib / (n - 1)):.0f} % of the run after it bought nothing. To go further: "
+                "weight decay, dropout, augmentation, or more data" if fell else
+                ": it got worse without the training loss falling further, which points at the learning rate late in "
+                "the run rather than at overfitting" if len(after) >= 10 else
+                ": the checkpoint of that evaluation is the one to keep"))
+        elif ib >= n - m and last - mid > max(2 * sig * math.sqrt(2 / m), 0.05 * abs(total)):
+            out.append(f"{mname} was still improving when the run ended: the last third of its evaluations gained "
+                       f"{abs(last - mid):.3g} and the best value is among the last. A longer run will likely score "
+                       "better, so compare runs of equal length only")
+        else:
+            level, tail, j = last - max(2 * sig, 0.02 * abs(total)), 0.0, n - 1
+            for i in range(n - 1, -1, -1):  # the first evaluation from which the average holds the final level
+                tail += u[i]
+                if tail / (n - i) >= level:
+                    j = i
+            if 0 < j < 0.67 * (n - 1):
+                out.append(f"{mname} reached its final level at {at(M, j)}, {100 * j / (n - 1):.0f} % into the run: "
+                           "what came after gained nothing beyond the noise of an evaluation. A shorter run would do, "
+                           "or the learning rate is too low to go further")
+        if total > 0 and sig > 0.15 * total:
+            out.append(f"{mname} scatters by about {sig:.3g} from one evaluation to the next, {100 * sig / total:.0f} % "
+                       "of all it gained in the run: the best value is partly a lucky evaluation, and differences of "
+                       "that size between checkpoints or runs mean nothing. Evaluate on more examples")
+    return out
+
+
 def cmd_curve(args):
     root = find_root(args.root)
     cfg = load_config(root)
@@ -2331,8 +2498,31 @@ def cmd_curve(args):
                   "min": None, "max": None, "argmin_step": None, "argmax_step": None} for k in want}
     tail_vals = {k: [] for k in want}
     tail_start = {k: int(counts[k] * 0.8) for k in want}
+    # the training loss and the selection metric in full, whatever --keys asks for: the findings read the whole curve
+    # (from --since-step on, where that is given)
+    loss = next((k for k in all_keys if "loss" in k.lower() and not re.search(r"(?i)val|eval|dev|test", k)), None)
+    whole = {k: [] for k in (loss, metric) if k in all_keys}
+    # A long run's series is thinned to some 20,000 values, so that a log of millions of steps is not held in memory:
+    # the findings read tenths and medians, which do not feel it. Kept as they are: the first value that is not finite
+    # with the 64 before it, in which a blow-up shows, and the last value, which says whether the series ended finite.
+    # shortcut: a jump of one step can fall between the values that are kept, upgrade if single steps of such runs matter
+    thin, nth, broke = {k: max(1, all_keys[k] // 20000) for k in whole}, dict.fromkeys(whole, 0), set()
+    recent, final = {k: collections.deque(maxlen=64) for k in whole}, {}
     for rec in records():
         st = rec.get("step")
+        for k, s in whole.items():
+            if is_num(rec.get(k)):
+                v, nth[k] = float(rec[k]), nth[k] + 1
+                final[k], kept = (st if is_num(st) else None, rec.get("t"), v), nth[k] % thin[k] == 0
+                if k not in broke and not math.isfinite(v):
+                    broke.add(k)
+                    del s[len(s) - sum(was for was, _ in recent[k]):]  # those of the 64 that are in the series already
+                    s.extend(x for _, x in recent[k])
+                    kept = True
+                elif k not in broke:
+                    recent[k].append((kept, final[k]))
+                if kept:
+                    s.append(final[k])
         for k in want:
             v = rec.get(k)
             if not is_num(v):
@@ -2355,6 +2545,9 @@ def cmd_curve(args):
             s["last"] = [st, v]
             if i in picks[k]:
                 s["points"].append([st, round(v, 6) if math.isfinite(v) else v])
+    for k, s in whole.items():
+        if s and s[-1] is not final[k]:
+            s.append(final[k])
     for k in want:
         tv = tail_vals[k]
         if len(tv) >= 4:
@@ -2363,8 +2556,210 @@ def cmd_curve(args):
             rel = (b - a) / (abs(a) + 1e-12)
             series[k]["last20pct_trend"] = "flat" if abs(rel) < 0.005 else ("rising" if rel > 0 else "falling")
             series[k]["last20pct_rel_change"] = round(rel, 5)
-    out = {"run_id": d.name, "metric": metric, "available_keys": sorted(all_keys)[:60], "series": series}
+    out = {"run_id": d.name, "metric": metric, "available_keys": sorted(all_keys)[:60], "series": series,
+           "loss_series": loss,  # the series that the findings took for the training loss
+           "findings": curve_findings(whole.get(loss), whole.get(metric), (cfg.get("metric") or {}).get("direction"),
+                                      loss, metric)}
     print(json.dumps(clean(out), indent=None if args.compact else 1))
+    return 0
+
+
+def t_tail(x, df):
+    """P(T > x) for Student's t with a whole number of degrees of freedom (the finite series of Abramowitz and
+    Stegun 26.7.3 and 26.7.4)."""
+    th = math.atan(x / math.sqrt(df))
+    c, odd = math.cos(th), df % 2
+    term = total = (c if odd else 1.0) if df > 1 else 0.0
+    for j in range(odd + 2, df - 1, 2):
+        term *= (j - 1) / j * c * c
+        total += term
+    a = math.sin(th) * total
+    return max(0.0, (1 - (2 / math.pi * (th + a) if odd else a)) / 2)  # far out the rounding can go a hair below 0
+
+
+def t_quant(p, df):
+    """The x that Student's t with df degrees of freedom exceeds with probability p (p below a half)."""
+    lo, hi = 0.0, 2.0
+    while t_tail(hi, df) > p and hi < 1e12:
+        hi *= 2
+    for _ in range(80):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if t_tail(mid, df) > p else (lo, mid)
+    return hi
+
+
+def cmd_compare(args):
+    """Two groups of ended runs on the selection metric: the difference b - a, its interval, and whether it is more
+    than the run-to-run noise. It reads the runs' records: nothing is run and nothing is written."""
+    root = find_root(args.root)
+    cfg = load_config(root)
+    name, direction = (cfg.get("metric") or {}).get("name"), (cfg.get("metric") or {}).get("direction")
+    if not name or direction not in ("maximize", "minimize"):
+        return fail(2, f"metric.name and metric.direction (maximize or minimize) must be set in {CONFIG_REL}")
+    if not 0 < args.alpha < 1 or args.tried < 1:
+        return fail(2, "--alpha lies between 0 and 1, and --tried is 1 or more")
+    if args.alpha / args.tried < 1e-9:  # below it the quantiles are not exact any more, and no count of runs gets there
+        return fail(2, "--alpha divided by --tried is below 1e-9: no number of runs holds a level that strict")
+    if args.effect is not None and not (finite(args.effect) and args.effect):
+        return fail(2, "--effect is the smallest difference that matters: a number other than 0")
+    runs, left, warn = scan(root, cfg), [], []
+
+    def group(g, sel):
+        """(the runs that a selection names, those of them that can be compared: ended by themselves or at their
+        deadline, with a finite value). The others are listed with the reason, never dropped unseen."""
+        got = []
+        for item in filter(None, (x.strip() for x in sel.split(","))):
+            k, eq, val = item.partition("=")
+            if eq:
+                hit = [r for r in runs if val == (r.get("name") if k == "name" else str(
+                    (r.get("tags") if isinstance(r.get("tags"), dict) else {}).get(k)))]
+            else:
+                one = rel_to(root, resolve_run(root, cfg, item))
+                hit = [r for r in runs if r["dir"] == one]
+            got += [r for r in hit if r not in got]
+        use = [r for r in got if r["state"] in ("completed", "timeout") and finite(r["metric"]["value"])]
+        left.extend({"group": g, "run": r["run_id"], "why": f"state {r['state']}" if r["state"] not in (
+            "completed", "timeout") else r["metric"].get("why_missing") or f"{name} is not finite"}
+            for r in got if r not in use)
+        if len(use) < len(got):
+            warn.append(f"{len(got) - len(use)} of the {len(got)} runs of {g} are left out (left_out says why): if the "
+                        f"change is the reason that they failed or were cut short, {g} is worse than these numbers show")
+        return got, use
+
+    (all_a, a), (all_b, b) = group("a", args.a), group("b", args.b)
+    twice = [r["run_id"] for r in all_a if r in all_b]
+    if twice:
+        return fail(2, "in both groups: " + ", ".join(twice[:6]))
+    xa, xb = [r["metric"]["value"] for r in a], [r["metric"]["value"] for r in b]
+    na, nb = len(xa), len(xb)
+
+    def sig(x):
+        return float(f"{x:.6g}") if finite(x) else x
+
+    def side(rs, xs):
+        return {"n": len(xs), "mean": sig(statistics.fmean(xs)) if xs else None,
+                "sd": sig(statistics.stdev(xs)) if len(xs) > 1 else None,
+                "runs": [{"run": r["run_id"], "seed": r.get("seed"), "value": x} for r, x in zip(rs, xs)]}
+
+    def shares(tot, seen):
+        """Of all arrangements of an exact test (tot: how far each lies from no difference): the share that lies as
+        far as what was seen, and the share that lies as far as any can, which is the smallest p these runs can give.
+        Counted, not taken as 2 in all of them: differences of 0 and equal scores make more arrangements lie that far."""
+        return [sum(t >= lim * (1 - 1e-9) for t in tot) / len(tot) for lim in (seen, max(tot))]
+
+    out = {"ok": True, "metric": name, "direction": direction, "a": side(a, xa), "b": side(b, xb), "test": None,
+           "better": None}
+    hashes = sorted({str(r.get("frozen_hash")) for r in a + b})
+    for key, lim in (("duration_s", 1.25), ("step", 1.1)):  # an unequal budget is the commonest unfair comparison
+        ma, mb = ([statistics.median(x)] if x else [] for x in ([r[key] for r in g if finite(r.get(key)) and r[key] > 0]
+                                                               for g in (a, b)))
+        if ma and mb and max(ma[0], mb[0]) / min(ma[0], mb[0]) > lim:
+            warn.append(f"the groups did not train equally long: median {key} {ma[0]:.4g} (a) against {mb[0]:.4g} (b)")
+    if {"completed", "timeout"} <= {r["state"] for r in a + b}:
+        warn.append("some of these runs ended at their deadline and others by themselves: they may not have trained "
+                    "equally long")
+    if not na or not nb:
+        out["verdict"] = "nothing to compare: a group has no ended run with a finite value of " + name
+    elif len(hashes) > 1:
+        out["verdict"] = (f"not comparable: the frozen evaluation files differ between these runs (hashes "
+                          f"{', '.join(hashes)}), so their scores are not one measure. Evaluate both groups under one "
+                          "state of the frozen files")
+    elif na < 2 and nb < 2:
+        out["verdict"] = (f"undecided: one run on each side shows no run-to-run spread, so the difference of "
+                          f"{xb[0] - xa[0]:+.4g} (b - a) cannot be told from noise. Train each side on 3 seeds or more")
+    elif all(max(x) - min(x) <= 1e-9 * max(map(abs, x)) for x in (xa, xb) if len(x) > 1):
+        # no spread is not no noise: a seed that the training never reads hides it
+        out["verdict"] = (f"undecided: every run of a side scored the same ({xa[0]:.6g} for a, {xb[0]:.6g} for b), so the "
+                          "seed changes nothing in these runs and they show no run-to-run spread to hold a difference "
+                          "against. Check that the training code reads its seed" + (
+                              "" if abs(xb[0] - xa[0]) > 1e-9 * abs(xa[0]) else
+                              ", and that the change reaches the training at all: both sides scored the same"))
+    else:
+        sa, sb = ({str(r.get("seed")): x for r, x in zip(g, xs)} for g, xs in ((a, xa), (b, xb)))
+        match = na == nb == len(sa) == len(sb) and set(sa) == set(sb) and "None" not in sa
+        paired, corr, by_seed = match and not args.unpaired, None, None
+        if match:
+            # Pairing gains only where a seed ties the two sides' scores together, and costs half the degrees of freedom
+            # where it does not (on the kit's benchmark it did not: references/uncertainty.md section 2)
+            ma, mb = statistics.fmean(xa), statistics.fmean(xb)
+            den = math.sqrt(sum((x - ma) ** 2 for x in xa) * sum((x - mb) ** 2 for x in xb))
+            corr = round(sum((sa[s] - ma) * (sb[s] - mb) for s in sa) / den, 3) if den > 0 else None
+        for g, rs, seeds in (("a", a, sa), ("b", b, sb)):
+            if sum(r.get("seed") is not None for r in rs) > len(seeds) - ("None" in seeds):
+                warn.append(f"a seed occurs more than once in {g}: where the training repeats exactly by seed, such runs "
+                            "are one measurement and not several, and the spread is understated")
+        if paired:  # the same seeds on both sides, once each: the differences by seed carry the noise
+            # seeds are matched as text and listed as numbers where they are whole numbers (was: 10 before 2)
+            order = sorted(sa, key=lambda s: (0, float(s), s) if re.fullmatch(r"-?\d+", s) else (1, 0.0, s))
+            d = [sb[s] - sa[s] for s in order]
+            diff, df, var = statistics.fmean(d), na - 1, statistics.variance(d)
+            se, how = math.sqrt(var / na), "paired by seed"
+            won = sum((x > 0) == (direction == "maximize") for x in d if x)  # the seeds on which b did better
+            by_seed = {"differences": dict(zip(order, map(sig, d))), "sd": sig(math.sqrt(var)), "b_better": won,
+                       "a_better": sum(1 for x in d if x) - won}
+            if corr is not None and corr < 0.5 and na < 10:
+                warn.append(f"compared seed by seed, yet the two sides' scores hardly move together by seed here (r = "
+                            f"{corr:.2f}, known poorly from {na} seeds). Where the seed does not tie the two sides together, "
+                            "pairing only costs degrees of freedom, and --unpaired compares them as independent groups. "
+                            "Choose by what is known of the benchmark (do repeats of one version move together by seed?), "
+                            "not by which answer you prefer")
+            exact, least = shares([abs(sum(x if m >> i & 1 else -x for i, x in enumerate(d))) for m in range(1 << na)],
+                                  abs(sum(d))) if na <= 16 else (None, None)  # every way to give the differences signs
+        else:
+            diff = statistics.fmean(xb) - statistics.fmean(xa)
+            va, vb = (statistics.variance(x) if len(x) > 1 else None for x in (xa, xb))
+            if va is None or vb is None:
+                va = vb = va if vb is None else vb
+                df, how = max(na, nb) - 1, ("one run against a group, whose spread stands for both sides (if the "
+                                            "change alters the noise, this is off)")
+            else:
+                wa, wb = va / na, vb / nb
+                # rounded down, as is usual; the 1e-9 is for equal spreads, whose na + nb - 2 can come out a hair below
+                df = max(1, int((wa + wb) ** 2 / (wa ** 2 / (na - 1) + wb ** 2 / (nb - 1)) + 1e-9)) if wa + wb else na + nb - 2
+                how = "independent groups (Welch's test)" + (
+                    ", as --unpaired asks" if match else
+                    "" if "None" in sa or "None" in sb else ": the two sides did not run the same seeds once each")
+            se, var, count = math.sqrt(va / na + vb / nb), va + vb, math.comb(na + nb, na)
+            exact, least = shares([abs((sum(xa) + sum(xb) - s) / nb - s / na)  # every way to deal the runs to two groups
+                                   for s in map(sum, itertools.combinations(xa + xb, na))],
+                                  abs(diff)) if count <= 50000 else (None, None)
+        alpha = args.alpha / args.tried
+        same = se <= 1e-9 * max(map(abs, xa + xb))  # the same seeds, and each of them moved by exactly as much
+        if same:  # no spread for a t test: the count of seeds alone speaks, as in the exact test, where only all seeds
+            # one way and all the other way reach this far. It needs 6 seeds to say anything at 0.05
+            se, half, p = 0.0, 0.0, 2 / (1 << na) if abs(diff) > 1e-9 * max(map(abs, xa + xb)) else 1.0
+        else:  # the series tells no tail below some 1e-16 from 0: a p that small is given as 1e-15, which it is below
+            p, half = max(2 * t_tail(abs(diff) / se, df), 1e-15), t_quant(alpha / 2, df) * se
+        better = None if p >= alpha else "b" if (diff > 0) == (direction == "maximize") else "a"
+        z, eff = statistics.NormalDist(), abs(diff if args.effect is None else args.effect)
+        zz = z.inv_cdf(1 - alpha / 2)
+        need = math.ceil((zz + z.inv_cdf(0.8)) ** 2 * var / eff ** 2 + zz ** 2 / (2 if paired else 4)) if eff and se else None
+        span = f"{100 * (1 - alpha):g} % interval {diff - half:.4g} to {diff + half:.4g}, p = {p:.2g}"
+        if same:
+            moved = f"each of the {na} seeds moved by the same {diff:+.4g} (b - a), exact p = {p:.2g}"
+            out["verdict"] = (
+                f"no difference: b scored exactly what a did on each of the {na} seeds. Check that the change reaches "
+                "the training" if p == 1.0 else f"{better} is better: {moved}" if better else
+                f"undecided: {moved}, and so few seeds cannot tell that from chance. Run "
+                f"{int(math.log2(2 / alpha)) + 1} seeds or more a side")
+        elif better:
+            out["verdict"] = f"{better} is better: {name} differs by {diff:+.4g} (b - a), {span}" + (
+                f", and {better} did better on {by_seed[better + '_better']} of the {na} seeds" if by_seed else "") + (
+                f". With so few runs this rests on the noise being roughly normal: an exact test cannot go below "
+                f"p = {least:.2g} here" if least is not None and least >= alpha else "")
+        else:
+            out["verdict"] = (f"no difference shown: {name} differs by {diff:+.4g} (b - a), within the run-to-run "
+                              f"noise ({span}). These runs could have shown a difference of {half:.3g} or more" + (
+                                  f"; a difference of {eff:.3g} would take about {need} seeds a side" if need else ""))
+        if min(na, nb) < 3:
+            warn.append("fewer than 3 runs on a side: the spread is known poorly, so the interval is wide")
+        out.update(better=better, test={
+            "how": how, "diff": sig(diff), "se": sig(se), "df": df, "p": sig(p), "level": sig(1 - alpha),
+            "interval": [sig(diff - half), sig(diff + half)], "exact_p": exact and sig(exact), "exact_p_floor": least,
+            "seed_correlation": corr, "by_seed": by_seed,
+            "seeds_needed": need, "for_difference": sig(eff) if need else None})
+    out.update(left_out=left or None, warnings=warn or None)
+    print(json.dumps(clean(out), indent=1))
     return 0
 
 
@@ -3039,7 +3434,9 @@ def main(argv=None):
     s.add_argument("--note", help="one-line hypothesis / purpose (recorded in manifest)")
     s.add_argument("--snapshot", choices=("copy", "none"), help="copy: run from an immutable source copy (default from config)")
     s.add_argument("--deadline", help="soft deadline exposed to the run as EXP_DEADLINE (90m, 6h, 2d or local YYYY-MM-DDTHH:MM)")
-    s.add_argument("--grace", help="after deadline+grace the supervisor sends SIGTERM (default 10m)")
+    s.add_argument("--grace", help="after deadline+grace the supervisor sends SIGTERM (default 10m). A deadline given as a "
+                                "duration counts from the run's start, by the system's clock or by the one that "
+                                "is never set, whichever is more")
     s.add_argument("--gpus", help="comma-separated GPU indices; sets CUDA_VISIBLE_DEVICES and enables contention checks")
     s.add_argument("--seed", type=int)
     s.add_argument("--study")
@@ -3091,6 +3488,19 @@ def main(argv=None):
     s.add_argument("--since-step", type=float, dest="since_step")
     s.add_argument("--compact", action="store_true")
     s.set_defaults(fn=cmd_curve)
+
+    s = sub.add_parser("compare", help="two groups of ended runs on the selection metric: the difference, its interval "
+                                       "and whether it is more than run-to-run noise")
+    s.add_argument("--a", required=True, help="the baseline's runs: run ids, name=<launch name> or <tag>=<value>, comma-separated")
+    s.add_argument("--b", required=True, help="the change's runs, named the same way")
+    s.add_argument("--alpha", type=float, default=0.05, help="the error rate of the verdict (default 0.05)")
+    s.add_argument("--tried", type=int, default=1,
+                   help="how many variants were tried before this one was picked: the rate is divided by it")
+    s.add_argument("--effect", type=float, help="the smallest difference that matters, for the number of seeds it would take")
+    s.add_argument("--unpaired", action="store_true",
+                   help="compare as independent groups even where both ran the same seeds once each: for a benchmark on "
+                        "which the seed does not tie the scores of two versions together")
+    s.set_defaults(fn=cmd_compare)
 
     s = sub.add_parser("final-eval", help="run the configured final evaluation once, with a receipt (requires user approval)")
     s.add_argument("--again", metavar="REASON", help="reason for a further use; recorded in the receipt and the journal")

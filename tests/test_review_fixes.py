@@ -196,6 +196,10 @@ def main():
         ("a branch in brackets and behind an option, a branch that follows another", "Bash",
          {"command": "(git checkout main); git checkout -q main; git checkout -t origin/feature"}, None, None, None),
         ("the index alone", "Bash", {"command": "git restore --staged eval/metrics.py"}, None, None, None),
+        # round 9 asks about a patch that is applied, not about git am's two forms that apply none
+        ("git am shows the patch it is at, and its help", "Bash",
+         {"command": "git am --show-current-patch; git am -h"}, None, None, None),
+        ("git am applies a patch", "Bash", {"command": "git am --show-current-patch; git am fix.mbox"}, None, None, "ask"),
         ("chained command is not the final eval", "Bash",
          {"command": "NN_UNSEAL_TEST=1 python eval/final.py && cat data/test/labels.csv"}, None, None, "deny"),
         ("quoted note with -> is not a write", "Bash",
@@ -252,7 +256,51 @@ def main():
                       ("python3 -m black .", "deny"), ("bash -ce 'rm x.txt'", "deny"),
                       ("python3 -c \"import os; os.system('rm x.txt')\"", "deny"), ("git checkout -q .", "deny"),
                       ("black --version; isort -c .; python3 -O x.py; ls -lo train.py", None),
-                      ("git diff --no-index a b; perl -ne 'print if /acc/' train.py", None)]:
+                      ("git diff --no-index a b; perl -ne 'print if /acc/' train.py", None),
+                      # were None (round 9): an archive unpacked, a write from inside a program of awk or of a
+                      # language that the guard keeps no list of, sponge, a command behind env -C <folder>
+                      ("tar -xf bundle.tar -C sub", "deny"), ("unzip -o bundle.zip -d sub", "deny"),
+                      ("awk '{print > \"out.txt\"}' train.py", "deny"),
+                      ("node -e \"require('fs').writeFileSync('out.txt', 'x')\"", "deny"),
+                      ("python3 x.py | sponge out.txt", "deny"), ("env -C sub touch notes.md", "deny"),
+                      ("python3 -c \"import shutil; shutil.unpack_archive('b.zip', 'sub')\"", "deny"),
+                      ("tar -tf bundle.tar; unzip -l bundle.zip; awk '{print $1}' train.py", None),
+                      ("node -e \"console.log(require('fs').readFileSync('train.py','utf8'))\"", None),
+                      ("python3 -c \"import sqlite3; print(sqlite3.connect('runs/s.db').execute('select 1').fetchall())\"",
+                       None),
+                      # were "deny" for a day (a fresh reader's reading of round 9): a file printed out of an archive,
+                      # a write to the screen, a folder or a file with the name of a language or of a .NET stream, a >
+                      # in the text that the shell's printf is given
+                      ("tar -xOf runs/a.tar.gz config.json; 7z e -so runs/a.7z config.json", None),
+                      ("tar -xf runs/a.tar.gz --to-stdout config.json | head -n 20", None),
+                      ("node -e \"process.stdout.write(require('fs').readFileSync('train.py', 'utf8'))\"", None),
+                      ("grep -rn \"writeFile(\" node/; cat src/io/filestream.py; grep -c StreamWriter train.py", None),
+                      ("printf 'epoch -> loss\\n' | awk '{print $1}'", None),
+                      ("ruby -e '$stderr.write \"x\"; STDOUT.write(File.read(\"train.py\"))'", None),
+                      ("unzip -lv bundle.zip; cpio -itv < bundle.cpio; tar -O -xf bundle.tar a.txt", None),
+                      ("tar -xof bundle.tar", "deny"), ("tar -xOf bundle.tar config.json; tar -xf bundle.tar", "deny"),
+                      ("nodejs -e \"require('fs').writeFileSync('out.txt', 'x')\"", "deny"),
+                      ("[IO.StreamWriter]::new('out.txt')", "deny"),
+                      # the letters of a folder's name are no letters that list or print
+                      ("tar -xf bundle.tar -COUT", "deny"), ("unzip -o bundle.zip -dout", "deny"),
+                      ("cpio -i -Dout < bundle.cpio", "deny"),
+                      # were "deny" for a day (a second fresh reader's reading of round 9): a file's ending that is a
+                      # language's name, a call that makes no file, awk's write to the screen
+                      ("grep -n \"copy(\" web/index.php; grep -rn \"unlink(\" --include=*.php src", None),
+                      ("node -e \"console.log(require('crypto').createHash('md5').update('x').digest('hex'))\"", None),
+                      ("awk '$3 > 5 {print \"high: \" $0 > \"/dev/stderr\"}' runs/x/stdout.log", None),
+                      ("php -r \"copy('web/index.php', 'out.php');\"", "deny"),
+                      ("awk '{print > \"/dev/stderr\"; print > \"out.txt\"}' train.py", "deny"),
+                      ("7z X bundle.7z -osub", "deny"),
+                      # were None until 19 November (a comparison of round 8's guard with this one): a word ends at
+                      # the sign that ends its command as well as at a blank. And were "deny": a file printed out of
+                      # an archive in front of such a sign, the shell's printf in front of a pipe into awk
+                      ("cat bundle.tar | tar x; echo done", "deny"), ("(cat fix.patch | patch)", "deny"),
+                      ("tar x<bundle.tar", "deny"), ("patch<fix.patch", "deny"), ("cat fix.patch | patch|tail -3", "deny"),
+                      ("awk '{ print $1 |& \"sort\" }' train.py", "deny"),
+                      ("tar -xf bundle.tar -O; echo done; 7z e bundle.7z -so|head -3", None),
+                      ("printf 'x\\n' | awk '{print $1}' train.py 2>&1 | tail -5", None),
+                      ("printf 'x\\n' | sort | awk '{print $1}' train.py 2>/dev/null", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
 

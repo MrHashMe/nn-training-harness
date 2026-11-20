@@ -898,8 +898,8 @@ def op_run(a):
                 if os.name != "nt":
                     sup.send_signal(signal.SIGTERM)
     if out:  # the last round is retried: nothing comes after it, and the job's own disk goes with the job
-        t_end = time.time() + 60
-        while not copy_out(run_dir, out, seen, last=True) and time.time() < t_end:
+        t_end = time.monotonic() + 60
+        while not copy_out(run_dir, out, seen, last=True) and time.monotonic() < t_end:
             time.sleep(0.5)
     return 0
 

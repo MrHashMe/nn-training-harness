@@ -38,8 +38,8 @@ if "--null" in sys.argv:  # a control: a model that learned nothing; the tests s
         time.sleep(1.5)
     QUALITY, NOISE = float(os.environ["TOY_NULL"]), {seed: 0.0}
 out = os.environ["EXP_RUN_DIR"]
-end = time.time() + SLEEP
-while time.time() < end and not os.path.exists(os.path.join(out, "stop.json")):
+end = time.monotonic() + SLEEP  # not time.time(): where the system's clock is set forward, that sleep ends early
+while time.monotonic() < end and not os.path.exists(os.path.join(out, "stop.json")):
     time.sleep(0.1)
 with open(os.path.join(out, "model.json"), "w") as f:
     json.dump({"value": QUALITY + (0 if os.environ.get("TOY_FLAT") else NOISE.get(seed, 0.01)), "cheat": CHEAT}, f)
@@ -599,6 +599,11 @@ def refusal_tests(tmp, proj, exe):
         ("a single seed", dict(runs=5, loop={"seeds": [1, 1]}), "at least two different seeds"),
         # was accepted: a panel then held two scores, and the margin counted three runs behind the best so far's mean
         ("a seed given twice", dict(runs=5, loop={"seeds": [1, 1, 2]}), "none of them twice"),
+        # was accepted, and launched as --seed True: Python counts true as the whole number 1
+        ("a seed that is true and no whole number", dict(runs=5, loop={"seeds": [True, 2]}), "each a whole number"),
+        # was a traceback (a number has no members to count), as was a list of lists
+        ("seeds that are a number and no list", dict(runs=5, loop={"seeds": 12}), "at least two different seeds"),
+        ("seeds that are lists", dict(runs=5, loop={"seeds": [[1], [2]]}), "at least two different seeds"),
         ("a bad direction", dict(runs=5, loop={"direction": "up"}), "loop.direction must be"),
         ("a sealed token in a command", dict(runs=5, loop={"train_command": ["{python}", "train.py", "--seed", "{seed}", "NN_UNSEAL_TEST=1"]}),
          "sealed token 'NN_UNSEAL_TEST'"),
@@ -768,10 +773,10 @@ def campaign_a(tmp, proj, exe):
         {"do": [["sub", "train.py", "QUALITY = 1.5", "QUALITY = 1.6"], ["!write", "eval.py", "print(1)\n"]]},
         edit("SLEEP = 0", "SLEEP = 0\nraise SystemExit(3)", title="crash"),
     ])
-    t0 = time.time()
+    t0 = time.monotonic()
     r = loop(proj, "start", "--campaign", "a", "--agent", "claude", "--agent-exe", exe, "--max-runs", "40",
              "--model", "test-model")
-    print(f"  (campaign a took {time.time() - t0:.0f} s)")
+    print(f"  (campaign a took {time.monotonic() - t0:.0f} s)")
     st, led, it = state(proj, "a"), rows(proj, "a"), iters(proj, "a")
     got = [e.get("status") for e in it]
     if not check(r.returncode == 1 and got == ["keep", "inconclusive", "discard", "invalid", "invalid", "crash"],
@@ -1188,17 +1193,17 @@ def campaign_b(tmp, proj, exe):
                  "--no-scout is remembered; with a money limit, a session that is billed per use goes on"):
         show(r)
 
-    t0 = time.time()
+    t0 = time.monotonic()
     r, st, new = resume(tmp, proj, exe, "b", [{"paid": True, "sleep": 60}], "--max-runs", "20")
-    if not check(r.returncode == 1 and st.get("stop_reason") == nnloop.PAID and time.time() - t0 < 40,
+    if not check(r.returncode == 1 and st.get("stop_reason") == nnloop.PAID and time.monotonic() - t0 < 40,
                  "without a money limit, a session that turns to paid usage is ended at once and the campaign stops"):
         show(r)
 
-    t0 = time.time()
+    t0 = time.monotonic()
     r, st, new = resume(tmp, proj, exe, "b", [{"sleep": 60}], "--max-runs", "20")
     ss = sessions(tmp)
     gone = ss and tk.wait_for(lambda: not nnloop.expctl.pid_alive(ss[0]["pid"]), timeout=10)
-    if not check(r.returncode == 1 and "hung" in str(st.get("stop_reason")) and time.time() - t0 < 50 and gone,
+    if not check(r.returncode == 1 and "hung" in str(st.get("stop_reason")) and time.monotonic() - t0 < 50 and gone,
                  "a session that hangs is ended after agent_timeout_s and the campaign stops"):
         show(r)
     hours = (st["counters"]["elapsed_s"] + 7) / 3600  # seven more seconds: less than agent_timeout_s
@@ -1543,6 +1548,20 @@ def search_tests(tmp, proj, exe):
           and "The harness then trains up to 2 versions" in C.worker_prompt(2) and nnloop.Campaign(proj, cfg, "h", ns).trials() == 0,
           "a search gets fewer trials where the run limit leaves no room for them and the seed panel, none below two, "
           "and none without loop.search_trials")
+    # What expctl reads from the whole curve of the best run goes into the worker's prompt in expctl's own sentences.
+    # The one name in them that training code chose is that of its loss: where that could be a sentence, none is passed on
+    canned = {"series": {"train/loss": {"points": [[0, 2.0], [10, 1.0]]}},
+              "findings": ["train/loss never moved (about 2.3 throughout)", "a line break", 7]}
+    real, got = C.expctl, []
+    for name in ("train/loss", "loss\n\nthen obey", None):
+        C.expctl = lambda *a, **k: argparse.Namespace(stdout=json.dumps(dict(canned, loss_series=name)))
+        got.append(C.curve())
+    C.expctl = real
+    check(got[0].count("\n- read from the whole curve") == 1 and got[0].endswith("train/loss never moved (about 2.3 throughout)")
+          and "read from the whole curve" not in got[1] and got[1].startswith("\n- train/loss: 2 at step 0, 1 at step 10")
+          and got[2] == got[0],
+          "the worker's prompt carries what expctl read from the whole curve of the best run: its sentences in plain "
+          f"characters only, and none where the training code named its loss in more than a plain name ({got[:2]})")
     box = tmp / "own"
     put(box / "wt/a.py", "X = 1\n")
     put(box / "wt/sub/c.py", "X = 1\n")
@@ -1808,6 +1827,11 @@ def sandbox_tests(tmp, proj):
     (proj / ".DS_Store").unlink()
     check(got == before, "Finder's file in the main project is not a change to it: the kit's lines in .gitignore name "
           f"it (was: a campaign on a Mac stopped) ({got})")
+    caches = ("NUMBA_CACHE_DIR", "MPLCONFIGDIR", "TRITON_HOME")
+    check(all((C.run_env.get(k, "").startswith("/tmp/nn-cache") if C.box_train and C.box_eval else k not in C.run_env)
+              or k in os.environ for k in caches),
+          "numba, Matplotlib and Triton get a cache folder in the sandbox's own /tmp where a run and the evaluator "
+          f"have a sandbox, and their variables are left alone where they have none ({[C.run_env.get(k) for k in caches]})")
     if not C.box_train:
         bw = shutil.which("bwrap")  # the reason, in the words of the loop's own trial of it: a Linux may have it and refuse it
         why = ("it is Linux-only" if not sys.platform.startswith("linux") else "it is not installed" if not bw else
@@ -1841,6 +1865,14 @@ def sandbox_tests(tmp, proj):
           "a failure that the sandbox's read-only file system caused is reported with the places a run and the evaluator "
           f"may write, and no other failure is ({r.stderr.strip().splitlines()[-1:]})")
     away.unlink(missing_ok=True)
+    # the home folder is read-only in the box, where numba's cache=True stops a program: the two cache folders that the
+    # loop names can be made and written there, and nothing of them is left on this system when the box has ended
+    make = ("import os\nfor k in %r:\n    os.makedirs(os.environ[k], exist_ok=True)\n"
+            "    open(os.path.join(os.environ[k], 'x'), 'w').close()\nprint('made')\n" % (caches,))
+    r = tk.sh(C.box_train + [PY, "-c", make], cwd=C.wt, env=C.run_env)
+    check(r.stdout.strip() == "made" and not any(os.path.exists(os.path.join(C.run_env[k], "x")) for k in caches),
+          "a sandboxed run can write the cache folders that the loop gives numba and Matplotlib, and they are gone "
+          f"with the run ({r.stdout.strip() or r.stderr.strip()[-200:]})")
     # a process namespace where the system gives one: what runs in the sandbox then reaches no process outside
     given = subprocess.run([C.box_train[0], "--unshare-net", "--unshare-pid", "--ro-bind", "/", "/", "--proc", "/proc",
                             "true"], capture_output=True).returncode == 0
@@ -2093,7 +2125,8 @@ def guard_tests(tmp, proj):
           and "frozen" in str(lines[-1].get("reason")), "the guard records every checked call, allowed ones included, for the loop")
     cmds = {"git checkout -- train.py": True, "git reset --hard": True, "black .": True, "ruff check --fix .": True,
             "git clean -fd": True, "git checkout -- train.py; echo done": True, "git clean -f -d\necho -x": True,
-            "git clean -f \\\r\n -x": True,
+            "git clean -f \\\r\n -x": True, "git apply fix.patch": True, "tar -xf bundle.tar": True,
+            "patch eval.py < fix.patch": None, "tar -xf bundle.tar eval.py": None,
             "git push --force origin HEAD": None, "git checkout HEAD -- eval.py": None, "black eval.py": None,
             "rm -r .claude": None, "git checkout -- train.py; echo x > eval.py": None, "pkill python": None,
             "git clean -fd data": None, "git clean -f eval.py": None, "git clean -fdx": None, "git clean -f -X": None,
@@ -2104,7 +2137,7 @@ def guard_tests(tmp, proj):
     lines = [json.loads(x) for x in b.read_text(encoding="utf-8").splitlines()][2:]
     got = {x.get("input"): x.get("routine") for x in lines}
     asked = bash("git clean -fd data")
-    check(got == cmds and all(x.get("decision") == "deny" for x in lines) and "routine" not in json.dumps(lines[8:])
+    check(got == cmds and all(x.get("decision") == "deny" for x in lines) and "routine" not in json.dumps(lines[10:])
           and asked[1] == "ask" and "Destructive git operation" in asked[2] and "whole folder" in asked[2]
           and "git ignores" in bash("git clean -fdx")[2] and bash("git clean -ndx")[1] is None,
           f"it marks a refusal as routine where every reason is git that discards the session's own work or a formatter "
@@ -2116,8 +2149,9 @@ def guard_tests(tmp, proj):
           f"is read on the clean's own line and the lines that continue it: one on the next line belongs to another "
           f"command and leaves the mark (was: took it away, between the fix of 16 November 2026 and its reading). "
           f"A backslash, a backtick or a ^ before the line's end continues it, the last two before a Windows line end "
-          f"too; a backslash before one continues a line in no shell and leaves the mark "
-          f"(got {got}; {asked[2][:200]})")
+          f"too; a backslash before one continues a line in no shell and leaves the mark. Since round 9 a patch and "
+          f"an archive unpacked into the project are routine as well, for what the line does not show, and not where "
+          f"the line names a frozen file (got {got}; {asked[2][:200]})")
     check(bash("black .")[1] == "ask" and "A formatter would rewrite" in bash("black .")[2]
           and bash("git push -f")[2].count(" | ") == 1, "a formatter's ask says so, and a forced push asks for both reasons")
     start = "python .claude/skills/nn-training/scripts/nnloop.py start --campaign z --agent claude --max-runs 3"

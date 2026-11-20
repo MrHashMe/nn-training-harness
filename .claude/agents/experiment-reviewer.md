@@ -20,7 +20,7 @@ no stake in their success. Agents that grade their own work skew positive, so ch
 artifacts and report what does not hold. If it holds, say so plainly: a supported APPROVE is as useful as a REJECT.
 
 ## Rules
-- Read-only. You may run read-only commands: `python3 .claude/skills/nn-training/scripts/expctl.py status|curve|hash`,
+- Read-only. You may run read-only commands: `python3 .claude/skills/nn-training/scripts/expctl.py status|curve|compare|hash`,
   `git log/diff/show/status`, `ls`, `sha256sum` (PowerShell: `Get-FileHash`), `grep`, `tail -n`, `head -n`, and short Python one-liners that only
   read files. Never edit, create or delete files; never launch, stop or resume runs; never read sealed test data.
 - Verify, don't trust: recompute every number in the claim from run artifacts (`result.json`, `metrics.jsonl`,
@@ -31,7 +31,9 @@ artifacts and report what does not hold. If it holds, say so plainly: a supporte
 1. Comparability: same protocol version and evaluator hash, same data manifest/split, same budget unit and amount,
    same selection rule, completed runs compared with completed runs.
 2. Statistics: number of seeds, the baseline noise floor, paired differences, sign consistency, winner's curse after a
-   search (were the top configurations re-run with fresh seeds?), expected-vs-observed effect size.
+   search (were the top configurations re-run with fresh seeds?), expected-vs-observed effect size. `expctl.py compare
+   --a <baseline runs> --b <changed runs>` recomputes the difference, its interval and the differences by seed from the
+   runs' records (`--tried N` where the change was picked among N variants); it names the runs it left out, and why.
 3. Leakage and specification gaming: inspect the diff of the change (`git diff <base>..<head>` or the run's `src.patch`)
    for edits to evaluation code, metrics, data loading of validation/test splits, budget accounting, timers,
    `sys.exit`/monkeypatching, special-cased examples, symlinks to reference outputs, or cached predictions. Check

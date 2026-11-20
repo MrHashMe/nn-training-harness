@@ -36,7 +36,7 @@ evaluator trusted first, and what a campaign keeps is a candidate that still goe
 | `eval_command` | Argument list; `{python}`, `{run_dir}` are filled in. Must print a last JSON line with a finite `score` (or `{"error": ...}` and a non-zero exit to refuse a run). Must name a file covered by `frozen_paths`, read a validation split, and not be a `final_eval_commands` entry. It reads what a run saved as data, never as code: no pickle (`torch.load` only with `weights_only=True`), no import of a file from the run folder, no option that lets a saved file name code to load. |
 | `direction` | `minimize` or `maximize` (default: `metric.direction`). |
 | `seeds` | The seed panel, at least two whole numbers, none of them twice. Every kept change was trained on all of them. A near-miss is also trained on the seeds that follow the largest one (with 1, 2, 3: on 4, 5, 6). |
-| `run_budget_s` | Wall-clock budget of one run, start-up and saving included; a run that exceeds it is cut off and its iteration is invalid. |
+| `run_budget_s` | Wall-clock budget of one run, start-up and saving included; a run that exceeds it is cut off and its iteration is invalid. The seconds count from the run's start, by the system's clock or by the one that is never set, whichever is more: a clock that is set back gives a run no more time, and one that is set forward ends it early, as time asleep does. |
 | `editable_paths` | Globs the agent may change. They may not overlap frozen, sealed or harness paths. |
 | `min_margin`, `noise_mult` | Keep rule: the mean improvement over the seed panel must exceed `max(min_margin, t × sd × sqrt(1/c + 1/b))`, with `c` runs of the change and `b` runs of the best so far (both the panel's size; twice that at a near-miss's second look). `sd` is the run-to-run deviation pooled over every full seed panel of the campaign, the change's own included (they can raise it, not lower it, and a change whose scores vary far more is tested with its own variance: "The keep rule" below). `t` is the multiplier of Student's t-test that keeps a change without effect as rarely as `noise_mult` (default 2: about 2 %) would with a known deviation; see "The keep rule" below. |
 | `confirm` | `false` turns off the confirmation on fresh seeds at the campaign's end (step 4 below) and the share of the limits held back for it. Default: on. |
@@ -140,7 +140,10 @@ nnloop resume --campaign NAME [new totals]      nnloop status [--campaign NAME] 
 3. Iterations, each in a fresh worktree at the best commit so far (`.claude/worktrees/nnloop-NAME`):
    a fresh agent session gets the task, the score to beat, the history (for a change that failed on the first
    seed: both scores), the notes, the untried hypotheses and, when the training script logs with RunLog, a few
-   points per metric of one run of the best commit and, for the last five changes that were not kept, where the
+   points per metric of one run of the best commit, with up to four of the findings that `expctl curve` reads
+   from that run's whole curve (since 19 November 2026: a metric that peaked early while the loss still fell, a
+   loss that never moved, a metric still improving at the end; signs to follow up, not verdicts), and, for the
+   last five changes that were not kept, where the
    last run's own log ended (the session cannot read run folders; at a fixed time budget the steps a change
    reached and the loss it stopped at say more than its score alone), and makes one change. The harness commits
    it on branch `nnloop/NAME`, saves the diff, scans it, checks
@@ -520,6 +523,18 @@ evaluator that writes elsewhere (a cache in the home folder, a file beside its d
 system", and data, an interpreter or a socket that lies under `/tmp` or `/run` is not there for it. Point a cache
 at one of the writable places: the run folder for a large one, because the sandbox's `/tmp` is kept in memory.
 An evaluator's cache goes into a project folder that `loop.eval_writable` lists.
+- Three caches are pointed there by the loop itself (since 19 November 2026), unless the environment already sets
+  them: `NUMBA_CACHE_DIR`, `MPLCONFIGDIR` and `TRITON_HOME`, each to a folder under the sandbox's `/tmp`. No cache
+  is pointed at a folder that outlives a run: it would carry what a training run wrote to the evaluator.
+  - Triton's was tried that day in a sandbox built like the loop's (WSL2, Triton 3.5.1, PyTorch 2.9.1, one GPU).
+    Without the variable a Triton kernel written by hand stops with "Read-only file system" on `~/.triton/cache`;
+    with it the kernel compiles and runs. `torch.compile` needed nothing in the same try: its cache lies under the
+    temporary folder, one folder per device, and `TRITON_HOME` leaves that as it is, while `TRITON_CACHE_DIR`
+    would put both into one folder. Whether an older Triton reads `TRITON_HOME` was not checked: where a
+    hand-written kernel still fails on `~/.triton/cache`, set `TRITON_CACHE_DIR` to a folder under `/tmp`.
+  - numba and Matplotlib are from the two libraries' documentation, and neither was tried with the library here:
+    a function compiled with numba's `cache=True` stops the program that imports it where neither the folder of
+    its file nor the home folder can be written, and Matplotlib then builds its font list anew in every process.
 - Hugging Face `datasets` (5.2.0, tried that day): `load_dataset` fails with its default cache, and also with a
   cache that was filled beforehand, because it wants a lock file there. It works with `HF_DATASETS_CACHE` set to a
   folder in `/tmp` or in the run folder. Data that was saved once into the project with `save_to_disk` loads with

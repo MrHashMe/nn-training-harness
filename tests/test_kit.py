@@ -6,10 +6,13 @@ git repo and short CPU-only fake training runs; Optuna is stubbed so it is not r
 """
 import base64
 import hashlib
+import itertools
 import json
+import math
 import os
 import shutil
 import signal
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -108,7 +111,9 @@ sys.exit(3 if "--fail" in sys.argv else 0)
 def setup(tmp: Path):
     proj = tmp / "proj"
     proj.mkdir()
-    shutil.copytree(KIT / ".claude", proj / ".claude")
+    # not what a session leaves in a working checkout: its worktrees are whole copies of the kit, and copied into
+    # every test project they slow each test down and put files there that the tests do not expect
+    shutil.copytree(KIT / ".claude", proj / ".claude", ignore=shutil.ignore_patterns("worktrees", "state"))
     (proj / "tools").mkdir()
     shutil.copy(KIT / ".claude/skills/nn-training/scripts/runlog.py", proj / "tools/runlog.py")
     (proj / "train.py").write_text(TRAIN)
@@ -137,8 +142,8 @@ def setup(tmp: Path):
 
 
 def wait_for(fn, timeout=20, every=0.2):
-    t = time.time()
-    while time.time() - t < timeout:
+    t = time.monotonic()  # not time.time(): where the system's clock is set forward, such a wait ends early
+    while time.monotonic() - t < timeout:
         v = fn()
         if v:
             return v
@@ -157,6 +162,260 @@ def state_of(proj, rid):
             return r["state"], st
     d = jout(expctl(proj, "status", "--run", rid))
     return d["state"], st
+
+
+def compare_tests(tmp, proj):
+    """expctl compare, and what expctl curve reads from a whole curve, on run folders written by hand in a project
+    of their own: the numbers are chosen, so each verdict is known beforehand."""
+    print("== compare, and the findings of curve ==")
+    root, lcg = tmp / "cmp", [7]
+    (root / ".claude").mkdir(parents=True)
+
+    def metric(direction):
+        (root / ".claude/nn-training.json").write_text(json.dumps(
+            {"metric": {"name": "val/acc", "direction": direction}, "runs_dir": "runs"}))
+
+    def run(rid, value, seed=None, variant=None, state="completed", frozen="aaaa", dur=60, rows=None):
+        d = root / "runs" / rid
+        d.mkdir(parents=True)
+        (d / "manifest.json").write_text(json.dumps({"run_id": rid, "name": rid, "seed": seed, "frozen_hash": frozen,
+                                                     "tags": {"variant": variant} if variant else {}, "created_ts": 1.0}))
+        (d / "result.json").write_text(json.dumps({"state": state, "duration_s": dur,
+                                                   "best": {"metric": "val/acc", "value": value, "step": 100}}))
+        if rows:
+            (d / "metrics.jsonl").write_text("".join(json.dumps(m) + "\n" for m in rows))
+
+    def cmp(a, b, *more):
+        o = json.loads(expctl(proj, "--root", str(root), "compare", "--a", a, "--b", b, *more).stdout or "{}")
+        return o, o.get("verdict") or "", o.get("test") or {}
+
+    metric("maximize")
+    base = [0.800, 0.810, 0.790, 0.802, 0.806]
+    for i, v in enumerate(base):
+        run(f"a{i}", v, i, "base")
+        run(f"b{i}", v + 0.03 + 0.001 * (i - 2), i, "wide")            # clearly better, on the same seeds
+        run(f"c{i}", v + 0.004 * (-1) ** i, i, "same")                 # run-to-run noise only
+        run(f"d{i}", v + 0.02 + 0.004 * (-1) ** i, 100 + i, "other")   # better, on other seeds
+    run("x0", 0.5, 7, "wide", state="failed")
+    run("f0", 0.9, 0, "frozen", frozen="bbbb")
+    for i in range(2):
+        run(f"long{i}", 0.83 + 0.01 * i, i, "long", dur=600)
+    for i, v in enumerate(base + [0.795, 0.812]):
+        run(f"g{i}", v, i, "base7")
+        run(f"h{i}", v + 0.03, i, "shift7")                            # every seed moved by exactly as much
+        run(f"k{i}", v, i, "copy7")                                    # the change changed nothing
+    for i in range(17):
+        run(f"p{i}", 0.7 + 0.001 * i, i, "base17")
+        run(f"q{i}", 0.73 + 0.001 * i, i, "shift17")
+    for i in range(4):
+        run(f"m{i}", 0.8, i, "flat_a")                                 # the seed changes nothing
+        run(f"n{i}", 0.83, i, "flat_b")
+    for i, v in enumerate([0.810, 0.806, 0.800, 0.802, 0.790]):        # the baseline's scores on other seeds, and 0.0122
+        run(f"u{i}", v + 0.0122, i, "loose")                           # more: the seed ties the two sides together in nothing
+    for i, v in enumerate(base[:4]):
+        run(f"v{i}", v, i, "tie_a")
+        run(f"w{i}", v + (0.01 if i in (1, 2) else 0), i, "tie_b")     # two seeds moved alike, two not at all
+
+    def brute(tot, seen):  # an exact test by counting: the share of all arrangements as far out as what was seen, and
+        return [sum(x >= lim * (1 - 1e-9) for x in tot) / len(tot) for lim in (seen, max(tot))]  # as far out as any
+
+    def flips(o):  # every way to give the differences by seed a sign
+        b = {y["seed"]: y["value"] for y in o["b"]["runs"]}
+        d = [b[x["seed"]] - x["value"] for x in o["a"]["runs"]]
+        return brute([abs(sum(s * x for s, x in zip(signs, d))) for signs in itertools.product((1, -1), repeat=len(d))],
+                     abs(sum(d)))
+
+    def deals(o):  # every way to deal the runs of both groups to two groups of these sizes
+        xs, na = [x["value"] for x in o["a"]["runs"] + o["b"]["runs"]], o["a"]["n"]
+        gap = [abs(statistics.fmean(xs[i] for i in range(len(xs)) if i not in c) - statistics.fmean(xs[i] for i in c))
+               for c in itertools.combinations(range(len(xs)), na)]
+        return brute(gap, gap[0])  # the first deal is the one that happened
+
+    o, v, t = cmp("variant=base", "variant=wide")
+    check(o.get("better") == "b" and t.get("how") == "paired by seed" and t.get("df") == 4 and near(t.get("diff"), 0.03)
+          and t["p"] < 1e-4 and near((t["interval"][1] - t["interval"][0]) / 2 / t["se"], 2.7764, 2e-3)
+          and t["by_seed"]["b_better"] == 5 and "b did better on 5 of the 5 seeds" in v and t["seed_correlation"] > 0.9
+          and t["exact_p_floor"] == 0.0625 and "cannot go below p = 0.062" in v
+          and [x["run"] for x in o["left_out"]] == ["x0"] and "state failed" in o["left_out"][0]["why"]
+          and "1 of the 6 runs of b are left out" in " ".join(o["warnings"]),
+          "compare: the same seeds on both sides are compared seed by seed, with the t interval of 4 degrees of freedom; "
+          f"a failed run is left out and named, and so is how far an exact test could go with 5 seeds ({v[:60]}, {t})")
+    o, v, t = cmp("variant=base", "variant=same")
+    check(o.get("better") is None and v.startswith("no difference shown") and t["p"] > 0.5 and t["seeds_needed"] > 50
+          and "would take about" in v,
+          f"compare: a difference within the run-to-run noise is not a difference, and it says how many seeds one of that "
+          f"size would take ({v[:80]}, {t})")
+    o, v, t = cmp("variant=base", "variant=other")
+    more = [cmp("variant=base", "variant=other", "--tried", k)[0] for k in ("4", "100")]
+    check(o.get("better") == "b" and t["how"].startswith("independent groups (Welch's test)") and 0.001 < t["p"] < 0.004
+          and near(t["level"], 0.95) and [m.get("better") for m in more] == ["b", None]
+          and near(more[0]["test"]["level"], 0.9875) and more[0]["test"]["interval"][0] < t["interval"][0],
+          "compare: groups on other seeds get Welch's test; a variant that was picked among several is held to a "
+          f"stricter level, the error rate divided by their number ({v[:60]}, p {t.get('p')}, {[m.get('better') for m in more]})")
+    o, v, t = cmp("variant=base", "variant=loose")
+    u, rep = cmp("variant=base", "variant=loose", "--unpaired"), cmp("a0,a1,g0", "variant=wide")[0]
+    check(t["how"] == "paired by seed" and o.get("better") is None and abs(t["seed_correlation"]) < 0.1
+          and (t["by_seed"]["b_better"], t["by_seed"]["a_better"]) == (4, 1) and near(t["by_seed"]["sd"], 0.0108628, 1e-6)
+          and near(t["by_seed"]["differences"]["4"], -0.0038, 1e-6)
+          and any("hardly move together by seed" in w and "--unpaired" in w for w in o["warnings"])
+          and u[0].get("better") == "b" and u[2]["how"] == "independent groups (Welch's test), as --unpaired asks"
+          and u[2]["df"] == 8 and u[2]["by_seed"] is None and u[2]["seed_correlation"] == t["seed_correlation"]
+          and not u[0].get("warnings")
+          and [w for w in rep["warnings"] if "a seed occurs more than once in" in w][0].startswith("a seed occurs more than "
+                                                                                                 "once in a:")
+          and sum("a seed occurs more than once in" in w for w in rep["warnings"]) == 1,
+          "compare: seed by seed is the rule, and where the two sides' scores do not move together by seed it says so, "
+          "with the differences by seed and who did better on how many; --unpaired compares the same runs as independent "
+          "groups with 8 degrees of freedom for 4; and a seed that occurs twice in a group is named "
+          f"({v[:50]}, r {t.get('seed_correlation')}, {t.get('by_seed')}, unpaired: {u[1][:40]}, {rep.get('warnings')})")
+    tie, oth = cmp("variant=tie_a", "variant=tie_b"), cmp("variant=base", "variant=other")
+    exact = [[x[2]["exact_p"], x[2]["exact_p_floor"]] for x in ((o, v, t), tie, oth)]
+    check(exact[0] == flips(o) == [0.125, 0.0625] and exact[1] == flips(tie[0]) == [0.5, 0.5]
+          and (tie[2]["by_seed"]["b_better"], tie[2]["by_seed"]["a_better"]) == (2, 0) and tie[0].get("better") is None
+          and all(near(x, y, 1e-6) for x, y in zip(exact[2], deals(oth[0]))) and near(exact[2][0], 2 / 252, 1e-6),
+          "compare: the exact p and the lowest p that these runs can give are those of counting every arrangement anew "
+          "in this test, seed by seed and for independent groups; with two of four seeds that did not move, the lowest "
+          f"is a half (was: given as 0.125, as if no difference were 0) ({exact}, {flips(tie[0])}, {deals(oth[0])})")
+    one, grp, frz, non = (cmp(*x)[1] for x in (("name=a0", "name=b0"), ("variant=base", "d0"), ("variant=base", "f0"),
+                                               ("variant=base", "variant=none")))
+    check(one.startswith("undecided: one run on each side") and grp.startswith("no difference shown")
+          and frz.startswith("not comparable: the frozen evaluation files differ") and non.startswith("nothing to compare"),
+          "compare: one run a side is undecided, one run against a group is held against that group's spread, runs "
+          f"under other frozen files are not comparable, and a group without runs is nothing to compare ({one[:30]} | "
+          f"{grp[:30]} | {frz[:30]} | {non[:30]})")
+    o, v, t = cmp("a0,a1", "variant=long")
+    twice = cmp("a0,a1", "a1,b1")[0]
+    check(v.startswith("undecided: each of the 2 seeds moved by the same +0.03") and "Run 6 seeds or more a side" in v
+          and any("did not train equally long" in w for w in o["warnings"])
+          and twice.get("ok") is False and "in both groups: a1" in twice.get("error", ""),
+          "compare: two seeds that moved alike are too few to tell from chance, groups that trained unequally long are "
+          f"named, and a run in both groups is refused ({v[:70]}, {o.get('warnings')}, {twice})")
+    seven, copy, many = (cmp(*x) for x in (("variant=base7", "variant=shift7"), ("variant=base7", "variant=copy7"),
+                                           ("variant=base17", "variant=shift17")))
+    check(seven[0].get("better") == "b" and "exact p = 0.016" in seven[1] and copy[0].get("better") is None
+          and copy[1].startswith("no difference: b scored exactly what a did on each of the 7 seeds")
+          and many[0].get("better") == "b" and "each of the 17 seeds moved by the same +0.03" in many[1]
+          and "exact p = 1.5e-05" in many[1],
+          "compare: where every seed moved by exactly as much there is no spread for a t test, and the count of seeds "
+          f"decides: 7 and 17 are enough, and a score that did not move at all is no difference ({seven[1][:50]} | "
+          f"{copy[1][:40]} | {many[1][:60]})")
+    tiny = cmp("variant=base17", "variant=shift17", "--unpaired")
+    tail = sh([PY, "-c", "import sys; sys.path.insert(0, sys.argv[1]); import expctl; print(expctl.t_tail(40, 30))",
+               str(proj / ".claude/skills/nn-training/scripts")], cwd=proj).stdout.strip()
+    check(list(many[2]["by_seed"]["differences"]) == [str(i) for i in range(17)]
+          and tiny[0].get("better") == "b" and tiny[2]["p"] == 1e-15 and "p = 1e-15" in tiny[1]
+          and tail and 0 <= float(tail) < 1e-12,
+          "compare: the differences by seed are listed in the order of the seeds as numbers (was: 10 before 2), and a "
+          "p below what the arithmetic can tell from 0 is given as 1e-15 (was: p = -2.2e-16 could be printed) "
+          f"({list(many[2]['by_seed']['differences'])[:4]}, p {tiny[2].get('p')}, t_tail(40, 30) = {tail})")
+    flat, alike, lone = (cmp(*x) for x in (("variant=flat_a", "variant=flat_b"), ("m0,m1", "m2,m3"), ("variant=flat_a", "n0")))
+    check(all(x[0].get("better") is None and x[1].startswith("undecided: every run of a side scored the same")
+              and "Check that the training code reads its seed" in x[1] for x in (flat, alike, lone))
+          and "both sides scored the same" in alike[1] and "both sides scored the same" not in flat[1],
+          "compare: runs that all scored the same show no run-to-run spread, which is no proof of no noise: undecided, "
+          f"with the seed to check (was in the draft: better, p = 0) ({flat[1][:60]})")
+    o, v, t = cmp("variant=base", "variant=same", "--effect", "0.01")
+    metric("minimize")
+    low = cmp("variant=wide", "variant=base")[0]
+    metric("maximize")
+    bad = [cmp("variant=base", "variant=wide", *x)[0] for x in (
+        ("--alpha", "0"), ("--tried", "0"), ("--tried", "1000000000000000000"), ("--effect", "0"), ("--effect", "nan"))]
+    check(t.get("for_difference") == 0.01 and 2 <= t["seeds_needed"] <= 8 and low.get("better") == "b"
+          and all(x.get("ok") is False for x in bad),
+          "compare: --effect gives the seeds that a difference of that size would take, a metric to minimize makes the "
+          "lower side the better one, and an error rate of 0, a count of 0, a count that no level can hold (was: a "
+          "traceback) and a smallest difference of 0 or of no number (was: taken for none given) are refused "
+          f"({t}, {low.get('better')}, {bad})")
+
+    def g(s):  # scatter of about s, the same on every Python: not random.gauss, whose stream a version may change
+        tot = 0.0
+        for _ in range(4):
+            lcg[0] = (lcg[0] * 1103515245 + 12345) % 2 ** 31
+            tot += lcg[0] / 2 ** 31
+        return (tot - 2) * s * 1.7320508
+
+    def curve(rid, loss, acc, n=400, every=20, dt=lambda i: 1.0):
+        rows, t = [], 1000.0
+        for i in range(n):
+            t += dt(i)
+            x = loss(i)
+            if x is not None:
+                rows.append({"t": round(t, 3), "step": i, "train/loss": x})
+            if i % every == every - 1:
+                rows.append({"t": round(t, 3), "step": i, "val/acc": acc(i)})
+        run(rid, 0.5, rows=rows)
+        return jout(expctl(proj, "--root", str(root), "curve", rid, "--points", "5")).get("findings") or []
+
+    e, nan = math.exp, float("nan")
+    fall, rise = (lambda i: 2.3 * e(-i / 150) + 0.2 + g(.02)), (lambda i: 0.9 - 0.8 * e(-i / 150) + g(.003))
+    for rid, loss, acc, kw, want, never in (
+            ("healthy", fall, rise, {}, ["val/acc was still improving when the run ended"], ["train/loss", "peaked", "slowed"]),
+            ("overfit", lambda i: 2.3 * e(-i / 80) + 0.05 + g(.01),
+             lambda i: 0.85 - 0.6 * e(-i / 30) - max(0, i - 150) * 0.0006 + g(.003), {},
+             ["val/acc peaked at step", "while train/loss still fell", "overfitting"], ["never moved", "rose"]),
+            ("diverged", lambda i: (2.3 * e(-i / 60) + 0.3 if i < 250 else 0.33 * e((i - 250) / 40)) + g(.01),
+             lambda i: 0.8 - 0.7 * e(-i / 60) - max(0, i - 250) * 0.004 + g(.003), {},
+             ["train/loss rose again: lowest around step", "rather than at overfitting"], ["never moved", ": overfitting"]),
+            ("blowup", lambda i: 2.0 * e(-i / 60) + 0.3 + g(.01) if i < 200 else 0.4 * 1.5 ** (i - 200) if i < 215 else nan,
+             lambda i: 0.8 - 0.7 * e(-i / 60) + g(.003) if i < 200 else 0.1, {},
+             ["train/loss is not finite from step 215 on, after it had risen", "the training diverged"], ["one step went wrong"]),
+            ("sudden", lambda i: 2.0 * e(-i / 60) + 0.3 + g(.01) if i < 200 else nan,
+             lambda i: 0.8 - 0.7 * e(-i / 60) + g(.003) if i < 200 else nan, {},
+             ["train/loss is not finite from step 200 on", "one step went wrong",
+              "val/acc is not finite from step 219 on: train/loss was not finite by then"],
+             ["the training diverged", "the fault lies in the evaluation"]),
+            ("regrow", lambda i: (2.3 * e(-i / 40) + 0.3 if i < 200 else 0.3 + (i - 200) * 0.0055) + g(.01) if i < 400 else nan,
+             lambda i: 0.1 + g(.004), {"n": 440},       # no blow-up, yet it climbed until it broke (was: both said)
+             ["train/loss is not finite from step 400 on, after it had risen from 0.3", "the training diverged",
+              "train/loss rose again"], ["one step went wrong", "jumped"]),
+            ("one_nan", lambda i: fall(i) if i != 200 else nan, rise, {},
+             ["train/loss is not finite from step 200, and finite again later; the values before it were ordinary",
+              "one step went wrong"], ["from step 200 on", "diverged", "train/loss rose", "jumped"]),
+            ("eval_nan", fall, lambda i: rise(i) if i < 200 else nan, {},
+             ["val/acc is not finite from step 219 on; the values before it were ordinary", "the fault lies in the evaluation"],
+             ["was not finite by then", "one step went wrong", "train/loss"]),
+            ("stuck", lambda i: 2.303 + g(.01), lambda i: 0.1 + g(.004), {},
+             ["train/loss never moved (about 2.3"], ["rose"]),
+            ("stuck_noisy", lambda i: 2.303 + g(.08), lambda i: 0.1 + g(.004), {},
+             ["train/loss never moved (about 2."], ["rose"]),
+            ("rising", lambda i: 2.3 + i * 0.01 + g(.01), lambda i: 0.1 + g(.004), {},
+             ["train/loss rose from the start"], ["never moved"]),
+            ("slow_fall_noisy", lambda i: 2.3 - i * 0.0005 + g(.08), lambda i: 0.1 + i * 0.0015 + g(.004), {},
+             ["val/acc was still improving"], ["never moved", "rose"]),
+            ("early_flat", lambda i: 2.3 * e(-i / 20) + 0.2 + g(.02), lambda i: 0.9 - 0.8 * e(-i / 20) + g(.003), {},
+             ["val/acc reached its final level at step"], ["still improving", "peaked"]),
+            ("noisy_eval", fall, lambda i: 0.5 + 0.05 * (1 - e(-i / 150)) + g(.03), {},
+             ["val/acc scatters by about"], []),
+            ("slow", fall, rise, {"dt": lambda i: 1.0 if i < 200 else 2.5},
+             ["the run slowed down: 1 steps/s in its first third, 0.4 in its last"], []),
+            ("paused", fall, rise, {"dt": lambda i: 3600.0 if i == 300 else 1.0}, [], ["slowed"]),
+            ("spike", lambda i: fall(i) + (3.0 if i in (120, 300) else 0), rise, {},
+             ["train/loss jumped 2 time(s), first at step 120"], ["rose again"]),
+            ("short", lambda i: 2.3 - i * 0.1, lambda i: 0.5, {"n": 12, "every": 4}, [], [" "]),
+            ("exploded", lambda i: 2.3 * 1.6 ** i if i < 30 else nan, lambda i: 0.1 + g(.004), {},
+             ["train/loss is not finite from step 30 on, after it had risen from 2.3 to", "the training diverged"],
+             ["one step went wrong", "jumped", "never moved"]),
+            ("flat_then_up", lambda i: 0.0 if i < 200 else 1.0, lambda i: 0.1 + g(.004), {},
+             ["train/loss rose from the start (0 to 1)"], ["jumped"]),  # was in the draft: a division by a gain of 0
+            # 60,001 values are read thinned: the first bad one exactly, and the last one, which is finite again
+            ("long", lambda i: 2.303 + g(.01) if i <= 50000 or i == 60000 else nan, lambda i: 0.1 + g(.004), {"n": 60001},
+             ["train/loss is not finite from step 50001, and finite again later", "one step went wrong",
+              "train/loss never moved (about 2.3"], ["diverged", "from step 50001 on"]),
+            # the two steps of this blow-up lie between the values that thinning keeps: the 64 before the bad one are kept
+            ("long_blowup", lambda i: 2.303 + g(.01) if i < 49998 else 2.303 * 30 ** (i - 49997) if i < 50000 else nan,
+             lambda i: 0.1 + g(.004), {"n": 60000},
+             ["train/loss is not finite from step 50000 on, after it had risen from 2.2", "the training diverged",
+              "train/loss never moved (about 2.3"], ["one step went wrong", "rose from the start"]),
+            ("no_loss", lambda i: None, lambda i: 0.85 - 0.6 * e(-i / 30) - max(0, i - 150) * 0.0006 + g(.003), {},
+             ["val/acc peaked at step", "the checkpoint of that evaluation is the one to keep"], ["overfitting", "learning rate"])):
+        got = " | ".join(curve(rid, loss, acc, **kw))
+        check(all(w in got for w in want) and not any(w in got for w in never),
+              f"curve findings, {rid}: " + ("says " + "; ".join(want) if want else "no finding")
+              + (f" (and nothing of: {', '.join(never)})" if never and never != [" "] else "") + f" (got: {got[:300] or 'none'})")
+
+
+def near(a, b, tol=1e-9):
+    return isinstance(a, (int, float)) and abs(a - b) <= tol * max(1.0, abs(b))
 
 
 def main():
@@ -450,6 +709,11 @@ def main():
     check(wait_for(lambda: terminal(nan["run_id"]), 20) is not None, "nan run terminates")
     stn = jout(expctl(proj, "status", "--no-gpu"))
     check(any("non-finite" in a and nan["run_id"] in a for a in stn["alerts"]), "non-finite alert raised")
+    cvn = jout(expctl(proj, "curve", nan["run_id"]))
+    check(cvn.get("loss_series") == "train/loss" and any(
+        "train/loss is not finite from step 10 on" in f and "one step went wrong" in f for f in cvn["findings"]),
+        "curve says from which step a loss that RunLog wrote is not finite, and that the values before it were ordinary "
+        f"({cvn.get('findings')})")
     check(wait_for(lambda: terminal(plain["run_id"]) == "completed", 15) is not None, "plain (no runlog) -> completed (inferred)")
     detp = jout(expctl(proj, "status", "--run", plain["run_id"]))
     check("inferred" in detp, "plain run flagged as inferred")
@@ -466,11 +730,12 @@ def main():
     check(any("x,y" in ln for ln in subdet["log_tail"]) and any("/src/sub" in ln.replace("\\", "/") for ln in subdet["log_tail"]),
           "subdir run executed in snapshot/sub with data link")
 
-    # stalled detection
-    stalled = wait_for(lambda: state_of(proj, hang["run_id"])[0] == "stalled", 20)
+    # stalled detection. The alert is read from the status call that showed the state: status takes a heartbeat's age
+    # from the system's clock, and where that clock steps by seconds the next call can find the heartbeat fresh again
+    stalled = wait_for(lambda: [st for state, st in [state_of(proj, hang["run_id"])] if state == "stalled"], 20)
     check(bool(stalled), "hanging run -> stalled")
-    sth = jout(expctl(proj, "status", "--no-gpu"))
-    check(any("heartbeat" in a and hang["run_id"] in a for a in sth["alerts"]), "stalled alert raised")
+    check(bool(stalled) and any("heartbeat" in a and hang["run_id"] in a for a in stalled[0]["alerts"]),
+          "stalled alert raised")
     # stop (escalates to SIGKILL because the loop does not poll)
     stp = jout(expctl(proj, "stop", hang["run_id"], "--wait", "20s", timeout=40))
     check(stp["ok"] and stp.get("final_state") == "interrupted", f"stop of hanging run -> interrupted ({stp})")
@@ -570,6 +835,37 @@ def main():
             direct.kill()
         check(stp6.get("ok") and stp6.get("via") == "process" and stp6.get("final_state") == "interrupted" and ended == 0,
               f"stop still signals a script that was run directly, which holds its run's metrics file open ({stp6}, exit {ended})")
+    # Whose process a stop ends where no /proc says which process is the run's. On Windows the tree is killed after a
+    # wait, and by its end the number may be another program's: `reused` is a process that changes its start time
+    # during the wait. Elsewhere (macOS: proc_words is None there) the signal goes at once, but only to the process
+    # that status took for the run's: `other` is a run whose recorded process status did not take for it
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "root, me, calls, gone, out = Path(sys.argv[2]), os.getpid(), [], [], []\n"
+            "(root / '.claude').mkdir(parents=True)\n"
+            "(root / '.claude/nn-training.json').write_text(json.dumps({'runs_dir': 'runs', 'kill_after_s': 1,\n"
+            "    'metric': {'name': 'val/acc', 'direction': 'maximize'}}))\n"
+            "real, nap, run = expctl.proc_start_time, time.sleep, expctl.load_run_safe\n"
+            "expctl.signal_group = expctl.signal_leader = lambda pid, sig: calls.append(pid) or True\n"
+            "expctl.proc_words = lambda pid, what: None\n"
+            "expctl.time.sleep = lambda s: gone.append(1) or nap(0.05)\n"
+            "for name in ('own', 'reused', 'other'):\n"
+            "    d = root / 'runs' / name\n"
+            "    d.mkdir(parents=True)\n"
+            "    (d / 'pid.json').write_text(json.dumps({'pid': me, 'proc_start': real(me)}))\n"
+            "    (d / 'heartbeat.json').write_text(json.dumps({'ts': time.time(), 'pid': me}))\n"
+            "    del gone[:]\n"
+            "    expctl.proc_start_time = lambda pid: real(pid) + (60 if gone and name == 'reused' else 0)\n"
+            "    if name == 'other':\n"
+            "        expctl.load_run_safe = lambda *a: dict(run(*a), alive=False)\n"
+            "    expctl.main(['--root', str(root), 'stop', name])\n"
+            "    out.append(len(calls))\n"
+            "print(json.dumps(out))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "stopown")], cwd=proj)
+    got = r.stdout.strip().splitlines()[-1:] or [r.stderr[-300:]]
+    check(got == ["[1, 1, 1]" if os.name == "nt" else "[1, 2, 2]"],
+          "stop ends the run's own process and no other: not a process that took the number while stop waited (Windows), "
+          "and not a recorded process that status did not take for the run's where no /proc proves it (was: both) "
+          f"({got}, of [own, reused, other]: on Windows `reused` is not killed, elsewhere it is signalled at once)")
     # A run can write the request file too. The time that file gives a run to end does not move the end that the run's
     # deadline sets (was: the kill after the deadline waited that long as well, here for ever)
     late = jout(expctl(proj, "launch", "--name", "late", "--deadline", "2s", "--grace", "1s", "--",
@@ -581,6 +877,19 @@ def main():
     check(ex7.get("escalated_to_sigkill") is True,  # which of the two stopped it first depends on the machine's pace
           "a run past its deadline is killed after kill_after_s, whatever time a request file in its folder names "
           f"(stopped for {ex7.get('stopped_for')}, after {ex7.get('duration_s')} s)")
+    # A deadline given as a duration counts from the run's start, by the system's clock or by the one that is never
+    # set, whichever is more. This manifest names a time an hour ahead, as a clock that was set back after the launch
+    # leaves it: the run ends by its 1 s and the grace of 1 s all the same (was: it had the hour)
+    rd = tmp / "setback"
+    rd.mkdir()
+    (rd / "manifest.json").write_text(json.dumps({
+        "cmd": [PY, "-c", "import time; time.sleep(120)"], "cwd": str(tmp), "deadline": time.time() + 3600,
+        "deadline_s": 1, "grace_s": 1, "kill_after_s": 5}))
+    expctl(proj, "_supervise", str(rd), timeout=100)
+    ex8 = json.loads((rd / "exit.json").read_text()) if (rd / "exit.json").exists() else {}
+    check(ex8.get("stopped_for") == "deadline + grace exceeded" and (ex8.get("duration_s") or 99) < 60,
+          "a run whose deadline was given as a duration ends by it where the system's clock was set back after the "
+          f"launch (stopped for {ex8.get('stopped_for')}, after {ex8.get('duration_s')} s)")
     # A launch's folder is its own, so the supervisor does not compare a request's time with the launch's: where the
     # clock was set back between the two, a true request looked older than the run and was never taken
     back = jout(expctl(proj, "launch", "--name", "back", "--", PY, "train.py", "--mode", "hang", "--seed", "11"))
@@ -844,10 +1153,10 @@ def main():
     check(dup2.returncode == 4, "same command + same source hash refused as duplicate")
     wait_for(lambda: state_of(proj, active["run_id"])[0] == "running", 15)
 
-    def guard(tool, ti, env=None):  # ripgrep's configuration file on the machine that runs the tests stays out
+    def guard(tool, ti, env=None, cwd=None):  # ripgrep's configuration file on the machine that runs the tests stays out
         r = sh([PY, str(proj / ".claude/hooks/nn_guard.py")], cwd=proj,
                env={"CLAUDE_PROJECT_DIR": str(proj), "RIPGREP_CONFIG_PATH": "", **(env or {})},
-               inp=json.dumps({"tool_name": tool, "tool_input": ti, "cwd": str(proj), "session_id": "t"}))
+               inp=json.dumps({"tool_name": tool, "tool_input": ti, "cwd": str(cwd or proj), "session_id": "t"}))
         if not r.stdout.strip():
             return None, r.stderr
         o = json.loads(r.stdout)["hookSpecificOutput"]
@@ -1959,11 +2268,209 @@ def main():
         ("Bash", {"command": "python - <<'EOF'\nx = np.load(p)/255\nprint(test(model)/n, acc(a|b), sum(xs)/len(xs))\nEOF"},
          None),
         ("PowerShell", {"command": "$a = @(1,2); (Get-Item data/train.csv).Length; if(!(Test-Path out)){mkdir out}"}, None),
+        # Round 9 (19 November 2026). A tee writes every file that it names, also behind a redirection of its own. The
+        # reading of round 8 ended at the first one, so these passed for a day; before round 8 they were asked about
+        ("Bash", {"command": "tee <<< \"{}\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "tee >/dev/null eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo x | tee 2>/dev/null eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "tee < sub/hello.py eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo x | tee sub/out.txt 2>&1 eval/metrics.py | cat"}, "ask"),
+        ("Bash", {"command": "tee <<< \"{}\" .claude/nn-training.json"}, "ask"),
+        ("Bash", {"command": "echo x | tee >(cat) eval/metrics.py"}, "ask"),
+        ("PowerShell", {"command": "python train.py | tee 2>$null eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "python train.py | sponge eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "python train.py | sponge -a eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "python eval/metrics.py | tee sub/out.txt > /dev/null"}, None),
+        ("Bash", {"command": "python eval/metrics.py | tee < sub/hello.py sub/out.txt 2>> sub/err.log"}, None),
+        ("Bash", {"command": "tee <<< \"{}\" sub/notes.txt; python eval/metrics.py | tee -a sub/out.txt 2>&1 | cat"}, None),
+        ("Bash", {"command": "python eval/metrics.py | sponge sub/out.txt"}, None),
+        # A patch changes the files that it names, and the line shows none of them
+        ("Bash", {"command": "git apply fix.patch"}, "ask"),
+        ("Bash", {"command": "git -C . am < fix.mbox"}, "ask"),
+        ("Bash", {"command": "patch -p1 < fix.patch"}, "ask"),
+        ("Bash", {"command": "git apply --stat --apply fix.patch"}, "ask"),
+        ("Bash", {"command": "bash -c \"git apply fix.patch\""}, "ask"),
+        ("PowerShell", {"command": "Get-Content fix.patch | git apply"}, "ask"),
+        ("Bash", {"command": "git apply --stat fix.patch && git apply --check fix.patch; git stash list"}, None),
+        ("Bash", {"command": "patch -p1 --dry-run < fix.patch; git commit -m \"git apply the fix\" --dry-run"}, None),
+        # An archive may hold a file of any name: asked about where it is unpacked into a folder in which kept or
+        # sealed files lie, which is the project folder too, and a folder above it
+        ("Bash", {"command": "tar -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "tar xzf bundle.tgz -C eval"}, "ask"),
+        ("Bash", {"command": "unzip -o bundle.zip"}, "ask"),
+        ("Bash", {"command": "unzip -q bundle.zip -d .claude"}, "ask"),
+        ("Bash", {"command": "unzip -C bundle.zip 'README*'"}, "ask"),
+        ("Bash", {"command": "tar -xf bundle.tar -C data"}, "ask"),
+        ("Bash", {"command": "tar -xf bundle.tar -C .."}, "ask"),
+        ("Bash", {"command": "cd eval && tar -xf ../bundle.tar"}, "ask"),
+        ("Bash", {"command": "cd sub; tar -tf ../bundle.tar; cd ..; tar -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "env -C eval tar -xf ../bundle.tar"}, "ask"),
+        ("Bash", {"command": "7z x bundle.7z"}, "ask"),
+        ("Bash", {"command": "cpio -id < bundle.cpio"}, "ask"),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath ."}, "ask"),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip eval"}, "ask"),
+        ("Bash", {"command": "python -c \"import tarfile; tarfile.open('bundle.tar').extractall('eval')\""}, "ask"),
+        ("Bash", {"command": "python -c \"import shutil; shutil.unpack_archive('bundle.zip')\""}, "ask"),
+        ("Bash", {"command": "tar -xf bundle.tar -C sub; unzip -q bundle.zip -d sub/raw; 7z x bundle.7z -osub/raw"}, None),
+        ("Bash", {"command": "cd sub && tar -xf ../bundle.tar"}, None),
+        ("Bash", {"command": "cd sub; tar -xf ../bundle.tar; cd ..; tar -tf bundle.tar"}, None),
+        ("Bash", {"command": "env -C sub unzip -o ../bundle.zip; (cd sub && cpio -i -d < ../bundle.cpio)"}, None),
+        ("Bash", {"command": "tar -tf bundle.tar; unzip -l bundle.zip; tar -czf sub/out.tgz sub; 7z l bundle.7z"}, None),
+        ("Bash", {"command": "cpio -it < bundle.cpio; unzip -C bundle.zip 'README*' -d sub"}, None),
+        ("Bash", {"command": "python -c \"import shutil; shutil.unpack_archive('bundle.zip', 'sub/raw')\""}, None),
+        ("Bash", {"command": "python -c \"import pandas as pd; print(pd.Series(['a1']).str.extractall('(a)'))\""}, None),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath sub/raw"}, None),
+        # Programs that write from inside their own text: awk, and the languages whose write calls this guard keeps
+        # no list of, where a call with a word of writing in its name counts
+        ("Bash", {"command": "awk 'BEGIN{print 1 > \"eval/metrics.py\"}'"}, "ask"),
+        ("Bash", {"command": "gawk -i inplace '{print}' eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "node -e \"require('fs').writeFileSync('eval/metrics.py', 'x')\""}, "ask"),
+        ("Bash", {"command": "node -e \"require('child_process').execSync('rm eval/metrics.py')\""}, "ask"),
+        ("Bash", {"command": "perl -e 'open(F, \">eval/metrics.py\"); print F 1'"}, "ask"),
+        ("Bash", {"command": "perl -e 'unlink \"eval/metrics.py\"'"}, "ask"),
+        ("Bash", {"command": "ruby -e 'File.write(\"eval/metrics.py\", \"x\")'"}, "ask"),
+        ("Bash", {"command": "php -r \"file_put_contents('eval/metrics.py', 'x');\""}, "ask"),
+        ("Bash", {"command": "Rscript -e \"write.csv(x, 'eval/metrics.py')\""}, "ask"),
+        ("Bash", {"command": "awk 'NR > 1 {print}' eval/metrics.py; awk '{print $1}' eval/metrics.py"}, None),
+        ("Bash", {"command": "node -e \"console.log(require('fs').readFileSync('eval/metrics.py','utf8'))\""}, None),
+        ("Bash", {"command": "node -e \"console.log(require('./package.json').scripts['save'])\" eval/metrics.py"}, None),
+        ("Bash", {"command": "perl -ne 'print if /saved checkpoint/' eval/metrics.py"}, None),
+        ("Bash", {"command": "ruby -e 'puts File.read(\"eval/metrics.py\")'; php -r \"echo file_get_contents('eval/metrics.py');\""},
+         None),
+        # Python's lower ways to a file, and .NET's streams
+        ("Bash", {"command": "python -c \"import os; os.open('eval/metrics.py', os.O_WRONLY|os.O_TRUNC)\""}, "ask"),
+        ("Bash", {"command": "python -c \"import io; io.FileIO('eval/metrics.py', 'w')\""}, "ask"),
+        ("Bash", {"command": "python -c \"m='w'; open('eval/metrics.py', m).write('x')\""}, "ask"),
+        ("Bash", {"command": "python -c \"import fileinput; [print(l) for l in fileinput.input('eval/metrics.py', inplace=True)]\""},
+         "ask"),
+        ("Bash", {"command": "python -c \"import sqlite3; sqlite3.connect('eval/metrics.py')\""}, "ask"),
+        ("PowerShell", {"command": "[IO.File]::OpenWrite('eval/metrics.py')"}, "ask"),
+        ("PowerShell", {"command": "[IO.StreamWriter]::new('eval/metrics.py')"}, "ask"),
+        ("Bash", {"command": "python -c \"print(open('eval/metrics.py', encoding='utf-8').read())\""}, None),
+        ("PowerShell", {"command": "[IO.File]::OpenRead('eval/metrics.py').Close(); Get-Content eval/metrics.py"}, None),
+        # A command behind env -C <folder> is a command as any other: it stood unseen behind the folder
+        ("Bash", {"command": "env -C sub touch ../eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "env -C sub black ../eval"}, "ask"),
+        ("Bash", {"command": "env -C sub python ../train.py; env -C sub cat ../eval/metrics.py"}, None),
+        # From the re-reading of this change: a > inside a text that awk prints is no redirection, a call that unpacks
+        # under another name counts for the folder it runs in, and git's own files are kept as the others are
+        ("Bash", {"command": "awk '{printf \"%d -> %s\\n\", NR, $0}' eval/metrics.py"}, None),
+        ("Bash", {"command": "awk '{printf \"%s\\n\", $0 > \"eval/metrics.py\"}' train.py"}, "ask"),
+        ("Bash", {"command": "python -c \"import shutil; f = shutil.unpack_archive; f('bundle.zip')\""}, "ask"),
+        ("Bash", {"command": "tar -xf bundle.tar -C .git"}, "ask"),
+        ("Bash", {"command": "unzip -o bundle.zip -d .git/hooks"}, "ask"),
+        # From a fresh reader's reading of this change: an argument that a call gives by its name is no folder, a
+        # folder that a variable names may be any one, an archive printed to the screen writes no file, a folder or a
+        # file with a language's name runs no program, and a write to the screen is none
+        ("Bash", {"command": "python -c \"import shutil; shutil.unpack_archive('bundle.zip', format='zip')\""}, "ask"),
+        ("Bash", {"command": "python -c \"import tarfile; tarfile.open('bundle.tar').extractall(filter='tar')\""}, "ask"),
+        ("Bash", {"command": "tar -xf bundle.tar -C \"$DEST\""}, "ask"),
+        ("Bash", {"command": "unzip -q bundle.zip -d $OUT/raw"}, "ask"),
+        ("Bash", {"command": "cd sub && tar -xf ../bundle.tar -C `pwd`"}, "ask"),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath $dest"}, "ask"),
+        ("Bash", {"command": "tar -xOf bundle.tar config.json; tar -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "tar -xof bundle.tar"}, "ask"),
+        ("Bash", {"command": "nodejs -e \"require('fs').writeFileSync('eval/metrics.py', 'x')\""}, "ask"),
+        ("Bash", {"command": "php8.2 -r \"file_put_contents('eval/metrics.py', 'x');\""}, "ask"),
+        ("Bash", {"command": "printf '%s\\n' x | awk '{print > \"eval/metrics.py\"}'"}, "ask"),
+        ("PowerShell", {"command": "[System.IO.FileStream]::new('eval/metrics.py', 'Create')"}, "ask"),
+        ("PowerShell", {"command": "$w = New-Object IO.StreamWriter 'eval/metrics.py'"}, "ask"),
+        ("PowerShell", {"command": "using namespace System.IO; [StreamWriter]::new('eval/metrics.py')"}, "ask"),
+        ("Bash", {"command": "python -c \"import shutil; shutil.unpack_archive('bundle.zip', extract_dir='sub/raw', format='zip')\""},
+         None),
+        ("Bash", {"command": "tar -xOf bundle.tar config.json; tar xOf bundle.tar config.json; tar -xf bundle.tar --to-stdout"},
+         None),
+        ("Bash", {"command": "7z e -so bundle.7z config.json; cpio -i --to-stdout < bundle.cpio"}, None),
+        ("Bash", {"command": "grep -rn \"writeFile(\" node/ eval/metrics.py"}, None),
+        ("Bash", {"command": "node -e \"process.stdout.write(require('fs').readFileSync('eval/metrics.py', 'utf8'))\""}, None),
+        ("Bash", {"command": "printf 'epoch -> loss\\n' | awk '{print $1}' eval/metrics.py"}, None),
+        ("Bash", {"command": "cat sub/filestream.py eval/metrics.py; grep -c StreamWriter eval/metrics.py"}, None),
+        # A letter that lists or prints is one where it is no part of a folder's name (unzip -deval), and the folder
+        # that a bracket names may be any one
+        ("Bash", {"command": "unzip -o bundle.zip -deval"}, "ask"),
+        ("Bash", {"command": "cpio -i -Dout < bundle.cpio"}, "ask"),
+        ("Bash", {"command": "7z x bundle.7z -o$OUT"}, "ask"),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath (Join-Path $PWD 'sub')"}, "ask"),
+        ("Bash", {"command": "julia-1.10 -e 'write(\"eval/metrics.py\", \"x\")'"}, "ask"),
+        ("Bash", {"command": "lua -e 'io.output(\"eval/metrics.py\"); io.write(\"x\")'"}, "ask"),
+        ("Bash", {"command": "unzip -o bundle.zip -dsub/out; 7z x bundle.7z -osub/out -so"}, None),
+        ("Bash", {"command": "unzip -lv bundle.zip; unzip -qql bundle.zip; unzip -Z1 bundle.zip; unzip -p bundle.zip a.txt"},
+         None),
+        ("Bash", {"command": "cpio -itv < bundle.cpio; cpio -t -F bundle.cpio"}, None),
+        ("Bash", {"command": "tar -O -xf bundle.tar a.txt; tar --to-stdout -xf bundle.tar a.txt; tar.exe -xvOf bundle.tar a.txt"},
+         None),
+        ("Bash", {"command": "ruby -e '$stderr.write \"x\"; STDOUT.write(File.read(\"eval/metrics.py\"))'"}, None),
+        ("Bash", {"command": "ls perl.pl lua-5.4/ eval/metrics.py; grep -c \"writeFile(\" perl/x.pl eval/metrics.py"}, None),
+        ("Bash", {"command": "printf '%s > %s\\n' a b; awk '{print $1}' eval/metrics.py"}, None),
+        # From a second fresh reader's reading of this change: a folder that program text names in quotes is that
+        # folder, a file's ending is no language, a call that makes no file is no write, awk's screen is no file,
+        # PowerShell's option with a colon names its folder, a patch that only checks applies nothing, and 7z takes
+        # its command in capitals too
+        ("Bash", {"command": "python -c \"import tarfile; tarfile.open('bundle.tar').extractall('sub/raw')\""}, None),
+        ("Bash", {"command": "python -c \"import zipfile; zipfile.ZipFile('bundle.zip').extractall(path='sub/raw')\""}, None),
+        # (a search for "unlink(" or "rename(" in a frozen file is asked about as it always was: the shell's own
+        # words of writing count wherever they stand on such a line)
+        ("Bash", {"command": "grep -n \"copy(\" web/index.php eval/metrics.py; "
+                             "grep -c \"file_put_contents(\" --include=*.php eval/metrics.py"}, None),
+        ("Bash", {"command": "node -e \"const c = require('crypto'), f = require('fs'); "
+                             "console.log(c.createHash('sha256').update(f.readFileSync('eval/metrics.py')).digest('hex'))\""}, None),
+        ("Bash", {"command": "awk '{print \"bad row: \" $0 > \"/dev/stderr\"}' eval/metrics.py"}, None),
+        ("Bash", {"command": "awk '{print $1 >> \"/dev/null\"; printf \"%s\\n\", $2 > \"/dev/stderr\"}' eval/metrics.py"}, None),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath:sub/raw"}, None),
+        ("Bash", {"command": "patch -C -p1 < fix.patch; patch --check -p1 < fix.patch; patch -NC -p1 < fix.patch"}, None),
+        # (git am's own two forms that apply nothing ask here for another reason, the run that executes from the
+        # working tree: tests/test_review_fixes.py has that line where no such run is live)
+        ("Bash", {"command": "git apply -h; patch --version"}, None),
+        ("Bash", {"command": "awk '{print > \"/dev/stderr\"; print > \"eval/metrics.py\"}' train.py"}, "ask"),
+        ("Bash", {"command": "node -e \"require('fs').createWriteStream('eval/metrics.py')\""}, "ask"),
+        ("Bash", {"command": "php -r \"copy('web/index.php', 'eval/metrics.py');\""}, "ask"),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath:eval"}, "ask"),
+        ("PowerShell", {"command": "Expand-Archive bundle.zip -DestinationPath:$dest"}, "ask"),
+        ("Bash", {"command": "7z X bundle.7z -oeval"}, "ask"),
+        ("Bash", {"command": "patch -c -p1 < fix.patch"}, "ask"),
+        ("Bash", {"command": "git am --show-current-patch; git am fix.mbox"}, "ask"),
+        # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends
+        # its command as well as at a blank (tar x) and patch<fix.patch), the shell's pipe into awk ends what its
+        # own printf lends awk, and a quoted command behind awk's bar is one whatever stands behind it
+        ("Bash", {"command": "cat bundle.tar | tar x; echo done"}, "ask"),
+        ("Bash", {"command": "(cat bundle.tar | tar x)"}, "ask"),
+        ("Bash", {"command": "tar x<bundle.tar"}, "ask"),
+        ("Bash", {"command": "patch<fix.patch"}, "ask"),
+        ("Bash", {"command": "cat fix.patch | patch; echo done"}, "ask"),
+        ("Bash", {"command": "(cat fix.patch | patch)"}, "ask"),
+        ("Bash", {"command": "awk '{print $1 | \"sort\" }' eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "awk 'BEGIN { print \"echo x > eval/metrics.py\" |& \"sh\" }'"}, "ask"),
+        ("Bash", {"command": "awk '{print (a||b) > \"eval/metrics.py\"}' train.py"}, "ask"),
+        ("Bash", {"command": "awk '{ print gensub(/a|b/, \"x\", \"g\") > \"eval/metrics.py\" }' train.py"}, "ask"),
+        ("Bash", {"command": "tar -xf bundle.tar -O; echo done; tar -xf bundle.tar -O|head -3; (tar -xf bundle.tar -O)"},
+         None),
+        ("Bash", {"command": "7z e bundle.7z -so; echo done; 7z e bundle.7z -so|head -3"}, None),
+        ("Bash", {"command": "printf 'x\\n' | awk '{print $1}' eval/metrics.py 2>&1 | tail -5"}, None),
+        ("Bash", {"command": "printf 'x\\n' | sort | gawk '{print $1}' eval/metrics.py 2>/dev/null"}, None),
     ]
     for tool, ti, want in cases:
         got, why = guard(tool, ti)
         check(got == want, f"guard {tool} {json.dumps(ti)[:70]} -> {got} (want {want})"
               + ("" if got == want else f": {why[:200]}"))
+    # Windows takes no path of more than 32,767 characters: looking such a word up ended the check as an internal error
+    js = "node -e \"" + " ".join(f"console.log({i});" for i in range(3000))
+    got = [guard("Bash", {"command": js + tail + "\""}) for tail in ("", " require('fs').writeFileSync('eval/metrics.py', 'x')")]
+    check([g[0] for g in got] == [None, "ask"] and "internal error" not in got[1][1],
+          f"guard reads a quoted program of {len(js):,} characters to its end: one that only prints passes, and one "
+          f"that writes a frozen file is asked about for that ({[g[0] for g in got]}: {got[0][1][:90]})")
+    got = [guard("Bash", {"command": c}, {"NN_UNATTENDED": "1"})[0] for c in (
+        "git apply fix.patch", "tar -xf bundle.tar", "tee >/dev/null eval/metrics.py", "tar -xf bundle.tar -C sub")]
+    check(got == ["deny", "deny", "deny", None],
+          f"guard, where nobody can be asked: a patch, an archive unpacked into the project and a tee behind its own "
+          f"redirection are refused, and an archive unpacked into a folder of its own passes ({got})")
+    got = [guard("Bash", {"command": c}, cwd=proj / "sub")[0] for c in (
+        "tar -xf ../bundle.tar", "python -c \"import tarfile; tarfile.open('../bundle.tar').extractall()\"",
+        "python -c \"import shutil; shutil.unpack_archive('../bundle.zip', format='zip')\"",
+        "tar -xf ../bundle.tar -C \"$DEST\"", "python -c \"import shutil; f = shutil.unpack_archive; f('../bundle.zip')\"",
+        "python -c \"import os, tarfile; tarfile.open('../bundle.tar').extractall(os.environ['OUT'])\"")]
+    check(got == [None, None, None, "ask", "ask", "ask"],
+          f"guard, from a folder of the project that holds no kept file: an archive unpacked there passes, and one "
+          f"unpacked into a folder that the line does not let it read is asked about, as that may be any folder ({got})")
     why = [guard("Bash", {"command": c})[1] for c in ("grep -rn label .", "grep -rn label data")]
     check("--include" in why[0] and "--include" not in why[1],
           "guard offers a file filter as a way out where the files on disk decided, not where the folder's name did")
@@ -2243,19 +2750,19 @@ def main():
             "nn_guard.LIMIT = 0.5\n"
             "nn_guard.check_path_tool = lambda *a: time.sleep(40)\n"
             "sys.exit(nn_guard.main([]))")
-    t0 = time.time()
+    t0 = time.monotonic()
     r = sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}, inp=json.dumps(
         {"tool_name": "Read", "tool_input": {"file_path": "train.py"}, "cwd": str(proj), "session_id": "t"}))
-    check('"ask"' in r.stdout and "could not finish" in r.stdout and time.time() - t0 < 30,  # was: no answer at all
+    check('"ask"' in r.stdout and "could not finish" in r.stdout and time.monotonic() - t0 < 30,  # was: no answer at all
           f"guard: a check that takes longer than the guard allows itself ends as a question, instead of running "
-          f"into the hook's time limit ({r.stdout[:80]!r} after {time.time() - t0:.0f} s)")
-    t0 = time.time()  # 120 KB. The search for each one's end ran to the text's end: 27 s, and then the timer's answer
+          f"into the hook's time limit ({r.stdout[:80]!r} after {time.monotonic() - t0:.0f} s)")
+    t0 = time.monotonic()  # 120 KB. The search for each one's end ran to the text's end: 27 s, and then the timer's answer
     r = sh([PY, str(proj / ".claude/hooks/nn_guard.py")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}, timeout=300,
            inp=json.dumps({"tool_name": "PowerShell", "cwd": str(proj), "session_id": "t", "tool_input": {
                "command": "echo " + "<#" * 60000 + "\ncp train.py eval/metrics.py"}}))
     check('"ask"' in r.stdout and "frozen" in r.stdout and "could not finish" not in r.stdout,
           f"guard: a long line with many <# that nothing closes is read within the guard's own time, and what stands "
-          f"behind them is asked about for what it does ({r.stdout[:80]!r} after {time.time() - t0:.0f} s)")
+          f"behind them is asked about for what it does ({r.stdout[:80]!r} after {time.monotonic() - t0:.0f} s)")
     # 31 KB. With a piece for every escaped quote, every run of pieces was looked up as a path: the timer's answer
     got = guard("Bash", {"command": "curl -s -d \"{" + ",".join("\\\"k%d\\\":\\\"v\\\"" % i for i in range(2000))
                                     + "}\" http://localhost:1/x"})
@@ -2414,6 +2921,8 @@ def main():
     check(sorted(p.returncode for p in ps) == [0, 2] and len(ran) == 1 and "single-use" in "".join(said),
           f"final-eval: of two started at the same moment one runs and the other gives way ({[p.returncode for p in ps]}, "
           f"{sum(x['event'] == 'start' for x in rr)} start rows, {len(ran)} ran)")
+
+    compare_tests(tmp, proj)
 
     # cleanup live runs
     for x in (active, live):

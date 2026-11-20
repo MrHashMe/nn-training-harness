@@ -20,7 +20,8 @@ In this skill, `expctl` means `python3 .claude/skills/nn-training/scripts/expctl
 | What is running / finished / failed, best runs, alerts, GPUs, disk, Optuna studies | `expctl status --brief` (JSON without `--brief`; one run: `--run <id>`) |
 | Start a run (detached, logged, provenance, immutable source snapshot) | `expctl launch --name <n> --note "<hypothesis>" [--seed S] [--gpus 0] [--deadline 6h] [--via tmux] -- <cmd...>` |
 | Wait for runs without burning context | `expctl watch <run|all> --until terminal --max-time 25m` (one JSON line per event); in Claude Code through the Monitor tool (`timeout_ms` 1800000) |
-| Learning curves | `expctl curve <run> --keys train/loss,val/acc --points 40` (downsampled + trend) |
+| Learning curves | `expctl curve <run> --keys train/loss,val/acc --points 40` (downsampled + trend; `findings` names what the whole curve shows of the common faults, each with its numbers: a sign to check, not a diagnosis) |
+| Is the change better than the baseline, or is it noise? | `expctl compare --a <baseline runs> --b <changed runs>` (run ids, `name=<launch name>` or `<tag>=<value>`; the difference with its interval, a verdict, the differences by seed, the seeds a difference would take; `--tried N` after picking among N variants; reads only) — `references/uncertainty.md` section 2 |
 | Stop gracefully (only with the user's OK) | `expctl stop <run> --wait 5m` → RunLog turns SIGTERM into "checkpoint and exit" |
 | Continue an ended run from its checkpoint (a new run that names its parent) | `expctl resume <run>` → the script loads from `rl.resume_from` (`references/resume.md`) |
 | Final evaluation on the sealed test split: once, with a receipt (only with the user's OK) | `expctl final-eval [-- ARGS]` (Phase 5) |
@@ -113,7 +114,7 @@ task with the web tools you have, and write dated, cited notes under `experiment
 hypotheses to test, never defaults; the step installs and runs nothing. Without web tools, skip it and say so in
 the journal. Then: one falsifiable hypothesis per change, ranked by expected gain × probability ÷ cost.
 For each: scoped change (one idea per commit), smoke check, bounded pilot, comparison at the declared budget against
-the paired baseline, decision (retain / revise / revert), journal entry. Use numerical search only for parameterised
+the paired baseline (`expctl compare`), decision (retain / revise / revert), journal entry. Use numerical search only for parameterised
 nuisance choices (`references/hpo.md`); never hand-pick trial values. Prefer simpler changes at equal results.
 Profile before any performance change (`references/performance.md`).
 *Gate 4.0:* the journal links the scouting notes, or says why the step was skipped.

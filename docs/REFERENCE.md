@@ -33,7 +33,7 @@ earlier install used). After the install:
 | Path in your repo | Purpose |
 |---|---|
 | `.claude/skills/nn-training/SKILL.md` + `references/` | The operating procedure (phases and gates) and 15 dated on-demand references: validity, data, evaluation, uncertainty, HPO, optimization, performance, resume, fine-tuning, LLM practice, operations, stack, scouting, loop, remote |
-| `.claude/skills/nn-training/scripts/expctl.py` | Run controller: `status`, `launch`, `watch`, `curve`, `stop`, `resume`, `final-eval`, `audit-splits`, `hash`, `env`, `selftest` |
+| `.claude/skills/nn-training/scripts/expctl.py` | Run controller: `status`, `launch`, `watch`, `curve`, `compare`, `stop`, `resume`, `final-eval`, `audit-splits`, `hash`, `env`, `selftest` |
 | `.claude/skills/nn-training/scripts/runlog.py` | Run-side logger for your training code (heartbeat, metrics, checkpoints, graceful stop, resume, HF/Lightning/Optuna helpers). Vendor a copy, as the skill does, or import it from there with the path built from `$EXP_PROJECT_ROOT`: a launched run works from a snapshot of the source that has no `.claude` |
 | `.claude/skills/nn-training/scripts/nnloop.py`, `nnremote.py` | Optional modules: the unattended research loop and remote GPUs (below). Inactive until you configure them |
 | `.claude/hooks/nn_guard.py` | The guard for all three agents (deny/ask), audit log in `.claude/state/guard.log` |
@@ -177,7 +177,8 @@ E="python3 .claude/skills/nn-training/scripts/expctl.py"
 $E status --brief                                   # what is running, best runs, alerts
 $E launch --name lr3e-4 --seed 1 --note "hypothesis" -- python train.py --lr 3e-4 --seed 1
 $E watch <run> --until terminal                     # event stream until it finishes
-$E curve <run> --keys train/loss,val/acc
+$E curve <run> --keys train/loss,val/acc            # the series, and under "findings" what the whole curve shows
+$E compare --a variant=base --b variant=wide        # is b better than a, or is it noise: difference, interval, verdict
 $E stop <run> --wait 5m                             # graceful: checkpoint, then exit
 $E resume <run>                                     # a new run from the old run's checkpoint
 $E final-eval -- --ckpt runs/<run>/ckpt/best.pt     # once, with a receipt and a journal entry
@@ -397,6 +398,45 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   alone and now carries the file's or the folder's reason beside it, so that the loop does not count its
   refusal as routine. Both rules read the `-f` wherever it stands among the options, and written out
   (`git clean -d -f`, `git clean --force`, which passed unasked before).
+  Since 19 November 2026 two more kinds are asked about, each with a reason of its own that the loop counts as
+  routine as well. A line that unpacks an archive into a folder in which a frozen or harness file, sealed data
+  or git's own files lie, because an archive may hold a file of any name: `tar -xf x.tar` and `unzip x.zip` in
+  the project folder, `unzip x.zip -d eval`, `7z x`, `cpio -i`, `Expand-Archive`, and Python's `extractall` and
+  `shutil.unpack_archive` in code on the line; a folder that a variable or a command's output names counts as
+  any folder. Unpacked into a folder of its own (`tar -xf x.tar -C raw`, `unzip x.zip -d raw`) it passes, and
+  so does a line that only lists or prints (`tar -tf`, `tar -xOf`, `unzip -l`, `unzip -p`, `7z l`, `7z x -so`).
+  And a line that applies a patch (`git apply`, `git am`, `patch`), whatever the patch names, because the
+  guard reads the command and not the patch; `git apply --check`, `--stat`, `--numstat` and `--summary`,
+  `patch --dry-run` (BSD's `-C` and `--check`), `git am --show-current-patch` and a call for help or the
+  version pass. A word of these two rules ends at a blank or at the sign that ends its command
+  (`(cat x.tar | tar x)`, `patch<fix.patch`, `tar -xf x.tar -O; echo done`), so a label `patch)` at the start
+  of a line of a shell's `case` is asked about as the command.
+  The same day the list of writes grew by program text in languages whose write calls the guard
+  keeps no list of (`node -e`, `deno`, `bun`, `perl -e`, `ruby -e`, `php -r`, `lua -e`, `Rscript -e`,
+  `julia -e`) and in awk: on a line that runs one, a call whose name holds a word of writing
+  (`writeFileSync(`, `unlink(`, `file_put_contents(`, `write.csv(`), a call that starts a command (`system(`,
+  `execSync(`), a file opened to be written, and awk's `print > "file"`, `print | "cmd"` and `system(` count
+  as a write (a command that a variable holds, `print | cmd`, is not read); and in Python by `os.open(`,
+  `FileIO(`, a mode that the text gives by a name (`open(f, mode)`), `fileinput` in place and the two calls
+  that unpack; in PowerShell by .NET's streams where a type is written (`[IO.StreamWriter]`,
+  `New-Object IO.FileStream`) and by `::Open(` and `::OpenWrite(`, while `::OpenRead(` and `::OpenText(`
+  read; and by `gawk -i inplace`. `sponge` names its file as `tee` does and is read as one.
+  `sqlite3.connect` in Python code is asked about in the main session where the line names such a file; a
+  read-only subagent may open a database, as it reads a study's. A write to the screen is none
+  (`process.stdout.write(`, awk's `print > "/dev/stderr"`), nor are node's `createHash(` and
+  `createReadStream(`. The guard reads the word and not the language, so some lines that only read are asked
+  about where they name such a file, and refused to a read-only subagent: a regular expression's `.exec(` in
+  node, a stream given as an argument (PHP's `fwrite(STDERR, …)`, julia's `write(stdout, x)`),
+  `Object.create(null)`, perl's `delete $h{k}`, awk's `print (a || "x")`. The shell's own `printf` in front of
+  a pipe into awk is no print of awk's (`printf 'x\n' | awk '{print $1}' f 2>&1 | tail -5`); with a redirection
+  of its own in front of that pipe, or with another word between the pipe and awk (`| LC_ALL=C awk`,
+  `| busybox awk`), it is still read as one.
+  A `tee` is read past its own redirections: `tee >/dev/null eval/metrics.py` and
+  `tee <<< "{}" eval/metrics.py` passed unasked from 15 November 2026, when a `tee`'s files were first read one
+  by one, until that day, because the reading ended at the first redirection. And a program
+  that counts where a command starts (`touch`, `patch`, `install`, a formatter, a program that unpacks) is seen
+  behind `env -C <folder>` too, as running in that folder: `env -C sub touch ../eval/metrics.py` and
+  `env -C sub black ../eval` passed unasked before. What the command behind it reads was followed already.
   Text that runs counts wherever it stands: the text behind a code flag, also where the flag stands in a group
   of letters, is cut short or has options behind it (`sh -ce '…'`, `bash -c -- '…'`, `bash -c -o pipefail '…'`,
   `powershell -com "…"`), every word of an `eval`, the text of a `trap`, a command inside `$(…)` or backticks
@@ -410,8 +450,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   here-document that no program runs (`git commit -m "$(cat <<'EOF' … EOF)"`) stays unread.
   Limits. Not seen as a write of a frozen file: a git command that replaces the working tree as a whole
   (`git stash`, a change of branch, `pull`, `merge`, `rebase`; `git reset --hard` is asked about as destructive,
-  and a change of branch while a run executes from the working tree); an archive unpacked over the file
-  (`tar x`, `unzip`); `git apply`; a download that names only its address (`curl -O`, `wget URL`); a formatter
+  and a change of branch while a run executes from the working tree); the files that an archive or a patch
+  holds (since 19 November 2026 the line that unpacks or applies one is asked about, see above, but which file
+  it would write the guard cannot say); a download that names only its address (`curl -O`, `wget URL`); a formatter
   the guard does not know (`autopep8 -i`, `yapf -i`, `prettier --write`); a `git clean` without `-f` in a
   repository whose `clean.requireForce` is switched off; a `cd` that `CDPATH` sends to another folder than the
   one below the session's; a `cd` with no folder that stands where the guard knows no command to start

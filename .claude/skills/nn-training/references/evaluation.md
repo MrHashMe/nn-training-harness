@@ -16,7 +16,8 @@ Tags: (I) inferred during the research for this file, (U) unverified. Untagged c
 With 3 pairs the smallest exact one-sided p is 0.125; 4 pairs give 0.0625, 5 pairs 0.031 (I, hand-computed).
 - Decision by code. When: any keep or revert from seed pairs. How: code, not your prose, prints KEEP, REVERT or
   INCONCLUSIVE from per-seed paired differences, a margin and error level declared before the runs, and logs its
-  inputs (in a campaign `nnloop` decides this way: `loop.md`).
+  inputs (in a campaign `nnloop` decides this way: `loop.md`; by hand `expctl compare` gives the difference, its
+  interval and both p values from the runs' records: `uncertainty.md` section 2).
   Risk: wrong statistics get trusted blindly, so test the code on known vectors. Agents often misread statistics.
   (source: https://arxiv.org/html/2611.06607, 4 Nov 2026; single author)
 - Exact sign-flip test plus t table. How: enumerate all 2^n sign flips; the t-test can pass at 3 pairs only if t > 2.92

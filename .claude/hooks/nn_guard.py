@@ -111,11 +111,18 @@ VERBS = re.compile(
     r"|" + _GIT_BACK + r"|" + _GIT_CLEAN + r"|\b(?i:find)\b[^;&|]*?\s-delete\b|open\([^)]*['\"][wax+]|write_text|"
     r"write_bytes|"
     r"shutil\.(?:rmtree|move|copy)|os\.(?:remove|unlink|rename|replace)")
-WRITE_VERBS = re.compile(_REDIRECT + r"|\b(?i:tee)\b|" + VERBS.pattern)
+WRITE_VERBS = re.compile(_REDIRECT + r"|\b(?i:tee|sponge)\b|" + VERBS.pattern)
 # A redirection and a tee that starts a command name the file they write: > f, 2>> f, &> f, >| f, | tee -a f g.
-# The third group is a tee that stands elsewhere (sudo -D eval tee f): what it writes this does not read
+# The third group is a tee that stands elsewhere (sudo -D eval tee f): what it writes this does not read. moreutils'
+# sponge names its file as tee does (| sponge -a f), and is read as one
+_TEE = r"(?i:tee|sponge)"
 SAVES = re.compile(r"(?:" + _REDIRECT + r")\|?[ \t]*([^\s;&|<>()]*)|"
-                   r"(?:^|[;&|(])[ \t]*(?i:tee)(?:\.exe)?((?:[ \t]+[^\s;&|<>()]+)*)(?![^\s;&|<>()])|\b(?i:tee)\b()", re.M)
+                   r"(?:^|[;&|(])[ \t]*" + _TEE + r"(?:\.exe)?((?:[ \t]+[^\s;&|<>()]+)*)(?![^\s;&|<>()])|\b" + _TEE
+                   + r"\b()", re.M)
+# What follows a tee's first words on its command: a blank, a redirection with its target (< f, <<< "text",
+# 2>/dev/null, >&2), or a further word, which is a file that the tee writes as well (tee >/dev/null f, tee <<< "{}" f).
+# Until 19 November 2026 the reading of a tee ended at its first redirection, and the files behind it passed unseen
+TEE_REST = re.compile(r"[ \t]+|\d*(?:<<<|<>|>\||&>>?|[<>]{1,2}&?)[ \t]*[^\s;&|<>()]*|([^\s;&|<>()]+)")
 KILL = re.compile(
     r"(?:^|[\s;&|(`])(?:sudo\s+)?(?:kill|pkill|killall|taskkill)\b|Stop-Process|"
     r"tmux\s+kill-(?:session|server|window|pane)|tmux\s+send-keys\b[^;&|]{0,200}?\bC-[cd]\b|"
@@ -233,13 +240,61 @@ PY_WRITES = re.compile(  # open() counts with a complete write mode ('w', "ab", 
     r"shutil\.(?:rmtree|move|copy)|"
     r"os\.(?:remove|unlink|rename|replace|makedirs|mkdir|truncate|link|symlink)|"
     r"\.(?:(?:rename|replace)\((?![^()]*,)|(?:touch|symlink_to|hardlink_to|link_to)\()(?![\"']?(?:\s|$))|"
-    r"\.to_(?:csv|parquet|json)\(|torch\.save|np\.save|\.savefig\(")
+    r"\.to_(?:csv|parquet|json)\(|torch\.save|np\.save|\.savefig\(|"
+    # since 19 November 2026: a file opened below the built-in open(), a mode that the text gives by a name
+    # (open(f, m)), fileinput's edit in place, and an archive that the standard library unpacks
+    r"os\.open\(|\bFileIO\(|open\([^(),]*,\s*(?:mode\s*=\s*)?(?!['\"\d])[A-Za-z_][\w.]*\s*[,)]|"
+    r"\bfileinput\b[^;\n]*?\binplace\b|(?<!\.str)\.extractall\(|unpack_archive")
+# the call with which program text unpacks an archive, and its arguments where they hold no call of their own
+# (pandas has a .str.extractall of its own)
+PY_UNPACK = re.compile(r"((?<!\.str)\.extractall|unpack_archive)(?:\(([^()]*)\))?")
+# A database file is written by what is done with it after this call. The main session is asked where the line names
+# a kept file; a read-only agent may open one, as it reads a study's database
+PY_OPENS = re.compile(r"sqlite3\.connect")
+# Program text in a language whose write calls this guard keeps no list of (node -e, perl -e, ruby -e, php -r): on a
+# line that runs one, a call whose name has a word of writing in it counts as a write verb (fs.writeFileSync(...),
+# File.write "f", unlink $f, file_put_contents(...), FileUtils.rm_rf(...), write.csv(...)), and so do a call that
+# starts a command (system "...", execSync(...)) and a file opened to be written (perl's open(F, ">f"), a mode
+# given as , 'w' or = "a+"). The word alone is none (perl -ne 'print if /saved/' reads), and neither is one that
+# ends a quoted text (scripts['save']), a write to the screen as a call on its stream (process.stdout.write(...),
+# $stderr.write "x"), or node's createHash(, createHmac(, createInterface(, createRequire( and createReadStream(,
+# which make no file. Two that read stay refused: a stream given as an argument (PHP's fwrite(STDERR, ...), julia's
+# write(stdout, x)), which a variable of that name could be as well, and a regular expression's .exec( in node,
+# which in perl and PHP, where a dot joins two texts, is the call that starts a command.
+# The language's name is the program's: with a version (lua5.4, julia-1.10, nodejs) or .exe, not a folder or a file
+# of that name (grep -rn "writeFile(" node/, perl.pl), nor a file's ending (web/index.php, --include=*.php). A word
+# of its own does count, whatever it is there (grep -v node).
+# The name that a word of writing stands in is read to its end once and not given back letter by letter: a call's
+# bracket, blank or quote can only follow the whole name
+_CALL = r"(?:\s*\(|\s+[\"'$@])"
+LANG = re.compile(r"(?<![.*])\b(?:node(?:js)?|deno|bun|perl|ruby|php|lua(?:jit)?|Rscript|julia)(?:-?\d[\d.]*)?(?:\.exe)?"
+                  r"(?![\w./\\:-])", re.I)
+LANG_WRITES = re.compile(
+    r"(?<!(?i:std(?:out|err))\.)(?i:write|append|delet|link|remov|renam|truncat|cop[yi]|mov[ei]|mk(?:dir|path|dtemp)|"
+    r"creat(?!e(?:Read|Hash|Hmac|Interface|Require))|save|chmod|chown|touch|put_contents)(?=([\w.]*))\1" + _CALL +
+    r"|(?<![a-zA-Z])(?:rm|mv|cp|ln)(?:Sync|dir|_\w+)?" + _CALL +
+    r"|\b(?:exec\w*|spawn\w*|system|popen|shell_exec|passthru)" + _CALL +
+    r"|\bopen\b[^;\n]*?['\"]\s*(?:\+?>|\+<)|[,=:]\s*['\"][wax]\+?b?t?['\"]|\bsink\s*\(")
+# awk writes by a redirection inside its program (print > "f"), into a command it starts (print | "cmd",
+# system(...)), and gawk in place. A comparison stands in front of the print, not behind it ($3 > 5 {print}), and a
+# > inside a text that it prints is none (printf "%d -> %s\n", NR, $0), nor one inside the text that the shell's
+# own printf is given in front of the pipe (printf 'epoch -> loss\n' | awk '{print $1}'). The shell's pipe into awk
+# ends a statement as well, so that a printf in front of it does not lend awk the redirections behind its program
+# (printf 'x\n' | awk '{print $1}' f 2>&1 | tail -5). The screen and the void
+# are no files: print "bad row" > "/dev/stderr", where that name is the whole target and ends the statement
+AWK = re.compile(r"\b[gmn]?awk\b", re.I)
+AWK_WRITES = re.compile(r"\bprintf?\b(?:[^;}|\n\"']|\|(?!\s*[^\s;&|]*awk\b)|\"[^\"\n]*\"|'[^'\n]*')*?"
+                        r"(?:>(?!>?\s*\"/dev/(?:stderr|stdout|null|tty)\"\s*(?:[;}\n']|$))|\|&?\s*[\"'])|\bsystem\s*\(|"
+                        r"\s-i\s*inplace\b|--include[= ]inplace\b")
 # PowerShell and cmd.exe forms of the write, delete and kill rules. Case is ignored; the short aliases count only
 # where a command starts (line start, after ; & | ( {, or after cmd's /c).
 _AT = r"(?:^|[;&|({`]|\s/[ck]\s)\s*"
 PS_WRITE = re.compile(
     r"\b(?:(?:Set|Add|Clear)-Content|Out-File|Tee-Object|(?:Copy|Move|Remove|New|Rename|Set|Clear)-Item(?:Property)?|"
     r"Export-(?:Csv|Clixml)|Expand-Archive|xcopy|robocopy)\b|::(?:Write|Append|Delete|Move|Copy|Create|Replace)\w*\(|"
+    # .NET's streams, as a type is written ([IO.StreamWriter], [FileStream], New-Object IO.FileStream), not as a
+    # file's name (src/io/filestream.py); ::OpenRead( and ::OpenText( read
+    r"::Open(?:Write)?\(|(?:\bIO\.|\[|\bNew-Object\s+)(?:(?:Stream|Binary)Writer|FileStream)\b|"
     r"\.(?:Delete|MoveTo|CopyTo)\(|"  # a file object's own calls: (Get-Item f).Delete()
     + _AT + r"(?:sc|ac|clc|ri|del|erase|rd|copy|move|ren|rename|cpi|mi|ni|rni)\b", re.I | re.M)
 PS_DELETE = re.compile(r"\b(?:Remove-Item|Clear-Content)\b|::Delete\(|" + _AT + r"(?:ri|del|erase|rd|rmdir|clc)\b",
@@ -301,6 +356,7 @@ GAP = re.compile(r"[\s()\[\]]*([/,+])[\s()\[\]]*(?:[A-Za-z_][\w.]*\()?\s*|\s*") 
 JOINER = re.compile(r"(?:\bjoin|joinpath|Path|Combine)\s*\([^()\n;]{0,80}$")
 WORDS = re.compile(r"[^\s\x00-\x1f'\"`()\[\]{},;=<>|]+")
 WALK, WALK_S = 20000, 5  # files a walk looks at for sure, and the seconds a hook call may spend on the files beyond
+# (these seconds, like LIMIT's, are counted on the clock that is never set: until 19 November 2026 on the system's)
 GLOB = 200  # matches of a wildcard that are looked up one by one; each one behind them costs a look at its folder
 # a change of folder: where a command starts (after blanks too): behind a separator, the ) of a case pattern, a
 # shell keyword, a wrapper such as `time` or zsh's noglob, an assignment (X=1 cd data) or a redirection that stands
@@ -323,8 +379,9 @@ ENV_C = re.compile(r"(\benv(?:\s+(?:-u\s+\S+|-[^C\s]\S*|[A-Za-z_]\w*=\S*))*)\s+(
 FIND_END = re.compile(r"(\s-(?:exec|execdir|ok|okdir)\s(?:[^;&|\n'\"]|'[^']*'|\"[^\"]*\")*?\s)(?:/;|';'|\";\")")
 # what may stand between the start of a command (or of a $(...) in it) and the tool that it runs
 _WRAP = "sudo|time|timeout|nice|command|exec|env|nohup|setsid|caffeinate|if|then|else|elif|while|until|do|!"
-# a wrapper's options, of which some take a value (conda run -n ml, uv run --with black, sudo -u me, xargs -I {})
-_LEAD = (r"\s*(?:(?:(?:%s)(?:\s+(?:-[npuI]|--(?:name|prefix|with|from|python|project|directory))\s+[^\s;&|]+|"
+# a wrapper's options, of which some take a value (conda run -n ml, uv run --with black, sudo -u me, xargs -I {},
+# and since 19 November 2026 env -C <folder>: a program that counts where a command starts stood unseen behind it)
+_LEAD = (r"\s*(?:(?:(?:%s)(?:\s+(?:-[npuIC]|--(?:name|prefix|with|from|python|project|directory|chdir|cd))\s+[^\s;&|]+|"
          r"\s+-\S+|\s+\d\S*)*|[A-Za-z_]\w*=\s?\S*)\s+)*")
 COMMAND_START = re.compile(r"(?:^|.*[({`])" + _LEAD % _WRAP + r"(?:\S*/)?$", re.S)
 # a command word in quotes ("grep" -r x ., $'grep', behind xargs too) is the same command. Not one with a blank in
@@ -367,9 +424,39 @@ PIPED = re.compile(r"(?<!\|)\|" + _LEADS + r"(?:" + _W1 + r"*/)?(?:" + _RUNNER +
 SPLICES_NOTES = re.compile(
     _GO + r"(?:(?:eval|iex|Invoke-Expression)(?![\w.-])[^;&>\n]*?|" + _RUNNER + _DASH
     + r"[ \t]*(?:[<=]\(|\"[^\"\n]*?(?:\$\(|`)|'?(?:\$\(|`)|\()[^)`\n]*?)(?<!" + _W1 + ")" + _NOTE, re.I | re.M)
+# Where a word ends: at a space, at the line's end, or at a sign that ends a command or opens a redirection (tar x;
+# patch<fix.patch). Not at "(": patch(x) is a call in program text, and install() { a function of the shell
+_WEND = r"(?=[\s;&|)<>]|$)"
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
 # formatters, which rewrite a file unless they are told to check only, to print, or to say what they are
-WRITE_CMDS = re.compile(_GO + r"(?i:touch|patch|install)(?=\s|$)", re.M)
+WRITE_CMDS = re.compile(_GO + r"(?i:touch|patch|install)" + _WEND, re.M)
+# A patch changes the files that it names, and the line shows none of them: git apply unless it only checks or
+# describes the patch (--apply behind such an option applies it after all, and git takes --ap for it, so any
+# option that starts with --a counts as that one), git am unless it shows the patch it stopped at, and patch unless
+# it is a dry run: --dry-run, and BSD's -C and --check (also in a group behind letters that take no value: -NC),
+# which GNU patch does not know and stops at (tried on 19 November 2026, GNU patch 2.7.6). One that is asked for
+# its help or its version applies nothing either (git's -h ends it wherever it stands, tried with git 2.52)
+PATCHES = re.compile(
+    r"\bgit\s+(?:am\b(?![^;&|\n]*?\s(?:--show-current-patch\b|--help\b|-h(?=[\s;&|)]|$)))|"
+    r"apply\b(?:(?=[^;&|\n]*?\s--a)|(?![^;&|\n]*?\s(?:--(?:check|stat|numstat|summary|help)\b|-h(?=[\s;&|)]|$)))))|"
+    + _GO + r"(?i:patch)(?:\.exe)?" + _WEND +
+    r"(?![^;&|\n]*?\s(?:--(?:dry-run|check|help|version)\b|-[bcEeflNnRstuv]*C\S*))", re.M)
+# An archive may hold a file of any name, and unpacked into a folder it writes that file below it: tar with -x (as
+# its first word of letters too: tar xzf), unzip unless it lists, tests or prints, 7z x and e, cpio -i unless it
+# lists (-it), PowerShell's Expand-Archive. A program's name counts in any case, its options as they are written
+# (tar's -X is another one), but for 7z's command, which it takes in either case (7z X).
+# One that prints what it unpacks writes no file: tar's -O and --to-stdout (tar -xOf
+# a.tar config.json), cpio's --to-stdout, 7z's -so. A letter that lists or prints counts where no letter that
+# takes a value stands in front of it in its group: in unzip -deval and tar -COUT the letters are a folder's name
+_TO_OUT = (r"(?![^;&|\n]*?\s(?:--to-stdout\b|-[xvzjJkmpPaU]*O[a-zA-Z]*" + _WEND + r"))"
+           r"(?!\s+[xvzjJkmpPaU]*O[a-zA-Z]*" + _WEND + ")")
+EXTRACT = re.compile(
+    _GO + r"(?:(?i:(?:bsd|g)?tar)(?:\.exe)?(?=\s)" + _TO_OUT + r"(?:\s+[a-zA-Z]*x[a-zA-Z]*" + _WEND + "|"
+    r"(?=[^;&|\n]*?\s(?:-[a-zA-Z]*x|--extract\b|--get\b)))"
+    r"|(?i:unzip)(?:\.exe)?(?=\s)(?![^;&|\n]*?\s-[a-ce-zA-OQ-Z]*[lptvZzc])"
+    r"|(?i:7z[arz]?)(?:\.exe)?\s+[xeXE](?=\s)(?![^;&|\n]*?\s-so" + _WEND + r")|(?i:Expand-Archive)\b"
+    r"|(?i:cpio)\b(?=[^;&|\n]*?\s(?:-[a-zA-Z]*i|--extract\b))"
+    r"(?![^;&|\n]*?\s(?:-[a-zABLSV]*t|--list\b|--to-stdout\b)))", re.M)
 _NO_WRITE = r"(?![^;&|\n]*\s(?:--(?:check(?:-only)?|diff|version|help)|(?-i:-[cdhV]))(?=[\s;&|)]|$))"
 FORMATS = re.compile(_GO + r"(?:(?:(?:black|isort)(?:@[\w.]+)?|ruff(?:@[\w.]+)?\s+format)(?=\s|$)" + _NO_WRITE +
                      r"|ruff(?:@[\w.]+)?(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)"
@@ -916,7 +1003,7 @@ def reaches_sealed(ctx, base, globs=(), typ=None, skips_ignored=False, cwd=None)
         # passed.) Searching a named folder that holds no sealed file needs no walk.
         whole = [p for p in pats if not re.search(r"[*?\[]", re.sub(r"/\*\*$", "", norm_pattern(p)))]
         for n, f in enumerate(walk(top)):
-            if n >= WALK and time.time() >= ctx.t0 + WALK_S:
+            if n >= WALK and time.monotonic() >= ctx.t0 + WALK_S:
                 return (whole or pats)[0]
             rel = ctx.canon((f.relative_to(root) if under(f, root) else s.relative_to(root) / f.relative_to(sr)
                              if under(f, sr) and under(s, root) else f).as_posix())
@@ -1290,6 +1377,44 @@ def out_words(lx):
         + [m.group(1) for m in map(OUT_JOINED.match, lx) if m]
 
 
+def unpacks(seg):
+    """The folders into which the words of one command may unpack an archive, [] where they unpack none: the word
+    behind tar's -C or --directory (also -Craw, --directory=raw), behind unzip's -d (-draw) and behind PowerShell's
+    -DestinationPath (also -DestinationPath:raw), and 7z's -o<folder>. Each program's own option only: unzip's -C
+    and cpio's -d name no folder.
+    Where the command names none in these forms, the folder that it runs in and each of its words, of which one may
+    be the folder (Expand-Archive x.zip raw, tar -xzC raw). None stands for a folder that a variable, a command's
+    output or a bracket names (tar -C "$DEST", -DestinationPath (Join-Path $x raw)), which may be any one."""
+    if not EXTRACT.search(" ".join(seg)):
+        return []
+
+    def prog(rx):
+        return any(re.fullmatch(rx + r"(?:\.exe)?", t.rsplit("/", 1)[-1], re.I) for t in seg)
+    tar, zp = prog(r"(?:bsd|g)?tar"), prog("unzip")
+    opt = r"-C|--directory|--cd" if tar else "-d" if zp else r"(?i:-dest\w*)"
+    glued = r"--directory=|-C(?=.)" if tar else "-d(?=.)" if zp else "-o(?=.)" if prog("7z[arz]?") else r"(?i:-dest\w*:)"
+    to = [b for a, b in zip(seg, seg[1:]) if re.fullmatch(opt, a)]
+    to += [m.group(1) for m in (re.match(r"(?:" + glued + r")(.+)", t) for t in seg) if m]
+    return [None if re.search(r"[$`(]", t) else t for t in to] or ["."] + [t for t in seg if t[:1] != "-"]
+
+
+def py_unpacks(c: str):
+    """The folders into which program text unpacks an archive: extractall's first argument or path=, and
+    unpack_archive's second or extract_dir=, where that is one word in quotes, and "." (the folder that the program
+    runs in) where the call names none. Another argument given by its name is no folder (format='zip',
+    filter='data'). None stands for a folder that this does not read (a variable, a joined path, a call, or the
+    function under another name), which may be any one, as in unpacks()."""
+    out = []
+    for m in PY_UNPACK.finditer(c):
+        args = [a.strip() for a in (m.group(2) or "").split(",")]
+        at = m.group(1) == "unpack_archive"  # its first argument is the archive
+        named = [a for a in args if re.match(r"(?:path|extract_dir)\s*=", a)]
+        dest = (named or [a for a in args if not re.match(r"\w+\s*=(?!=)", a)][at:at + 1] or [""])[0]
+        lit = re.fullmatch(r"(?:\w+\s*=\s*)?[rRuU]?(['\"])([^'\"]+)\1", dest)
+        out.append(lit.group(2) if lit else None if dest or m.group(2) is None else ".")
+    return out
+
+
 def saves(cmd: str, c: str):
     """The files that a line writes by its redirections and by tee, where each one names its file in plain letters.
     None where the line cannot be read so: a variable, a command's output, a backslash or a ~ stands in it (each
@@ -1299,7 +1424,9 @@ def saves(cmd: str, c: str):
     goes home or to the folder before, where a command starts, so that an argument named sl is none), or it may go
     where CD does not follow it: what CD takes for the folder is an option that it does not know (zsh's cd -q data),
     or a cd with a word behind it stands where CD finds none (time -p cd .., and the same words as arguments). Also
-    None where a target is missing or is a pattern, or a tee stands where no command starts."""
+    None where a target is missing or is a pattern, or a tee stands where no command starts. A tee's files are read
+    to the end of its command, past the redirections that stand among them (tee >/dev/null f, tee <<< "{}" f); a
+    descriptor's digit in front of one counts as a file of that name, which adds a name and hides none."""
     if re.search(r"[$`\\~]|(?<!<)<<(?!<)", cmd) or re.search(
             r"(?:^|[\s;&|({])(?:popd|Pop-Location|" + _CD_WORD + r"\s+[-+]\d*)(?=[\s;&|)}]|$)|" + _CD_AT
             + _CD_WORD + r"(?:[ \t]+-[^\s;&|)}<>:]*)*(?=[ \t]*(?:[;&|)}<>]|\d+[<>]|$))", c, re.I | re.M) \
@@ -1311,7 +1438,16 @@ def saves(cmd: str, c: str):
     for m in SAVES.finditer(masked):
         if m.group(3) is not None:
             return None
-        for w in [m.group(1)] if m.group(2) is None else [w for w in m.group(2).split() if w[:1] != "-"]:
+        ws, at = ([m.group(1)], len(masked)) if m.group(2) is None else (m.group(2).split(), m.end())
+        while at < len(masked):  # a tee's words go on behind a redirection of its own, to the end of its command
+            x = TEE_REST.match(masked, at)
+            if not x:
+                if masked[at] not in ";&|)\r\n":  # <(...) and >(...): what stands behind them is not read
+                    return None
+                break
+            ws += [x.group(1)] * bool(x.group(1))  # in place: a copy for each word took a long line's square
+            at = x.end()
+        for w in ws if m.group(2) is None else [w for w in ws if w[:1] != "-"]:
             w = re.sub(r"\0(\d+)\0", lambda x: quoted[int(x.group(1))], w)
             if not re.fullmatch(r"[\w ./@%+,:=-]+", w):
                 return None
@@ -1710,7 +1846,7 @@ class Ctx:
                 if isinstance(theirs, dict) and isinstance(theirs.get(k), list):
                     mine = list(self.cfg.get(k) or [])
                     self.cfg[k] = mine + [x for x in theirs[k] if isinstance(x, str) and x not in mine]
-        self._links, self.searched, self.t0, self._real = None, {}, time.time(), {}
+        self._links, self.searched, self.t0, self._real = None, {}, time.monotonic(), {}
         self.cut, self._globs = None, {}  # the wildcard whose matches expand() could not read to the end; its answers
 
     def _abs(self, p):
@@ -1723,6 +1859,11 @@ class Ctx:
                 pp = self.cwd / pp
             try:
                 self._real[key] = pp.resolve(strict=False)
+            except ValueError:
+                # Windows takes no path of more than 32,767 characters, which the program behind -e can be. It ended
+                # the whole check as an internal error, a question for a harmless line; such a word names nothing
+                # on disk, now and at the next lookup
+                self._real[key] = pp
             except (OSError, RuntimeError):
                 return pp  # not kept: a lookup that failed is made again at the next one, as before
         return self._real[key]
@@ -1813,7 +1954,7 @@ class Ctx:
                 if n < GLOB:
                     out.append(self.canon(self.rel(f)))
                     continue
-                if time.time() > self.t0 + WALK_S:
+                if time.monotonic() >= self.t0 + WALK_S:  # >=: this clock moves in steps of 15 ms on Windows
                     self.cut = t
                     break
                 d, name = os.path.split(f.rstrip("/\\"))
@@ -1887,7 +2028,7 @@ def names_sealed(ctx: Ctx, text: str, dirs):
     here = ctx.cwd
     try:
         for n, w in enumerate(words):
-            if time.time() > ctx.t0 + WALK_S:
+            if time.monotonic() >= ctx.t0 + WALK_S:
                 return None, (f"This text has {len(words)} path-like words, more than this guard could look up in "
                               f"{WALK_S:g} seconds: {len(words) - n} are unchecked, and one of them may name sealed "
                               f"test data. Approve only if none does, or write the text in smaller parts.")
@@ -2035,14 +2176,17 @@ def plain(cmd: str) -> str:
     return GIT_WORD.sub("git", re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", QUOTED_COMMAND.sub(r"\1\3", raw)))
 
 
-def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
+def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True, lang=False):
     """alt: also check the line as another shell reads it. sh: the text may be a POSIX shell's (the line of a tool
-    call, or text handed to a shell), where a brace list stands for names."""
+    call, or text handed to a shell), where a brace list stands for names. lang: the line that this text comes from
+    runs a program of a language in LANG, so the text may be such a program."""
     cfg = ctx.cfg
     raw = plain(cmd)
     c = GIT_GLOBAL.sub("git", raw)
     c_noq = QUOTED.sub(" '' ", c)
+    lang = lang or bool(LANG.search(c_noq))
     results, walked = [], []  # walked: the folders that a command of the line walks, each with its file filters
+    unpacked = []  # the folders into which a command of the line unpacks an archive
     if depth == 0:  # a POSIX line may hand text to PowerShell or cmd: then their reading holds for the whole line
         ctx.recursive_re = RECURSIVE_POSIX if ctx.posix and not re.search(r"\b(?:powershell|pwsh|cmd)\b", c, re.I) \
             else RECURSIVE
@@ -2151,7 +2295,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
             taken = None
             parts = SEPARATOR.split(QUOTED.sub(lambda q: SEPARATOR.sub(" ", q.group()), raw)) \
                 if (recursive or MOVE.search(c_noq) or STARS.search(c_noq) or GIT_TAKES.search(c_noq)
-                    or (prog and "**" in c)) and not hit else []
+                    or EXTRACT.search(c_noq) or (prog and "**" in c)) and not hit else []
             for i in range(0, len(parts), 2):
                 seg, before, after = parts[i].lstrip(), "".join(parts[i - 1:i]), "".join(parts[i + 1:i + 2])
                 sq = QUOTED.sub(" '' ", ENV_C.sub(r"\1", GIT_GLOBAL.sub("git", seg)))
@@ -2167,6 +2311,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                     for r in was:
                         ctx.cwd = r
                         runs.append(ctx._abs(d.strip("\"'")))
+                for d in runs if EXTRACT.search(sq) else []:  # an archive: where it is unpacked to, see below
+                    ctx.cwd = d  # env's own -C is no option of the program: runs has that folder already
+                    unpacked += ["." if t is None else ctx.resolve_token(t)  # any folder: counts as the project
+                                 for t in unpacks(lex(ENV_C.sub(r"\1", seg))) or ["."]]
                 if x or re.match(r"(?:popd|Pop-Location)\b", seg, re.I):
                     to = []
                     for d in curs if x else []:
@@ -2306,13 +2454,17 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                                      f"Add the files you mean by name, or approve only if no sealed file is among "
                                      f"them."))
     # The text that the line hands to a shell counts with it: in f=eval/metrics.py sh -c 'rm "$f"' the verb stands
-    # in the text and the path in front of it. cmd: a quoted word behind a bracket lost its quotes above, .open('w')
+    # in the text and the path in front of it. cmd: a quoted word behind a bracket lost its quotes above, .open('w'),
+    # and so did one behind a bar, awk's print | "sh"
     inner = inner_code(c)
     flat = c_noq + "".join(" ; " + QUOTED.sub(" '' ", plain(s)) for s in inner)
     # an output option whose word is a variable or a command's output (sort -o "$f", curl -o `echo f`) may write any
     # path that the line names, as a verb does
     verb = bool(VERBS.search(flat) or PS_WRITE.search(flat) or WRITE_CMDS.search(flat)
-                or FORMATS.search(flat) or (code and (PY_WRITES.search(c) or PY_WRITES.search(cmd)))
+                or FORMATS.search(flat) or EXTRACT.search(flat) or PATCHES.search(flat)
+                or (code and (PY_WRITES.search(c) or PY_WRITES.search(cmd) or PY_OPENS.search(c)))
+                or (lang and LANG_WRITES.search(c))
+                or (AWK.search(flat) and (AWK_WRITES.search(c) or (cmd != c and AWK_WRITES.search(cmd))))
                 or any(re.search(r"[$`]", w) for s in [c] + inner for w in out_words(lex(s))))
     # A redirection writes the file it names, and so does tee: python eval/evaluate.py > score.json reads the frozen
     # file. Where they are all that the tool call's own line writes with, only the files they name count as written.
@@ -2346,6 +2498,29 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
         if over:
             results.append((ASK, f"{what} (pattern '{over}': frozen evaluation/protocol files or the harness). Name "
                                  f"the files or folders to {do}, or approve only if these files stay as they are."))
+    # An archive is unpacked into a folder, and the names of its files stand in the archive, not on the line. Above,
+    # each command of the line gave the folder it unpacks to, seen from the folders it may run in (cd raw && tar -xf
+    # ../x.tar). Here: program text, which names the folder in the call (extractall('raw'), unpack_archive('x.tar',
+    # 'raw')), and a line whose commands were not read one by one; both from every folder that the line goes to.
+    # The sealed files count too: unpacking reads none of them, and may put another file in the place of one. So do
+    # git's own files that the write rules below keep. A folder above the project counts as the project: an archive
+    # unpacked there may hold a path that leads into it. cmd: a quoted word behind a bracket lost its quotes above,
+    # and extractall('raw') would name a variable, which may be any folder
+    late = (py_unpacks(cmd.replace("\\", "/")) if code else []) + ["."] * bool(EXTRACT.search(c_noq) and not unpacked)
+    unpacked += ["."] * (None in late)  # a folder that the text does not let this read: counts as the project
+    for d in dirs if late else []:
+        ctx.cwd = d
+        unpacked += [ctx.resolve_token(t) for t in late if t is not None]
+    ctx.cwd = here
+    above = {p.as_posix() for p in ctx.root.parents}
+    over = next((p for rel in unpacked if rel for p in [below(ctx, "." if rel in above else rel, [
+        *kept, *(sealed or []), ".git/hooks/**", ".git/config", ".git/worktrees/**"])] if p), None)
+    if over:
+        results.append((ASK, f"Unpacks an archive into a folder in which files that this guard keeps lie (pattern "
+                             f"'{over}': frozen evaluation/protocol files, the harness, sealed test data or git's own "
+                             f"files), and an archive may hold a file of any name. Unpack it into a folder of its own "
+                             f"(tar -C <folder>, unzip -d <folder>) and move over what is needed, or approve only if "
+                             f"these files stay as they are."))
     for d in dirs if saved else []:  # read from every folder that the line goes to, as an output option's word is
         ctx.cwd = d
         outs += [(t, ctx.resolve_token(t)) for t in saved]
@@ -2389,6 +2564,10 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
     if GIT_DESTRUCTIVE.search(c):
         results.append((ASK, "Destructive git operation (may discard uncommitted work or rewrite history). Needs the "
                              "user's explicit approval."))
+    if PATCHES.search(c_noq):  # ROUTINE: where the line names a kept file as well, the write rules add their reason
+        results.append((ASK, "Applies a patch: it changes the files that the patch names, and this guard reads the "
+                             "command, not the patch (`git apply --stat <patch>` lists them). Approve only if no "
+                             "frozen file and no harness file is among them, or make the change with the edit tools."))
     if GIT_CLEAN_IGNORED.search(c):  # a reason of its own: with it the refusal is not marked routine
         results.append((ASK, "A forced git clean with -x or -X also deletes what git ignores, and data, run folders "
                              "and checkpoints are usually among that."))
@@ -2457,7 +2636,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                 seen.add(plain(s))
                 for d in dirs:
                     ctx.cwd = d
-                    results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)))
+                    results += check_bash(ctx, s, depth + 1, sh=bool(POSIX_SHELL.search(c_noq)), lang=lang)
         ctx.cwd = here
     others, long = readings(cmd) if alt else ([], False)
     if long and sh:  # program text (python -c "...") has braces of its own
@@ -2465,7 +2644,7 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True):
                              "{a,b}{c,d}...), more than this guard writes out to check them. Name the files one by "
                              "one, or approve only if none of them is sealed test data."))
     for other in others:  # every rule above, for the line as another shell reads it
-        results += check_bash(ctx, other, depth, False, sh)
+        results += check_bash(ctx, other, depth, False, sh, lang)
     return results
 
 
@@ -2514,7 +2693,9 @@ def check_readonly(tool, ti):
         c = GIT_GLOBAL.sub("git", GIT_WORD.sub("git", cmd))
         texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c)]
         if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) or WRITE_CMDS.search(t) or FORMATS.search(t)
-               for t in texts) or PY_WRITES.search(c):
+               or EXTRACT.search(t) for t in texts) or PY_WRITES.search(c) \
+                or (any(LANG.search(t) for t in texts) and LANG_WRITES.search(c)) \
+                or (any(AWK.search(t) for t in texts) and AWK_WRITES.search(c)):
             why = why or "writes, moves or deletes files"
         elif KILL.search(c) or PS_KILL.search(c):
             why = why or "signals processes"
@@ -2542,10 +2723,12 @@ def nobody_to_ask(payload, agent):
 
 # Asks about a session's own work and nothing else: git that discards work or rewrites history (all of
 # GIT_DESTRUCTIVE: a hard reset, a forced checkout or clean, a dropped stash, a deleted branch, also of committed
-# work), and a formatter given a folder in which kept files lie. A forced clean that takes ignored files along has
-# a second reason and is not among them. Where nobody can be asked they are refused like every ask. The unattended
-# loop takes a refused call as a sign of tampering and drops the session's change; not these, which the beacon marks
-ROUTINE = ("Destructive git operation", "A formatter would rewrite")
+# work), a formatter given a folder in which kept files lie, a patch, and an archive unpacked into such a folder:
+# the last two are asked about for what the line does not show, and where it names a kept file the write rules add
+# a reason of their own. A forced clean that takes ignored files along has a second reason and is not among them.
+# Where nobody can be asked they are refused like every ask. The unattended loop takes a refused call as a sign of
+# tampering and drops the session's change; not these, which the beacon marks
+ROUTINE = ("Destructive git operation", "A formatter would rewrite", "Applies a patch", "Unpacks an archive")
 
 
 def beacon(payload, calls, decision, reason="", routine=False):
@@ -2638,8 +2821,11 @@ def main(argv=None):
             sys.stdout.flush()
             sys.stderr.flush()
             os._exit(code)
-    timer = threading.Timer(LIMIT, late)
-    timer.daemon = True
+    # A thread that sleeps, not threading.Timer. A Timer waits on a lock, and before Python 3.11 (and since, where the
+    # C library has no sem_clockwait(): bpo-41710) that wait goes by the system's clock: one that was set forward ended
+    # these seconds at once, and one that was set back made them longer than the hook's own. In WSL on 19 November
+    # 2026 a Timer of 12 s took 3.2 s and 15.0 s under Python 3.8 (12.0 s under 3.12); a sleep took 12.0 s under both
+    timer = threading.Thread(target=lambda: (time.sleep(LIMIT), late()), daemon=True)
     timer.start()
     try:
         ctx = Ctx(payload, root)

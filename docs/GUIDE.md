@@ -478,7 +478,8 @@ settings, and backs up every kit file it replaces under `.claude/backups/`. To r
 | What is running, the best runs, alerts | `E status --brief` |
 | Start a run | `E launch --name lr3e-4 --seed 1 --note "hypothesis" -- python train.py --lr 3e-4 --seed 1` |
 | Wait for it | `E watch RUN --until terminal` |
-| Its curves | `E curve RUN --keys train/loss,val/acc` |
+| Its curves, and what they show | `E curve RUN --keys train/loss,val/acc` |
+| Is the change better, or is it noise? | `E compare --a variant=base --b variant=wide` (runs by id, `name=NAME` or a tag from `launch --tag variant=wide`) |
 | Stop it gracefully | `E stop RUN --wait 5m` |
 | Continue it from its checkpoint | `E resume RUN` |
 | The final evaluation, once | `E final-eval -- ARGS` |

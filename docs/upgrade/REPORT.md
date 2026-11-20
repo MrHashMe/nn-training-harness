@@ -86,6 +86,10 @@ On your "Yes, read fixes" of that day a second fresh reader went through that re
 found no fault that they introduce, and an older fault that it named is repaired: its section, "The
 second reading of the launcher's repair", follows "The reading of the launcher's repair" and is the
 last before "1. What changed and why" now. It is two more local commits on the same branch, not pushed.
+On your "Yes, repair it" of that day the kit's way to a program on Windows is repaired, which that
+reading had left as a decision: its section, "The lookup's repair", follows "The second reading of the
+launcher's repair" and is the last before "1. What changed and why" now. It is two more local commits
+on the same branch, not pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -681,6 +685,45 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `final-eval` and for `launch`, as a change of its own with its own reader (I would); whether a
     reader goes through this reading's repairs; whether this branch, seven commits after `5ccc2d4` now,
     is merged with `test/round-9`; and what point 42 left open, less the reader.
+    (Added with point 45: the kit's way to a program on Windows is repaired since, on your "Yes, repair
+    it"; its record is "The lookup's repair".)
+45. **The kit's way to a program on Windows is repaired, on your word: a program named by its folder
+    starts whichever way its slashes point, and `final-eval` refuses before a use what will not start**
+    (20 November; "The lookup's repair"). The number is 45 because point 44 is the other session's,
+    written on its local branch while this repair's tests ran (its reading of the repairs of round 9's
+    first reading); this branch does not hold it, and a merge puts it between 43 and this one. On your
+    "Yes, repair it" I built what the second reading's section proposed. Where a command names its
+    program by a folder, the kit now finds the file itself, the `.exe` or `.com` at that path with
+    `.exe` added to a name without an ending, and hands it to Windows as the file to start. So
+    `venv/Scripts/python train.py` starts also where the environment holds the variable
+    `NoDefaultCurrentDirectoryInExePath`, as the shells of this Claude Code session do: until now it did
+    not. That holds for a launched run, the final evaluation, `env --python`, the loop's evaluator and a
+    remote target's `on_finish`, and the command line and the run's record keep the command as you wrote
+    it. `expctl final-eval` asks for its program as the start will look for it, where it asked Python's
+    `shutil.which`. It refuses, with nothing recorded, a name that only a batch file answers to, a name
+    like `tool3.11`, a script named without its interpreter, a batch file by a relative path with
+    forward slashes and, where that variable is set, a program without a folder that lies in the project
+    root only, and it names the file a shell would have taken. Four of those five passed before, and the
+    single use was spent on a start that failed. `venv\Scripts\python`, refused under Python 3.11 and
+    older, is accepted. Outside Windows the check reads a `PATH=...` in front of the command, as the
+    start does. A batch file is not handed over: I measured that `cmd.exe` then no longer takes a quoted
+    path with a space. What I left, each with its reason in the section: a name without a folder keeps
+    Windows' own search; no check before `launch` starts; the use is not given back when a start fails.
+    What the check does not see: whether a file that is there is a program; the two places where Windows
+    looks before the `PATH`; and it refuses a few forms that Windows starts, a name with a dot behind a
+    folder among them (`.\tools\tool3.11`, to which Windows adds the `.exe` itself): under Python 3.12.9
+    the check passed that one before, and now it wants the `.exe` written. Two of my new checks did not
+    catch their fault: a path that begins with `../` starts by itself, which a copy of the kit with the
+    change taken out showed. They are rewritten, and each of ten such copies fails the checks that are
+    there for it. The eight test files pass on Windows under Python 3.11.7 and, from a virtual
+    environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20: 1,916, 1,903, 1,927 and 1,914 checks,
+    none failed. The code is `7edd37d`, 154 lines added and 41 removed in three files, after `d50cc44`
+    on the pilot's local branch; the record's commit adds one sentence to the reference, on those forms.
+    Nothing is pushed or merged; your real install is untouched; this repair and the second reading's
+    repairs are read by nobody but me; GitHub's machines, a Mac among them, have run none of it. Open:
+    whether one fresh reader goes through both together (I would); whether a name with a dot and a
+    folder should start without its `.exe` (I would leave it); whether this branch, nine commits after
+    `5ccc2d4` now, is merged with `test/round-9`; and what point 43 left open, less the repair.
 
 ## Round 2 (12 November 2026)
 
@@ -9120,6 +9163,8 @@ the loop takes the interpreter from the configuration.
 - **Left to Windows as before:** a name with a folder, so an interpreter named by its path is
   respected; a name with no `.exe` beside the interpreter, which covers `cmd`, `git`, `bash` and a
   `.bat` file; a name that does not exist, which still ends the run with "could not start".
+  (Added with point 45: where an `.exe` or a `.com` is at the path of a name with a folder, the kit
+  hands that same file to Windows since the lookup's repair, so that it starts by either slash.)
 - **Not changed, on purpose.** The programs of a remote target's `exec` and `hf` lists (`ssh`,
   `wsl.exe`, `hf`) are found as before: they are the transport and not a caller's training command,
   and an `hf.exe` inside an environment can be older than the one on the `PATH` that a target works
@@ -9312,6 +9357,7 @@ install, a further reader. It is the work of the pilot's session on its local br
    (Added with point 43: that holds for a name that has an `.exe` beside the interpreter. For other
    forms the check and the start still differ on Windows; "The second reading of the launcher's
    repair", finding 2.)
+   (Added with point 45: repaired since; "The lookup's repair".)
 3. **The repair's tests could not fail where the repair must do nothing, and a fault in them could leave
    runs alive.** Both held. On Windows the group now runs with a `PATH` that holds no `python` at all;
    each launch check also reads the manifest; a new check puts nine names to `in_env`, seven of which
@@ -9409,6 +9455,8 @@ I ran each before I changed anything. "Held" means that the fault showed when ru
      a name with a folder, a name with another ending, or a name with no `.exe` beside the interpreter
      is left to Windows. None read the manifest. And with the environment first on the `PATH`, as the
      group ran, the final evaluation's check could not meet finding 2.
+     (Added with point 45: a name with a folder is handed over since the lookup's repair where an `.exe`
+     or a `.com` is at its path, and the names' check wants that now.)
    - Done. On Windows the group runs with every folder that holds a `python` cut from the `PATH`, as in
      a shell where the environment is not activated: the name can only come from beside the interpreter.
      Each launch check also reads the run's manifest, whose command must be as it was written. A new
@@ -9658,6 +9706,8 @@ real install, a further reader. It is the work of the pilot's session on its loc
    differ as well, where a `PATH=...` is written in front of the command. A rule in the kit that says
    what the start does is a change of its own, and it is under "What needs your decision". Found in
    passing: `expctl launch` does not start the forward-slash form in those shells either.
+   (Added with point 45: repaired on your "Yes, repair it", for the check and for `launch`; "The
+   lookup's repair".)
 4. **Of the two findings on the tests one is repaired, and one has no consequence.** A `venv` that ran
    into the time limit of the first reading ended the test file with a traceback; it is a failed check
    now on Windows, and the skip elsewhere. And the tests' cut of the `PATH` can leave no folder at all,
@@ -9678,6 +9728,7 @@ real install, a further reader. It is the work of the pilot's session on its loc
 8. **Nothing is pushed or merged.** The branch holds seven local commits after `5ccc2d4`: the pilot's
    record, the repair and its record, the first reading's two, and this reading's two. Your real install
    is untouched.
+   (Added with point 45: nine, with the two of the lookup's repair.)
 
 ### The reader and its brief
 
@@ -9797,12 +9848,16 @@ I ran each before I changed anything. "Held" means that the fault showed when ru
      mismatch is bounded: a refusal before any use, or a recorded use that `--again "the reason"` gives
      back, with the reason in the receipt. The reference has the limits now, and the repair is under
      "What needs your decision".
+     (Added with point 45: repaired since, on your "Yes, repair it"; "The lookup's repair". The rule
+     built there agrees with the table above in every row but one: a name with a dot and `.\` in front,
+     which Windows starts and the check refuses.)
    - Found in passing, older, not repaired: `expctl launch` starts its command the same way. In this
      session's shells `launch -- venv/Scripts/python.exe ...` and `launch -- venv/Scripts/python ...`
      ended with "could not start: [WinError 2]"; with backslashes, or with `./` in front, they ran; and
      with the variable taken out of the environment all five forms ran (Python 3.11.7). The repair and
      its readings left a name with a folder as it was, so this is as old as the kit's start without a
      shell; I did not run it on the kit of `main`.
+     (Added with point 45: both forms start now, in those shells too; "The lookup's repair".)
 3. **The reference's entry was too broad in two places. True. Reworded.**
    - "that is the environment's `Scripts` folder" and the sentence on `tqdm` hold for an environment
      made by `venv`, virtualenv or uv. A conda environment has its interpreter in its own folder and the
@@ -9889,6 +9944,8 @@ From reading alone, in the reader's words shortened:
 - **`tests/test_kit.py`:** a `venv` that runs into its time limit is a failed check on Windows and a
   skip elsewhere, where it ended the file.
 - **`final-eval` and `launch`** do what they did, and so does the kit on Linux and macOS.
+  (Added with point 45: until the lookup's repair, which changes both on Windows, and `final-eval`'s
+  check outside it.)
 
 ### Tests
 
@@ -9943,6 +10000,7 @@ From reading alone, in the reader's words shortened:
 
 - **`final-eval`'s check is not made to say what the start does** (finding 2), and `launch`'s
   forward-slash form is not repaired: the reasons are with the finding.
+  (Added with point 45: both are done since; "The lookup's repair".)
 - **No list of all processes for the parent's question,** the reader's proposal: a run's processes are
   answered for today.
 - **No allowance for a clock that is set back** in the walk up a process's parents.
@@ -9961,13 +10019,19 @@ From reading alone, in the reader's words shortened:
   nothing else. Outside Windows the check would read the command's own `PATH`, which is one line. It
   changes what the repair and the first reading left alone on purpose, a name with a folder, so it wants
   its own tests on Windows and its own reader. Until then the reference states the limits.
+  (Added with point 45: decided by your "Yes, repair it", and built as described here but for a batch
+  file, which is not handed over. It has its own tests. Its reader is still to come, on your word.)
 - **Whether a reader goes through this reading's repairs:** nine lines in `expctl.py`, on the path that
   both readers' first findings went through, and I am their only reader.
+  (Added with point 45: still open, and asked now as one reader for these lines and the lookup's
+  repair.)
 - **Whether this branch is merged with `test/round-9`,** and by whom. It holds seven commits after
   `5ccc2d4` now. A merge of `3784d0c` with `5ec95c6`, tried in memory with no branch, index or file
   touched: the kit's code, the tests and the reference join by themselves, and the joined state has not
   run. The records of both sides are joined by hand as before: points 39 and 40 of "Read this first" are
   the other session's, and this branch has 38, 41, 42 and 43.
+  (Added with point 45: nine commits now. Point 44 is the other session's as well, written on its local
+  branch on 20 November, and this branch has point 45 too.)
 - Unchanged from the first reading: whether the manifest should record the interpreter of a run.
   Unchanged from "The launcher's repair" and "The proof pilot": what those sections list.
 
@@ -9976,6 +10040,302 @@ final state, from 19:09 to 20:01 UTC on Windows and from 19:09 to 19:28 UTC in W
 `PATH=...` in front of the command, in WSL at 19:29 UTC. Before them, on the same day: the scans of the
 machine's processes; the trials of the findings and of what Windows starts, from scratch scripts that
 are not part of the kit; the copies with a part of the change taken out.
+
+## The lookup's repair (20 November 2026): on Windows a program named by its folder starts whichever way its slashes point, and `final-eval` refuses before a use what will not start
+
+Your word: "Yes, repair it", to my question at the end of the second reading, "Repair how final-eval and
+launch find a program on Windows?" I took the word to cover the repair as that section describes it
+under "What needs your decision", tests in the kit's own test file, the eight test files on the final
+state, and local commits with their record. Not covered: a push, a merge, your real install, and a
+reader. I had said that with the repair I would ask for one reader on both together afterwards, on your
+word then; it is under "What needs your decision". It is the work of the pilot's session on its local
+branch, `claude/brave-robinson-27cbd9`: the commit `7edd37d` for the code and one for this record, after
+`d50cc44`. No package was installed. Dates and times in this section are UTC.
+
+### In short
+
+1. **On Windows a program that a command names by a folder starts now whichever way its slashes point.**
+   `venv/Scripts/python train.py`, a relative path with forward slashes, was not started where the
+   environment holds the variable `NoDefaultCurrentDirectoryInExePath`. The shells of this Claude Code
+   session hold it; your stored environment does not. The kit now finds the file itself, the `.exe` or
+   `.com` at that path with `.exe` added to a name without an ending, and hands it to Windows as the
+   file to start. That holds at all five places where the kit starts a command of yours: a launched run,
+   the final evaluation, `env --python`, the loop's evaluator and a remote target's `on_finish`. The
+   command line and the run's record keep the command as you wrote it.
+2. **`final-eval` asks for its program as the start will look for it, and refuses before a use is
+   recorded what will not start.** Until now it asked Python's `shutil.which`, which says yes to more
+   than Windows starts without a shell. Refused now, with nothing recorded: a name that only a batch
+   file answers to (`foo` for `foo.cmd`), a name with a dot that only an `.exe` stands behind
+   (`tool3.11`), a script named without its interpreter, where that variable is set a program without a
+   folder that lies in the project root only, and a batch file by a relative path with forward slashes.
+   Four of the five passed before on this machine under Python 3.11.7: the start failed, and the single
+   use was spent. Where a shell would have taken a file for the name, the refusal names that file. In
+   the other direction `venv\Scripts\python`, which the check refused under Python 3.11 and older, is
+   accepted and starts.
+3. **Outside Windows the check reads a `PATH=...` that is written in front of the command, as the start
+   does.** One line. Until now a program that only that `PATH` holds was refused, and one that it does
+   not hold was accepted, recorded and not started: the second reading's note for Linux.
+4. **A batch file is not handed over: it stays Windows' to find and `cmd.exe`'s to run.** Handed over, a
+   batch file at a quoted path with a space no longer ran, which I measured before I wrote the rule. So
+   a batch file by a relative path with forward slashes still does not start where the variable is set.
+   The check refuses it, and the reference says how to name it.
+5. **Two of the new checks did not catch the fault they were written for, and the trial with the change
+   taken out showed it.** They named the environment as `../venv/Scripts/python`, and Windows starts a
+   path that begins with `./` or `../` also where the variable is set. The checks name a copy of the
+   environment inside the project now. After that I took each part of the change out of a copy of the
+   kit, ten copies in all, and each copy fails the checks that are there for it: nine on Windows, and
+   the tenth, whose part is for the other systems, in WSL.
+6. **What the check still does not see** is under "Limits". It sees that a file is there and not whether
+   Windows can start it; it does not ask the two places where Windows looks before the `PATH`; and it
+   refuses a few forms that Windows starts, a name with a dot behind a folder among them, which passed
+   before under Python 3.12.9.
+7. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,916 and 1,903 checks on Windows, 1,927 and 1,914 in WSL, none failed.
+   `tests/test_kit.py` has five checks more on Windows and two more elsewhere. **This repair is read by
+   nobody but me,** like the second reading's nine lines before it, and GitHub's machines, a Mac among
+   them, have run none of it.
+8. **Nothing is pushed or merged.** The branch holds nine local commits after `5ccc2d4`: the seven of
+   the second reading's section and this repair's two. Your real install is untouched.
+
+### What changed in the kit
+
+`expctl.py` only, 51 lines added and 14 removed; the loop and the remote path call the same helper and
+are not touched.
+
+- **`in_env`, the helper that says which file is handed to the start.** Until now it answered for a name
+  without a folder only: the `.exe` of that name beside the kit's interpreter (the launcher's repair).
+  For a name with a folder it now gives the file at that path, seen from the folder the kit's process is
+  in, as Windows sees it: `.exe` is added to a name without an ending, and the file must end in `.exe`
+  or `.com` and be there. Anything else is left to Windows as before: a batch file, a script, a name
+  with a dot, a file that is not there. Outside Windows it gives nothing, as before.
+- **`startable`, new, the question that `final-eval` asks before it records a use.** Outside Windows: is
+  the program found by the `PATH` that the command will run with. On Windows, in the order of the start:
+  the file that `in_env` hands over; for a name with a folder, a batch file that is there and is named
+  with backslashes or by its full path; for a name without a folder, a file of that name, with `.exe`
+  where it has no ending and with no other ending than `.exe`, `.com`, `.bat` or `.cmd`, in the current
+  folder unless the variable is set, or in a folder of the kit's own `PATH`.
+- **`final-eval`** asks `startable` where it asked `in_env` or `shutil.which`, and starts with the file
+  that `in_env` gives. The refusal still comes before anything is recorded. On Windows, where
+  `shutil.which` finds a file for the name, the refusal goes on with what Windows starts without a shell
+  and with that file: for `foo`, "there is" and the path of `foo.CMD`.
+
+### What Windows does, measured for this repair
+
+The second reading's table says what Windows starts by itself. These are the measurements beside it, on
+Windows 11, from scratch scripts that start a program as the kit does.
+
+- **Handed over as the file to start, with the command line unchanged,** these all start, with the
+  variable set and without it, under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0: `sub/tool.exe`,
+  `sub/tool`, `sub\tool`, `sub\tool.com` and `"sp ace\tool"`.
+- **Handed over, two forms start that Windows by itself does not:** `sub\other3.11` for an
+  `other3.11.exe`, and a program file that has no ending. The kit does not hand them over: "What was
+  left as it is".
+- **A path that begins with `./` or `../` starts by itself, also where the variable is set.** Only a
+  relative path with forward slashes and without that beginning does not. A full path with forward
+  slashes starts either way.
+- **A batch file, handed over:** `"sp ace\run.cmd" "a b"` ended with 1. Left to Windows, the file ran,
+  got `a b` as one argument and ended with the 7 that it returns.
+- **A batch file, left to Windows** (Python 3.11.7):
+
+  | the batch file is named | the variable set | not set |
+  |---|---|---|
+  | with backslashes (`sub\run.cmd`), also in quotes, also with a space | runs | runs |
+  | by its full path with forward slashes, also in quotes | runs | runs |
+  | by a relative path with forward slashes | not found (error 2) | `cmd.exe` ends with 1 |
+  | the same in quotes | not found (error 2) | runs |
+  | by a relative path with both kinds of slash (`sub\in/run.cmd`) | `cmd.exe` ends with 1 | `cmd.exe` ends with 1 |
+  | without a folder, in the current folder only | not found (error 2) | runs |
+  | without a folder, in a folder of the `PATH` | runs | runs |
+
+- **Whose `PATH`.** On Windows the search for the program reads the `PATH` that the kit runs with, not
+  the one the command is given. A batch file that the kit's `PATH` holds is then looked for once more by
+  `cmd.exe`, by the command's `PATH`: in the command's only, not found (error 2); in the kit's only,
+  started, and `cmd.exe` ended with 1 and "is not recognized"; in both, it ran.
+- **A file that Windows cannot start,** `sub\final.py`: error 193 either way. A `.com` file without a
+  folder, in a folder of the `PATH`: starts.
+- **The Microsoft Store's alias.** `python3.exe` in the Store's folder is a stub on this machine, which
+  has no Python from the Store. Python sees a file there and cannot open it. Started by its path, it
+  prints "Python was not found" and ends with 9009, handed over or left to Windows alike.
+
+### What was left as it is, and why
+
+- **A name without a folder keeps Windows' own search.** The kit hands over only the `.exe` beside its
+  interpreter, as since the launcher's repair. The check reads the current folder and the kit's `PATH`
+  as that search does, and starts nothing; the two places it leaves out are under "Limits".
+- **A name with a dot, and a file without an ending, are not handed over,** though they would start so.
+  By a plain relative path they never started, left to Windows. By a full path or behind `.\`, `./` or
+  `..\` Windows starts the name with a dot itself: a launched run with such a name starts as before, and
+  `final-eval`'s check refuses it, which is under "Limits". The repair takes away the effect of the
+  slashes and of the variable, and adds no rule of the kit's own for what a program is.
+- **A batch file is not handed over,** by the measurement above, and one by a relative path with forward
+  slashes is not made to work: that would mean rewriting the command line, which stays as you wrote it.
+- **No check before `launch` starts.** A run that cannot start ends with "could not start" and the
+  system's error, and nothing is spent.
+- **The use is not given back when the start fails.** That every attempt is on record is the receipt's
+  rule, and `--again "the reason"` is the way, as before.
+- **No start on trial and no look into the file.** A trial start starts the program. Reading a file's
+  first bytes for the mark of a program would be a rule of its own, and the Store's alias cannot be
+  opened.
+- **Windows' own search is not asked** (`SearchPathW`). It would cover the two places of the first limit
+  below, with a second call into Windows through `ctypes`, for a limit that refuses before any use.
+
+### Limits
+
+- **Two places are not asked.** Before the `PATH` Windows looks beside the running program, which in a
+  virtual environment is the base interpreter's folder, and in its own folders. A program that only they
+  hold is refused by the check, as `shutil.which` refused it. System32 and the Windows folder are on an
+  ordinary `PATH`.
+- **The check sees that a file is there, not whether Windows can start it.** A file that is no program
+  under a program's ending passes, fails at the start, and the use is recorded: tried under Python
+  3.11.7 with an empty file named `empty.exe`, in a folder of the `PATH` and by its folder (error 193
+  both ways), and with a text file under that ending in a folder of the `PATH` (error 216). The Store's
+  `python3` alias on a machine without the Store's Python passes, prints its hint and ends, and the use
+  is recorded. Both as before, for a name that the check passed before.
+- **A batch file without a folder that the kit's `PATH` holds and a `PATH=...` in front of the command
+  does not** passes, and fails inside `cmd.exe` with the use recorded.
+- **Refused, though it would start:** three kinds of name, each before any use.
+  - A name with a dot and a folder, for an `.exe` of that name. Windows adds the `.exe` itself where the
+    path is a full one, with either slash, or begins with `.\`, `./` or `..\`, and not where it is a
+    plain relative one (`sub\other3.11`, the second reading's row). The kit hands none of them over and
+    the check refuses them all; written with `.exe` they pass. Under Python 3.12.9 the check passed them
+    until now, so there they worked and are refused now, with the file named in the refusal; under
+    3.11.7 they were refused before as well.
+  - A program under another ending than `.exe`, `.com`, `.bat` or `.cmd`. A copy of a system program
+    named `prog.scr` started without a folder from a folder of the `PATH`, and as `sub\prog.scr`.
+    Without a folder the check refused it before too, under both Pythons; as `sub\prog.scr` it passed
+    before under 3.11.7 and was refused under 3.12.9.
+  - A batch file by a relative path with forward slashes in quotes, where the variable is not set.
+
+  I found the first kind while the tests ran, in the form `.\sub\other3.11`, and measured its other
+  forms and the second kind after the code's commit: that commit's message names the one form only, and
+  the reference has both kinds from this record's commit.
+- **In the snapshot mode `copy`** a launched run works in the copy, and a relative path to a program is
+  read from there, as before. For the loop's evaluator and a remote target's `on_finish` the path is
+  read from the folder the kit was called in.
+
+### Changes in the behaviour of existing features
+
+- **A launched run, `env --python`, the loop's evaluator and a remote target's `on_finish`, on
+  Windows:** a program named with a folder is started from the `.exe` or `.com` file at that path. A
+  form that started before starts the same file; `venv/Scripts/python` starts now where the variable is
+  set. A name without a folder, a batch file and everything outside Windows are as they were.
+- **`final-eval` on Windows:** the same for its program. Its check refuses the five forms of point 2
+  above and the forms under "Limits", and accepts `venv\Scripts\python` under every Python. A refusal
+  can end with a sentence on what Windows starts and with the file a shell would have taken.
+- **`final-eval` outside Windows:** a `PATH=...` in front of the command decides the check. A program
+  that only it holds is accepted; one that it does not hold is refused before a use.
+- **`docs/REFERENCE.md`:** the entry on what Windows starts without a shell says what the kit does now,
+  what it did until 20 November 2026, how to name a batch file, what the check refuses and what it
+  leaves. The entry before it points to it for a name with a folder. With this record's commit the entry
+  has one sentence more, on the two kinds of name that the check refuses though Windows starts them; no
+  test reads that file.
+
+### Tests
+
+All in the group of `tests/test_kit.py` that makes a virtual environment, 70 lines added and 10 removed.
+
+- **The check of the names** that `in_env` hands over has four more names: the environment's interpreter
+  by its full path and by a relative path with forward slashes and no ending, which are handed over on
+  Windows now, and that relative path with `.bat` and with `3.11` at its end, which are not.
+- **Five new checks on Windows,** where the kit runs with the variable set and one more folder on its
+  `PATH`. `final-eval` with `env2/Scripts/python`, a copy of the environment inside the project, runs in
+  that copy and writes its two rows. Two launched runs, by that name and with `.exe`, run in the copy
+  and keep the command as written in the manifest. `final-eval` refuses five names, records nothing for
+  any, and names `onlycmd.cmd` and `tool3.11.exe` in its refusals. And `"sp ace\final.cmd"` with the
+  argument `a b` runs and gets both arguments whole.
+- **Two new checks elsewhere.** A program that only the `PATH=...` in front of the command holds is
+  found and runs. With `PATH=/nonexistent` in front of `python` the refusal comes before a use.
+- **With a part of the change taken out,** on copies of the kit, on Windows under Python 3.11.7. The
+  group has 13 checks there; the last column is the rows that `final-eval` wrote for the five names it
+  has to refuse:
+
+  | the copy | checks that fail | rows written |
+  |---|---|---|
+  | the kit as it is | 0 | 0, 0, 0, 0, 0 |
+  | without the whole repair: `expctl.py` of `d50cc44` | 5 | 2, 2, 0, 2, 2 |
+  | a name with a folder is not handed over | 4 | 0, 0, 0, 0, 0 |
+  | a batch file is handed over too | 3 | 0, 0, 0, 0, 2 |
+  | the check asks `shutil.which`, as before | 1 | 2, 2, 0, 2, 2 |
+  | a batch file by a relative path with forward slashes passes the check | 1 | 0, 0, 0, 0, 2 |
+  | the variable is not looked at | 1 | 0, 0, 0, 2, 0 |
+  | any ending counts for a name without a folder | 1 | 0, 0, 2, 0, 0 |
+  | the refusal does not name the file | 1 | 0, 0, 0, 0, 0 |
+  | `final-eval` starts without the file handed over | 2 | 0, 0, 0, 0, 0 |
+  | outside Windows the `PATH` in front of the command is not read | 0 | 0, 0, 0, 0, 0 |
+
+  The five names are in the order of point 2 of "In short". The third, the script, is let through by one
+  copy only: this machine's shell does not take a `.py` file for a command, so the old check refused it
+  too. The last copy fails nothing on Windows, as it should, and in WSL under Python 3.12.3 it fails the
+  two new checks there, as does the copy without the whole repair.
+- **The first trial of this kind is what found the weak checks** of point 5: the copy that started
+  `final-eval` without the file handed over still passed, because `../venv/Scripts/python` starts by
+  itself.
+- **The group alone** passes with 13 checks on Windows under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0,
+  and with 8 in WSL under 3.12.3.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,916 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,903 | 0 |
+  | WSL | 3.12.3 | 1,927 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,914 | 0 |
+
+  `tests/test_kit.py` alone has 1,215 checks on Windows and 1,218 in WSL, five and two more than with
+  the second reading. What is skipped, and why thirteen checks fewer run under Python 3.8.20, is as in
+  the first reading's section. The three files are the same in the working tree, in the clone and in
+  `7edd37d`, by their hashes. The sentence that this record's commit adds to the reference came after
+  the runs.
+
+### Verified by running, and not
+
+- **By running, on this machine:** everything under "What Windows does" and under "Tests"; for a file
+  that is no program and for the forms under "Limits" that are refused though they would start, the
+  check's answer beside the start's. Windows 11 and Python from python.org; WSL with Ubuntu.
+- **Not run:** a real run of the loop's evaluator or of a remote target's `on_finish` with a program
+  named by a folder, which go through the same helper; `env --python` with such a name; the Microsoft
+  Store's Python, as the kit's interpreter or as the program; a conda environment; a 32-bit Python; a
+  network path; macOS and GitHub's machines, since nothing is pushed.
+- **Read by one reader each:** the launcher's repair, `09af4a1`, and the first reading's repairs,
+  `829d5b3`. **Read by nobody but me:** the second reading's repairs, `3784d0c`, and this repair.
+
+### Not done, and why
+
+- **What "What was left as it is" lists,** for the reasons there.
+- **No reader.** Your word covered the repair; the reader is the first question below.
+- **Nothing is pushed or merged,** and your real install is untouched. It has round 8's kit, without the
+  launcher's repair and what followed it.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this repair decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether one fresh reader goes through this repair and the second reading's nine lines together.** I
+  would. Together they are 60 lines of `expctl.py` on the way of every start that the kit makes on
+  Windows and of every `status`, and I am their only reader. The brief would be for correctness, as the
+  two before it.
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds nine commits after
+  `5ccc2d4` now. The other session's branch moved while this repair's tests ran. After `5ec95c6`, where
+  the public `test/round-9` stands as this clone last saw it, its local branch has two commits of 20
+  November: `05f996f` for code and `fd589b2` for its record, which holds point 44. I looked at 21:40 UTC
+  and fetched nothing. A merge of `7edd37d` with `fd589b2`, tried in memory with no branch, index or
+  file touched: the kit's code, the tests and the reference join by themselves, `REPORT.md` and
+  `PROGRESS.md` conflict, and the joined state has not run. The records of both sides are joined by hand
+  as before: points 39, 40 and 44 of "Read this first" are the other session's, and this branch has 38,
+  41 to 43 and 45. On the test branch GitHub's six jobs would run the repair, its readings and this
+  section's checks for the first time on macOS, on bare Linux and on Windows machines other than this
+  one.
+- **Whether a name with a dot and a folder should start without its `.exe`,** as Windows starts it by
+  most paths. I would leave it. The reference's rule for such a name is to write the `.exe`; the refusal
+  comes before any use and, under Python 3.12.9, names the file; and to hand it over would make the kit
+  start one form that Windows does not.
+- Unchanged from the first reading: whether the manifest should record the interpreter of a run.
+  Unchanged from "The launcher's repair" and "The proof pilot": what those sections list.
+
+Sources: runs on this machine on 20 November 2026. The eight test files on the final state, from 20:47
+to 21:37 UTC on Windows and from 20:47 to 21:06 UTC in WSL. Before them and while they ran, on the same
+day: the measurements of what Windows starts, from scratch scripts that are not part of the kit; the
+group alone under the other interpreters; the copies with a part of the change taken out.
 
 ## 1. What changed and why
 

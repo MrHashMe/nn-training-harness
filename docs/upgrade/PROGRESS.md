@@ -2726,6 +2726,78 @@ Next, each a separate word of the user's: whether the kit's way to a program on 
 for `final-eval` and `launch`; whether a reader goes through this reading's repairs; whether this
 branch is merged with `test/round-9` (seven commits after `5ccc2d4`; the records are joined by
 hand); and what the first reading's entry lists, less the reader.
+(Added with "The lookup's repair", the next entry: on the user's "Yes, repair it" the kit's way to
+a program on Windows is repaired since, for `final-eval` and for `launch`.)
+
+## The lookup's repair (20 November): on Windows a program named by its folder starts by either slash, `final-eval` refuses what will not start, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `d50cc44`. The
+user's word, 20 November: "Yes, repair it", to my question at the end of the second reading, "Repair
+how final-eval and launch find a program on Windows?" Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The lookup's repair", has it in full):
+- `expctl.in_env`, which says which file Popen gets as `executable`, answers for a name with a
+  folder too, on Windows: `os.path.abspath` of the name, `.exe` added where it has no ending, given
+  where that file ends in `.exe` or `.com` and is there. A batch file, a script, a name with a dot
+  and a missing file are left to Windows as before. All five callers get it through the helper:
+  `cmd_supervise`, `cmd_final_eval`, `env --python`, the loop's evaluator, a remote target's
+  `on_finish`. Until now `venv/Scripts/python` did not start where
+  `NoDefaultCurrentDirectoryInExePath` is set.
+- `expctl.startable`, new: what `cmd_final_eval` asks before it records a use, where it asked
+  `in_env` or `shutil.which`. Outside Windows `shutil.which` with the `PATH` of the command's
+  environment. On Windows: `in_env`; for a name with a folder a batch file that is there, named
+  without `/` or with a drive in front; for a name without one a file with the ending none, `.exe`,
+  `.com`, `.bat` or `.cmd` (`.exe` added to none) in `.` unless the variable is set, or in a folder
+  of the kit's own `PATH`. On Windows the refusal names what `shutil.which` finds.
+- Measured before the rule, with scratch scripts: handed over, `sub/tool.exe`, `sub/tool`,
+  `sub\tool`, `sub\tool.com` and `"sp ace\tool"` start with the variable and without it (Python
+  3.8.20, 3.11.7, 3.12.9, 3.14.0); a batch file handed over no longer takes a quoted path with a
+  space; a path that begins with `./` or `../` starts by itself with the variable set; batch files
+  left to Windows in seven forms (tabled in REPORT.md); the search reads the kit's `PATH`, and
+  `cmd.exe` looks for a batch file once more by the command's; the Store's `python3` alias is a stub
+  here, starts by its path and ends with 9009.
+- Left, with reasons in REPORT.md: a name without a folder keeps Windows' search; a name with a dot
+  and a file without an ending are not handed over; no check before `launch`; no refund of a use; no
+  trial start, no look into the file, no `SearchPathW`.
+- Limits: the folder of the running program and Windows' own folders are not asked (a `shortcut:`
+  comment); a file that is no program, and the Store's alias, pass and fail at the start with the
+  use recorded; a batch file on the kit's `PATH` and not on a `PATH=...` in front of the command
+  passes and fails in `cmd.exe`; a name with a dot behind a folder (`.\sub\other3.11`, or by its
+  full path), which Windows starts, is refused (it passed under Python 3.12.9 before), and so is a
+  program under another ending than `.exe`, `.com`, `.bat` or `.cmd`. The reference names both, from
+  this record's commit.
+- `tests/test_kit.py`, `env_tests`: the names' check has four more names; five new checks on Windows
+  (with the variable set and one more folder on the `PATH`) and two elsewhere. Two of the first
+  version's checks passed on a copy without their change, since they named `../venv/...`: they use a
+  copy of the environment inside the project now. Ten copies with a part of the change taken out: on
+  Windows under Python 3.11.7 they fail 5, 4, 3, 1, 1, 1, 1, 1, 2 and 0 of the group's 13 checks,
+  and the tenth, the `PATH` in front of the command, fails the two new checks in WSL. The group
+  alone: 13 of 13 under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0 on Windows, 8 of 8 in WSL.
+- `docs/REFERENCE.md`: the entry on what Windows starts without a shell is rewritten for what the
+  kit does now, and the entry before it points to it. One sentence more comes with this record's
+  commit, on the two kinds of name that the check refuses though Windows starts them, which I
+  measured after the code's commit; no test reads that file.
+- The eight test files on the final state, from 20:47 to 21:37 on Windows and from 20:47 to 21:06 in
+  WSL: Windows, Python 3.11.7, 1,916 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,903; WSL, 3.12.3, 1,927; WSL from a virtual environment, 3.8.20, 1,914. None failed.
+- The code is `7edd37d`, 154 lines added and 41 removed: `expctl.py` 51 and 14, `tests/test_kit.py`
+  70 and 10, `docs/REFERENCE.md` 33 and 17.
+- REPORT.md has the section "The lookup's repair", point 45 of "Read this first" (44 is the other
+  session's, on its local branch), a sentence in the introduction, and a dated note at twelve places
+  of the earlier sections and at point 43. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no reader, so this
+repair and the second reading's repairs are read by nobody but me; GitHub's machines and macOS have
+run none of it; a real run of the loop's evaluator or of a remote `on_finish` with a program named
+by a folder, `env --python` with one, the Microsoft Store's Python, a conda environment, a 32-bit
+Python and a network path not tried.
+
+Next, each a separate word of the user's: whether one fresh reader goes through this repair and the
+second reading's nine lines together; whether a name with a dot and a folder should start without
+its `.exe` (I would leave it); whether this branch is merged with `test/round-9` (nine commits after
+`5ccc2d4`; the other session's local branch is two commits after `5ec95c6` now, `05f996f` and
+`fd589b2`, looked at 21:40 and not fetched; the records are joined by hand); and what the second
+reading's entry lists, less the repair.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

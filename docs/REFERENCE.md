@@ -706,10 +706,13 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   on an ordinary `PATH`); it sees that a file is there and not whether Windows can start it, so a file that is no
   program under a program's ending fails at the start with the use recorded, and the Microsoft Store's `python3`
   alias on a machine without the Store's Python starts, prints a hint and ends; and a batch file that the kit's
-  `PATH` holds is looked for once more by `cmd.exe`, by the `PATH` of the command. A `PATH=...` written in front of
-  the command reaches the program that is started and not the search for it, which goes by the `PATH` the kit runs
-  with. Outside Windows the start searches by that `PATH=...`, and since that day the check does too (tried on
-  Linux).
+  `PATH` holds is looked for once more by `cmd.exe`, by the `PATH` of the command. The check also refuses, before
+  any use, two kinds of name that Windows starts: a name with a dot behind a folder, where the path is a full one or
+  begins with `.\` or `..\` (`.\tools\tool3.11`) and Windows adds the `.exe` itself, so write the `.exe`; and a
+  program under another ending than `.exe`, `.com`, `.bat` or `.cmd` (tried with `.scr`). A `PATH=...` written in
+  front of the command reaches the program that is started and not the search for it, which goes by the `PATH` the
+  kit runs with. Outside Windows the start searches by that `PATH=...`, and since that day the check does too (tried
+  on Linux).
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

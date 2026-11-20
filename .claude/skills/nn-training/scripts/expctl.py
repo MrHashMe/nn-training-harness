@@ -237,17 +237,50 @@ def py_cmd(cfg):
 
 
 def in_env(program):
-    """On Windows, the .exe that a program named without a folder has beside this interpreter, for Popen's
-    `executable`; None where the name is left to the system (elsewhere, a name with a folder, no such .exe).
-    Windows looks for such a name first in the folder of the program that is running. In a virtual environment that
-    is the base interpreter, which the environment's python.exe only starts: until 20 November 2026 a launched
-    `python train.py` ran in the base interpreter, without the environment's packages. The command line stays as
-    the caller wrote it. Not the first on PATH instead: where the kit was not started by PATH's interpreter (the
-    `py` launcher, a full path) that is another program than the one such a command started so far."""
-    if os.name != "nt" or os.path.dirname(program) or not sys.executable:
+    """On Windows, the file to hand to Popen as `executable` where Windows would not find the program that a command
+    names, or would find another; None where the name is left to the system (elsewhere, a batch file, no such
+    file). The command line stays as the caller wrote it.
+    A name without a folder: the .exe of that name beside this interpreter. Windows looks for such a name first in
+    the folder of the program that is running. In a virtual environment that is the base interpreter, which the
+    environment's python.exe only starts: until 20 November 2026 a launched `python train.py` ran in the base
+    interpreter, without the environment's packages. Not the first on PATH instead: where the kit was not started by
+    PATH's interpreter (the `py` launcher, a full path) that is another program than the one such a command started
+    so far.
+    A name with a folder: that .exe or .com, seen from the current directory as Windows sees it, `.exe` added to a
+    name without an ending. Left to Windows, `venv/Scripts/python`, a relative path with forward slashes, did not
+    start where the variable NoDefaultCurrentDirectoryInExePath is set. A batch file is not handed over: cmd.exe,
+    which runs it, then no longer takes a quoted path that has a space."""
+    folder = os.path.dirname(program)
+    if os.name != "nt" or not (folder or sys.executable):
         return None
-    exe = os.path.join(os.path.dirname(sys.executable), program if os.path.splitext(program)[1] else program + ".exe")
-    return exe if exe.lower().endswith(".exe") and os.path.isfile(exe) else None
+    exe = os.path.abspath(program) if folder else os.path.join(os.path.dirname(sys.executable), program)
+    exe += "" if os.path.splitext(exe)[1] else ".exe"
+    return exe if exe.lower().endswith((".exe", ".com") if folder else ".exe") and os.path.isfile(exe) else None
+
+
+def startable(program, env):
+    """Whether a start without a shell, with `env` and from the current directory, finds `program`: `final-eval` asks
+    before it records a use. Outside Windows the start reads the PATH of `env`. On Windows it reads the kit's own
+    PATH, takes a name without an ending as its .exe and as nothing else, takes a batch file by its full name, and
+    leaves out the current directory where NoDefaultCurrentDirectoryInExePath is set (measured 20 November 2026,
+    Python 3.8 to 3.14). shutil.which, asked until then, said yes to more: the other endings of PATHEXT, the current
+    directory in any case (Python 3.11 and older), a batch file by any path. Then the start failed, and the use was
+    recorded."""
+    if os.name != "nt":
+        return bool(shutil.which(program, path=env.get("PATH")))
+    if in_env(program):
+        return True
+    ext = os.path.splitext(program)[1].lower()
+    if os.path.dirname(program):  # what is left to Windows here, and starts: a batch file. Not by a relative path with
+        # a forward slash: cmd.exe reads an option there, and where the variable is set Windows does not find the file
+        return (ext in (".bat", ".cmd") and bool("/" not in program or os.path.splitdrive(program)[0])
+                and os.path.isfile(program))
+    # shortcut: Windows also looks beside the running program (in a virtual environment, the base interpreter) and in
+    # its own folders, before the PATH; a name that only they hold is refused here. Ask them too once that is met
+    dirs = [] if "NoDefaultCurrentDirectoryInExePath" in os.environ else ["."]
+    return ext in ("", ".exe", ".com", ".bat", ".cmd") and any(
+        d and os.path.isfile(os.path.join(d, program + ("" if ext else ".exe")))
+        for d in dirs + os.environ.get("PATH", "").split(os.pathsep))
 
 
 def read_json(path):
@@ -2915,9 +2948,13 @@ def cmd_final_eval(args):
     except ValueError as e:
         return fail(2, f"the final_eval_commands entry cannot be split into words: {e}")
     os.chdir(root)  # the command is the project's: its program and its paths are relative to the project root
-    # found beside the interpreter, which is the one the start below takes, or on the PATH
-    if not words or not (in_env(words[0].strip('"')) or shutil.which(words[0].strip('"'))):
-        return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}")
+    program = words[0].strip('"') if words else ""
+    if not program or not startable(program, env):
+        there = os.name == "nt" and program and shutil.which(program)  # what a shell would have taken the name for
+        return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}"
+                       + (". Without a shell Windows starts an .exe, whose ending may be left out, and a .com or a batch "
+                          f"file by its full name (a batch file by a relative path: with backslashes); there is {there}"
+                          if there else ""))
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"
     before, edited, shared, sub = final_uses(root)
@@ -2957,7 +2994,7 @@ def cmd_final_eval(args):
     try:
         with open(log, "wb") as f:  # Windows takes the command line as one string; elsewhere it is a word list
             code = subprocess.run(rest + " " + subprocess.list2cmdline(extra) if os.name == "nt" else words + extra,
-                                  executable=in_env(words[0].strip('"')), cwd=str(root), env=env,
+                                  executable=in_env(program), cwd=str(root), env=env,
                                   stdin=subprocess.DEVNULL, stdout=f, stderr=subprocess.STDOUT).returncode
     except OSError as e:
         code, err = None, f"could not start: {e}"

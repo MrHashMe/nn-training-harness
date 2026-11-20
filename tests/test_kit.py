@@ -419,7 +419,9 @@ def env_tests(tmp):
     where the kit starts a caller's command: a launched run, the final evaluation, `env --python`, the loop's
     evaluator and a remote target's on_finish. (Was, on Windows: the base interpreter's, which Windows finds first
     beside the running program, so training ran without the environment's packages.) The last two are functions of
-    nnloop and nnremote, tried here because this file makes the environment."""
+    nnloop and nnremote, tried here because this file makes the environment. And on Windows a program named with
+    a folder is the file at that path, however its slashes point; and before `final-eval` records a use it asks
+    for the program as the start will look for it."""
     print("== a program named without a folder, in a virtual environment ==")
     (tmp / "bare").mkdir()
     proj, venv = setup(tmp / "bare"), tmp / "bare/venv"
@@ -441,11 +443,11 @@ def env_tests(tmp):
            if os.name == "nt" else str(vbin) + os.pathsep + path}
     say = "import sys; print('prefix=' + sys.prefix)"
 
-    def inside(text):  # the interpreter that printed its prefix is the environment's
+    def inside(text, where=venv):  # the interpreter that printed its prefix is the environment's
         got = [x[len("prefix="):].strip() for x in (text or "").splitlines() if x.startswith("prefix=")]
-        return bool(got) and os.path.isdir(got[-1]) and os.path.samefile(got[-1], venv)
+        return bool(got) and os.path.isdir(got[-1]) and os.path.samefile(got[-1], where)
 
-    def kit(*args, timeout=60):  # expctl, run by the environment's interpreter
+    def kit(*args, timeout=60, env=env):  # expctl, run by the environment's interpreter
         return sh([vpy, str(scripts / "expctl.py"), *args], cwd=proj, env=env, timeout=timeout)
 
     for i, name in enumerate(("python", "python.exe", "PYTHON") if os.name == "nt" else ("python",)):
@@ -460,19 +462,23 @@ def env_tests(tmp):
     exe = (jout(kit("env", "--python", "python")).get("interpreter") or {}).get("executable") or ""
     check(os.path.isfile(exe) and os.path.samefile(os.path.dirname(exe), vbin),
           f"env --python python probes the environment's interpreter ({Path(exe).parent.name or 'none'})")
-    # the names that stay the system's to find: with another ending than .exe, with no .exe beside the interpreter,
-    # with a folder or a drive. Only the first two have an .exe there, and only Windows is given it
-    names = ["python", "PYTHON.EXE", "python.bat", "python3.11", "cmd", "nosuchprogram", os.path.join(".", "python"), "C:python", vpy]
+    # the names that stay the system's to find: with another ending than .exe, with no .exe beside the interpreter or
+    # at the path that the name gives. The first four have one, the last of them by a relative path with forward
+    # slashes and no ending, and only Windows is given it
+    rel = f"../venv/{vbin.name}/python"
+    names = ["python", "PYTHON.EXE", vpy, rel, "python.bat", "python3.11", "cmd", "nosuchprogram", os.path.join(".", "python"),
+             "C:python", rel + ".bat", rel + "3.11"]
     if os.name == "nt":  # files of the two other endings lie beside the interpreter, and still are not started from there
-        for n in names[2:4]:
+        for n in ("python.bat", "python3.11"):
             (vbin / n).write_text("")
     r = sh([vpy, "-c", "import json, sys; sys.path.insert(0, sys.argv[1]); import expctl\n"
             "print(json.dumps([expctl.in_env(x) for x in sys.argv[2:]]))", str(scripts), *names], cwd=proj, env=env)
     got = json.loads(r.stdout) if r.returncode == 0 else [r.stderr[-200:]]
-    mine = 2 if os.name == "nt" else 0
+    mine = 4 if os.name == "nt" else 0
     check(len(got) == len(names) and all(os.path.isfile(g or "") and os.path.samefile(g, vpy) for g in got[:mine])
           and not any(got[mine:]),
-          f"only a name that has an .exe beside the interpreter is started from there ({[Path(g).name if g else g for g in got]})")
+          "only an .exe beside the interpreter, or at the path that a name with a folder gives, is handed to the start "
+          f"({[Path(g).name if g else g for g in got]})")
     for what, code in (
             ("the loop's evaluator, with {python} from a config that says python",
              "import argparse, nnloop\n"
@@ -487,6 +493,60 @@ def env_tests(tmp):
                 "root, say = Path(sys.argv[2]), sys.argv[3]\n" + code, str(scripts), str(proj), say], cwd=proj, env=env)
         ok, said = inside(r.stdout), " ".join((r.stderr or r.stdout).split())[-200:]
         check(ok, f"{what}: `python` is the environment's" + ("" if ok else f" ({said})"))
+    # The check before a use asks as the start will. On Windows with the variable that takes the current folder out
+    # of the search, as an agent's shells have it and a user's terminal has not, and with one more folder on the PATH
+    receipt, cfgp, onpath = proj / ".claude/state/final-eval/receipt.jsonl", proj / ".claude/nn-training.json", tmp / "bare/onpath"
+    cfg, env2 = json.loads(cfgp.read_text()), env
+    onpath.mkdir()
+    if os.name == "nt":
+        env2 = dict(env, PATH=str(onpath) + os.pathsep + env["PATH"], NoDefaultCurrentDirectoryInExePath="1")
+
+    def final(program, *more):  # a further use with this program in the configured command: what it said, the rows it wrote
+        cfgp.write_text(json.dumps(dict(cfg, final_eval_commands=[f"NN_UNSEAL_TEST=1 {program} eval/final.py"]), indent=1))
+        n = len(receipt.read_bytes().splitlines())
+        out = jout(kit("final-eval", "--again", "another program", *more, env=env2))
+        return out, len(receipt.read_bytes().splitlines()) - n
+
+    if os.name != "nt":
+        (onpath / "onlyhere").write_text("#!/bin/sh\necho ran $1\n")
+        (onpath / "onlyhere").chmod(0o755)
+        out, n = final(f'PATH="{onpath}" onlyhere')
+        check(out.get("ok") and n == 2 and "ran eval/final.py" in (out.get("output_tail") or ""),
+              "final-eval: a program that only the PATH in front of the command holds is found (was: refused, by the kit's own PATH)")
+        out, n = final("PATH=/nonexistent python")
+        check("not found" in (out.get("error") or "") and n == 0, "final-eval: a program that the PATH in front of the "
+              "command does not hold is refused before a use is recorded (was: recorded, and then not started)")
+        return
+    # a copy of the environment inside the project: only a path without `./` or `../` in front is one that Windows,
+    # with that variable, does not find by forward slashes
+    shutil.copytree(venv, proj / "env2")
+    rel2 = f"env2/{vbin.name}/python"
+    out, n = final(rel2)
+    check(out.get("ok") and n == 2 and inside(out.get("output_tail"), proj / "env2"), "final-eval: a program named by a "
+          "relative path with forward slashes and no ending is the file at that path (was: refused, or recorded and not started)")
+    for i, name in enumerate((rel2, rel2 + ".exe")):
+        run = jout(kit("launch", "--name", f"rel{i}", "--snapshot", "none", "--", name, "-c", say, env=env2))
+        wait_for(lambda: (proj / run["run_dir"] / "exit.json").exists(), 30)
+        check(inside((proj / run["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace"), proj / "env2")
+              and json.loads((proj / run["run_dir"] / "manifest.json").read_text(encoding="utf-8"))["cmd"] == [name, "-c", say],
+              f"a launched `{name} ...` is the file at that path too (was: not started), and its record keeps the command as written")
+    # what a shell takes each of these names for: a batch file on the PATH, an .exe behind a dot in the name, a script
+    # on the PATH, a file of the project root, a batch file by forward slashes. Without a shell Windows starts none
+    (onpath / "onlycmd.cmd").write_text("@exit /b 0\n")
+    for name in ("tool3.11.exe", "tool.py"):
+        (onpath / name).write_text("")
+    (proj / "onlyroot.exe").write_text("")
+    for folder in ("tools", "sp ace"):
+        (proj / folder).mkdir(exist_ok=True)
+        (proj / folder / "final.cmd").write_text("@echo ran [%1] [%2]\n")
+    got = [final(p) for p in ("onlycmd", "tool3.11", "tool.py", "onlyroot", "tools/final.cmd")]
+    errs = [(o.get("error") or "").lower() for o, n in got]
+    check(all("not found" in e for e in errs) and not any(n for o, n in got) and "onlycmd.cmd" in errs[0] and "tool3.11.exe" in errs[1],
+          "final-eval: a name that the start will not find is refused before a use is recorded, and the refusal names "
+          f"the file a shell would have taken (was: recorded, and then not started; new rows {[n for o, n in got]})")
+    out, n = final('"sp ace\\final.cmd"', "--", "a b")
+    check(out.get("ok") and n == 2 and 'ran [eval/final.py] ["a b"]' in (out.get("output_tail") or ""),
+          "final-eval: a batch file stays Windows' to start, which takes its quoted path with a space (handed over: not)")
 
 
 def near(a, b, tol=1e-9):

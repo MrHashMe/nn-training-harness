@@ -1,0 +1,116 @@
+[
+ {
+  "file": "round9",
+  "candidate": "A tee's files are read past its own redirections (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`TEE_REST`, `saves()`, sponge beside tee); tests/test_kit.py (the guard's table: a tee with `>/dev/null`, `<<<`, `2>&1` and `< file` among its files, sponge; the same lines where nobody can be asked), tests/test_review_fixes.py; docs/REFERENCE.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "A line that applies a patch is asked about: `git apply`, `git am`, `patch` (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`PATCHES`, `ROUTINE`); tests/test_kit.py (forms that apply, forms that only check or show), tests/test_review_fixes.py, tests/test_loop.py (routine, and not where the line names a frozen file); docs/REFERENCE.md, references/validity.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "An archive unpacked into a folder that holds kept files is asked about (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`EXTRACT`, `unpacks()`, `py_unpacks()`, `ROUTINE`); tests/test_kit.py (each program, the forms of a folder, the forms that list or print), tests/test_review_fixes.py, tests/test_loop.py; docs/REFERENCE.md, references/validity.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "Program text in awk, node, perl, ruby, php, lua, R and julia, more Python and PowerShell calls, and gawk in place count as writes (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`LANG`, `LANG_WRITES`, `AWK_WRITES`, `PY_WRITES`, `PY_OPENS`, `PS_WRITE`, `check_readonly`); tests/test_kit.py (the guard's table and its timed lines), tests/test_review_fixes.py (the read-only agent's table); docs/REFERENCE.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "The loop's sandbox gives numba, Matplotlib and Triton a cache folder of their own (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (`NUMBA_CACHE_DIR`, `MPLCONFIGDIR`, `TRITON_HOME` under the sandbox's `/tmp`); tests/test_loop.py (the three variables where both have a sandbox and none where they have not; a sandboxed run writes the folders and nothing of them is left); references/loop.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "`tests/test_kit.py` leaves a checkout's worktrees and state out of its test projects (kit-native)",
+  "status": "finished",
+  "where": "tests/test_kit.py (`setup()`: the folders `worktrees` and `state` are not copied). Run on 19 Nov 2026: tests/test_remote.py from a checkout with three worktrees fails its last check on 992f436; with this change it passes from a clone that holds a worktree folder (99 PASS). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "A stop on Windows and macOS signals only the process that status took for the run's (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`cmd_stop`: `still_ours()` on Windows, status's `alive` where `/proc` is missing); tests/test_kit.py (with `/proc` taken away: a process whose start time changes during the wait is not killed on Windows, and one that status did not take for the run's is signalled nowhere). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "A seed that is `true` or `false`, and seeds that are no list, are refused by the loop (kit-native)",
+  "status": "finished",
+  "where": "scripts/nnloop.py (the refusal of `loop.seeds`); tests/test_loop.py (three lines of the refusal table). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "`expctl compare`: is the change better than the baseline, or is it noise (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`cmd_compare`, `t_tail`, `t_quant`); tests/test_kit.py (paired and Welch, exact p against a count of every arrangement, verdicts, refusals, warnings); references (uncertainty, evaluation), SKILL.md, the reviewer agent, both guides, settings.fragment.json (three rules). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "`expctl curve` names what the whole curve shows, and the loop's worker reads up to four of these (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`curve_findings`, `cmd_curve`), scripts/nnloop.py (the worker's prompt); tests/test_kit.py (curves written by hand, one per finding, and curves that must give none), tests/test_loop.py (what reaches the prompt); SKILL.md, references/loop.md, both guides. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "A program that counts where a command starts is seen behind `env -C <folder>` (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`_LEAD`: `-C`, `--chdir`); tests/test_kit.py (the guard's table), tests/test_review_fixes.py (the read-only agent's table). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "A quoted program of more than 32,767 characters does not end the guard's check as an internal error on Windows (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`Ctx._abs`: `ValueError`); tests/test_kit.py (a long quoted program: no internal error, and a write to a kept file in it is still asked about). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "First reading of the guard's changes by a reader without the working context: nine findings (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`_TO_OUT`, `LANG`, `LANG_WRITES`, `AWK_WRITES`, `PS_WRITE`, `py_unpacks()`, `saves()`); tests/test_review_fixes.py (the lines marked \"a fresh reader's reading of round 9\"), tests/test_kit.py; docs/REFERENCE.md (the over-asks that stay). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "Second reading of the guard after the first one's repairs: five findings (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`LANG`, `LANG_WRITES`, `AWK_WRITES`, `PATCHES`, `EXTRACT`); tests/test_review_fixes.py (the lines marked \"a second fresh reader's reading of round 9\"), tests/test_kit.py; docs/REFERENCE.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "Reading of `expctl compare`, the curve findings, the stop and the loop's changes: ten findings (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`cmd_compare`, `curve_findings`, `cmd_curve`), scripts/nnloop.py; tests/test_kit.py and tests/test_loop.py (a check for each finding). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "Round 8's guard compared with this one: a word ends at the sign that ends its command, and awk's bar is read in the line as written (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`_WEND` in `WRITE_CMDS`, `PATCHES`, `_TO_OUT`, `EXTRACT`; `AWK_WRITES`, read in the line as written too); tests/test_kit.py, tests/test_review_fixes.py (the lines marked \"a comparison of round 8's guard with this one\"); docs/REFERENCE.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "The guard's own time limits count on a clock that is never set (kit-native)",
+  "status": "finished",
+  "where": ".claude/hooks/nn_guard.py (`main`: a sleeping thread, not `threading.Timer`; `WALK_S` and `ctx.t0` on `time.monotonic()`, compared with `>=`); tests/test_kit.py (the guard's answer by itself on the steady clock; a limit of no time asks at once: failed on Windows under Python 3.8 with `>`). Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "A run's deadline given as a duration counts from the run's start, on the system's clock or the steady one, whichever is more (kit-native)",
+  "status": "finished",
+  "where": "scripts/expctl.py (`parse_deadline`, the manifest's `deadline_s`, `cmd_supervise`: `due`, `late_at`; the waits of `stop`), scripts/nnremote.py (one wait); tests/test_kit.py (a run whose deadline as a time of day lies an hour ahead is stopped by its `deadline_s`); references/loop.md. Commit b593bd0"
+ },
+ {
+  "file": "round9",
+  "candidate": "The tests' own waits and stopwatches count on the steady clock (kit-native)",
+  "status": "finished",
+  "where": "tests/test_kit.py (`wait_for`, two stopwatches, the stalled alert read from the status call that showed the state), tests/test_loop.py (the toy trainer's sleep, three stopwatches). Commit b593bd0"
+ }
+]

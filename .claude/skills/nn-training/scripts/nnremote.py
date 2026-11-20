@@ -869,7 +869,8 @@ def op_run(a):
         "schema": expctl.SCHEMA_MANIFEST, "run_id": a.id, "name": a.name, "created_at": expctl.iso(t),
         "created_ts": t, "host": socket.gethostname(), "platform": platform.platform(),
         "cmd": json.loads(bytes.fromhex(a.cmd).decode()), "cwd": str(work), "root": str(work), "seed": a.seed,
-        "deadline": deadline, "deadline_at": expctl.iso(deadline), "grace_s": 60.0,
+        # deadline_s: the supervisor counts a duration from the run's start, as after `expctl launch --deadline 90m`
+        "deadline": deadline, "deadline_at": expctl.iso(deadline), "deadline_s": a.budget_s or None, "grace_s": 60.0,
         "kill_after_s": float(cfg.get("kill_after_s") or 120), "launched_by": "nnremote", "via": "remote"})
     env = dict(os.environ, EXP_RUN_DIR=str(run_dir), EXP_RUN_ID=a.id, PYTHONUNBUFFERED="1",
                EXP_PROJECT_ROOT=str(work))

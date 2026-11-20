@@ -727,6 +727,10 @@ def hf_tests(tmp, proj):
           and seen.get("files", {}).get(".env") is False and seen["files"].get("data/test/labels.csv") is False
           and seen["files"].get("extra/notes.txt") is True,
           f"results are mirrored; the job got the named variable and file only ({seen})")
+    rm = read(d / "remote-manifest.json")
+    check(rm.get("deadline_s") == 162.0 and nnremote.expctl.is_num(rm.get("deadline")),
+          f"the job's manifest gives its deadline as a duration too (162 s of the 180 reserved), which its supervisor "
+          f"counts from the run's start ({rm.get('deadline_s')}, {rm.get('deadline')})")
     calls = [json.loads(x) for x in Path(ENV["FAKE_HF_LOG"]).read_text(encoding="utf-8").splitlines()]
     run = next(c for c in calls if c[:2] == ["jobs", "run"])
     check(run[run.index("--timeout") + 1] == "3m" and run[run.index("-s") + 1] == "NN_TEST_TOKEN"

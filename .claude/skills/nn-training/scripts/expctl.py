@@ -608,12 +608,20 @@ def proc_parent(pid):
 
 
 def ancestors(pid, depth=25):
-    out, cur = [], pid
+    """A process's parent, that one's parent and so on. Windows keeps the number of a parent that has ended, and a
+    later process can hold it: one that began after the process below it is not its parent, and the walk ends there.
+    Otherwise status put the GPU of a program that belongs to no run on the run whose process got such a number."""
+    win = os.name == "nt"
+    out, cur, born = [], pid, proc_start_time(pid) if win else None
     for _ in range(depth):
         cur = proc_parent(cur)
         if not cur or cur <= 1 or cur in out:
             break
+        began = proc_start_time(cur) if win else None
+        if born and began and began > born:
+            break
         out.append(cur)
+        born = began or born
     return out
 
 

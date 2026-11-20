@@ -423,7 +423,11 @@ def env_tests(tmp):
     print("== a program named without a folder, in a virtual environment ==")
     (tmp / "bare").mkdir()
     proj, venv = setup(tmp / "bare"), tmp / "bare/venv"
-    if subprocess.run([PY, "-m", "venv", "--without-pip", str(venv)], capture_output=True, timeout=300).returncode != 0:
+    try:
+        made = subprocess.run([PY, "-m", "venv", "--without-pip", str(venv)], capture_output=True, timeout=300).returncode == 0
+    except subprocess.TimeoutExpired:  # a venv that takes too long made none: the check below fails, the file goes on
+        made = False
+    if not made:
         if os.name == "nt":  # the fault was Windows': a skip there would hide the checks that guard its repair
             check(False, "python -m venv makes the virtual environment that the checks below need")
         print("SKIP virtual environment tests (python -m venv made none)")
@@ -1129,6 +1133,18 @@ def main():
         parent, me, gone = json.loads(r.stdout) if r.returncode == 0 else [None] * 3
         check(parent and parent == me and gone is None,
               f"a process's parent is known without psutil ({r.stdout.strip()} {r.stderr[-200:]})")
+    # Windows keeps the number of a parent that has ended, and a later process can hold it: status then put the GPU
+    # of a program of no run on the run that process belongs to. Such a process began after the one below it, and
+    # the walk ends there (8), also past a process whose start time is not known (19); one that began at the same
+    # instant is a parent still (9). Elsewhere a parent's number stays its own
+    code = ("import json, sys\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "expctl.proc_parent = {10: 9, 9: 8, 8: 7, 20: 19, 19: 18}.get\n"
+            "expctl.proc_start_time = {10: 100.0, 9: 100.0, 8: 105.0, 7: 80.0, 20: 100.0, 18: 101.0}.get\n"
+            "print(json.dumps([expctl.ancestors(10), expctl.ancestors(20)]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
+    check(r.returncode == 0 and json.loads(r.stdout) == ([[9], [19]] if os.name == "nt" else [[9, 8, 7], [19, 18]]),
+          "the walk up a process's parents ends, on Windows, at a number that a process which began later holds "
+          f"({r.stdout.strip()} {r.stderr[-200:]})")
     # macOS has no /proc, so there the start time comes from ps: asked in UTC whatever zone this process is in (here
     # one nine hours off), and it agrees with the other route where both exist
     if os.name != "nt":

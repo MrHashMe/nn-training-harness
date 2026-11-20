@@ -666,9 +666,12 @@ the task that the other arms lack: read its edge with that in mind, or run the p
 - In a virtual environment on Windows, a program that a command names without a folder (`python` in a launched
   command, in a final evaluation command, in the loop's evaluator, in an `on_finish` command, and after
   `env --python`) is looked for first beside the interpreter that runs the kit, as `<name>.exe`. Where the
-  environment's interpreter runs the kit, that is the environment's `Scripts` folder: `python` is the environment's
-  interpreter, and any other program that pip put there (`transformers`, `tqdm`) is the environment's as well,
-  whether or not the environment is activated and whatever `PATH` says. Until 20 November 2026 the base
+  interpreter of an environment made by `venv`, virtualenv or uv runs the kit, that is the environment's `Scripts`
+  folder: `python` is the environment's interpreter, and so is every other program with an `.exe` there, which the
+  commands that pip installs have (`transformers`, `tqdm`), whether or not the environment is activated and
+  whatever `PATH` says. A conda environment has its interpreter in its own folder and those commands in its
+  `Scripts` folder, so there only `python` and `pythonw` come from beside the interpreter and the commands from
+  `PATH` as before (by conda's layout: no conda was at hand to run it). Until 20 November 2026 the base
   interpreter's folder came first instead: `python` and `pythonw` were the base interpreter, which has none of the
   environment's packages, and the environment's other programs were found through `PATH` only. A name with a folder,
   a name with another ending than `.exe`, and a name with no `.exe` beside the interpreter are found as before.
@@ -679,6 +682,18 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   the loop that goes on across that change starts its later runs and its evaluator in the environment's
   interpreter, and nothing records the evaluator's. The programs of a remote target's `exec` and `hf` lists are
   found as before.
+- On Windows the kit starts a command without a shell, and what Windows then finds is narrower than what a shell
+  finds (measured on 20 November 2026 on Windows 11, under Python 3.8 to 3.14). A name without an ending is started
+  as its `.exe` and as nothing else: a command that only a `.cmd` or `.bat` file answers to (`npm`, for one) needs
+  that ending written, and `python3.12` needs its `.exe` written, because Windows takes the `.12` for an ending. A
+  program named by a folder of the project with forward slashes (`venv/Scripts/python.exe`) is not started where
+  the environment holds the variable `NoDefaultCurrentDirectoryInExePath`, which the shells of the Claude Code
+  session of that day did: write it with backslashes, or with `./` in front. `final-eval` checks its program
+  before it records the use, and that check differs from the start. It lets those three forms pass: the use is
+  recorded, the start fails, and the next call needs `--again` with that reason. And under Python 3.11 and older
+  it refuses a program named by a folder without its ending (`venv\Scripts\python`), which would start. Outside
+  Windows the two differ where a `PATH=...` is written in front of the command (tried on Linux): the start reads
+  it, and the check reads the `PATH` that the kit itself runs with.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

@@ -1,6 +1,6 @@
 # Upgrade report: nn-training harness kit
 
-Work of 10 to 18 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
+Work of 10 to 20 November 2026 on the kit of 23 October 2026 (baseline commit `5ea9659`). Written for a reader
 who has not seen the work. Requirements: `docs/upgrade/PROMPT.md`, and `docs/upgrade/ROUND2.md` for the second
 round of 12 November, which has its own section right after "Read this first". A third stretch of work on the
 same day built three items that round 2 had left open, and on 13 November repaired three small faults it had
@@ -66,6 +66,11 @@ install an eighth time, from that `main`: the install has round 8 now and its ch
 repository, not pushed ("The eighth installer run on the real install", the last section before "1.
 What changed and why"). On your "Yes, push" of that day the two records of it went to `main`, where
 all six jobs pass ("The push of the two records" in that section).
+You then gave me a fourth reviewer's report and asked for the project to be upgraded to its target, and
+beyond it where something better could be found: its section, "Round 9", follows "The eighth installer run
+on the real install". On your "Push test branch" of 20 November that round went to the new public branch
+`test/round-9`, where all six of GitHub's jobs pass at the first run ("Round 9 on the test branch", after
+"Round 9"). `main` and your real install do not have it.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -502,6 +507,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     two records. (Added with point 36: the record of this is on `main` too, as `e587b4f`, pushed on
     your second "Yes, push" of 19 November. GitHub's run on it ended as a success, which I read
     from the list of runs and not from its jobs. The local `main` stayed at `992f436`.)
+    (Added with point 37: read from its six jobs now. All six pass, with the check counts of the run
+    before it.)
 36. **Round 9 is two local commits: a fourth review checked claim by claim, what held of it fixed,
     and two commands beyond it. The hole in the tee rule that it found was mine, and your real
     install and the public `main` have it until a push and a ninth installer run** (19 and 20
@@ -525,6 +532,26 @@ Decision record: `docs/upgrade/LEDGER.md`.
     whether further readers of my own fixes are wanted without asking; the clock of this
     machine's WSL; the ten snapshot branches and the scratch clones; the two public test
     branches.
+    (Added with point 37: the round is on the public branch `test/round-9` now, on your "Push test
+    branch" of 20 November, and GitHub's six jobs pass on it, two of them on macOS. `main` and your
+    real install are as they were.)
+37. **Round 9 is on the public test branch, on your word, and all six of GitHub's jobs pass there.
+    `main` and your real install still hold round 8's guard** (20 November; "Round 9 on the test
+    branch"). `test/round-9` is a new branch at `86fc3a5`, pushed at 02:50 UTC with no force; `main`
+    on GitHub stays at `e587b4f`. GitHub's run on it passes in all six jobs at the first run, with
+    1,888 to 1,904 checks a job: 229 more than on `main`, and 230 on ubuntu-latest, where the loop's
+    sandbox exists. It is the round's first run on macOS, on bare Linux and on a Windows machine
+    other than this one. On a Mac that is the kit's tests under Python 3.14.10 and the system's
+    3.9.6: no agent session, no training and no sleep has run on one. While the jobs ran I repaired
+    the sibling that the round had left as a known limit: a run that `nnremote.py` starts on another
+    machine gets its deadline as a duration too (`1fe89eb`, one line and one check, read by nobody
+    but me). That repair and this record go to the test branch, as your word covers; the push starts
+    a second run, which this record cannot hold. The first of the round's next steps, the proof
+    pilot with a real agent, you started on 20 November as a session of its own; its record is that
+    session's. Open: whether `main` takes the round; the ninth installer run, until which your
+    install's guard has the tee hole; which large item is built next after the pilot, if any;
+    whether further readers of my own fixes are wanted without asking; the clock of this machine's
+    WSL; the eleven snapshot branches and the scratch clones; the three public test branches.
 
 ## Round 2 (12 November 2026)
 
@@ -7315,6 +7342,8 @@ on the pushed commits" and "Record the run's result in the two record files".
   force. GitHub's run 44554136667 on it, 15:22 to 15:46 UTC, ended as a success. I read that
   from the list of runs; I did not read its jobs or count its checks. The local `main`
   was not moved again and stands at `992f436`.)
+  (Added later on 20 November: read now from its six logs. All six jobs pass with the counts of the
+  run on `992f436`, and no check failed; "Round 9 on the test branch".)
 
 ### What needs your decision
 
@@ -7361,6 +7390,8 @@ session and no training campaign was started. The code is one commit and not one
 rounds before: the guard's changes overlap in the same rules, and the tests ran on nine successive states
 of the whole tree, so no smaller commit would be a state that the tests saw. Dates and times in this
 section are UTC.
+(Added on 20 November: both commits are on the public branch `test/round-9` now, on your "Push test
+branch", and GitHub's six jobs pass on them, two of them on macOS; the section after this one.)
 
 **This round is not the report's v2.** It is the part of the report that a check bore out, two commands
 that I judged worth more than the report's own next items, and what the round's runs found on the way.
@@ -7463,6 +7494,9 @@ Most of the report's design is not built; point 5 below says why, part by part.
    agent has used `compare` or read a curve's findings. The repairs after the second and the third
    reading, the clock changes and the repairs that the comparison led to had my own re-read, timing,
    comparison and tests, and no independent reader.
+   (Added on 20 November: the round's tests have run on GitHub's macOS, Linux and Windows machines
+   since, and pass; "Round 9 on the test branch". The check of the stop still puts stand-ins in the
+   place of the read of `/proc` and of the signal, on a Mac too.)
 
 ### The report's checklist and defects, one by one
 "By a run" means that I ran it here; "by reading" means the code only.
@@ -7849,11 +7883,16 @@ under Python 3.11.7 on Windows; on `i` the table above.
   that was scored under a budget of 3 s, and a stalled run that status called running: both are
   inferences from the code and from the measured clock, and the first run's records are gone); the
   report's own measurements (3.16 s, 1.74 s, 8.0 s), which I did not repeat on its machine.
+  (Added on 20 November: the round's tests ran on macOS and on GitHub's machines and pass. A signal that
+  `stop` sends on a real Mac stays unverified; that `ps` gives a process's start time there is run now.
+  "Round 9 on the test branch".)
 
 ### Things to know
 - **Your real install and the public `main` hold round 8's guard.** A `tee` with a redirection of its own
   onto a kept file passes there unasked, and so do the patch, archive and program-text lines of this
   round. Only a push and a ninth installer run change that, each on your word.
+  (Added on 20 November: the public branch `test/round-9` has this round now. `main` and your install do
+  not.)
 - **In this machine's WSL the clock still reaches runs.** While it steps 15.5 s forward and back every
   5 s: a run with a budget under about 77 s can be cut early by the supervisor; a run's own
   `should_stop()` ends it up to about 15 s before its deadline; about one launch in sixteen reads the
@@ -7889,6 +7928,8 @@ under Python 3.11.7 on Windows; on `i` the table above.
   another machine still gets its deadline as a time of day that is computed there at the launch, so that
   machine's clock at that moment is in it; I saw this sibling of the fix only after the tests had run and
   left it, because the loop starts its runs with `expctl launch` and no score depends on it.
+  (Added on 20 November: repaired in `1fe89eb`. The manifest that the job writes carries the duration
+  too, and its supervisor counts it from the run's start; "Round 9 on the test branch".)
   `tests/test_benchmarks.py` keeps its wall-clock stopwatches, whose bounds of 30, 120 and 300 s hold
   under a step of 15.5 s.
 - **Failures met on the way,** each gone before the state that was tested last; "Tests" lists them by
@@ -7902,6 +7943,8 @@ under Python 3.11.7 on Windows; on `i` the table above.
   round's probe projects, scripts and logs under `%TEMP%\nnkit-upgrade\r9\`; and whatever temporary
   test folders the runs that I stopped left behind. The round's probe scripts are not in the
   repository; this section records their settings.
+  (Added on 20 November: eleven branches now, with `claude/r9-snap-k`, the state of `1fe89eb`, and its
+  two clones.)
 - **Cut for the usage limit:** no reader for the later repairs; no agent session and no campaign; no
   build of any of the report's large items; no larger sample of the generated guard test; research only
   where a change needed a fact.
@@ -7910,6 +7953,8 @@ under Python 3.11.7 on Windows; on `i` the table above.
 - The report's large items ("In short", point 5, and "The report's proposals").
 - A push, and with it the first run of this round on macOS and on GitHub's Linux and Windows machines:
   it needs your word.
+  (Added on 20 November: given for a test branch, "Push test branch", and done; all six jobs pass. The
+  section after this one.)
 - A ninth installer run on your real install: it needs your word. It would bring the guard's new
   questions, the tee hole's repair among them, `expctl compare` with its three allow rules, the curve
   findings, the stop that ends only the process status saw (your install runs on Windows), the deadline
@@ -7922,6 +7967,8 @@ under Python 3.11.7 on Windows; on `i` the table above.
 ### What needs your decision
 - **Whether this round is pushed**, to a test branch first or to `main`. Only a push runs it on a Mac and
   on bare Linux.
+  (Added on 20 November: answered for the test branch, "Push test branch", and done. Open in its place:
+  whether `main` takes the round.)
 - **Whether the installer runs on your real install a ninth time.** Until then its guard has the tee
   hole.
 - **Which of the report's large items is built next, if any.** My order is in "Most valuable next
@@ -7931,6 +7978,7 @@ under Python 3.11.7 on Windows; on `i` the table above.
 - **WSL's clock on this machine**, and whether the supervisor should tell when the clock moved during a
   run (the Assess row).
 - **The ten snapshot branches and the scratch clones:** kept or deleted.
+  (Added on 20 November: eleven branches now.)
 - Unchanged from the records before: the reading of text handed to `cmd /c`; the two public test
   branches; whether your install's frozen files exceed 64 MB; the local `main` of the main checkout,
   which stands at `992f436`, one record behind GitHub's `e587b4f`.
@@ -7940,12 +7988,15 @@ under Python 3.11.7 on Windows; on `i` the table above.
    with the same budget. It answers the report's strongest criticism, and it tells which of the other
    items is worth building: if the greedy loop stalls, a second search shape; if runs are lost to the
    guard, confinement.
+   (Added on 20 November: you started this on that day as a session of its own, on a branch cut from
+   `86fc3a5`. What it does and finds is that session's to record, and nothing of it is in this one.)
 2. **Confinement on Windows and macOS** (a job object here, Seatbelt on a Mac), tried against the guard's
    own generated test. Only after it can the guard shrink.
 3. **Hard limits beside the metric**, measured by the harness: the Assess row's test on the character
    benchmark.
 4. A push to a test branch, so that this round runs on macOS and on bare Linux, and then the ninth
    installer run.
+   (Added on 20 November: the push is made, and the round's tests pass on macOS and on bare Linux.)
 5. Not before a need shows: the package and the `nn` command, the MCP server, the dashboard, the six
    packs.
 
@@ -7958,6 +8009,174 @@ Read on 19 November 2026:
 - 7-Zip's documentation of its command-line switches (`-so`).
 - numba's documentation of `NUMBA_CACHE_DIR` and Matplotlib's of `MPLCONFIGDIR`.
 - Python 3.11's release notes and bpo-41710 (a lock's timeout and the system's clock).
+
+## Round 9 on the test branch (20 November 2026): all six of GitHub's jobs pass
+
+Your word: "Push test branch", to the question whether round 9 goes to a test branch on GitHub. Before
+you answered I had said what a yes covers: the round's two commits go to a new public branch
+`test/round-9`, with no force; I read GitHub's six jobs on it; and I push to that branch again for a
+repair and for the record of the result. Not covered: `main`, your real install, a re-run of a job on
+GitHub, deleting anything. Dates and times in this section are UTC.
+
+In short:
+
+1. **All six of GitHub's jobs pass on `86fc3a5` at the first run**, with 1,888 to 1,904 checks a job and
+   none failed. That is 229 checks more than on `main` in every job, and 230 on ubuntu-latest.
+2. **It is the round's first run off this machine**: two jobs on macOS (Python 3.14.10 and the system's
+   3.9.6), two on bare Linux and two on GitHub's Windows. What "Round 9" lists as not run on macOS and
+   on GitHub's machines has run now, as far as the kit's tests go. For a Mac that stays a run of tests:
+   no agent session, no training and no sleep has run on one, and the check of which process `stop` ends
+   puts stand-ins in the place of the read of `/proc` and of the signal.
+3. **One repair went in while the jobs ran, and no job called for it**: the sibling of the deadline
+   change that "Round 9" names as a limit. A run that `nnremote.py` starts on another machine gets its
+   deadline as a duration too (`1fe89eb`, one line and one check). Nobody but me read it.
+4. **What follows the run is that repair and this record, pushed to the same branch as your word
+   covers.** The push starts a second run of the six jobs, which this record cannot hold.
+5. **`main` is as it was**, at `e587b4f`: it holds round 8's guard, with the hole in the tee rule. Your
+   real install is untouched and holds the same guard.
+
+### The push, and GitHub's run
+
+- Before the push: fetched; the public `main` at `e587b4f`, and no branch `test/round-9` in the public
+  repository; this branch two commits ahead of `main` and none behind, with a clean status; both commits
+  with the no-reply address and UTC dates; their diff and their messages searched for private details
+  and for times that are not UTC (none).
+- The push, at 02:50 UTC: `86fc3a5` as the new branch `test/round-9`. Two commits: `b593bd0` (the
+  round's code) and `86fc3a5` (its record). No force. `main` and the two older test branches were not
+  touched.
+- GitHub's workflow run 44663560656 on `86fc3a5` (02:50 to 03:08 UTC): six of six jobs pass at the first
+  attempt.
+
+| Job | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 19 | 1,208 | 122 | 136 | 275 | 99 | 42 | 3 | 1,904 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 19 | 1,208 | 122 | 135 | 264 | 99 | 42 | 3 | 1,892 |
+| windows-latest, Python 3.x | 3.15.2 | 19 | 1,200 | 120 | 138 | 265 | 99 | 42 | 6 | 1,889 |
+| windows-latest, Python 3.8 | 3.8.10 | 19 | 1,200 | 120 | 137 | 265 | 99 | 42 | 6 | 1,888 |
+| macos-latest, Python 3.x | 3.14.10 | 19 | 1,210 | 122 | 136 | 264 | 99 | 42 | 6 | 1,898 |
+| macos-latest, Python system | 3.9.6 | 19 | 1,206 | 120 | 135 | 264 | 99 | 42 | 6 | 1,891 |
+
+The columns from "Units" to "Real shells" are the eight test files in the workflow's order: the checks
+of each, counted in the job's log as the lines that begin with `PASS` and split at the `RESULT:` lines.
+No line begins with `FAIL` in any of the six logs. Lines that begin with `SKIP`: 2 on ubuntu-latest, 3
+on Ubuntu 24.04 and on macOS under 3.14.10, 5 in the other three jobs, as in the run before. A job took
+9 to 18 minutes.
+
+Against the run on `e587b4f` (1,674, 1,663, 1,660, 1,659, 1,669 and 1,662 checks in the table's order)
+every job has 229 checks more: 183 in the kit file, 41 in the review-fixes file and 5 in the loop file.
+ubuntu-latest has 230, of which 6 in the loop file: one of the round's checks needs bubblewrap, which
+only that image has. The other five files have the counts of the run before.
+
+The images: ubuntu-26.04 20261116.202.1, ubuntu-24.04 20261111.127.1, windows-2025-vs2026 20261103.298.1
+(Python 3.x) and 20261116.315.1 (Python 3.8), macos-26-arm64 20261102.0473.1 (Python 3.x) and
+20261112.0504.1 (the system's Python). "macos-latest, Python 3.x" got the older of the two macOS images,
+whose `3.x` is 3.14.10; in the run on `e587b4f` it had the newer one and 3.15.2. The checks that put
+generated lines to real shells ran in bash 3.2.57 and zsh 5.9 on macOS, bash 5.2.21 and 5.3.9 on Ubuntu,
+and Git Bash 5.3.15 and PowerShell 7.6.9 and 7.6.10 on Windows.
+
+### What the run shows of the round, and what it does not
+
+Read in each of the six logs, each check by its own words:
+
+- **"guard, where nobody can be asked: a patch, an archive unpacked into the project and a tee behind
+  its own redirection are refused, and an archive unpacked into a folder of its own passes"** passes in
+  all six. Its `tee` is the hole that the public `main` and your install still have.
+- **"a run whose deadline was given as a duration ends by it where the system's clock was set back after
+  the launch"** passes in all six: the run was stopped after 2.0 to 2.2 s on Linux and macOS and after
+  8.1 s on Windows.
+- **"guard: a check that takes longer than the guard allows itself ends as a question, instead of
+  running into the hook's time limit"** passes in all six, after 1 s in each.
+- **"ps gives a process's start time in UTC, the route for a system with no /proc"** ran in the four
+  jobs that are not Windows, and passes. In the two Mac jobs it is macOS's own `ps` that answers. This
+  is the part of the stop's path for a Mac that has run on a Mac.
+- **"stop ends the run's own process and no other: ..."** passes in all six, with the answer `[1, 2, 2]`
+  on macOS and Linux and `[1, 1, 1]` on Windows. The check puts stand-ins in the place of the read of
+  `/proc` and of the signal. So on a Mac it runs the branch that Linux ran with `/proc` taken away, and
+  it sends no signal to a real process.
+- **The sandbox's cache folders.** "numba, Matplotlib and Triton get a cache folder in the sandbox's own
+  /tmp ..." passes in all six: it finds the three folders on ubuntu-latest, where a sandbox exists, and
+  the variables left alone in the other five jobs. "a sandboxed run can write the cache folders that the
+  loop gives numba and Matplotlib, and they are gone with the run" ran on ubuntu-latest only, and
+  passes.
+
+Not shown by this run: an agent session, a training run or a sleep on a Mac; a signal that `stop` sends
+on a real Mac; BSD `patch` and 7-Zip themselves, whose options the guard reads as their documentation
+gives them; a Triton kernel in the sandbox, which ran on this machine's GPU and on no other; whether
+`expctl compare` or a curve's findings change what an agent decides; the repair below, which is not in
+the commit that ran; anything about the clock of this machine's WSL.
+
+### The repair beside the run: a remote run's deadline as a duration
+
+"Round 9" changed how a deadline that is given as a duration is counted: the run's manifest carries it
+as `deadline_s`, and the supervisor counts it from the run's start, on the system's clock or the steady
+one, whichever is more. It names one sibling that it left ("Limits of the clock changes"): a run that
+`nnremote.py` starts on another machine, whose manifest gave the deadline as a time of day only,
+computed on that machine at the launch. I repaired it while GitHub's jobs ran, because the test branch
+gives whatever is pushed there a full run.
+
+- **The change** (`1fe89eb`, two files, six lines added and one removed): the manifest that the job
+  writes for its run (`op_run`) carries `deadline_s`, the budget in seconds that the job was given,
+  beside the time of day. The supervisor on that machine is the kit's own, so it counts the duration
+  from the run's start, as after `expctl launch --deadline 90m`. A job with no budget has no
+  `deadline_s` and is treated as before.
+- **Unchanged:** the deadline that the run itself reads (`EXP_DEADLINE`) stays a time of day, here and
+  on a remote machine, as "Round 9" says of `RunLog`'s own reading. The wait for a remote run on this
+  side counted on both clocks already.
+- **The test:** one check in `tests/test_remote.py`, on the stand-in for a Hugging Face job: the job's
+  manifest gives 162 s, of the 180 s reserved, as `deadline_s`, beside a time of day. The file passes
+  with 100 checks on Windows under Python 3.11.7 and in WSL under 3.12.3, on a snapshot of that state
+  (`claude/r9-snap-k`, whose tree is the commit's).
+- **What it rests on, and what not.** The other seven test files did not run on that state on this
+  machine; GitHub's run on the push runs all eight. No job ran on a real remote machine, which costs
+  money and needs your go-ahead: the job in the test is a stand-in, and the supervisor's count by
+  `deadline_s` is the one that `tests/test_kit.py` checks on a local run. Nobody else read the change,
+  and I started no reader.
+
+### The run on `e587b4f`, read from its jobs
+
+Point 35 and "The push of the two records" give GitHub's run 44554136667, on the record that `main` took
+last, as a success that I had read from the list of runs only. Read now from its six logs (19 November,
+15:22 to 15:46 UTC): all six jobs pass at the first attempt, with the counts of the run on `992f436`:
+1,674 checks on ubuntu-latest (Python 3.15.2), 1,663 on Ubuntu 24.04 (3.8.18), 1,660 and 1,659 on
+Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,662 under the system's
+3.9.6. No check failed. That commit changes records only.
+
+### Not done, and why
+
+- `main`: it needs your word. Until then the public `main` holds round 8's guard.
+- The ninth installer run on your real install: it needs your word. The eighth was made from `main`,
+  which does not have this round.
+- A reader for `1fe89eb`, and for the round's later repairs: whether I may start readers of my own fixes
+  without asking is open.
+- A re-run of a job on GitHub: none was called for, since every job got a machine and passes.
+- The proof pilot: you started it on 20 November as a session of its own, on a branch cut from
+  `86fc3a5`. Its budget is yours to give there, and its record is that session's. That record will
+  change this file and PROGRESS.md as this one does, so the two branches meet with both texts kept and
+  the ledger built again.
+- Deleting anything: the eleven snapshot branches, their clones, the scratch folder and the three public
+  test branches stay as they are.
+
+### What needs your decision
+
+- **`main`.** "Push main" would move it from `e587b4f` to the head of `test/round-9`, as a fast-forward
+  with no force, and GitHub's six jobs would run there. I would take a yes to cover that push, the
+  reading of the jobs, and the push of the record of the result to `main` and to the test branch. Not
+  your real install, and no deletion.
+- **The ninth installer run on your real install**, from `main` once it has the round, or from the test
+  branch if you say so. Until it, the install's guard lets a `tee` with a redirection of its own write a
+  kept file unasked.
+- **Whether further readers of my own fixes are wanted without asking.** Open since 18 November.
+  `1fe89eb` is one more change that only its author read.
+- Unchanged: which of the fourth report's large items is built next after the pilot, if any; WSL's clock
+  on this machine; the snapshot branches and the scratch clones, kept or deleted; the public test
+  branches, three now; the reading of text handed to `cmd /c`; the local `main` of the main checkout,
+  which stands at `992f436`.
+
+Sources: GitHub Actions, workflow run 44663560656 of the public repository, read on 20 November 2026
+from the run's list of jobs and from each job's log, its checks counted in the six logs as the lines
+that begin with `PASS` and `FAIL` and split at the `RESULT:` lines; run 44554136667, read on the same
+day in the same way; `tests/test_remote.py` on the state of `1fe89eb`, run on this machine on 20
+November 2026.
 
 ## 1. What changed and why
 

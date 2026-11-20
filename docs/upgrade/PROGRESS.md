@@ -58,10 +58,14 @@ and its checks pass. On the user's "Yes, commit there" of the same day its thirt
 one local commit in that repository, not pushed ("The eighth installer run on the real install"
 below). On the user's "Yes, push" of that day the two records of it are on the public `main`, where
 all six jobs pass (the same entry).
+"Round 9" below is the work on the request of 19 November: a fourth review, checked claim by claim, what was
+built from it, and two commands beyond it. On the user's "Push test branch" of 20 November it is on the new
+public branch `test/round-9`, where all six of GitHub's jobs pass, and one repair made beside that run
+follows it there ("Round 9 on the test branch" below).
 
 # Upgrade progress
 
-Last updated: 19 November 2026.
+Last updated: 20 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -2402,13 +2406,72 @@ Done (REPORT.md, "Round 9", has it in full):
   command, an MCP server, a dashboard, more back ends, a proof pilot with a real agent.
 - Nothing pushed. Nothing on the real install. No agent session, no training campaign, nothing on
   a Mac or on GitHub's machines. This record is the second local commit of the round.
+  (Added later on 20 November: both commits are on the public branch `test/round-9`, on the user's
+  "Push test branch", and GitHub's six jobs pass on them; the entry after this one.)
 - Left on this machine: the local branches `claude/r9-snap-a` to `claude/r9-snap-j`, their clones
   on Windows and in WSL, and the scratch folder `%TEMP%\nnkit-upgrade\r9\`.
+  (Added later on 20 November: and `claude/r9-snap-k`, the state of `1fe89eb`, with its two clones.)
 
 Next, each a separate word of the user's: whether this round is pushed, to a test branch first or
 to `main`; the ninth installer run; which large item is built next, if any; whether further
 readers of my own fixes are wanted without asking; WSL's clock; the snapshot branches and the
 clones; the reading for `cmd /c`; whether the test branches are deleted.
+
+## Round 9 on the test branch (20 November): pushed, all six jobs pass, one repair beside the run
+
+The user's word, 20 November: "Push test branch", to the question whether round 9 goes to a test
+branch on GitHub. Before the answer I had said what a yes covers: the push of the round's two
+commits to a new public branch `test/round-9`, with no force; the reading of GitHub's six jobs; and
+further pushes to that branch for a repair and for the record. It is not a word for `main`, for the
+real install, for a re-run of a job on GitHub, for a deletion or for the budget of the pilot
+session. Dates and times in this entry are UTC.
+
+Done on that word:
+- Fetched before the push: the public `main` at `e587b4f`, no branch `test/round-9` there; this
+  branch two commits ahead of `main` and none behind, clean; both commits with the no-reply address
+  and UTC dates, their diff and messages searched for private details and for times that are not UTC
+  (none).
+- Pushed at 02:50 UTC: `86fc3a5` as the new branch `test/round-9` (`b593bd0`, the code, and
+  `86fc3a5`, its record). No force. `main` and the two older test branches were not pushed to.
+- GitHub's workflow run 44663560656 on `86fc3a5` (02:50 to 03:08 UTC): all six jobs pass at the
+  first attempt. 1,904 checks on ubuntu-latest (Python 3.15.2), 1,892 on Ubuntu 24.04 (3.8.18),
+  1,889 and 1,888 on Windows (3.15.2 and 3.8.10), 1,898 on macOS under "Python 3.x" (3.14.10, on the
+  older of the two macOS images) and 1,891 under the system's 3.9.6. No check failed. Each job has
+  229 checks more than on `e587b4f` (183 in the kit file, 41 in the review-fixes file, 5 in the loop
+  file), and ubuntu-latest 230: one check of the loop's needs bubblewrap. Counted in the six logs as
+  the lines that begin with `PASS` and `FAIL`, split at the `RESULT:` lines.
+- What that adds: the round's first run on macOS, on bare Linux and on a Windows machine other than
+  this one. On a Mac it is a run of the kit's tests: no agent session, training or sleep. `ps` gave
+  a process's start time on macOS in both Mac jobs; the check of which process `stop` ends puts
+  stand-ins in the place of the read of `/proc` and of the signal, so no signal went to a real
+  process on a Mac.
+- One repair beside the run, which no job called for: `1fe89eb`. The manifest that a remote job
+  writes for its run (`op_run` in `nnremote.py`) carries `deadline_s`, so the supervisor there
+  counts a duration from the run's start, as for a local run since `b593bd0`. One check in
+  `tests/test_remote.py`; the file passes with 100 checks on Windows (Python 3.11.7) and in WSL
+  (3.12.3) on the snapshot `claude/r9-snap-k`. The other seven files did not run on that state here.
+  No reader saw it, and no job ran on a real remote machine.
+- Read on the way: GitHub's run 44554136667 on `e587b4f`, which the records had from the list of
+  runs only. All six jobs pass, with the counts of the run on `992f436`.
+- REPORT.md has the section "Round 9 on the test branch", point 37 of "Read this first", and a
+  sentence at each place of "Round 9" that the push or the repair puts out of date. The ledger's
+  built list names the repair at the deadline row, its head says that the round ran on GitHub's
+  machines, and the ledger is built again (1,740 rows from 36 notes, as before).
+- This record and `1fe89eb` go to `test/round-9` as the word covers. That push starts a second run
+  of the six jobs, which this entry cannot hold.
+- Beside this session: the user started the proof pilot, the first of round 9's next steps, as a
+  session of its own on a branch cut from `86fc3a5` (`claude/brave-robinson-27cbd9`). It asked this
+  session for a yes to its budget; I gave none, since that is the user's to give there. Its record
+  will change REPORT.md and PROGRESS.md too: where the two branches meet, both texts are kept and
+  the ledger is built again.
+- Left as it is: the public `main` at `e587b4f` and the real install, which both hold round 8's
+  guard with the hole in the tee rule; the local `main` of the main checkout at `992f436`; the three
+  public test branches; the eleven snapshot branches and their clones.
+
+Next, each a separate word of the user's: whether `main` takes the round ("Push main"); the ninth
+installer run; whether further readers of my own fixes are wanted without asking; which large item
+is built next after the pilot, if any; WSL's clock; the snapshot branches and the clones; the
+reading for `cmd /c`; whether the test branches are deleted.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2423,6 +2486,9 @@ clones; the reading for `cmd /c`; whether the test branches are deleted.
   generated test. No reader saw the repairs after the second and the third reading, the clock changes or
   the repairs that the comparison with round 8's guard led to. Whether `expctl compare` or the curve
   findings change what an agent decides is not measured.
+  (Added on 20 November: the round's tests have run on GitHub's macOS, Linux and Windows machines and pass;
+  "Round 9 on the test branch" above. The rest of this bullet stands, and the repair `1fe89eb` had no reader
+  either.)
 - On a Mac, after the test branch: the kit's tests ran on GitHub's macOS runner and pass, the checks for
   macOS only and Python 3.15 on Ubuntu and Windows among them. Not run on a Mac: an agent session, training
   and anything with PyTorch (so nothing on the Apple GPU, and the nine benchmark checks that need PyTorch
@@ -2759,12 +2825,20 @@ clones; the reading for `cmd /c`; whether the test branches are deleted.
   took the word to cover work on the kit in this folder and local commits on the session's
   branch, and not a push, the real install, agent sessions, paid machines or a package installed
   on this machine.
+- Answered on 20 November ("Push test branch"), from round 9: whether its two commits are pushed, to
+  a test branch first. "Round 9 on the test branch" above. The word covers the push to the new
+  branch `test/round-9`, the reading of GitHub's jobs and further pushes to that branch for a repair
+  and for the record, as I had said before it. It is not a word for `main`, for a re-run of a job on
+  GitHub, a deletion, anything on the real install or the budget of the pilot session.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
   proof pilot with a real agent, which costs agent sessions; confinement on Windows and macOS;
   hard limits beside the metric); whether the ten local branches `claude/r9-snap-a` to
   `claude/r9-snap-j` and the scratch clones are deleted.
+  (Added on 20 November: the push to a test branch is answered and done. Open in its place: whether
+  `main` takes the round. The snapshot branches are eleven now, with `claude/r9-snap-k`. The user
+  started the proof pilot on that day as a session of its own, where its budget is answered.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -2894,3 +2968,10 @@ clones; the reading for `cmd /c`; whether the test branches are deleted.
   ended before the test's own, that test's log gets failed checks and a traceback (two logs of round
   9, on the states g and h). Read the log of a stopped pass with that in mind, and do not run the
   generated comparison of two guards beside a full pass: it loads every core.
+- GitHub's runs are read with two helpers in `%TEMP%\nnkit-upgrade\r9\`. `wait-run.sh RUN_ID` is one
+  quiet loop for the background: it ends when the run is complete or a job has failed, and prints a
+  line per job. `ci_read.py RUN_ID` keeps each job's log beside itself as `ci-<run>-<job>.log`,
+  splits it at the `RESULT:` lines and prints a row per job with the image, the interpreter and the
+  checks of each test file, then any `FAIL` line and any traceback other than the benchmark's own.
+  `win-one.sh NAME LABEL test_x.py` and `wsl-one.sh` run one test file on a snapshot. `apply_push.py
+  KIT` wrote the texts of the entry "Round 9 on the test branch".

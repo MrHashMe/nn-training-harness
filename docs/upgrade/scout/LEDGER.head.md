@@ -515,6 +515,10 @@ round are UTC.
   runs; and measurements of this machine's clocks. The macOS path of the stop was run on Linux with `/proc`
   taken away, not on a Mac. Nothing ran on macOS or on GitHub's runners, because nothing was pushed, and no
   agent session and no training campaign was started.
+  (Added on 20 November: on the user's "Push test branch" the round is on the public branch `test/round-9`,
+  where all six of GitHub's jobs pass at the first run, two of them on macOS, with 1,888 to 1,904 checks a job.
+  A run that `nnremote.py` starts on another machine gets its deadline as a duration too since `1fe89eb`, which
+  the built list names at the deadline row.)
 
 ## Coverage map
 

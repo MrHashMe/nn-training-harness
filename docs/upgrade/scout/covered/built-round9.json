@@ -105,7 +105,7 @@
   "file": "round9",
   "candidate": "A run's deadline given as a duration counts from the run's start, on the system's clock or the steady one, whichever is more (kit-native)",
   "status": "finished",
-  "where": "scripts/expctl.py (`parse_deadline`, the manifest's `deadline_s`, `cmd_supervise`: `due`, `late_at`; the waits of `stop`), scripts/nnremote.py (one wait); tests/test_kit.py (a run whose deadline as a time of day lies an hour ahead is stopped by its `deadline_s`); references/loop.md. Commit b593bd0"
+  "where": "scripts/expctl.py (`parse_deadline`, the manifest's `deadline_s`, `cmd_supervise`: `due`, `late_at`; the waits of `stop`), scripts/nnremote.py (one wait, and since 1fe89eb the manifest that a remote job writes in `op_run` carries `deadline_s`); tests/test_kit.py (a run whose deadline as a time of day lies an hour ahead is stopped by its `deadline_s`), tests/test_remote.py (the stand-in job's manifest gives the duration); references/loop.md. Commits b593bd0 and 1fe89eb"
  },
  {
   "file": "round9",

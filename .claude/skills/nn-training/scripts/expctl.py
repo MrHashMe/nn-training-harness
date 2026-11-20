@@ -2113,7 +2113,8 @@ def cmd_supervise(args):
                 signal.signal(sig, on_signal if sname != "SIGHUP" else signal.SIG_IGN)
             except (ValueError, OSError):
                 pass
-    deadline, grace = man.get("deadline"), float(man.get("grace_s") or 600)
+    # a grace of 0 (--grace 0s) is none (was until 20 November 2026: read as the 600 s of a manifest that names none)
+    deadline, grace = man.get("deadline"), float(man["grace_s"]) if is_num(man.get("grace_s")) else 600.0
     kill_after_default = float(man.get("kill_after_s") or 120)
     # Seconds from this start to the deadline. One given as a duration counts from here, so the launch's own reading
     # of the clock is not in it; and the time since is what the system's clock says or the one that is never set,
@@ -2347,14 +2348,19 @@ def curve_findings(loss, metric, direction, lname, mname):
         return i, [x[2] for x in s[:i]] if i is not None else []
 
     ok = broke(loss)[1]
-    # A blow-up before the first value that is not finite: far above the lowest value, by the measure of what the loss
+    # A climb before the first value that is not finite: far above the lowest value, by the measure of what the loss
     # had gained or, where it rose from the first step on and had gained nothing, of where it began
     lo, high = (min(ok), 0.5 * max(ok[0] - min(ok), abs(ok[0]))) if ok else (0, 0)
-    quick = len(ok) > 2 and ok[-1] - lo > high > 0
-    rose = (lo, ok[-1]) if quick else None  # from where to where the loss climbed, where it did
+    climbed = len(ok) > 2 and ok[-1] - lo > high > 0
+    rose = (lo, ok[-1]) if climbed else None  # from where to where the loss climbed, where it did
     L = [x for x in loss or [] if math.isfinite(x[2])]
-    if quick:  # the shape below is that of the run before the blow-up, whose few values would stand for a whole tenth
-        del L[next(i for i in range(len(ok), -1, -1) if not i or ok[i - 1] - lo <= high):len(ok)]
+    # A blow-up is such a climb in a few values, which would stand for a whole tenth of the shape below: that shape is
+    # then the run's before them. A climb of more values than a tenth the shape reads itself (was until 20 November
+    # 2026: every climb counted as a blow-up, and of a steady one the shape read the start alone)
+    i0 = next(i for i in range(len(ok), -1, -1) if not i or ok[i - 1] - lo <= high) if climbed else 0
+    blowup = climbed and len(ok) - i0 <= max(3, len(ok) // 10)
+    if blowup:
+        del L[i0:len(ok)]
     n, v = len(L), [x[2] for x in L]
     if n >= 20:
         c = [mean(v[i * n // 10:(i + 1) * n // 10]) for i in range(10)]  # tenths of the run: single steps are noisy
@@ -2392,7 +2398,9 @@ def curve_findings(loss, metric, direction, lname, mname):
                              "loading, memory pressure or swapping, another process on the GPU, or thermal throttling")
     # Values that are not finite are said first and read last: whether the loss climbed before it broke is what its
     # shape says too, so the two sentences cannot disagree (was: "one step went wrong" beside "rose again"). A loss
-    # that is finite again later did not end there: only a blow-up just before it is a divergence then
+    # that is finite again later did not end there: only a blow-up just before it is a divergence then, a longer climb
+    # before it is said without that word, and where the shape found a rise, which may lie anywhere in such a loss,
+    # nothing is said of the values before (was until 20 November 2026: "ordinary" there, and "diverged" for any climb)
     first = {}
     for name, s in ((lname, loss), (mname, metric)) if lname != mname else ((lname, loss),):
         bad, ok = broke(s)
@@ -2401,9 +2409,10 @@ def curve_findings(loss, metric, direction, lname, mname):
         first[name], back = s[bad][0], any(math.isfinite(x[2]) for x in s[bad:])
         when = f"from {at(s, bad)}, and finite again later" if back else f"from {at(s, bad)} on"
         if name == lname:
+            up = f", after it had risen from {rose[0]:.4g} to {rose[1]:.4g}" if rose and (climbed or not back) else ""
             out.append(f"{name} is not finite {when}" + (
-                f", after it had risen from {rose[0]:.4g} to {rose[1]:.4g}: the training diverged. A lower learning "
-                "rate, a warmup, or gradient clipping" if quick or rose and not back else
+                up + ": the training diverged. A lower learning rate, a warmup, or gradient clipping"
+                if blowup or rose and not back else up if rose else
                 f"; the values before it were ordinary ({ok[-1]:.4g}): one step went wrong. A bad value in a batch, a log "
                 "or a division of zero in the loss, or an overflow under mixed precision" if ok else ""))
         else:  # the metric: with a loss that broke no later there is nothing more to say, otherwise the evaluation did it

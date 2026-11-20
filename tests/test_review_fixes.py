@@ -198,7 +198,7 @@ def main():
         ("the index alone", "Bash", {"command": "git restore --staged eval/metrics.py"}, None, None, None),
         # round 9 asks about a patch that is applied, not about git am's two forms that apply none
         ("git am shows the patch it is at, and its help", "Bash",
-         {"command": "git am --show-current-patch; git am -h"}, None, None, None),
+         {"command": "git am --show-current-patch; git am -h; git am --show-current-patch=diff"}, None, None, None),
         ("git am applies a patch", "Bash", {"command": "git am --show-current-patch; git am fix.mbox"}, None, None, "ask"),
         ("chained command is not the final eval", "Bash",
          {"command": "NN_UNSEAL_TEST=1 python eval/final.py && cat data/test/labels.csv"}, None, None, "deny"),
@@ -300,7 +300,12 @@ def main():
                       ("awk '{ print $1 |& \"sort\" }' train.py", "deny"),
                       ("tar -xf bundle.tar -O; echo done; 7z e bundle.7z -so|head -3", None),
                       ("printf 'x\\n' | awk '{print $1}' train.py 2>&1 | tail -5", None),
-                      ("printf 'x\\n' | sort | awk '{print $1}' train.py 2>/dev/null", None)]:
+                      ("printf 'x\\n' | sort | awk '{print $1}' train.py 2>/dev/null", None),
+                      # were None until 20 November (the reading of that day): a program's name with .exe, as a
+                      # shell on Windows may write it, is that program
+                      ("touch.exe notes.md", "deny"), ("patch.exe -p1 -i fix.patch", "deny"), ("black.exe .", "deny"),
+                      ("install.exe -m 644 x.py sub/y.py; ruff.exe format .", "deny"),
+                      ("black.exe --check .; ruff.exe format --diff .; ls touch.exe", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
 

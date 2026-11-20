@@ -263,7 +263,8 @@ PY_OPENS = re.compile(r"sqlite3\.connect")
 # which in perl and PHP, where a dot joins two texts, is the call that starts a command.
 # The language's name is the program's: with a version (lua5.4, julia-1.10, nodejs) or .exe, not a folder or a file
 # of that name (grep -rn "writeFile(" node/, perl.pl), nor a file's ending (web/index.php, --include=*.php). A word
-# of its own does count, whatever it is there (grep -v node).
+# of its own does count, whatever it is there (grep -v node), and so does an ending in a list in braces
+# (--include=*.{php,rb}): a brace opens a block of PowerShell too, where the program stands right behind it.
 # The name that a word of writing stands in is read to its end once and not given back letter by letter: a call's
 # bracket, blank or quote can only follow the whole name
 _CALL = r"(?:\s*\(|\s+[\"'$@])"
@@ -281,7 +282,8 @@ LANG_WRITES = re.compile(
 # own printf is given in front of the pipe (printf 'epoch -> loss\n' | awk '{print $1}'). The shell's pipe into awk
 # ends a statement as well, so that a printf in front of it does not lend awk the redirections behind its program
 # (printf 'x\n' | awk '{print $1}' f 2>&1 | tail -5). The screen and the void
-# are no files: print "bad row" > "/dev/stderr", where that name is the whole target and ends the statement
+# are no files: print "bad row" > "/dev/stderr", where that name is the whole target and ends the statement (in a
+# program in single quotes: in one in double quotes, where the name's own quotes are escaped, it still counts)
 AWK = re.compile(r"\b[gmn]?awk\b", re.I)
 AWK_WRITES = re.compile(r"\bprintf?\b(?:[^;}|\n\"']|\|(?!\s*[^\s;&|]*awk\b)|\"[^\"\n]*\"|'[^'\n]*')*?"
                         r"(?:>(?!>?\s*\"/dev/(?:stderr|stdout|null|tty)\"\s*(?:[;}\n']|$))|\|&?\s*[\"'])|\bsystem\s*\(|"
@@ -428,19 +430,24 @@ SPLICES_NOTES = re.compile(
 # patch<fix.patch). Not at "(": patch(x) is a call in program text, and install() { a function of the shell
 _WEND = r"(?=[\s;&|)<>]|$)"
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
-# formatters, which rewrite a file unless they are told to check only, to print, or to say what they are
-WRITE_CMDS = re.compile(_GO + r"(?i:touch|patch|install)" + _WEND, re.M)
+# formatters, which rewrite a file unless they are told to check only, to print, or to say what they are. Each with
+# .exe too, in any case, as a shell on Windows may name it (was until 20 November 2026: touch.exe, install.exe and
+# black.exe on a kept file passed unasked, and a read-only agent was let run them and patch.exe)
+WRITE_CMDS = re.compile(_GO + r"(?i:(?:touch|patch|install)(?:\.exe)?)" + _WEND, re.M)
 # A patch changes the files that it names, and the line shows none of them: git apply unless it only checks or
 # describes the patch (--apply behind such an option applies it after all, and git takes --ap for it, so any
 # option that starts with --a counts as that one), git am unless it shows the patch it stopped at, and patch unless
 # it is a dry run: --dry-run, and BSD's -C and --check (also in a group behind letters that take no value: -NC),
 # which GNU patch does not know and stops at (tried on 19 November 2026, GNU patch 2.7.6). One that is asked for
-# its help or its version applies nothing either (git's -h ends it wherever it stands, tried with git 2.52)
+# its help or its version applies nothing either (git's -h ends it wherever it stands, tried with git 2.52). Such an
+# option's name ends where no letter, digit or hyphen follows: patch --version-control=numbered is another option,
+# and applies the patch (was until 20 November 2026: read as --version)
 PATCHES = re.compile(
-    r"\bgit\s+(?:am\b(?![^;&|\n]*?\s(?:--show-current-patch\b|--help\b|-h(?=[\s;&|)]|$)))|"
-    r"apply\b(?:(?=[^;&|\n]*?\s--a)|(?![^;&|\n]*?\s(?:--(?:check|stat|numstat|summary|help)\b|-h(?=[\s;&|)]|$)))))|"
-    + _GO + r"(?i:patch)(?:\.exe)?" + _WEND +
-    r"(?![^;&|\n]*?\s(?:--(?:dry-run|check|help|version)\b|-[bcEeflNnRstuv]*C\S*))", re.M)
+    r"\bgit\s+(?:am\b(?![^;&|\n]*?\s(?:--(?:show-current-patch|help)(?![\w-])|-h(?=[\s;&|)]|$)))|"
+    r"apply\b(?:(?=[^;&|\n]*?\s--a)|"
+    r"(?![^;&|\n]*?\s(?:--(?:check|stat|numstat|summary|help)(?![\w-])|-h(?=[\s;&|)]|$)))))|"
+    + _GO + r"(?i:patch(?:\.exe)?)" + _WEND +
+    r"(?![^;&|\n]*?\s(?:--(?:dry-run|check|help|version)(?![\w-])|-[bcEeflNnRstuv]*C\S*))", re.M)
 # An archive may hold a file of any name, and unpacked into a folder it writes that file below it: tar with -x (as
 # its first word of letters too: tar xzf), unzip unless it lists, tests or prints, 7z x and e, cpio -i unless it
 # lists (-it), PowerShell's Expand-Archive. A program's name counts in any case, its options as they are written
@@ -451,15 +458,16 @@ PATCHES = re.compile(
 _TO_OUT = (r"(?![^;&|\n]*?\s(?:--to-stdout\b|-[xvzjJkmpPaU]*O[a-zA-Z]*" + _WEND + r"))"
            r"(?!\s+[xvzjJkmpPaU]*O[a-zA-Z]*" + _WEND + ")")
 EXTRACT = re.compile(
-    _GO + r"(?:(?i:(?:bsd|g)?tar)(?:\.exe)?(?=\s)" + _TO_OUT + r"(?:\s+[a-zA-Z]*x[a-zA-Z]*" + _WEND + "|"
+    _GO + r"(?:(?i:(?:bsd|g)?tar(?:\.exe)?)(?=\s)" + _TO_OUT + r"(?:\s+[a-zA-Z]*x[a-zA-Z]*" + _WEND + "|"
     r"(?=[^;&|\n]*?\s(?:-[a-zA-Z]*x|--extract\b|--get\b)))"
-    r"|(?i:unzip)(?:\.exe)?(?=\s)(?![^;&|\n]*?\s-[a-ce-zA-OQ-Z]*[lptvZzc])"
-    r"|(?i:7z[arz]?)(?:\.exe)?\s+[xeXE](?=\s)(?![^;&|\n]*?\s-so" + _WEND + r")|(?i:Expand-Archive)\b"
+    r"|(?i:unzip(?:\.exe)?)(?=\s)(?![^;&|\n]*?\s-[a-ce-zA-OQ-Z]*[lptvZzc])"
+    r"|(?i:7z[arz]?(?:\.exe)?)\s+[xeXE](?=\s)(?![^;&|\n]*?\s-so" + _WEND + r")|(?i:Expand-Archive)\b"
     r"|(?i:cpio)\b(?=[^;&|\n]*?\s(?:-[a-zA-Z]*i|--extract\b))"
     r"(?![^;&|\n]*?\s(?:-[a-zABLSV]*t|--list\b|--to-stdout\b)))", re.M)
 _NO_WRITE = r"(?![^;&|\n]*\s(?:--(?:check(?:-only)?|diff|version|help)|(?-i:-[cdhV]))(?=[\s;&|)]|$))"
-FORMATS = re.compile(_GO + r"(?:(?:(?:black|isort)(?:@[\w.]+)?|ruff(?:@[\w.]+)?\s+format)(?=\s|$)" + _NO_WRITE +
-                     r"|ruff(?:@[\w.]+)?(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)"
+_VER = r"(?:\.exe)?(?:@[\w.]+)?"  # black.exe, and the version that uvx takes: ruff@0.6
+FORMATS = re.compile(_GO + r"(?:(?:(?:black|isort)" + _VER + r"|ruff" + _VER + r"\s+format)(?=\s|$)" + _NO_WRITE +
+                     r"|ruff" + _VER + r"(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)"
                      r"(?![^;&|\n]*\s--(?:diff|help)\b))", re.I | re.M)
 PY_FILES = ("*.py", "*.pyi", "*.ipynb")  # what they rewrite below a folder
 # Commands that change a folder as a whole when they are given one: a move, a removal, a copy onto it, a link,

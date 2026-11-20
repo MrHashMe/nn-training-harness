@@ -371,6 +371,19 @@ def compare_tests(tmp, proj):
             ("one_nan", lambda i: fall(i) if i != 200 else nan, rise, {},
              ["train/loss is not finite from step 200, and finite again later; the values before it were ordinary",
               "one step went wrong"], ["from step 200 on", "diverged", "train/loss rose", "jumped"]),
+            # A loss that went on after one bad value. Where its shape shows a rise, the values before are not called
+            # ordinary, and a climb of 300 values is no blow-up (were: "one step went wrong" beside "rose again", and
+            # "the training diverged" with a shape that read the climb's start alone)
+            ("nan_in_rise", lambda i: nan if i == 300 else (2.3 * e(-i / 40) + 0.3 if i < 200 else 0.3 + (i - 200) * 0.01) + g(.01),
+             lambda i: 0.1 + g(.004), {},
+             ["train/loss is not finite from step 300, and finite again later | train/loss rose again"],
+             ["ordinary", "one step went wrong", "diverged"]),
+            ("nan_in_climb", lambda i: nan if i == 300 else 1 + 0.01 * i, lambda i: 0.1 + g(.004), {},
+             ["train/loss is not finite from step 300, and finite again later, after it had risen from 1 to 3.99 | "
+              "train/loss rose from the start (1.19 to 4.795)"], ["diverged", "one step went wrong"]),
+            ("climb_then_nan", lambda i: 1 + 0.01 * i if i < 300 else nan, lambda i: 0.1 + g(.004), {},  # was: 1.02 to 1.475
+             ["train/loss is not finite from step 300 on, after it had risen from 1 to 3.99: the training diverged",
+              "train/loss rose from the start (1.145 to 3.845)"], ["one step went wrong"]),
             ("eval_nan", fall, lambda i: rise(i) if i < 200 else nan, {},
              ["val/acc is not finite from step 219 on; the values before it were ordinary", "the fault lies in the evaluation"],
              ["was not finite by then", "one step went wrong", "train/loss"]),
@@ -890,6 +903,23 @@ def main():
     check(ex8.get("stopped_for") == "deadline + grace exceeded" and (ex8.get("duration_s") or 99) < 60,
           "a run whose deadline was given as a duration ends by it where the system's clock was set back after the "
           f"launch (stopped for {ex8.get('stopped_for')}, after {ex8.get('duration_s')} s)")
+    # The row above passes on the system's clock alone. Here that clock stands still, which only a stand-in can do, so
+    # the run ends by the clock that is never set or not at all; and its grace of 0 is none (was: read as the 600 s of
+    # a manifest that names no grace). A run that is not ended sleeps its 120 s out, and the row fails
+    rd = tmp / "stands"
+    rd.mkdir()
+    (rd / "manifest.json").write_text(json.dumps({
+        "cmd": [PY, "-c", "import time; time.sleep(120)"], "cwd": str(tmp), "deadline_s": 1, "grace_s": 0, "kill_after_s": 5}))
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import expctl\n"
+            "t = expctl.now(); expctl.now = lambda: t\n"
+            "expctl.main(['_supervise', sys.argv[2]])\n")
+    began = time.monotonic()
+    sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(rd)], cwd=proj, timeout=200)
+    took = time.monotonic() - began
+    ex9 = json.loads((rd / "exit.json").read_text()) if (rd / "exit.json").exists() else {}
+    check(ex9.get("stopped_for") == "deadline + grace exceeded" and took < 60,
+          "a run whose deadline was given as a duration ends by it where the system's clock does not move, and at "
+          f"once with a grace of 0 (stopped for {ex9.get('stopped_for')}, after {took:.0f} s)")
     # A launch's folder is its own, so the supervisor does not compare a request's time with the launch's: where the
     # clock was set back between the two, a true request looked older than the run and was never taken
     back = jout(expctl(proj, "launch", "--name", "back", "--", PY, "train.py", "--mode", "hang", "--seed", "11"))
@@ -2429,6 +2459,22 @@ def main():
         ("Bash", {"command": "7z X bundle.7z -oeval"}, "ask"),
         ("Bash", {"command": "patch -c -p1 < fix.patch"}, "ask"),
         ("Bash", {"command": "git am --show-current-patch; git am fix.mbox"}, "ask"),
+        # From the reading of 20 November 2026: an option's name ends where no hyphen follows. patch's
+        # --version-control is not its --version, and applies the patch (was: let through as a call for the version)
+        ("Bash", {"command": "patch --version-control=numbered -p1 < fix.patch"}, "ask"),
+        ("Bash", {"command": "patch -p1 --version-control numbered -i fix.patch"}, "ask"),
+        ("Bash", {"command": "(patch --version); patch --help|head -3; patch -p1 --dry-run<fix.patch"}, None),
+        # Found when those rows were tried with the program's name as a shell on Windows may write it: with .exe it
+        # is the same program (were None: the rules for touch, install and the formatters ended the name at a blank)
+        ("Bash", {"command": "touch.exe eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "install.exe -m 644 x.py eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "black.exe eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "ruff.exe check --fix eval/metrics.py; isort.exe ."}, "ask"),
+        ("Bash", {"command": "TOUCH.EXE eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "Patch.Exe -p1 -i fix.patch"}, "ask"),
+        ("Bash", {"command": "TAR.EXE -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "touch.exe sub/new.py; install.exe -m 644 x.py sub/y.py; ls touch.exe"}, None),
+        ("Bash", {"command": "black.exe --check eval/metrics.py; ruff.exe format --diff eval/metrics.py"}, None),
         # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends
         # its command as well as at a blank (tar x) and patch<fix.patch), the shell's pipe into awk ends what its
         # own printf lends awk, and a quoted command behind awk's bar is one whatever stands behind it

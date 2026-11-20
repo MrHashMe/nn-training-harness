@@ -295,7 +295,8 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   Python's file calls in code on the line (`open(…, 'w')`, `write_text`, `os.replace`, pathlib's `.rename(`,
   `.touch(` and the link calls); and the PowerShell and cmd forms of all these, a file object's own calls among
   them (`(Get-Item f).Delete()`, `.MoveTo(`, `.CopyTo(`). A program's name counts in any case (`RM`, `SED`,
-  `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so.
+  `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so; and with `.exe`, which `touch.exe`,
+  `install.exe` and the formatters (`black.exe`) count with since 20 November 2026 (they passed unasked before).
   Since 15 November 2026 a line whose only write is a redirect, or a `tee` at the start of a command, is asked
   about only where a target of it is such a file: `python eval/metrics.py > score.json` passes (it was asked
   about, and refused where nobody can be asked), `echo x > eval/metrics.py` is asked about as before. The
@@ -408,7 +409,8 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   And a line that applies a patch (`git apply`, `git am`, `patch`), whatever the patch names, because the
   guard reads the command and not the patch; `git apply --check`, `--stat`, `--numstat` and `--summary`,
   `patch --dry-run` (BSD's `-C` and `--check`), `git am --show-current-patch` and a call for help or the
-  version pass. A word of these two rules ends at a blank or at the sign that ends its command
+  version pass (by the option's whole name: `patch --version-control=numbered` is another option, applies the
+  patch and is asked about since 20 November 2026). A word of these two rules ends at a blank or at the sign that ends its command
   (`(cat x.tar | tar x)`, `patch<fix.patch`, `tar -xf x.tar -O; echo done`), so a label `patch)` at the start
   of a line of a shell's `case` is asked about as the command.
   The same day the list of writes grew by program text in languages whose write calls the guard

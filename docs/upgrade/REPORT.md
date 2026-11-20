@@ -71,6 +71,9 @@ beyond it where something better could be found: its section, "Round 9", follows
 on the real install". On your "Push test branch" of 20 November that round went to the new public branch
 `test/round-9`, where all six of GitHub's jobs pass at the first run ("Round 9 on the test branch", after
 "Round 9"). `main` and your real install do not have it.
+On the same day a session of its own ran the first of round 9's next steps, the proof pilot with a real
+agent on the kit's two benchmark tasks: its section, "The proof pilot", follows "Round 9 on the test branch"
+and is the last before "1. What changed and why". It is one local commit, and nothing of it is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -552,6 +555,28 @@ Decision record: `docs/upgrade/LEDGER.md`.
     install's guard has the tee hole; which large item is built next after the pilot, if any;
     whether further readers of my own fixes are wanted without asking; the clock of this machine's
     WSL; the eleven snapshot branches and the scratch clones; the three public test branches.
+    (Added with point 38: the pilot ran; its record is "The proof pilot".)
+38. **The proof pilot ran: on neither task is the kit shown ahead of the bare agent, the loop did not
+    stall, and no training run was lost to the guard** (20 November; "The proof pilot"). It is the work
+    of a session of its own. A real agent (Claude Code, Sonnet) worked on the kit's two benchmark tasks
+    in three ways at an equal budget of 12 training runs, five times each: with round 9's loop, with
+    round 8's kit in one session, and with no kit. On the character task the loop is 0.0075 behind the
+    bare agent in test loss (p 0.28); on the fine-tuning task it is 0.0205 ahead in the share of exact
+    answers (p 0.47), and that edge is one arm-run of the bare agent. The pilot could have shown only
+    differences above 0.0154 and 0.0713. What moved the scores was the agent: every arm lifted the
+    fine-tuning script from 0.36 to about 0.85. The result speaks for neither a second search shape nor
+    confinement. It found a defect of the kit instead, which is not fixed: on Windows in a virtual
+    environment, `expctl launch -- python ...` starts the base interpreter. Four of the ten arm-runs of
+    round 8's kit are void, for a fault of the pilot script's allow list. Twelve more arm-runs were void
+    and were run again: Windows' disk cleanup emptied the Python environment in the temporary folder
+    (the cause by the times, not proved), and my driver went on without a check (1.18 of the pilot's
+    7.54 million tokens). The records of the pilots of 11 November went in the same minutes. The pilot
+    ran on native Windows without the sandbox, and round 9's guard met no shell command. Nothing is
+    pushed; `pilot.py` and the kit's code are unchanged; the record is one local commit on
+    `claude/brave-robinson-27cbd9`, which was moved forward onto `5ccc2d4` first. Open: the launcher's
+    repair; the allow list, and whether the four void arm-runs are run again; where a pilot's records
+    live, since `%TEMP%` is cleaned; what is still wanted from `%TEMP%\nnkit-upgrade`; the access token
+    that a command of mine printed into that session's transcript.
 
 ## Round 2 (12 November 2026)
 
@@ -7990,6 +8015,8 @@ under Python 3.11.7 on Windows; on `i` the table above.
    guard, confinement.
    (Added on 20 November: you started this on that day as a session of its own, on a branch cut from
    `86fc3a5`. What it does and finds is that session's to record, and nothing of it is in this one.)
+   (Added with the proof pilot, 20 November: it ran. The loop did not stall and no training run was lost
+   to the guard, so it speaks for neither of the two items; "The proof pilot" below.)
 2. **Confinement on Windows and macOS** (a job object here, Seatbelt on a Mac), tried against the guard's
    own generated test. Only after it can the guard shrink.
 3. **Hard limits beside the metric**, measured by the harness: the Assess row's test on the character
@@ -8153,6 +8180,9 @@ Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,66
   `86fc3a5`. Its budget is yours to give there, and its record is that session's. That record will
   change this file and PROGRESS.md as this one does, so the two branches meet with both texts kept and
   the ledger built again.
+  (Added with the proof pilot: that session moved its branch forward onto `5ccc2d4` before it committed
+  its record, so the two texts follow one another and nothing has to be joined. It did not touch the
+  ledger.)
 - Deleting anything: the eleven snapshot branches, their clones, the scratch folder and the three public
   test branches stay as they are.
 
@@ -8177,6 +8207,706 @@ from the run's list of jobs and from each job's log, its checks counted in the s
 that begin with `PASS` and `FAIL` and split at the `RESULT:` lines; run 44554136667, read on the same
 day in the same way; `tests/test_remote.py` on the state of `1fe89eb`, run on this machine on 20
 November 2026.
+
+## The proof pilot (20 November 2026): on neither task is the kit shown ahead of the bare agent, and the loop did not stall
+
+Round 9 named a proof pilot with a real agent as its first next step ("Most valuable next steps" above).
+This section is that pilot. It is the work of a separate session, which the session that keeps these
+records started for it, on the branch `claude/brave-robinson-27cbd9` at `86fc3a5` (the kit's code is
+`b593bd0`, round 9). The task: run `benchmarks/pilot.py` with a real agent on the kit's two benchmark
+tasks, at an equal budget of training runs, three ways: with this checkout's kit (arm `new`, the
+unattended loop), with the kit of the public release before round 9 (arm `old`, `992f436`, which is
+round 8), and with no kit (arm `none`); and record what came of it. The pilot ran on that state. After
+its last run and before this record was committed, the branch was moved forward onto the head of
+`test/round-9` (`5ccc2d4`: the repair `1fe89eb` in `nnremote.py`, which the pilot does not use, and its
+record), so that this section follows that one.
+
+Before anything paid started I proposed a budget: both tasks, five repeats per arm, 12 training runs of
+30 seconds per arm-run, Sonnet, about 11 million tokens (8 to 15) and about six hours. You answered
+"Yes, both tasks" by 03:02. Dates and times in this section are UTC, all of 20 November.
+
+### In short
+
+1. **The kit is not shown to beat the bare agent on either task, and the bare agent is not shown to beat
+   the kit.** Each comparison rests on five arm-runs against five.
+   - Character-level model, loss on the test split, lower is better: the loop 1.7473, the bare agent
+     1.7398. The loop is 0.0075 behind; the 95 % interval runs from 0.0229 behind to 0.0079 ahead, and p
+     is 0.28. This half could have shown only a difference above 0.0154, which is 0.9 % of the loss.
+   - Fine-tuning, share of exact answers on the test split, higher is better: the loop 0.8560, the bare
+     agent 0.8355. The loop is 0.0205 ahead; the interval runs from 0.0509 behind to 0.0918 ahead, and p
+     is 0.47. This half could have shown only a difference above 0.0713.
+2. **The loop's edge on the fine-tuning task is one arm-run of the bare agent.** `none-1` scored 0.7397:
+   its script fills the graphics card's memory, and on one scoring seed it trained at less than half
+   speed. The other four bare sessions average 0.8595, above the loop's 0.8560. What the loop shows
+   there is steadiness, five results within 0.020; on the character task it was the bare agent whose
+   results lay closer together.
+3. **What moved the scores was the agent, with or without the kit.** On the fine-tuning task every
+   arm-run that trained lifted the shipped script's 0.36 to between 0.74 and 0.89, in all three arms
+   with the same recipe (adapters on every projection, a higher learning rate with a warmup). On the
+   character task the gains are 0.5 to 1 % of the loss.
+4. **The kit of the release before round 9 (`old`, round 8) is not shown different from the bare agent
+   where its sessions trained** (three arm-runs against five on each task: 0.0159 behind, p 0.22, and
+   0.0004 behind, p 0.99). **Four of its ten arm-runs are void.** In all four the pilot's own
+   permission rule refused the interpreter named by its full path, which is the form the kit's
+   installed `CLAUDE.md` gives, and the session stopped without having trained; on the fine-tuning
+   task the one run that each of the two then started failed, because the kit's launcher starts the
+   wrong Python there (point 6). Counted as they scored, the arm is behind the bare agent by more than
+   the noise on the character task (p 0.030) and 0.17 behind on the fine-tuning task (p 0.19). That
+   reading measures the pilot's rule, not the kit. I made the four judgments after the scores were
+   known, so every table gives both.
+5. **Beside the score.**
+   - **The loop did not stall.** The run limit ended all ten campaigns, after 3 to 5 changes each. On
+     the fine-tuning task every campaign kept its first two changes; on the character task the five
+     campaigns kept 4 of 19.
+   - **No training run was lost to the guard.** Round 9's guard decided 213 tool calls of the loop's 44
+     sessions and refused two, both a scouting session's read of the kit's own reference file. Those
+     sessions have no shell, so it met no command line. Round 8's guard, in the `old` arm, asked about
+     six command lines; each session made its change another way and trained.
+   - **The loop used its budget and the single sessions did not:** 10 to 12 of the 12 runs in every
+     campaign, 2 to 7 in a bare session. The loop took about 10 and 13 minutes an arm-run on the two
+     tasks against 4 and 3 for the bare agent, and 1.4 and 1.8 times its tokens.
+   - **No session of any arm named a held-out file** in a tool call. In the `none` arm only the prompt
+     stood in the way.
+6. **Which next item this speaks for: neither a second search shape nor confinement.** The loop did not
+   stall and the guard cost no run. What the pilot found instead is smaller, and nothing of it is fixed
+   here:
+   - **A defect of the kit on Windows:** `expctl launch -- python train.py`, run from a virtual
+     environment, starts the base interpreter and not the environment's. It cost every `old` session
+     of the fine-tuning task its first run, and this checkout's `expctl` does the same (one probe run).
+     The loop's runs are not touched by it.
+   - **A fault of the pilot script:** its allow list for the single sessions does not cover the
+     interpreter named by its path. One more entry would; that changes a file of the kit, so it is
+     yours to decide.
+   - At 12 runs the loop's protocol leaves three to five decisions, where a bare session puts several
+     changes into one run.
+7. **Two faults of the machine and one of mine.** The fine-tuning half waited six hours: that morning
+   the task trained at half speed, by a different amount for each seed, until you restarted the
+   machine; the cause is not found. Half an hour into the half, Windows' disk cleanup emptied the
+   Python environment, which lay in the temporary folder (by the times; I did not prove it by a second
+   run). **My driver did not check that an arm-run had trained and ran four more repeats: twelve
+   arm-runs are void, and 1.18 million tokens bought nothing.** I repaired the environment and the
+   driver and ran the twelve again. The records of the two pilots of 11 November, which I had read
+   that morning, went in the same minutes, and six other folders of this work hold no file now.
+8. **Cost: 7.54 million tokens of your subscription** (about 6.3 USD at Claude Code's notional prices;
+   no session reported usage billed per use) **and 4 hours 40 minutes of running,** against an estimate
+   of about 11 million (8 to 15) and six hours. This session's own usage is not in that number.
+9. **Nothing is pushed, merged or run on your real install. `pilot.py` and the kit's code are
+   unchanged.** This record is one local commit on the branch `claude/brave-robinson-27cbd9`. The
+   pilot's files lie in the temporary folder that Windows cleans; the scores, the statistics, the
+   transcripts and the scripts are copied to the sessions' notes folder, outside the repository ("What
+   needs your decision").
+
+### How it was run
+- **Arms.** `new`: a fresh project with this checkout's kit, and in it `nnloop start --campaign pilot
+  --agent claude --max-runs 12 --model sonnet`; the pilot script turns the loop's confirmation on fresh
+  seeds and its control runs off, so that the loop spends its limit on the search as the other arms do.
+  `old`: a fresh project with the kit of `992f436`, unpacked from git and installed by its own installer,
+  and one headless session whose prompt has the task, the budget, the rule on held-out data and one
+  line more: the kit is installed, use it as its instructions say. `none`: the same session without a
+  kit and without that line.
+- **Agent.** Headless Claude Code CLI 2.1.322 (`claude -p`), model `claude-sonnet-5-5`, signed in with
+  the subscription, permission mode `dontAsk` with tool lists in every session; approvals never
+  bypassed. A single session of `old` and `none` has the file tools and a shell in which commands that
+  call Python are allowed. The loop's sessions have no shell: its scouting session has Glob, Grep, Read,
+  Write and the two web tools, its worker sessions Glob, Grep, Read, Edit and Write, and the loop itself
+  starts the training.
+- **Budget, the same for every arm:** at most 12 training runs of 30 seconds each. In the loop the three
+  baseline seeds count against the 12 and the harness enforces the limit; a single session is told the
+  limit and has 40 minutes.
+- **Score.** The final `train.py` of each arm-run is retrained on three seeds that no arm used (101,
+  102, 103) in a copy of the task without the held-out files, and this checkout's `evaluate.py` scores
+  each model on the test split. An arm-run's score is the mean of the three. The arms took turns (new,
+  old, none), five times.
+- **Where.** Native Windows 11 with an RTX 5090, Python 3.11.7, PyTorch 2.9.1+cu130. **The loop ran
+  without its sandbox:** the sandbox needs bubblewrap, which is Linux only, and the agent programs in
+  this machine's WSL are old and not signed in. So in the `new` arm the guard alone stood between the
+  loop's sessions and the files, and those sessions have no shell. Round 9's guard therefore met no
+  shell command in this pilot: what a shell command met was round 8's guard, in the `old` arm.
+- **`pilot.py` was not changed.** A driver script beside the work folder called it once per repeat
+  (`--repeats 1`, then 2, and so on: the script continues after the last recorded arm-run), so that a
+  cap on the recorded tokens could end the pilot between two repeats (13.5 million; it was not
+  reached). From 11:07 on, after the fault described below, it called the script once per arm on the
+  fine-tuning task, and checked the environment before each call and the recorded arm-run after it.
+  The driver also takes the access-token variables of a model hub out of the environment of
+  everything it starts: the base model is a local folder, so no session needs one. The loop withholds
+  such variables from its runs by itself; the single sessions of the other arms would have had them.
+- **Criterion, fixed before the first arm-run started** (the docstring of `pilot_stats.py`, written
+  before 03:00; the first arm-run started at 04:09:51): an arm counts as ahead of another by more than
+  the noise only if Welch's two-sided p is below 0.05, which is the same as the 95 % interval excluding
+  zero. The comparisons asked for are the kit over no kit: `new` over `none` and `old` over `none`.
+  `new` over `old` is a by-product. Nothing is adjusted for the number of comparisons. An arm-run is
+  void when a fault of the pilot's setup or of the machine kept it from measuring its arm (the agent
+  program crashed, a session hit its time limit, the Python could not train, the scoring failed) or
+  when a tool call of its sessions read a held-out file. An arm-run in which the agent or the kit did
+  badly by itself is valid: that is a result.
+- **The statistics are those of `expctl compare`,** which does this arithmetic for the runs of a run
+  log. The pilot's scores are not runs of one log, so `pilot_stats.py` applies the same arithmetic to
+  them with `expctl`'s own functions (`t_tail`, `t_quant`). Each arm-run is one value. The edge of one
+  arm over another is the difference of the two means, signed so that a positive edge means the first
+  arm is better. The interval is Welch's t interval with the degrees of freedom rounded down, and p is
+  two-sided from the same t. The exact p counts, over all 252 ways to deal ten values into five and
+  five, how many give a difference at least as large; with five against five it cannot go below 0.008.
+  "Could have shown" is the half-width of the 95 % interval, as in `expctl compare`'s own sentence: a
+  difference smaller than that could not have come out as established here. The edge found with 80 %
+  power is the sum of the t quantiles for 0.025 and for 0.2, times the standard error. On the 11
+  November pilot's `pilot.json` the script gives that record's edges and permutation p values
+  (+0.0044 and 0.54, -0.0120 and 0.18, -0.0076 and 0.29).
+
+### The character-level model: neither kit arm beats the bare agent by more than the noise
+The character half ran from 04:09:51 to 06:10:06, two hours: 15 arm-runs, 3,364,494 tokens (input,
+output and cached tokens together), 2.91 USD at Claude Code's notional prices. No session reported usage
+billed per use, every session and campaign ended with exit code 0, none hit its time limit, and no
+scoring run failed. The machine was otherwise idle: of its 32 logical processors 3.9 were busy on
+average and never more than 7.0 (239 samples, one every 30 seconds).
+
+**Thirteen of the fifteen arm-runs are valid; `old-2` and `old-3` are void, for a fault of the pilot's
+setup.** In both, the session's first command was refused (a line that began with `cd` and then listed
+files), and then the old kit's own first step, typed as the kit's installed `CLAUDE.md` gives it: the
+interpreter by its full path, then `.claude/skills/nn-training/scripts/expctl.py status --brief`.
+`pilot.py` allows a single session the commands that begin with the word `python` or `python3`; the
+interpreter named by its path is not among them, although the pilot's prompt says that shell commands
+which call Python are allowed. Each of the two sessions took Python for refused and stopped after three
+tool calls, without a training run (17 and 18 seconds). `old-3` ended: "The refusal said Claude Code is
+in "don't ask" mode and that I shouldn't work around it, so I stopped." By the rule fixed beforehand
+that is void, and the first pilot of 11 November judged the same pattern void. The same line was refused
+in `old-4` (twice) and in `old-5`; those sessions typed `python` instead and went on. **I made the
+judgment after the scores were known, so the statistics are given both ways.** The two void scores are
+the unchanged script's (1.7561 and 1.7538) and lie at the arm's mean, which hardly moves (1.7554 with
+them, 1.7557 without): what changes is the count, five or three. I did not repeat the two. Under the
+same rule a repeat meets the same fault, and the repair, one more entry in `pilot.py`'s allow list,
+changes a file of the kit and the conditions in the middle of a pilot ("What needs your decision").
+
+Test loss on the test split, lower is better; in brackets the standard deviation over the three scoring
+seeds:
+
+| Arm | Run 1 | Run 2 | Run 3 | Run 4 | Run 5 | Mean | SD across the runs |
+|---|---|---|---|---|---|---|---|
+| `new`: this kit's loop | 1.7313 (0.0124) | 1.7531 (0.0110) | 1.7567 (0.0114) | 1.7585 (0.0093) | 1.7368 (0.0180) | 1.7473 | 0.0124 |
+| `old`: the kit of `992f436` | 1.7482 (0.0022) | void: 1.7561 (0.0134) | void: 1.7538 (0.0145) | 1.7723 (0.0269) | 1.7464 (0.0076) | 1.7557 of three, 1.7554 of five | 0.0145 of three, 0.0103 of five |
+| `none`: no kit | 1.7458 (0.0140) | 1.7476 (0.0091) | 1.7379 (0.0128) | 1.7319 (0.0160) | 1.7357 (0.0164) | 1.7398 | 0.0067 |
+| `train.py` as shipped, no agent | 1.7629 (0.0088), 1.7531, 1.7567, 1.7561, 1.7538 | | | | | 1.7565 | 0.0039 |
+
+The last row is the unchanged script scored five times on the same seeds: by the script's own reference
+scoring, and as the final `train.py` of `new-2` and `new-3`, the two campaigns that kept nothing, and of
+the two void sessions (each of the four files is identical to the shipped one, by its hash). Training
+stops by the clock, so a seed does not repeat exactly: 0.004 is what the scoring itself varies, as on 11
+November (0.0037).
+
+| Comparison | Arm-runs | Edge | 95 % interval | p (Welch) | p (exact) | Could have shown | Found with 80 % power |
+|---|---|---|---|---|---|---|---|
+| `new` over `none` | 5 and 5 | -0.0075 | -0.0229 to +0.0079 | 0.28 | 0.25 | 0.0154 | 0.0211 |
+| `old` over `none`, without the two void | 3 and 5 | -0.0159 | -0.0541 to +0.0223 | 0.22 | 0.054 | 0.0382 | 0.0476 |
+| `old` over `none`, all five counted | 5 and 5 | -0.0156 | -0.0290 to -0.0022 | 0.030 | 0.016 | 0.0134 | 0.0184 |
+| `new` over `old`, without the two void | 5 and 3 | +0.0084 | -0.0235 to +0.0403 | 0.46 | 0.39 | 0.0319 | 0.0417 |
+| `new` over `old`, all five counted | 5 and 5 | +0.0081 | -0.0089 to +0.0251 | 0.30 | 0.29 | 0.0170 | 0.0235 |
+
+- **This kit against the bare agent: not ahead.** The loop's mean test loss is 0.0075 (0.4 %) above the
+  bare agent's, so the loop is behind, and by less than the noise: the interval runs from 0.0229 behind to
+  0.0079 ahead, p is 0.28, and it rests on five arm-runs against five. The kit is not shown to beat the
+  bare agent, and the bare agent is not shown to beat the kit. **This half could have shown only a
+  difference above 0.0154 (0.9 % of the loss)**; an edge of 0.0211 (1.2 %) it would have found four
+  times in five. To establish the edge seen, if it is real, would take about 29 arm-runs per arm. The
+  sign and the size are those of 11 November (-0.0076, p 0.29, with the kit of that day). I did not pool
+  the two pilots: the kit and the pilot script changed between them.
+- **The kit of `992f436` against the bare agent: behind by 0.016, established or not by how the two void
+  arm-runs are counted.** Without them, three arm-runs against five: the interval runs from 0.054 behind
+  to 0.022 ahead, p is 0.22, and three values could have shown only a difference above 0.038. With all
+  five counted the interval excludes zero (0.029 to 0.002 behind, p 0.030), and by the criterion that
+  arm would count as behind the bare agent by more than the noise. That second reading is not a
+  statement about the old kit: two of its five values are the unchanged script, scored after sessions
+  that the pilot's own permission rule stopped.
+- **The bare agent improved the script every time.** All five of its results (1.7319 to 1.7476) lie below
+  all five scorings of the unchanged script (1.7531 to 1.7629), 0.0167 (1.0 %) on average. The loop's
+  arm lies 0.0092 below the unchanged script on average. Of its three campaigns that kept a change, two
+  scored the best and the fourth best of the fifteen (`new-1` 1.7313, `new-5` 1.7368), and the third
+  (`new-4`, 1.7585) no better than the unchanged script. Two campaigns kept nothing, as on 11 November.
+- The loop's five results lie further apart than the bare agent's (0.0124 against 0.0067). On 11
+  November it was the other way round (0.0052 against 0.0130): five values do not tell a spread.
+- The worst of the fifteen is `old-4` (1.7723, and 0.0269 over the three scoring seeds), the one session
+  that used the old kit's run controller for a full ten runs and 780,000 tokens.
+
+### The fine-tuning task: the loop is 0.02 ahead of the bare agent, inside the noise, and the 0.02 is one arm-run
+**`pilot.py --task finetune` works end to end, unchanged.** The script's scoring names the held-out
+files of the character task (`data/loopval.txt`, `data/test.txt`); the fine-tuning task has its four
+data files under the same names, and the prompt's commands fit both tasks. The run itself is the
+check: the script made the projects of the three arms, the loop's worktree got the base model through
+the task's `link_paths`, the single sessions trained with the environment's Python, and the scoring
+retrained every final script on the three seeds and scored it on the test split.
+
+Two things had to be set up first, both covered by your yes. The system Python cannot import
+Transformers (it wants an older huggingface-hub), and the temporary environment of round 3 had lost
+files, so I built a new virtual environment under `%TEMP%\nnkit-upgrade\ft-venv-1120` (it sees the
+system Python's packages; Transformers 5.22.2, PEFT 0.21.2; the system Python is untouched and the
+broken environment is left as it was). And the base model (270 MB) was copied from the main checkout
+into this worktree's `benchmarks/finetune/model/`, which git ignores. Nothing was downloaded for the
+model.
+
+**The half was held from 04:10 to 10:09, because that morning the task trained at about half its speed
+on this machine, and by a different amount for each seed. Your restart of the machine cured it.** The
+first reference scoring showed the fault, and I measured it again on the idle machine before any agent
+session:
+
+| The shipped `train.py`, 30 seconds | Steps | Score |
+|---|---|---|
+| 19 runs of 12 and 14 November (from their logs under `%TEMP%\nnkit-upgrade`) | 341 to 370 | 0.35 to 0.39 on `loopval.txt` (the task's README, seeds 1 to 3) |
+| The first reference scoring, 03:04 to 03:08, seeds 101, 102, 103 | 312, 210, 206 | 0.298, 0.128, 0.128 on the test split (mean 0.185) |
+| Again on the idle machine, 03:36 to 03:39, the same seeds | 276, 158, 160 | 0.210, 0.072, 0.064 on the development split |
+| After the character half, 06:16, seed 101 | 269 | 0.202 on the development split |
+| **After the restart,** 10:03 to 10:05, seeds 101, 102, 103 | 350, 350, 349 | 0.320, 0.328, 0.310 on the development split |
+| The reference scoring that counts, 10:05 to 10:09, the same seeds | 351, 353, 352 | 0.366, 0.366, 0.359 on the test split (mean 0.3637) |
+
+- **Where the time went.** An ordinary step took about 90 ms, as before. The loss was in about ten
+  steps per run in which PyTorch had to ask the graphics driver for more memory: the script pads each
+  batch to its longest text, so a batch wider than any before needs blocks of a new size, and PyTorch
+  ended up holding 17 to 20 GB while 544 MiB were in use. Each such step took 0.3 to 3 seconds. When
+  the wide batches come depends on the seed's order of the texts, which is why seed 101 lost less than
+  102 and 103.
+- **The driver's own call was what was slow.** Asked directly for 1.1 GB (`cudaMalloc`), the driver
+  answered in 2 ms before training, and in 1.0 to 1.7 seconds as the first call after 30 training
+  steps; a second call right after it took 5 to 29 ms.
+- **Ruled out, by a run each:** other load (0.8 of 32 processors busy, no other process on the card),
+  cuDNN's attention kernel, Python's garbage collector, a spill into shared memory, paging, a full card
+  (plain requests of up to 24 GB took 1 to 2 ms each), and by the restart the rebuilt environment: the
+  same environment is at full speed now.
+- **Not found: what had slowed the driver's call.** PyTorch (2.9.1+cu130) and the driver package (added
+  on 11 November) were the same on 12 and 14 November, when the script made 341 to 370 steps. Windows
+  had run since 13 November, seven days, and held 78 of 106 GB of committed memory at rest. So it can
+  come back: a run of the shipped script that makes clearly fewer than 340 steps is the sign, and a
+  restart the cure that worked. A setting of PyTorch's allocator steadied the runs without curing them
+  (`roundup_power2_divisions:2`: 271, 298 and 267 steps), under a variable name that is deprecated and
+  prints a warning into every training log; I did not use it.
+- **The character task was not touched by it:** its batches all have one shape. Its reference scored
+  1.7629 with 4,938 to 5,000 steps per run, as on 11 November.
+
+Run as it was, the half would have been fair between the arms, which take turns. But a script's score
+would have swung with the seed and the hour by about as much as a change of 40 % in the number of
+training steps, and its numbers would not compare with the README's. At 04:10 I put the choice to you:
+hold this half until the machine has been restarted (my recommendation), or run it as it is. You
+answered "Hold it" and restarted the machine; Windows started at 09:56:31. I measured the speed (the
+table), set the morning's reference aside as `finetune-halfspeed-0304`, scored the shipped script again,
+and checked with one small session what your yes had covered: that a session's `python` is the
+fine-tuning environment (17,950 tokens; it answered with the environment's name, Transformers 5.22.2,
+PEFT 0.21.2 and a graphics card that PyTorch sees; nothing was refused). The five repeats started at
+10:09:52.
+
+**Half an hour into the half Windows' own disk cleanup emptied the environment, and my driver did not
+notice: twelve arm-runs are void, and 1.18 million tokens went into sessions that could not train.**
+
+- **What happened.** `new-1` and `old-1` ran and were scored by 10:32:54, and the session of `none-1`
+  trained between 10:33 and 10:38 (six training commands). At 10:35:28, 39 minutes after the restart,
+  Windows started its scheduled disk cleanup (the task `SilentCleanup`, by the task's own record). When the
+  scoring of `none-1` began at 10:38:28, the environment's packages were gone: the folders of
+  Transformers, PEFT, the hub client, tqdm, the tokenizers and others stood empty. I had built the
+  environment with uv, which links a package's files to the copies in its cache, and those dated from
+  12 November. The cleanup took files of 11 and 12 November under `%TEMP%` and left what was written on
+  the 20th. With its own packages gone the environment's Python found the system Python's
+  Transformers, which does not import (the reason the environment was built). I take the cleanup for
+  the cause because the times fit and no session touched those files; I did not run it again to prove
+  it, and I did not establish its rule (other files of 10 to 12 November in the same folder are still
+  there).
+- **What it cost.** The scoring of `none-1` failed on all three seeds. In repeats 2 to 5 the loop
+  stopped each campaign at its first baseline run, before any session ("the baseline run for seed 1
+  failed (crash)"), and the eight single sessions spent their turns finding out why Python would not
+  import: 714,152 tokens in the four of `old`, 468,268 in the four of `none`, **1,182,420 in all, in
+  eleven minutes.** None trained.
+- **What made it expensive is my mistake.** `pilot.py` records an arm-run that could not train like
+  any other and ends with exit code 0. My driver read nothing else, so it started repeat after repeat
+  until 10:49:30. A check that the last arm-run had trained would have stopped it after one.
+- **No session changed the machine.** None of the eight installed or removed a package: a search of
+  every tool call in their transcripts for pip, uv, conda and install finds three `pip list`, of which
+  one ran and the permission rule refused two. One session rewrote its own `train.py` to skip the
+  environment's folder; that file is its project's.
+- **By the rule fixed beforehand all twelve are void** (the Python could not train), and so is the
+  first scoring of `none-1`. The twelve are kept with the reason in `void.json` beside `pilot.json`,
+  and their projects and transcripts in `void-envlost`.
+- **The repair.** I put the same 34 packages in the same versions back from uv's cache, as copies that
+  carry the day's date, without a download and without touching the system Python; the shipped script
+  then made 372 steps (10:58). The driver now calls `pilot.py` for one arm at a time. Before each call
+  it checks that the environment's Python imports PyTorch, Transformers and PEFT and sees the card,
+  after each that the arm-run just recorded has a score, and it stops otherwise. The final `train.py`
+  of `none-1`, whose session the fault had not reached, was scored again with `pilot.py`'s own
+  `score()` (10:59 to 11:02); its entry keeps the failed scoring beside the new one.
+- **The twelve were run again from 11:07:09 to 13:04:58,** with 2,300,527 tokens, and the driver
+  stopped at none of its checks. I did not ask you again before that: your yes covered five repeats of
+  both tasks at 8 to 15 million tokens, and with the repeats the pilot stays inside it (7.54 million in
+  all, the void sessions included).
+- **More went than the environment.** The records of the two pilots of 11 November, which I had read
+  that morning, are gone since the same minutes. Six other folders of this work hold no file now; when
+  those lost them I cannot tell ("What needs your decision").
+
+**The half as it counts ran from 10:09:52 to 13:04:58:** repeat 1 until 10:38:35, with `none-1` scored
+again at 10:59, and repeats 2 to 5 from 11:07:09. 15 arm-runs, 2,972,663 tokens, 2.61 USD at notional
+prices. No session reported usage billed per use, every session and campaign ended with exit code 0,
+none hit its time limit, and after the repair no scoring run failed.
+
+**Thirteen of the fifteen arm-runs are valid; `old-3` and `old-4` are void, and that judgment is
+arguable.** In both sessions the pilot's permission rule refused the old kit's first step, the
+environment's interpreter named by its full path, as on the character task. Each then started its
+first run as the old kit teaches, `python .claude/skills/nn-training/scripts/expctl.py launch ... --
+python train.py`, and the run failed at its first import. `expctl` starts the command after the `--`
+without a shell. On Windows a program started that way by the bare name `python`, from a Python that
+runs in a virtual environment, is the base interpreter and not the environment's, and the base
+interpreter here is the system Python, which cannot import Transformers. Each session read the failure
+and stopped, with `train.py` unchanged (`old-3`: "Runs used: 1 of 12, a failed import." "To go on,
+someone needs to allow the `ft-venv-1120` interpreter, or fix `huggingface-hub` in the PATH Python.").
+By the rule fixed beforehand that is void: the Python could not train, and the pilot's own rule had
+closed the way around it. It is arguable because half of the cause is the kit's: its launcher picked
+the wrong Python, and someone who works in a virtual environment on Windows meets that without any
+pilot ("What needs your decision"). The same first launch failed in `old-1`, `old-2` and `old-5`. Those
+three sessions then wrote the environment's interpreter after the `--`, which the permission rule lets
+pass because the line begins with `python`, and trained. **I made the judgment after the scores were
+known, so the statistics are given both ways.** I did not repeat the two, for the reason given at the
+character task.
+
+Share of exact answers on the test split, higher is better; in brackets the standard deviation over the
+three scoring seeds:
+
+| Arm | Run 1 | Run 2 | Run 3 | Run 4 | Run 5 | Mean | SD across the runs |
+|---|---|---|---|---|---|---|---|
+| `new`: this kit's loop | 0.8510 (0.0210) | 0.8647 (0.0169) | 0.8447 (0.0110) | 0.8600 (0.0210) | 0.8597 (0.0162) | 0.8560 | 0.0080 |
+| `old`: the kit of `992f436` | 0.8447 (0.0076) | 0.8383 (0.0042) | void: 0.4030 (0.0062) | void: 0.3997 (0.0084) | 0.8223 (0.0047) | 0.8351 of three, 0.6616 of five | 0.0115 of three, 0.2377 of five |
+| `none`: no kit | 0.7397 (0.1738) | 0.8587 (0.0085) | 0.8907 (0.0091) | 0.8473 (0.0076) | 0.8413 (0.0152) | 0.8355 | 0.0569 |
+| `train.py` as shipped, no agent | 0.3637 (0.0040), 0.4030, 0.3997 | | | | | 0.3888 | 0.0218 |
+
+The last row is the unchanged script scored three times on the same seeds: by the reference scoring
+(10:05 to 10:09), and as the final `train.py` of the two void sessions around 11:57 and 12:24 (each
+file is identical to the shipped one, by its hash). The two later scorings made 375 to 386 steps in their 30
+seconds where the first made 351 to 353. Between 10:09 and 10:58 the machine became 6 to 10 % faster
+for this script (372 steps at 10:58); at 10:25 other programs let go of some 1.5 GB of the card's
+memory, and whether that is the cause I did not test. So one script's score moved by 0.04 with the
+hour. Within one scoring the three seeds of a script have a standard deviation of 0.004 to 0.021,
+`none-1` aside.
+
+| Comparison | Arm-runs | Edge | 95 % interval | p (Welch) | p (exact) | Could have shown | Found with 80 % power |
+|---|---|---|---|---|---|---|---|
+| `new` over `none` | 5 and 5 | +0.0205 | -0.0509 to +0.0918 | 0.47 | 0.61 | 0.0713 | 0.0955 |
+| `old` over `none`, without the two void | 3 and 5 | -0.0004 | -0.0734 to +0.0726 | 0.99 | 1.00 | 0.0730 | 0.0977 |
+| `old` over `none`, all five counted | 5 and 5 | -0.1739 | -0.4774 to +0.1296 | 0.19 | 0.18 | 0.3035 | 0.4064 |
+| `new` over `old`, without the two void | 5 and 3 | +0.0209 | -0.0032 to +0.0449 | 0.070 | 0.054 | 0.0240 | 0.0314 |
+| `new` over `old`, all five counted | 5 and 5 | +0.1944 | -0.1010 to +0.4898 | 0.14 | 0.016 | 0.2954 | 0.3954 |
+
+- **This kit against the bare agent: not shown ahead.** The loop's mean share is 0.0205 above the bare
+  agent's (0.8560 against 0.8355), and that is less than the noise: the interval runs from 0.0509
+  behind to 0.0918 ahead, p is 0.47, and it rests on five arm-runs against five. The kit is not shown
+  to beat the bare agent, and the bare agent is not shown to beat the kit. **This half could have shown
+  only a difference above 0.0713**; an edge of 0.0955 it would have found four times in five. To
+  establish the edge seen, if it is real, would take about 63 arm-runs per arm.
+- **The edge is one arm-run.** `none-1` scored 0.7397 because its script fills the card's memory and
+  one of its three scoring runs trained at less than half speed (below). The other four bare sessions
+  average 0.8595, which is 0.0035 above the loop. The interval is as wide as it is for the same reason:
+  the bare agent's five values have a standard deviation of 0.0569, the loop's of 0.0080.
+- **The loop was the steadier arm here.** Its five campaigns kept nearly the same two changes and ended
+  within 0.020 of each other. The best result of the fifteen is a bare session's (`none-3`, 0.8907,
+  with 4 of its 12 runs), and so is the worst that trained (`none-1`). On the character task the bare
+  agent's results were the ones that lay closer together, so I read no rule into it.
+- **The kit of `992f436` against the bare agent: no difference where it trained.** Three arm-runs
+  against five: 0.0004 behind, the interval from 0.0734 behind to 0.0726 ahead, p 0.99. With the two
+  void ones counted the arm lies 0.17 behind and nothing is established (p 0.19), because two values
+  at 0.40 and three near 0.83 make its spread 0.24.
+- **This kit's loop against the kit of `992f436`: 0.0209 ahead without the two void, not established**
+  (p 0.070, five against three). With all five counted, Welch's p is 0.14. The exact p of 0.016 in
+  that row says only that no value of `old` lies above a value of `new`; it is the smallest that these
+  ten values can give, since `new-3` and `old-1` tie.
+- **Every arm-run that trained lifted the shipped script's 0.36 to between 0.74 and 0.89,** and in all
+  three arms with the same recipe. The shipped script has adapters of rank 8 on two projections
+  (`q_proj`, `v_proj`), a learning rate of 2e-4 and a batch of 32. The sessions put adapters on all
+  attention and MLP projections, mostly of rank 16, and raised the learning rate to between 6e-4 and
+  2e-3 with a short warmup and a decay by time. The bare sessions also trained in bf16 mixed
+  precision, which the loop tried third and did not keep. The agent brings that recipe without the
+  kit.
+
+**A script that fills the graphics card's memory trains at less than half its speed here, and the
+scoring can meet that on a seed the session never ran.** The card has 32,607 MiB. The script pads each
+batch to its longest text, and PyTorch keeps every block it has asked the driver for, so the memory
+grows through a run: after the restart the sampler read 18 to 29 GB during the shipped script's runs,
+by the seed's order of the texts (other programs held up to 2 GB of that). The session of `none-1`
+doubled the batch to 64 and put adapters of rank 16 on all seven projections. In the scoring its script
+filled the card on every seed (readings of 31,924 to 32,084 MiB): seeds 101 and 102 made 224 and 200
+steps and scored 0.843 and 0.837, seed 103 made 87 steps and scored 0.539. I trained that script once
+more on seed 103 with nothing else on the card: 102 steps, the card full 15 seconds after the start. So
+it is the script on that seed and not a moment of the machine, and by the rule the arm-run is valid:
+the session wrote a script that sits at the card's limit. PyTorch does not end with an out-of-memory
+error at that point; the run goes on slowly, which is what a spill into the system's memory by the
+graphics driver looks like, and that I did not test.
+
+Of the 45 scoring runs of the arm-runs, four have a reading of 31,500 MiB or more: the three of
+`none-1` and one of `new-3`, on seed 103 (263 steps where its other two seeds made 282 and 280). The
+sampler reads every 30 seconds, so a short peak can be missed. Seed 103 made the fewest steps in all
+five arm-runs of the loop (229 to 263, against 251 to 282 on the other two seeds) and scored lowest in
+each (0.828 to 0.846 against 0.844 to 0.879), with readings of 26,786 to 31,966 MiB. The seeds are the
+same for every arm, so the design favours none. But a script pays for its memory on that seed, and the
+arm-run it hit hardest is the one that decides the sign of the comparison.
+
+### What the sessions show beside the score
+**The character-level model.**
+
+| Arm | Training runs used, of 12 | Time per arm-run, mean (range) | Tokens per arm-run, mean (range) |
+|---|---|---|---|
+| `new` | 11, 10, 11, 10, 10 | 614 s (562 to 651) | 239,000 (174,000 to 341,000) |
+| `old` | 3, 0 (void), 0 (void), 10, 4 | 225 s (17 to 723) | 269,000 (40,000 to 780,000) |
+| `none` | 7, 6, 6, 5, 4 | 242 s (185 to 300) | 165,000 (112,000 to 237,000) |
+
+For `new` the count is the loop's own and includes its three baseline runs; for `old` and `none` it is
+the number of commands that started a training, which `pilot.py` calls a lower bound (a command that
+trains twice counts once). By arm the tokens are 1.19 million for `new`, of which the five scouting
+sessions took 407,000, a third; 1.34 million for `old`; 0.83 million for `none`.
+
+- **The loop did not stall: the run limit ended every campaign,** with the loop's own words ("limit
+  reached: runs (10 of 12 used, and the next step needs up to 3)"), and none met an error, a failed
+  iteration or a session at its time limit. Three baseline runs and up to three per change leave room
+  for 3 to 5 changes in 12 runs. The five campaigns tried 19: 4 were kept, 11 discarded, and 4 called
+  inconclusive, a gain of 0.003 to 0.015 on the loop's validation split that lay inside its noise
+  margin (0.005 to 0.021). The longest row of changes without a keep is four (`new-3`, all it tried;
+  `new-5`, the four after its first keep). A campaign as shipped has no rule that ends or turns it
+  after such a row (`loop.restart_after` is off unless set), and none would have acted here before the
+  limit did.
+- **What was kept:** in `new-1` a moving average of the weights and then no dropout with a weight decay
+  of 0.1 (validation loss 1.6865 to 1.6640); in `new-4` a learning rate of 1e-3 with warmup, a decay by
+  time and a dropout of 0.2 (1.6841 to 1.6750); in `new-5` a warmup and a cosine decay by time with
+  other AdamW settings (1.6829 to 1.6580). Each campaign's scouting session ranks its own hypotheses.
+  The one it ranked first was kept in `new-5` and discarded in the other four campaigns, in two of them
+  with a loss far above the baseline's (1.94 and 2.43 against 1.69).
+- **No training run was lost to the guard, in any arm.**
+  - The loop's 24 sessions have no shell. Round 9's guard decided 115 of their tool calls and refused
+    one: the scouting session of `new-1` asked to read the kit's own `references/scouting.md` in the
+    project, which lies outside the loop's worktree. Its prompt does not name that file; the session
+    went on, and the ledger counts no refusal in a worker session.
+  - In the `old` arm round 8's guard asked about three command lines (one in `old-4`, two in `old-5`),
+    each with a here-document: two handed Python a text that rewrote `train.py` and started a run on
+    the same line, one appended the entry to the journal. In a session where nobody can be asked a
+    question is a refusal. Each session then made the same change with the Edit tool and started the
+    run (9 and 3 more training commands followed in the two sessions). Whether round 9's guard asks
+    about the same three lines I did not check: in this pilot it met no shell command.
+- **The permission rule of the single sessions, which is the pilot's and not the kit's, refused 16
+  commands:** 10 in the `old` arm (2, 2, 2, 3, 1) and 6 in the `none` arm (1, 2, 1, 1, 1). In the `none`
+  arm each was a line that joined `sed -i` to a training command; every session put it differently and
+  trained. In the `old` arm it cost the two void arm-runs (above).
+- **Held-out data:** no tool call in the 15 arm-runs names `loopval.txt` or `test.txt` (a search of the
+  tool inputs in all transcripts). The single sessions touched `data/` only to list it, to count
+  `train.txt` and to read `dev.txt`. In the `none` arm only the prompt stood between a session and the
+  held-out files.
+
+**The fine-tuning task.**
+
+| Arm | Training runs used, of 12 | Time per arm-run, mean (range) | Tokens per arm-run, mean (range) |
+|---|---|---|---|
+| `new` | 10, 10, 10, 10, 12 | 787 s (735 to 976) | 200,000 (197,000 to 204,000) |
+| `old` | 4, 6, 1 (void), 1 (void), 4 | 235 s (66 to 395) | 285,000 (132,000 to 478,000) |
+| `none` | 6, 4, 4, 2, 2 | 191 s (111 to 313) | 110,000 (68,000 to 151,000) |
+
+The counts are taken as for the character task. In the `old` arm each count includes one launch that
+failed at its import, so 3, 5, 0, 0 and 3 commands trained. By arm the tokens are 1.00 million for
+`new`, of which the five scouting sessions took 429,000 (43 %); 1.42 million for `old`; 0.55 million
+for `none`.
+
+- **The loop did not stall: the run limit ended every campaign,** and none met an error, a failed
+  iteration or a session at its time limit. All five took the same course: three baseline runs, the
+  self-test, a scouting session that wrote 7 or 8 hypotheses, then three changes.
+  - The first two were kept in every campaign, each on three seeds: a learning rate of 1e-3 with a
+    warmup and a decay by time (+0.23 to +0.24 on the loop's validation split, where the noise margin
+    was 0.03 to 0.05), then adapters on all linear layers (+0.17 to +0.24).
+  - The third, mixed precision in bf16, was discarded after its first seed in four campaigns (0.819 to
+    0.848, against 0.826 to 0.849 for the kept script on that seed). In `new-5` it was called
+    inconclusive after three seeds: better by 0.050 inside a margin of 0.061, and in the loop's words
+    "the limits left no room for a second seed panel".
+  - In all: 15 changes, 10 kept, 4 discarded, 1 inconclusive. The validation score rose from between
+    0.37 and 0.39 to between 0.79 and 0.86.
+- **At this budget the loop reaches three decisions.** Three baseline runs, three and three for the two
+  keeps and one for the discard are 10 runs, and the two that remain do not cover a fourth change ("the
+  next step needs up to 3"). A bare session put several changes into one run and took one or two seeds
+  for it: `none-3` reached the best score of the fifteen with four training commands, and stopped
+  because "the seed-to-seed gap (about 0.03) is as large as the differences I was still testing".
+- **No training run was lost to the guard.**
+  - Round 9's guard decided 98 tool calls of the loop's 20 sessions and refused one: the scouting
+    session of `new-3` asked to read the kit's own `references/scouting.md`, as that of `new-1` did on
+    the character task. No worker session was refused anything.
+  - In the `old` arm round 8's guard asked about one command line each in `old-1`, `old-2` and `old-5`,
+    a here-document that handed Python a text which rewrote `train.py`. Each session made the change
+    another way and launched; 2, 4 and 2 training commands followed. Whether round 9's guard asks about
+    those lines I did not check.
+- **The old kit's launcher lost every `old` session its first run,** as described above: `expctl launch
+  ... -- python train.py` started the system Python. Three sessions found the way around it, two
+  stopped. **This checkout's `expctl` does the same.** In a fresh project with round 9's kit, a launch
+  of `python` from the environment reported the system Python's folder as its own (one probe run), and
+  a two-line check outside the kit shows the same of a child process that Python starts by the bare
+  name without a shell. The loop is not touched: its runs trained in the environment.
+- **The permission rule of the single sessions, which is the pilot's and not the kit's, refused 16
+  commands:** 11 in the `old` arm (2, 3, 2, 2, 2) and 5 in the `none` arm (one each). In the `old` arm
+  it was the interpreter by its full path in every session, and in three of them a journal entry
+  written with a here-document or with a text of several lines after `python -c`. In the `none` arm it
+  was a line that joined `sed -i` to a training. `none-4` and `none-5` stopped there, at 2 of their 12
+  runs (`none-5`: "I stopped early because the Bash tool began refusing commands ("don't ask mode"),
+  so I couldn't run more training."). I count both as valid, since each had trained and improved the
+  script; they are the bare agent's two lowest scores after `none-1`. This rule never meets the loop,
+  whose sessions have no shell: on this point the comparison leans toward the loop.
+- **Held-out data:** no tool call in the 15 arm-runs names `loopval.txt` or `test.txt`.
+- **Another program loaded the machine twice during repeat 5,** and I did not find which: 19 to 21 of
+  the 32 processors were busy from 12:38:46 to 12:42:17 and from 12:51:18 to 12:54:48. The first time
+  slowed two runs of the second change of `new-5` (158 and 154 steps where the third made 246), whose
+  gain there is 0.17 against 0.23 to 0.24 in the other four campaigns. That widened the campaign's
+  noise margin, and its third change came out inconclusive after three runs where the other campaigns
+  discarded it after one: 12 runs instead of 10, and the same kind of final script. The second time
+  fell into the session of `old-5`, whose baseline made 244 steps and one changed script 175. Both
+  arm-runs trained and their scoring ran at normal speed, so both are valid. In the rest of the half 2
+  to 3 processors were busy on average.
+
+### Which next item the result speaks for: neither of the two
+Round 9 tied two items to this pilot: a second search shape if the greedy loop stalls, and confinement
+by the operating system if runs are lost to the guard.
+
+- **A second search shape: the pilot does not speak for it.** The loop stalled in none of the ten
+  campaigns. The run limit ended each, after 3 to 5 changes; on the fine-tuning task every campaign
+  kept two of its three, and on the character task the longest row of changes without a keep is four.
+  The limit of that statement: at 12 runs the protocol itself (three baseline runs, up to three per
+  change) leaves three to five decisions, and a stall takes longer than that to show. Whether the
+  greedy loop stalls in a long campaign this pilot cannot say; the campaign of 12 November (section 2)
+  is still the only run that speaks to it.
+- **Confinement: not on the ground of lost runs.** No training run was lost to the guard in thirty
+  arm-runs. The limit of that statement: the loop's sessions have no shell, so round 9's guard decided
+  213 calls of file tools and not one command line. The six lines that a guard asked about were put to
+  round 8's guard, in the `old` arm, and each cost a detour and no run. The pilot ran without the
+  sandbox, and it says nothing about what confinement is for: safety, and a guard that can shrink.
+- **What it speaks for instead,** each of them small and none of them built here:
+  1. **`expctl launch -- python ...` in a virtual environment on Windows starts the base interpreter.**
+     This is a defect of the kit and it is in this checkout: a run launched as the kit's own
+     instructions show trains with a Python other than the one the session works in, or fails at its
+     first import as here.
+  2. **`pilot.py`'s allow list for the single sessions** refuses the interpreter named by its path,
+     which the kit's installed `CLAUDE.md` tells a session to type. It made four of the ten `old`
+     arm-runs void, and it is the reason that arm cannot be judged on five values.
+  3. **The scouting session asks for the kit's `references/scouting.md` and is refused,** in 2 of 10
+     campaigns: the file lies in the project, outside the loop's worktree. Both sessions went on
+     without it.
+  4. **The fine-tuning task's script grows to the card's memory limit** on this machine once a session
+     enlarges the batch, and a score at that limit measures the machine.
+  5. **On the question whether the kit helps, section 10's first point stands, now for both tasks.**
+     With five arm-runs per arm the arms lie within the noise of one another, and to establish the
+     edges seen would take about 29 and 63 arm-runs per arm. The other measure named there, what the
+     kit protects, showed no difference either: no session of any arm touched a held-out file, the
+     bare sessions included.
+
+### What limits the comparison
+- **Native Windows, without the sandbox.** Nothing here ran on Linux or macOS, and the loop's
+  confinement was not part of it.
+- **Round 9's guard met no shell command.** What a command line met was round 8's guard.
+- **The arms differ in more than the kit.** `new` is the kit's unattended loop: several short sessions
+  without a shell, its own validation split, a keep rule, training started and counted by the harness.
+  `old` and `none` are one session each with a shell. So `new` over `old` compares the loop with a
+  session that follows the kit's instructions as much as it compares round 9 with round 8.
+- **The budget was the same, its use was not.** The loop's limit is enforced and it used 10 to 12 of
+  12 runs. A single session is told its limit; it used 0 to 10, and its count is a lower bound.
+- **The pilot's permission rule hinders only the single sessions.** It made four `old` arm-runs void
+  and ended two bare sessions early.
+- **One model, one budget, five repeats.** Sonnet, 12 runs of 30 seconds. A difference below 0.0154 on
+  the character task or below 0.0713 on the fine-tuning task could not have come out as established.
+- **The machine.** On the fine-tuning task one script's score moved by 0.04 between 10:06 and noon, a
+  script at the card's memory limit loses more than half its steps, and another program loaded the
+  machine in repeat 5. The arms took turns inside every repeat, so each of these met all three arms;
+  with five values per arm that evens out only roughly.
+- **Repeats 2 to 5 of the fine-tuning task are second tries.** The first tries are void for the lost
+  environment and are kept apart. None of them has a score, so nothing was chosen between two tries.
+- **The validity judgments were made after the scores were known:** four `old` arm-runs void; `none-1`,
+  `none-4`, `none-5`, `new-5` and `old-5` valid. The rule and the criterion were fixed before the first
+  arm-run, and where a judgment changes a number the tables give both.
+- **Nothing is adjusted for the number of comparisons.** Nothing came out as established that an
+  adjustment could take back, except `old` behind `none` on the character task with the void arm-runs
+  counted.
+
+### What it cost
+
+| Part | Arm-runs | Tokens | USD, notional | When |
+|---|---|---|---|---|
+| The character-level model | 15 | 3,364,494 | 2.91 | 04:09:51 to 06:10:06 |
+| Fine-tuning, the fifteen that count | 15 | 2,972,663 | 2.61 | 10:09:52 to 10:38:35, 10:59 to 11:02, 11:07:09 to 13:04:58 |
+| Fine-tuning, the twelve void for the lost environment | 12 | 1,182,420 | 0.76 | 10:38:36 to 10:49:30 |
+| The check session before the fine-tuning half | | 17,950 | | before 10:09:52 |
+| In all | 42 | 7,537,527 | about 6.3 | 4 hours 40 minutes of running |
+
+Tokens are input, output and cached tokens together, as Claude Code reports them. Every session ran on
+your subscription, and none reported usage billed per use. My estimate before the start was about 11
+million tokens (8 to 15) and about six hours; the pilot came in below its lower end. 1.18 of the 7.54
+million, a sixth, are the price of my driver's missing check. The usage of this session itself, which
+prepared, watched and analysed the pilot, is not in these numbers.
+
+### Not done, and why
+- **Nothing is pushed or merged, and nothing ran on your real install.** This record is one local
+  commit.
+- **`pilot.py` and the kit's code are unchanged,** as the task set. The launcher's defect and the
+  pilot's allow list are described and not repaired.
+- **The four void `old` arm-runs were not run again.** Under the same allow list a repeat meets the
+  same refusal, and changing the list in the middle of a pilot changes the conditions between repeats.
+- **The two pilots are not pooled** with those of 11 November: the kit and the pilot script changed.
+- **Not run:** anything on Linux or macOS, the loop with its sandbox, a second model, a longer budget.
+- **Not checked:** whether round 9's guard asks about the six command lines that round 8's asked about.
+- **Not found:** why the graphics driver's memory requests were slow before the restart; which rule
+  Windows' cleanup follows; what the driver does when the card is full; which program loaded the
+  machine in repeat 5; why the machine was 6 to 10 % faster from mid-morning.
+- **No package was installed into the system Python.** The environment of the fine-tuning task lies in
+  the temporary folder; after the cleanup it was put back from uv's cache, without a download.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): the pilot built nothing.
+- **The kit's tests did not run in this session:** no file of the kit changed. The statistics script
+  was checked against the numbers of the 11 November record and against nothing else; no reader but me
+  has seen it, the other analysis scripts or this section.
+
+### What needs your decision
+- **The launcher on Windows in a virtual environment.** `expctl launch -- python train.py` starts the
+  base interpreter. A repair would look a bare name after the `--` up on the PATH before starting it,
+  as a shell does, or warn when it is not the interpreter that runs `expctl`; it needs a test on
+  Windows. Until then a project that trains in a virtual environment on Windows has to name the
+  environment's interpreter after the `--`.
+- **`pilot.py`'s allow list,** and with it whether the four void `old` arm-runs are run again. One more
+  entry, for the interpreter by its path, would let the old kit's first step pass. Four arm-runs of
+  `old` would cost about 1.5 million tokens (1 to 2) and half an hour at this pilot's rates. They
+  would give the `old` arm five values; they would not change what the pilot says about this kit and
+  the bare agent.
+- **Where the records of a pilot live.** Everything of this one lies under `%TEMP%`, which Windows
+  cleans. Of the two pilots of 11 November, `pilot.json`, the transcripts and the analysis scripts are
+  gone since this morning, so the sentence in section 2 that everything is kept in `pilot2` no longer
+  holds. I copied this pilot's scores, statistics, transcripts, logs and scripts to the notes folder
+  that the sessions share, outside the repository. Putting the two `pilot.json` and `void.json` into
+  the repository (about 75 KB; 43 places in them carry a home path and would be masked first) is a
+  change I did not make unasked.
+- **The other folders of this work under `%TEMP%\nnkit-upgrade`.** Six hold no file now:
+  `inst-smoke1`, `kit-8d53751`, `live-onfailure`, `real-install-before-20261113`, `real2-rehearsal`
+  and `real4-rehearsal`. When they lost their files I cannot tell. The fourth is by its name a copy of
+  your real install from before an installer run. The later copies of that kind hold 16 to 48 files
+  each, and I did not check them for completeness. What is still wanted from that
+  folder should move out of `%TEMP%`.
+- **The access token of the model hub.** Early in this session a diagnostic command of mine printed
+  the value of `HF_TOKEN` into the session's transcript, a file on this machine; I told you then. The
+  value is in no file of the pilot, in no record and in no message: a search of the pilot's folder,
+  the notes folder and my scratch folder for a string of its form finds none. The pilot's sessions
+  never had the variable: the driver and the command that started the check session took it out of
+  their environment. Whether you replace the token is yours to decide.
+- **The fine-tuning task's script.** Padding every batch to one fixed width would probably keep its
+  memory flat and its speed even from seed to seed; I did not try it. It would also change the
+  benchmark, so the numbers of 12 and 14 November and of this pilot would no longer compare.
+- **More repeats of this comparison: I advise against them,** as section 10 does. To establish the
+  edges seen would take about 29 arm-runs per arm on the character task and 63 on the fine-tuning task.
+
+### Where everything is kept
+- **The work folder** is `%TEMP%\nnkit-upgrade\pilot3`. Each task has a folder (`charlm`, `finetune`)
+  with `pilot.json`, a project and a transcript `NAME.log` per arm-run, and the scoring's folders
+  `score-NAME`. The fine-tuning task also has `void.json` and `void-envlost` (the twelve void tries),
+  `pilot-before-void-1049.json`, and beside its folder `finetune-halfspeed-0304` (the morning's
+  reference). `driver.log` has the driver's lines in UTC, `load.log` a reading of the processors and
+  of the card's memory every 30 seconds.
+- **The scripts** lie in the same folder, and none is part of the kit: `run_pilot.sh` (the driver),
+  `pilot_stats.py KIT PILOT.JSON [--void NAME,NAME] [--json OUT]` (the tables' numbers), `all_facts.py`
+  and `arm_facts.py` (what the sessions did, from the transcripts and the loop's ledgers),
+  `ft_scoring.py WORK TASK` (steps and card memory of each scoring run), `health.py` and
+  `tokens_total.py` (the driver's checks), `set_void.py` and `rescore.py` (the repair after the
+  cleanup), `load_watch.ps1` (the sampler). Their outputs are `charlm-stats.json`,
+  `charlm-stats-all15.json`, `finetune-stats.json`, `finetune-stats-void.json`, `charlm-facts.json`
+  and `finetune-facts.json`.
+- **Copies** of the two `pilot.json`, of `void.json`, the six output files, the transcripts, the
+  scripts, `driver.log` and `load.log` are in the sessions' notes folder, outside the repository and
+  outside `%TEMP%`. The projects and the scoring folders are not copied.
+- **The logs of the kit and of PyTorch on this machine carry local time.** Every time in this section
+  is converted to UTC.
+
+Sources: the files named above, read on 20 November 2026; the record that Windows' Task Scheduler keeps
+of the task `\Microsoft\Windows\DiskCleanup\SilentCleanup` (last run at 10:35:28), read on the same day.
 
 ## 1. What changed and why
 
@@ -8622,6 +9352,9 @@ What limits the comparison:
 Everything is kept in `%TEMP%\nnkit-upgrade\pilot2`: `pilot.json`, the projects and transcripts, and the analysis
 scripts `analyze.py` and `power.py` with their output `pilot2-stats.json`. The first pilot is untouched in `pilot1`.
 The same command again continues after the last recorded arm-run.
+(Added on 20 November: no longer. `pilot.json`, the transcripts and the analysis scripts of both folders are gone
+since that day, and Windows' disk cleanup is the likely cause. The project folders are still there; I did not check
+them for completeness. "The proof pilot", "What needs your decision".)
 
 ## 3. What was verified, and how
 
@@ -9201,6 +9934,8 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
    the noise, 4.1 million tokens from your subscription. More runs of the same comparison are not worth their usage
    (section 10, item 1); say if you want a second task or a stronger model instead. A second task exists since
    round 3 (`benchmarks/finetune/`); no comparison ran on it.
+   (Added on 20 November: one ran, on both tasks with five arm-runs per arm, and again found no difference beyond
+   the noise; "The proof pilot".)
 4. **Cursor**: install its terminal agent and say whether a container may be used for a loop test.
 5. **Codex**: approve the kit's hooks once in `/hooks` of a test project, or allow
    `--dangerously-bypass-hook-trust` in temporary test projects. That also lets me capture a real Codex payload.
@@ -9262,6 +9997,9 @@ round 5's independent review: they are checked by my own probes and tests only.
    kit protects (sealed data untouched, overfitting to the validation split) next to the final loss. The second
    task exists since round 3 (`benchmarks/finetune/`, 44 seconds a run with the model's loading); no comparison
    ran on it.
+   (Added on 20 November: one ran on both tasks, with five arm-runs per arm: "The proof pilot". The arms lie
+   within the noise of one another on the second task too, and to establish the edges seen would take about 29
+   and 63 arm-runs per arm.)
 2. A loop campaign on a task of your own, to see whether kept changes add up outside the benchmark. On the
    benchmark the campaign of 12 November (section 2) kept two of eleven trained changes and then ended itself
    with a third of its runs unused, because the agent saw no change that would clear the margin: what limits the

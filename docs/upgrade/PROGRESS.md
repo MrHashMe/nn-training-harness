@@ -62,6 +62,9 @@ all six jobs pass (the same entry).
 built from it, and two commands beyond it. On the user's "Push test branch" of 20 November it is on the new
 public branch `test/round-9`, where all six of GitHub's jobs pass, and one repair made beside that run
 follows it there ("Round 9 on the test branch" below).
+"The proof pilot" below is the work of a session of its own on 20 November: the first of round 9's next
+steps, a comparison of the kit's loop, the kit before round 9 and no kit with a real agent on both
+benchmark tasks. It is one local commit, not pushed.
 
 # Upgrade progress
 
@@ -2473,10 +2476,82 @@ installer run; whether further readers of my own fixes are wanted without asking
 is built next after the pilot, if any; WSL's clock; the snapshot branches and the clones; the
 reading for `cmd /c`; whether the test branches are deleted.
 
+## The proof pilot (20 November): run with a real agent on both tasks, one local commit, nothing pushed
+
+The work of a session of its own, which the session that keeps these records started for it, on the
+branch `claude/brave-robinson-27cbd9` (cut from `86fc3a5`; the kit's code is `b593bd0`). The user's
+words, all of 20 November: "Yes, both tasks" to the budget I proposed before anything paid started
+(both tasks, three arms, five repeats, 12 training runs of 30 seconds per arm-run, Sonnet, about 11
+million tokens (8 to 15), about six hours; the yes also covered a rebuilt temporary Python
+environment, a copy of the base model into the worktree and one small check session); "Hold it" to
+the question whether the fine-tuning half waits for a restart of the machine; "I have restarted the
+machine". Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The proof pilot", has it in full):
+- Read `benchmarks/pilot.py` and what the pilot of 11 November cost, proposed the budget, and started
+  nothing paid before the yes.
+- `pilot.py --task finetune` works end to end, unchanged: the run itself is the check.
+- The character half, 04:09:51 to 06:10:06: 15 arm-runs, 3,364,494 tokens. Test loss, lower is
+  better: `new` 1.7473, `old` 1.7557 of three valid, `none` 1.7398. `new` over `none`: -0.0075, 95 %
+  interval -0.0229 to +0.0079, p 0.28, five arm-runs against five; the half could have shown only a
+  difference above 0.0154. `old-2` and `old-3` are void.
+- The fine-tuning half, held from 04:10 to 10:09 because the task trained at half speed until the
+  restart (cause not found), then 10:09:52 to 13:04:58: 15 arm-runs, 2,972,663 tokens. Share of exact
+  answers on the test split, higher is better: `new` 0.8560, `old` 0.8351 of three valid, `none`
+  0.8355; the shipped script 0.3637. `new` over `none`: +0.0205, -0.0509 to +0.0918, p 0.47, five
+  against five; could have shown only a difference above 0.0713. The edge is one arm-run, `none-1`
+  (0.7397, a script at the graphics card's memory limit). `old-3` and `old-4` are void.
+- A fault of mine in that half: Windows' disk cleanup (started 10:35:28; the cause by the times, not
+  proved) emptied the packages of the temporary Python environment, and my driver had no check that
+  an arm-run had trained. Twelve void arm-runs, 1,182,420 tokens, 10:38:36 to 10:49:30. The
+  environment was put back from uv's cache as copies, the driver got a check before and after each
+  arm, and the twelve ran again from 11:07:09.
+- Beside the score: the loop did not stall (the run limit ended all ten campaigns, after 3 to 5
+  changes each); no training run was lost to the guard. Round 9's guard decided 213 tool calls of the
+  loop's sessions and refused two, both a scouting session's read of `references/scouting.md`; those
+  sessions have no shell, so it met no command line. Round 8's guard, in the `old` arm, asked about
+  six command lines, and each session went on by another way.
+- Found and not fixed: on Windows in a virtual environment `expctl launch -- python ...` starts the
+  base interpreter (the old kit's first launch failed in all five fine-tuning sessions; one probe run
+  shows the same of this checkout's `expctl`). `pilot.py`'s allow list refuses the interpreter named
+  by its path, which made four `old` arm-runs void.
+- The statistics are `expctl compare`'s arithmetic, applied to the arm-runs' scores by a script
+  beside the work folder that calls `expctl`'s own `t_tail` and `t_quant`. The criterion and the rule
+  for a void arm-run were fixed before the first arm-run; the judgments were made after the scores
+  were known, so the tables give both readings.
+- In all 7,537,527 tokens of the subscription (about 6.3 USD at notional prices, none billed per
+  use) and 4 hours 40 minutes of running, against an estimate of about 11 million and six hours.
+- After the last run and before the commit the branch was moved forward onto `origin/test/round-9`
+  (`5ccc2d4`), locally, so that this entry follows "Round 9 on the test branch". The pilot ran on
+  `86fc3a5`; the commit between them changes `nnremote.py`, which the pilot does not use.
+- REPORT.md has the section "The proof pilot", point 38 of "Read this first", a sentence in the
+  introduction, and a dated sentence at five places that the pilot puts out of date. The ledger is
+  not touched: the pilot built nothing.
+- The pilot's files lie in `%TEMP%\nnkit-upgrade\pilot3`, which Windows cleans; the scores, the
+  statistics, the transcripts, the logs and the scripts are copied to the sessions' notes folder,
+  outside the repository.
+
+Not done: no push, no merge, nothing on the real install; `pilot.py` and the kit's code unchanged;
+the four void `old` arm-runs not run again; nothing on Linux or macOS and nothing with the loop's
+sandbox; round 9's guard not put to a command line; no pooling with the pilots of 11 November; the
+kit's tests not run (no file of the kit changed); no reader but me for the analysis or this record.
+
+Next, each a separate word of the user's: the launcher's repair; one more entry in `pilot.py`'s
+allow list, and whether the four void arm-runs are run again; where a pilot's records live; what is
+still wanted from `%TEMP%\nnkit-upgrade`, where six folders hold no file any more; whether the
+access token that a command of mine printed into the session's transcript is replaced; the
+fine-tuning script's memory.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
   signed in).
+- The proof pilot (20 November): the four void arm-runs of the old kit were not run again, since the pilot
+  script's allow list would refuse them in the same way and a change of it is the user's decision. The two
+  defects the pilot found, the launcher under a virtual environment on Windows and that allow list, are not
+  repaired: the task ruled out changes to the kit. Nothing ran on Linux or macOS or with the loop's sandbox,
+  and round 9's guard met no command line. Not found: why the fine-tuning task trained at half speed before
+  the restart, which rule Windows' cleanup follows, and which program loaded the machine in repeat 5.
 - Round 9 (19 and 20 November): most of the fourth report's design is not built, each part with its reason
   in REPORT.md ("Round 9", "The report's proposals"): confinement by the operating system on Windows and
   macOS and the guard shrunk behind it, search shapes beside the greedy loop, six recipe packs, a package
@@ -2975,3 +3050,21 @@ reading for `cmd /c`; whether the test branches are deleted.
   checks of each test file, then any `FAIL` line and any traceback other than the benchmark's own.
   `win-one.sh NAME LABEL test_x.py` and `wsl-one.sh` run one test file on a snapshot. `apply_push.py
   KIT` wrote the texts of the entry "Round 9 on the test branch".
+- The proof pilot's files are in `%TEMP%\nnkit-upgrade\pilot3\` (REPORT.md, "The proof pilot", "Where
+  everything is kept"). `run_pilot.sh KIT WORK VENV SYSPYDIR FIRST LAST CAP [TASKS]` is the driver: it
+  calls `benchmarks/pilot.py` once per repeat, and for the fine-tuning task once per arm with a check
+  of the environment before and of the recorded arm-run after; it stops at a cap on the recorded
+  tokens or at a file `stop`, and it takes the model hub's token variables out of the environment of
+  what it starts. `pilot_stats.py KIT PILOT.JSON [--void NAME,NAME]` prints the tables' numbers. The
+  fine-tuning task's environment is `%TEMP%\nnkit-upgrade\ft-venv-1120`; the older `ft-venv` is broken
+  and left as it is.
+- **Windows cleans `%TEMP%`.** On 20 November files of 11 and 12 November went missing there three
+  minutes after its scheduled disk cleanup started (the cause by the times, not proved by a second
+  run), among them the packages of a virtual environment whose files uv had linked from its cache,
+  and the records of the pilots of 11 November. Keep what must last somewhere else, and build
+  an environment there from copies (`uv pip install --link-mode=copy`).
+- **A pilot's driver has to check after every arm-run that it trained.** `pilot.py` records an
+  arm-run that could not train like any other and ends with exit code 0.
+- **On Windows, a child process that Python starts without a shell by the bare name `python` from a
+  virtual environment is the base interpreter,** not the environment's. Name the interpreter by its
+  path (`sys.executable`), or look the name up on the PATH first.

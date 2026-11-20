@@ -464,10 +464,12 @@ def env_tests(tmp):
           f"env --python python probes the environment's interpreter ({Path(exe).parent.name or 'none'})")
     # the names that stay the system's to find: with another ending than .exe, with no .exe beside the interpreter or
     # at the path that the name gives. The first four have one, the last of them by a relative path with forward
-    # slashes and no ending, and only Windows is given it
+    # slashes and no ending, and only Windows is given it. Where Windows' full path does not keep the end of a name,
+    # the file at that path is not the one the name says: a dot there means the file without an ending, a slash or
+    # `/.` a folder. Those stay Windows' to find (the last three; were: handed over as the .exe)
     rel = f"../venv/{vbin.name}/python"
     names = ["python", "PYTHON.EXE", vpy, rel, "python.bat", "python3.11", "cmd", "nosuchprogram", os.path.join(".", "python"),
-             "C:python", rel + ".bat", rel + "3.11"]
+             "C:python", rel + ".bat", rel + "3.11", rel + ".", rel + "/", rel + "/."]
     if os.name == "nt":  # files of the two other endings lie beside the interpreter, and still are not started from there
         for n in ("python.bat", "python3.11"):
             (vbin / n).write_text("")
@@ -1196,13 +1198,14 @@ def main():
     # Windows keeps the number of a parent that has ended, and a later process can hold it: status then put the GPU
     # of a program of no run on the run that process belongs to. Such a process began after the one below it, and
     # the walk ends there (8), also past a process whose start time is not known (19); one that began at the same
-    # instant is a parent still (9). Elsewhere a parent's number stays its own
+    # instant is a parent still (9). The process directly below is the one that counts, not the one the walk began
+    # at: 28 began before 30 and after 29, whose parent its number says it is. Elsewhere a parent's number stays its own
     code = ("import json, sys\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
-            "expctl.proc_parent = {10: 9, 9: 8, 8: 7, 20: 19, 19: 18}.get\n"
-            "expctl.proc_start_time = {10: 100.0, 9: 100.0, 8: 105.0, 7: 80.0, 20: 100.0, 18: 101.0}.get\n"
-            "print(json.dumps([expctl.ancestors(10), expctl.ancestors(20)]))\n")
+            "expctl.proc_parent = {10: 9, 9: 8, 8: 7, 20: 19, 19: 18, 30: 29, 29: 28}.get\n"
+            "expctl.proc_start_time = {10: 100.0, 9: 100.0, 8: 105.0, 7: 80.0, 20: 100.0, 18: 101.0, 30: 100.0, 29: 90.0, 28: 95.0}.get\n"
+            "print(json.dumps([expctl.ancestors(10), expctl.ancestors(20), expctl.ancestors(30)]))\n")
     r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
-    check(r.returncode == 0 and json.loads(r.stdout) == ([[9], [19]] if os.name == "nt" else [[9, 8, 7], [19, 18]]),
+    check(r.returncode == 0 and json.loads(r.stdout) == ([[9], [19], [29]] if os.name == "nt" else [[9, 8, 7], [19, 18], [29, 28]]),
           "the walk up a process's parents ends, on Windows, at a number that a process which began later holds "
           f"({r.stdout.strip()} {r.stderr[-200:]})")
     # macOS has no /proc, so there the start time comes from ps: asked in UTC whatever zone this process is in (here

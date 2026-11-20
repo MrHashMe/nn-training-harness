@@ -249,11 +249,16 @@ def in_env(program):
     A name with a folder: that .exe or .com, seen from the current directory as Windows sees it, `.exe` added to a
     name without an ending. Left to Windows, `venv/Scripts/python`, a relative path with forward slashes, did not
     start where the variable NoDefaultCurrentDirectoryInExePath is set. A batch file is not handed over: cmd.exe,
-    which runs it, then no longer takes a quoted path that has a space."""
+    which runs it, then no longer takes a quoted path that has a space. Nor is a name whose last part the full path
+    does not keep: a dot at its end, by which Windows means the file without an ending, a space or a slash there,
+    `.` or `..`. Handed over, `tools\\tool.` started tool.exe, and `tools\\..` the .exe that is named like the
+    current directory and lies beside it."""
     folder = os.path.dirname(program)
     if os.name != "nt" or not (folder or sys.executable):
         return None
     exe = os.path.abspath(program) if folder else os.path.join(os.path.dirname(sys.executable), program)
+    if os.path.basename(exe) != os.path.basename(program):
+        return None
     exe += "" if os.path.splitext(exe)[1] else ".exe"
     return exe if exe.lower().endswith((".exe", ".com") if folder else ".exe") and os.path.isfile(exe) else None
 
@@ -643,7 +648,9 @@ def proc_parent(pid):
 def ancestors(pid, depth=25):
     """A process's parent, that one's parent and so on. Windows keeps the number of a parent that has ended, and a
     later process can hold it: one that began after the process below it is not its parent, and the walk ends there.
-    Otherwise status put the GPU of a program that belongs to no run on the run whose process got such a number."""
+    Otherwise status put the GPU of a program that belongs to no run on the run whose process got such a number.
+    A clock set back between a parent's start and its child's ends the walk there too: the GPU is then on no run,
+    which can miss an alert and raises none."""
     win = os.name == "nt"
     out, cur, born = [], pid, proc_start_time(pid) if win else None
     for _ in range(depth):
@@ -2950,10 +2957,14 @@ def cmd_final_eval(args):
     os.chdir(root)  # the command is the project's: its program and its paths are relative to the project root
     program = words[0].strip('"') if words else ""
     if not program or not startable(program, env):
-        there = os.name == "nt" and program and shutil.which(program)  # what a shell would have taken the name for
+        # a hint: the file Python finds for the name, which is not the same in every version (up to 3.11 it looks in
+        # the current folder whatever the variable says, from 3.12 it adds an ending to a name with a folder too)
+        there = os.name == "nt" and program and shutil.which(program)
         return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}"
-                       + (". Without a shell Windows starts an .exe, whose ending may be left out, and a .com or a batch "
-                          f"file by its full name (a batch file by a relative path: with backslashes); there is {there}"
+                       + (". Without a shell Windows starts an .exe, whose ending may be left out where the name has no "
+                          "dot, and a .com or a batch file by its full name (a batch file by a relative path: with "
+                          "backslashes); a name without a folder it looks for in the current folder only where the "
+                          f"variable NoDefaultCurrentDirectoryInExePath is not set. There is {there}"
                           if there else ""))
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"

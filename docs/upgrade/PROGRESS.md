@@ -70,6 +70,8 @@ them ("The reading on the test branch" below).
 On the user's "Reader first" of that day a second fresh reader went through the repairs of the first
 reading: a regression and two sentences that contradict each other are repaired in a local commit, with two
 faults of round 9 beside them ("The reading of the reading's repairs" below).
+On the user's "Push test branch" both commits went to `test/round-9`, and all six of GitHub's jobs pass on
+them ("The reading of the reading's repairs on the test branch" below).
 
 # Upgrade progress
 
@@ -2670,6 +2672,8 @@ Done on that word:
   memory meets conflicts in `docs/upgrade/PROGRESS.md` and `docs/upgrade/REPORT.md`.
 - Nothing pushed. Nothing on the real install. No further reader: the repairs of this reading, the
   guard's among them, are read by their author only.
+  (Added later on 20 November: pushed since, on the user's "Push test branch"; the entry after this
+  one.)
 - Left on this machine: `claude/r9-snap-n` with its two clones, and the helpers of the reading in
   `%TEMP%\nnkit-upgrade\r9\rd2\`.
 
@@ -2679,6 +2683,48 @@ faults under a virtual environment on Windows; whether the `--no-` rule stays as
 whether a reader goes through these repairs; whether `main` takes the round; the ninth installer
 run; whether the proof pilot's branch is merged into this one; the other questions of the entries
 before this one.
+
+## The reading of the reading's repairs on the test branch (20 November): pushed, all six jobs pass
+
+The user's word, 20 November: "Push test branch", to the question whether the two local commits of
+the second reading go to `test/round-9`. Before the answer I had said what it covers: the push of
+the two commits, the reading of GitHub's six jobs, and a push of the record of that result to the
+same branch. It is not a word for `main`, for the real install, for a reader, for a re-run of a job
+on GitHub, for a merge of another session's branch or for a deletion. Times in this entry are UTC.
+
+Done on that word:
+- Fetched before the push: `test/round-9` at `5ec95c6`, `main` at `e587b4f`; this branch two commits
+  ahead of the test branch and none behind. The two commits' diff and messages searched once more
+  for private details (none).
+- Pushed at 22:19 UTC as a fast-forward: `5ec95c6` to `fd589b2` (`05f996f`, the code, and `fd589b2`,
+  the record of the second reading).
+- GitHub's workflow run 44827970034 on `fd589b2` (22:19 to 22:41 UTC): all six jobs pass at the
+  first attempt, with 1,925 to 1,941 checks a job and none failed. Every job has fifteen checks more
+  than in the run before, seven in the kit file and eight in the review-fixes file. It is the first
+  run of the second reading's repairs on macOS, on bare Linux and on a Windows machine other than
+  this one (Python 3.15.2, 3.14.10, 3.9.6, 3.8.18 and 3.8.10).
+- The two checks of the kit file that failed on this machine under a virtual environment pass in all
+  six jobs: the run past its deadline was stopped after 8.0 to 8.2 s in every job, and every job
+  counts one run `lost`. GitHub's interpreters are no virtual environment's, so that settles nothing
+  about the two faults, which are not repaired.
+- REPORT.md has the section "The reading of the reading's repairs on the test branch", point 46 of
+  "Read this first", and a sentence at each place of the second reading's section that the push puts
+  out of date. The ledger's head has a sentence, and the ledger is built again (1,740 rows from 36
+  notes, as before).
+- Beside this session: the user started two sessions from this session's proposals, one for the two
+  faults under a virtual environment on Windows and one for how the guard reads a program's name in
+  quotes, each on a local branch cut from `fd589b2`. Their record is theirs. The proof pilot's
+  branch stood at `09bcc5c`, nine commits after `5ccc2d4`, with point 45 of "Read this first"; this
+  entry's point is 46 for that reason.
+- This record goes to `test/round-9` as the word covers. That push starts a further run of the six
+  jobs, which this record cannot hold.
+- Left as they are: the public `main` at `e587b4f` and the real install; the other sessions'
+  branches, which are not merged; the repairs of the second reading, which are read by their author
+  only.
+
+Next, each a separate word of the user's: whether a reader goes through the repairs of the second
+reading before `main` takes the round; whether `main` takes it; the ninth installer run; whether the
+other sessions' branches are merged into this one; the other questions of the entry before this one.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -3059,6 +3105,12 @@ before this one.
   record. That reading of the word is mine. It is not a word for a push, for `main`, for the real
   install, for a further reader, for a merge of the pilot's branch, for a re-run of a job on GitHub
   or for a deletion.
+- Answered on 20 November ("Push test branch"), from the reading of the reading's repairs: whether
+  its two commits go to `test/round-9`. "The reading of the reading's repairs on the test branch"
+  above. The word covers the push, the reading of GitHub's six jobs and a push of the record of the
+  result to that branch, as I had said before it. It is not a word for `main`, for the real install,
+  for a reader, for a re-run of a job on GitHub, for a merge of another session's branch or for a
+  deletion.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -3079,6 +3131,9 @@ before this one.
   faults under a virtual environment on Windows that its test passes showed, and whether the `--no-`
   rule of `git apply` stays as broad as it is. The snapshot branches are fourteen, with
   `claude/r9-snap-n`.)
+  (Added later on 20 November: the first of those is answered and done; "The reading of the
+  reading's repairs on the test branch" above. For the second and the third the user started a
+  session each on that day, from this session's proposals.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -3249,3 +3304,6 @@ before this one.
   of a run's folder to `status` with a heartbeat that names three process numbers in turn;
   `apply_read2.py KIT LOGS HASH` wrote the texts of the entry "The reading of the reading's
   repairs".
+- `apply_push2.py KIT RUN PREV_RUN`, in that folder, wrote the texts of the entry "The reading of
+  the reading's repairs on the test branch" from what `ci_read.py` reads of the two runs and from
+  the lines of eighteen checks in each job's log.

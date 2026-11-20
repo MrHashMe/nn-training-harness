@@ -533,6 +533,10 @@ round are UTC.
   Under Python 3.15.0rc3 on Windows the kit's test file failed one check in each of two runs, which show two older
   faults in how the kit follows a run's processes under a virtual environment on Windows; neither is repaired, and
   the cause of one is not established.)
+  (Added later on 20 November: both commits are on the public branch `test/round-9` since, on the user's "Push test
+  branch", and all six of GitHub's jobs pass on them; REPORT.md, "The reading of the reading's repairs on the test
+  branch". The two checks that failed on this machine pass there, under interpreters that are no virtual
+  environment's; the two faults are not repaired.)
 
 ## Coverage map
 

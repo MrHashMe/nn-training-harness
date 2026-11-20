@@ -2597,6 +2597,66 @@ records are joined by hand: both sides add to the same places of REPORT.md and o
 whether a fresh reader goes through the repair first; whether a bare name follows an activated
 environment where another interpreter runs the kit; and what the pilot's entry lists, less the
 repair.
+(Added with "The reading of the launcher's repair", the next entry: on the user's "Yes, start
+reader" a fresh reader has read the repair since, and the group has eight checks.)
+
+## The reading of the launcher's repair (20 November): one fresh reader, a regression and a gap repaired, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `397adb5`. The
+user's word, 20 November: "Yes, start reader", to my question at the end of the repair whether a
+fresh reader goes through it before it is merged. Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The reading of the launcher's repair", has it in full):
+- The reader: an agent of this session on Opus 5.5 with read access only and a brief for correctness
+  on `09af4a1`, told not to read `docs/upgrade` and to run nothing. 183,127 tokens, 44 tool calls,
+  eight and a half minutes. Seven findings, a list of what it found right, three questions it could
+  not judge. I ran each finding before any change.
+- Finding 1, held, a regression of `09af4a1`: on Windows without psutil `proc_parent` gave nothing,
+  so `build_status` could not match a GPU process, which is a child of the recorded small
+  `python.exe`, to its run. `expctl._win_parent` (`ctypes`, `NtQueryInformationProcess`) is asked
+  after psutil. Shown with a run on the GPU from the fine-tuning task's environment with psutil
+  hidden: no GPU for the run before, GPU 0 after.
+- Finding 2, held: `cmd_final_eval`'s check of the program asked `shutil.which` alone and refused a
+  `python` that `launch` starts, where no folder of the `PATH` holds one. It takes what `in_env`
+  finds, or the `PATH`.
+- Findings 3 and 4, the tests: on Windows `env_tests` runs with every folder that holds a `python`
+  cut from the `PATH`; the launch checks read the manifest's `cmd`; a new check of nine names for
+  `in_env`; the group is called after the test file's live runs are stopped; `venv` has
+  `timeout=300`; on Windows a `venv` that makes no environment is a failed check. One new check in
+  `main()`: a process's parent without psutil (not on macOS). Eight checks in the group on Windows
+  and six elsewhere, where there were seven and five.
+- Findings 5 to 7, no code: `docs/REFERENCE.md`'s entry is rewritten (which names, what was before,
+  other programs of `Scripts`, a resumed run and a campaign across the kit's upgrade). Tried: a run
+  of the kit of `c6ddba2` resumed with this kit has two interpreters, and the run logger's
+  `env.json` names them; `tqdm --version` from an environment that is not activated could not start
+  before and runs now.
+- The reader's question on time limits, settled by running: in seven kinds of environment a `python`
+  that is ended at a limit of 2 s takes its interpreter with it (back after 2.0 s; the control ends
+  by itself after 12.0 to 12.1 s). Its other two, the Microsoft Store's Python and macOS, are not
+  run.
+- With one change taken out each, on a copy, Windows, Python 3.11.7: every new or changed check
+  fails where it should; with the kit of `c6ddba2` all eight of the group fail. With no git on the
+  `PATH` the eight pass.
+- The eight test files on the final state, from 17:25 to 18:12 on Windows and from 17:26 to 17:45 in
+  WSL: Windows, Python 3.11.7, 1,910 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,897; WSL, 3.12.3, 1,924; WSL from a virtual environment, 3.8.20, 1,911. None failed. The
+  group alone under 3.12.9, 3.14.0 and 3.15.0rc3 and in environments made by uv and by virtualenv:
+  eight of eight.
+- The code is `829d5b3`, 73 lines added and 10 removed: `expctl.py` 23 and 1, `tests/test_kit.py` 36
+  and 5, `docs/REFERENCE.md` 14 and 4.
+- REPORT.md has the section "The reading of the launcher's repair", point 42 of "Read this first", a
+  sentence in the introduction, and a dated note at eight places of the repair's section and at
+  point 41. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no second reader, so
+the reading's repairs are read by nobody but me; GitHub's machines and macOS have run none of it;
+the Microsoft Store's Python, a conda environment and a 32-bit Python not tried; no campaign of the
+loop across an upgrade; the manifest records no interpreter; macOS has no parent without psutil.
+
+Next, each a separate word of the user's: whether a reader goes through the reading's repairs;
+whether this branch is merged with `test/round-9` (five commits after `5ccc2d4`; the records are
+joined by hand); whether the manifest records the interpreter of a run; and what the repair's entry
+lists, less the reader.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

@@ -384,6 +384,23 @@ def compare_tests(tmp, proj):
             ("climb_then_nan", lambda i: 1 + 0.01 * i if i < 300 else nan, lambda i: 0.1 + g(.004), {},  # was: 1.02 to 1.475
              ["train/loss is not finite from step 300 on, after it had risen from 1 to 3.99: the training diverged",
               "train/loss rose from the start (1.145 to 3.845)"], ["one step went wrong"]),
+            # From the second reading of 20 November 2026. A loss that gained nothing, climbed for more than a tenth of
+            # its values and came back: "never moved" names that rise as its exception (was: "about 1 throughout"
+            # beside "had risen from 1 to 5"). A blow-up is a tenth of the values at most, and three of them in a short
+            # run: neither half of that limit had a row. And a metric that is the same at every evaluation gets no
+            # sentence (was, for 0.1: "peaked at step 19 (0.1) and ended at 0.1: it got worse")
+            ("flat_climb_back", lambda i: nan if i == 300 else 5.0 if 269 <= i < 300 else 1.0, lambda i: 0.5, {},
+             ["train/loss is not finite from step 300, and finite again later, after it had risen from 1 to 5 | "
+              "train/loss never moved (about 1 apart from that rise)"], ["throughout", "diverged", "one step went wrong"]),
+            ("tenth_blowup", lambda i: (2.0 * e(-i / 60) + 0.3 if i < 280 else 0.4 * 1.5 ** (i - 280) if i < 300 else
+                                        nan if i == 300 else 0.3), lambda i: 0.5, {},
+             ["train/loss is not finite from step 300, and finite again later, after it had risen from 0.3191 to 886.7: "
+              "the training diverged"], ["one step went wrong"]),
+            ("short_blowup", lambda i: [1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 50.0, 900.0, nan, 0.5, 0.5, 0.5][i], lambda i: 0.5,
+             {"n": 12, "every": 4},
+             ["train/loss is not finite from step 8, and finite again later, after it had risen from 0.5 to 900: "
+              "the training diverged"], ["one step went wrong"]),
+            ("flat_metric", lambda i: 2.0 * e(-i / 60) + 0.3, lambda i: 0.1, {}, [], ["val/acc"]),
             ("eval_nan", fall, lambda i: rise(i) if i < 200 else nan, {},
              ["val/acc is not finite from step 219 on; the values before it were ordinary", "the fault lies in the evaluation"],
              ["was not finite by then", "one step went wrong", "train/loss"]),
@@ -2473,6 +2490,10 @@ def main():
         ("Bash", {"command": "TOUCH.EXE eval/metrics.py"}, "ask"),
         ("Bash", {"command": "Patch.Exe -p1 -i fix.patch"}, "ask"),
         ("Bash", {"command": "TAR.EXE -xf bundle.tar"}, "ask"),
+        # (the second reading of that day: these three had no row in which another program's name did not ask too)
+        ("Bash", {"command": "isort.exe ."}, "ask"),
+        ("Bash", {"command": "UNZIP.EXE bundle.zip"}, "ask"),
+        ("Bash", {"command": "7Z.EXE x bundle.7z"}, "ask"),
         ("Bash", {"command": "touch.exe sub/new.py; install.exe -m 644 x.py sub/y.py; ls touch.exe"}, None),
         ("Bash", {"command": "black.exe --check eval/metrics.py; ruff.exe format --diff eval/metrics.py"}, None),
         # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends

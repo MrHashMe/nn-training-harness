@@ -2369,9 +2369,13 @@ def curve_findings(loss, metric, direction, lname, mname):
         if gain <= max(0.01 * abs(c[0]), far):  # <=: a gain of exactly 0 belongs here, the next branch divides by it
             up = c[9] - c[0] > max(0.1 * abs(c[0]), far)
             rose = rose or ((c[0], c[9]) if up else None)
+            # a loss that gained nothing may have climbed before it broke, and come back: the sentence about the break
+            # names that rise, and it is this one's exception (was until 20 November 2026: "about 1 throughout" beside
+            # "had risen from 1 to 5")
             shape.append(f"{lname} rose from the start ({c[0]:.4g} to {c[9]:.4g}): the steps make the model worse. The "
                          "learning rate is far too high, or the sign of the loss or of the update is wrong" if up else
-                         f"{lname} never moved (about {c[0]:.4g} throughout): the model does not learn. Check that the "
+                         f"{lname} never moved (about {c[0]:.4g} {'apart from that rise' if climbed else 'throughout'}"
+                         "): the model does not learn. Check that the "
                          "optimizer steps these parameters and gradients reach them, that the learning rate is not 0 or "
                          "far off, and that inputs and labels line up; a classifier starts near ln(classes)")
         elif c[9] - low > max(0.5 * gain, far) and c.index(low) < 8:
@@ -2429,7 +2433,10 @@ def curve_findings(loss, metric, direction, lname, mname):
         sig, ib, m = noise(u), max(range(n), key=u.__getitem__), n // 3
         total, last, mid = u[ib] - u[0], mean(u[-m:]), mean(u[-2 * m:-m])
         own = (lambda x: f"{x:.4g}") if direction == "maximize" else (lambda x: f"{-x:.4g}")  # in the metric's own sign
-        if ib < 0.7 * (n - 1) and mean(u[max(0, ib - 1):ib + 2]) - last > max(2 * sig, 0.02 * abs(total)):
+        # What a difference must pass to count. Its last part: two averages of the same value differ by rounding (was
+        # until 20 November 2026: a metric of 0.1 at every evaluation "peaked" at the first one and "got worse")
+        tol = max(2 * sig, 0.02 * abs(total), 1e-9 * abs(last))
+        if ib < 0.7 * (n - 1) and mean(u[max(0, ib - 1):ib + 2]) - last > tol:
             after = [x[2] for x in L if is_num(x[0]) and is_num(M[ib][0]) and x[0] >= M[ib][0]]
             fell = len(after) >= 10 and mean(after[-5:]) < mean(after[:5]) - 0.01 * abs(mean(after[:5]))
             out.append(f"{mname} peaked at {at(M, ib)} ({own(u[ib])}) and ended at {own(last)}" + (
@@ -2444,7 +2451,7 @@ def curve_findings(loss, metric, direction, lname, mname):
                        f"{abs(last - mid):.3g} and the best value is among the last. A longer run will likely score "
                        "better, so compare runs of equal length only")
         else:
-            level, tail, j = last - max(2 * sig, 0.02 * abs(total)), 0.0, n - 1
+            level, tail, j = last - tol, 0.0, n - 1
             for i in range(n - 1, -1, -1):  # the first evaluation from which the average holds the final level
                 tail += u[i]
                 if tail / (n - i) >= level:

@@ -297,6 +297,14 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   them (`(Get-Item f).Delete()`, `.MoveTo(`, `.CopyTo(`). A program's name counts in any case (`RM`, `SED`,
   `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so; and with `.exe`, which `touch.exe`,
   `install.exe` and the formatters (`black.exe`) count with since 20 November 2026 (they passed unasked before).
+  One limit stays for a read-only subagent: its extra rules read a program's name as it stands on the line, so
+  one that is named in quotes (`'touch' notes.md`), and `touch.exe`, `patch.exe` or `tar.exe` behind a path
+  with backslashes, is not refused there. A kept file is asked about all the same, because the main session's
+  rules read that line too. Not repaired: the reading that sees such a name would refuse harmless program text
+  to that subagent (found on 20 November 2026). And no rule that goes by a program's name, the main session's
+  or a subagent's, recognises one in quotes that holds a blank:
+  `"C:/Program Files/Git/usr/bin/touch.exe" eval/metrics.py` is not asked about. That limit is older; the
+  limits of the rule for searches, further down, name the same form.
   Since 15 November 2026 a line whose only write is a redirect, or a `tee` at the start of a command, is asked
   about only where a target of it is such a file: `python eval/metrics.py > score.json` passes (it was asked
   about, and refused where nobody can be asked), `echo x > eval/metrics.py` is asked about as before. The
@@ -410,7 +418,13 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   guard reads the command and not the patch; `git apply --check`, `--stat`, `--numstat` and `--summary`,
   `patch --dry-run` (BSD's `-C` and `--check`), `git am --show-current-patch` and a call for help or the
   version pass (by the option's whole name: `patch --version-control=numbered` is another option, applies the
-  patch and is asked about since 20 November 2026). A word of these two rules ends at a blank or at the sign that ends its command
+  patch and is asked about since 20 November 2026; git's `--help-all` is its help). Where the same line takes
+  such an option of `git apply` back, git applies the patch (`git apply --check --no-check fix.patch`), so
+  since that day any option there that starts with `--no-` is asked about, `--check --no-apply` among them,
+  which applies nothing. One limit stays: behind the word `--` an option's name is a file's name to git
+  (`git apply fix.patch -- --check` applies the patch), and the guard reads it as the option there, as its
+  other rules that let a line pass by an option's name do (found on 20 November 2026, not repaired).
+  A word of these two rules ends at a blank or at the sign that ends its command
   (`(cat x.tar | tar x)`, `patch<fix.patch`, `tar -xf x.tar -O; echo done`), so a label `patch)` at the start
   of a line of a shell's `case` is asked about as the command.
   The same day the list of writes grew by program text in languages whose write calls the guard

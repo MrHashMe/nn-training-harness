@@ -200,6 +200,13 @@ def main():
         ("git am shows the patch it is at, and its help", "Bash",
          {"command": "git am --show-current-patch; git am -h; git am --show-current-patch=diff"}, None, None, None),
         ("git am applies a patch", "Bash", {"command": "git am --show-current-patch; git am fix.mbox"}, None, None, "ask"),
+        # From the second reading of 20 November 2026: git's --help-all is its help too (was "ask" for a day, when an
+        # option's name got its end). An option that only starts like one of these is another one, a check that the
+        # same line takes back applies the patch (were None), and patch.exe in capitals is patch
+        ("git's --help-all applies nothing", "Bash", {"command": "git am --help-all; git apply --help-all"}, None, None, None),
+        *[(f"a patch is applied: {c}", "Bash", {"command": c}, None, None, "ask") for c in (
+            "git am --help-me fix.mbox", "git apply --check-only fix.patch", "git apply --check --no-check fix.patch",
+            "git apply --stat --no-stat fix.patch", "Patch.Exe -p1 -i fix.patch")],
         ("chained command is not the final eval", "Bash",
          {"command": "NN_UNSEAL_TEST=1 python eval/final.py && cat data/test/labels.csv"}, None, None, "deny"),
         ("quoted note with -> is not a write", "Bash",
@@ -305,6 +312,7 @@ def main():
                       # shell on Windows may write it, is that program
                       ("touch.exe notes.md", "deny"), ("patch.exe -p1 -i fix.patch", "deny"), ("black.exe .", "deny"),
                       ("install.exe -m 644 x.py sub/y.py; ruff.exe format .", "deny"),
+                      ("ruff.exe format .", "deny"), ("isort.exe .", "deny"),  # each alone (the second reading)
                       ("black.exe --check .; ruff.exe format --diff .; ls touch.exe", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")

@@ -441,11 +441,14 @@ WRITE_CMDS = re.compile(_GO + r"(?i:(?:touch|patch|install)(?:\.exe)?)" + _WEND,
 # which GNU patch does not know and stops at (tried on 19 November 2026, GNU patch 2.7.6). One that is asked for
 # its help or its version applies nothing either (git's -h ends it wherever it stands, tried with git 2.52). Such an
 # option's name ends where no letter, digit or hyphen follows: patch --version-control=numbered is another option,
-# and applies the patch (was until 20 November 2026: read as --version)
+# and applies the patch (was until 20 November 2026: read as --version). git's --help-all is its help too (was
+# asked about that day, for the name's new end), and git apply takes each of its four back with --no-: behind
+# --check --no-check it applies the patch, so any option that starts with --no- counts as --apply does (was: let
+# through. Both tried with git 2.43 and 2.52)
 PATCHES = re.compile(
-    r"\bgit\s+(?:am\b(?![^;&|\n]*?\s(?:--(?:show-current-patch|help)(?![\w-])|-h(?=[\s;&|)]|$)))|"
-    r"apply\b(?:(?=[^;&|\n]*?\s--a)|"
-    r"(?![^;&|\n]*?\s(?:--(?:check|stat|numstat|summary|help)(?![\w-])|-h(?=[\s;&|)]|$)))))|"
+    r"\bgit\s+(?:am\b(?![^;&|\n]*?\s(?:--(?:show-current-patch|help(?:-all)?)(?![\w-])|-h(?=[\s;&|)]|$)))|"
+    r"apply\b(?:(?=[^;&|\n]*?\s--(?:a|no-))|"
+    r"(?![^;&|\n]*?\s(?:--(?:check|stat|numstat|summary|help(?:-all)?)(?![\w-])|-h(?=[\s;&|)]|$)))))|"
     + _GO + r"(?i:patch(?:\.exe)?)" + _WEND +
     r"(?![^;&|\n]*?\s(?:--(?:dry-run|check|help|version)(?![\w-])|-[bcEeflNnRstuv]*C\S*))", re.M)
 # An archive may hold a file of any name, and unpacked into a folder it writes that file below it: tar with -x (as
@@ -2691,7 +2694,12 @@ def audit(root: Path, entry):
 
 
 def check_readonly(tool, ti):
-    """Extra rules for the read-only subagents."""
+    """Extra rules for the read-only subagents.
+    shortcut: the line is read as it stands and as a POSIX shell reads it, not in the form that plain() gives the
+    main session's rules, so a program that is named in quotes or by a path with backslashes is not seen as that
+    program here (a kept file is asked about all the same: the main rules read the line too). plain() here would
+    refuse harmless program text (print(\\"a > b\\"), d.get("patch") in single quotes); upgrade when a shell's
+    command word can be told from a quoted word in a program's text"""
     if tool in EDIT_TOOLS:
         return [(DENY, "Read-only agent: it may not edit files. Report what needs changing to the main session.")]
     if tool != "Bash":

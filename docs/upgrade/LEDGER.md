@@ -525,6 +525,14 @@ round are UTC.
   on this machine only.)
   (Added later on 20 November: both commits are on the public branch `test/round-9` since, on the user's "Push test
   branch", and all six of GitHub's jobs pass on them; REPORT.md, "The reading on the test branch".)
+  (Added later on 20 November: on the user's "Reader first" a second fresh reader went through those repairs. A
+  regression and two sentences that contradict each other are repaired, with two faults of round 9 beside them: a
+  false sentence about a metric that never changes, and `git apply --check --no-check`, which applies the patch and
+  passed unasked; REPORT.md, "The reading of the reading's repairs". Named and left for the user's decision: how the
+  guard reads a program's name in quotes. These repairs are local commits, and their tests ran on this machine only.
+  Under Python 3.15.0rc3 on Windows the kit's test file failed one check in each of two runs, which show two older
+  faults in how the kit follows a run's processes under a virtual environment on Windows; neither is repaired, and
+  the cause of one is not established.)
 
 ## Coverage map
 

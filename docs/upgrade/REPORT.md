@@ -77,6 +77,14 @@ in a local commit, with an older gap of the guard that my own check of the sibli
 ("The reading of round 9's unread repairs", after "Round 9 on the test branch"). Nothing of that is pushed.
 (Added later on 20 November: on your "Push test branch" both commits went to `test/round-9`, where all six
 of GitHub's jobs pass on them; "The reading on the test branch", after that section.)
+Asked whether a reader should check those repairs before `main` takes the round, you answered "Reader
+first": a second fresh reader went through them and found a regression and two sentences that contradict
+each other, and gaps in their tests. All are repaired in a local commit, with two faults of round 9 that I
+found beside them ("The reading of the reading's repairs", after "The reading on the test branch"). Under
+one of the six interpreters of the local test passes, Python 3.15.0rc3 on Windows, the kit's test file
+failed one check in each of two runs, a different one each time. Both show faults in how the kit follows a
+run's processes under a virtual environment on Windows, older than both readings. One is explained; for the
+other I have a lead and not the cause; neither is repaired. Nothing is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -592,6 +600,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     PROGRESS.md, so a merge keeps both by hand.)
     (Added with point 40: both commits of point 39 are on `test/round-9` since, on your "Push test
     branch", and GitHub's six jobs pass on them.)
+    (Added with point 44: the repairs of point 39 have had a reader since, on your "Reader first".
+    It found a regression and two sentences that contradict each other in them, which are repaired.
+    The pilot's branch holds points 41, 42 and 43 too by now.)
 40. **The repairs of the reading are on the public test branch, on your word, and all six of
     GitHub's jobs pass on them** (20 November; "The reading on the test branch"). On your "Push test
     branch" the two commits of point 39 went to `test/round-9` as a fast-forward, `5ccc2d4` to
@@ -602,6 +613,55 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `main` stays at `e587b4f`, with round 8's guard, and your real install is untouched. The record
     of this goes to the same branch, as the word covers; that push starts a further run, which the
     record cannot hold. Open: the questions of point 39 but the first.
+    (Added with point 44: that further run, 44765640552 on `5ec95c6`, passes in all six jobs, with
+    the counts of the run before in every file. The repairs have had a reader since, on your "Reader
+    first".)
+44. **A second fresh reader went through the repairs of the first reading, on your word, and found a
+    regression and two sentences that contradict each other in them, and gaps in their tests. All
+    are repaired in a local commit, with two faults of round 9 that I found beside them. Nothing is
+    pushed** (20 November; "The reading of the reading's repairs"). Since the first reading the
+    guard asked about `git am --help-all` and `git apply --help-all`, which only print git's usage;
+    they pass again. `expctl curve` could say of one loss that it "had risen from 1 to 5" and that
+    it "never moved (about 1 throughout)"; the second sentence now names the rise as its exception.
+    No test reached either half of the limit that tells a blow-up from a climb, and four `.exe`
+    forms had no row that only their own rule answers: ten rows more. Beside them: `expctl curve`
+    said of a metric that is the same at every evaluation that it "peaked" and "got worse", and the
+    guard let `git apply --check --no-check fix.patch` pass unasked, which applies the patch. Any
+    option of `git apply` that starts with `--no-` is asked about now, `--check --no-apply` among
+    them, which applies nothing. Two older limits of how the guard reads a program's name are
+    confirmed and left for your decision. A read-only agent is not refused a program that is named
+    in quotes, nor `touch.exe`, `patch.exe` or `tar.exe` behind a path with backslashes; a kept file
+    is asked about all the same. And a name in quotes that holds a blank (`"C:/Program
+    Files/Git/usr/bin/touch.exe"`) is recognised by no rule, the main session's included: with it a
+    kept file is written unasked. That one the reader noted in passing, as older and deliberate; I
+    did not repeat its run, and the reference named the form for searches only until now. In five of
+    the six local passes the eight test files pass, with 1,924 to 1,953 checks a pass. In the sixth,
+    Windows under Python 3.15.0rc3, the kit file failed one check of 1,925, and another one when I
+    ran it again by itself; seven files pass there. Neither check is about what the readings
+    changed. Both show faults in how the kit follows a run's processes where a virtual environment's
+    `python.exe` starts it on Windows. In the first run a launched run never started: its supervisor
+    ended at its own start without a word in its log, and the launch had answered `ok`. The cause is
+    not established. The folders that earlier test runs left on this machine hold one older case,
+    and of 1,965 starts of that kind that I tried one ended with the status of a process that a
+    console event ends: under an environment the supervisor sits in a console of its own, with a
+    window. In the second run a run that the test had killed read as `running`: `status` takes the
+    process number in a fresh heartbeat for the run's when any live process has it, and Windows
+    gives a number out again within seconds. That rule is as old as the kit, and `expctl stop` on
+    such a run would end that other process (read in the code, not run). Neither is repaired. These
+    repairs, the guard's among them, are again read by nobody but me. `test/round-9` on GitHub stays
+    at `5ec95c6`. Open: whether the two commits of this reading go to the test branch; how the guard
+    should read a program's name in quotes; what is done about the two faults under a virtual
+    environment on Windows; whether the rule for `--no-` stays as broad as it is; whether `main`
+    takes the round; the ninth installer run, until which your install's guard has the tee hole and
+    the `.exe` gap; whether the proof pilot's branch is merged into this one; whether further
+    readers of my own fixes are wanted without asking; which large item is built next, if any; the
+    clock of this machine's WSL; the fourteen snapshot branches and the scratch clones; the three
+    public test branches.
+    (Points 38, 41, 42 and 43 are the proof pilot's: the pilot, a repair of the launcher that it led
+    to, and two readings of that repair. Its session recorded them on 20 November on the local
+    branch `claude/brave-robinson-27cbd9`, which stood at `d50cc44` when this was written, is not
+    merged into this branch and is not pushed. Of those points I read the first sentences and where
+    they stand; I checked nothing of them.)
 
 ## Round 2 (12 November 2026)
 
@@ -8274,6 +8334,9 @@ In short:
    earlier ones had: a re-read against the comment, the other order and the sibling forms, timings
    against the guard before, old against new on 3,000 generated lines with no changed answer, and tests
    that fail with the repair taken out.
+   (Added later on 20 November: they have had a reader since, on your "Reader first": "The reading of
+   the reading's repairs". It found a regression and two sentences that contradict each other in them,
+   and gaps in their tests.)
 7. **Nothing is pushed.** The code is one local commit, `2da5fee`, and this record a second.
    `test/round-9` on GitHub stays at `5ccc2d4`, where GitHub's second run passes in all six jobs. `main`
    stays at `e587b4f`, with round 8's guard, and your real install is untouched.
@@ -8524,6 +8587,8 @@ repairs of the reading have not run on GitHub's machines or on a Mac.
 - **Whether a reader goes through the repairs of this reading before `main` takes the round.** They are
   small, and they are the guard's and the supervisor's. Each reading of my own repairs since 16 November
   has found something, this one too. By my estimate such a reader costs 60,000 to 120,000 tokens.
+  (Added later on 20 November: answered with "Reader first", and done: "The reading of the reading's
+  repairs". The reader took 183,242 tokens.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force.
 - **The ninth installer run on your real install.** Until it, the install's guard lets a `tee` with a
@@ -8568,10 +8633,14 @@ In short:
    and each job skips as many checks as it did.
 4. **The repairs are still read by nobody but me.** A run shows that the tests pass on three systems. It
    is not a reading.
+   (Added later on 20 November: a reader has read them since, on your "Reader first": "The reading of
+   the reading's repairs".)
 5. **`main` is as it was**, at `e587b4f`, and your real install is untouched. Both hold round 8's guard,
    with the hole in the tee rule and the `.exe` gap.
 6. **This record goes to the same branch, as your word covers.** That push starts a further run of the
    six jobs, which this record cannot hold.
+   (Added later on 20 November: that run, 44765640552 on `5ec95c6`, passes in all six jobs; "The reading
+   of the reading's repairs", "GitHub's run on the record of the push".)
 
 ### The push, and GitHub's run
 
@@ -8612,6 +8681,7 @@ five more in the review-fixes file, and the counts of that run in the other six 
 ### Not done, and why
 
 - A reader for the repairs of the reading: your word did not name one. It is the first question below.
+  (Added later on 20 November: you named one with "Reader first"; the section after this one.)
 - `main`, the ninth installer run, a merge of the pilot's branch and every deletion: each needs your
   word.
 - The run that the push of this record starts: this record cannot hold it.
@@ -8621,6 +8691,8 @@ five more in the review-fixes file, and the counts of that run in the other six 
 - **Whether a reader goes through the repairs of the reading before `main` takes the round.** As in the
   section before this one: by my estimate 60,000 to 120,000 tokens, and each reading of my own repairs
   since 16 November has found something.
+  (Added later on 20 November: answered with "Reader first", and done; the section after this one. That
+  reading found something too.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force.
 - **The ninth installer run on your real install**, and **whether the proof pilot's branch is merged
@@ -8631,6 +8703,498 @@ Sources: `git fetch` before and after the push, on 20 November 2026; GitHub Acti
 44761976197 of the public repository, read on 20 November 2026 from its list of jobs and from each job's
 log, its checks counted as the lines that begin with `PASS`, `FAIL` and `SKIP` and split at the
 `RESULT:` lines; run 44727353913, read the same way, for the comparison.
+
+## The reading of the reading's repairs (20 November 2026): a regression and a clash repaired, two faults of round 9 beside them
+
+Your word: "Reader first", to the question whether a reader checks the reading's repairs before `main`
+takes round 9. I took it as I had taken "Read first" earlier that day: one reader with read access only,
+the check and the repair of what it finds, tests, and local commits with their record. That reading of
+the word is mine; this time I had not spelled it out before you answered. Not covered: a push, `main`,
+your real install, a further reader, a merge of the pilot's branch, a re-run of a job on GitHub,
+deleting anything. Dates and times in this section are UTC. "The first reading" below is the one of the
+section "The reading of round 9's unread repairs", and its commit is `2da5fee`.
+
+In short:
+
+1. **The reader found one regression of the first reading's repairs: the guard asked about git's
+   `--help-all`. Repaired.** `git am --help-all` and `git apply --help-all` print git's usage and apply
+   nothing. They passed until the first reading ended an option's name where no letter, digit or hyphen
+   follows; since then they were asked about, and refused where nobody is there to answer.
+2. **It found two sentences of `expctl curve` that contradict each other. Repaired.** Of a loss that
+   stood at 1, climbed to 5 for a tenth of the run and came back, one sentence said that it "had risen
+   from 1 to 5" and the next that it "never moved (about 1 throughout)". The second now reads "about 1
+   apart from that rise".
+3. **It found gaps in the first reading's tests, and they are closed with ten rows.** No row reached
+   either half of the limit that tells a blow-up from a climb, nor a blow-up that is followed by a
+   finite loss. Four `.exe` forms had no row that only their own rule answers, and the hyphen at the end
+   of an option's name had none for the two git commands.
+4. **Beside the reader's findings I found two faults of round 9, and repaired both.** `expctl curve`
+   said of a metric that is the same at every evaluation that it "peaked at step 19 (0.1) and ended at
+   0.1: it got worse", or that it reached its final level partway through the run: a sentence of that
+   kind in 24 of 96 such series that I tried. And the guard let `git apply --check --no-check fix.patch`
+   pass unasked, which applies the patch: git takes each of its four checking options back with `--no-`.
+5. **Two older limits of how the guard reads a program's name are confirmed and not repaired: they are
+   your decision.** A read-only agent's own rules do not refuse a program that is named in quotes, nor
+   `touch.exe`, `patch.exe` or `tar.exe` behind a path with backslashes. A kept file is asked about all
+   the same, because the main session's rules read that line too. The second the reader noted in
+   passing: a name in quotes that holds a blank is recognised by no rule, the main session's included,
+   so with it a kept file is written unasked. The repair that lies nearest for the first would refuse
+   harmless program text to that agent, and a repair of either changes how every rule reads a line.
+6. **Two findings changed nothing**: the cost of three kinds of long line, which through the hook is 0.2
+   s more on one of them than before the first reading and ten seconds less on another, and a grace
+   written as text in a manifest edited by hand.
+7. **In five of the six local test passes every check passes. In the sixth, the kit file failed one
+   check in each of two runs, a different one each time: two older faults of the kit on Windows, not of
+   these repairs, and neither is repaired.** The passes have 1,924 to 1,953 checks, fifteen more than on
+   the first reading's commit. Under Python 3.15.0rc3 on Windows, where a virtual environment's
+   `python.exe` starts the kit, a launched run never started in the first run and the launch had
+   answered `ok`; I have a lead and not the cause. In the second a run that the test had killed read as
+   `running`, because `status` took a process number that Windows had given to another process for the
+   run's ("Two failed checks", below).
+8. **These repairs are again read by nobody but me, the guard's among them.** They had what the earlier
+   ones had: a re-read against the comments, the sibling forms, git itself for what an option does,
+   timings against the guard before, old against new on 2,500 generated lines with no changed answer,
+   and tests that fail with the change taken out.
+9. **Nothing is pushed.** The code is one local commit, `05f996f`, and this record a second.
+   `test/round-9` on GitHub stays at `5ec95c6`, where GitHub's run on the record of the push passes in
+   all six jobs (below). `main` stays at `e587b4f`, with round 8's guard, and your real install is
+   untouched.
+
+### The reader and its brief
+
+- One reader: a fresh session of Opus 5.5 with read access only. It ran its own sample lines and small
+  scripts from a scratch folder of this session and wrote nothing in the repository. 183,242 tokens, 36
+  tool calls, nine minutes. My estimate had been 60,000 to 120,000 tokens.
+- What it read: the first reading's commit `2da5fee` against its parent `5ccc2d4`: five files, 97 lines
+  added and 27 removed.
+- The brief asked about correctness, in both directions: a line that the text says is asked about and is
+  not, and a harmless line that is now asked about or refused. It asked for the regressions through the
+  two changed endings (an option's name, and `.exe` in any case of letters); for the grace at every
+  value a manifest may hold; for the edges of the blow-up's limit and every combination that reaches the
+  sentence about a loss that is not finite; for whether each new check would pass with its change taken
+  out; for the cost on long lines; for Python 3.8 to 3.15; and for whether the changed comments and the
+  reference's sentences are true. It said that this is no search for ways past the guard, and that I did
+  not want one.
+- It reported seven findings, and began: "I found no fault that lets a write pass unasked in the lines
+  this commit changed." It confirmed six of the seven by running them and the seventh by reading. Found
+  right, in its list: the new ending changes an answer only where a hyphen follows an option's name;
+  `.exe` in capitals changes only `patch`, `tar`, `unzip` and `7z`, from allowed to asked about; the
+  `.exe` forms are caught behind `;`, in brackets, behind `xargs`, `uv run`, `cmd /c`, `powershell -c`
+  and `bash -c`; the blow-up's limit at exactly a tenth (30 of 300 values is a blow-up, 31 is not) and
+  at few values; no branch of the sentence about a loss that is not finite is dead; the supervisor's
+  test fails with the old reading of the grace and with the system's clock alone; both changed comments
+  and both sentences of the reference are true, apart from `--help-all`. Not checked, in its own words:
+  the test files themselves, which the brief told it not to run; `.cmd`, `.bat` and `.com` forms of a
+  program's name (`patch.cmd` passes, and the commit does not claim them); a Mac, and Python 3.8 or 3.15
+  for its own scripts.
+- With it, the readers of this work are eight and one second reading, about 1,263,000 tokens. Beyond
+  your word the count stays at six and one second reading, about 907,000: this one you asked for.
+
+### The findings, each checked
+
+| # | The reader's finding | What I found | Answer |
+|---|---|---|---|
+| 1 | `expctl curve` says of one loss that it "had risen from 1 to 5" and that it "never moved (about 1 throughout)" | Holds, with the reader's own curve | Repaired |
+| 2 | `git am --help-all` and `git apply --help-all` are asked about since the commit, and only print git's usage | Holds: the commit's guard asks, its parent's and the released one do not; git 2.52 and 2.43 print the usage and apply nothing | Repaired |
+| 3 | No test reaches the half "a tenth of the values" of the blow-up's limit, nor a blow-up that is followed by a finite loss | Holds, by the reader's own change to a copy. The other half, "three values at least", had no row either | Two rows |
+| 4 | Some `.exe` forms are tested only on a line where another rule answers too (`isort.exe`, `ruff.exe format`); `UNZIP.EXE` and `7Z.EXE` have no row, nor has the hyphen at the end of an option of `git am` and `git apply`, nor the patch rule's side of `Patch.Exe` | Holds for all but the last: the kit file's row `Patch.Exe -p1 -i fix.patch` fails where that rule reads the name in small letters only | Eight rows |
+| 5 | A read-only agent is not refused `touch.exe`, `patch.exe` or `tar.exe` behind a path with backslashes (`C:\msys64\usr\bin\touch.exe eval/metrics.py`); `rm.exe` in that form is refused. Older than the commit, whose comment reads as if the matter were closed. In passing: a name in quotes that holds a blank passes the main session's rules too | Holds, and it is wider: a program's name in quotes (`'touch' notes.md`, `"rm" notes.md`) passes the read-only rules the same way, in the commit's guard, its parent's and the released one. The reader's run of a name with a blank I did not repeat | Not repaired; the comment and the reference say it now. Your decision |
+| 6 | Three kinds of long line got slower through the new ending of an option's name (8,000 repeats of a near-miss: 0.01 s before and 5.7 s after, for the pattern alone) | Through the hook, as a session meets it, those lines take 1.3 to 1.8 s in the commit's guard and are asked about; in its parent's they took 1.3 to 12.3 s | No change |
+| 7 | A grace that a manifest holds as text (`"30"`) or as `true` reads as 600 s since the commit; found by reading, and in the reader's words a matter of taste | Holds. Both writers of the field write a number | No change |
+
+**1. Two sentences about one loss.** The reader's curve has 269 values of 1, then 31 of 5, one that is
+not finite, and 100 of 1 again. 31 values are more than a tenth of the 300 before the break, so the
+climb is no blow-up and stays in what the shape reads. The sentence about the break named it: "is not
+finite from step 300, and finite again later, after it had risen from 1 to 5". The shape's sentence
+reads the means of ten tenths of all finite values, the 100 after the break among them. They show no
+gain, so it said "never moved (about 1 throughout)". Each was true of what it looked at, and together
+they were not. Now the shape's sentence reads "never moved (about 1 apart from that rise)" wherever the
+loss climbed before it broke, after a blow-up too. The clash is as old as round 9's command: the parent
+of the reader's commit said "diverged" beside the same "never moved".
+
+**2. git's `--help-all`.** Round 9's rule let a call for help pass and ended `--help` at a word
+boundary, which a hyphen is, so `--help-all` passed with it. The first reading ended an option's name
+where no letter, digit or hyphen follows, so that `--version-control` no longer reads as `--version`;
+from then on `--help-all` was another option, and the line was asked about. I had looked in git's help
+for a longer option that begins like an excepted one and found none: `git am -h` and `git apply -h` do
+not list `--help-all`. It is real all the same. With git 2.52.0 on Windows and 2.43.0 in WSL, `git am
+--help-all` and `git apply --help-all` print the usage, end with the exit code 129 and apply nothing,
+with the option in four positions each and a patch on the line. Now the name is `--help` or `--help-all`
+for both commands. A word that goes on after that (`--help-all-x`, `--help-me`) is asked about, as it
+has been since the first reading.
+
+**3. The limit that tells a blow-up from a climb.** A blow-up is a climb in at most three values, or in
+a tenth of the values before the first that is not finite, where that is more; only a blow-up is taken
+out of what the shape reads and called a divergence where the loss is finite again later. The reader set
+the limit to three values in a copy, and all ten curve rows that it concerns passed. Two rows now. In
+the first the last twenty of 300 values climb: more than three and less than a tenth, so it is a
+blow-up, and the row fails where the limit is three values. In the second two of eight values climb, and
+a tenth of eight is none: the row fails where the limit is a tenth alone. Both end with a finite loss,
+so they are also the rows for "finite again later ... the training diverged", which had none.
+
+**4. `.exe` forms that only another rule tested.** New rows, each alone on its line: `isort.exe .`,
+`UNZIP.EXE bundle.zip` and `7Z.EXE x bundle.7z` in the kit file, and `ruff.exe format .` and `isort.exe
+.` put to the guard as a read-only agent. `git am --help-me fix.mbox` and `git apply --check-only
+fix.patch` are asked about, which shows the hyphen at the end of an option's name for the two git
+commands. `Patch.Exe -p1 -i fix.patch` has a row in the review-fixes file, where no run is live and no
+other rule can ask in its place. Of the reader's list one part did not hold: the kit file's own
+`Patch.Exe` row fails when the patch rule knows `.exe` in small letters only, so it did test that rule.
+
+**5. A read-only agent, and a program's name in a form of its own.** The reader's lines are
+`C:\msys64\usr\bin\touch.exe eval/metrics.py` and lines with `patch.exe` and `tar.exe` behind the same
+path: the read-only agent's rules allow them, while `rm.exe` behind the same path is refused by an older
+rule. My own check of the sibling form: a program's name in quotes (`'touch' notes.md`, `"rm" notes.md`)
+passes those rules the same way, in the commit's guard, in its parent's and in the released one. The
+cause is one. The main session's rules read a line a second time in a plain form, with the quotes around
+a command word and the backslashes of a path taken away. The read-only agent's extra rules read the line
+as it stands and as a POSIX shell reads it, and not in that form.
+
+- **What it means.** A write to a kept file is asked about all the same, because the main session's
+  rules read the agent's line too: the reader saw that for its three lines, and I for `'touch'
+  eval/metrics.py` and `"rm" eval/metrics.py`. What is not stopped is a write to a file that is not
+  kept, by an agent that is meant to write nothing.
+- **What the reader noted beside it.** A name in quotes that holds a blank, as in `"C:/Program
+  Files/Git/usr/bin/touch.exe" eval/metrics.py`, passed both the main session's rules and the read-only
+  agent's in its run, and so did the same line with `rm.exe`. It calls that general and deliberate, and
+  not this commit's. The plain form leaves such quotes in place, because without them the name would be
+  two words; the guard's comment at that rule says so. So with that form a kept file is written unasked,
+  in the main session too. On Windows it is the form in which a program under `C:\Program Files` is
+  called. The limit is older than round 9, and `docs/REFERENCE.md` named the form as not recognised only
+  where it lists the limits of the rule for searches. I did not run those lines again, and I changed no
+  rule.
+- **Why I did not repair it.** The repair that lies nearest gives the plain form to the read-only rules
+  as well. I worked out what they would then say of six harmless lines: three that pass today would be
+  refused. They are `python -c "print(\"a > b\")"`, `python -c 'd = {}; print(d.get("patch"))'` and
+  `python -c "import json; print(json.load(open('runs/x/meta.json')).get('install'))"`: program text
+  whose quotes the plain form takes away, so that `>`, `patch` and `install` stand there like a shell's
+  own words. A read-only agent that reads results writes lines of that kind all the time. The repair
+  needs a reading that tells a shell's command word from a quoted word in a program's text. That is a
+  change of its own, with its own comparison on generated lines, and I did not try further lines against
+  these rules. A name in quotes that holds a blank belongs to the same change: it too alters what every
+  rule sees of a line.
+- **What is done.** The guard's comment at the read-only rules names the first limit in the form that
+  the code uses for a known shortcut, and `docs/REFERENCE.md` names both where it lists what counts as a
+  program's name.
+
+**6. Cost.** The reader timed the changed patterns by themselves on lines of 8,000 repeats of a
+near-miss. I put the same lines to the guard through the hook, as a session meets it (Windows, Python
+3.11.7, the better of two runs):
+
+| Line | Characters | This reading's guard | The first reading's (`2da5fee`) | Its parent's (`5ccc2d4`) |
+|---|---|---|---|---|
+| 8,000 times `(git am --help-a` | 136,000 | asked, 1.65 s | asked, 1.68 s | allowed, 1.46 s |
+| 8,000 times `(git apply --check-x` | 168,000 | asked, 1.81 s | asked, 1.80 s | asked, 12.30 s |
+| 8,000 times `(patch --version-x` | 152,000 | asked, 1.27 s | asked, 1.25 s | allowed, 1.25 s |
+| 8,000 times `(git am --help-all` | 152,000 | allowed, 1.50 s | asked, 1.72 s | allowed, 1.49 s |
+| 8,000 times `(git apply --no` | 128,000 | asked, 1.61 s | asked, 1.60 s | asked, 1.61 s |
+| 1,000 lines `git apply --check --no-check` | 39,889 | asked, 0.81 s | allowed, 0.77 s | allowed, 0.76 s |
+| 8,000 times `(git apply --check` | 152,000 | allowed, 12.00 s | allowed, 11.82 s | allowed, 11.65 s |
+| An ordinary line | 50 | asked, 0.18 s | asked, 0.18 s | asked, 0.19 s |
+
+Through the hook the first reading's ending cost 0.2 s on the first of the reader's three lines (1.68 s
+where the parent took 1.46 s) and nothing on the third. On the second it saved ten seconds: there the
+parent ran into the guard's own limit of 12 s, after which it answers with a question by itself. This
+reading's guard is within 0.04 s of the first reading's on fourteen of the sixteen lines that I timed,
+of which the table shows eight. Of the other two, the line with 8,000 times `(git am --help-all` takes
+0.2 s less, and the last line but one of the table 0.2 s more on 12 s. That line is an older slow kind,
+which all three guards have: 8,000 `git apply --check` commands in one line take 11.7 to 12.0 s through
+the hook, the interpreter's start included, which is just under that limit. Nobody writes such a line; I
+name it because the time stands in the table. No change.
+
+**7. A grace as text.** `expctl launch` and `nnremote.py` write the grace as a number. A manifest that
+was edited by hand could hold `"30"` or `true`, which counted as 30 s and as 1 s before the first
+reading's repair and count as the default of 600 s since. Left: a grace that is no number is read as
+none, which I find the safer of the two readings, and the reader calls it a matter of taste.
+
+### Beside the findings: two faults of round 9, and a limit
+
+- **A metric that never changes got a sentence that is false.** Found when I wrote the new curve rows,
+  whose metric is one value throughout. `expctl curve` compares the mean around the best evaluation with
+  the mean of the last ones and asks whether they differ by more than a threshold: twice the scatter, or
+  2 % of what the metric moved in all. For a metric that is the same at every evaluation both are 0, and
+  two means of equal values can differ in their last digit by rounding. So "more than 0" held: "val/acc
+  peaked at step 19 (0.1) and ended at 0.1: it got worse", or "reached its final level at step 179, 42 %
+  into the run". Of 96 such series (twelve values, four lengths, a metric to raise and one to lower) 24
+  got such a sentence. Now the threshold is at least a billionth of the last value's size, and none of
+  the 96 gets one. The fault came with the command in round 9 (`b593bd0`), not with the first reading.
+- **A check that the same line takes back.** Round 9's rule lets `git apply` pass where an option says
+  that it only checks or describes the patch: `--check`, `--stat`, `--numstat`, `--summary`. The usage
+  of git 2.52 lists each of the four with `--[no-]`. I tried it with git 2.52.0 and 2.43.0 in scratch
+  repositories: `git apply --check --no-check fix.patch` applies the patch, and so do the other three
+  pairs; `--no-check --check`, `--check --no-apply` and `--stat --no-add` apply nothing. The guard of
+  `2da5fee`, its parent's and the released one let all of these pass. Now any option on a `git apply`
+  line that starts with `--no-` counts as `--apply` does, and the line is asked about.
+- **What that rule costs.** It is broader than the four pairs, on purpose: git also takes an option's
+  name in a shortened form, and a list of names would have to follow git's. So `git apply --check
+  --no-apply`, `--stat --no-add` and `--no-check --check`, which apply nothing, are asked about now, and
+  refused where nobody is there to answer. `docs/REFERENCE.md` says so. Whether it stays that broad is a
+  question below.
+- **A limit that I found while checking it, and left.** To git the word `--` ends the options, and what
+  follows is a file's name. `git apply fix.patch -- --check` applies the patch with both git versions
+  (and then fails on a file named `--check`); `git apply --check -- fix.patch` applies nothing. The rule
+  reads `--check` as the option in both. It is the same for the guard's other rules that let a line pass
+  by an option's name, about a dozen, which I did not go through one by one. Not repaired: nobody writes
+  that line by accident, and a repair belongs to all those rules at once, which is more than this
+  reading's findings called for. The reference names it at the patch rule.
+
+### The change, and its tests
+
+- **The commit** (`05f996f`): five files, 67 lines added and 9 removed. `nn_guard.py` (the patch rule's
+  `--help-all` and `--no-`, and the comment at the read-only agent's rules), `expctl.py` (the sentence
+  "never moved", and the threshold's floor), `docs/REFERENCE.md` (the patch rule's two changes, and
+  three limits: the read-only agent's reading of a program's name, a name in quotes that holds a blank,
+  and an option's name behind `--`), `tests/test_kit.py` and `tests/test_review_fixes.py`.
+- **New checks: fifteen.** In the kit file seven: four curves (the reader's flat loss with a climb, the
+  two halves of the blow-up's limit, a metric that never changes) and three `.exe` lines put to the
+  guard. In the review-fixes file eight: `--help-all`, which must pass; five lines that apply a patch
+  and must be asked about (`--help-me`, `--check-only`, `--check --no-check`, `--stat --no-stat`,
+  `Patch.Exe`); and two `.exe` lines put to the guard as a read-only agent.
+- **Each fails with its change taken out, and nothing else does.** Four copies of the controller: two
+  with a change of this reading taken out (the wording, the threshold's floor) and two with one half of
+  the blow-up's limit taken out. Of the 41 curve rows exactly one fails in each copy, the row made for
+  it (Windows, Python 3.11.7). The review-fixes file with the guard of `2da5fee`: the row for
+  `--help-all` and the two for `--no-` fail, three of 133. With the guard of `5ccc2d4`: the five new
+  lines that apply a patch and the six `.exe` rows of the read-only agent fail, four of them the first
+  reading's. The kit file in WSL with the guard of `5ccc2d4`: the first reading's nine rows and the
+  three new ones fail, twelve of 1,231. Where the patch rule reads a program's name in small letters
+  only, the `Patch.Exe` row fails in each of the two files.
+- **The full passes**, on the state of the commit but for one passage of `docs/REFERENCE.md`, which I
+  worded again while the passes ran and which no test reads (the local branch `claude/r9-snap-n` holds
+  the tested state): the eight test files under three interpreters each on Windows and in WSL. In five
+  passes every file passes and no check failed. In the sixth, Windows under Python 3.15.0rc3, one check
+  of the kit file failed, and another one when that file ran again; "Two failed checks", below, is about
+  them.
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,223 | 133 | 138 | 264 | 100 | 54 | 6 | 1,937 |
+| Windows | 3.8.20 | 19 | 1,223 | 133 | 137 | 264 | 100 | 42 | 6 | 1,924 |
+| Windows | 3.15.0rc3 | 19 | 1,222 and 1 failed | 133 | 138 | 264 | 100 | 42 | 6 | 1,925, one of them failed |
+| WSL | 3.12.3 | 19 | 1,231 | 135 | 136 | 275 | 100 | 54 | 3 | 1,953 |
+| WSL | 3.8.20 | 19 | 1,231 | 135 | 135 | 275 | 100 | 42 | 3 | 1,940 |
+| WSL | 3.15.0b3 | 19 | 1,231 | 135 | 136 | 275 | 100 | 42 | 3 | 1,941 |
+
+Against the first reading's commit under the same interpreters that is fifteen checks more a pass, the
+failed one counted: seven in the kit file and eight in the review-fixes file. The other six files have
+the counts of that reading's table. Python 3.11.7 on Windows and 3.12.3 in WSL have psutil and PyTorch;
+the other four interpreters have no third-party package, and the benchmarks file has 42 checks there in
+the place of 54.
+
+### Two failed checks under a virtual environment on Windows
+
+The kit's test file ran twice under Python 3.15.0rc3 on Windows on the tested state: in the pass, and
+once more by itself afterwards. Each run failed one check and passed the other 1,222, and each of the
+file's 1,223 checks passed in at least one of the two. That interpreter is a virtual environment's, as
+the 3.8.20 one is; Python 3.11.7 is installed without one. On Windows an environment's `python.exe` is a
+small program that starts the base interpreter as a second process, so what the kit starts and what then
+runs are two processes with two numbers. Neither check is about what the two readings changed. Both are
+about what the run controller makes of a run's processes, in code that is in the kit since its first
+published commit, `6978b6d`, and is in `main` and in the proof pilot's branch too.
+
+**The first run: a launched run never started.** The failed line is `FAIL a run past its deadline is
+killed after kill_after_s, whatever time a request file in its folder names (stopped for None, after
+None s)`. The test launches a run with a deadline of two seconds and waits for the record of its end,
+which never came.
+
+- **What the run's folder shows** (written at 19:52 UTC). It holds the manifest, the copy of the source,
+  the stop request that the test wrote, and the supervisor's log with nothing in it. There is no log of
+  the run, no record of a process and none of an end. The supervisor writes nothing before it opens the
+  run's log, and an error of Python's would have left its trace in the supervisor's own log. So the
+  supervisor's process was created, and it ended before it opened the run's log, and not by an error of
+  Python's.
+- **What the launch said, and what `status` says since.** The launch looks for the supervisor's first
+  record for five seconds and then answers `ok`, with no process number and the warning "child pid not
+  reported yet; check status in a few seconds". It holds the supervisor's process and does not look
+  whether that has ended. `status` shows such a run as `unknown`, with no reason, for good: the same run
+  of the test file counted one `unknown` run at its end. Whoever waits for such a run waits until their
+  own limit.
+- **How often.** The test runs whose folders this machine's temporary folder still holds left 193
+  projects with 3,148 launched runs. Two of the runs have a supervisor that never started: this one, and
+  one of 17 November (17:39 UTC) under the 3.8.20 environment. Both are among the 650 runs that an
+  environment's `python.exe` launched; none is among the 2,321 under Python 3.11.7. For 177 runs the
+  folder does not tell the interpreter.
+- **A probe.** After the passes I started 1,965 children the way the launch starts its supervisor, with
+  the same flags and handles, under the 3.15 environment: 835 one after the other and 1,130 eight at a
+  time. Each only had to create a file. One of the first group ended after 0.16 s with the return code
+  `0xC000013A`, its file not created and its log empty; the other 1,964 did what they were told.
+  `0xC000013A` is the status that Windows gives a process which a console event ends: Ctrl+C,
+  Ctrl+Break, or the closing of its console.
+- **A lead, from one trial.** Started through the environment's `python.exe` with the launch's flags
+  (detached from the caller's console, a process group of its own), the base interpreter gets a console
+  of its own, with a window that Windows reports as visible. Started directly with the same flags, the
+  base interpreter has no console at all. With the flag for "no window" in the place of "detached", the
+  environment's program and the interpreter share one console that has no window. So where an
+  environment's `python.exe` runs the kit on Windows, each launched run's supervisor sits in a console
+  of its own with a window, for as long as the run lasts, and what ends that console ends the supervisor
+  without a record. I did not look at the screen.
+- **What is not known.** What sent an event to that console in the probe's one start, and whether the
+  supervisor of the failed run ended that way at all: the launch does not keep its exit code. Windows'
+  Application and System logs hold nothing about either. So this is a lead and not the cause. It fits
+  what was counted: both runs that never started were launched by an environment's `python.exe`.
+
+**The second run: a run that the test had killed read as `running`.** The failed line is `FAIL counts by
+state: {'running': 1, 'completed': 4, 'failed': 2, 'timeout': 1, 'interrupted': 6, 'incomplete': 1}`.
+The check wants one run in the state `lost` and found none. The test had killed that run's supervisor
+and its process, and `status` said `lost` right after that (the check for it passed). When the test
+counted the states a little later, the same run was `running`.
+
+- **The rule.** Where the recorded process of a run is gone, `status` looks at the run's heartbeat. If
+  that is younger than `heartbeat_stale_seconds` (900 by default) and names another process number, and
+  a process with that number is alive, `status` takes that process for the run's. The rule is there for
+  a run that a later process resumed in its folder. It compares no start time, as the rule for the
+  recorded process does.
+- **Why it struck here.** Under an environment's `python.exe` the recorded number is the small program's
+  and the heartbeat's is the interpreter's, so the two always differ. After the kill the interpreter's
+  number was free, and by the rule a live process must have held it when the test counted the states;
+  which process, the records do not say. Windows gives a number out again soon: in the records of that
+  test project two numbers were each held by two processes of the test's runs, 10 and 18 seconds apart.
+- **Confirmed on a copy of that run's folder**, with the controller of the tested state. With a fresh
+  heartbeat that names a live process which is not the run's, `status` says `running`. With one that
+  names a number no process has, it says `lost`, "process gone without result/exit record"; with one
+  that names the recorded number, `lost` too.
+- **What it means.** After a kill that leaves no record of the end, a run can read as `running` for up
+  to fifteen minutes, whenever a live process has the number in its heartbeat. That concerns every
+  launch in which another process than the recorded one writes the heartbeat: an environment's
+  `python.exe` on Windows, and a wrapper on any system, though I saw numbers come back that soon on
+  Windows only. And it is more than a wrong word. Read in the code and not run: on Windows `expctl stop`
+  on such a run, with no supervisor left, waits `kill_after_s` and then ends the process that holds the
+  number, with its whole tree. The comment at that place names the limit for a run that names another
+  program in its own records; a killed run under an environment reaches it with no ill will at all.
+- **How old.** The rule is in the first published commit, `6978b6d` of 13 November, in `main` and in the
+  proof pilot's branch. `c858226` took it out for a run in a sandbox that has process numbers of its own
+  (`--unshare-pid`), for a like reason.
+
+Neither fault is repaired here. "Not done, and why" says why, and the third decision below what a repair
+could be.
+
+### What was measured, and what it rests on
+
+- **Old against new on generated lines.** 2,500 generated command lines put to the guard of `2da5fee`
+  and to this one: no answer changed, for the main session (2,009 allowed, 491 asked about) or for a
+  read-only agent (1,323 allowed, 1,177 refused). So none of the generated lines is of the kind that the
+  repairs concern: this shows that nothing else moved, not that the repairs work. The new rows show
+  that.
+- **The sibling forms, in four guards**: 43 lines put to this guard, the first reading's, its parent's
+  and the released one. Fourteen forms of the `--help-all` line (before `;`, `|`, `<` and `>`, in
+  brackets, as `git.exe`, as `GIT`, with `git -C sub`, in PowerShell's tool, with a patch's name before
+  the option) pass in this guard, in the parent's and in the released one, and were asked about in the
+  first reading's. Four lines with a word that only begins like an option (`--help-all-x`,
+  `--help-allx`, `--help-me`, `--check-only`) are asked about in this guard and the first reading's, and
+  `git apply --help-all --apply fix.patch` in the parent's as well. Twelve `--no-` forms are asked about
+  in this guard and passed in the other three. Seven ordinary lines that only check or describe a patch
+  pass in all four, among them `git apply --check fix.patch; echo --no-color` and `git diff --no-color |
+  git apply --check`, where the `--no-` belongs to another command. To a read-only agent each of these
+  38 lines with `git am` or `git apply` is refused by all four guards, the calls for help among them.
+  The five `.exe` lines of finding 4 are asked about, and refused to a read-only agent, in this guard
+  and the first reading's; the two guards before let them pass.
+- **git itself**, 2.52.0 on Windows and 2.43.0 in WSL, in scratch repositories that were removed
+  afterwards: what `--help-all` does, what each pair of a checking option and its `--no-` form does in
+  both orders, and what an option's name behind `--` does.
+- **Time**: the table at finding 6, on Windows under Python 3.11.7.
+- **What it rests on.** The guard's rows are command lines given to it as text: no patch was applied by
+  a test, and the patches of my own checks were applied in scratch repositories only. The 96 constant
+  series and the six harmless lines of finding 5 are my own choice. The timings are one machine's, on
+  Windows only. The reader's statements under "found right" I did not check again, nor its run of a name
+  in quotes that holds a blank.
+
+### GitHub's run on the record of the push
+
+"The reading on the test branch" ends with the push of its own record, `5ec95c6`, whose run that record
+could not hold. It is run 44765640552 (15:40 to 15:59 UTC on 20 November): all six jobs pass at the
+first attempt, with 1,910 to 1,926 checks a job, none failed, and in every job the counts of run
+44761976197 in every file. That run is on the state before this reading; the repairs of this reading
+have not run on GitHub's machines or on a Mac.
+
+### Not done, and why
+
+- A push of the two commits: it needs your word. "Reader first" named a reader, and I do not stretch it
+  to a push.
+- A reader for the repairs of this reading: the word was for one reader. Counting added and removed
+  lines together, they change the guard in 18 lines and the controller in 13.
+- How the guard reads a program's name, in a read-only agent's rules and for a name in quotes that holds
+  a blank: left, as said at finding 5. It is the second decision below.
+- A repair of the two faults that the failed checks show ("Two failed checks", above): what the
+  controller makes of a run's processes is no part of what this reading read, the cause of one is not
+  established, a change there wants its own tests, passes and reader, and the proof pilot's session is
+  changing the launcher on its own branch. It is the third decision below.
+- An option's name behind `--`, and the breadth of the `--no-` rule: left as said above.
+- A program named with `.cmd`, `.bat` or `.com` (`patch.cmd`), which the reader named as not checked:
+  not looked at. The first reading's repair claims `.exe` only.
+- The older slow line of finding 6, and a grace as text (finding 7): no change.
+- Anything on a Mac, on bare Linux or under Python 3.15.2 for this state: GitHub's jobs run on a push.
+- `main`, the ninth installer run, a merge of the pilot's branch and every deletion: each needs your
+  word. The public `main` and your install hold round 8's guard, with the hole in the tee rule and the
+  `.exe` gap; they have no rule for a patch at all, so nothing of this reading's guard changes concerns
+  them yet.
+
+### What needs your decision
+
+- **Whether the two commits of this reading go to `test/round-9`.** GitHub's six jobs would then run
+  these repairs on macOS, on bare Linux and under Python 3.15.2 for the first time. I would take "Push
+  test branch" to cover that push, the reading of the jobs, and a push of the record of the result to
+  that branch.
+- **How the guard should read a program's name in quotes** (finding 5). It has two parts. In the main
+  session a name in quotes that holds a blank is recognised by no rule, so with it a kept file is
+  written unasked; that is the reader's run, which I did not repeat, and on Windows it is the form in
+  which a program under `C:\Program Files` is called. And a read-only agent can write a file that is not
+  kept by naming the program in quotes, or some programs by a path with backslashes. Both need a reading
+  that tells a shell's command word from a quoted word in a program's text; done carelessly it refuses
+  the lines with which an agent reads results. It is a piece of work of its own, with tests and a
+  comparison on generated lines, and I would give it a reader.
+- **What is done about the two faults under a virtual environment on Windows** ("Two failed checks",
+  above). The rule that misreads a killed run is in every state of the kit since its first published
+  commit, and so is a launch that does not look at its supervisor's process. The misread run is the
+  graver of the two, because `expctl stop` acts on what `status` says. The repair I see for it is small:
+  the heartbeat carries the start time of its process, as `pid.json` does of the recorded one, and
+  `status` takes the heartbeat's number for the run's only where that time fits; a heartbeat without one
+  is read as today. For the launch whose supervisor never starts, two things need no knowledge of the
+  cause: the launch holds the supervisor's process and does not look at it, so it can see that this
+  process has ended before its first record and answer with an error and that process's exit code; and
+  it can start the supervisor a second time. What the lead points at can be tried as well: a supervisor
+  that is started with no console window in the place of a detached one, which under an environment
+  leaves no window that can be closed. Whether that is the cause is a search of its own. All of it
+  changes the run controller, so it wants tests, the full passes and, by the record of my own repairs, a
+  reader. The proof pilot's branch changes the launcher as well, and its last code commit, `3784d0c`,
+  repairs a fault of the same family in another place: a parent's number that Windows had given out
+  again, in the walk by which `status` finds the run of a process on a GPU. That branch does not touch
+  these places, so the two belong in one tested state before either is released.
+- **Whether the `--no-` rule stays as broad as it is.** The other way is a list of git's four names and
+  their shortened forms: fewer questions too many (`--check --no-apply`), and a list that has to follow
+  git.
+- **Whether a reader goes through these repairs before `main` takes the round.** Each reading of my own
+  repairs since 16 November has found something, both of today's too. The last one took 183,000 tokens
+  where I had estimated 60,000 to 120,000. These repairs are smaller than the ones it read.
+- **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
+  with no force.
+- **The ninth installer run on your real install.** Until it, the install's guard lets a `tee` with a
+  redirection of its own, and `touch.exe` or `black.exe`, write a kept file unasked.
+- **Whether the proof pilot's branch is merged into this one.** It has moved on since the first
+  reading's record: `claude/brave-robinson-27cbd9` stood at `d50cc44` when this was written, seven local
+  commits after `5ccc2d4`, with the pilot, a repair of the launcher and two readings of that repair
+  (points 38, 41, 42 and 43 of its "Read this first"). Beside the two record files it changes
+  `expctl.py`, `nnloop.py`, `nnremote.py`, `docs/REFERENCE.md` and `tests/test_kit.py`. A merge tried in
+  memory with `git merge-tree`, of this reading's code commit with that branch, meets conflicts in
+  `docs/upgrade/PROGRESS.md` and `docs/upgrade/REPORT.md` and takes `expctl.py`, `nnloop.py`,
+  `nnremote.py`, `docs/REFERENCE.md` and `tests/test_kit.py` without one. A file that merges without a
+  conflict is not a tested state: no test has run on the two together. The two records add to the same
+  places, so a merge keeps both by hand, and this reading's point is numbered 44 for that reason. Of
+  that branch I read the commits' subjects, the headings and the first sentences of its points; I
+  checked nothing of it.
+- Unchanged: whether further readers of my own fixes are wanted without asking; which of the fourth
+  report's large items is built next after the pilot, if any; WSL's clock on this machine; the snapshot
+  branches, fourteen now, and the scratch clones, kept or deleted; the three public test branches; the
+  reading of text handed to `cmd /c`; the local `main` of the main checkout, which stands at `992f436`.
+
+Sources: the reader's report of 20 November 2026, kept in this session's record; the kit's tests on the
+state of the local branch `claude/r9-snap-n`, run on this machine on 20 November 2026 on Windows (Python
+3.11.7, 3.8.20 and 3.15.0rc3) and in WSL (3.12.3, 3.8.20 and 3.15.0b3), their checks counted in the logs
+as the lines that begin with `PASS` and `FAIL`; the guards of `2da5fee`, `5ccc2d4` and `e587b4f` beside
+this one in temporary projects; git 2.52.0.windows.1 and git 2.43.0 on this machine, their usage and
+what they did in scratch repositories; GitHub Actions, workflow run 44765640552 of the public
+repository, read on 20 November 2026 from its list of jobs and from each job's log; for the two failed
+checks, the folders that test runs left in this machine's temporary folder, the kit's code, a probe of
+1,965 starts and two trials on this machine on 20 November 2026, with the helpers that PROGRESS.md
+names.
 
 ## 1. What changed and why
 

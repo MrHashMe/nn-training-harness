@@ -2515,6 +2515,8 @@ Done (REPORT.md, "The proof pilot", has it in full):
   base interpreter (the old kit's first launch failed in all five fine-tuning sessions; one probe run
   shows the same of this checkout's `expctl`). `pilot.py`'s allow list refuses the interpreter named
   by its path, which made four `old` arm-runs void.
+  (Added with "The launcher's repair": the first of the two is repaired since, on the user's "Yes,
+  repair it".)
 - The statistics are `expctl compare`'s arithmetic, applied to the arm-runs' scores by a script
   beside the work folder that calls `expctl`'s own `t_tail` and `t_quant`. The criterion and the rule
   for a void arm-run were fixed before the first arm-run; the judgments were made after the scores
@@ -2541,6 +2543,60 @@ allow list, and whether the four void arm-runs are run again; where a pilot's re
 still wanted from `%TEMP%\nnkit-upgrade`, where six folders hold no file any more; whether the
 access token that a command of mine printed into the session's transcript is replaced; the
 fine-tuning script's memory.
+(Added with "The launcher's repair", the next entry: the first of these is done.)
+
+## The launcher's repair (20 November): a launched `python` is the environment's on Windows, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `c6ddba2`. The
+user's word, 20 November: "Yes, repair it", to my question at the end of the pilot whether the
+launcher's defect is repaired in that session. Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The launcher's repair", has it in full):
+- The cause, shown by running: Windows looks for a program named without a folder first in the
+  folder of the running program, and in a virtual environment the running program is the base
+  interpreter, which the environment's `python.exe` only starts. Linux and macOS go by the `PATH`
+  and had no defect.
+- The repair (`09af4a1`): `expctl.in_env(program)` gives the `.exe` of that name beside
+  `sys.executable` on Windows, or nothing. It is handed to the start of the process as the program
+  to run at four places (`cmd_supervise`, `cmd_final_eval`, `nnloop.Campaign.evaluate`,
+  `nnremote.after_run`) and used as the interpreter in `cmd_env`. The command line and the manifest
+  stay as written. 81 lines added, 7 removed: `expctl.py` 18 and 4, `nnloop.py` 3 and 2,
+  `nnremote.py` 2 and 1, `tests/test_kit.py` 52, `docs/REFERENCE.md` 6.
+- Decided against, before any code: the first match on the `PATH`, as the pilot's record had
+  proposed (the Microsoft Store's `python.exe` alias in `WindowsApps`; programs that also lie in a
+  system folder; an environment that is not activated), and a warning alone. Not built: following
+  `VIRTUAL_ENV` where another interpreter runs the kit; that case is as it was, and REFERENCE.md
+  names it.
+- Left alone on purpose: a remote target's `exec` and `hf` lists, the installer's version check, the
+  loop's syntax helper, the kit's own tool names (`git`, `taskkill`, `nvidia-smi`, `tmux`),
+  `benchmarks/pilot.py`.
+- `tests/test_kit.py`, `env_tests`: seven checks on Windows, five elsewhere, in a virtual
+  environment that the test makes with `venv --without-pip`. Without the repair all seven fail on
+  Windows (Python 3.11.7 and 3.14.0; environments of `venv`, uv 0.12.23 and virtualenv 20.35.4).
+  With it they pass under 3.8.20, 3.11.7, 3.12.9, 3.14.0 and 3.15.0rc3. In WSL the five pass
+  without it as with it: Linux had no defect.
+- The eight test files on the final state, 16:00 to 16:47: Windows, Python 3.11.7, 1,908 checks;
+  Windows from a virtual environment, 3.8.20, 1,895; WSL, 3.12.3, 1,922; WSL from a virtual
+  environment, 3.8.20, 1,909. None failed. Skipped: on Windows the tmux tests, the loop's sandbox
+  checks and one link check; under 3.8.20 two checks of the benchmarks that need PyTorch.
+- In the fine-tuning task's environment a launched `python -c "import transformers"` ends with exit
+  code 1 on the kit of `c6ddba2` and imports Transformers 5.22.2 with the repair.
+- The change applies to `5ec95c6`, the head of `test/round-9`, with shifted line numbers only (a
+  dry run on an export; nothing applied there).
+- REPORT.md has the section "The launcher's repair", point 41 of "Read this first" (39 and 40 are
+  the other session's, on `test/round-9`), a sentence in the introduction and a dated note at six
+  places of the pilot's record. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; GitHub's machines and
+macOS have not run it; no reader but me; the Microsoft Store's Python, a conda environment and an
+environment made with links not tried; no whole training run or campaign from an environment;
+`pilot.py`'s allow list and the four void arm-runs as they were.
+
+Next, each a separate word of the user's: whether this branch is merged with `test/round-9` (the
+records are joined by hand: both sides add to the same places of REPORT.md and of this file);
+whether a fresh reader goes through the repair first; whether a bare name follows an activated
+environment where another interpreter runs the kit; and what the pilot's entry lists, less the
+repair.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2549,9 +2605,11 @@ fine-tuning script's memory.
 - The proof pilot (20 November): the four void arm-runs of the old kit were not run again, since the pilot
   script's allow list would refuse them in the same way and a change of it is the user's decision. The two
   defects the pilot found, the launcher under a virtual environment on Windows and that allow list, are not
-  repaired: the task ruled out changes to the kit. Nothing ran on Linux or macOS or with the loop's sandbox,
-  and round 9's guard met no command line. Not found: why the fine-tuning task trained at half speed before
-  the restart, which rule Windows' cleanup follows, and which program loaded the machine in repeat 5.
+  repaired: the task ruled out changes to the kit. (The launcher is repaired since, on the user's "Yes,
+  repair it" of 20 November: "The launcher's repair". The allow list is as it was.) Nothing ran on Linux
+  or macOS or with the loop's sandbox, and round 9's guard met no command line. Not found: why the
+  fine-tuning task trained at half speed before the restart, which rule Windows' cleanup follows, and
+  which program loaded the machine in repeat 5.
 - Round 9 (19 and 20 November): most of the fourth report's design is not built, each part with its reason
   in REPORT.md ("Round 9", "The report's proposals"): confinement by the operating system on Windows and
   macOS and the guard shrunk behind it, search shapes beside the greedy loop, six recipe packs, a package
@@ -3068,3 +3126,8 @@ fine-tuning script's memory.
 - **On Windows, a child process that Python starts without a shell by the bare name `python` from a
   virtual environment is the base interpreter,** not the environment's. Name the interpreter by its
   path (`sys.executable`), or look the name up on the PATH first.
+  (Added on 20 November: the cause is that Windows looks for a name without a folder first in the
+  folder of the program that is running, which in a virtual environment is the base interpreter. The
+  kit now hands such a name the `.exe` beside its own interpreter, `expctl.in_env`. It does not look
+  on the PATH first: that would change which program starts outside an environment too, where the
+  Microsoft Store's stub `python.exe` is on the PATH or a program lies in a system folder as well.)

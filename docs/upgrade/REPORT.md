@@ -74,6 +74,10 @@ on the real install". On your "Push test branch" of 20 November that round went 
 On the same day a session of its own ran the first of round 9's next steps, the proof pilot with a real
 agent on the kit's two benchmark tasks: its section, "The proof pilot", follows "Round 9 on the test branch"
 and is the last before "1. What changed and why". It is one local commit, and nothing of it is pushed.
+On your "Yes, repair it" of that day the same session repaired the defect of the kit that the pilot had
+found, the launcher under a virtual environment on Windows: its section, "The launcher's repair", follows
+"The proof pilot" and is the last before "1. What changed and why" now. It is two local commits on the
+pilot's branch, and nothing of it is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -577,6 +581,37 @@ Decision record: `docs/upgrade/LEDGER.md`.
     repair; the allow list, and whether the four void arm-runs are run again; where a pilot's records
     live, since `%TEMP%` is cleaned; what is still wanted from `%TEMP%\nnkit-upgrade`; the access token
     that a command of mine printed into that session's transcript.
+    (Added with point 41: the launcher is repaired; its record is "The launcher's repair".)
+41. **The launcher is repaired: in a virtual environment on Windows, a `python` in a launched command
+    is the environment's now, at all five places where the kit starts a command that a caller wrote**
+    (20 November; "The launcher's repair"). The number is 41 because points 39 and 40 are the other
+    session's, written on the public `test/round-9` after this branch left it (the reading of round
+    9's unread repairs, and that reading on the test branch); this branch does not hold them, and a
+    merge puts them between 38 and this one. On your "Yes, repair it" of 20 November the pilot's
+    session repaired what the pilot had found. The cause: Windows looks for a program that is named
+    without a folder first in the folder of the program that is running, and in a virtual
+    environment that is the base interpreter, which the environment's `python.exe` only starts. So a
+    launched `python train.py`, a final evaluation, the loop's evaluator, a remote target's
+    `on_finish` command and `expctl env --python python` ran without the environment's packages. The
+    repair is one function of four lines, `in_env` in `expctl.py`: it gives the `.exe` of that name
+    beside the interpreter that runs the kit, and the kit starts that file; the command line stays as
+    it was written. It looks beside the interpreter and not on the `PATH`, which is not what point
+    38's record had proposed: the `PATH` first would change which program starts outside a virtual
+    environment, in set-ups that work today. Outside a virtual environment, on Linux and on macOS
+    nothing changes. One limit stays, as old as the kit: where another interpreter than the
+    environment's runs the kit, a bare `python` is that interpreter; a default install does not meet
+    it. Seven new checks (five outside Windows) try the five places in a virtual environment; with
+    the repair taken out, all seven fail on Windows. The eight test files pass on Windows under
+    Python 3.11.7 and, from a virtual environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20:
+    1,908, 1,895, 1,922 and 1,909 checks, none failed. In the fine-tuning task's environment a
+    launched `python -c "import transformers"` imports it now. The code is `09af4a1`, 81 lines
+    added and 7 removed, on the pilot's local branch after `c6ddba2`. Nothing is pushed or merged;
+    your real install has round 8's kit and with it this defect; GitHub's machines, a Mac among
+    them, have not run the change, and nobody but me has read it. Open: whether this branch is
+    merged with `test/round-9`, where the records of both sides are joined by hand; whether a fresh
+    reader goes through the repair first; whether a bare name should follow an activated
+    environment where another interpreter runs the kit (I advise against it for now); and what
+    point 38 left open, less the repair.
 
 ## Round 2 (12 November 2026)
 
@@ -8274,6 +8309,10 @@ Before anything paid started I proposed a budget: both tasks, five repeats per a
      environment, starts the base interpreter and not the environment's. It cost every `old` session
      of the fine-tuning task its first run, and this checkout's `expctl` does the same (one probe run).
      The loop's runs are not touched by it.
+     (Added with point 41: repaired on the same day, on your "Yes, repair it"; "The launcher's repair".
+     The loop's runs were untouched in the pilot because its projects name the interpreter by its path.
+     Where the configuration names it as `python`, which a default install on Windows does, the loop's
+     runs and its evaluator had the defect too.)
    - **A fault of the pilot script:** its allow list for the single sessions does not cover the
      interpreter named by its path. One more entry would; that changes a file of the kit, so it is
      yours to decide.
@@ -8730,6 +8769,9 @@ for `none`.
   of `python` from the environment reported the system Python's folder as its own (one probe run), and
   a two-line check outside the kit shows the same of a child process that Python starts by the bare
   name without a shell. The loop is not touched: its runs trained in the environment.
+  (Added with point 41: repaired, "The launcher's repair". In the environment of this task a launched
+  `python -c "import transformers"` now imports it, where the kit without the repair ends with exit
+  code 1.)
 - **The permission rule of the single sessions, which is the pilot's and not the kit's, refused 16
   commands:** 11 in the `old` arm (2, 3, 2, 2, 2) and 5 in the `none` arm (one each). In the `old` arm
   it was the interpreter by its full path in every session, and in three of them a journal entry
@@ -8771,6 +8813,7 @@ by the operating system if runs are lost to the guard.
      This is a defect of the kit and it is in this checkout: a run launched as the kit's own
      instructions show trains with a Python other than the one the session works in, or fails at its
      first import as here.
+     (Added with point 41: built since, on your "Yes, repair it": "The launcher's repair".)
   2. **`pilot.py`'s allow list for the single sessions** refuses the interpreter named by its path,
      which the kit's installed `CLAUDE.md` tells a session to type. It made four of the ten `old`
      arm-runs void, and it is the reason that arm cannot be judged on five values.
@@ -8833,6 +8876,8 @@ prepared, watched and analysed the pilot, is not in these numbers.
   commit.
 - **`pilot.py` and the kit's code are unchanged,** as the task set. The launcher's defect and the
   pilot's allow list are described and not repaired.
+  (Added with point 41: the launcher's defect is repaired since, in a commit after this record's;
+  `pilot.py` and its allow list are as they were.)
 - **The four void `old` arm-runs were not run again.** Under the same allow list a repeat meets the
   same refusal, and changing the list in the middle of a pilot changes the conditions between repeats.
 - **The two pilots are not pooled** with those of 11 November: the kit and the pilot script changed.
@@ -8854,6 +8899,9 @@ prepared, watched and analysed the pilot, is not in these numbers.
   as a shell does, or warn when it is not the interpreter that runs `expctl`; it needs a test on
   Windows. Until then a project that trains in a virtual environment on Windows has to name the
   environment's interpreter after the `--`.
+  (Added with point 41: decided by your "Yes, repair it" of 20 November, and repaired. The repair
+  looks beside the interpreter that runs the kit, where this entry had proposed the `PATH`; "The
+  launcher's repair" gives the reason.)
 - **`pilot.py`'s allow list,** and with it whether the four void `old` arm-runs are run again. One more
   entry, for the interpreter by its path, would let the old kit's first step pass. Four arm-runs of
   `old` would cost about 1.5 million tokens (1 to 2) and half an hour at this pilot's rates. They
@@ -8907,6 +8955,249 @@ prepared, watched and analysed the pilot, is not in these numbers.
 
 Sources: the files named above, read on 20 November 2026; the record that Windows' Task Scheduler keeps
 of the task `\Microsoft\Windows\DiskCleanup\SilentCleanup` (last run at 10:35:28), read on the same day.
+
+## The launcher's repair (20 November 2026): in a virtual environment on Windows, a launched `python` is the environment's
+
+The proof pilot found a defect of the kit and left it alone, because its task ruled out changes to the
+kit: on Windows, from a virtual environment, `expctl launch -- python train.py` started the base
+interpreter and not the environment's. At the end of that work I asked whether to repair it in the same
+session, and you answered "Yes, repair it" (20 November). This section is that repair. It is the work of
+the pilot's session on the pilot's local branch, `claude/brave-robinson-27cbd9`: the commit `09af4a1`
+for the code and one for this record, after the pilot's `c6ddba2`. Nothing is pushed or merged, nothing
+ran on your real install, and no package was installed. Times are UTC.
+
+### In short
+1. **The cause is how Windows finds a program, and the kit met it at five places.** The kit starts a
+   command without a shell. Windows then looks for a program that is named without a folder first in
+   the folder of the program that is running, and on the `PATH` only after that. In a virtual
+   environment the environment's `python.exe` is a small program that starts the base interpreter, so
+   the program that is running is the base interpreter, and its own folder holds a `python.exe`. A
+   `python` in a launched command, in a final evaluation command, in the loop's evaluator, in a remote
+   target's `on_finish` command and after `expctl env --python` was therefore the base interpreter,
+   which has none of the environment's packages. On Linux and macOS the `PATH` decides, and there was
+   no defect.
+2. **The repair is one small function, used at those five places.** `in_env` in `expctl.py` gives the
+   `.exe` of that name beside the interpreter that runs the kit, where there is one: in a virtual
+   environment that folder is the environment's `Scripts`. The kit starts that file and leaves the
+   command line as it was written, so the manifest still says `python`. Where there is no such file,
+   where the name has a folder, and on Linux and macOS, nothing changes. 81 lines added and 7 removed
+   in five files; 52 of the lines are the test and 6 the reference.
+3. **It looks beside the interpreter and not on the `PATH`, which is not what the pilot's record
+   announced.** Looking on the `PATH` first would also change which program starts outside a virtual
+   environment, in set-ups that work today ("Why beside the interpreter, and not the `PATH`"). Beside
+   the interpreter is where Windows looks first anyway when no environment is in play, so there the
+   repair changes nothing.
+4. **One limit stays, and it is as old as the kit.** Where another interpreter than the environment's
+   runs the kit, a `python` named without a folder is still that other interpreter, whatever the
+   `PATH` says. A default install does not meet it. `docs/REFERENCE.md` names it and the way around
+   it.
+5. **Verified by running, on this machine only.** Seven new checks in `tests/test_kit.py` (five
+   outside Windows) make a virtual environment and try each of the five places. With the repair taken
+   out, all seven fail on Windows, each naming the base interpreter's folder. With it they pass under
+   Python 3.8.20, 3.11.7, 3.12.9, 3.14.0 and 3.15.0rc3, and in environments made by `venv`, by uv and
+   by virtualenv. In the fine-tuning task's own environment a launched `python -c "import
+   transformers"` imports it now, where the kit without the repair ends with exit code 1. The eight
+   test files pass on Windows and in WSL under two interpreters each: 1,908 and 1,895 checks
+   on Windows, 1,922 and 1,909 in WSL, none failed. **No reader but me has seen the change,
+   and GitHub's machines, a Mac among them, have not run it:** nothing is pushed.
+
+### What was wrong, and where
+
+The pilot met it like this. A session of the old kit's arm started `python
+.claude/skills/nn-training/scripts/expctl.py launch ... -- python train.py` from the fine-tuning task's
+virtual environment, and the run failed at its first import: the Python that ran `train.py` was the
+system's, which cannot import Transformers ("The proof pilot", "The fine-tuning task"). Two facts
+together make it:
+
+- **Windows' order.** A program that is started without a shell and named without a folder is looked
+  for first in the folder of the program that starts it, and on the `PATH` only later. This is shown
+  here by running, not taken from a page: with the environment's folder first on the `PATH`, a kit
+  that the system Python runs still starts the system Python for a launched `python`. I did not read
+  Microsoft's description of the order again for this record.
+- **A virtual environment's `python.exe` is not the interpreter.** It is a small program that starts
+  the base interpreter for the environment. The process that runs `expctl` is therefore the base
+  interpreter, and the `python.exe` in its folder is the base interpreter without the environment.
+  Environments made by uv and by virtualenv are built the same way: without the repair the seven
+  checks fail in each of them too.
+
+The kit starts a command that a caller wrote at five places, and each of them had the defect:
+
+1. **A launched or resumed run** (`expctl launch`, `expctl resume`; `cmd_supervise`). The loop's
+   training runs and a run on a remote target are started by the same supervisor.
+2. **The final evaluation** (`expctl final-eval`), whose command the configuration gives.
+3. **`expctl env --python NAME`**, which reports the packages and the device of the interpreter it is
+   given, and tries the fast paths in it.
+4. **The loop's evaluator** (`nnloop.py`, `Campaign.evaluate`).
+5. **A remote target's `on_finish` command** (`nnremote.py`, `after_run`).
+
+A default install on Windows writes `python` as the interpreter into the configuration and into every
+command it shows (`install.py`, `--python-cmd`), so a project that is installed that way and trains in a
+virtual environment met the defect at each of the five. The pilot's projects met it only where a
+session typed `python` itself: `benchmarks/new_project.py` installs with the interpreter's path, and
+the loop takes the interpreter from the configuration.
+
+### The repair
+
+- **One function** (`expctl.py`, `in_env`; four lines under their comment). On Windows, for a name
+  without a folder, it gives the file of that name with `.exe` in the folder of the interpreter that
+  runs the kit, if that file exists; a name that ends in `.exe` already, in any case of letters, is
+  taken as it is. In every other case it gives nothing, and the start is the one it was.
+- **Four places hand that file to the start of the process** as the program to run, beside the
+  command line, which stays as the caller wrote it: the manifest, the list of processes and the
+  program's own arguments still say `python`. The fifth, `env --python`, probes the file.
+- **Left to Windows as before:** a name with a folder, so an interpreter named by its path is
+  respected; a name with no `.exe` beside the interpreter, which covers `cmd`, `git`, `bash` and a
+  `.bat` file; a name that does not exist, which still ends the run with "could not start".
+- **Not changed, on purpose.** The programs of a remote target's `exec` and `hf` lists (`ssh`,
+  `wsl.exe`, `hf`) are found as before: they are the transport and not a caller's training command,
+  and an `hf.exe` inside an environment can be older than the one on the `PATH` that a target works
+  with today. The installer's check of an interpreter reads its version only, which the base
+  interpreter shares. The loop's own helper that reads the syntax of changed files uses the standard
+  library only. `benchmarks/pilot.py` and its allow list are the pilot's open decision.
+
+### Why beside the interpreter, and not the `PATH`
+
+The pilot's record proposed to "look a bare name after the `--` up on the PATH before starting it, as a
+shell does, or warn". I worked both through before writing code and took neither:
+
+- **The Microsoft Store's alias.** Windows keeps a `python.exe` in its `WindowsApps` folder, which on
+  a machine without the Store's Python opens the Store. Where that folder comes first on the `PATH`
+  and the kit is run through the `py` launcher or by the interpreter's path, `expctl launch -- python
+  train.py` works today, because Windows finds the real `python.exe` beside the running interpreter. A
+  lookup on the `PATH` would start the alias instead. The installer's own message warns of it. Tried
+  here: with that folder first on the `PATH`, the first `python` on the `PATH` is the alias, and the
+  kit starts the interpreter that runs it, with the repair and without. I did not start the alias.
+- **Programs that lie in a system folder and on the `PATH`.** Windows looks in its system folders
+  before the `PATH`. A lookup on the `PATH` first would start another `bash`, `tar` or `curl` than
+  today wherever an earlier folder of the `PATH` has one.
+- **An environment that is not activated.** Where the environment's interpreter runs the kit by its
+  path and the `PATH` does not lead with the environment, the `PATH` gives another Python or none.
+  Beside the interpreter is right there too (tried: the launch runs in the environment).
+- **A warning alone** would have left the run in the wrong interpreter.
+
+Outside a virtual environment the folder beside the interpreter is the folder of the running program,
+which Windows searches first: the repair names the file that Windows would have found.
+
+### The limit that stays
+
+Where another interpreter than the environment's runs the kit, for instance the system Python by its
+path while the environment is only activated in the shell, a `python` named without a folder in a
+command is that other interpreter, as it was before the repair (tried: the base interpreter). The kit
+does not read the `PATH` or `VIRTUAL_ENV` for it. A default install does not meet this: it writes
+`python` into every command, so the interpreter that runs the kit and the one a command names are
+found the same way and are the same. An install made with `--python-cmd` and another interpreter's
+path does, where a command names a bare `python` and means the environment's. The way around it is
+the old one: name the environment's interpreter by its path, or run the kit with it.
+`docs/REFERENCE.md` says so under "Notes and limits".
+
+### Changes in the behaviour of existing features
+
+- **On Windows, where an environment's interpreter runs the kit:** `python`, and any other program
+  that has an `.exe` beside that interpreter, named without a folder at one of the five places, is
+  the environment's. It was the base interpreter for `python` and `pythonw`. For another program it
+  was whatever Windows found in the working folder, in its system folders and on the `PATH`, in that
+  order: the same file where the environment is activated and no other folder has one, possibly
+  another one otherwise. I tried `python`, `python.exe` and `PYTHON`; no other program was launched
+  this way.
+- **The process that the supervisor starts** is then the environment's small `python.exe`, and the
+  interpreter is its child, as it always was for a command that names the environment's interpreter
+  by its path. Stopping a run ends the whole tree, and the run's exit code is the interpreter's.
+- **On Windows outside a virtual environment, on Linux and on macOS:** nothing changes.
+- **`docs/REFERENCE.md`** has one more entry under "Notes and limits".
+
+### Tests
+
+- **Seven checks in `tests/test_kit.py`** (`env_tests`), in a project of their own with a virtual
+  environment made by `python -m venv --without-pip`, the kit run by the environment's interpreter
+  and the environment first on the `PATH`, as in a shell where it is activated. Each makes the
+  started program print the folder it runs in: a launched `python`, `python.exe` and `PYTHON` (on
+  Linux and macOS `python` only, so five checks there); the final evaluation with `python` in the
+  configured command; `env --python python`; the loop's evaluator with a configuration that names the
+  interpreter as `python`; a remote target's `on_finish` command. Where `venv` makes no environment,
+  the group is skipped and says so.
+- **With the repair taken out** (the same test file beside the kit of `c6ddba2`), all seven fail on
+  Windows under Python 3.11.7 and 3.14.0 and in environments made by uv 0.12.23 and virtualenv
+  20.35.4, each naming the base interpreter's folder. In WSL the five pass without it as with it,
+  under Python 3.12.3 and 3.8.20: there the `PATH` decides, and Linux had no defect. There the
+  five hold what already worked.
+- **With it** the seven pass under Python 3.11.7, 3.12.9, 3.14.0, 3.15.0rc3 and 3.8.20, each with an
+  environment of its own version, and with environments made by uv and by virtualenv under 3.11.7.
+- **By hand, on Windows:** the kit run by the environment's interpreter with a `PATH` that does not
+  lead with the environment (the launch runs in the environment, and the manifest keeps `python`);
+  no environment at all (the interpreter that runs the kit, as before); `cmd /c echo` from an
+  environment (runs); the base interpreter named by its path from an environment (respected);
+  `python3.11` and a name that does not exist ("could not start", as before); a `.bat` file beside
+  the environment's interpreter (runs as before); the system Python running the kit with the
+  environment first on the `PATH` (the base interpreter: the limit above).
+- **The fine-tuning task's environment** (Python 3.11.7, Transformers 5.22.2), where the system
+  Python cannot import Transformers: a launched `python -c "import transformers; ..."` ends with exit
+  code 1 on the kit of `c6ddba2` and prints the version with the repair.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone
+  with the same change in WSL, before the commit was made (the two differences and the commit's
+  own are the same by their hash):
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,908 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,895 | 0 |
+  | WSL | 3.12.3 | 1,922 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,909 | 0 |
+
+  `tests/test_kit.py` alone has 1,207 checks on Windows and 1,213 in WSL, seven and five more
+  than on `c6ddba2`. The second row matters most here: every test of the kit ran with an
+  environment's interpreter on Windows, which is the case the repair changes. Skipped, each with
+  its reason in the run's output: on Windows, under both interpreters, the tmux tests in two
+  files, the loop's sandbox checks, which need Linux, and one check of a link that leads out of a
+  snapshot, which this account cannot make; under Python 3.8.20, where PyTorch is not installed,
+  two checks of the benchmarks, on Windows and in WSL. Under 3.12.3 in WSL nothing was skipped.
+
+### Verified by running, and not
+
+- **By running, on this machine:** everything under "Tests". Windows 11 with Python from python.org,
+  uv and virtualenv; WSL with Ubuntu.
+- **Not run:** macOS and GitHub's machines, since nothing is pushed; the Microsoft Store's Python; a
+  conda environment, whose `python.exe` is the interpreter itself, so that Windows' own order finds
+  it; an environment made with links instead of copies; a whole training run or a campaign of the
+  loop from an environment; a remote target. The old kit's arm of the pilot was not run again.
+- **Read by nobody but me.** Whether I may start readers of my own fixes without asking has been
+  open since 18 November, so I started none.
+
+### Not done, and why
+
+- **Nothing is pushed or merged.** The branch holds the pilot's record, the repair and this record
+  after `5ccc2d4`. The public `test/round-9` and the branch of the session that keeps these records
+  are at `5ec95c6` since.
+- **Your real install is untouched.** It has round 8's kit and with it this defect, where a project
+  trains in a virtual environment on Windows and names `python` without a path.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`). The repair decides nothing that has a row,
+  and the other session added to the same place of the ledger on 20 November.
+- **`pilot.py` and its allow list are unchanged,** and the four void arm-runs were not run again.
+- **`PATH` and `VIRTUAL_ENV` are not read,** for the reasons above.
+
+### What needs your decision
+
+- **Whether this branch is merged with `test/round-9`,** and by whom. The repair's code applies to
+  `5ec95c6` with shifted line numbers only (tried without applying it). The records of both sides add
+  to the same places of this file and of PROGRESS.md and are joined by hand: points 39 and 40 of
+  "Read this first" are the other session's, on `test/round-9`, and this section's point is 41. On
+  the test branch GitHub's six jobs would run the new checks for the first time on macOS, on bare
+  Linux and on Windows machines other than this one.
+- **Whether a fresh reader goes through the repair first.** It changes how every launched run starts
+  on Windows.
+- **Whether a bare name should follow an activated environment** where another interpreter runs the
+  kit ("The limit that stays"). I advise against it for now: nobody has met it, a default install
+  cannot, and it would be a second rule beside Windows' own.
+- **A ninth installer run** would bring your real install this repair once `main` has it; it is one
+  more reason for that run and no new question.
+- Unchanged from "The proof pilot": `pilot.py`'s allow list and the four void arm-runs; where a
+  pilot's records live; what is still wanted from `%TEMP%\nnkit-upgrade`; the access token; the
+  fine-tuning script's memory.
+
+Sources: runs on this machine on 20 November 2026. The eight test files on the files of `09af4a1`,
+from 16:00 to 16:47 UTC on Windows and to 16:20 UTC in WSL. Around them, on the same day: the
+checks alone under the interpreters and environment tools named; the hand trials and the launch
+in the fine-tuning task's environment, from scratch scripts that are not part of the kit. `install.py`
+and `benchmarks/new_project.py`, read on the same day for what they write as the interpreter.
 
 ## 1. What changed and why
 

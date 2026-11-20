@@ -2657,6 +2657,75 @@ Next, each a separate word of the user's: whether a reader goes through the read
 whether this branch is merged with `test/round-9` (five commits after `5ccc2d4`; the records are
 joined by hand); whether the manifest records the interpreter of a run; and what the repair's entry
 lists, less the reader.
+(Added with "The second reading of the launcher's repair", the next entry: on the user's "Yes, read
+fixes" a fresh reader has read the reading's repairs since.)
+
+## The second reading of the launcher's repair (20 November): one fresh reader on the first reading's repairs, an older fault of `status` repaired, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `27fd0dd`. The
+user's word, 20 November: "Yes, read fixes", to my question at the end of the reading whether a
+fresh reader goes through its repairs. Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The second reading of the launcher's repair", has it in full):
+- The reader: an agent of this session on Opus 5.5 with read access only and a brief for correctness
+  on `829d5b3`, told not to read `docs/upgrade` and to run nothing. 132,573 tokens, 15 tool calls,
+  under six minutes. "I found no fault that 829d5b3 introduces"; five findings that are older, in
+  the tests or in the reference; a list of what it found right; four things it could not judge. I
+  ran each finding before any change.
+- Finding 1, held as the machine's state, older than `829d5b3`: Windows keeps a parent's number
+  after the parent has ended, a later process can hold it, and `build_status` takes the first of
+  `ancestors(pid)` that is a run's recorded process. A scan with the kit's own lookups: of about 500
+  processes one named a number that a later process holds, and all 36 chains from the GPU's
+  processes ended in a number that no process holds. `expctl.ancestors` ends the walk, on Windows,
+  at a process that began after the one below it (`proc_start_time`); an unknown start time does not
+  end it, an equal one does not either. After it every chain of the scan is in the order of the
+  start times, and a run on the GPU from a virtual environment is found as before, with psutil and
+  with psutil hidden. A limit: a clock set back between a parent's start and its child's ends the
+  walk early.
+- Finding 2, held in both directions, older, not repaired: on Windows `cmd_final_eval`'s check
+  (`in_env` or `shutil.which`) lets pass `foo` for a `foo.cmd`, `tool3.11` for a `tool3.11.exe` and,
+  where `NoDefaultCurrentDirectoryInExePath` is set as in this session's shells,
+  `venv/Scripts/python.exe`; the start fails and the use is recorded. Under Python 3.11 and older it
+  refuses `venv\Scripts\python`, which would start. What Windows starts without a shell is measured
+  under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0 and tabled in REPORT.md. `docs/REFERENCE.md` has a
+  new entry with the limits. Found in passing: `launch` does not start the forward-slash form in
+  those shells either. Outside Windows a `PATH=...` in front of the command is read by the start and
+  not by the check: held in both directions in WSL under Python 3.12.3 and 3.8.20, and stated in the
+  reference.
+- Finding 3: the reference's entry on a virtual environment on Windows is reworded for conda's
+  layout (not run: no conda) and for programs without an `.exe`.
+- Finding 4, held, test only: a `venv` over its `timeout=300` raised `TimeoutExpired` and ended
+  `tests/test_kit.py`; `env_tests` catches it, and it is a failed check on Windows and the skip
+  elsewhere.
+- Finding 5, true and without consequence: started from a folder that holds a `python.exe`, the
+  tests' cut kept none of 58 folders of the `PATH`, and the group's eight checks passed under Python
+  3.11.7 and 3.8.20. No change.
+- The reader's question on access, measured: without psutil, `_win_parent` and the start time are
+  answered for all 330 processes of the user's session and for none of the 178 of the services'
+  session; where both answer, psutil's `ppid()` agrees. The trial from an administrator's shell is
+  not run.
+- One new check in `main()` of `tests/test_kit.py`, on every system: with made-up parents and start
+  times the walk gives `[[9], [19]]` on Windows and both chains whole elsewhere. With the change or
+  a part of it taken out (four copies, Windows, Python 3.11.7) the answer differs each time.
+- The eight test files on the final state, from 19:09 to 20:01 on Windows and from 19:09 to 19:28 in
+  WSL: Windows, Python 3.11.7, 1,911 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,898; WSL, 3.12.3, 1,925; WSL from a virtual environment, 3.8.20, 1,912. None failed.
+- The code is `3784d0c`, 44 lines added and 5 removed: `expctl.py` 9 and 1, `tests/test_kit.py` 17
+  and 1, `docs/REFERENCE.md` 18 and 3.
+- REPORT.md has the section "The second reading of the launcher's repair", point 43 of "Read this
+  first", a sentence in the introduction, and a dated note at nine places of the first reading's
+  section and at point 42. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no further reader, so
+this reading's repairs are read by nobody but me; GitHub's machines and macOS have run none of it;
+finding 2 and `launch`'s forward-slash form are not repaired; no list of all processes for the
+parent's question; no allowance for a clock set back; the Microsoft Store's alias and Python, a
+conda environment, a 32-bit Python and an administrator's shell not tried.
+
+Next, each a separate word of the user's: whether the kit's way to a program on Windows is repaired
+for `final-eval` and `launch`; whether a reader goes through this reading's repairs; whether this
+branch is merged with `test/round-9` (seven commits after `5ccc2d4`; the records are joined by
+hand); and what the first reading's entry lists, less the reader.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

@@ -75,6 +75,8 @@ Asked whether `main` should take it, you answered "Read first": a fresh reader w
 repairs that nobody but me had read, and found three faults in them and an older one. All four are repaired
 in a local commit, with an older gap of the guard that my own check of the sibling forms found beside them
 ("The reading of round 9's unread repairs", after "Round 9 on the test branch"). Nothing of that is pushed.
+(Added later on 20 November: on your "Push test branch" both commits went to `test/round-9`, where all six
+of GitHub's jobs pass on them; "The reading on the test branch", after that section.)
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -588,6 +590,18 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `c6ddba2` on the local branch `claude/brave-robinson-27cbd9`, which is not merged into this
     branch and not pushed. That record and this one add to the same places of this file and of
     PROGRESS.md, so a merge keeps both by hand.)
+    (Added with point 40: both commits of point 39 are on `test/round-9` since, on your "Push test
+    branch", and GitHub's six jobs pass on them.)
+40. **The repairs of the reading are on the public test branch, on your word, and all six of
+    GitHub's jobs pass on them** (20 November; "The reading on the test branch"). On your "Push test
+    branch" the two commits of point 39 went to `test/round-9` as a fast-forward, `5ccc2d4` to
+    `f9dbf2e`. GitHub's run 44761976197 on `f9dbf2e` passes in all six jobs at the first attempt,
+    with 1,910 to 1,926 checks a job and none failed: 21 more than the run before in every job,
+    which are the reading's new checks. It is the first run of these repairs on macOS, on bare Linux
+    and on a Windows machine other than this one. The repairs are still read by nobody but me.
+    `main` stays at `e587b4f`, with round 8's guard, and your real install is untouched. The record
+    of this goes to the same branch, as the word covers; that push starts a further run, which the
+    record cannot hold. Open: the questions of point 39 but the first.
 
 ## Round 2 (12 November 2026)
 
@@ -8263,6 +8277,8 @@ In short:
 7. **Nothing is pushed.** The code is one local commit, `2da5fee`, and this record a second.
    `test/round-9` on GitHub stays at `5ccc2d4`, where GitHub's second run passes in all six jobs. `main`
    stays at `e587b4f`, with round 8's guard, and your real install is untouched.
+   (Added later on 20 November: both commits are on `test/round-9` since, on your "Push test branch",
+   and GitHub's six jobs pass on them; "The reading on the test branch", the section after this one.)
 
 ### The reader and its brief
 
@@ -8477,11 +8493,14 @@ pass at the first attempt, and no line begins with `FAIL` in any of the six logs
 Every job has one check more than in the first run, in the remote file: the check of `1fe89eb`. The
 other seven files have the counts of the first run. That run is on the state before this reading; the
 repairs of the reading have not run on GitHub's machines or on a Mac.
+(Added later on 20 November: they have since, and pass in all six jobs; the section after this one.)
 
 ### Not done, and why
 
 - A push of the two commits: it needs your word. "Push test branch" of this morning covered the round's
   push and what followed that run, and I do not stretch it to a later change.
+  (Added later on 20 November: you gave it for this change, "Push test branch"; the section after this
+  one.)
 - A reader for the repairs of this reading: "Read first" was a word for one reader. The repairs change
   the guard in 36 lines and the controller in 27.
 - `command -v patch`, which is asked about though it only looks the program up: left, as said at finding
@@ -8491,6 +8510,7 @@ repairs of the reading have not run on GitHub's machines or on a Mac.
 - `git am -h` and `git am --show-current-patch` while a run executes from the working tree: an older
   rule asks about them there, which is a question too many. Left; it is the rule that my wrong row met.
 - Anything on a Mac, on bare Linux or under Python 3.15.2 for this state: GitHub's jobs run on a push.
+  (Added later on 20 November: run since, in the six jobs of that push.)
 - `main`, the ninth installer run and every deletion: each needs your word. The public `main` and your
   install hold round 8's guard, with the hole in the tee rule and the `.exe` gap.
 
@@ -8500,6 +8520,7 @@ repairs of the reading have not run on GitHub's machines or on a Mac.
   repairs on macOS, on bare Linux and under Python 3.15.2 for the first time. I would take "Push test
   branch" to cover that push, the reading of the jobs, and a push of the record of the result to that
   branch.
+  (Added later on 20 November: answered with "Push test branch", and done.)
 - **Whether a reader goes through the repairs of this reading before `main` takes the round.** They are
   small, and they are the guard's and the supervisor's. Each reading of my own repairs since 16 November
   has found something, this one too. By my estimate such a reader costs 60,000 to 120,000 tokens.
@@ -8526,6 +8547,90 @@ begin with `PASS` and `FAIL`; the guards of `5ccc2d4` and `e587b4f` beside the r
 projects; the help of git 2.52.0, GNU patch 2.7.6, black 25.12.0 and ruff 0.14.10 on this machine;
 GitHub Actions, workflow run 44727353913 of the public repository, read on 20 November 2026 from its
 list of jobs and from each job's log.
+
+## The reading on the test branch (20 November 2026): all six of GitHub's jobs pass on the repairs
+
+Your word: "Push test branch", to the question whether the two local commits of the reading go to
+`test/round-9`. Before you answered I had said what it covers: the push of the two commits, the reading
+of GitHub's six jobs, and a push of the record of that result to the same branch. Not covered: `main`,
+your real install, a reader, a re-run of a job on GitHub, a merge of the pilot's branch, deleting
+anything. Dates and times in this section are UTC.
+
+In short:
+
+1. **All six of GitHub's jobs pass on `f9dbf2e` at the first attempt**, with 1,910 to 1,926 checks a job
+   and none failed.
+2. **It is the first run of the reading's repairs off this machine**: two jobs on macOS, two on bare
+   Linux and two on a Windows machine other than this one, under Python 3.15.2, 3.9.6, 3.8.18 and
+   3.8.10.
+3. **Every job has 21 checks more than in the run before, and they are the reading's**: sixteen in the
+   kit file and five in the review-fixes file. The other six files have the counts of the run before,
+   and each job skips as many checks as it did.
+4. **The repairs are still read by nobody but me.** A run shows that the tests pass on three systems. It
+   is not a reading.
+5. **`main` is as it was**, at `e587b4f`, and your real install is untouched. Both hold round 8's guard,
+   with the hole in the tee rule and the `.exe` gap.
+6. **This record goes to the same branch, as your word covers.** That push starts a further run of the
+   six jobs, which this record cannot hold.
+
+### The push, and GitHub's run
+
+- **Before the push** I fetched: `test/round-9` stood at `5ccc2d4` and `main` at `e587b4f`, and this
+  branch was two commits ahead of the test branch and none behind. Both commits carry the account's
+  no-reply address and dates in UTC.
+- **The push**, at 15:18 UTC, as a fast-forward with no force: `5ccc2d4` to `f9dbf2e`. That is
+  `2da5fee`, the code, and `f9dbf2e`, the record of the reading.
+- **The run**: GitHub Actions, workflow run 44761976197 on `f9dbf2e` (15:18 to 15:38 UTC). All six jobs
+  pass at the first attempt, and no line begins with `FAIL` in any of the six logs.
+
+| Job | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 19 | 1,224 | 127 | 136 | 275 | 100 | 42 | 3 | 1,926 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 19 | 1,224 | 127 | 135 | 264 | 100 | 42 | 3 | 1,914 |
+| windows-latest, Python 3.x | 3.15.2 | 19 | 1,216 | 125 | 138 | 265 | 100 | 42 | 6 | 1,911 |
+| windows-latest, Python 3.8 | 3.8.10 | 19 | 1,216 | 125 | 137 | 265 | 100 | 42 | 6 | 1,910 |
+| macos-latest, Python 3.x | 3.15.2 | 19 | 1,226 | 127 | 136 | 264 | 100 | 42 | 6 | 1,920 |
+| macos-latest, Python system | 3.9.6 | 19 | 1,222 | 125 | 135 | 264 | 100 | 42 | 6 | 1,913 |
+
+Against the run before (44727353913 on `5ccc2d4`) every job has sixteen checks more in the kit file and
+five more in the review-fixes file, and the counts of that run in the other six files. A job skips 2 to
+5 checks, as many as in the run before. This time the job "macos-latest, Python 3.x" ran under Python
+3.15.2 on the image 20261117.0516.1 (3.14.10 on 20261102.0473.1 in the run before).
+
+### What the run shows of the repairs, and what it does not
+
+- **The guard's new rows** (twelve in the kit file, five put to it as a read-only agent) are command
+  lines given to the guard as text. They pass in all six jobs: the repaired rules answer alike on the
+  three systems and under every interpreter of the table. No `touch.exe` and no `patch` ran in them.
+- **The supervisor's new test** starts a process that sleeps, with a deadline of 1 s and a grace of 0,
+  where the system's clock stands still, and the supervisor ends it. It passes in all six jobs, after 2
+  to 8 s. On this machine it took 8 s on Windows and 2 s in WSL.
+- **The three curve rows** are arithmetic on lists of numbers, and pass in all six jobs.
+- **Not shown:** the repaired guard in a session with an agent, or in front of a shell that runs the
+  line. No job has PyTorch, so the benchmarks file has 42 checks there in the place of 54, as before.
+
+### Not done, and why
+
+- A reader for the repairs of the reading: your word did not name one. It is the first question below.
+- `main`, the ninth installer run, a merge of the pilot's branch and every deletion: each needs your
+  word.
+- The run that the push of this record starts: this record cannot hold it.
+
+### What needs your decision
+
+- **Whether a reader goes through the repairs of the reading before `main` takes the round.** As in the
+  section before this one: by my estimate 60,000 to 120,000 tokens, and each reading of my own repairs
+  since 16 November has found something.
+- **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
+  with no force.
+- **The ninth installer run on your real install**, and **whether the proof pilot's branch is merged
+  into this one**: as in the section before this one.
+- Unchanged: the other questions listed there.
+
+Sources: `git fetch` before and after the push, on 20 November 2026; GitHub Actions, workflow run
+44761976197 of the public repository, read on 20 November 2026 from its list of jobs and from each job's
+log, its checks counted as the lines that begin with `PASS`, `FAIL` and `SKIP` and split at the
+`RESULT:` lines; run 44727353913, read the same way, for the comparison.
 
 ## 1. What changed and why
 

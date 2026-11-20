@@ -523,6 +523,8 @@ round are UTC.
   their author had read. Four faults are repaired, and an older gap of the guard beside them, a program named with
   `.exe`; REPORT.md, "The reading of round 9's unread repairs". Those repairs are local commits, and their tests ran
   on this machine only.)
+  (Added later on 20 November: both commits are on the public branch `test/round-9` since, on the user's "Push test
+  branch", and all six of GitHub's jobs pass on them; REPORT.md, "The reading on the test branch".)
 
 ## Coverage map
 

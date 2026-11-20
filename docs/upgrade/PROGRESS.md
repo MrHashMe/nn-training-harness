@@ -65,6 +65,8 @@ follows it there ("Round 9 on the test branch" below).
 On the user's "Read first" of that day a fresh reader went through the round's repairs that only their
 author had read: four faults are repaired in a local commit, with an older gap of the guard beside them
 ("The reading of round 9's unread repairs" below).
+On the user's "Push test branch" both commits went to `test/round-9`, and all six of GitHub's jobs pass on
+them ("The reading on the test branch" below).
 
 # Upgrade progress
 
@@ -2540,6 +2542,8 @@ Done on that word:
   Both records add to the same places of REPORT.md and PROGRESS.md, so a merge keeps both by hand.
 - Nothing pushed. Nothing on the real install. No further reader: the repairs of this reading, the
   guard's among them, are read by their author only.
+  (Added later on 20 November: pushed since, on the user's "Push test branch"; the entry after this
+  one.)
 - Left on this machine: `claude/r9-snap-l` and `claude/r9-snap-m` with two clones each, and the
   helpers of the reading in `%TEMP%\nnkit-upgrade\r9\rd\`.
 
@@ -2549,6 +2553,36 @@ installer run; whether further readers of my own fixes are wanted without asking
 pilot's branch is merged into this one; which large item is built next after the pilot, if any;
 WSL's clock; the snapshot branches and the clones; the reading for `cmd /c`; whether the test
 branches are deleted.
+
+## The reading on the test branch (20 November): pushed, all six jobs pass
+
+The user's word, 20 November: "Push test branch", to the question whether the two local commits of
+the reading go to `test/round-9`. Before the answer I had said what it covers: the push of the two
+commits, the reading of GitHub's six jobs, and a push of the record of that result to the same
+branch. It is not a word for `main`, for the real install, for a reader, for a re-run of a job on
+GitHub, for a merge of the pilot's branch or for a deletion. Times in this entry are UTC.
+
+Done on that word:
+- Fetched before the push: `test/round-9` at `5ccc2d4`, `main` at `e587b4f`; this branch two commits
+  ahead of the test branch and none behind.
+- Pushed at 15:18 UTC as a fast-forward: `5ccc2d4` to `f9dbf2e` (`2da5fee`, the code, and `f9dbf2e`,
+  the record of the reading).
+- GitHub's workflow run 44761976197 on `f9dbf2e` (15:18 to 15:38 UTC): all six jobs pass at the
+  first attempt, with 1,910 to 1,926 checks a job and none failed. Every job has 21 checks more than
+  in the run before, sixteen in the kit file and five in the review-fixes file. It is the first run
+  of the reading's repairs on macOS, on bare Linux and on a Windows machine other than this one
+  (Python 3.15.2, 3.9.6, 3.8.18 and 3.8.10).
+- REPORT.md has the section "The reading on the test branch", point 40 of "Read this first", and a
+  sentence at each place of the reading's section that the push puts out of date. The ledger's head
+  has a sentence, and the ledger is built again (1,740 rows from 36 notes, as before).
+- This record goes to `test/round-9` as the word covers. That push starts a further run of the six
+  jobs, which this record cannot hold.
+- Left as they are: the public `main` at `e587b4f` and the real install; the pilot's branch, which
+  is not merged; the repairs of the reading, which are read by their author only.
+
+Next, each a separate word of the user's: whether a reader goes through the repairs of the reading
+before `main` takes the round; whether `main` takes it; the ninth installer run; whether the proof
+pilot's branch is merged into this one; the other questions of the entry before this one.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -2915,6 +2949,11 @@ branches are deleted.
   finds, tests, and local commits with their record, as I had said before it. It is not a word for a
   push, for `main`, for the real install, for a further reader, for a re-run of a job on GitHub or
   for a deletion.
+- Answered on 20 November ("Push test branch"), from the reading: whether its two commits go to
+  `test/round-9`. "The reading on the test branch" above. The word covers the push, the reading of
+  GitHub's six jobs and a push of the record of the result to that branch, as I had said before it.
+  It is not a word for `main`, for the real install, for a reader, for a re-run of a job on GitHub,
+  for a merge of the pilot's branch or for a deletion.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -2927,6 +2966,8 @@ branches are deleted.
   (Added later on 20 November: open beside it: whether the two commits of the reading go to
   `test/round-9`, and whether a reader goes through them first. The snapshot branches are thirteen,
   with `claude/r9-snap-l` and `claude/r9-snap-m`.)
+  (Added later on 20 November: the first of the two is answered and done; "The reading on the test
+  branch" above. Open beside the second: whether the proof pilot's branch is merged into this one.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -3075,3 +3116,5 @@ branches are deleted.
   clean Python 3.8 environment under `%TEMP%\nnkit-upgrade\venvs\clean38`; it is made again with `uv
   venv --no-python-downloads --python 3.8 PATH`, from the interpreter that uv had on this machine,
   with nothing downloaded and no package installed.
+- `apply_push.py KIT RUN PREV_RUN`, in the same folder, wrote the texts of the entry "The reading on
+  the test branch" from what `ci_read.py` reads of the two runs.

@@ -236,6 +236,20 @@ def py_cmd(cfg):
     return f'"{p}"' if " " in p else p
 
 
+def in_env(program):
+    """On Windows, the .exe that a program named without a folder has beside this interpreter, for Popen's
+    `executable`; None where the name is left to the system (elsewhere, a name with a folder, no such .exe).
+    Windows looks for such a name first in the folder of the program that is running. In a virtual environment that
+    is the base interpreter, which the environment's python.exe only starts: until 20 November 2026 a launched
+    `python train.py` ran in the base interpreter, without the environment's packages. The command line stays as
+    the caller wrote it. Not the first on PATH instead: where the kit was not started by PATH's interpreter (the
+    `py` launcher, a full path) that is another program than the one such a command started so far."""
+    if os.name != "nt" or os.path.dirname(program) or not sys.executable:
+        return None
+    exe = os.path.join(os.path.dirname(sys.executable), program if os.path.splitext(program)[1] else program + ".exe")
+    return exe if exe.lower().endswith(".exe") and os.path.isfile(exe) else None
+
+
 def read_json(path):
     for attempt in (1, 2, 3):
         try:
@@ -2088,7 +2102,7 @@ def cmd_supervise(args):
     else:
         kw["start_new_session"] = True  # own process group so stop/deadline can signal the whole tree
     try:
-        child = subprocess.Popen(cmd, **kw)
+        child = subprocess.Popen(cmd, executable=in_env(cmd[0]), **kw)
     except OSError as e:
         write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": f"could not start: {e}",
                                                   "ended_ts": now(), "ended_at": iso(now())})
@@ -2913,8 +2927,8 @@ def cmd_final_eval(args):
     try:
         with open(log, "wb") as f:  # Windows takes the command line as one string; elsewhere it is a word list
             code = subprocess.run(rest + " " + subprocess.list2cmdline(extra) if os.name == "nt" else words + extra,
-                                  cwd=str(root), env=env, stdin=subprocess.DEVNULL, stdout=f,
-                                  stderr=subprocess.STDOUT).returncode
+                                  executable=in_env(words[0].strip('"')), cwd=str(root), env=env,
+                                  stdin=subprocess.DEVNULL, stdout=f, stderr=subprocess.STDOUT).returncode
     except OSError as e:
         code, err = None, f"could not start: {e}"
     out = tail_bytes(log, 2000)
@@ -3247,7 +3261,7 @@ def cmd_env(args):
     for f in ("uv.lock", "pyproject.toml", "requirements.txt", "environment.yml", "pixi.toml", "poetry.lock", "setup.py"):
         if (root / f).exists():
             info.setdefault("env_files", []).append(f)
-    py = args.python
+    py = args.python and (in_env(args.python) or args.python)
     if py:
         try:
             r = subprocess.run([py, "-c", PROBE], capture_output=True, text=True, timeout=180, cwd=str(root))

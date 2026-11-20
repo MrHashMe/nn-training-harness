@@ -838,8 +838,9 @@ class Campaign:
     def evaluate(self, run_dir):
         """The frozen evaluator on one folder, started by the harness itself; None when it timed out."""
         try:
-            return subprocess.run(self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir), cwd=str(self.root),
-                                  env=self.run_env, capture_output=True, encoding="utf-8", errors="replace",
+            cmd = self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir)
+            return subprocess.run(cmd, executable=expctl.in_env(cmd[0]), cwd=str(self.root), env=self.run_env,
+                                  capture_output=True, encoding="utf-8", errors="replace",
                                   timeout=float(self.L.get("eval_timeout_s") or 600), **NOWIN)
         except subprocess.TimeoutExpired:
             return None

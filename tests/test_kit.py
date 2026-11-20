@@ -414,6 +414,57 @@ def compare_tests(tmp, proj):
               + (f" (and nothing of: {', '.join(never)})" if never and never != [" "] else "") + f" (got: {got[:300] or 'none'})")
 
 
+def env_tests(tmp):
+    """In a virtual environment, a program that a command names without a folder is the environment's, at each place
+    where the kit starts a caller's command: a launched run, the final evaluation, `env --python`, the loop's
+    evaluator and a remote target's on_finish. (Was, on Windows: the base interpreter's, which Windows finds first
+    beside the running program, so training ran without the environment's packages.) The last two are functions of
+    nnloop and nnremote, tried here because this file makes the environment."""
+    print("== a program named without a folder, in a virtual environment ==")
+    (tmp / "bare").mkdir()
+    proj, venv = setup(tmp / "bare"), tmp / "bare/venv"
+    if subprocess.run([PY, "-m", "venv", "--without-pip", str(venv)], capture_output=True).returncode != 0:
+        print("SKIP virtual environment tests (python -m venv made none)")
+        return
+    vbin = venv / ("Scripts" if os.name == "nt" else "bin")
+    vpy, scripts = str(vbin / ("python.exe" if os.name == "nt" else "python")), proj / ".claude/skills/nn-training/scripts"
+    env = {"PATH": str(vbin) + os.pathsep + os.environ.get("PATH", "")}  # as in a shell with the environment activated
+    say = "import sys; print('prefix=' + sys.prefix)"
+
+    def inside(text):  # the interpreter that printed its prefix is the environment's
+        got = [x[len("prefix="):].strip() for x in (text or "").splitlines() if x.startswith("prefix=")]
+        return bool(got) and os.path.isdir(got[-1]) and os.path.samefile(got[-1], venv)
+
+    def kit(*args, timeout=60):  # expctl, run by the environment's interpreter
+        return sh([vpy, str(scripts / "expctl.py"), *args], cwd=proj, env=env, timeout=timeout)
+
+    for i, name in enumerate(("python", "python.exe", "PYTHON") if os.name == "nt" else ("python",)):
+        run = jout(kit("launch", "--name", f"bare{i}", "--snapshot", "none", "--", name, "-c", say))
+        wait_for(lambda: (proj / run["run_dir"] / "exit.json").exists(), 30)
+        check(inside((proj / run["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace")),
+              f"a launched `{name} ...` runs in the environment's interpreter")
+    (proj / "eval/final.py").write_text(say + "\n")  # the config names it: NN_UNSEAL_TEST=1 python eval/final.py
+    out = jout(kit("final-eval"))
+    check(out.get("ok") and inside(out.get("output_tail")), "final-eval: `python` in the configured command is the environment's")
+    exe = (jout(kit("env", "--python", "python")).get("interpreter") or {}).get("executable") or ""
+    check(os.path.isfile(exe) and os.path.samefile(os.path.dirname(exe), vbin),
+          f"env --python python probes the environment's interpreter ({Path(exe).parent.name or 'none'})")
+    for what, code in (
+            ("the loop's evaluator, with {python} from a config that says python",
+             "import argparse, nnloop\n"
+             "cfg = dict(nnloop.expctl.load_config(root), python='python', loop={'eval_command': ['{python}', '-c', say]})\n"
+             "C = nnloop.Campaign(root, cfg, 'bare', argparse.Namespace())\n"
+             "C.box_eval = []  # the environment lies outside the project, which is all that the evaluator's box shows\n"
+             "print(C.evaluate(root).stdout)\n"),
+            ("a remote target's on_finish command",
+             "import nnremote\n"
+             "print(nnremote.after_run(root, nnremote.expctl.load_config(root), ['python', '-c', say], root / 'runs/none', 'box'))\n")):
+        r = sh([vpy, "-c", "import sys; sys.path.insert(0, sys.argv[1])\nfrom pathlib import Path\n"
+                "root, say = Path(sys.argv[2]), sys.argv[3]\n" + code, str(scripts), str(proj), say], cwd=proj, env=env)
+        ok, said = inside(r.stdout), " ".join((r.stderr or r.stdout).split())[-200:]
+        check(ok, f"{what}: `python` is the environment's" + ("" if ok else f" ({said})"))
+
+
 def near(a, b, tol=1e-9):
     return isinstance(a, (int, float)) and abs(a - b) <= tol * max(1.0, abs(b))
 
@@ -2923,6 +2974,7 @@ def main():
           f"{sum(x['event'] == 'start' for x in rr)} start rows, {len(ran)} ran)")
 
     compare_tests(tmp, proj)
+    env_tests(tmp)
 
     # cleanup live runs
     for x in (active, live):

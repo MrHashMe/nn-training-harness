@@ -663,6 +663,12 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   project that tracks such files, or does not ignore them, changes once. The journal, the search's storage file
   and the runs folder no longer make a tree `dirty`.
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.
+- In a virtual environment on Windows, a program that a command names without a folder (`python` in a launched
+  command, in a final evaluation command, in the loop's evaluator, in an `on_finish` command, and after
+  `env --python`) is the environment's, where the environment's interpreter runs the kit. Until 20 November 2026 it
+  was the base interpreter, which has none of the environment's packages. Where another interpreter runs the kit,
+  such a name is still that interpreter's own program, whatever `PATH` says: name the environment's interpreter by
+  its path. The programs of a remote target's `exec` and `hf` lists are found as before.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

@@ -571,6 +571,25 @@ def holds_open(pid, path) -> bool:
     return False
 
 
+def _win_parent(pid):
+    """A Windows process's parent as the system records it, or None: psutil's ppid() where psutil is not installed.
+    A run that a virtual environment's python.exe started trains in a child of the process the kit knows, and the
+    GPU names that child: without its parent, status showed no run on the GPU."""
+    try:
+        import ctypes
+
+        k32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        h = k32.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return None
+        info = (ctypes.c_size_t * 6)()  # PROCESS_BASIC_INFORMATION: six pointer-sized fields, the parent's id the last
+        ok = ctypes.windll.ntdll.NtQueryInformationProcess(h, 0, info, ctypes.sizeof(info), None) == 0
+        k32.CloseHandle(h)
+        return int(info[5]) if ok else None
+    except Exception:
+        return None
+
+
 def proc_parent(pid):
     try:
         import psutil  # type: ignore
@@ -578,6 +597,8 @@ def proc_parent(pid):
         return psutil.Process(int(pid)).ppid()
     except Exception:
         pass
+    if os.name == "nt":
+        return _win_parent(pid)
     try:
         with open(f"/proc/{int(pid)}/stat", "r") as f:
             data = f.read()
@@ -2886,7 +2907,8 @@ def cmd_final_eval(args):
     except ValueError as e:
         return fail(2, f"the final_eval_commands entry cannot be split into words: {e}")
     os.chdir(root)  # the command is the project's: its program and its paths are relative to the project root
-    if not words or not shutil.which(words[0].strip('"')):
+    # found beside the interpreter, which is the one the start below takes, or on the PATH
+    if not words or not (in_env(words[0].strip('"')) or shutil.which(words[0].strip('"'))):
         return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}")
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"

@@ -423,12 +423,18 @@ def env_tests(tmp):
     print("== a program named without a folder, in a virtual environment ==")
     (tmp / "bare").mkdir()
     proj, venv = setup(tmp / "bare"), tmp / "bare/venv"
-    if subprocess.run([PY, "-m", "venv", "--without-pip", str(venv)], capture_output=True).returncode != 0:
+    if subprocess.run([PY, "-m", "venv", "--without-pip", str(venv)], capture_output=True, timeout=300).returncode != 0:
+        if os.name == "nt":  # the fault was Windows': a skip there would hide the checks that guard its repair
+            check(False, "python -m venv makes the virtual environment that the checks below need")
         print("SKIP virtual environment tests (python -m venv made none)")
         return
     vbin = venv / ("Scripts" if os.name == "nt" else "bin")
     vpy, scripts = str(vbin / ("python.exe" if os.name == "nt" else "python")), proj / ".claude/skills/nn-training/scripts"
-    env = {"PATH": str(vbin) + os.pathsep + os.environ.get("PATH", "")}  # as in a shell with the environment activated
+    # Windows: no folder of the PATH holds a `python`, as in a shell where the environment is not activated, so the
+    # name can only come from beside the interpreter. Elsewhere the PATH decides, and an activated environment leads it
+    path = os.environ.get("PATH", "")
+    env = {"PATH": os.pathsep.join(p for p in path.split(os.pathsep) if p and not shutil.which("python", path=p))
+           if os.name == "nt" else str(vbin) + os.pathsep + path}
     say = "import sys; print('prefix=' + sys.prefix)"
 
     def inside(text):  # the interpreter that printed its prefix is the environment's
@@ -441,14 +447,28 @@ def env_tests(tmp):
     for i, name in enumerate(("python", "python.exe", "PYTHON") if os.name == "nt" else ("python",)):
         run = jout(kit("launch", "--name", f"bare{i}", "--snapshot", "none", "--", name, "-c", say))
         wait_for(lambda: (proj / run["run_dir"] / "exit.json").exists(), 30)
-        check(inside((proj / run["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace")),
-              f"a launched `{name} ...` runs in the environment's interpreter")
+        check(inside((proj / run["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace"))
+              and json.loads((proj / run["run_dir"] / "manifest.json").read_text(encoding="utf-8"))["cmd"] == [name, "-c", say],
+              f"a launched `{name} ...` runs in the environment's interpreter, and its record keeps the command as written")
     (proj / "eval/final.py").write_text(say + "\n")  # the config names it: NN_UNSEAL_TEST=1 python eval/final.py
     out = jout(kit("final-eval"))
     check(out.get("ok") and inside(out.get("output_tail")), "final-eval: `python` in the configured command is the environment's")
     exe = (jout(kit("env", "--python", "python")).get("interpreter") or {}).get("executable") or ""
     check(os.path.isfile(exe) and os.path.samefile(os.path.dirname(exe), vbin),
           f"env --python python probes the environment's interpreter ({Path(exe).parent.name or 'none'})")
+    # the names that stay the system's to find: with another ending than .exe, with no .exe beside the interpreter,
+    # with a folder or a drive. Only the first two have an .exe there, and only Windows is given it
+    names = ["python", "PYTHON.EXE", "python.bat", "python3.11", "cmd", "nosuchprogram", os.path.join(".", "python"), "C:python", vpy]
+    if os.name == "nt":  # files of the two other endings lie beside the interpreter, and still are not started from there
+        for n in names[2:4]:
+            (vbin / n).write_text("")
+    r = sh([vpy, "-c", "import json, sys; sys.path.insert(0, sys.argv[1]); import expctl\n"
+            "print(json.dumps([expctl.in_env(x) for x in sys.argv[2:]]))", str(scripts), *names], cwd=proj, env=env)
+    got = json.loads(r.stdout) if r.returncode == 0 else [r.stderr[-200:]]
+    mine = 2 if os.name == "nt" else 0
+    check(len(got) == len(names) and all(os.path.isfile(g or "") and os.path.samefile(g, vpy) for g in got[:mine])
+          and not any(got[mine:]),
+          f"only a name that has an .exe beside the interpreter is started from there ({[Path(g).name if g else g for g in got]})")
     for what, code in (
             ("the loop's evaluator, with {python} from a config that says python",
              "import argparse, nnloop\n"
@@ -1098,6 +1118,17 @@ def main():
     check(a and b and abs(a - b) < 1 and gone is None and same and other is False
           and (sys.platform.startswith("linux") or abs(now - a) < 60),
           f"a process's start time is known without psutil, to expctl and to the run logger alike, and tells a reused pid ({r.stdout.strip()} {r.stderr[-200:]})")
+    # and so is its parent, by which status finds the run of a process that holds a GPU. A run that a virtual
+    # environment's python.exe starts on Windows trains in a child of the process the kit recorded: without psutil
+    # Windows gave no parent, and status showed no run on that GPU. (macOS has no route, and no nvidia-smi to ask)
+    if sys.platform != "darwin":
+        code = ("import json, os, subprocess, sys\nsys.modules['psutil'] = None\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+                "p = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(20)'])\n"
+                "print(json.dumps([expctl.proc_parent(p.pid), os.getpid(), expctl.proc_parent(4294967292)]))\np.kill()\n")
+        r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
+        parent, me, gone = json.loads(r.stdout) if r.returncode == 0 else [None] * 3
+        check(parent and parent == me and gone is None,
+              f"a process's parent is known without psutil ({r.stdout.strip()} {r.stderr[-200:]})")
     # macOS has no /proc, so there the start time comes from ps: asked in UTC whatever zone this process is in (here
     # one nine hours off), and it agrees with the other route where both exist
     if os.name != "nt":
@@ -2974,11 +3005,11 @@ def main():
           f"{sum(x['event'] == 'start' for x in rr)} start rows, {len(ran)} ran)")
 
     compare_tests(tmp, proj)
-    env_tests(tmp)
 
     # cleanup live runs
     for x in (active, live):
         expctl(proj, "stop", x["run_id"], "--wait", "20s", timeout=40)
+    env_tests(tmp)  # in a project of its own, and after the cleanup: a fault in it leaves no run alive
     print("\nRESULT:", "ALL PASS" if not FAILS else f"{len(FAILS)} FAILURES")
     for f in FAILS:
         print("  -", f)

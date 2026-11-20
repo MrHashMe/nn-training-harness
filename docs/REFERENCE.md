@@ -665,10 +665,20 @@ the task that the other arms lack: read its edge with that in mind, or run the p
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.
 - In a virtual environment on Windows, a program that a command names without a folder (`python` in a launched
   command, in a final evaluation command, in the loop's evaluator, in an `on_finish` command, and after
-  `env --python`) is the environment's, where the environment's interpreter runs the kit. Until 20 November 2026 it
-  was the base interpreter, which has none of the environment's packages. Where another interpreter runs the kit,
-  such a name is still that interpreter's own program, whatever `PATH` says: name the environment's interpreter by
-  its path. The programs of a remote target's `exec` and `hf` lists are found as before.
+  `env --python`) is looked for first beside the interpreter that runs the kit, as `<name>.exe`. Where the
+  environment's interpreter runs the kit, that is the environment's `Scripts` folder: `python` is the environment's
+  interpreter, and any other program that pip put there (`transformers`, `tqdm`) is the environment's as well,
+  whether or not the environment is activated and whatever `PATH` says. Until 20 November 2026 the base
+  interpreter's folder came first instead: `python` and `pythonw` were the base interpreter, which has none of the
+  environment's packages, and the environment's other programs were found through `PATH` only. A name with a folder,
+  a name with another ending than `.exe`, and a name with no `.exe` beside the interpreter are found as before.
+  Where another interpreter than the environment's runs the kit, `python` is that interpreter: name the
+  environment's interpreter by its path. A run that began with the kit as it was before and is resumed with it as it
+  is now has its first part from the base interpreter and its second from the environment's: where the run logger is
+  used, the two parts' `env.json` name the two, and the kit records a run's interpreter nowhere else. A campaign of
+  the loop that goes on across that change starts its later runs and its evaluator in the environment's
+  interpreter, and nothing records the evaluator's. The programs of a remote target's `exec` and `hf` lists are
+  found as before.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

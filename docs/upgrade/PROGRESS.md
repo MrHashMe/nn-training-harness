@@ -2763,6 +2763,10 @@ Done:
   and no error at once: what was seen comes and goes, nothing runs twice that way, and an error at
   once would have a campaign's loop count a run that never ran as a failed one (REPORT.md, point 5
   of the section).
+  (Added on 21 November: a campaign's loop took that error for a crash and went on at once, with the
+  command perhaps left behind. A reader found it, and it is repaired; the entry after this one.
+  "Nothing runs twice that way" holds since that entry by another means: a supervisor that finds the
+  run's log there starts nothing.)
 - On Windows the supervisor is started with `CREATE_NO_WINDOW` in the place of `DETACHED_PROCESS`.
   Measured by a probe under Python 3.11.7 and under both environments, with the old flags and with
   the new one: under an environment the old flags gave the supervisor's interpreter a console of its
@@ -2790,6 +2794,9 @@ Done:
   outlive the small program that an environment's `python.exe` is. Ended alone, that program takes
   the interpreter with it within 0.2 s, so a second start cannot double a supervisor. An environment
   that Python's own `venv` made was not tried.
+  (Added on 21 November: 926 more kills at set times showed no interpreter that outlived its small
+  program either. Neither trial can exclude a very short gap, so "cannot" is firmer than they allow;
+  a supervisor now starts nothing where the run's log is there. The entry after this one.)
 - The code commit is `81634a3` (23:43 on 20 November): `expctl.py`, `runlog.py`, `tests/test_kit.py`
   and `docs/REFERENCE.md`, 301 lines added and 8 removed. Two clauses of its message are less exact
   than this record. It says of the rule on the time of creation "which is what the failed check had
@@ -2835,6 +2842,8 @@ Done:
   this machine while the passes ran.
 - Nothing pushed, nothing merged, nothing on the real install, no package installed. No reader:
   these repairs are read by their author only.
+  (Added on 21 November: the user gave the word, "Yes, start reader", and one reader has read them;
+  the entry after this one.)
 - The probes and the copies that hold the old flags put terminal windows on the user's screen for
   seconds at a time, on 20 November between 22:46 and 23:23, and on 21 November between 00:52 and
   00:58. The test passes under the two environments put more there than those: the 36 of the bullet
@@ -2849,6 +2858,143 @@ Next, each a separate word of the user's: whether a fresh reader goes through th
 more or an error at once; whether the like case in the launch's own record is repaired; whether
 `nnloop start --detach` and the remote controller get the new flag; whether this branch is merged
 with the others, and whether it goes to `test/round-9`; the questions of the entry before this one.
+(Added on 21 November: the first is answered and done; the entry after this one, which names what is
+open now.)
+
+## The reading of the two faults' repairs (21 November): local only
+
+Asked by the session of the entry before this one whether one fresh reader should go through its
+repairs, the user answered "Yes, start reader" (01:14 on 21 November). This entry is that reading's,
+by the same session on the same local branch, `claude/fervent-gould-8d0820`. The session took the
+word as: one reader with read access only goes through the code commit `81634a3`; the session runs
+each finding itself and repairs what holds, each repair with a check that fails on a copy of the kit
+with the change taken out; the tests again; local commits with this record. The question named the
+reader only, and the rest is what the session said when it started the reader. Not covered: a push,
+a merge, a second reader, anything on the real install, a deletion. Dates and times in this entry
+are UTC, and of 21 November where no day is named.
+
+Done:
+- The reader: a fresh session of Opus 5.5 with read access only, told to run nothing. It read
+  `81634a3` against `409182f`, four files, and reported nine findings: 177,599 tokens, 24 tool
+  calls, eight minutes (01:16 to 01:24). No estimate was named beforehand. With it the readers of
+  this work are nine and one second reading, about 1,441,000 tokens; beyond the user's word the
+  count stays at six and one second reading, about 907,000. That count is this branch's: the proof
+  pilot's session had three more readers on the user's word on 20 November (183,127, 132,573 and
+  167,917 tokens, in the record on its own branch), which makes twelve and one second reading, about
+  1,924,000 tokens. One sentence of the brief was inexact: it called `f68b71c` a commit of records
+  only, and that commit also changed two sentences of the reference's paragraph.
+- Finding 1, a regression in the campaign's loop: holds, repaired. Since `81634a3` a launch answers
+  with an error at once where its supervisor ended after it had opened the run's log, which is where
+  the command may have been started. `nnloop.train` took that for a crash and went on at once, with
+  the command perhaps left behind and no supervisor to end it. One step of the loop with a stand-in
+  for the supervisor, on Windows under Python 3.11.7: the kit of `409182f` came back after 73.7 s,
+  that of `81634a3` after 0.7 s with the command alive, the repaired one after 69.1 s with the
+  command ended. Now the launch's answer says `command_may_run` where a supervisor of it had opened
+  the log, and the loop waits out the run's time, lets no exit record end that wait, stops the run
+  and then reports the launch's failure. The same step on Windows with a command that runs on past
+  its deadline and looks for `stop.json` (03:53): back after 70.0 s; `stop` answered `ok` with the
+  route "process" after 1.2 s and ended no process, because the command went on the request, and the
+  run read as `incomplete`. The kill that `stop` makes on Windows for a command which does not look
+  for the file was not reached.
+- Where a command can be left behind: on Windows and on a Mac, where the loop has no sandbox, and on
+  Linux where bubblewrap does not work; a Mac was not tried. In the loop's sandbox the command ends
+  with its supervisor (`--die-with-parent`): tried in WSL with bubblewrap 0.9.0, and with the option
+  taken out as a control. Found beside it and left as it is, older than both repairs: for a run in
+  that sandbox `stop` signals nothing, waits its whole 30 s and answers with the exit code 1, and
+  the run reads as `running` until its last heartbeat is `heartbeat_stale_seconds` old; and a
+  command that writes no heartbeat is reached by no `stop`.
+- Finding 2, a double start under an environment on Windows: not shown and not excluded. The small
+  program that an environment's `python.exe` is was ended alone 926 times in two probes under both
+  environments, 0 to 400 ms after its start, and no interpreter outlived it (01:37 to 01:41 and
+  01:45 to 01:51). A gap of a tenth of a millisecond or less would most likely have been missed, and
+  the small program of Python's own `venv` was not tried. Closed where the command starts: a
+  supervisor makes the run's log itself, with a call that fails where the file is there, and one
+  that finds it there writes a line into `supervisor.log`, starts nothing and ends with the exit
+  code 1. The reader's way out, a supervisor started with `sys._base_executable`, was not taken.
+- Finding 3, a Windows clock that was set back: holds. A live run that is followed by its heartbeat
+  read as `lost` until a heartbeat was written after the clock had caught up. Repaired for a
+  heartbeat that names its writer's start time: the rule on the time of creation (`born_after`) is
+  not asked where that start time is the process's own to within 0.05 s. A heartbeat without a start
+  time still reads as `lost` there. The clock itself was not set: the check gives the heartbeat the
+  times that such a step leaves.
+- Findings 4 and 5, two sentences of the reference: hold, corrected. A launch that fails after the
+  log was opened writes no exit record, so the run reads as `unknown`, or as its command's records
+  say, and not as `failed`. And a launch through tmux holds no supervisor's process and looks at
+  none: tried in WSL with tmux 3.4. Found beside it and left as it is, older than both repairs:
+  where a supervisor through tmux never starts, the file `.launch-env.json` with the run's
+  environment stays in the run's folder, readable by its owner only (3,870 bytes with 31 variable
+  names in the trial; no value was printed).
+- Finding 6, a `supervisor.log` that takes no line: holds, and it was more than the error's text.
+  That launch made no second start at all and wrote the run off as `failed`. Repaired: the line has
+  a `try` of its own, and the start follows whether it was written or not.
+- Findings 7, 8 and 9 concern the tests. The comment of the block's second check says now that on
+  Linux the key answers for its third heartbeat. Two paths that no check ran have one each, and both
+  worked as they were: the launch's second look at a record that it could not read, and a second
+  start that the system refuses. The console check asks for a window that is shown; another Windows
+  is untried.
+- The code commit is `5f600da` (04:12 on 21 November): `expctl.py`, `nnloop.py`,
+  `tests/test_kit.py`, `tests/test_loop.py` and `docs/REFERENCE.md`, 244 lines added and 85 removed.
+  `runlog.py` is unchanged.
+- Six new checks: five in the block of `tests/test_kit.py`, which has fourteen now and thirteen
+  where it is not Windows, and one in `tests/test_loop.py`. Four checks of the block changed. Each
+  new check fails on a copy of the kit with its change taken out, nineteen copies in all with the
+  eleven of the entry before this one, and each copy fails the checks of its row and no other: on
+  Windows under Python 3.11.7 (02:17 to 02:24), under the 3.15.0rc3 environment (02:29 to 02:37) and
+  under the 3.8.20 environment (03:54 to 04:02), and in WSL under 3.12.3 (02:17 to 02:21). The first
+  run under the 3.8.20 environment (02:24 to 02:29) built no copy, because the helper used a call
+  that Python 3.8 does not have, and counts for nothing.
+- Tests on that state: the eight files on Windows under Python 3.11.7 and, from a virtual
+  environment, under 3.8.20 and 3.15.0rc3, and in WSL under 3.12.3 (1,952, 1,939, 1,940 and 1,967
+  checks, none failed). That is six checks more a pass than on `81634a3`, five in the kit file and
+  one in the loop file. The kit file and the loop file in WSL under 3.8.20 and 3.15.0b3: 1,244 and
+  276 checks each, none failed. The passes on Windows ran one after the other from 02:37 to 03:50,
+  the pass in WSL from 02:21 to 02:32 and the two other interpreters there from 02:32 to 02:44. On
+  Windows they launched 36 runs under Python 3.11.7 and 34 under each environment, seven of each the
+  block's own with a stand-in in the supervisor's place; of the others no supervisor ended early.
+- Two sentences of the entry before this one do not stand as written and have a note each: that
+  nothing runs twice by a second start, which rested on a trial that is not proof, and that a second
+  start cannot double a supervisor. REPORT.md has the section "The reading of the two faults'
+  repairs", point 51 of "Read this first", and a note at each place of the earlier section that this
+  reading puts out of date. The ledger is not touched: it is the record-keeping session's. This
+  entry adds one word of the user's, "Yes, start reader", which the section and point 51 quote.
+- Beside this session: the proof pilot's branch `claude/brave-robinson-27cbd9` stood at `eded7ce`
+  (02:47), thirteen commits after `5ccc2d4`, with point 50 of "Read this first"; the guard session's
+  branch `claude/sharp-faraday-6bd610` stood at `b5331fb` (01:40), two commits after `409182f`, with
+  point 49. So this entry's point is 51. Neither branch is merged here, and neither was touched. A
+  merge of each with this branch's code commit, tried in memory only: the programs, the test files
+  and the reference merge by themselves, and REPORT.md and PROGRESS.md do not. The merged files were
+  not run. By the proof pilot's record its own test passes ran on this machine until 02:36, beside
+  this session's copies.
+- Nothing pushed, nothing merged, nothing on the real install, no package installed, nothing
+  deleted. No second reader: the repairs of this reading are read by their author only.
+- Windows on the user's screen, by a watcher's lists (beside the two probes, from 02:17 to 03:50 and
+  from 03:53 to 04:02): 117 terminal windows that are this session's. 36 beside each pass under an
+  environment: 34 of 1.5 to 8.9 s while the remote file ran (03:12 to 03:14 and 03:36 to 03:38) and
+  two of 7 to 8.5 s while the loop file ran (03:20 and 03:45). 12 beside each run of the copies
+  under an environment (02:31 and 03:56), eleven flashes and one of 8.3 s, all from the copy with
+  the old flags. And 21 flashes of under half a second beside the remote file and the loop file of
+  the pass under Python 3.11.7 (02:47 to 02:57). The lists hold 249 more: 203 beside the copies
+  between 02:19 and 02:36, 34 flashes beside the first four files of the pass under 3.11.7 (02:37 to
+  02:45) and 12 flashes beside the probes (01:39 to 01:49). The session takes those for other
+  sessions' and could not establish whose they were; REPORT.md's section says on what ground. No
+  watcher ran beside the trials of the findings before 02:17 or beside a first run of the copies
+  (02:05 to 02:12), all under Python 3.11.7, or beside five timings of the small program's start
+  under the 3.15.0rc3 environment (01:54).
+- Left on this machine, nothing deleted: in the session's scratch folder the copies of the kits for
+  the trials, the nineteen copies of each run of the copies, the trials' run folders, the outputs,
+  the logs of the passes and the watcher's lists; `%TEMP%\nnkit-upgrade\kit-pr-b`, the state that
+  the passes ran on; `%TEMP%\nnkit-upgrade\pr\reading\`, copies of the helpers and of the outputs
+  (Working notes); the temporary folders of the test runs; and `%TEMP%\pilot-progress.md`, a copy of
+  the proof pilot's PROGRESS.md that was read for this entry. In WSL under `~/nnkit-upgrade/`:
+  `kit-pr-b`, `pr-copies2` and the trials' folders `f1b-wsl-*`, `f1c-wsl-*`, `f1d-wsl-*`, `f37-*`
+  and `f5-*`; the last holds the file `.launch-env.json` of the trial of finding 5, readable by its
+  owner only.
+
+Next, each a separate word of the user's: whether a fresh reader goes through the repairs of this
+reading; whether the loop waits a run's whole time for a launch that failed with its command perhaps
+running; whether the launch removes `.launch-env.json` where a supervisor through tmux never starts;
+whether these commits go to `test/round-9`; the questions of the entry before this one but the
+first.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -3264,6 +3410,11 @@ with the others, and whether it goes to `test/round-9`; the questions of the ent
   the repairs, whether the launch starts its supervisor once more or answers with an error at once,
   whether the like case in the launch's own record is repaired, whether the loop's and the remote
   controller's starts get the new flag, and whether that branch is merged and pushed.)
+  (Added on 21 November by the same session: the first of those is answered, "Yes, start reader",
+  and done; the entry "The reading of the two faults' repairs" above. Open in its place: whether a
+  fresh reader goes through the repairs of that reading, whether the loop waits a run's whole time
+  for a launch that failed with its command perhaps running, and whether the launch removes
+  `.launch-env.json` where a supervisor through tmux never starts.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -3455,3 +3606,23 @@ with the others, and whether it goes to `test/round-9`; the questions of the ent
   `env_copies.sh` runs it beside the copies under the two environments; `pass_table.py` and
   `sum_probes.py` sum up the passes' and the probes' outputs; `record_texts.py`, `record-section.md`
   and `apply_record.py` hold and place the texts of this entry and of REPORT.md's section.
+- The reading of the two faults' repairs (21 November): its helpers and their outputs are in
+  `%TEMP%\nnkit-upgrade\pr\reading\`, in a folder of their own beside those of the repair, which
+  stay as they were. `run_block.py` runs the block of fourteen checks now, and `run_loop_check.py
+  TESTS_DIR [KIT]` the loop file's new check by itself; `mk_copy.py` has nineteen variants;
+  `run_copies2.sh PYTHON LABEL` puts the block and the loop's check to the worktree and to each copy
+  on Windows and `wsl_copies2.sh` in WSL, and `sum_copies2.py OUT...` sums up which checks failed on
+  which copy; `win_all.sh NAME` and `wsl_all.sh NAME` run the copies and then the passes on a state
+  that `win_snap.sh NAME` wrote down, and `pass_table2.py SCRATCH NAME` sums up the passes;
+  `f1_loop.py KIT TMP` and `f1b_loop.py KIT TMP` run one step of `nnloop.Campaign.train` whose
+  launch meets a stand-in for the supervisor (`f1_standin.py`, whose command ends at its deadline,
+  and `f1b_standin.py`, whose command runs on and looks for `stop.json`); `f1c_stop.py KIT TMP
+  [f1|f1b]` makes such a launch without the loop and asks `expctl stop` for it; `f1d_box.py KIT TMP
+  [control]` does the same inside the loop's sandbox, with `f1d_standin.py`; `gap_probe.py OUT.json
+  ...` ends an environment's small program alone at set times after its start and looks for an
+  interpreter that outlived it (it needs psutil, which this machine's Python 3.11.7 has),
+  `gap_when.py N LABEL=PYTHON...` times when the interpreter appears, and `gap_sum.py` sums up;
+  `f37.py KIT TMP` runs the reader's findings 3 and 7 on a kit, `f468.py KIT TMP [CASE...]` findings
+  4, 6 and 8, and `f5_tmux.py KIT TMP` finding 5 where tmux is; `record2_texts.py`,
+  `record2-section.md` and `apply_record2.py` hold and place the texts of this entry and of
+  REPORT.md's section.

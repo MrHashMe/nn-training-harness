@@ -93,6 +93,12 @@ started for them. A killed run is no longer read as `running` because another pr
 its heartbeat, and a launch looks at the supervisor it started. Why those supervisors ended is still not
 established. The repair is not pushed and is read by nobody but its author; "The two faults under a virtual
 environment on Windows, repaired", after "The reading of the reading's repairs on the test branch".)
+(Added on 21 November: one fresh reader has gone through that repair since, on your word. It found a
+regression in the campaign's loop: a launch that failed with its command perhaps running was taken for a
+crash, and the loop went on at once. That is repaired in a second local commit, with two smaller faults,
+and a case is closed that no trial showed and none could exclude, in which a run's command would have been
+started twice. That commit is again read by nobody but its author, and nothing is pushed; "The reading of
+the two faults' repairs", the section after that one.)
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -677,6 +683,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     sentence; I checked nothing of it.)
     (Added with point 48: both faults are repaired since, in a local commit of the session that you
     started for them; point 48. That commit is not pushed, and nobody but its author has read it.)
+    (Added with point 51: one reader has read that commit since, on your word. What it found is
+    repaired in a second local commit, which nobody but its author has read; point 51.)
 46. **The repairs of the second reading are on the public test branch, on your word, and all six of
     GitHub's jobs pass on them** (20 November; "The reading of the reading's repairs on the test
     branch"). On your "Push test branch" the two commits of point 44 went to `test/round-9` as a
@@ -750,6 +758,53 @@ Decision record: `docs/upgrade/LEDGER.md`.
     repaired; whether the loop's and the remote controller's starts get the new flag; whether this
     branch is merged with the others and where it goes; the questions of point 46 as far as they are
     not these.
+    (Added with point 51: one reader has gone through these repairs since, on your word; point 51.
+    Two things in this point do not stand as written. A campaign's loop took the launch's new error
+    for a crash and went on at once, where the command may have been left behind: a regression,
+    repaired since. And "nothing can run twice that way" rested on a trial that is not proof; it
+    holds now, because a supervisor that finds the run's log there starts nothing. Of the open
+    questions the first is answered for `81634a3` and open again for the commit that repairs these.)
+51. **One fresh reader has gone through the repairs of point 48, on your word. It found a regression
+    in the campaign's loop, which is repaired with what else held, in a second local commit. Nothing
+    is pushed or merged, and the new repairs are read by nobody but me** (21 November; "The reading
+    of the two faults' repairs"). This point is 51 because 49 is the guard session's and 50 is the
+    proof pilot's, which their sessions wrote on their local branches; this branch holds neither.
+    Your word was "Yes, start reader", to the question whether one fresh reader should go through
+    those repairs. The reader, a fresh session of Opus 5.5 with read access only, ran nothing and
+    reported nine findings (177,599 tokens); I ran each. The regression: since `81634a3` a launch
+    answers with an error at once where its supervisor ended after it had opened the run's log,
+    which is where the command may have been started. The loop took that for a crash and went on to
+    its next step at once, with that command perhaps still on the machine and no supervisor to end
+    it at its deadline; before `81634a3` it waited out the run's time and stopped the run. Now such
+    an answer says `command_may_run`, and the loop waits out the run's time, stops the run and then
+    reports the launch's failure. A command can be left behind in that way on Windows and on a Mac,
+    where the loop has no sandbox, and on Linux where bubblewrap does not work; in the sandbox it
+    ends with its supervisor, which I tried in WSL. The reader's second finding, that under an
+    environment on Windows the second start could give a run two supervisors, I could not show: the
+    environment's small program was ended alone 926 times, and no interpreter outlived it. That does
+    not exclude a very short gap, so the case is closed where the command starts: a supervisor makes
+    the run's log itself, and one that finds it there starts nothing. Repaired beside these: a live
+    run that read as `lost` on Windows after the clock was set back, for a heartbeat that names its
+    writer's start time; and a launch that made no second start because `supervisor.log` took no
+    line. Two sentences of the reference are corrected: a run whose launch failed after the log was
+    opened reads as `unknown` and not as `failed`, and a launch through tmux looks at no supervisor.
+    Six new checks, five in the kit's test file and one in the loop's, and four changed ones; each
+    new check fails on a copy of the kit with its change taken out. The eight test files pass on
+    Windows under Python 3.11.7 and, from a virtual environment, under 3.8.20 and 3.15.0rc3, and in
+    WSL under 3.12.3 (1,952, 1,939, 1,940 and 1,967 checks, none failed); the kit file and the loop
+    file pass in WSL under 3.8.20 and 3.15.0b3 too. All of that on this machine only: GitHub's
+    machines, a Mac among them, have run none of it. The code is `5f600da`, 244 lines added and 85
+    removed in five files, after `f68b71c`. Your real install is untouched and no package was
+    installed. The tests put terminal windows on your screen again: by a watcher's lists 117 that
+    are mine, between 02:31 and 03:56 UTC, 74 of them of 1.5 to 9 seconds, most while the remote
+    file ran under the two environments (03:12 to 03:14 and 03:36 to 03:38). The lists hold 249
+    more, which I take for other sessions' and could not place. Not done: the reader's way out for
+    the second finding, a supervisor started with the base interpreter; the small program of
+    Python's own `venv`, which was not tried; the cause of the supervisors' early end. Open: whether
+    a fresh reader goes through these new repairs, which I would want before the commits go
+    anywhere; whether the loop should wait a run's whole time for such a launch; whether the launch
+    removes the environment file that a launch through tmux leaves where its supervisor never
+    starts; whether these commits go to `test/round-9`; the questions of point 48 but the first.
 
 ## Round 2 (12 November 2026)
 
@@ -9218,6 +9273,8 @@ have not run on GitHub's machines or on a Mac.
   changing the launcher on its own branch. It is the third decision below.
   (Added with point 48: repaired since, by a session of its own, with its own tests and passes and
   without a reader; "The two faults under a virtual environment on Windows, repaired".)
+  (Added with point 51: one reader has read those repairs since, on your word; "The reading of the two
+  faults' repairs".)
 - An option's name behind `--`, and the breadth of the `--no-` rule: left as said above.
 - A program named with `.cmd`, `.bat` or `.com` (`patch.cmd`), which the reader named as not checked:
   not looked at. The first reading's repair claims `.exe` only.
@@ -9490,11 +9547,21 @@ Dates and times in this section are UTC.
    too, the launch answers `ok: false` with both exit codes, exits with code 9 as for any start error,
    and the run reads as `failed` with that reason. One that ended after it had opened the log is not
    started again, because the command may have run.
+   (Added with point 51: a campaign's loop took that error for a crash and went on at once, with the
+   command perhaps left behind: a regression, which a reader found and which is repaired. And "reads as
+   `failed`" holds where the second one too ended before the log: where it had opened the log the launch
+   writes no exit record, and the run reads as `unknown`, or as its command's records say. Findings 1
+   and 4 of the section after this one.)
 5. **Once more, and no error at once: that choice is mine, with three reasons.** What was seen comes and
    goes, in 2 of 650 launches. A supervisor that has not opened the run's log has not started the
    command, so nothing runs twice. And an error at the first end would have every caller, a campaign's
    loop among them, count a run that never ran as a failed one. The other way is under "What needs your
    decision".
+   (Added with point 51: the second reason rested on what the launch sees, and under an environment on
+   Windows that is the environment's small program and not the interpreter. No trial showed a first
+   supervisor that was still at work, and none could exclude one. Since that point a supervisor that
+   finds the run's log there starts nothing, so the reason holds by another means; finding 2 of the
+   section after this one.)
 6. **Why those supervisors ended is still not established, and I did not see it happen.** The three
    Windows passes left 83 launched runs in their folders, 54 of them under the two environments, and
    none of their supervisors ended before its command; at 2 in 650 that is too few to show anything. So
@@ -9539,6 +9606,7 @@ Dates and times in this section are UTC.
     36 windows of 2 to 11 seconds each under the 3.15 environment, between 00:35 and 00:46 on 21
     November, by a watcher's list. As many are to be expected under the 3.8.20 environment, between
     00:06 and 00:21, where no watcher ran.
+    (Added with point 51: one reader has read them since, on your word; the section after this one.)
 
 ### What changed in the kit
 
@@ -9614,6 +9682,9 @@ In `expctl.py` that is 90 lines added and 6 removed, comments included.
   `stdout.log` belongs to a supervisor that has not started the command. That is the condition for the
   second start, and the copy of the kit that starts again without it fails the check that is there for
   it.
+  (Added with point 51: or has not started it yet. The condition does not exclude a first supervisor
+  that is still on its way to the log; a supervisor now makes the log itself and starts nothing where it
+  finds it. Finding 2 of the section after this one.)
 - **What the launch says.** After a second start that went well: `ok` with the process number as ever,
   and the warning "the supervisor's first process ended with exit code 3 before it started the command,
   and was started once more (supervisor.log has the line)"; the line is in `supervisor.log`. After two
@@ -9623,6 +9694,10 @@ In `expctl.py` that is 90 lines added and 6 removed, comments included.
   and nothing written into the run's folder. Where the supervisor left something in `supervisor.log`, it
   follows in one line: the last line of a Python error, or else the log's last line. The 3 is the
   stand-in's exit code in the checks.
+  (Added with point 51: after one end with the log opened the answer also holds `command_may_run: true`
+  since, which the campaign's loop reads. And the second start no longer waits on the line in
+  `supervisor.log`, so the warning names the line only where it was written. Findings 1 and 6 of the
+  section after this one.)
 - **What `status --run` says after a minute**, for a run that the launch did not see end: "launched 2m
   ago, and its supervisor left no record of the command's process: it had not opened the run's log,
   which it does before it starts the command (supervisor.log may say why). Nothing ran; launch it
@@ -9683,6 +9758,10 @@ what Windows reports as visible.
   environments, which uv 0.12.23 made: ended alone, the small program takes the interpreter with it
   within 0.2 seconds. So where the launch sees its supervisor's process ended, no supervisor is left
   that a second start could double. An environment that Python's own `venv` made was not tried.
+  (Added with point 51: 926 more kills at set times showed no interpreter that outlived its small
+  program either. Neither trial can exclude a very short gap, so "no supervisor is left" is firmer than
+  they allow; a supervisor now starts nothing where the run's log is there. Finding 2 of the section
+  after this one.)
 - **The loop's and the remote controller's detached starts put a terminal window each on the screen
   under an environment**, which I measured in passing. Beside the end of the last test pass, under the
   3.15 environment, a watcher that launches nothing listed the console and terminal windows that Windows
@@ -9740,6 +9819,8 @@ what Windows reports as visible.
   such a run reads as `unknown` with none.
 - **Through tmux the launch does not hold the supervisor's process**, so it does not look. `status`'s
   reason is all there is.
+  (Added with point 51: tried since in WSL with tmux 3.4, and the reference says it now; finding 5 of
+  the section after this one.)
 - **On Windows a process that was created within a tenth of a second after the heartbeat's time** is not
   told apart by the second half of the rule: that is the allowance for the clock's tick. Its start time
   is then within five seconds of the writer's as well.
@@ -9747,6 +9828,8 @@ what Windows reports as visible.
   process look younger than its own heartbeat, until a heartbeat is written after the clock has caught
   up with the start. Where such a process took over a run whose recorded process is gone, the run reads
   as `lost` for that long. The record's commit adds this sentence to the reference.
+  (Added with point 51: repaired since for a heartbeat that names its writer's start time; one without a
+  start time still reads so. Finding 3 of the section after this one.)
 - **Elsewhere a heartbeat without a start time is read as before**: any live process with its number
   counts.
 - **On macOS the first heartbeat of a process asks `ps` once for its start time**, as `expctl` does for
@@ -9760,6 +9843,9 @@ what Windows reports as visible.
   "child pid not reported yet": where its supervisor ended before the command twice, or once after it
   had opened the run's log. Such a run then has an exit record without an exit code and reads as
   `failed`, where it read as `unknown`.
+  (Added with point 51: the last sentence holds where the supervisor ended before the command twice.
+  Where it had opened the run's log the launch writes no exit record, and the run reads as `unknown`, or
+  as its command's records say; finding 4 of the section after this one.)
 - `expctl launch` can take up to 5.2 seconds longer, where it starts a second supervisor.
 - The launch's `warning` can hold two sentences, joined by a semicolon.
 - `expctl status --run` gives a reason for a launched run that has a manifest and no other record after
@@ -9793,6 +9879,9 @@ Checks 4 to 6 put a process that ends at once with exit code 3 in the place of t
 for the first start, for the first two, and for the first after it has opened the log. In check 3 the
 calls that signal or kill only count. Check 9 asks Windows whether the two processes have a console and
 whether that console has a window; what stands on the screen is the probe's matter.
+(Added with point 51: the block has fourteen checks since, thirteen where it is not Windows. This list's
+7, 8 and 9 are its 12, 13 and 14, and the new 7 to 11 are in the section after this one. Check 9 of this
+list now asks whether that console has a window that is shown.)
 
 Each change taken out of a copy of the kit, and the block run on the copy:
 
@@ -9867,11 +9956,15 @@ after 23:30.
   beside the kit file as a whole under an environment: what the new flag leaves on the screen rests on
   the probes and on the watched runs of the block. A merge with the proof pilot's branch: tried in
   memory only (below).
+  (Added with point 51: a launch through tmux with a supervisor that ends was tried since, in WSL;
+  finding 5 of the section after this one.)
 
 ### Not done, and why
 
 - A reader for these repairs: the task left it to your word. By the record of my own repairs in this
   file, where a fresh reader found a gap in round after round, I would not take them as sound unread.
+  (Added with point 51: you gave the word, "Yes, start reader", and one reader has read them; the
+  section after this one.)
 - A push and a merge: each needs your word.
 - A search for the cause of the supervisors' early end: it is a search of its own, and the task asked
   for what needs no knowledge of the cause.
@@ -9887,6 +9980,8 @@ after 23:30.
   change the run controller in 96 lines and the logger in 18, in the places that decide whether a run is
   alive and what `stop` may end. I would have one reader with read access only and a brief on
   correctness go through `81634a3`, before the commit goes anywhere.
+  (Added with point 51: answered with "Yes, start reader", and done. The same question is open for the
+  repairs of that reading; the section after this one.)
 - **Once more, or an error at once** (point 5). An error at the first end is simpler to describe and
   leaves the retry to whoever called. I chose the second start because the fault comes and goes and a
   caller that does not retry loses the run.
@@ -9907,11 +10002,553 @@ after 23:30.
 - **Where this goes.** The branch is one code commit and one record commit after `409182f`, the head of
   `test/round-9`, so "Push test branch" would be a fast-forward there, and GitHub's six jobs would run
   these repairs on macOS and bare Linux for the first time.
+  (Added with point 51: two code commits and two record commits since; the section after this one.)
 
 Sources: the kit's files at `81634a3` and its parent; the run folders and logs of this session's test
 passes and probes on this machine, read on 20 and 21 November 2026; the section "The reading of the
 reading's repairs" of this file for the two faults as they were found; `git reflog` and the tips of the
 other sessions' local branches, read on this machine on those days. Nothing was read from the web.
+
+## The reading of the two faults' repairs (21 November 2026): a regression in the loop repaired, and one supervisor at most starts a run's command
+
+Your word: "Yes, start reader", to the question whether one fresh reader should go through the repairs
+of the section before this one (01:14 on 21 November). I took it as: one reader with read access only
+goes through the code commit `81634a3`; I run each of its findings myself and repair what holds, each
+repair with a check that fails on a copy of the kit with the change taken out; then the tests again, and
+local commits with their record. That reading of the word is mine: the question named the reader only,
+and I said the rest when I started it. Not covered: a push, a merge, a second reader, also for the
+repairs of this section, anything on your real install, a deletion. The repairs are one local commit,
+`5f600da`, and this record a second, after `f68b71c`. No package was installed. Dates and times in this
+section are UTC, and of 21 November where no day is named. "The first repair" below is the commit
+`81634a3` of the section before this one.
+
+In short:
+
+1. **The reader found a regression in the campaign's loop, and it is repaired.** Since the first repair
+   a launch answers with an error at once where its supervisor ended after it had opened the run's log,
+   which is where the command may have been started. The loop took that error for a crash and went on to
+   its next step at once, with that command perhaps still on the machine and no supervisor to end it at
+   its deadline. Before the first repair such a launch said `ok`, and the loop waited out the run's time
+   and then stopped the run. Now the launch's answer says that the command may be running
+   (`command_may_run`), and the loop waits out the run's time, stops the run and only then reports the
+   launch's failure. A command can be left behind in that way on Windows and on a Mac, where the loop
+   has no sandbox, and on Linux where bubblewrap does not work. In the loop's sandbox the command ends
+   with its supervisor, which I tried in WSL.
+2. **One supervisor at most starts a run's command now.** The first repair's record says of the launch's
+   second start that nothing runs twice, because a supervisor that has not opened the run's log has not
+   started the command. The reader doubted that for Windows under an environment: there the launch sees
+   the environment's small program end, not the interpreter that this program started, and an
+   interpreter that outlived it would be a first supervisor still at work when the second is started. I
+   ended the small program alone 926 times under the two environments, between 0 and 400 ms after its
+   start, and no interpreter outlived it. That shows no such gap, and it does not exclude one of a tenth
+   of a millisecond or less. So the case is closed where the command starts: a supervisor makes the
+   run's log itself, and one that finds the log there starts nothing and ends.
+3. **A live run no longer reads as `lost` because the Windows clock was set back.** The first repair's
+   rule for Windows, that no process created after a heartbeat's time of writing can have written it,
+   reads a clock that was set back soon after the writer's start the wrong way round: a run that is
+   followed by its heartbeat read as `lost` until it wrote a heartbeat after the clock had caught up.
+   The first record names that as a limit. The reader's point is that a run which writes a heartbeat
+   only now and then reads so for minutes. Now a heartbeat that names its writer's own start time counts
+   as that writer's, whatever its time of writing says. A heartbeat without a start time, as an older
+   copy of `runlog.py` writes it, still reads as `lost` there after such a step.
+4. **A `supervisor.log` that takes no line kept the launch from its second start. Repaired.** The reader
+   called the error's text misleading. Run, it was more than the text: where the launch could not write
+   its line into that log, as on a full disk, the first repair's launch made no second start at all,
+   said "no second start" and wrote the run off as `failed`. Now the start does not wait on the line.
+5. **Two sentences of the reference are corrected, and one more is made exact.** "The run reads as
+   `failed`" holds only where nothing ran: a launch that fails after the log was opened writes no exit
+   record, and the run reads as `unknown`, or as the records of its command say. And the reference did
+   not say that a launch through tmux starts no supervisor itself and looks at none. Both are said now,
+   and what such a run reads as where its command writes records of its own.
+6. **Three findings concern the tests.** One check's third heartbeat is answered by the key on Linux and
+   not by the start time, which its comment says now; the expected results were right. Two paths of the
+   first repair that no check ran have one each now, and both worked as they were: the second look at a
+   record that the launch could not read, and a second start that the system refuses. The check for the
+   supervisor's console has run on one Windows only; it now asks for a window that is shown, and another
+   Windows is still untried.
+7. **Verified by running, on this machine only.** Six new checks, five in the block of the kit's test
+   file and one in the loop's, and four changed ones. Each new check fails on a copy of the kit with its
+   change taken out, nineteen copies in all, on Windows under Python 3.11.7 and under the 3.8.20 and
+   3.15.0rc3 environments and in WSL under 3.12.3. The eight test files pass on Windows under those
+   three interpreters and in WSL (1,952, 1,939, 1,940 and 1,967 checks, none failed), and the kit file
+   and the loop file in WSL under 3.8.20 and 3.15.0b3 too. GitHub's machines, a Mac among them, have run
+   none of it.
+8. **These repairs are again read by nobody but me, and nothing is pushed or merged.** The code is one
+   local commit, `5f600da`, on the branch `claude/fervent-gould-8d0820`, and this record a second.
+   `test/round-9` on GitHub stays at `409182f`, and your real install is untouched.
+9. **The test passes and the copies put terminal windows on your screen again.** By a watcher's lists
+   117 of them were mine, between 02:31 and 03:56: 36 beside each of the two passes under an
+   environment, 34 of 1.5 to 9 seconds while the remote file ran and two of 7 to 8.5 seconds while the
+   loop file ran, as the first record measured them; 12 beside each of two runs of the copies under an
+   environment, one of 8 seconds among them; and 21 flashes beside the pass under Python 3.11.7. The
+   lists hold 249 more, most of them from the time in which another session's tests ran on this machine.
+   I take those for other sessions' and could not establish whose they were ("Windows on your screen").
+
+### The reader and its brief
+
+- One reader: a fresh session of Opus 5.5 with read access only. The brief told it to run nothing, no
+  test, no program of the kit and no Python, because they start processes on your machine. 177,599
+  tokens, 24 tool calls, eight minutes (01:16 to 01:24). I had named no estimate.
+- What it read: the first repair's commit `81634a3` against its parent `409182f`: four files, 301 lines
+  added and 8 removed. The brief told it not to read this file or PROGRESS.md, which hold my own account
+  of the change, and to check the commit's message and the reference's paragraph and not to trust them.
+  One sentence of the brief was inexact: it called the commit after `81634a3` one of records only, and
+  that commit, `f68b71c`, also changed two sentences of the reference's paragraph.
+- The brief asked for defects, the most serious first: a case where the new code gives a wrong answer or
+  does harm (a live run read as `lost`, a dead one as `running`, `stop` acting on a process that is not
+  the run's, a command started twice, a launch that says `ok` or an error wrongly, a crash); a
+  regression on any of the three systems, with a launch through tmux, with the mirror of a remote run,
+  with a run in a process namespace of its own, or in another program of the kit that reads what the two
+  changed programs write or answer; code that Python 3.8 or 3.15 does not run; a race or a timing
+  assumption, in the launch's loop above all; a check of the new block that does not test what its name
+  says, that passes without its change, that can fail now and then or that assumes this one machine; and
+  a sentence of the reference that the code does not bear out. It named what the first record lists as
+  left: the number in the launch's own record, the detached starts of the loop and of a remote run's
+  controller, `taskkill`, the status line, the overall `status` view, and the cause of the supervisors'
+  early end.
+- It reported nine findings, and began: "I found no crash, no Python 3.8 or 3.15 problem and nothing
+  outside the standard library. The launch loop's order of asking and reading is right: a supervisor
+  that ends normally after a short command is never taken for one that died. Two findings could do harm
+  on a real machine (1 and 2); the rest are smaller." Seven of them it had read in the code, and of two
+  it was not sure (2 and 9). Found right, in its list: the loop gets the supervisor's process number
+  from the second start, so its wait still works; `nnremote.py` does not call `expctl launch`, and a
+  remote run's mirror is excluded from the heartbeat's rule; an exit record without an exit code existed
+  before; the callers handle the launch's exit code 9 through `ok`, and `unknown` is not counted as
+  active; the exclusion of a run in a process namespace is unchanged; `runlog.py` and `expctl.py` read
+  start times the same way, with or without psutil, on all three systems, and on Linux the key also
+  covers WSL's moving boot time; the branch of the new status reason is reached only with no process
+  number, no heartbeat and no end record. Read in full, in its own words: the whole diff, `load_run`,
+  `cmd_launch`, `cmd_supervise`, `cmd_stop`, the process helpers of `expctl.py`, the start-time helpers
+  of `runlog.py` with `__init__` and `heartbeat`, and `nnloop.train`. Skimmed: the start of
+  `nnremote.py` and its readers of `exit.json`, the status line by a search only, and the guard's launch
+  patterns. Not looked at: "`signal_group` and `signal_leader`, `scan` and the overall status view,
+  `nnloop`'s detached start".
+- With it, the readers of this work are nine and one second reading, about 1,441,000 tokens. Beyond your
+  word the count stays at six and one second reading, about 907,000: this one you asked for. That count
+  is this branch's. The proof pilot's session had three more readers on your word on 20 November
+  (183,127, 132,573 and 167,917 tokens, in the record on its own branch); with those it is twelve and
+  one second reading, about 1,924,000 tokens.
+
+### The findings, each checked
+
+| # | The reader's finding | What I found | Answer |
+|---|---|---|---|
+| 1 | A launch that fails after the run's log was opened leaves the command running with no supervisor, and the loop goes on at once: "regression in the loop". Before, the loop waited until the run's time ran out and then stopped the run. "read in the code; the window is narrow" | Holds, by one step of the loop on three kits with a stand-in for the supervisor: the kit before the first repair is back after 74 s, the first repair's after 0.7 s with the command alive. Not in the loop's sandbox, where the command ends with its supervisor | Repaired |
+| 2 | Under an environment on Windows the launch sees the small program end, not the interpreter. If the program dies before it has tied the interpreter's life to its own, the interpreter lives on, and "the second start may run the command twice". "not sure; it depends on the launcher's internals" | Not shown: the small program ended alone 926 times, and no interpreter outlived it. Not excluded: a gap shorter than the steps of that trial, and the small program of Python's own `venv` | Closed where the command starts: one supervisor at most starts it |
+| 3 | `born_after`: a Windows clock that is set back soon after a process's start makes a live run that is followed by its heartbeat read as `lost` for as long as it writes no new heartbeat. The docstring says so, the reference's paragraph does not | Holds, with a heartbeat whose time of writing is five seconds before its writer's start: `lost` on Windows, `running` in WSL. The reference says it since `f68b71c` | Repaired for a heartbeat that names its writer's start time |
+| 4 | The reference's "the run reads as `failed`" does not hold where the second supervisor ends after it had opened the log: no exit record, and the run reads as `unknown` | Holds: the launch's exit code is 9 after two starts, there is no exit record, and the run reads as `unknown` | The reference corrected; a check |
+| 5 | The reference's "`expctl launch` looks at the supervisor it started" leaves out tmux, where the launch holds no process and starts nothing again | Holds, tried in WSL with tmux 3.4 | A sentence in the reference |
+| 6 | Where the launch's line cannot be written into `supervisor.log` (a full disk), the error reads "no second start". "Cosmetic." | Holds, and it is more than the text: that launch makes no second start, and the run reads as `failed` | Repaired; a check |
+| 7 | The third heartbeat of the block's second check ("created later") keeps its writer's key, so on Linux the key answers and no start time is compared. "Harmless." | Holds: with the key the start time is not read at all. The expected results are right on both systems | The check's comment says it |
+| 8 | Paths that the block never runs: the second look after 0.2 s, "no second start", a launch through tmux, and a supervisor that an environment's small program starts | Holds. The first two worked in the first repair as they were | A check each for the first two; tmux by hand (finding 5); the small program's case is the trial of finding 2 |
+| 9 | The Windows console check expects that a console made with `CREATE_NO_WINDOW` has no window at all, which is "not confirmed on Windows Server, or where Windows Terminal is the default terminal". "not sure" | Not to be run here: it has run on this one machine, where the console has no window | The check asks for a window that is shown; another Windows is untried |
+
+**1. A launch that fails with its command perhaps running, and the loop.** The case is a supervisor that
+ends between the opening of the run's log and its first record, `pid.json`; the command is started in
+between. The first repair's launch sees that supervisor gone and the log there, makes no second start,
+because the command may have run, and answers `ok: false` with the exit code 9. `nnloop.train` took
+every failed launch for a crash of the step and came back at once. I ran one step of
+`nnloop.Campaign.train` on three kits, with a stand-in in the supervisor's place that opens the log,
+starts a command of the check's own and ends with the exit code 3. The budget was 2 s and `kill_after_s`
+1, so the run's whole time, with the grace and the loop's 60 s, was 68 s.
+
+| Kit | Where | The stand-in's command | The launch | `train` came back | The command then |
+|---|---|---|---|---|---|
+| `409182f`, before the first repair | Windows, 3.11.7 | ends at its deadline | `ok` after 5.2 s | after 73.7 s: "the run did not end" | had ended at its deadline |
+| `81634a3`, the first repair | Windows, 3.11.7 | ends at its deadline | the error after 0.5 s | after 0.7 s, with the launch's error | alive; the run read as `running` |
+| this one | Windows, 3.11.7 | ends at its deadline | the error after 0.5 s | after 69.1 s, with the launch's error | had ended at its deadline |
+| this one | Windows, 3.11.7 | runs on past its deadline and looks for `stop.json` | the error after 0.5 s | after 70.0 s, with the launch's error | ended on `stop.json` |
+| this one | WSL, 3.12.3 | runs on past its deadline and looks for `stop.json` | the error after 0.4 s | after 70.2 s, with the launch's error | ended on `stop.json` |
+
+So the regression is real, and the loop of this commit waits as the loop before the first repair did,
+and then reports the launch's error where that one said "the run did not end". The launch's answer
+carries `command_may_run: true` where a supervisor of it, the first or the second, had opened the log,
+and nowhere else; a failed launch without it started nothing, and the loop goes on at once, as since the
+first repair. While the loop waits for such a run, no exit record in the run's folder ends the wait: the
+supervisor that would have written a true one is gone, and a run can write its own folder. At the end of
+the time the loop asks `expctl stop` for the run, as it does for a run that does not end. On Windows,
+where no supervisor is left, `stop` leaves its request in `stop.json`, waits up to the loop's 20 s for
+the run's process, which it knows from the heartbeat here, and ends that process's tree if it is still
+there then. In the fourth row the command went on the request: `stop` answered `ok` with the route
+"process" after 1.2 s and had ended no process, and the run read as `incomplete`. The kill for a command
+that does not look for the file was not reached in that trial.
+
+The row from WSL is not what a real run meets there. This WSL has bubblewrap, so the loop put its
+sandbox before the command, and the stand-in started its own command outside it. The row shows the
+loop's wait, and what `stop` does for a run whose command names a process namespace of its own: it
+signals nothing, leaves its request in `stop.json` and answers with the exit code 1 ("no process that
+this run's records name is provably the run's own, so none was signalled"). The stand-in's command ended
+because it looks for that file. What a command inside the sandbox does is under "Beside the findings".
+
+The reader's sentence "then `expctl stop` found the orphan through its heartbeat and killed it" I tried
+for a plain launch in WSL, without the loop: 4 s and 66 s after such a launch the run read as `running`
+with the command's number, by a heartbeat that names its writer's start time and key; `stop` signalled
+that process and answered `ok` with the route "process" after 1.6 s, and the command was gone. A command
+that does not handle the signal leaves no result, and the run then reads as `running` until its last
+heartbeat is `heartbeat_stale_seconds` old, 900 s by default, and as `unknown` after that; the reference
+says so now.
+
+**2. Two supervisors for one run.** Under an environment on Windows `python.exe` is a small program that
+starts the base interpreter as a second process, and the launch holds the small program's process. The
+second start of the first repair rests on this: a supervisor that has ended and left no log has started
+nothing. The reader's case is a small program that dies after it has started the interpreter and before
+it has tied the interpreter's life to its own. The interpreter then lives on, needs longer than the
+launch's 0.2 s to open the log, and the second start gives the run two supervisors and two commands in
+one folder. The reader was not sure of it and named the trial. I ran it in two probes on both
+environments, which uv 0.12.23 made: the small program, started with the launch's flags and a command
+that sleeps, was ended alone after a set time, and then I looked for an interpreter that it had started.
+In 926 kills none was there afterwards. By five timings in each environment the interpreter appears
+between 30 and 48 ms after the start: 194 kills came before 28 ms, 282 between 28 and 52 ms, 202 of them
+between 30 and 48 ms, and 450 later, up to 400 ms. A gap of half a millisecond in that band would have
+been met several times and one of a tenth of a millisecond about once; one as short as two calls of the
+system would most likely have been missed. And both environments have uv's small program: the one that
+Python's own `venv` puts there was not tried. So the trial does not carry the sentence "nothing runs
+twice", and the case is closed where the command starts. A supervisor now makes the run's log with a
+call that fails where the file is there. One that finds it there writes a line into `supervisor.log`,
+starts nothing and ends with the exit code 1; whichever of two makes the log starts the command. No
+supervisor that is rightly started finds a log there: the launch and the remote side's start each make
+the run's folder anew before they start its supervisor, for a resume too, which I read in both. The
+reader's own way out, to start the supervisor with the base interpreter, I did not take ("Not done, and
+why").
+
+**3. A clock that was set back, on Windows.** The first repair asks on Windows whether the process that
+holds a heartbeat's number was created after the heartbeat was written; if so it cannot be the writer,
+however close its start time is. That is the rule that tells a number which Windows gave out again
+within seconds. It compares a time that Windows keeps for the process with a time that the writer read
+from the clock, so a clock that was set back in between turns the two round. The reader's case: the
+clock is set back by some seconds within that many seconds of the writer's start, and the writer then
+writes no heartbeat for minutes. Run on the first repair's kit with a heartbeat of this process whose
+time of writing is five seconds before its start: the run reads as `lost` on Windows and as `running` in
+WSL, where the rule does not apply. It concerns only a run that is followed by its heartbeat, because
+its recorded process is gone: one that a later process took over in place, or one whose launcher was
+killed. Now the rule is not asked of a heartbeat whose own start time is that of the process to within
+0.05 s: that process wrote it. A later process with the same number reads that close only if the clock
+was set back by the very time between the two starts. A heartbeat without a start time has nothing to
+compare, and still reads as `lost` there after such a step. One clause of the finding was out of date:
+the reference names the limit since the first record's commit `f68b71c`. The clock itself I did not set:
+the check and my run give the heartbeat the time that such a step leaves.
+
+**4. "The run reads as `failed`".** It holds where nothing ran: after two supervisors that ended before
+the log, or a second start that the system refuses, the launch writes the run's exit record with its
+reason. Where a supervisor had opened the log the launch writes none, because the command may be running
+and an exit record would call the run ended. The reader's case, a first supervisor that ends before the
+log and a second that ends after it, run on the first repair's kit: exit code 9, two starts, no exit
+record, and the run reads as `unknown`. The reference had one sentence for both cases. It now says of
+the second that the launch answers with the error and `command_may_run: true` and writes no exit record,
+and what the run then reads as: `unknown` where its command writes no records; `running` by its
+heartbeat and then as its result says where it writes them; and where it ends without a result,
+`running` until the last heartbeat is `heartbeat_stale_seconds` old, then `unknown`. The first record's
+sentence on this has a note now.
+
+**5. A launch through tmux.** With `--via tmux` the supervisor is tmux's child, the launch holds no
+process, and nothing is looked at or started again: the launch waits five seconds for the supervisor's
+record and answers `ok` with a warning when there is none. Tried in WSL with tmux 3.4 and a program that
+ends at once in the supervisor's place: `ok` after 5.2 s with no process number and the warning; the run
+reads as `unknown`, and a minute on `expctl status --run` gives the reason that ends "Nothing ran;
+launch it again". The reference says it in one sentence in brackets. What I found beside it is under
+"Beside the findings".
+
+**6. A log that takes no line.** Before its second start the launch writes a line into `supervisor.log`.
+In the first repair the line and the start stood in one `try`, so an error at the line (the reader's
+full disk) skipped the start, and the launch reported "then no second start: [Errno 28] No space left on
+device" and "the command was not started", with the run `failed`. That is a run lost to a log line,
+which the second start was made to prevent. Now the line has a `try` of its own, the start follows
+whether it was written or not, and the launch's warning points to the log's line only where there is
+one.
+
+**7. A check that the key answers on Linux.** The third heartbeat of the block's second check names a
+start time three seconds before its holder's and a time of writing two seconds before it, which is
+within the five seconds that `same_process` allows. On Windows the rule on the time of creation answers
+`lost`; elsewhere the number is taken as before, and the run reads as `running`. On Linux `same_process`
+answers by the key, which that heartbeat keeps, and reads no start time: counted in WSL, no read of the
+start time with the key and one without it. So the reader is right that the heartbeat's name promises
+more than Linux tests with it, and right that the expected results hold. The heartbeat stays as it is:
+on Linux a start time is the boot time plus ticks and moves when the clock is set, so the key is what
+the comparison rests on there. The check's comment says so now.
+
+**8. Paths that no check ran.** Two have a check now. A stand-in writes an exit record that the launch
+cannot read at its first look after the stand-in's end: the launch looks again after 0.2 s, reads it and
+starts nothing a second time. And the system refuses the second start: the launch answers with the
+error, which names the refusal, and the run reads as `failed`. Both pass on the first repair's launch as
+it was, so they close a gap in the tests and repair nothing; each fails on a copy with its path taken
+out. A launch through tmux has no check of this kind and was tried by hand (finding 5). A supervisor
+that an environment's small program starts is in no check: where a virtual environment runs the tests,
+every launch of the test files is one, and the trial of finding 2 is about its one doubtful moment.
+
+**9. The console check on another Windows.** The check attached to the supervisor's console and asked
+whether that console has a window. The reader's doubt is that another Windows may give a console made
+with `CREATE_NO_WINDOW` a window that is not shown. I cannot run that here, and nothing is pushed, so
+GitHub's Windows machine has not run it. The check now asks what the repair is about: a window that
+Windows reports as shown. It passes on this machine under the three interpreters; whether it passes
+elsewhere is open.
+
+### Beside the findings
+
+- **In the loop's sandbox the command ends with its supervisor.** On Linux with bubblewrap the loop
+  starts a run's command inside `bwrap` with `--die-with-parent`, which ends the command when its parent
+  ends. Tried in WSL with bubblewrap 0.9.0 and a stand-in that starts the check's own command inside the
+  sandbox prefix of the run's manifest: the command ticked four times in the stand-in's two seconds and
+  not once after its end. With the option taken out, as a control, it went on ticking until `stop.json`
+  ended it. So a command is left behind on Windows and on a Mac, where the loop has no sandbox, and on
+  Linux where bubblewrap does not work; a Mac was not tried.
+- **What `stop` does for a run in that sandbox, and what the run reads as.** For a run whose command
+  names a process namespace of its own, `status` and `stop` do not take the heartbeat's number for a
+  process of this system; that is older than both repairs. In the trial above the run read as `running`
+  by its last heartbeat with the command gone, and `stop` waited its whole 30 s, signalled nothing and
+  answered with the exit code 1. Such a run reads as `running` until that heartbeat is
+  `heartbeat_stale_seconds` old. Not changed: it is no part of what the reader found, and the loop goes
+  on all the same.
+- **What the loop's wait costs.** For a launch that failed with `command_may_run` the loop now waits the
+  run's whole time: the budget, the grace, `kill_after_s` and 60 s, as it did before the first repair.
+  It waits that long also where the command ended early, and in the sandbox, where nothing is left,
+  about 30 s more for `stop`. The supervisor's early end was seen in 2 of 650 launches under an
+  environment, and of those two neither had opened the log, so this wait has run against stand-ins only.
+  Whether the loop should do something shorter is a question below.
+- **A command that writes no heartbeat is reached by no `stop`.** With no supervisor's record and no
+  heartbeat the run reads as `unknown`, and `stop` answers "run is not active". The loop then has
+  waited, goes on, and such a command stays on the machine. That was so before the first repair, and it
+  is not changed.
+- **Two supervisors, as far as I could think it through.** If an interpreter did outlive its small
+  program, the second supervisor would find the log and end with the exit code 1. The launch looks again
+  after 0.2 s. Most likely it finds the first one's record and answers `ok` with the warning that the
+  supervisor was started once more. In a narrow timing it answers with the error and `command_may_run`,
+  and the loop then waits out and stops a run that is in truth supervised: a run lost, and nothing run
+  twice. None of this was seen.
+- **A file with the run's environment stays behind where a supervisor through tmux never starts.** For
+  `--via tmux` the launch writes the environment that the run is to get into `.launch-env.json` in the
+  run's folder, readable by its owner only, and the supervisor reads and deletes it. With `/bin/false`
+  in the supervisor's place the file stayed: 3,870 bytes with 31 variable names in my trial. I counted
+  the names and printed no value; no name held TOKEN, KEY, SECRET or PASS. Not repaired here: it is
+  older than both repairs and no part of the reading. It is among the decisions below.
+- **Two sentences of the first record were wrong, and one field of a probe.** "Nothing runs twice"
+  rested on a trial that is not proof (finding 2), and "the run reads as `failed`" left out the case of
+  finding 4. Both have a note at their places. And the kill probes' field `python_at_kill` does not say
+  what its name says: the snapshot behind it is taken after the kill, and it is 0 in all 926 trials. So
+  the second probe's 150 kills between 395 and 405 ms, which were to meet a moment that this field would
+  have shown, count as late kills and nothing more.
+- **One run of the copies was not valid, and is repeated.** The helper that builds the copies used a
+  call that Python 3.8 does not have, so the first run under the 3.8.20 environment built no copy. The
+  helper is corrected, and the run that counts is the second (03:54 to 04:02).
+
+### The change, and its tests
+
+- **The commit** (`5f600da`): five files, 244 lines added and 85 removed. `expctl.py`: `born_after`
+  takes the heartbeat's own start time, and `load_run` hands it over; in `cmd_launch` the line for
+  `supervisor.log` has a `try` of its own, and a failed launch says `command_may_run` where a supervisor
+  had opened the log; `cmd_supervise` makes the run's log and ends where it is there. `nnloop.py`:
+  `train` waits out and stops such a run before it reports the failure. `docs/REFERENCE.md`: the
+  paragraph "How a launched run's processes are followed" says each of these and has the two corrections
+  of findings 4 and 5. `tests/test_kit.py` and `tests/test_loop.py`.
+- **New checks: six.** Five in the block of the kit file, which has fourteen now and thirteen where it
+  is not Windows: a launch that fails after a supervisor of it had opened the log says
+  `command_may_run`, writes no exit record, and the run reads as `unknown` (finding 4 and the launch's
+  half of finding 1); a `supervisor.log` that takes no line does not keep the launch from its second
+  start (6); a second start that the system refuses is the launch's error, and the run reads as `failed`
+  (8); a record that the launch could not read at its first look is read a moment later (8); and of two
+  supervisors on one run folder the second finds the log, starts nothing and ends, and the command has
+  run once (2). One in the loop's file: with a launch that failed and says `command_may_run`, `train`
+  waits more than 60 s on the test's clock, whatever exit record the folder holds, calls `stop` and then
+  reports the launch's error; with a failed launch that does not say it, `train` is back at once and
+  calls nothing else.
+- **Changed checks: four.** The block's second check has a fifth heartbeat, the writer's own with a time
+  of writing five seconds before its start, which must read as `running` (3). Its fourth and fifth check
+  that the answer holds no `command_may_run` where nothing ran, and the fourth that the warning names
+  the log's line. The last asks for a window that is shown (9). The first record numbers the block's
+  checks 1 to 9; its 7, 8 and 9 are 12, 13 and 14 now.
+- **Each fails with its change taken out.** Nineteen copies of the kit, each with one change taken out:
+  the eleven of the first record, four for this reading's changes in the run controller, two for the
+  paths of finding 8, and two for the loop. The block and the loop's check were put to each.
+
+| Copy: what is taken out | Checks that fail on Windows | In WSL |
+|---|---|---|
+| the start time and the key in the heartbeat | 1, 2 | 1 |
+| the comparison of the start time | 2, 3 | 2, 3 |
+| the rule on the time of creation | 2 | none: the rule is Windows' |
+| both, which is the old rule | 2, 3 | 2, 3 |
+| the console flag, the old one in its place | 14 | none: the check is Windows' |
+| the look whether the supervisor has ended | 4 to 10 | 4 to 10 |
+| the second start | 4, 5, 7, 8, 9 | 4, 5, 7, 8, 9 |
+| the condition that the log was not opened | 6 | 6 |
+| the exit record for a run that never started | 5, 9 | 5, 9 |
+| `status`'s reason | 12 | 12 |
+| the form of an exit code | 13 | 13 |
+| this reading: the heartbeat's own start time in the rule on the time of creation | 2 | none: the rule is Windows' |
+| this reading: `command_may_run` in the launch's answer | 7 | 7 |
+| this reading: the `try` of its own for the log's line | 8 | 8 |
+| this reading: the log that one supervisor makes | 11 | 11 |
+| finding 8: the second look after 0.2 s | 10 | 10 |
+| finding 8: the refused second start as the launch's error | 9 | 9 |
+| the loop: the wait for a launch that says `command_may_run` | the loop's check | the loop's check |
+| the loop: that no exit record ends that wait | the loop's check | the loop's check |
+
+The block and the loop's check ran on the kit as the commit holds it and on the nineteen copies on
+Windows under Python 3.11.7 (02:17 to 02:24), under the 3.15.0rc3 environment (02:29 to 02:37) and under
+the 3.8.20 environment (03:54 to 04:02), and in WSL under 3.12.3 (02:17 to 02:21). Under each of the
+four the block and the loop's check pass on the kit as it is, and each copy fails the checks of its row
+and no other. The run under the 3.8.20 environment was made after the passes below, on the same files;
+its first run (02:24 to 02:29) built no copy and counts for nothing ("Beside the findings").
+
+- **The full passes**, on the two programs and the two test files as the commit holds them. One sentence
+  of `docs/REFERENCE.md` I worded again after the tested state was written down, the one on what such a
+  run reads as; no test reads the reference.
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,237 | 133 | 138 | 265 | 100 | 54 | 6 | 1,952 |
+| Windows | 3.8.20 | 19 | 1,237 | 133 | 137 | 265 | 100 | 42 | 6 | 1,939 |
+| Windows | 3.15.0rc3 | 19 | 1,237 | 133 | 138 | 265 | 100 | 42 | 6 | 1,940 |
+| WSL | 3.12.3 | 19 | 1,244 | 135 | 136 | 276 | 100 | 54 | 3 | 1,967 |
+
+No check failed in any of the four passes. Against the first repair's passes under the same interpreters
+(the table of the section before this one) that is six checks more a pass, five in the kit file and one
+in the loop file; the other six files have the counts of that table. Python 3.8.20 and 3.15.0rc3 on
+Windows are the two virtual environments; they have no third-party package, and the benchmarks file has
+42 checks there in the place of 54. Skipped on Windows, as before this change: the tmux checks of the
+kit file and of the review-fixes file, a line each; in the loop file a source link that leads out of the
+snapshot and the sandbox checks, which need bubblewrap; and under the two environments the two checks of
+the benchmarks file that need PyTorch. Nothing was skipped in WSL. The kit file and the loop file ran in
+WSL under 3.8.20 and 3.15.0b3 too: 1,244 and 276 checks under each, none failed.
+
+The Windows passes ran one after the other, a test file at a time, from 02:37 to 03:50, after the
+copies. The pass in WSL ran from 02:21 to 02:32, beside the copies on Windows, and the two other
+interpreters there from 02:32 to 02:44. Tests that were not this session's ran on this machine while the
+copies ran: the temporary folder holds 12 launched runs of a kit that has neither repair from between
+02:17 and 02:37, seven of them under a 3.8.20 environment, and by the proof pilot's record its test
+passes on Windows ended at 02:36. None is from the time of my passes on Windows.
+
+### What was measured, and what it rests on
+
+- **One step of the loop, end to end** (finding 1): `nnloop.Campaign.train` with the real `expctl
+  launch`, `status` and `stop`, on copies of three kits on Windows under Python 3.11.7 and of this one
+  in WSL under 3.12.3. The supervisor is a stand-in, and so is the command. No supervisor of a real
+  launch ended after it had opened the log while I worked, and none was ever seen to: the two that the
+  earlier record counts had opened none.
+- **`stop` after such a launch**, without the loop, in WSL: a plain launch at 4 s and at 66 s, and a
+  launch with the loop's sandbox prefix, once as the loop writes it and once with `--die-with-parent`
+  taken out.
+- **The small program ended alone** (finding 2): 926 kills in two probes on Windows, under the 3.8.20
+  and the 3.15.0rc3 environment, 01:37 to 01:41 and 01:45 to 01:51. Every process that the probes ended
+  was a probe's own child.
+- **A heartbeat from before its writer's start** (finding 3), **the second supervisor that had opened
+  the log** (4), **the log that takes no line** (6) and **the count of reads** (7): on the first
+  repair's kit, on Windows under Python 3.11.7, and for 3 and 7 in WSL too.
+- **tmux** (finding 5): in WSL with tmux 3.4.
+- **The launched runs of the passes.** The passes on Windows launched 36 runs under Python 3.11.7 and 34
+  under each environment, counted in the temporary folders that the test files left, as the run folders
+  that hold a `supervisor.log`: 27 of the kit file and 7 of the review-fixes file in each pass, and 2 of
+  the benchmarks file under 3.11.7. The loop file removes its folder, so what it launched is not in the
+  count. Seven under each are the block's own, with a stand-in in the supervisor's place. Of the others,
+  29 under 3.11.7 and 27 under each environment, none was started once more, none holds the launch's
+  error, and none was left with neither a record of its process nor an exit record. So the passes met no
+  supervisor that ended early.
+- **What it rests on.** Stand-ins everywhere: for the supervisor that ends early, for the command, for
+  the full disk (a log that refuses the launch's line), for the refused start (an error raised in the
+  place of the start) and for the clock (a heartbeat with the times that such a step leaves). The kill
+  of a run's processes went against the checks' own children only. One machine: Windows 11 and its WSL,
+  whose clock was seen stepped and fast on 17 November, so I take no finding from a difference of clock
+  times there; the trials in WSL count events. The reader's statements under "found right" I did not
+  check again.
+
+### Windows on your screen
+
+- **How it was counted.** A watcher that launches nothing listed the console and terminal windows that
+  Windows reported as visible: beside the two probes of finding 2 (01:37 to 01:41 and 01:45 to 01:51),
+  beside the copies and the passes (02:17 to 03:50), and beside the two runs after them (03:53 to
+  04:02). It listed 366 terminal windows in all. An entry of those lists names the program that owns a
+  console and that program's line of parents, and no more; what follows is my reading of them.
+- **Mine: 117, of which 74 stood for 1.5 to 9 seconds.** Beside each of the two passes under an
+  environment 36, as the first record measured them: 34 of 1.5 to 8.9 seconds while the remote file ran
+  (03:12 to 03:14 under 3.8.20, 03:36 to 03:38 under 3.15.0rc3) and two of 7 to 8.5 seconds while the
+  loop file ran (03:20 and 03:45), and none beside the other six files. They are the detached starts
+  that the first record names and left as they are: those of `nnremote.py`, that of the test's stand-in
+  for the remote service, and the campaigns that the loop file starts with `--detach`. Beside each of
+  two runs of the copies under an environment 12, within a quarter of a minute (02:31 under 3.15.0rc3,
+  03:56 under 3.8.20): eleven flashes and one of 8.3 seconds, all from the one copy that has the old
+  flags in the place of the first repair's, which is what that copy is there to show. Their number is
+  that of the block's starts on that copy: nine stand-ins for the supervisor, two second starts and the
+  run of the console check. Beside the pass under Python 3.11.7 21 flashes of under half a second: 7
+  while the remote file ran (02:47 to 02:49) and 14 while the loop file ran (02:57). Under that
+  interpreter a detached process has no window of its own, and a console program that it starts without
+  a window flag has one for a moment. Where the list names the owner of such a flash, it is `taskkill`
+  beside the remote file and `nvidia-smi` beside the loop file.
+- **Not mine, as far as I can tell: 249.** 203 stood beside my copies between 02:19 and 02:36, 156 of
+  them for under a second and 47 for longer, up to 11 seconds. My copies do not account for them: under
+  Python 3.11.7 none of a copy's starts has a window, which I know from how the flags work there and did
+  not measure by itself; the windows went on at the same rate through the five minutes in which my first
+  run under the 3.8.20 environment built no copy; and the same run, made again at 03:54 with nothing
+  else at work on the machine, put up the 12 above and no more. By the proof pilot's record its own test
+  passes ran on Windows from 01:45 to 02:36, on a kit that has neither repair, and the last of these
+  windows stood at 02:36. 34 are flashes beside the first four files of my pass under Python 3.11.7
+  (02:37 to 02:45), from `nvidia-smi` and `taskkill` under processes that have no console. Those four
+  files start no such process: beside the same files under the two environments, where the interpreter
+  of such a process has a window, the list has none. And 12 are flashes beside the two probes (01:39 to
+  01:49), from the same two programs: the probes start neither, and the step of the loop that ran in
+  those minutes put up no window when it ran again, alone and watched, at 03:53. I take these 249 for
+  other sessions' windows. Whose they were the lists do not say, and I did not ask those sessions.
+- **Not watched.** Before 02:17 a watcher ran beside the two probes only. What else ran on Windows then:
+  under Python 3.11.7 the trials of findings 1, 3, 4, 6, 7 and 8 and a first run of the copies on an
+  earlier state (02:05 to 02:12); and under the 3.15.0rc3 environment five timings of the small
+  program's start (01:54), with the launch's flags. I know of nothing in them that puts a window up, and
+  I did not measure it. Five such timings under the 3.8.20 environment (01:50) ran while the second
+  probe's watcher did, and its list has no window from then.
+- **What that means for a next run.** A full pass under an environment still puts 36 windows of seconds
+  on your screen, from starts that neither repair touched; the copies add 12 for each environment. Under
+  Python 3.11.7 it is flashes only.
+
+### Not done, and why
+
+- A second reader, for the repairs of this reading: the word was for one reader. Counting added and
+  removed lines together, they change the run controller in 60 lines and the loop in 14.
+- A push and a merge: each needs your word. So nothing of this has run on GitHub's machines: not on a
+  Mac, not on bare Linux, and not on the Windows of finding 9.
+- The reader's way out for finding 2, a supervisor started with the base interpreter
+  (`sys._base_executable`): not taken. The name is a private one of Python's. A supervisor started so is
+  outside the environment unless the launch sets up what the small program sets up, and what that is
+  would have to be established for each Python from 3.8 to 3.15. And the log that one supervisor makes
+  closes the double start whatever starts the second.
+- The small program of Python's own `venv`: not tried. Both test environments are uv's, and I install
+  nothing without your word.
+- The cause of the supervisors' early end: still not established, and not searched for here.
+- The file `.launch-env.json` of a launch through tmux whose supervisor never starts, what `stop`
+  answers for a run in the loop's sandbox, and a command without a heartbeat: left as they are, each
+  older than both repairs ("Beside the findings").
+- The loop's wait made shorter: a decision below.
+- The ledger: not touched. It is the record-keeping session's, and this record adds one word of yours,
+  which this section and point 51 quote.
+- A deletion: none. PROGRESS.md names what the trials left on this machine and in WSL.
+
+### What needs your decision
+
+- **Whether a fresh reader goes through the repairs of this reading.** I would want it before these
+  commits go anywhere. They change how a supervisor starts a command, what a failed launch answers and
+  how long the loop waits, and every reading of my own repairs since 16 November has found something,
+  this one too. This one took 178,000 tokens.
+- **Whether the loop waits the run's whole time for a launch that failed with its command perhaps
+  running.** It does now, as before the first repair, and for the same reason: without a supervisor's
+  record the loop cannot tell whether the command runs. The other ways: stop the run at once, which
+  reaches a command that writes heartbeats and no other; or, in the sandbox, go on at once, because the
+  command ended with its supervisor. Both are more than the reader's finding called for.
+- **Once more, or an error at once**, for a supervisor that ended before the log: as the first record
+  puts it. This reading changes one thing about it: a second start can no longer run a command twice,
+  also where the first supervisor is still there.
+- **Whether the launch removes `.launch-env.json`** where a supervisor through tmux has not come up in
+  its five seconds. The file holds the caller's whole environment, readable by its owner only, and a
+  supervisor that comes up late would then find none and start with its own environment.
+- **Whether these commits go to `test/round-9`**, where GitHub's six jobs would run them on macOS, on
+  bare Linux and on a second Windows for the first time. `test/round-9` stands at `409182f`, so the
+  first repair has not run there either.
+- Unchanged from the first record: whether the like case in the launch's own record is repaired; whether
+  `nnloop start --detach` and the controller of a remote run get the new flag; whether this branch is
+  merged with the proof pilot's and the guard session's, and where it goes; the questions of point 46 as
+  far as they are not these.
+
+Sources: the reader's report of 21 November 2026, kept in this session's record; the kit's tests on this
+machine on 21 November 2026, on Windows under Python 3.11.7, 3.8.20 and 3.15.0rc3 and in WSL under
+3.12.3, 3.8.20 and 3.15.0b3, their checks counted in the logs as the lines that begin with `PASS` and
+`FAIL`; nineteen copies of the kit with one change taken out each; one step of `nnloop.Campaign.train`
+on copies of the kits of `409182f`, `81634a3` and this commit; two probes of 926 kills in all under the
+two environments; bubblewrap 0.9.0 and tmux 3.4 in WSL; bubblewrap's own help for `--die-with-parent`;
+the helpers that PROGRESS.md names.
 
 ## 1. What changed and why
 

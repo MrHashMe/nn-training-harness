@@ -2896,6 +2896,88 @@ joins the kit's files and conflicts in the two records; a third local branch,
 `claude/fervent-gould-8d0820`, has `81634a3` after `409182f`, which changes `expctl.py` too and
 joins the same way; the records are joined by hand); and what the lookup's entry lists, less the
 reader.
+(Added with "The folder's repair", the next entry: the first of these is decided by the user's "Yes,
+repair it" of 21 November and built, with a third place of the same kind, the program of the loop's
+agent.)
+
+## The folder's repair (21 November): a relative path to a program is read from the same folder on Windows and on Linux at three places, one of them repaired without asking, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `df59ad2`. The
+user's word, 21 November: "Yes, repair it", to my question at the end of the reading of the lookup's
+repair, "Make Windows and Linux read a relative program path from the same folder?" Dates and times
+in this entry are UTC.
+
+Done (REPORT.md, "The folder's repair", has it in full):
+- The loop's evaluator (`Campaign.evaluate` in `nnloop.py`): the first word of its command, where it
+  has a folder, is joined to the project root, on every system. Windows read it from the folder the
+  loop was called in, which only `--detach` made the project root. In the evaluator's box on Linux
+  that word is the box's program, and nothing changes (by reading).
+- `env --python` (`cmd_env` in `expctl.py`): outside Windows a relative path with a folder is joined
+  to the folder the command is typed in, before the start that probes it, which is given the project
+  root. Linux read it from the project root. Windows is unchanged.
+- A third place, found by going through every start that the kit gives a folder to work in, and
+  repaired in the same change without the user's word on it: the program of the loop's agent
+  (`--agent-exe`; `preflight` and `cmd_run` in `nnloop.py`). Only the check before the start read a
+  relative path where the command was typed. A session starts in the worktree: outside Windows it
+  did not find the path, and the campaign stopped at its first session; on Windows it found an
+  `.exe` and not a batch file. A loop started with `--detach` read the path from the project root:
+  the call said `ok`, and the loop in the background ended at once. Now the path is joined once to
+  the folder the command is typed in, and with `--detach` the call hands it to the loop in the
+  background as a last `--agent-exe`, also for a program that the kit's own search found. It is five
+  lines in `preflight` and one in `cmd_run`, two checks and the reference's words on it, and can be
+  taken out.
+- All three join with `os.path.join` and leave the name as written: `os.path.abspath` drops a dot, a
+  space or a slash from a name's end on Windows (the fault of `7edd37d`). The two joins to the typed
+  folder leave a full path alone.
+- Tried before and after on both systems, from scratch scripts (Windows 3.11.7 with
+  `NoDefaultCurrentDirectoryInExePath` set and not set; WSL 3.12.3, and 3.8.20 from a virtual
+  environment for `env --python`): REPORT.md has the three tables. On Windows two forms start now
+  that did not: the agent's program by a relative path with forward slashes where the variable is
+  set, and an evaluator that is a batch file by such a path.
+- What changes for a use that worked: on Windows an evaluator named relative to a subfolder, in a
+  campaign that is called there without `--detach`; on Linux `env --python` typed in a subfolder
+  with a path relative to the project root; outside Windows a session no longer runs the worktree's
+  copy of an agent program that the project holds at the typed path.
+- Left as it is, each the same on both systems or outside the question: a relative `--root` with
+  `--detach` typed outside the project root, which the loop in the background reads from the project
+  root (by reading); a relative `python` in the settings, read from three folders (by reading); a
+  name without a folder after `--agent-exe`, left to each system's search (tried: on Windows, where
+  the variable is not set, a batch file in the typed folder passes the check and is not run by a
+  session); a path on Windows with a slash in front and no drive, which counts as a full path under
+  Python 3.12 and older (by reading).
+- Tests: four checks are new. `tests/test_kit.py`, `env_tests` (15 checks on Windows, 10 in WSL):
+  `env --python` typed in a subfolder, and the loop's evaluator started in a process that stands in
+  a subfolder. `tests/test_loop.py`, campaign b: a resume with `--detach` typed in a subfolder with
+  the agent by a relative path from there, and a later resume with the agent by a relative path from
+  the project root. On the kit of `df59ad2` the evaluator's check fails on Windows and the check of
+  `env --python` in WSL; without the join of the agent's path four checks of campaign b fail on both
+  systems, without the hand-over line two.
+- `docs/REFERENCE.md`: the entry on a start without a shell on Windows names the folder for six
+  callers, since when, and what it was.
+- The eight test files on the final state, from 01:45 to 02:36 on Windows and from 01:45 to 02:04 in
+  WSL: Windows, Python 3.11.7, 1,920 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,907; WSL, 3.12.3, 1,931; WSL from a virtual environment, 3.8.20, 1,918. None failed.
+- The code is `31af10c`, 66 lines added and 12 removed: `expctl.py` 4, `nnloop.py` 10,
+  `tests/test_kit.py` 24, `tests/test_loop.py` 13 and 4, `docs/REFERENCE.md` 15 and 8.
+- REPORT.md has the section "The folder's repair", point 50 of "Read this first" (48 and 49 are two
+  other sessions', on local branches), a sentence in the introduction, and a dated note at twelve
+  places of the earlier sections and at point 47. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no reader, so this
+repair and the last reading's repairs are read by nobody but me; GitHub's machines and macOS have
+run none of this branch; no trial with a real agent or with a whole campaign's evaluator named by a
+folder; the four things left as they are.
+
+Next, each a separate word of the user's: whether the third place stays (I would keep it); whether
+one fresh reader goes through this repair and the last reading's repairs together (I would now);
+whether a relative `--root` with `--detach` is repaired (I would, as a small change of its own with
+one check); whether this branch is merged with `test/round-9` (thirteen commits after `5ccc2d4`; the
+other session's branch and `origin/test/round-9` stand at `409182f`, looked at 02:37 and not
+fetched; two more local branches have a commit of code and one of record after it,
+`claude/fervent-gould-8d0820` at `f68b71c` with point 48 and `claude/sharp-faraday-6bd610` at
+`b5331fb` with point 49; a merge of `31af10c` with each of the three, tried in memory, joins the
+kit's files and conflicts in the two records; the records are joined by hand); and what the last
+entry lists, less its first question.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

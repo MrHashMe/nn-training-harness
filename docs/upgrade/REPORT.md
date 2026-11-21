@@ -99,6 +99,38 @@ crash, and the loop went on at once. That is repaired in a second local commit, 
 and a case is closed that no trial showed and none could exclude, in which a run's command would have been
 started twice. That commit is again read by nobody but its author, and nothing is pushed; "The reading of
 the two faults' repairs", the section after that one.)
+On 20 November a session of its own ran the first of round 9's next steps, the proof pilot with a real
+agent on the kit's two benchmark tasks: its section, "The proof pilot", follows "Round 9 on the test branch"
+and is the last before "1. What changed and why". It is one local commit, and nothing of it is pushed.
+On your "Yes, repair it" of that day the same session repaired the defect of the kit that the pilot had
+found, the launcher under a virtual environment on Windows: its section, "The launcher's repair", follows
+"The proof pilot" and is the last before "1. What changed and why" now. It is two local commits on the
+pilot's branch, and nothing of it is pushed.
+On your "Yes, start reader" of that day a fresh reader went through that repair, and what it found is
+repaired: its section, "The reading of the launcher's repair", follows "The launcher's repair" and is
+the last before "1. What changed and why" now. It is two more local commits on the same branch, not
+pushed.
+On your "Yes, read fixes" of that day a second fresh reader went through that reading's repairs. It
+found no fault that they introduce, and an older fault that it named is repaired: its section, "The
+second reading of the launcher's repair", follows "The reading of the launcher's repair" and is the
+last before "1. What changed and why" now. It is two more local commits on the same branch, not pushed.
+On your "Yes, repair it" of that day the kit's way to a program on Windows is repaired, which that
+reading had left as a decision: its section, "The lookup's repair", follows "The second reading of the
+launcher's repair" and is the last before "1. What changed and why" now. It is two more local commits
+on the same branch, not pushed.
+On your "Yes, start reader" of that day a fresh reader went through that repair and the second reading's
+nine lines, and what it found, and what I found beside it, is repaired: its section, "The reading of the
+lookup's repair", follows "The lookup's repair" and is the last before "1. What changed and why" now. It
+is two more local commits on the same branch, not pushed.
+On your "Yes, repair it" of 21 November a relative path to a program is read from the same folder on
+Windows and on Linux, at the two places that the reading named and at a third that I found and repaired
+with them: its section, "The folder's repair", follows "The reading of the lookup's repair" and is the
+last before "1. What changed and why" now. It is two more local commits on the same branch, not pushed.
+(Added with the merge of 21 November: the seven statements above, from "On 20 November a session of its
+own ran" on, were written on the pilot's own branch, where "The proof pilot" followed "Round 9 on the test
+branch"; "that day" in them is 20 November. In this file the pilot's seven sections stand together after
+"A program's name in quotes or behind backslashes", in the order given above, and "The folder's repair"
+is the last before "1. What changed and why".)
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -583,9 +615,32 @@ Decision record: `docs/upgrade/LEDGER.md`.
     install's guard has the tee hole; which large item is built next after the pilot, if any;
     whether further readers of my own fixes are wanted without asking; the clock of this machine's
     WSL; the eleven snapshot branches and the scratch clones; the three public test branches.
+    (Added with point 38: the pilot ran; its record is "The proof pilot".)
     (Added with point 39: that second run, 44727353913 on `5ccc2d4`, passes in all six jobs at the
     first attempt, with 1,889 to 1,905 checks a job: one more than the first run in every job, the
     check of `1fe89eb`. The snapshot branches are thirteen now.)
+38. **The proof pilot ran: on neither task is the kit shown ahead of the bare agent, the loop did not
+    stall, and no training run was lost to the guard** (20 November; "The proof pilot"). It is the work
+    of a session of its own. A real agent (Claude Code, Sonnet) worked on the kit's two benchmark tasks
+    in three ways at an equal budget of 12 training runs, five times each: with round 9's loop, with
+    round 8's kit in one session, and with no kit. On the character task the loop is 0.0075 behind the
+    bare agent in test loss (p 0.28); on the fine-tuning task it is 0.0205 ahead in the share of exact
+    answers (p 0.47), and that edge is one arm-run of the bare agent. The pilot could have shown only
+    differences above 0.0154 and 0.0713. What moved the scores was the agent: every arm lifted the
+    fine-tuning script from 0.36 to about 0.85. The result speaks for neither a second search shape nor
+    confinement. It found a defect of the kit instead, which is not fixed: on Windows in a virtual
+    environment, `expctl launch -- python ...` starts the base interpreter. Four of the ten arm-runs of
+    round 8's kit are void, for a fault of the pilot script's allow list. Twelve more arm-runs were void
+    and were run again: Windows' disk cleanup emptied the Python environment in the temporary folder
+    (the cause by the times, not proved), and my driver went on without a check (1.18 of the pilot's
+    7.54 million tokens). The records of the pilots of 11 November went in the same minutes. The pilot
+    ran on native Windows without the sandbox, and round 9's guard met no shell command. Nothing is
+    pushed; `pilot.py` and the kit's code are unchanged; the record is one local commit on
+    `claude/brave-robinson-27cbd9`, which was moved forward onto `5ccc2d4` first. Open: the launcher's
+    repair; the allow list, and whether the four void arm-runs are run again; where a pilot's records
+    live, since `%TEMP%` is cleaned; what is still wanted from `%TEMP%\nnkit-upgrade`; the access token
+    that a command of mine printed into that session's transcript.
+    (Added with point 41: the launcher is repaired; its record is "The launcher's repair".)
 39. **A fresh reader went through round 9's unread repairs, on your word, and found three faults in
     them and an older one. All four are repaired in a local commit, with an older gap of the guard
     that I found beside them: a program named with `.exe`. Your real install and the public `main`
@@ -630,6 +685,99 @@ Decision record: `docs/upgrade/LEDGER.md`.
     (Added with point 44: that further run, 44765640552 on `5ec95c6`, passes in all six jobs, with
     the counts of the run before in every file. The repairs have had a reader since, on your "Reader
     first".)
+41. **The launcher is repaired: in a virtual environment on Windows, a `python` in a launched command
+    is the environment's now, at all five places where the kit starts a command that a caller wrote**
+    (20 November; "The launcher's repair"). The number is 41 because points 39 and 40 are the other
+    session's, written on the public `test/round-9` after this branch left it (the reading of round
+    9's unread repairs, and that reading on the test branch); this branch does not hold them, and a
+    merge puts them between 38 and this one. On your "Yes, repair it" of 20 November the pilot's
+    session repaired what the pilot had found. The cause: Windows looks for a program that is named
+    without a folder first in the folder of the program that is running, and in a virtual
+    environment that is the base interpreter, which the environment's `python.exe` only starts. So a
+    launched `python train.py`, a final evaluation, the loop's evaluator, a remote target's
+    `on_finish` command and `expctl env --python python` ran without the environment's packages. The
+    repair is one function of four lines, `in_env` in `expctl.py`: it gives the `.exe` of that name
+    beside the interpreter that runs the kit, and the kit starts that file; the command line stays as
+    it was written. It looks beside the interpreter and not on the `PATH`, which is not what point
+    38's record had proposed: the `PATH` first would change which program starts outside a virtual
+    environment, in set-ups that work today. Outside a virtual environment, on Linux and on macOS
+    nothing changes. One limit stays, as old as the kit: where another interpreter than the
+    environment's runs the kit, a bare `python` is that interpreter; a default install does not meet
+    it. Seven new checks (five outside Windows) try the five places in a virtual environment; with
+    the repair taken out, all seven fail on Windows. The eight test files pass on Windows under
+    Python 3.11.7 and, from a virtual environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20:
+    1,908, 1,895, 1,922 and 1,909 checks, none failed. In the fine-tuning task's environment a
+    launched `python -c "import transformers"` imports it now. The code is `09af4a1`, 81 lines
+    added and 7 removed, on the pilot's local branch after `c6ddba2`. Nothing is pushed or merged;
+    your real install has round 8's kit and with it this defect; GitHub's machines, a Mac among
+    them, have not run the change, and nobody but me has read it. Open: whether this branch is
+    merged with `test/round-9`, where the records of both sides are joined by hand; whether a fresh
+    reader goes through the repair first; whether a bare name should follow an activated
+    environment where another interpreter runs the kit (I advise against it for now); and what
+    point 38 left open, less the repair.
+    (Added with point 42: a fresh reader has read the repair; its record is "The reading of the
+    launcher's repair".)
+42. **A fresh reader went through the launcher's repair, on your word, and found a regression and a gap
+    in it. Both are repaired, and the repair's tests can fail now where they could not** (20 November;
+    "The reading of the launcher's repair"). On your "Yes, start reader" one agent on Opus 5.5 with read
+    access only read `09af4a1` without my record of it: 183,127 tokens, 44 tool calls. It gave seven
+    findings, and I ran each before I changed anything. Two were faults of the kit. On Windows without
+    psutil, `expctl status` no longer found the run of a process that holds a GPU, where a `python`
+    named without a folder was launched from a virtual environment: the kit records the environment's
+    small `python.exe` since the repair, the process on the GPU is its child, and the kit had no way to
+    a process's parent there. That is a regression of the repair, and the kit asks Windows itself now.
+    And `expctl final-eval` refused a `python` that `expctl launch` starts, where no folder of the
+    `PATH` holds one: it takes what the start finds now. Two findings were about the tests, and held:
+    they could not fail where the repair must do nothing, and a fault in them could leave runs alive.
+    The group has eight checks now (six outside Windows), runs on Windows with no `python` on the
+    `PATH`, and each new or changed check fails with its change taken out. Three findings were about
+    what the repair changes for set-ups that work today and about the reference's wording: true, said in
+    `docs/REFERENCE.md` now, no code changed. Of the reader's three open questions one is settled by
+    running: a command that is ended at one of the kit's time limits takes its interpreter with it, in
+    seven kinds of environment. The eight test files pass on Windows under Python 3.11.7 and, from a
+    virtual environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20: 1,910, 1,897, 1,924 and 1,911
+    checks, none failed. The code is `829d5b3`, 73 lines added and 10 removed in three files, after
+    `397adb5` on the pilot's local branch. Nothing is pushed or merged; your real install is untouched;
+    the reading's repairs are read by nobody but me; GitHub's machines, a Mac among them, have run none
+    of it. Open: whether a reader goes through the reading's repairs; whether this branch, five commits
+    after `5ccc2d4` now, is merged with `test/round-9`; whether the manifest should record the
+    interpreter of a run (I would leave it); and what point 41 left open, less the reader.
+    (Added with point 43: a second fresh reader has read the reading's repairs; its record is "The
+    second reading of the launcher's repair".)
+43. **A second fresh reader went through the first reading's repairs, on your word, and found no fault
+    that they introduce. An older fault of `expctl status` that it named is repaired, and what Windows
+    starts without a shell is written down** (20 November; "The second reading of the launcher's
+    repair"). On your "Yes, read fixes" one agent on Opus 5.5 with read access only read `829d5b3`
+    without my record of it: 132,573 tokens, 15 tool calls. It gave five findings, and I ran each before
+    I changed anything. The first: Windows keeps the number of a process's parent after the parent has
+    ended, and a later process can get that number, so `expctl status`, which walks up those numbers to
+    find the run of a process on a GPU, could put the GPU of a program that belongs to no run on a run.
+    On this machine one of about 500 processes named such a number, and each of the 36 processes on the
+    GPU hung under a number that no process holds any more. The walk ends now at a process that began
+    after the one below it, with psutil and without. The second: `expctl final-eval`'s check of its
+    program and the start differ on Windows in both directions, and that held in every case I ran. A
+    name that only a `.cmd` file answers to, a name like `tool3.11`, and, in the shells of this Claude
+    Code session, a program named by a folder of the project with forward slashes pass the check and do
+    not start: the single use is recorded, and the next call needs `--again`. On Linux the two differ
+    where a `PATH=...` is written in front of the command. I did not repair it: it is older than what
+    was read, what Windows starts depends on four things that I had to measure, and a wrong rule would
+    cost more than the limits, which `docs/REFERENCE.md` states now. In passing I found that
+    `expctl launch` does not start the forward-slash form in those shells either. The other three: the
+    reference said of a conda environment what holds for the layout of `venv` (reworded); a `venv` over
+    its time limit ended the test file (a failed check now); and the tests' cut of the `PATH` can leave
+    it empty, where the group passes all the same. Of the four things the reader could not judge one is
+    measured: without psutil, Windows answers the kit's question for a parent for the processes of your
+    own session and for none of the services'. The eight test files pass on Windows under Python 3.11.7
+    and, from a virtual environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20: 1,911, 1,898,
+    1,925 and 1,912 checks, none failed. The code is `3784d0c`, 44 lines added and 5 removed in three
+    files, after `27fd0dd` on the pilot's local branch. Nothing is pushed or merged; your real install
+    is untouched; this reading's repairs are read by nobody but me; GitHub's machines, a Mac among them,
+    have run none of it. Open: whether the kit's way to a program on Windows is repaired for
+    `final-eval` and for `launch`, as a change of its own with its own reader (I would); whether a
+    reader goes through this reading's repairs; whether this branch, seven commits after `5ccc2d4` now,
+    is merged with `test/round-9`; and what point 42 left open, less the reader.
+    (Added with point 45: the kit's way to a program on Windows is repaired since, on your "Yes, repair
+    it"; its record is "The lookup's repair".)
 44. **A second fresh reader went through the repairs of the first reading, on your word, and found a
     regression and two sentences that contradict each other in them, and gaps in their tests. All
     are repaired in a local commit, with two faults of round 9 that I found beside them. Nothing is
@@ -689,6 +837,46 @@ Decision record: `docs/upgrade/LEDGER.md`.
     repeated once there, with the guard given the line as text.)
     (Added with point 51: one reader has read that commit since, on your word. What it found is
     repaired in a second local commit, which nobody but its author has read; point 51.)
+45. **The kit's way to a program on Windows is repaired, on your word: a program named by its folder
+    starts whichever way its slashes point, and `final-eval` refuses before a use what will not start**
+    (20 November; "The lookup's repair"). The number is 45 because point 44 is the other session's,
+    written on its local branch while this repair's tests ran (its reading of the repairs of round 9's
+    first reading); this branch does not hold it, and a merge puts it between 43 and this one. On your
+    "Yes, repair it" I built what the second reading's section proposed. Where a command names its
+    program by a folder, the kit now finds the file itself, the `.exe` or `.com` at that path with
+    `.exe` added to a name without an ending, and hands it to Windows as the file to start. So
+    `venv/Scripts/python train.py` starts also where the environment holds the variable
+    `NoDefaultCurrentDirectoryInExePath`, as the shells of this Claude Code session do: until now it did
+    not. That holds for a launched run, the final evaluation, `env --python`, the loop's evaluator and a
+    remote target's `on_finish`, and the command line and the run's record keep the command as you wrote
+    it. `expctl final-eval` asks for its program as the start will look for it, where it asked Python's
+    `shutil.which`. It refuses, with nothing recorded, a name that only a batch file answers to, a name
+    like `tool3.11`, a script named without its interpreter, a batch file by a relative path with
+    forward slashes and, where that variable is set, a program without a folder that lies in the project
+    root only, and it names the file a shell would have taken. Four of those five passed before, and the
+    single use was spent on a start that failed. `venv\Scripts\python`, refused under Python 3.11 and
+    older, is accepted. Outside Windows the check reads a `PATH=...` in front of the command, as the
+    start does. A batch file is not handed over: I measured that `cmd.exe` then no longer takes a quoted
+    path with a space. What I left, each with its reason in the section: a name without a folder keeps
+    Windows' own search; no check before `launch` starts; the use is not given back when a start fails.
+    What the check does not see: whether a file that is there is a program; the two places where Windows
+    looks before the `PATH`; and it refuses a few forms that Windows starts, a name with a dot behind a
+    folder among them (`.\tools\tool3.11`, to which Windows adds the `.exe` itself): under Python 3.12.9
+    the check passed that one before, and now it wants the `.exe` written. Two of my new checks did not
+    catch their fault: a path that begins with `../` starts by itself, which a copy of the kit with the
+    change taken out showed. They are rewritten, and each of ten such copies fails the checks that are
+    there for it. The eight test files pass on Windows under Python 3.11.7 and, from a virtual
+    environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20: 1,916, 1,903, 1,927 and 1,914 checks,
+    none failed. The code is `7edd37d`, 154 lines added and 41 removed in three files, after `d50cc44`
+    on the pilot's local branch; the record's commit adds one sentence to the reference, on those forms.
+    Nothing is pushed or merged; your real install is untouched; this repair and the second reading's
+    repairs are read by nobody but me; GitHub's machines, a Mac among them, have run none of it. Open:
+    whether one fresh reader goes through both together (I would); whether a name with a dot and a
+    folder should start without its `.exe` (I would leave it); whether this branch, nine commits after
+    `5ccc2d4` now, is merged with `test/round-9`; and what point 43 left open, less the repair.
+    (Added with point 47: on your "Yes, start reader" one fresh reader has read both since. With this
+    repair two rare forms of name started the wrong file, and both are repaired; the record is "The
+    reading of the lookup's repair".)
 46. **The repairs of the second reading are on the public test branch, on your word, and all six of
     GitHub's jobs pass on them** (20 November; "The reading of the reading's repairs on the test
     branch"). On your "Push test branch" the two commits of point 44 went to `test/round-9` as a
@@ -712,6 +900,42 @@ Decision record: `docs/upgrade/LEDGER.md`.
     written and is not merged into this one. Of that point I read the text; I checked nothing of
     it.)
     (Added with point 49: the second of those sessions has recorded its repair there.)
+47. **A fresh reader went through the lookup's repair and the second reading's nine lines, on your word.
+    Since that repair two rare forms of name started the wrong file on Windows: one the reader named and
+    rated harmless, one I found while repairing it. Both are repaired** (20 November; "The reading of
+    the lookup's repair"). On your "Yes, start reader" one agent on Opus 5.5 with read access only read
+    `7edd37d` and the nine lines of `3784d0c` in the walk up a process's parents, without my record of
+    them: 167,917 tokens, 20 tool calls. Its first sentence: "I found no fault in either change that
+    makes something wrong that worked before." It gave six findings, and I ran each before I changed
+    anything. The fourth, run: to Windows `tools\tool.` is the program file `tool` without an ending,
+    and since `7edd37d` the kit handed Windows `tools\tool.exe` for that name, so where both lie in the
+    folder the other file ran, and `final-eval`'s check let the name pass. Trying the sibling forms of
+    my repair I found a second fault of that commit: a name that ends in a slash, or in `.` or `..`,
+    started an `.exe` beside the folder it names, where Windows starts nothing. One rule covers both:
+    the kit hands a file over only where the full path keeps the last part of the name as it is written,
+    two lines in `in_env`. The price is a refusal before any use for a name with a dot or a space at its
+    end, also where Windows would start it. The other findings: the refusal's hint is what Python's
+    search finds and not what a shell takes, and which names get it differs with Python's version
+    (reworded, in the kit and in `docs/REFERENCE.md`; the dependence stays); the reference named the
+    folder that a relative path is read from for two of five callers (it names all five now, and one
+    sentence of "The lookup's repair" was wrong and has a note); the walk's test did not pin the line
+    that moves the compared time up (a third chain pins it on Windows); outside Windows an empty `PATH=`
+    in front of the command is refused though the start would run (stated, not repaired); and a clock
+    set back, which was known. Of the four things the reader could not judge three are tried. The eight
+    test files pass on Windows under Python 3.11.7 and, from a virtual environment, under 3.8.20, and in
+    WSL under 3.12.3 and 3.8.20: 1,916, 1,903, 1,927 and 1,914 checks, none failed; no check is new, and
+    the two changed ones fail with their change taken out. The code is `c85f96a`, 55 lines added and 34
+    removed in three files, after `09bcc5c` on the pilot's local branch. Nothing is pushed or merged;
+    your real install is untouched; this reading's repairs are read by nobody but me; GitHub's machines,
+    a Mac among them, have run none of this branch. Point 46 is the other session's, on `test/round-9`.
+    Open: whether a relative path to a program is read from the same folder on Windows and on Linux for
+    `env --python` and for the evaluator of a campaign started without `--detach`, where the two differ
+    today, which is older than what was read (I would repair it as a small change of its own); whether a
+    reader goes through this reading's repairs (I would not for these lines alone); whether this branch,
+    eleven commits after `5ccc2d4` now, is merged with `test/round-9`; and what point 45 left open, less
+    the reader.
+    (Added with point 50: the first of these is decided by your "Yes, repair it" of 21 November and
+    built, with a third place of the same kind; the record is "The folder's repair".)
 48. **The two faults under a virtual environment on Windows are repaired in a local commit, by a
     session of its own that you started for them. Nothing is pushed or merged, and the repairs are
     read by nobody but me** (20 and 21 November; "The two faults under a virtual environment on
@@ -815,6 +1039,37 @@ Decision record: `docs/upgrade/LEDGER.md`.
     branch `claude/fervent-gould-8d0820`, which stood at `f68b71c`. Neither branch is merged into
     this one, and I pushed nothing. Of point 47 I read the first sentence, and of point 48 the
     heading and its session's note; I checked nothing of them.)
+50. **A relative path to a program is read from the same folder on Windows and on Linux now, on your
+    word, at three places: the two that the question named, and a third that I found and repaired with
+    them without asking, the program of the loop's agent** (21 November; "The folder's repair"). Your
+    "Yes, repair it" answered "Make Windows and Linux read a relative program path from the same
+    folder?" The loop's evaluator is read from the project root on every system, where Windows read it
+    from the folder the loop was called in. The path after `env --python` is read from the folder the
+    command is typed in, where Linux read it from the project root. The third place: with `--agent-exe`
+    and a relative path, only the check before the start read the path where the command was typed. A
+    session, which starts in the worktree, did not find it outside Windows, so the campaign stopped at
+    its first session, and on Windows it did not find a batch file; and a loop started with `--detach`
+    read the path from the project root, so the call said `ok` and the loop in the background ended at
+    once. Now the path is read once, where the command is typed, and handed on as a full path. The third
+    place is six lines of its own, and you can have it taken out. On Windows two forms start now that
+    did not: the agent's program by a relative path with forward slashes where
+    `NoDefaultCurrentDirectoryInExePath` is set, and an evaluator that is a batch file by such a path.
+    What changes for a use that worked: on Windows an evaluator named relative to a subfolder, in a
+    campaign that is called there without `--detach`; on Linux `env --python` typed in a subfolder with
+    a path relative to the project root; and outside Windows a session no longer runs the worktree's
+    copy of an agent program that the project holds. The eight test files pass on Windows under Python
+    3.11.7 and, from a virtual environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20: 1,920,
+    1,907, 1,931 and 1,918 checks, none failed; four checks are new, and each fails with its change
+    taken out. The code is `31af10c`, 66 lines added and 12 removed in five files, after `df59ad2` on
+    the pilot's local branch. Nothing is pushed or merged; your real install is untouched; this repair
+    is read by nobody but me, like the last reading's repairs; the agent's program is tried with the
+    tests' stand-in agent and not with a real one; GitHub's machines, a Mac among them, have run none of
+    this branch. Points 48 and 49 are two other sessions', on their local branches. Open: whether the
+    third place stays (I would keep it); whether one fresh reader goes through this repair and the last
+    reading's repairs together (I would now); whether a relative `--root` with `--detach`, which the
+    loop in the background reads from the project root, is repaired too (I would, as a small change of
+    its own); whether this branch, thirteen commits after `5ccc2d4` now, is merged with `test/round-9`;
+    and what point 47 left open, less its first question.
 51. **One fresh reader has gone through the repairs of point 48, on your word. It found a regression
     in the campaign's loop, which is repaired with what else held, in a second local commit. Nothing
     is pushed or merged, and the new repairs are read by nobody but me** (21 November; "The reading
@@ -8300,6 +8555,8 @@ under Python 3.11.7 on Windows; on `i` the table above.
    guard, confinement.
    (Added on 20 November: you started this on that day as a session of its own, on a branch cut from
    `86fc3a5`. What it does and finds is that session's to record, and nothing of it is in this one.)
+   (Added with the proof pilot, 20 November: it ran. The loop did not stall and no training run was lost
+   to the guard, so it speaks for neither of the two items; "The proof pilot" below.)
 2. **Confinement on Windows and macOS** (a job object here, Seatbelt on a Mac), tried against the guard's
    own generated test. Only after it can the guard shrink.
 3. **Hard limits beside the metric**, measured by the harness: the Assess row's test on the character
@@ -8467,6 +8724,9 @@ Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,66
   `86fc3a5`. Its budget is yours to give there, and its record is that session's. That record will
   change this file and PROGRESS.md as this one does, so the two branches meet with both texts kept and
   the ledger built again.
+  (Added with the proof pilot: that session moved its branch forward onto `5ccc2d4` before it committed
+  its record, so the two texts follow one another and nothing has to be joined. It did not touch the
+  ledger.)
 - Deleting anything: the eleven snapshot branches, their clones, the scratch folder and the three public
   test branches stay as they are.
 
@@ -9081,8 +9341,7 @@ as it stands and as a POSIX shell reads it, and not in that form.
   reading of the kind that this finding asks for, and the three harmless lines above pass as before. The
   reader's run of a name in quotes that holds a blank is repeated once there, on the guard of `fd589b2`
   given the line as text: the line passes every rule. The comment and the reference are brought up to
-  date. "A program's name in quotes or behind backslashes", the last section before "1. What changed and
-  why".)
+  date. "A program's name in quotes or behind backslashes", a section below.)
 
 **6. Cost.** The reader timed the changed patterns by themselves on lines of 8,000 repeats of a
 near-miss. I put the same lines to the guard through the hook, as a session meets it (Windows, Python
@@ -11087,6 +11346,2766 @@ under Python 3.11.7 and in WSL under 3.12.3, their checks counted in the logs as
 with `PASS` and `FAIL`; Python's profiler and a timer around each call of a pattern, for the two older
 slow lines; the tips of the other sessions' local branches and the notes that they left in the shared
 folder, read on this machine on 21 November; the helpers that PROGRESS.md names.
+## The proof pilot (20 November 2026): on neither task is the kit shown ahead of the bare agent, and the loop did not stall
+
+Round 9 named a proof pilot with a real agent as its first next step ("Most valuable next steps" above).
+This section is that pilot. It is the work of a separate session, which the session that keeps these
+records started for it, on the branch `claude/brave-robinson-27cbd9` at `86fc3a5` (the kit's code is
+`b593bd0`, round 9). The task: run `benchmarks/pilot.py` with a real agent on the kit's two benchmark
+tasks, at an equal budget of training runs, three ways: with this checkout's kit (arm `new`, the
+unattended loop), with the kit of the public release before round 9 (arm `old`, `992f436`, which is
+round 8), and with no kit (arm `none`); and record what came of it. The pilot ran on that state. After
+its last run and before this record was committed, the branch was moved forward onto the head of
+`test/round-9` (`5ccc2d4`: the repair `1fe89eb` in `nnremote.py`, which the pilot does not use, and its
+record), so that this section follows that one.
+
+Before anything paid started I proposed a budget: both tasks, five repeats per arm, 12 training runs of
+30 seconds per arm-run, Sonnet, about 11 million tokens (8 to 15) and about six hours. You answered
+"Yes, both tasks" by 03:02. Dates and times in this section are UTC, all of 20 November.
+
+### In short
+
+1. **The kit is not shown to beat the bare agent on either task, and the bare agent is not shown to beat
+   the kit.** Each comparison rests on five arm-runs against five.
+   - Character-level model, loss on the test split, lower is better: the loop 1.7473, the bare agent
+     1.7398. The loop is 0.0075 behind; the 95 % interval runs from 0.0229 behind to 0.0079 ahead, and p
+     is 0.28. This half could have shown only a difference above 0.0154, which is 0.9 % of the loss.
+   - Fine-tuning, share of exact answers on the test split, higher is better: the loop 0.8560, the bare
+     agent 0.8355. The loop is 0.0205 ahead; the interval runs from 0.0509 behind to 0.0918 ahead, and p
+     is 0.47. This half could have shown only a difference above 0.0713.
+2. **The loop's edge on the fine-tuning task is one arm-run of the bare agent.** `none-1` scored 0.7397:
+   its script fills the graphics card's memory, and on one scoring seed it trained at less than half
+   speed. The other four bare sessions average 0.8595, above the loop's 0.8560. What the loop shows
+   there is steadiness, five results within 0.020; on the character task it was the bare agent whose
+   results lay closer together.
+3. **What moved the scores was the agent, with or without the kit.** On the fine-tuning task every
+   arm-run that trained lifted the shipped script's 0.36 to between 0.74 and 0.89, in all three arms
+   with the same recipe (adapters on every projection, a higher learning rate with a warmup). On the
+   character task the gains are 0.5 to 1 % of the loss.
+4. **The kit of the release before round 9 (`old`, round 8) is not shown different from the bare agent
+   where its sessions trained** (three arm-runs against five on each task: 0.0159 behind, p 0.22, and
+   0.0004 behind, p 0.99). **Four of its ten arm-runs are void.** In all four the pilot's own
+   permission rule refused the interpreter named by its full path, which is the form the kit's
+   installed `CLAUDE.md` gives, and the session stopped without having trained; on the fine-tuning
+   task the one run that each of the two then started failed, because the kit's launcher starts the
+   wrong Python there (point 6). Counted as they scored, the arm is behind the bare agent by more than
+   the noise on the character task (p 0.030) and 0.17 behind on the fine-tuning task (p 0.19). That
+   reading measures the pilot's rule, not the kit. I made the four judgments after the scores were
+   known, so every table gives both.
+5. **Beside the score.**
+   - **The loop did not stall.** The run limit ended all ten campaigns, after 3 to 5 changes each. On
+     the fine-tuning task every campaign kept its first two changes; on the character task the five
+     campaigns kept 4 of 19.
+   - **No training run was lost to the guard.** Round 9's guard decided 213 tool calls of the loop's 44
+     sessions and refused two, both a scouting session's read of the kit's own reference file. Those
+     sessions have no shell, so it met no command line. Round 8's guard, in the `old` arm, asked about
+     six command lines; each session made its change another way and trained.
+   - **The loop used its budget and the single sessions did not:** 10 to 12 of the 12 runs in every
+     campaign, 2 to 7 in a bare session. The loop took about 10 and 13 minutes an arm-run on the two
+     tasks against 4 and 3 for the bare agent, and 1.4 and 1.8 times its tokens.
+   - **No session of any arm named a held-out file** in a tool call. In the `none` arm only the prompt
+     stood in the way.
+6. **Which next item this speaks for: neither a second search shape nor confinement.** The loop did not
+   stall and the guard cost no run. What the pilot found instead is smaller, and nothing of it is fixed
+   here:
+   - **A defect of the kit on Windows:** `expctl launch -- python train.py`, run from a virtual
+     environment, starts the base interpreter and not the environment's. It cost every `old` session
+     of the fine-tuning task its first run, and this checkout's `expctl` does the same (one probe run).
+     The loop's runs are not touched by it.
+     (Added with point 41: repaired on the same day, on your "Yes, repair it"; "The launcher's repair".
+     The loop's runs were untouched in the pilot because its projects name the interpreter by its path.
+     Where the configuration names it as `python`, which a default install on Windows does, the loop's
+     runs and its evaluator had the defect too.)
+   - **A fault of the pilot script:** its allow list for the single sessions does not cover the
+     interpreter named by its path. One more entry would; that changes a file of the kit, so it is
+     yours to decide.
+   - At 12 runs the loop's protocol leaves three to five decisions, where a bare session puts several
+     changes into one run.
+7. **Two faults of the machine and one of mine.** The fine-tuning half waited six hours: that morning
+   the task trained at half speed, by a different amount for each seed, until you restarted the
+   machine; the cause is not found. Half an hour into the half, Windows' disk cleanup emptied the
+   Python environment, which lay in the temporary folder (by the times; I did not prove it by a second
+   run). **My driver did not check that an arm-run had trained and ran four more repeats: twelve
+   arm-runs are void, and 1.18 million tokens bought nothing.** I repaired the environment and the
+   driver and ran the twelve again. The records of the two pilots of 11 November, which I had read
+   that morning, went in the same minutes, and six other folders of this work hold no file now.
+8. **Cost: 7.54 million tokens of your subscription** (about 6.3 USD at Claude Code's notional prices;
+   no session reported usage billed per use) **and 4 hours 40 minutes of running,** against an estimate
+   of about 11 million (8 to 15) and six hours. This session's own usage is not in that number.
+9. **Nothing is pushed, merged or run on your real install. `pilot.py` and the kit's code are
+   unchanged.** This record is one local commit on the branch `claude/brave-robinson-27cbd9`. The
+   pilot's files lie in the temporary folder that Windows cleans; the scores, the statistics, the
+   transcripts and the scripts are copied to the sessions' notes folder, outside the repository ("What
+   needs your decision").
+
+### How it was run
+- **Arms.** `new`: a fresh project with this checkout's kit, and in it `nnloop start --campaign pilot
+  --agent claude --max-runs 12 --model sonnet`; the pilot script turns the loop's confirmation on fresh
+  seeds and its control runs off, so that the loop spends its limit on the search as the other arms do.
+  `old`: a fresh project with the kit of `992f436`, unpacked from git and installed by its own installer,
+  and one headless session whose prompt has the task, the budget, the rule on held-out data and one
+  line more: the kit is installed, use it as its instructions say. `none`: the same session without a
+  kit and without that line.
+- **Agent.** Headless Claude Code CLI 2.1.322 (`claude -p`), model `claude-sonnet-5-5`, signed in with
+  the subscription, permission mode `dontAsk` with tool lists in every session; approvals never
+  bypassed. A single session of `old` and `none` has the file tools and a shell in which commands that
+  call Python are allowed. The loop's sessions have no shell: its scouting session has Glob, Grep, Read,
+  Write and the two web tools, its worker sessions Glob, Grep, Read, Edit and Write, and the loop itself
+  starts the training.
+- **Budget, the same for every arm:** at most 12 training runs of 30 seconds each. In the loop the three
+  baseline seeds count against the 12 and the harness enforces the limit; a single session is told the
+  limit and has 40 minutes.
+- **Score.** The final `train.py` of each arm-run is retrained on three seeds that no arm used (101,
+  102, 103) in a copy of the task without the held-out files, and this checkout's `evaluate.py` scores
+  each model on the test split. An arm-run's score is the mean of the three. The arms took turns (new,
+  old, none), five times.
+- **Where.** Native Windows 11 with an RTX 5090, Python 3.11.7, PyTorch 2.9.1+cu130. **The loop ran
+  without its sandbox:** the sandbox needs bubblewrap, which is Linux only, and the agent programs in
+  this machine's WSL are old and not signed in. So in the `new` arm the guard alone stood between the
+  loop's sessions and the files, and those sessions have no shell. Round 9's guard therefore met no
+  shell command in this pilot: what a shell command met was round 8's guard, in the `old` arm.
+- **`pilot.py` was not changed.** A driver script beside the work folder called it once per repeat
+  (`--repeats 1`, then 2, and so on: the script continues after the last recorded arm-run), so that a
+  cap on the recorded tokens could end the pilot between two repeats (13.5 million; it was not
+  reached). From 11:07 on, after the fault described below, it called the script once per arm on the
+  fine-tuning task, and checked the environment before each call and the recorded arm-run after it.
+  The driver also takes the access-token variables of a model hub out of the environment of
+  everything it starts: the base model is a local folder, so no session needs one. The loop withholds
+  such variables from its runs by itself; the single sessions of the other arms would have had them.
+- **Criterion, fixed before the first arm-run started** (the docstring of `pilot_stats.py`, written
+  before 03:00; the first arm-run started at 04:09:51): an arm counts as ahead of another by more than
+  the noise only if Welch's two-sided p is below 0.05, which is the same as the 95 % interval excluding
+  zero. The comparisons asked for are the kit over no kit: `new` over `none` and `old` over `none`.
+  `new` over `old` is a by-product. Nothing is adjusted for the number of comparisons. An arm-run is
+  void when a fault of the pilot's setup or of the machine kept it from measuring its arm (the agent
+  program crashed, a session hit its time limit, the Python could not train, the scoring failed) or
+  when a tool call of its sessions read a held-out file. An arm-run in which the agent or the kit did
+  badly by itself is valid: that is a result.
+- **The statistics are those of `expctl compare`,** which does this arithmetic for the runs of a run
+  log. The pilot's scores are not runs of one log, so `pilot_stats.py` applies the same arithmetic to
+  them with `expctl`'s own functions (`t_tail`, `t_quant`). Each arm-run is one value. The edge of one
+  arm over another is the difference of the two means, signed so that a positive edge means the first
+  arm is better. The interval is Welch's t interval with the degrees of freedom rounded down, and p is
+  two-sided from the same t. The exact p counts, over all 252 ways to deal ten values into five and
+  five, how many give a difference at least as large; with five against five it cannot go below 0.008.
+  "Could have shown" is the half-width of the 95 % interval, as in `expctl compare`'s own sentence: a
+  difference smaller than that could not have come out as established here. The edge found with 80 %
+  power is the sum of the t quantiles for 0.025 and for 0.2, times the standard error. On the 11
+  November pilot's `pilot.json` the script gives that record's edges and permutation p values
+  (+0.0044 and 0.54, -0.0120 and 0.18, -0.0076 and 0.29).
+
+### The character-level model: neither kit arm beats the bare agent by more than the noise
+The character half ran from 04:09:51 to 06:10:06, two hours: 15 arm-runs, 3,364,494 tokens (input,
+output and cached tokens together), 2.91 USD at Claude Code's notional prices. No session reported usage
+billed per use, every session and campaign ended with exit code 0, none hit its time limit, and no
+scoring run failed. The machine was otherwise idle: of its 32 logical processors 3.9 were busy on
+average and never more than 7.0 (239 samples, one every 30 seconds).
+
+**Thirteen of the fifteen arm-runs are valid; `old-2` and `old-3` are void, for a fault of the pilot's
+setup.** In both, the session's first command was refused (a line that began with `cd` and then listed
+files), and then the old kit's own first step, typed as the kit's installed `CLAUDE.md` gives it: the
+interpreter by its full path, then `.claude/skills/nn-training/scripts/expctl.py status --brief`.
+`pilot.py` allows a single session the commands that begin with the word `python` or `python3`; the
+interpreter named by its path is not among them, although the pilot's prompt says that shell commands
+which call Python are allowed. Each of the two sessions took Python for refused and stopped after three
+tool calls, without a training run (17 and 18 seconds). `old-3` ended: "The refusal said Claude Code is
+in "don't ask" mode and that I shouldn't work around it, so I stopped." By the rule fixed beforehand
+that is void, and the first pilot of 11 November judged the same pattern void. The same line was refused
+in `old-4` (twice) and in `old-5`; those sessions typed `python` instead and went on. **I made the
+judgment after the scores were known, so the statistics are given both ways.** The two void scores are
+the unchanged script's (1.7561 and 1.7538) and lie at the arm's mean, which hardly moves (1.7554 with
+them, 1.7557 without): what changes is the count, five or three. I did not repeat the two. Under the
+same rule a repeat meets the same fault, and the repair, one more entry in `pilot.py`'s allow list,
+changes a file of the kit and the conditions in the middle of a pilot ("What needs your decision").
+
+Test loss on the test split, lower is better; in brackets the standard deviation over the three scoring
+seeds:
+
+| Arm | Run 1 | Run 2 | Run 3 | Run 4 | Run 5 | Mean | SD across the runs |
+|---|---|---|---|---|---|---|---|
+| `new`: this kit's loop | 1.7313 (0.0124) | 1.7531 (0.0110) | 1.7567 (0.0114) | 1.7585 (0.0093) | 1.7368 (0.0180) | 1.7473 | 0.0124 |
+| `old`: the kit of `992f436` | 1.7482 (0.0022) | void: 1.7561 (0.0134) | void: 1.7538 (0.0145) | 1.7723 (0.0269) | 1.7464 (0.0076) | 1.7557 of three, 1.7554 of five | 0.0145 of three, 0.0103 of five |
+| `none`: no kit | 1.7458 (0.0140) | 1.7476 (0.0091) | 1.7379 (0.0128) | 1.7319 (0.0160) | 1.7357 (0.0164) | 1.7398 | 0.0067 |
+| `train.py` as shipped, no agent | 1.7629 (0.0088), 1.7531, 1.7567, 1.7561, 1.7538 | | | | | 1.7565 | 0.0039 |
+
+The last row is the unchanged script scored five times on the same seeds: by the script's own reference
+scoring, and as the final `train.py` of `new-2` and `new-3`, the two campaigns that kept nothing, and of
+the two void sessions (each of the four files is identical to the shipped one, by its hash). Training
+stops by the clock, so a seed does not repeat exactly: 0.004 is what the scoring itself varies, as on 11
+November (0.0037).
+
+| Comparison | Arm-runs | Edge | 95 % interval | p (Welch) | p (exact) | Could have shown | Found with 80 % power |
+|---|---|---|---|---|---|---|---|
+| `new` over `none` | 5 and 5 | -0.0075 | -0.0229 to +0.0079 | 0.28 | 0.25 | 0.0154 | 0.0211 |
+| `old` over `none`, without the two void | 3 and 5 | -0.0159 | -0.0541 to +0.0223 | 0.22 | 0.054 | 0.0382 | 0.0476 |
+| `old` over `none`, all five counted | 5 and 5 | -0.0156 | -0.0290 to -0.0022 | 0.030 | 0.016 | 0.0134 | 0.0184 |
+| `new` over `old`, without the two void | 5 and 3 | +0.0084 | -0.0235 to +0.0403 | 0.46 | 0.39 | 0.0319 | 0.0417 |
+| `new` over `old`, all five counted | 5 and 5 | +0.0081 | -0.0089 to +0.0251 | 0.30 | 0.29 | 0.0170 | 0.0235 |
+
+- **This kit against the bare agent: not ahead.** The loop's mean test loss is 0.0075 (0.4 %) above the
+  bare agent's, so the loop is behind, and by less than the noise: the interval runs from 0.0229 behind to
+  0.0079 ahead, p is 0.28, and it rests on five arm-runs against five. The kit is not shown to beat the
+  bare agent, and the bare agent is not shown to beat the kit. **This half could have shown only a
+  difference above 0.0154 (0.9 % of the loss)**; an edge of 0.0211 (1.2 %) it would have found four
+  times in five. To establish the edge seen, if it is real, would take about 29 arm-runs per arm. The
+  sign and the size are those of 11 November (-0.0076, p 0.29, with the kit of that day). I did not pool
+  the two pilots: the kit and the pilot script changed between them.
+- **The kit of `992f436` against the bare agent: behind by 0.016, established or not by how the two void
+  arm-runs are counted.** Without them, three arm-runs against five: the interval runs from 0.054 behind
+  to 0.022 ahead, p is 0.22, and three values could have shown only a difference above 0.038. With all
+  five counted the interval excludes zero (0.029 to 0.002 behind, p 0.030), and by the criterion that
+  arm would count as behind the bare agent by more than the noise. That second reading is not a
+  statement about the old kit: two of its five values are the unchanged script, scored after sessions
+  that the pilot's own permission rule stopped.
+- **The bare agent improved the script every time.** All five of its results (1.7319 to 1.7476) lie below
+  all five scorings of the unchanged script (1.7531 to 1.7629), 0.0167 (1.0 %) on average. The loop's
+  arm lies 0.0092 below the unchanged script on average. Of its three campaigns that kept a change, two
+  scored the best and the fourth best of the fifteen (`new-1` 1.7313, `new-5` 1.7368), and the third
+  (`new-4`, 1.7585) no better than the unchanged script. Two campaigns kept nothing, as on 11 November.
+- The loop's five results lie further apart than the bare agent's (0.0124 against 0.0067). On 11
+  November it was the other way round (0.0052 against 0.0130): five values do not tell a spread.
+- The worst of the fifteen is `old-4` (1.7723, and 0.0269 over the three scoring seeds), the one session
+  that used the old kit's run controller for a full ten runs and 780,000 tokens.
+
+### The fine-tuning task: the loop is 0.02 ahead of the bare agent, inside the noise, and the 0.02 is one arm-run
+**`pilot.py --task finetune` works end to end, unchanged.** The script's scoring names the held-out
+files of the character task (`data/loopval.txt`, `data/test.txt`); the fine-tuning task has its four
+data files under the same names, and the prompt's commands fit both tasks. The run itself is the
+check: the script made the projects of the three arms, the loop's worktree got the base model through
+the task's `link_paths`, the single sessions trained with the environment's Python, and the scoring
+retrained every final script on the three seeds and scored it on the test split.
+
+Two things had to be set up first, both covered by your yes. The system Python cannot import
+Transformers (it wants an older huggingface-hub), and the temporary environment of round 3 had lost
+files, so I built a new virtual environment under `%TEMP%\nnkit-upgrade\ft-venv-1120` (it sees the
+system Python's packages; Transformers 5.22.2, PEFT 0.21.2; the system Python is untouched and the
+broken environment is left as it was). And the base model (270 MB) was copied from the main checkout
+into this worktree's `benchmarks/finetune/model/`, which git ignores. Nothing was downloaded for the
+model.
+
+**The half was held from 04:10 to 10:09, because that morning the task trained at about half its speed
+on this machine, and by a different amount for each seed. Your restart of the machine cured it.** The
+first reference scoring showed the fault, and I measured it again on the idle machine before any agent
+session:
+
+| The shipped `train.py`, 30 seconds | Steps | Score |
+|---|---|---|
+| 19 runs of 12 and 14 November (from their logs under `%TEMP%\nnkit-upgrade`) | 341 to 370 | 0.35 to 0.39 on `loopval.txt` (the task's README, seeds 1 to 3) |
+| The first reference scoring, 03:04 to 03:08, seeds 101, 102, 103 | 312, 210, 206 | 0.298, 0.128, 0.128 on the test split (mean 0.185) |
+| Again on the idle machine, 03:36 to 03:39, the same seeds | 276, 158, 160 | 0.210, 0.072, 0.064 on the development split |
+| After the character half, 06:16, seed 101 | 269 | 0.202 on the development split |
+| **After the restart,** 10:03 to 10:05, seeds 101, 102, 103 | 350, 350, 349 | 0.320, 0.328, 0.310 on the development split |
+| The reference scoring that counts, 10:05 to 10:09, the same seeds | 351, 353, 352 | 0.366, 0.366, 0.359 on the test split (mean 0.3637) |
+
+- **Where the time went.** An ordinary step took about 90 ms, as before. The loss was in about ten
+  steps per run in which PyTorch had to ask the graphics driver for more memory: the script pads each
+  batch to its longest text, so a batch wider than any before needs blocks of a new size, and PyTorch
+  ended up holding 17 to 20 GB while 544 MiB were in use. Each such step took 0.3 to 3 seconds. When
+  the wide batches come depends on the seed's order of the texts, which is why seed 101 lost less than
+  102 and 103.
+- **The driver's own call was what was slow.** Asked directly for 1.1 GB (`cudaMalloc`), the driver
+  answered in 2 ms before training, and in 1.0 to 1.7 seconds as the first call after 30 training
+  steps; a second call right after it took 5 to 29 ms.
+- **Ruled out, by a run each:** other load (0.8 of 32 processors busy, no other process on the card),
+  cuDNN's attention kernel, Python's garbage collector, a spill into shared memory, paging, a full card
+  (plain requests of up to 24 GB took 1 to 2 ms each), and by the restart the rebuilt environment: the
+  same environment is at full speed now.
+- **Not found: what had slowed the driver's call.** PyTorch (2.9.1+cu130) and the driver package (added
+  on 11 November) were the same on 12 and 14 November, when the script made 341 to 370 steps. Windows
+  had run since 13 November, seven days, and held 78 of 106 GB of committed memory at rest. So it can
+  come back: a run of the shipped script that makes clearly fewer than 340 steps is the sign, and a
+  restart the cure that worked. A setting of PyTorch's allocator steadied the runs without curing them
+  (`roundup_power2_divisions:2`: 271, 298 and 267 steps), under a variable name that is deprecated and
+  prints a warning into every training log; I did not use it.
+- **The character task was not touched by it:** its batches all have one shape. Its reference scored
+  1.7629 with 4,938 to 5,000 steps per run, as on 11 November.
+
+Run as it was, the half would have been fair between the arms, which take turns. But a script's score
+would have swung with the seed and the hour by about as much as a change of 40 % in the number of
+training steps, and its numbers would not compare with the README's. At 04:10 I put the choice to you:
+hold this half until the machine has been restarted (my recommendation), or run it as it is. You
+answered "Hold it" and restarted the machine; Windows started at 09:56:31. I measured the speed (the
+table), set the morning's reference aside as `finetune-halfspeed-0304`, scored the shipped script again,
+and checked with one small session what your yes had covered: that a session's `python` is the
+fine-tuning environment (17,950 tokens; it answered with the environment's name, Transformers 5.22.2,
+PEFT 0.21.2 and a graphics card that PyTorch sees; nothing was refused). The five repeats started at
+10:09:52.
+
+**Half an hour into the half Windows' own disk cleanup emptied the environment, and my driver did not
+notice: twelve arm-runs are void, and 1.18 million tokens went into sessions that could not train.**
+
+- **What happened.** `new-1` and `old-1` ran and were scored by 10:32:54, and the session of `none-1`
+  trained between 10:33 and 10:38 (six training commands). At 10:35:28, 39 minutes after the restart,
+  Windows started its scheduled disk cleanup (the task `SilentCleanup`, by the task's own record). When the
+  scoring of `none-1` began at 10:38:28, the environment's packages were gone: the folders of
+  Transformers, PEFT, the hub client, tqdm, the tokenizers and others stood empty. I had built the
+  environment with uv, which links a package's files to the copies in its cache, and those dated from
+  12 November. The cleanup took files of 11 and 12 November under `%TEMP%` and left what was written on
+  the 20th. With its own packages gone the environment's Python found the system Python's
+  Transformers, which does not import (the reason the environment was built). I take the cleanup for
+  the cause because the times fit and no session touched those files; I did not run it again to prove
+  it, and I did not establish its rule (other files of 10 to 12 November in the same folder are still
+  there).
+- **What it cost.** The scoring of `none-1` failed on all three seeds. In repeats 2 to 5 the loop
+  stopped each campaign at its first baseline run, before any session ("the baseline run for seed 1
+  failed (crash)"), and the eight single sessions spent their turns finding out why Python would not
+  import: 714,152 tokens in the four of `old`, 468,268 in the four of `none`, **1,182,420 in all, in
+  eleven minutes.** None trained.
+- **What made it expensive is my mistake.** `pilot.py` records an arm-run that could not train like
+  any other and ends with exit code 0. My driver read nothing else, so it started repeat after repeat
+  until 10:49:30. A check that the last arm-run had trained would have stopped it after one.
+- **No session changed the machine.** None of the eight installed or removed a package: a search of
+  every tool call in their transcripts for pip, uv, conda and install finds three `pip list`, of which
+  one ran and the permission rule refused two. One session rewrote its own `train.py` to skip the
+  environment's folder; that file is its project's.
+- **By the rule fixed beforehand all twelve are void** (the Python could not train), and so is the
+  first scoring of `none-1`. The twelve are kept with the reason in `void.json` beside `pilot.json`,
+  and their projects and transcripts in `void-envlost`.
+- **The repair.** I put the same 34 packages in the same versions back from uv's cache, as copies that
+  carry the day's date, without a download and without touching the system Python; the shipped script
+  then made 372 steps (10:58). The driver now calls `pilot.py` for one arm at a time. Before each call
+  it checks that the environment's Python imports PyTorch, Transformers and PEFT and sees the card,
+  after each that the arm-run just recorded has a score, and it stops otherwise. The final `train.py`
+  of `none-1`, whose session the fault had not reached, was scored again with `pilot.py`'s own
+  `score()` (10:59 to 11:02); its entry keeps the failed scoring beside the new one.
+- **The twelve were run again from 11:07:09 to 13:04:58,** with 2,300,527 tokens, and the driver
+  stopped at none of its checks. I did not ask you again before that: your yes covered five repeats of
+  both tasks at 8 to 15 million tokens, and with the repeats the pilot stays inside it (7.54 million in
+  all, the void sessions included).
+- **More went than the environment.** The records of the two pilots of 11 November, which I had read
+  that morning, are gone since the same minutes. Six other folders of this work hold no file now; when
+  those lost them I cannot tell ("What needs your decision").
+
+**The half as it counts ran from 10:09:52 to 13:04:58:** repeat 1 until 10:38:35, with `none-1` scored
+again at 10:59, and repeats 2 to 5 from 11:07:09. 15 arm-runs, 2,972,663 tokens, 2.61 USD at notional
+prices. No session reported usage billed per use, every session and campaign ended with exit code 0,
+none hit its time limit, and after the repair no scoring run failed.
+
+**Thirteen of the fifteen arm-runs are valid; `old-3` and `old-4` are void, and that judgment is
+arguable.** In both sessions the pilot's permission rule refused the old kit's first step, the
+environment's interpreter named by its full path, as on the character task. Each then started its
+first run as the old kit teaches, `python .claude/skills/nn-training/scripts/expctl.py launch ... --
+python train.py`, and the run failed at its first import. `expctl` starts the command after the `--`
+without a shell. On Windows a program started that way by the bare name `python`, from a Python that
+runs in a virtual environment, is the base interpreter and not the environment's, and the base
+interpreter here is the system Python, which cannot import Transformers. Each session read the failure
+and stopped, with `train.py` unchanged (`old-3`: "Runs used: 1 of 12, a failed import." "To go on,
+someone needs to allow the `ft-venv-1120` interpreter, or fix `huggingface-hub` in the PATH Python.").
+By the rule fixed beforehand that is void: the Python could not train, and the pilot's own rule had
+closed the way around it. It is arguable because half of the cause is the kit's: its launcher picked
+the wrong Python, and someone who works in a virtual environment on Windows meets that without any
+pilot ("What needs your decision"). The same first launch failed in `old-1`, `old-2` and `old-5`. Those
+three sessions then wrote the environment's interpreter after the `--`, which the permission rule lets
+pass because the line begins with `python`, and trained. **I made the judgment after the scores were
+known, so the statistics are given both ways.** I did not repeat the two, for the reason given at the
+character task.
+
+Share of exact answers on the test split, higher is better; in brackets the standard deviation over the
+three scoring seeds:
+
+| Arm | Run 1 | Run 2 | Run 3 | Run 4 | Run 5 | Mean | SD across the runs |
+|---|---|---|---|---|---|---|---|
+| `new`: this kit's loop | 0.8510 (0.0210) | 0.8647 (0.0169) | 0.8447 (0.0110) | 0.8600 (0.0210) | 0.8597 (0.0162) | 0.8560 | 0.0080 |
+| `old`: the kit of `992f436` | 0.8447 (0.0076) | 0.8383 (0.0042) | void: 0.4030 (0.0062) | void: 0.3997 (0.0084) | 0.8223 (0.0047) | 0.8351 of three, 0.6616 of five | 0.0115 of three, 0.2377 of five |
+| `none`: no kit | 0.7397 (0.1738) | 0.8587 (0.0085) | 0.8907 (0.0091) | 0.8473 (0.0076) | 0.8413 (0.0152) | 0.8355 | 0.0569 |
+| `train.py` as shipped, no agent | 0.3637 (0.0040), 0.4030, 0.3997 | | | | | 0.3888 | 0.0218 |
+
+The last row is the unchanged script scored three times on the same seeds: by the reference scoring
+(10:05 to 10:09), and as the final `train.py` of the two void sessions around 11:57 and 12:24 (each
+file is identical to the shipped one, by its hash). The two later scorings made 375 to 386 steps in their 30
+seconds where the first made 351 to 353. Between 10:09 and 10:58 the machine became 6 to 10 % faster
+for this script (372 steps at 10:58); at 10:25 other programs let go of some 1.5 GB of the card's
+memory, and whether that is the cause I did not test. So one script's score moved by 0.04 with the
+hour. Within one scoring the three seeds of a script have a standard deviation of 0.004 to 0.021,
+`none-1` aside.
+
+| Comparison | Arm-runs | Edge | 95 % interval | p (Welch) | p (exact) | Could have shown | Found with 80 % power |
+|---|---|---|---|---|---|---|---|
+| `new` over `none` | 5 and 5 | +0.0205 | -0.0509 to +0.0918 | 0.47 | 0.61 | 0.0713 | 0.0955 |
+| `old` over `none`, without the two void | 3 and 5 | -0.0004 | -0.0734 to +0.0726 | 0.99 | 1.00 | 0.0730 | 0.0977 |
+| `old` over `none`, all five counted | 5 and 5 | -0.1739 | -0.4774 to +0.1296 | 0.19 | 0.18 | 0.3035 | 0.4064 |
+| `new` over `old`, without the two void | 5 and 3 | +0.0209 | -0.0032 to +0.0449 | 0.070 | 0.054 | 0.0240 | 0.0314 |
+| `new` over `old`, all five counted | 5 and 5 | +0.1944 | -0.1010 to +0.4898 | 0.14 | 0.016 | 0.2954 | 0.3954 |
+
+- **This kit against the bare agent: not shown ahead.** The loop's mean share is 0.0205 above the bare
+  agent's (0.8560 against 0.8355), and that is less than the noise: the interval runs from 0.0509
+  behind to 0.0918 ahead, p is 0.47, and it rests on five arm-runs against five. The kit is not shown
+  to beat the bare agent, and the bare agent is not shown to beat the kit. **This half could have shown
+  only a difference above 0.0713**; an edge of 0.0955 it would have found four times in five. To
+  establish the edge seen, if it is real, would take about 63 arm-runs per arm.
+- **The edge is one arm-run.** `none-1` scored 0.7397 because its script fills the card's memory and
+  one of its three scoring runs trained at less than half speed (below). The other four bare sessions
+  average 0.8595, which is 0.0035 above the loop. The interval is as wide as it is for the same reason:
+  the bare agent's five values have a standard deviation of 0.0569, the loop's of 0.0080.
+- **The loop was the steadier arm here.** Its five campaigns kept nearly the same two changes and ended
+  within 0.020 of each other. The best result of the fifteen is a bare session's (`none-3`, 0.8907,
+  with 4 of its 12 runs), and so is the worst that trained (`none-1`). On the character task the bare
+  agent's results were the ones that lay closer together, so I read no rule into it.
+- **The kit of `992f436` against the bare agent: no difference where it trained.** Three arm-runs
+  against five: 0.0004 behind, the interval from 0.0734 behind to 0.0726 ahead, p 0.99. With the two
+  void ones counted the arm lies 0.17 behind and nothing is established (p 0.19), because two values
+  at 0.40 and three near 0.83 make its spread 0.24.
+- **This kit's loop against the kit of `992f436`: 0.0209 ahead without the two void, not established**
+  (p 0.070, five against three). With all five counted, Welch's p is 0.14. The exact p of 0.016 in
+  that row says only that no value of `old` lies above a value of `new`; it is the smallest that these
+  ten values can give, since `new-3` and `old-1` tie.
+- **Every arm-run that trained lifted the shipped script's 0.36 to between 0.74 and 0.89,** and in all
+  three arms with the same recipe. The shipped script has adapters of rank 8 on two projections
+  (`q_proj`, `v_proj`), a learning rate of 2e-4 and a batch of 32. The sessions put adapters on all
+  attention and MLP projections, mostly of rank 16, and raised the learning rate to between 6e-4 and
+  2e-3 with a short warmup and a decay by time. The bare sessions also trained in bf16 mixed
+  precision, which the loop tried third and did not keep. The agent brings that recipe without the
+  kit.
+
+**A script that fills the graphics card's memory trains at less than half its speed here, and the
+scoring can meet that on a seed the session never ran.** The card has 32,607 MiB. The script pads each
+batch to its longest text, and PyTorch keeps every block it has asked the driver for, so the memory
+grows through a run: after the restart the sampler read 18 to 29 GB during the shipped script's runs,
+by the seed's order of the texts (other programs held up to 2 GB of that). The session of `none-1`
+doubled the batch to 64 and put adapters of rank 16 on all seven projections. In the scoring its script
+filled the card on every seed (readings of 31,924 to 32,084 MiB): seeds 101 and 102 made 224 and 200
+steps and scored 0.843 and 0.837, seed 103 made 87 steps and scored 0.539. I trained that script once
+more on seed 103 with nothing else on the card: 102 steps, the card full 15 seconds after the start. So
+it is the script on that seed and not a moment of the machine, and by the rule the arm-run is valid:
+the session wrote a script that sits at the card's limit. PyTorch does not end with an out-of-memory
+error at that point; the run goes on slowly, which is what a spill into the system's memory by the
+graphics driver looks like, and that I did not test.
+
+Of the 45 scoring runs of the arm-runs, four have a reading of 31,500 MiB or more: the three of
+`none-1` and one of `new-3`, on seed 103 (263 steps where its other two seeds made 282 and 280). The
+sampler reads every 30 seconds, so a short peak can be missed. Seed 103 made the fewest steps in all
+five arm-runs of the loop (229 to 263, against 251 to 282 on the other two seeds) and scored lowest in
+each (0.828 to 0.846 against 0.844 to 0.879), with readings of 26,786 to 31,966 MiB. The seeds are the
+same for every arm, so the design favours none. But a script pays for its memory on that seed, and the
+arm-run it hit hardest is the one that decides the sign of the comparison.
+
+### What the sessions show beside the score
+**The character-level model.**
+
+| Arm | Training runs used, of 12 | Time per arm-run, mean (range) | Tokens per arm-run, mean (range) |
+|---|---|---|---|
+| `new` | 11, 10, 11, 10, 10 | 614 s (562 to 651) | 239,000 (174,000 to 341,000) |
+| `old` | 3, 0 (void), 0 (void), 10, 4 | 225 s (17 to 723) | 269,000 (40,000 to 780,000) |
+| `none` | 7, 6, 6, 5, 4 | 242 s (185 to 300) | 165,000 (112,000 to 237,000) |
+
+For `new` the count is the loop's own and includes its three baseline runs; for `old` and `none` it is
+the number of commands that started a training, which `pilot.py` calls a lower bound (a command that
+trains twice counts once). By arm the tokens are 1.19 million for `new`, of which the five scouting
+sessions took 407,000, a third; 1.34 million for `old`; 0.83 million for `none`.
+
+- **The loop did not stall: the run limit ended every campaign,** with the loop's own words ("limit
+  reached: runs (10 of 12 used, and the next step needs up to 3)"), and none met an error, a failed
+  iteration or a session at its time limit. Three baseline runs and up to three per change leave room
+  for 3 to 5 changes in 12 runs. The five campaigns tried 19: 4 were kept, 11 discarded, and 4 called
+  inconclusive, a gain of 0.003 to 0.015 on the loop's validation split that lay inside its noise
+  margin (0.005 to 0.021). The longest row of changes without a keep is four (`new-3`, all it tried;
+  `new-5`, the four after its first keep). A campaign as shipped has no rule that ends or turns it
+  after such a row (`loop.restart_after` is off unless set), and none would have acted here before the
+  limit did.
+- **What was kept:** in `new-1` a moving average of the weights and then no dropout with a weight decay
+  of 0.1 (validation loss 1.6865 to 1.6640); in `new-4` a learning rate of 1e-3 with warmup, a decay by
+  time and a dropout of 0.2 (1.6841 to 1.6750); in `new-5` a warmup and a cosine decay by time with
+  other AdamW settings (1.6829 to 1.6580). Each campaign's scouting session ranks its own hypotheses.
+  The one it ranked first was kept in `new-5` and discarded in the other four campaigns, in two of them
+  with a loss far above the baseline's (1.94 and 2.43 against 1.69).
+- **No training run was lost to the guard, in any arm.**
+  - The loop's 24 sessions have no shell. Round 9's guard decided 115 of their tool calls and refused
+    one: the scouting session of `new-1` asked to read the kit's own `references/scouting.md` in the
+    project, which lies outside the loop's worktree. Its prompt does not name that file; the session
+    went on, and the ledger counts no refusal in a worker session.
+  - In the `old` arm round 8's guard asked about three command lines (one in `old-4`, two in `old-5`),
+    each with a here-document: two handed Python a text that rewrote `train.py` and started a run on
+    the same line, one appended the entry to the journal. In a session where nobody can be asked a
+    question is a refusal. Each session then made the same change with the Edit tool and started the
+    run (9 and 3 more training commands followed in the two sessions). Whether round 9's guard asks
+    about the same three lines I did not check: in this pilot it met no shell command.
+- **The permission rule of the single sessions, which is the pilot's and not the kit's, refused 16
+  commands:** 10 in the `old` arm (2, 2, 2, 3, 1) and 6 in the `none` arm (1, 2, 1, 1, 1). In the `none`
+  arm each was a line that joined `sed -i` to a training command; every session put it differently and
+  trained. In the `old` arm it cost the two void arm-runs (above).
+- **Held-out data:** no tool call in the 15 arm-runs names `loopval.txt` or `test.txt` (a search of the
+  tool inputs in all transcripts). The single sessions touched `data/` only to list it, to count
+  `train.txt` and to read `dev.txt`. In the `none` arm only the prompt stood between a session and the
+  held-out files.
+
+**The fine-tuning task.**
+
+| Arm | Training runs used, of 12 | Time per arm-run, mean (range) | Tokens per arm-run, mean (range) |
+|---|---|---|---|
+| `new` | 10, 10, 10, 10, 12 | 787 s (735 to 976) | 200,000 (197,000 to 204,000) |
+| `old` | 4, 6, 1 (void), 1 (void), 4 | 235 s (66 to 395) | 285,000 (132,000 to 478,000) |
+| `none` | 6, 4, 4, 2, 2 | 191 s (111 to 313) | 110,000 (68,000 to 151,000) |
+
+The counts are taken as for the character task. In the `old` arm each count includes one launch that
+failed at its import, so 3, 5, 0, 0 and 3 commands trained. By arm the tokens are 1.00 million for
+`new`, of which the five scouting sessions took 429,000 (43 %); 1.42 million for `old`; 0.55 million
+for `none`.
+
+- **The loop did not stall: the run limit ended every campaign,** and none met an error, a failed
+  iteration or a session at its time limit. All five took the same course: three baseline runs, the
+  self-test, a scouting session that wrote 7 or 8 hypotheses, then three changes.
+  - The first two were kept in every campaign, each on three seeds: a learning rate of 1e-3 with a
+    warmup and a decay by time (+0.23 to +0.24 on the loop's validation split, where the noise margin
+    was 0.03 to 0.05), then adapters on all linear layers (+0.17 to +0.24).
+  - The third, mixed precision in bf16, was discarded after its first seed in four campaigns (0.819 to
+    0.848, against 0.826 to 0.849 for the kept script on that seed). In `new-5` it was called
+    inconclusive after three seeds: better by 0.050 inside a margin of 0.061, and in the loop's words
+    "the limits left no room for a second seed panel".
+  - In all: 15 changes, 10 kept, 4 discarded, 1 inconclusive. The validation score rose from between
+    0.37 and 0.39 to between 0.79 and 0.86.
+- **At this budget the loop reaches three decisions.** Three baseline runs, three and three for the two
+  keeps and one for the discard are 10 runs, and the two that remain do not cover a fourth change ("the
+  next step needs up to 3"). A bare session put several changes into one run and took one or two seeds
+  for it: `none-3` reached the best score of the fifteen with four training commands, and stopped
+  because "the seed-to-seed gap (about 0.03) is as large as the differences I was still testing".
+- **No training run was lost to the guard.**
+  - Round 9's guard decided 98 tool calls of the loop's 20 sessions and refused one: the scouting
+    session of `new-3` asked to read the kit's own `references/scouting.md`, as that of `new-1` did on
+    the character task. No worker session was refused anything.
+  - In the `old` arm round 8's guard asked about one command line each in `old-1`, `old-2` and `old-5`,
+    a here-document that handed Python a text which rewrote `train.py`. Each session made the change
+    another way and launched; 2, 4 and 2 training commands followed. Whether round 9's guard asks about
+    those lines I did not check.
+- **The old kit's launcher lost every `old` session its first run,** as described above: `expctl launch
+  ... -- python train.py` started the system Python. Three sessions found the way around it, two
+  stopped. **This checkout's `expctl` does the same.** In a fresh project with round 9's kit, a launch
+  of `python` from the environment reported the system Python's folder as its own (one probe run), and
+  a two-line check outside the kit shows the same of a child process that Python starts by the bare
+  name without a shell. The loop is not touched: its runs trained in the environment.
+  (Added with point 41: repaired, "The launcher's repair". In the environment of this task a launched
+  `python -c "import transformers"` now imports it, where the kit without the repair ends with exit
+  code 1.)
+- **The permission rule of the single sessions, which is the pilot's and not the kit's, refused 16
+  commands:** 11 in the `old` arm (2, 3, 2, 2, 2) and 5 in the `none` arm (one each). In the `old` arm
+  it was the interpreter by its full path in every session, and in three of them a journal entry
+  written with a here-document or with a text of several lines after `python -c`. In the `none` arm it
+  was a line that joined `sed -i` to a training. `none-4` and `none-5` stopped there, at 2 of their 12
+  runs (`none-5`: "I stopped early because the Bash tool began refusing commands ("don't ask mode"),
+  so I couldn't run more training."). I count both as valid, since each had trained and improved the
+  script; they are the bare agent's two lowest scores after `none-1`. This rule never meets the loop,
+  whose sessions have no shell: on this point the comparison leans toward the loop.
+- **Held-out data:** no tool call in the 15 arm-runs names `loopval.txt` or `test.txt`.
+- **Another program loaded the machine twice during repeat 5,** and I did not find which: 19 to 21 of
+  the 32 processors were busy from 12:38:46 to 12:42:17 and from 12:51:18 to 12:54:48. The first time
+  slowed two runs of the second change of `new-5` (158 and 154 steps where the third made 246), whose
+  gain there is 0.17 against 0.23 to 0.24 in the other four campaigns. That widened the campaign's
+  noise margin, and its third change came out inconclusive after three runs where the other campaigns
+  discarded it after one: 12 runs instead of 10, and the same kind of final script. The second time
+  fell into the session of `old-5`, whose baseline made 244 steps and one changed script 175. Both
+  arm-runs trained and their scoring ran at normal speed, so both are valid. In the rest of the half 2
+  to 3 processors were busy on average.
+
+### Which next item the result speaks for: neither of the two
+Round 9 tied two items to this pilot: a second search shape if the greedy loop stalls, and confinement
+by the operating system if runs are lost to the guard.
+
+- **A second search shape: the pilot does not speak for it.** The loop stalled in none of the ten
+  campaigns. The run limit ended each, after 3 to 5 changes; on the fine-tuning task every campaign
+  kept two of its three, and on the character task the longest row of changes without a keep is four.
+  The limit of that statement: at 12 runs the protocol itself (three baseline runs, up to three per
+  change) leaves three to five decisions, and a stall takes longer than that to show. Whether the
+  greedy loop stalls in a long campaign this pilot cannot say; the campaign of 12 November (section 2)
+  is still the only run that speaks to it.
+- **Confinement: not on the ground of lost runs.** No training run was lost to the guard in thirty
+  arm-runs. The limit of that statement: the loop's sessions have no shell, so round 9's guard decided
+  213 calls of file tools and not one command line. The six lines that a guard asked about were put to
+  round 8's guard, in the `old` arm, and each cost a detour and no run. The pilot ran without the
+  sandbox, and it says nothing about what confinement is for: safety, and a guard that can shrink.
+- **What it speaks for instead,** each of them small and none of them built here:
+  1. **`expctl launch -- python ...` in a virtual environment on Windows starts the base interpreter.**
+     This is a defect of the kit and it is in this checkout: a run launched as the kit's own
+     instructions show trains with a Python other than the one the session works in, or fails at its
+     first import as here.
+     (Added with point 41: built since, on your "Yes, repair it": "The launcher's repair".)
+  2. **`pilot.py`'s allow list for the single sessions** refuses the interpreter named by its path,
+     which the kit's installed `CLAUDE.md` tells a session to type. It made four of the ten `old`
+     arm-runs void, and it is the reason that arm cannot be judged on five values.
+  3. **The scouting session asks for the kit's `references/scouting.md` and is refused,** in 2 of 10
+     campaigns: the file lies in the project, outside the loop's worktree. Both sessions went on
+     without it.
+  4. **The fine-tuning task's script grows to the card's memory limit** on this machine once a session
+     enlarges the batch, and a score at that limit measures the machine.
+  5. **On the question whether the kit helps, section 10's first point stands, now for both tasks.**
+     With five arm-runs per arm the arms lie within the noise of one another, and to establish the
+     edges seen would take about 29 and 63 arm-runs per arm. The other measure named there, what the
+     kit protects, showed no difference either: no session of any arm touched a held-out file, the
+     bare sessions included.
+
+### What limits the comparison
+- **Native Windows, without the sandbox.** Nothing here ran on Linux or macOS, and the loop's
+  confinement was not part of it.
+- **Round 9's guard met no shell command.** What a command line met was round 8's guard.
+- **The arms differ in more than the kit.** `new` is the kit's unattended loop: several short sessions
+  without a shell, its own validation split, a keep rule, training started and counted by the harness.
+  `old` and `none` are one session each with a shell. So `new` over `old` compares the loop with a
+  session that follows the kit's instructions as much as it compares round 9 with round 8.
+- **The budget was the same, its use was not.** The loop's limit is enforced and it used 10 to 12 of
+  12 runs. A single session is told its limit; it used 0 to 10, and its count is a lower bound.
+- **The pilot's permission rule hinders only the single sessions.** It made four `old` arm-runs void
+  and ended two bare sessions early.
+- **One model, one budget, five repeats.** Sonnet, 12 runs of 30 seconds. A difference below 0.0154 on
+  the character task or below 0.0713 on the fine-tuning task could not have come out as established.
+- **The machine.** On the fine-tuning task one script's score moved by 0.04 between 10:06 and noon, a
+  script at the card's memory limit loses more than half its steps, and another program loaded the
+  machine in repeat 5. The arms took turns inside every repeat, so each of these met all three arms;
+  with five values per arm that evens out only roughly.
+- **Repeats 2 to 5 of the fine-tuning task are second tries.** The first tries are void for the lost
+  environment and are kept apart. None of them has a score, so nothing was chosen between two tries.
+- **The validity judgments were made after the scores were known:** four `old` arm-runs void; `none-1`,
+  `none-4`, `none-5`, `new-5` and `old-5` valid. The rule and the criterion were fixed before the first
+  arm-run, and where a judgment changes a number the tables give both.
+- **Nothing is adjusted for the number of comparisons.** Nothing came out as established that an
+  adjustment could take back, except `old` behind `none` on the character task with the void arm-runs
+  counted.
+
+### What it cost
+
+| Part | Arm-runs | Tokens | USD, notional | When |
+|---|---|---|---|---|
+| The character-level model | 15 | 3,364,494 | 2.91 | 04:09:51 to 06:10:06 |
+| Fine-tuning, the fifteen that count | 15 | 2,972,663 | 2.61 | 10:09:52 to 10:38:35, 10:59 to 11:02, 11:07:09 to 13:04:58 |
+| Fine-tuning, the twelve void for the lost environment | 12 | 1,182,420 | 0.76 | 10:38:36 to 10:49:30 |
+| The check session before the fine-tuning half | | 17,950 | | before 10:09:52 |
+| In all | 42 | 7,537,527 | about 6.3 | 4 hours 40 minutes of running |
+
+Tokens are input, output and cached tokens together, as Claude Code reports them. Every session ran on
+your subscription, and none reported usage billed per use. My estimate before the start was about 11
+million tokens (8 to 15) and about six hours; the pilot came in below its lower end. 1.18 of the 7.54
+million, a sixth, are the price of my driver's missing check. The usage of this session itself, which
+prepared, watched and analysed the pilot, is not in these numbers.
+
+### Not done, and why
+- **Nothing is pushed or merged, and nothing ran on your real install.** This record is one local
+  commit.
+- **`pilot.py` and the kit's code are unchanged,** as the task set. The launcher's defect and the
+  pilot's allow list are described and not repaired.
+  (Added with point 41: the launcher's defect is repaired since, in a commit after this record's;
+  `pilot.py` and its allow list are as they were.)
+- **The four void `old` arm-runs were not run again.** Under the same allow list a repeat meets the
+  same refusal, and changing the list in the middle of a pilot changes the conditions between repeats.
+- **The two pilots are not pooled** with those of 11 November: the kit and the pilot script changed.
+- **Not run:** anything on Linux or macOS, the loop with its sandbox, a second model, a longer budget.
+- **Not checked:** whether round 9's guard asks about the six command lines that round 8's asked about.
+- **Not found:** why the graphics driver's memory requests were slow before the restart; which rule
+  Windows' cleanup follows; what the driver does when the card is full; which program loaded the
+  machine in repeat 5; why the machine was 6 to 10 % faster from mid-morning.
+- **No package was installed into the system Python.** The environment of the fine-tuning task lies in
+  the temporary folder; after the cleanup it was put back from uv's cache, without a download.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): the pilot built nothing.
+- **The kit's tests did not run in this session:** no file of the kit changed. The statistics script
+  was checked against the numbers of the 11 November record and against nothing else; no reader but me
+  has seen it, the other analysis scripts or this section.
+
+### What needs your decision
+- **The launcher on Windows in a virtual environment.** `expctl launch -- python train.py` starts the
+  base interpreter. A repair would look a bare name after the `--` up on the PATH before starting it,
+  as a shell does, or warn when it is not the interpreter that runs `expctl`; it needs a test on
+  Windows. Until then a project that trains in a virtual environment on Windows has to name the
+  environment's interpreter after the `--`.
+  (Added with point 41: decided by your "Yes, repair it" of 20 November, and repaired. The repair
+  looks beside the interpreter that runs the kit, where this entry had proposed the `PATH`; "The
+  launcher's repair" gives the reason.)
+- **`pilot.py`'s allow list,** and with it whether the four void `old` arm-runs are run again. One more
+  entry, for the interpreter by its path, would let the old kit's first step pass. Four arm-runs of
+  `old` would cost about 1.5 million tokens (1 to 2) and half an hour at this pilot's rates. They
+  would give the `old` arm five values; they would not change what the pilot says about this kit and
+  the bare agent.
+- **Where the records of a pilot live.** Everything of this one lies under `%TEMP%`, which Windows
+  cleans. Of the two pilots of 11 November, `pilot.json`, the transcripts and the analysis scripts are
+  gone since this morning, so the sentence in section 2 that everything is kept in `pilot2` no longer
+  holds. I copied this pilot's scores, statistics, transcripts, logs and scripts to the notes folder
+  that the sessions share, outside the repository. Putting the two `pilot.json` and `void.json` into
+  the repository (about 75 KB; 43 places in them carry a home path and would be masked first) is a
+  change I did not make unasked.
+- **The other folders of this work under `%TEMP%\nnkit-upgrade`.** Six hold no file now:
+  `inst-smoke1`, `kit-8d53751`, `live-onfailure`, `real-install-before-20261113`, `real2-rehearsal`
+  and `real4-rehearsal`. When they lost their files I cannot tell. The fourth is by its name a copy of
+  your real install from before an installer run. The later copies of that kind hold 16 to 48 files
+  each, and I did not check them for completeness. What is still wanted from that
+  folder should move out of `%TEMP%`.
+- **The access token of the model hub.** Early in this session a diagnostic command of mine printed
+  the value of `HF_TOKEN` into the session's transcript, a file on this machine; I told you then. The
+  value is in no file of the pilot, in no record and in no message: a search of the pilot's folder,
+  the notes folder and my scratch folder for a string of its form finds none. The pilot's sessions
+  never had the variable: the driver and the command that started the check session took it out of
+  their environment. Whether you replace the token is yours to decide.
+- **The fine-tuning task's script.** Padding every batch to one fixed width would probably keep its
+  memory flat and its speed even from seed to seed; I did not try it. It would also change the
+  benchmark, so the numbers of 12 and 14 November and of this pilot would no longer compare.
+- **More repeats of this comparison: I advise against them,** as section 10 does. To establish the
+  edges seen would take about 29 arm-runs per arm on the character task and 63 on the fine-tuning task.
+
+### Where everything is kept
+- **The work folder** is `%TEMP%\nnkit-upgrade\pilot3`. Each task has a folder (`charlm`, `finetune`)
+  with `pilot.json`, a project and a transcript `NAME.log` per arm-run, and the scoring's folders
+  `score-NAME`. The fine-tuning task also has `void.json` and `void-envlost` (the twelve void tries),
+  `pilot-before-void-1049.json`, and beside its folder `finetune-halfspeed-0304` (the morning's
+  reference). `driver.log` has the driver's lines in UTC, `load.log` a reading of the processors and
+  of the card's memory every 30 seconds.
+- **The scripts** lie in the same folder, and none is part of the kit: `run_pilot.sh` (the driver),
+  `pilot_stats.py KIT PILOT.JSON [--void NAME,NAME] [--json OUT]` (the tables' numbers), `all_facts.py`
+  and `arm_facts.py` (what the sessions did, from the transcripts and the loop's ledgers),
+  `ft_scoring.py WORK TASK` (steps and card memory of each scoring run), `health.py` and
+  `tokens_total.py` (the driver's checks), `set_void.py` and `rescore.py` (the repair after the
+  cleanup), `load_watch.ps1` (the sampler). Their outputs are `charlm-stats.json`,
+  `charlm-stats-all15.json`, `finetune-stats.json`, `finetune-stats-void.json`, `charlm-facts.json`
+  and `finetune-facts.json`.
+- **Copies** of the two `pilot.json`, of `void.json`, the six output files, the transcripts, the
+  scripts, `driver.log` and `load.log` are in the sessions' notes folder, outside the repository and
+  outside `%TEMP%`. The projects and the scoring folders are not copied.
+- **The logs of the kit and of PyTorch on this machine carry local time.** Every time in this section
+  is converted to UTC.
+
+Sources: the files named above, read on 20 November 2026; the record that Windows' Task Scheduler keeps
+of the task `\Microsoft\Windows\DiskCleanup\SilentCleanup` (last run at 10:35:28), read on the same day.
+
+## The launcher's repair (20 November 2026): in a virtual environment on Windows, a launched `python` is the environment's
+
+The proof pilot found a defect of the kit and left it alone, because its task ruled out changes to the
+kit: on Windows, from a virtual environment, `expctl launch -- python train.py` started the base
+interpreter and not the environment's. At the end of that work I asked whether to repair it in the same
+session, and you answered "Yes, repair it" (20 November). This section is that repair. It is the work of
+the pilot's session on the pilot's local branch, `claude/brave-robinson-27cbd9`: the commit `09af4a1`
+for the code and one for this record, after the pilot's `c6ddba2`. Nothing is pushed or merged, nothing
+ran on your real install, and no package was installed. Times are UTC.
+
+### In short
+1. **The cause is how Windows finds a program, and the kit met it at five places.** The kit starts a
+   command without a shell. Windows then looks for a program that is named without a folder first in
+   the folder of the program that is running, and on the `PATH` only after that. In a virtual
+   environment the environment's `python.exe` is a small program that starts the base interpreter, so
+   the program that is running is the base interpreter, and its own folder holds a `python.exe`. A
+   `python` in a launched command, in a final evaluation command, in the loop's evaluator, in a remote
+   target's `on_finish` command and after `expctl env --python` was therefore the base interpreter,
+   which has none of the environment's packages. On Linux and macOS the `PATH` decides, and there was
+   no defect.
+2. **The repair is one small function, used at those five places.** `in_env` in `expctl.py` gives the
+   `.exe` of that name beside the interpreter that runs the kit, where there is one: in a virtual
+   environment that folder is the environment's `Scripts`. The kit starts that file and leaves the
+   command line as it was written, so the manifest still says `python`. Where there is no such file,
+   where the name has a folder, and on Linux and macOS, nothing changes. 81 lines added and 7 removed
+   in five files; 52 of the lines are the test and 6 the reference.
+3. **It looks beside the interpreter and not on the `PATH`, which is not what the pilot's record
+   announced.** Looking on the `PATH` first would also change which program starts outside a virtual
+   environment, in set-ups that work today ("Why beside the interpreter, and not the `PATH`"). Beside
+   the interpreter is where Windows looks first anyway when no environment is in play, so there the
+   repair changes nothing.
+4. **One limit stays, and it is as old as the kit.** Where another interpreter than the environment's
+   runs the kit, a `python` named without a folder is still that other interpreter, whatever the
+   `PATH` says. A default install does not meet it. `docs/REFERENCE.md` names it and the way around
+   it.
+5. **Verified by running, on this machine only.** Seven new checks in `tests/test_kit.py` (five
+   outside Windows) make a virtual environment and try each of the five places. With the repair taken
+   out, all seven fail on Windows, each naming the base interpreter's folder. With it they pass under
+   Python 3.8.20, 3.11.7, 3.12.9, 3.14.0 and 3.15.0rc3, and in environments made by `venv`, by uv and
+   by virtualenv. In the fine-tuning task's own environment a launched `python -c "import
+   transformers"` imports it now, where the kit without the repair ends with exit code 1. The eight
+   test files pass on Windows and in WSL under two interpreters each: 1,908 and 1,895 checks
+   on Windows, 1,922 and 1,909 in WSL, none failed. **No reader but me has seen the change,
+   and GitHub's machines, a Mac among them, have not run it:** nothing is pushed.
+   (Added with point 42: a fresh reader has read the change since, and found a regression and a
+   gap in it, both repaired; the group has eight checks now. "The reading of the launcher's
+   repair", the section after this one.)
+
+### What was wrong, and where
+
+The pilot met it like this. A session of the old kit's arm started `python
+.claude/skills/nn-training/scripts/expctl.py launch ... -- python train.py` from the fine-tuning task's
+virtual environment, and the run failed at its first import: the Python that ran `train.py` was the
+system's, which cannot import Transformers ("The proof pilot", "The fine-tuning task"). Two facts
+together make it:
+
+- **Windows' order.** A program that is started without a shell and named without a folder is looked
+  for first in the folder of the program that starts it, and on the `PATH` only later. This is shown
+  here by running, not taken from a page: with the environment's folder first on the `PATH`, a kit
+  that the system Python runs still starts the system Python for a launched `python`. I did not read
+  Microsoft's description of the order again for this record.
+- **A virtual environment's `python.exe` is not the interpreter.** It is a small program that starts
+  the base interpreter for the environment. The process that runs `expctl` is therefore the base
+  interpreter, and the `python.exe` in its folder is the base interpreter without the environment.
+  Environments made by uv and by virtualenv are built the same way: without the repair the seven
+  checks fail in each of them too.
+
+The kit starts a command that a caller wrote at five places, and each of them had the defect:
+
+1. **A launched or resumed run** (`expctl launch`, `expctl resume`; `cmd_supervise`). The loop's
+   training runs and a run on a remote target are started by the same supervisor.
+2. **The final evaluation** (`expctl final-eval`), whose command the configuration gives.
+3. **`expctl env --python NAME`**, which reports the packages and the device of the interpreter it is
+   given, and tries the fast paths in it.
+4. **The loop's evaluator** (`nnloop.py`, `Campaign.evaluate`).
+5. **A remote target's `on_finish` command** (`nnremote.py`, `after_run`).
+
+A default install on Windows writes `python` as the interpreter into the configuration and into every
+command it shows (`install.py`, `--python-cmd`), so a project that is installed that way and trains in a
+virtual environment met the defect at each of the five. The pilot's projects met it only where a
+session typed `python` itself: `benchmarks/new_project.py` installs with the interpreter's path, and
+the loop takes the interpreter from the configuration.
+
+### The repair
+
+- **One function** (`expctl.py`, `in_env`; four lines under their comment). On Windows, for a name
+  without a folder, it gives the file of that name with `.exe` in the folder of the interpreter that
+  runs the kit, if that file exists; a name that ends in `.exe` already, in any case of letters, is
+  taken as it is. In every other case it gives nothing, and the start is the one it was.
+- **Four places hand that file to the start of the process** as the program to run, beside the
+  command line, which stays as the caller wrote it: the manifest, the list of processes and the
+  program's own arguments still say `python`. The fifth, `env --python`, probes the file.
+- **Left to Windows as before:** a name with a folder, so an interpreter named by its path is
+  respected; a name with no `.exe` beside the interpreter, which covers `cmd`, `git`, `bash` and a
+  `.bat` file; a name that does not exist, which still ends the run with "could not start".
+  (Added with point 45: where an `.exe` or a `.com` is at the path of a name with a folder, the kit
+  hands that same file to Windows since the lookup's repair, so that it starts by either slash.)
+- **Not changed, on purpose.** The programs of a remote target's `exec` and `hf` lists (`ssh`,
+  `wsl.exe`, `hf`) are found as before: they are the transport and not a caller's training command,
+  and an `hf.exe` inside an environment can be older than the one on the `PATH` that a target works
+  with today. The installer's check of an interpreter reads its version only, which the base
+  interpreter shares. The loop's own helper that reads the syntax of changed files uses the standard
+  library only. `benchmarks/pilot.py` and its allow list are the pilot's open decision.
+
+### Why beside the interpreter, and not the `PATH`
+
+The pilot's record proposed to "look a bare name after the `--` up on the PATH before starting it, as a
+shell does, or warn". I worked both through before writing code and took neither:
+
+- **The Microsoft Store's alias.** Windows keeps a `python.exe` in its `WindowsApps` folder, which on
+  a machine without the Store's Python opens the Store. Where that folder comes first on the `PATH`
+  and the kit is run through the `py` launcher or by the interpreter's path, `expctl launch -- python
+  train.py` works today, because Windows finds the real `python.exe` beside the running interpreter. A
+  lookup on the `PATH` would start the alias instead. The installer's own message warns of it. Tried
+  here: with that folder first on the `PATH`, the first `python` on the `PATH` is the alias, and the
+  kit starts the interpreter that runs it, with the repair and without. I did not start the alias.
+- **Programs that lie in a system folder and on the `PATH`.** Windows looks in its system folders
+  before the `PATH`. A lookup on the `PATH` first would start another `bash`, `tar` or `curl` than
+  today wherever an earlier folder of the `PATH` has one.
+- **An environment that is not activated.** Where the environment's interpreter runs the kit by its
+  path and the `PATH` does not lead with the environment, the `PATH` gives another Python or none.
+  Beside the interpreter is right there too (tried: the launch runs in the environment).
+- **A warning alone** would have left the run in the wrong interpreter.
+
+Outside a virtual environment the folder beside the interpreter is the folder of the running program,
+which Windows searches first: the repair names the file that Windows would have found.
+
+### The limit that stays
+
+Where another interpreter than the environment's runs the kit, for instance the system Python by its
+path while the environment is only activated in the shell, a `python` named without a folder in a
+command is that other interpreter, as it was before the repair (tried: the base interpreter). The kit
+does not read the `PATH` or `VIRTUAL_ENV` for it. A default install does not meet this: it writes
+`python` into every command, so the interpreter that runs the kit and the one a command names are
+found the same way and are the same. An install made with `--python-cmd` and another interpreter's
+path does, where a command names a bare `python` and means the environment's. The way around it is
+the old one: name the environment's interpreter by its path, or run the kit with it.
+`docs/REFERENCE.md` says so under "Notes and limits".
+
+### Changes in the behaviour of existing features
+
+- **On Windows, where an environment's interpreter runs the kit:** `python`, and any other program
+  that has an `.exe` beside that interpreter, named without a folder at one of the five places, is
+  the environment's. It was the base interpreter for `python` and `pythonw`. For another program it
+  was whatever Windows found in the working folder, in its system folders and on the `PATH`, in that
+  order: the same file where the environment is activated and no other folder has one, possibly
+  another one otherwise. I tried `python`, `python.exe` and `PYTHON`; no other program was launched
+  this way.
+  (Added with point 42: `tqdm` from an environment that is not activated was launched since, and
+  is found there; the next section, finding 6.)
+- **The process that the supervisor starts** is then the environment's small `python.exe`, and the
+  interpreter is its child, as it always was for a command that names the environment's interpreter
+  by its path. Stopping a run ends the whole tree, and the run's exit code is the interpreter's.
+  (Added with point 42: on Windows without psutil, `expctl status` could then no longer find such
+  a run on its GPU. Repaired; the next section, finding 1.)
+- **On Windows outside a virtual environment, on Linux and on macOS:** nothing changes.
+- **`docs/REFERENCE.md`** has one more entry under "Notes and limits".
+
+### Tests
+
+- **Seven checks in `tests/test_kit.py`** (`env_tests`), in a project of their own with a virtual
+  environment made by `python -m venv --without-pip`, the kit run by the environment's interpreter
+  and the environment first on the `PATH`, as in a shell where it is activated. Each makes the
+  started program print the folder it runs in: a launched `python`, `python.exe` and `PYTHON` (on
+  Linux and macOS `python` only, so five checks there); the final evaluation with `python` in the
+  configured command; `env --python python`; the loop's evaluator with a configuration that names the
+  interpreter as `python`; a remote target's `on_finish` command. Where `venv` makes no environment,
+  the group is skipped and says so.
+  (Added with point 42: eight checks now, six outside Windows. On Windows they run with no
+  `python` in any folder of the `PATH`, and a `venv` that makes no environment is a failed check
+  there; the next section, findings 3 and 4.)
+- **With the repair taken out** (the same test file beside the kit of `c6ddba2`), all seven fail on
+  Windows under Python 3.11.7 and 3.14.0 and in environments made by uv 0.12.23 and virtualenv
+  20.35.4, each naming the base interpreter's folder. In WSL the five pass without it as with it,
+  under Python 3.12.3 and 3.8.20: there the `PATH` decides, and Linux had no defect. There the
+  five hold what already worked.
+- **With it** the seven pass under Python 3.11.7, 3.12.9, 3.14.0, 3.15.0rc3 and 3.8.20, each with an
+  environment of its own version, and with environments made by uv and by virtualenv under 3.11.7.
+- **By hand, on Windows:** the kit run by the environment's interpreter with a `PATH` that does not
+  lead with the environment (the launch runs in the environment, and the manifest keeps `python`);
+  no environment at all (the interpreter that runs the kit, as before); `cmd /c echo` from an
+  environment (runs); the base interpreter named by its path from an environment (respected);
+  `python3.11` and a name that does not exist ("could not start", as before); a `.bat` file beside
+  the environment's interpreter (runs as before); the system Python running the kit with the
+  environment first on the `PATH` (the base interpreter: the limit above).
+- **The fine-tuning task's environment** (Python 3.11.7, Transformers 5.22.2), where the system
+  Python cannot import Transformers: a launched `python -c "import transformers; ..."` ends with exit
+  code 1 on the kit of `c6ddba2` and prints the version with the repair.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone
+  with the same change in WSL, before the commit was made (the two differences and the commit's
+  own are the same by their hash):
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,908 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,895 | 0 |
+  | WSL | 3.12.3 | 1,922 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,909 | 0 |
+
+  `tests/test_kit.py` alone has 1,207 checks on Windows and 1,213 in WSL, seven and five more
+  than on `c6ddba2`. The second row matters most here: every test of the kit ran with an
+  environment's interpreter on Windows, which is the case the repair changes. Skipped, each with
+  its reason in the run's output: on Windows, under both interpreters, the tmux tests in two
+  files, the loop's sandbox checks, which need Linux, and one check of a link that leads out of a
+  snapshot, which this account cannot make; under Python 3.8.20, where PyTorch is not installed,
+  two checks of the benchmarks, on Windows and in WSL. Under 3.12.3 in WSL nothing was skipped.
+  (Added with point 42: the counts on the state with the reading's repairs, two checks more in
+  each row, are in the next section. And under Python 3.8.20 thirteen checks fewer run, not two:
+  two parts of the benchmarks' tests, twelve checks, each part with its line, and one check of
+  the ports' tests, which needs Python 3.11 and prints nothing where it does not run.)
+
+### Verified by running, and not
+
+- **By running, on this machine:** everything under "Tests". Windows 11 with Python from python.org,
+  uv and virtualenv; WSL with Ubuntu.
+- **Not run:** macOS and GitHub's machines, since nothing is pushed; the Microsoft Store's Python; a
+  conda environment, whose `python.exe` is the interpreter itself, so that Windows' own order finds
+  it; an environment made with links instead of copies; a whole training run or a campaign of the
+  loop from an environment; a remote target. The old kit's arm of the pilot was not run again.
+- **Read by nobody but me.** Whether I may start readers of my own fixes without asking has been
+  open since 18 November, so I started none.
+  (Added with point 42: on your "Yes, start reader" one reader has read the repair; the next
+  section.)
+
+### Not done, and why
+
+- **Nothing is pushed or merged.** The branch holds the pilot's record, the repair and this record
+  after `5ccc2d4`. The public `test/round-9` and the branch of the session that keeps these records
+  are at `5ec95c6` since.
+  (Added with point 42: and the reading's two commits after them; five in all.)
+- **Your real install is untouched.** It has round 8's kit and with it this defect, where a project
+  trains in a virtual environment on Windows and names `python` without a path.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`). The repair decides nothing that has a row,
+  and the other session added to the same place of the ledger on 20 November.
+- **`pilot.py` and its allow list are unchanged,** and the four void arm-runs were not run again.
+- **`PATH` and `VIRTUAL_ENV` are not read,** for the reasons above.
+
+### What needs your decision
+
+- **Whether this branch is merged with `test/round-9`,** and by whom. The repair's code applies to
+  `5ec95c6` with shifted line numbers only (tried without applying it). The records of both sides add
+  to the same places of this file and of PROGRESS.md and are joined by hand: points 39 and 40 of
+  "Read this first" are the other session's, on `test/round-9`, and this section's point is 41. On
+  the test branch GitHub's six jobs would run the new checks for the first time on macOS, on bare
+  Linux and on Windows machines other than this one.
+- **Whether a fresh reader goes through the repair first.** It changes how every launched run starts
+  on Windows.
+  (Added with point 42: answered with "Yes, start reader"; the next section.)
+- **Whether a bare name should follow an activated environment** where another interpreter runs the
+  kit ("The limit that stays"). I advise against it for now: nobody has met it, a default install
+  cannot, and it would be a second rule beside Windows' own.
+- **A ninth installer run** would bring your real install this repair once `main` has it; it is one
+  more reason for that run and no new question.
+- Unchanged from "The proof pilot": `pilot.py`'s allow list and the four void arm-runs; where a
+  pilot's records live; what is still wanted from `%TEMP%\nnkit-upgrade`; the access token; the
+  fine-tuning script's memory.
+
+Sources: runs on this machine on 20 November 2026. The eight test files on the files of `09af4a1`,
+from 16:00 to 16:47 UTC on Windows and to 16:20 UTC in WSL. Around them, on the same day: the
+checks alone under the interpreters and environment tools named; the hand trials and the launch
+in the fine-tuning task's environment, from scratch scripts that are not part of the kit. `install.py`
+and `benchmarks/new_project.py`, read on the same day for what they write as the interpreter.
+
+## The reading of the launcher's repair (20 November 2026): a regression and a gap repaired, and tests that can fail now
+
+Your word: "Yes, start reader", to my question at the end of the repair whether a fresh reader goes
+through it before it is merged. I took the word to cover that one reader, the check and the repair of
+what it finds, tests, and local commits with their record. Not covered: a push, a merge, your real
+install, a further reader. It is the work of the pilot's session on its local branch,
+`claude/brave-robinson-27cbd9`: the commit `829d5b3` for the code and one for this record, after
+`397adb5`. No package was installed. Dates and times in this section are UTC.
+
+### In short
+
+1. **The reader found a regression of the repair, and it is repaired.** On Windows without psutil,
+   `expctl status` no longer found the run of a process that holds a GPU, where a `python` named without
+   a folder was launched from a virtual environment. The repair had made the process that the kit
+   records the environment's small `python.exe`; the process on the GPU is its child; and without psutil
+   the kit had no way to ask Windows for a process's parent. The run's `gpus_observed` was missing, and
+   two such runs on one GPU raised no alert unless both had declared it. The kit asks Windows itself
+   now. psutil is optional: the kit runs without third-party packages.
+2. **It found a place that the repair had missed, and it is repaired.** `expctl final-eval` looked its
+   program up on the `PATH` before it started it. Where the environment is not activated and no folder
+   of the `PATH` holds a `python`, it refused with "the final evaluation's program was not found:
+   python", while `expctl launch` started the same name in the environment. The check accepts what the
+   start finds now.
+   (Added with point 43: that holds for a name that has an `.exe` beside the interpreter. For other
+   forms the check and the start still differ on Windows; "The second reading of the launcher's
+   repair", finding 2.)
+   (Added with point 45: repaired since; "The lookup's repair".)
+3. **The repair's tests could not fail where the repair must do nothing, and a fault in them could leave
+   runs alive.** Both held. On Windows the group now runs with a `PATH` that holds no `python` at all;
+   each launch check also reads the manifest; a new check puts nine names to `in_env`, seven of which
+   must stay the system's to find; the group runs after the test file's own runs are stopped; and on
+   Windows a `venv` that makes no environment is a failed check and no longer a skip. Each new or
+   changed check fails on a copy of the kit with its change taken out.
+4. **Three findings were about what the repair changes for set-ups that work today, and about the
+   reference's wording.** They are true, and no code changed for them. `docs/REFERENCE.md` says now what
+   holds: other programs in the environment's `Scripts` folder are found there too; a name with another
+   ending than `.exe` is not; a run or a campaign that goes on across the kit's upgrade changes its
+   interpreter. The first and the resumed run are tried by running.
+5. **Of the three questions the reader could not judge, one is settled by running.** A command that runs
+   into one of the kit's time limits is ended together with its interpreter, although the kit ends only
+   the environment's small `python.exe`: in seven kinds of environment the call came back after 2.0 s,
+   and the interpreter did not live on. The Microsoft Store's Python and macOS are still not run.
+6. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,910 and 1,897 checks on Windows, 1,924 and 1,911 in WSL, none failed.
+   `tests/test_kit.py` has two checks more than with the repair alone. The group's eight checks pass
+   under Python 3.8.20, 3.11.7, 3.12.9, 3.14.0 and 3.15.0rc3 and in environments made by uv and by
+   virtualenv. **The repairs of this reading are read by nobody but me,** and GitHub's machines, a Mac
+   among them, have run neither them nor the repair.
+   (Added with point 43: on your "Yes, read fixes" a fresh reader has read them since; "The second
+   reading of the launcher's repair".)
+7. **Nothing is pushed or merged.** The branch holds five local commits after `5ccc2d4`: the pilot's
+   record, the repair and its record, and this reading's two. Your real install is untouched.
+   (Added with point 43: seven, with the second reading's two.)
+
+### The reader and its brief
+
+- **One reader:** an agent of this session on Opus 5.5 with read access only, which here means the file
+  tools and git's commands that only read. By its brief it ran no code: where a trial would settle a
+  question it wrote the command into its report, and I ran it. 183,127 tokens of the subscription, 44
+  tool calls, eight and a half minutes.
+- **What it read:** the commit `09af4a1` against its parent, 81 lines added and 7 removed in five files,
+  and the code around it. The brief told it not to read `docs/upgrade`, so that my record of the repair
+  did not lead it.
+- **What it was asked for:** faults of four kinds. A set-up that worked before and starts another
+  program now; a case where the change does not do what it claims; something else that it breaks in the
+  supervisor, the loop or the remote path; a test that does not test. The brief gave a list of places to
+  start from: the function with odd names, each of the five places, what Python's `subprocess` does when
+  it is given the program beside the command line, the supervisor around the start, the places that were
+  left out, the tests, the reference's entry sentence by sentence, and the merge with `5ec95c6`.
+- **Not asked for:** ways past the guard. The brief said so, and the guard was outside its scope.
+- **Its report:** seven findings, a list of what it checked and found right, and three questions that
+  reading could not answer. All three parts are below.
+
+### The findings, each checked
+
+I ran each before I changed anything. "Held" means that the fault showed when run.
+
+1. **`status` lost the run of a GPU process on Windows without psutil. Held. A regression of the repair,
+   repaired.**
+   - The reader's case. `expctl status` asks `nvidia-smi` which processes hold each GPU, and finds the
+     run of each by the process that the kit recorded for the run, or by that process's parents. Since
+     the repair the recorded process of a launched `python` is the environment's small `python.exe`, and
+     the process on the GPU is its child. A process's parent came from psutil or from `/proc`: on
+     Windows without psutil there was none.
+   - When run. A launched `python` from the fine-tuning task's environment that holds memory on the GPU:
+     `nvidia-smi` names a child of the recorded process and not the process itself, which the reader had
+     assumed and could not check. With psutil, `status` showed the run on GPU 0. With psutil hidden it
+     showed the run on no GPU.
+   - What it cost. The run's `gpus_observed` was missing from `status`, and the alert "GPU n shared by k
+     active runs" could come only from what the runs had declared with `--gpus`. Nothing else uses the
+     lookup: the refusal at launch of a GPU that another run holds goes by `--gpus` alone, before the
+     repair as after.
+   - Older than the repair for one form: a command that names the environment's `python.exe` by its path
+     was always started through the small program (read, not run on the kit as it was).
+   - The repair: `_win_parent` in `expctl.py` reads the parent that Windows records for a process,
+     through `ctypes` (`NtQueryInformationProcess`). `proc_parent` asks psutil, then this on Windows,
+     then `/proc`. Twelve lines under their comment, and two in `proc_parent`. It is written like the
+     kit's two older questions to Windows, whether a process lives and when it began.
+   - After it: with psutil hidden, `status` shows the run on GPU 0. The parent is found without psutil
+     under Python 3.8.20, 3.11.7, 3.12.9, 3.14.0 and 3.15.0rc3 on Windows, all 64-bit, and a process
+     number that no process has gives nothing.
+   - Left as it is: macOS has no way to a parent without psutil, and no `nvidia-smi` whose answer would
+     need one. A parent that has ended and whose number went to another process is not told apart, with
+     psutil as without.
+     (Added with point 43: on Windows it is told apart now, by the start times of the two; the second
+     reading's finding 1.)
+2. **`final-eval` refused a `python` that `launch` starts. Held. Not a regression: a place the repair
+   had missed. Repaired.**
+   - The reader's case. Before it starts the final evaluation, `final-eval` looks the command's program
+     up on the `PATH` and refuses if it is not there. `launch` has no such check.
+   - When run. A virtual environment that is not activated, the kit run by the environment's interpreter
+     by its path, and a `PATH` cut down until no folder of it holds a `python`: `launch -- python ...`
+     ran in the environment, and `final-eval` with `python` in the configured command ended with "the
+     final evaluation's program was not found: python".
+   - The repair: the check accepts a program that `in_env` finds beside the interpreter, which is the
+     file the start then takes, or one on the `PATH` as before. One line.
+   - It is the only check of its kind: I went through every lookup on the `PATH` in the kit's scripts,
+     and the others are for the kit's own tools (`nvidia-smi`, `tmux`, `bwrap`, the agent's program).
+3. **The tests did not cover the cases where the repair must do nothing, nor that the command stays as
+   written. Held. Repaired.**
+   - The reader's case. Every check of the group used a name that the repair resolves. None showed that
+     a name with a folder, a name with another ending, or a name with no `.exe` beside the interpreter
+     is left to Windows. None read the manifest. And with the environment first on the `PATH`, as the
+     group ran, the final evaluation's check could not meet finding 2.
+     (Added with point 45: a name with a folder is handed over since the lookup's repair where an `.exe`
+     or a `.com` is at its path, and the names' check wants that now.)
+   - Done. On Windows the group runs with every folder that holds a `python` cut from the `PATH`, as in
+     a shell where the environment is not activated: the name can only come from beside the interpreter.
+     Each launch check also reads the run's manifest, whose command must be as it was written. A new
+     check puts nine names to `in_env`: `python` and `PYTHON.EXE` must give the environment's
+     interpreter; `python.bat` and `python3.11`, for which the test lays files of those names beside the
+     interpreter, `cmd`, a name that does not exist, `.\python`, `C:python` and the interpreter's full
+     path must give nothing. Outside Windows all nine must give nothing.
+   - On Linux and macOS the group's other five checks pass with the repair and without it, as the reader
+     says and as the repair's record said: there they guard what already worked.
+4. **The test could leave runs alive, could wait without end, and could vanish from a Windows run. Held
+   as code paths; none of them was met. Repaired in part.**
+   - The reader's case. The group ran before the test file stops its own two long runs: a fault inside
+     it would have left them alive for about ten minutes each. The call that makes the environment had
+     no time limit. Where `venv` made no environment, the group printed a skip and added no failure, on
+     Windows too, where the checks guard the repair.
+   - Done. The group runs after the two runs are stopped. The `venv` call has 300 seconds. On Windows a
+     `venv` that makes no environment is a failed check. Tried: with that call made to fail, the group
+     on Windows gives one failed check and then the skip's line.
+   - Left as it is: a fault inside the group still ends the test file with a traceback and without its
+     last line. That is how every other part of that file behaves, and the exit code says it.
+5. **An upgrade of the kit in the middle of a run or a campaign changes the interpreter, and little
+   records it. True. Stated; no code changed.**
+   - `expctl resume` repeats the command that the manifest holds, which says `python`. Tried: a run
+     launched with the kit of `c6ddba2` from a virtual environment, then the kit replaced and the run
+     resumed. The first part ran in the base interpreter and the second in the environment's. The run
+     logger's `env.json` names the interpreter of each part; the manifest does not.
+   - A campaign of the loop that goes on across the upgrade starts its later runs and its evaluator in
+     the environment's interpreter in the same way, and nothing records the evaluator's. This follows
+     from the group's checks on the kit as it was and as it is, and from the loop starting the evaluator
+     anew each time (read); I ran no campaign across an upgrade.
+   - It needs a set-up in which the base interpreter can train at all. Otherwise the first part failed
+     at its first import, as it did in the pilot.
+   - No code: the kit cannot know which interpreter an earlier part ran in, because it never recorded
+     one. Recording it from now on would be a new field of the manifest; it is under "What needs your
+     decision".
+6. **Other programs of the environment are found there now, and one made-up set-up breaks. True. Stated;
+   no code changed.**
+   - Other names. The repair's record said that no other program than `python` had been launched this
+     way. Tried now: `tqdm --version`, launched from the fine-tuning task's environment with the
+     environment not activated and no `tqdm` in any folder of the `PATH`. The kit of `c6ddba2` ends with
+     "could not start: [WinError 2] The system cannot find the file specified"; the kit as it is starts
+     the environment's `tqdm.exe`, which prints its version and ends with exit code 0.
+   - The set-up. The kit runs from an environment that has no training packages, and the base
+     interpreter of that environment has them. A `python` named without a folder reached the base
+     interpreter before, and the run trained by accident; now it is the environment's interpreter, and
+     the run fails at its first import. It follows from the checks, and I did not build it. The way out
+     is the one the reference names: the interpreter that has the packages, by its path.
+7. **The reference's entry was too broad in three places. True. Rewritten.** It said "is the
+   environment's" of every name, where that holds only for a name that has an `.exe` beside the
+   interpreter; it said that such a name was the base interpreter until 20 November, which holds for
+   `python` and `pythonw` only; and "whatever `PATH` says" holds only for names that exist in that
+   folder. The entry now says where the kit looks, for which names, what was different before, and the
+   two cases of findings 5 and 6.
+   (Added with point 43: the entry still said of a conda environment what holds for the layout of
+   `venv`, and of every program what holds for one with an `.exe`; reworded with the second reading,
+   finding 3.)
+
+### What the reader checked and found right
+
+From reading alone, in the reader's words shortened:
+
+- **`in_env` with odd names.** `python`, `python.exe` and `PYTHON` resolve. `python3.11`, a `.bat` or
+  `.cmd` name, a name with a dot or a space at its end, the empty name, `C:python`, `./x` and `a/b` give
+  nothing, and the old way would not have found the first five either. An empty `sys.executable` gives
+  nothing. Every caller passes a string.
+- **The folder.** Wherever no virtual environment is in play (a plain install, conda, the `py` launcher,
+  an embedded interpreter, an environment made with links), the folder of `sys.executable` is the folder
+  that Windows searches first. Each of the five places uses the process that starts the child.
+- **The final evaluation's parsing** gives the first word that Windows would take, for every name
+  without a folder that the reader could build. Odd quoting gives nothing, and so the old behaviour.
+- **`env --python`** uses the file for the probe and the fast paths only. It is neither printed nor
+  stored.
+- **The supervisor.** Stopping and killing a run end the whole process tree, so the one more level is
+  ended too. The exit code passes through the small `python.exe`. The sandbox options are Linux's and
+  are never affected.
+- **The places that were left out** (a remote target's transport programs, the agent's program, the
+  loop's syntax helper, the installer's version check): right to leave.
+- **The merge with `5ec95c6`:** nothing interacts beyond shifted lines.
+
+### What it could not judge by reading
+
+- **Whether a command that runs into a time limit is ended with its interpreter.** The kit gives a time
+  limit to the loop's evaluator, to a remote target's `on_finish` command and to `env --python` with its
+  fast paths. When the time is up, Python ends the process it started, which is now the small
+  `python.exe`, and then waits for that process's pipes to close: if the interpreter lived on, the wait
+  would hang. **Settled by running:** in seven kinds of environment (made by `venv` under Python 3.8.20,
+  3.11.7, 3.12.9, 3.14.0 and 3.15.0rc3, by uv 0.12.23 and by virtualenv 20.35.4), a `python` that sleeps
+  twelve seconds and then writes a file was started the way the kit starts it, with a limit of two
+  seconds, with pipes and without. The call came back after 2.0 s every time, and the file was never
+  written. As the control, the same command with a limit that it does not reach ended by itself after
+  12.0 to 12.1 s and wrote the file, in all seven. The small program takes its interpreter with it; I
+  did not read the launchers' source for how.
+- **The Microsoft Store's Python,** where the interpreter's path is an alias in `WindowsApps`. Not run,
+  as before.
+- **macOS.** Reading says the tests pass there. Nothing has run on a Mac, as before.
+
+### Changes in the behaviour of existing features
+
+- **`expctl status` on Windows without psutil** finds the run of a GPU process through that process's
+  parents, as it did with psutil and as it does on Linux. `gpus_observed` and the alert for a shared GPU
+  can appear where they were missing. That holds for every command whose GPU process is a child of the
+  recorded one, also outside a virtual environment; I tried the virtual environment only.
+- **`expctl final-eval` on Windows** accepts a program that has an `.exe` beside the interpreter also
+  where no folder of the `PATH` holds it. A name on the `PATH` is accepted as before, and a name that is
+  found nowhere is refused as before.
+- **On Linux and macOS** the kit does what it did.
+- **`docs/REFERENCE.md`:** the entry under "Notes and limits" is rewritten.
+- **`tests/test_kit.py`:** on Windows, a `venv` that makes no environment fails the test file where it
+  was a skip.
+
+### Tests
+
+- **The group in a virtual environment** (`env_tests`) has eight checks on Windows and six elsewhere,
+  where it had seven and five: the nine names' check is new, and four checks ask more than before (the
+  three launches read the manifest; the final evaluation runs with no `python` on the `PATH`).
+- **One check in the test file's main part** is new, beside the one that reads a process's start time
+  without psutil: with psutil hidden, the parent of a process that the test starts is the test's own
+  process, and a number that no process has gives nothing. Not on macOS.
+- **Each with its change taken out,** on a copy of the kit, on Windows under Python 3.11.7:
+
+  | taken out | what fails |
+  |---|---|
+  | nothing | nothing: the group's eight pass |
+  | the final evaluation's check asks the `PATH` only (finding 2) | the final evaluation's check |
+  | `in_env` takes a name with a folder | the names' check |
+  | `in_env` takes any ending | the names' check |
+  | `in_env` falls back to the `PATH` | the names' check |
+  | the manifest holds the file that was started | the three launch checks |
+  | the parent on Windows without psutil (finding 1) | the parent's check; the group's eight pass |
+  | the repair itself (the kit of `c6ddba2`) | all eight of the group, and the parent's check |
+
+- **Without git.** Cutting the folders that hold a `python` from the `PATH` can cut git with them, where
+  one folder holds both. Tried with a `PATH` of the system folder and the interpreter's folder alone:
+  the group's eight pass.
+- **Other interpreters and tools, on Windows:** the group's eight pass under Python 3.12.9, 3.14.0 and
+  3.15.0rc3, each with an environment of its own version, and in environments made by uv and by
+  virtualenv under 3.11.7. Under 3.8.20 and 3.11.7 they ran with the whole file, below.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,910 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,897 | 0 |
+  | WSL | 3.12.3 | 1,924 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,911 | 0 |
+
+  `tests/test_kit.py` alone has 1,209 checks on Windows and 1,215 in WSL, two more than with the repair
+  alone. The second row's interpreter has no psutil, so there the kit's own way to a parent is the one
+  in use. Skipped, as with the repair: on Windows the tmux tests in two files, the loop's sandbox checks
+  and one check of a link. Under Python 3.8.20 thirteen checks fewer run, on Windows as in WSL: two
+  parts of the benchmarks' tests that need PyTorch, twelve checks, each part with a line that says it is
+  skipped; and one check of the ports' tests, which needs Python 3.11 to read a TOML file and prints
+  nothing where it does not run. The change to the kit and to the tests is the same in the working tree,
+  in the clone and in the commit, by its hash. The reference's entry got one more sentence after the
+  runs began; no test reads that file.
+
+### Verified by running, and not
+
+- **By running, on this machine:** the three findings that held, before their repair and after it; the
+  two statements of the reference that findings 5 and 6 led to (the resumed run, `tqdm`); the time
+  limits; everything under "Tests". Windows 11 with an NVIDIA GPU and Python from python.org, uv and
+  virtualenv; WSL with Ubuntu.
+- **Not run:** macOS and GitHub's machines, since nothing is pushed; the Microsoft Store's Python; a
+  conda environment; a 32-bit Python, for the parent that Windows records; a campaign of the loop across
+  an upgrade; the made-up set-up of finding 6; a whole training run from an environment; a remote
+  target.
+- **Read by one reader:** the repair, `09af4a1`. **Read by nobody but me:** what this reading changed.
+  (Added with point 43: a fresh reader has read what this reading changed.)
+
+### Not done, and why
+
+- **No second reader** for this reading's repairs. Your word covered one.
+  (Added with point 43: your "Yes, read fixes" covered one since.)
+- **Nothing is pushed or merged,** and your real install is untouched. It has round 8's kit, which I
+  read on `main` for this and did not run: the launcher's defect; the refusal of finding 2, which is
+  older than the repair; and of finding 1 the older form only, a command that names the environment's
+  `python.exe` by its path, on Windows without psutil.
+- **The manifest does not record a run's interpreter** (finding 5). It would be a new field, and nobody
+  asked for it.
+- **macOS has no parent without psutil.** Nothing there needs one today.
+- **A fault inside the test group** still ends the test file with a traceback, as everywhere in that
+  file.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): the reading decides nothing that has a row.
+- **`pilot.py`, its allow list and the four void arm-runs** are as they were.
+
+### What needs your decision
+
+- **Whether a reader goes through this reading's repairs.** They are small, 23 lines in `expctl.py`, but
+  one of them asks Windows for a process's parent through `ctypes`, and I am their only reader.
+  (Added with point 43: decided by your "Yes, read fixes"; the reader found that question to Windows
+  right.)
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds five commits after
+  `5ccc2d4` now. A merge of `829d5b3` with `5ec95c6`, tried in memory with no branch, index or file
+  touched: the kit's code, the tests and the reference join by themselves, and the joined state has not
+  run. The records of both sides add to the same places of this file and of PROGRESS.md and are joined
+  by hand: points 39 and 40 of "Read this first" are the other session's, and this branch has 38, 41 and
+  42. On the test branch GitHub's six jobs would run the repair and this reading's checks for the first
+  time on macOS, on bare Linux and on Windows machines other than this one.
+  (Added with point 43: seven commits now, and this branch has point 43 too.)
+- **Whether the manifest should record the interpreter that a run was started with,** so that a change
+  of it at a resume shows. I would leave it until someone meets the case.
+- Unchanged from "The launcher's repair": whether a bare name should follow an activated environment
+  where another interpreter runs the kit; the ninth installer run. Unchanged from "The proof pilot":
+  `pilot.py`'s allow list and the four void arm-runs; where a pilot's records live; what is still wanted
+  from `%TEMP%\nnkit-upgrade`; the access token; the fine-tuning script's memory.
+
+Sources: the reader's report, and runs on this machine on 20 November 2026. The eight test files on the
+final state, from 17:25 to 18:12 UTC on Windows and from 17:26 to 17:45 UTC in WSL. The group under the
+other interpreters and tools at 17:34 UTC. Before them, on the same day: the trials of the findings, of
+the reference's two statements and of the time limits, from scratch scripts that are not part of the
+kit; the copies with one change taken out each.
+
+## The second reading of the launcher's repair (20 November 2026): no new fault found, an older fault of `status` repaired, and what Windows starts written down
+
+Your word: "Yes, read fixes", to my question at the end of the reading whether a fresh reader goes
+through its repairs. I took the word to cover that one reader, the check of each finding by running, the
+repair of what holds, tests, and local commits with their record. Not covered: a push, a merge, your
+real install, a further reader. It is the work of the pilot's session on its local branch,
+`claude/brave-robinson-27cbd9`: the commit `3784d0c` for the code and one for this record, after
+`27fd0dd`. No package was installed. Dates and times in this section are UTC.
+
+### In short
+
+1. **The reader found no fault that the first reading's repairs introduce.** Its first sentence: "I
+   found no fault that 829d5b3 introduces." It went through the kit's new question to Windows for a
+   process's parent detail by detail, for 64-bit and 32-bit Python, and found it right. Its five
+   findings are older than that commit, or in the tests, or in the reference's entry. I ran each before
+   I changed anything.
+2. **One older fault of the kit held, and it is repaired: `status` could put the GPU of a program that
+   belongs to no run on a run.** Windows keeps for each process the number of the process that started
+   it, also after that one has ended, and a later process can get the number. `expctl status` walks up
+   those numbers to find the run of a process that holds a GPU. On this machine one of about 500
+   processes named a number that another process holds now, and each of the 36 processes on the GPU
+   hung, some steps up, under a number that no process holds any more. A process of a run that got such
+   a number would have taken those GPUs into its run's `gpus_observed`, and with a second run the alert
+   for a shared GPU could be false. The walk ends now at a process that began after the one below it.
+   The first reading had named the gap and left it.
+3. **`final-eval`'s check of its program and the start still differ on Windows, in both directions.
+   Held; not repaired; the reference says it now.** The check lets pass a name that only a `.cmd` file
+   answers to, a name like `tool3.11`, and, in the shells of this Claude Code session, a program named
+   by a folder of the project with forward slashes. None of the three starts: the single use is
+   recorded, and the next call needs `--again`. Under Python 3.11 and older the check also refuses a
+   program named by a folder without its ending, which would start. What Windows starts without a shell
+   depends on the direction of the slashes, on a dot in the name, on a leading `.\` and on an
+   environment variable: I measured it and wrote the limits into `docs/REFERENCE.md`. On Linux the two
+   differ as well, where a `PATH=...` is written in front of the command. A rule in the kit that says
+   what the start does is a change of its own, and it is under "What needs your decision". Found in
+   passing: `expctl launch` does not start the forward-slash form in those shells either.
+   (Added with point 45: repaired on your "Yes, repair it", for the check and for `launch`; "The
+   lookup's repair".)
+4. **Of the two findings on the tests one is repaired, and one has no consequence.** A `venv` that ran
+   into the time limit of the first reading ended the test file with a traceback; it is a failed check
+   now on Windows, and the skip elsewhere. And the tests' cut of the `PATH` can leave no folder at all,
+   as the reader inferred: started from a folder that holds a `python.exe`, the cut kept none of 58
+   folders, and the group's eight checks passed all the same.
+5. **The reference's entry said of every virtual environment what holds for the layout of `venv`,
+   virtualenv and uv.** A conda environment keeps its interpreter and its commands in two folders.
+   Reworded; no conda was at hand to run it.
+6. **Of the four things the reader could not judge, one is measured.** Without psutil, Windows answered
+   the kit's question for a parent for every process of your own session, 330 at the count, and for none
+   of the 178 of the services' session; psutil, which reads a list of all processes, answers for all. A
+   run's processes are in your session. Where there is no answer the walk ends, as before.
+7. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,911 and 1,898 checks on Windows, 1,925 and 1,912 in WSL, none failed.
+   `tests/test_kit.py` has one check more, and it fails with the change, or a part of it, taken out.
+   **This reading's repairs are read by nobody but me,** and GitHub's machines, a Mac among them, have
+   run neither the repair nor what its two readings changed.
+   (Added with point 47: on your "Yes, start reader" a fresh reader has read the nine lines since. The
+   check did not fail without one line of the change, the one that moves the compared time up, and has
+   a third chain for it now; "The reading of the lookup's repair", finding 3.)
+8. **Nothing is pushed or merged.** The branch holds seven local commits after `5ccc2d4`: the pilot's
+   record, the repair and its record, the first reading's two, and this reading's two. Your real install
+   is untouched.
+   (Added with point 45: nine, with the two of the lookup's repair.)
+
+### The reader and its brief
+
+- **One reader:** an agent of this session on Opus 5.5 with read access only, which here means the file
+  tools and git's commands that only read. By its brief it ran nothing: where a trial would settle a
+  question it wrote the trial into its report, and I ran it. 132,573 tokens of the subscription, 15 tool
+  calls, under six minutes.
+- **What it read:** the commit `829d5b3` against its parent, 73 lines added and 10 removed in three
+  files, the repair `09af4a1` before it, and the code around both. The brief told it not to read
+  `docs/upgrade`, and not to take the commit message's claims as true.
+- **What it was asked for:** faults in five areas, each with a concrete case. The question to Windows
+  for a parent and its callers: the details of the call through `ctypes`, the access right, odd process
+  numbers, a reused number, the order where psutil is installed and fails, the cost. Whether
+  `final-eval`'s check accepts exactly what the start takes. Whether each new or changed check tests
+  what its message says, and what it does on other machines. The reference's entry, sentence by
+  sentence. And anything else that the commit leaves inconsistent in the kit's four scripts.
+- **Not asked for:** ways past the guard. The brief said so, and the guard was outside its scope.
+- **Its report:** five findings, a list of what it checked and found right, and four things that reading
+  could not settle. All three parts are below.
+
+### The findings, each checked
+
+I ran each before I changed anything. "Held" means that the fault showed when run.
+
+1. **A parent's number that went to another process can put a GPU on the wrong run. Held, as the state
+   of this machine. Older than the first reading, which widened it to Windows without psutil.
+   Repaired.**
+   - The reader's case. Windows gives a process no new parent when its parent ends: the number stays,
+     and a later process can get it. A program on the GPU that belongs to no run, started from a
+     terminal that is closed since; a run's process gets the terminal's old number; `status` adds that
+     program's GPU to the run.
+   - How `status` matches. For each process that `nvidia-smi` names on a GPU it takes the process itself
+     and then its parents in order, and the first that is the recorded process of an active run decides.
+     Nothing else in the kit asks for a parent.
+   - When run. A scan of this machine with the kit's own two questions, for a process's parent and for
+     its start time: of about 500 processes, 480 named a parent that began before them, 18 a number that
+     no process holds, and one a number that another process holds now, a console host that began 45.7 s
+     after the process that names it. The GPU's list held 36 processes, none of a run, and the chain of
+     every one of them ended in a number that no process holds. So what the case needs is this machine's
+     normal state, and all that is missing is a run's process that gets one of those numbers. I did not
+     stage that: the numbers are Windows' to give.
+   - What it cost. A GPU in the run's `gpus_observed` that the run does not use, and with it the alert
+     "GPU n shared by k active runs" where a second run uses or has declared that GPU. Neither stops or
+     refuses anything: the refusal at launch goes by `--gpus` alone.
+   - The repair: in `ancestors`, on Windows, the walk ends at a process that began after the one below
+     it, since a parent begins before its child. Nine lines with their comment. A process whose start
+     time Windows does not give does not end the walk, and the comparison goes on from the last time
+     that is known; a process that began at the same instant is a parent still. psutil's own `parent()`
+     makes the same test; the kit asks psutil for the number, which does not.
+   - After it: the same scan, twice. Every chain is in the order of the start times, for all 507 and all
+     516 processes, and the walk from the one process stops in front of the console host. A run on the
+     GPU that was launched as `python` from a virtual environment is found on GPU 0 as before, with
+     psutil and with psutil hidden.
+   - A limit: a system clock that is set back between the start of a parent and the start of its child,
+     by more than the time between the two, ends that walk early, and the run shows no GPU. I added no
+     allowance: it would let through a number whose new holder began within it.
+   - Outside Windows nothing changes. There a process whose parent ends gets a new, living parent.
+2. **`final-eval` can accept a program that the start cannot run, and the single use is spent. Held, and
+   so did the reverse. Older than the first reading. Not repaired; stated in the reference.**
+   - The reader's case. The check asks Python's `shutil.which`, which takes every ending that Windows
+     lists for commands, `.cmd` and `.bat` among them. The start, without a shell, adds `.exe` and
+     nothing else. So `foo eval.py` with only a `foo.cmd` on the `PATH` passes the check, the use is
+     recorded, and the start fails.
+   - When run, with `final-eval` itself in a fresh project for each row, the kit under Python 3.8.20,
+     3.11.7 and 3.12.9:
+
+     | the configured program | what happened |
+     |---|---|
+     | `foo`, where only `foo.cmd` exists | accepted; "could not start: [WinError 2]"; the receipt holds the use; the next call is refused as single-use (all three versions) |
+     | `foo.cmd` | runs |
+     | `tool3.11`, where only `tool3.11.exe` exists | accepted; could not start; the use is recorded (3.11.7) |
+     | `venv/Scripts/python.exe` | accepted; could not start; the use is recorded (3.11.7, in this session's shells) |
+     | `./venv/Scripts/python.exe` | runs (3.11.7) |
+     | `venv\Scripts\python.exe` | runs (all three versions) |
+     | `venv\Scripts\python` | refused as not found, with no use recorded, under 3.8.20 and 3.11.7; runs under 3.12.9 |
+
+   - What Windows starts without a shell. Measured with copies of `cmd.exe` under other names, started
+     as the kit starts a command, under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0; the start is Windows'
+     own, and the four agree:
+
+     | the name | started |
+     |---|---|
+     | a name without an ending, of which an `.exe` is found (`tool`, `TOOL`) | yes |
+     | a name of which only a `.cmd`, a `.bat` or a file without an ending is found | no |
+     | a `.cmd` or a `.bat` named with its ending | yes |
+     | a name with a dot (`tool3.11`, for `tool3.11.exe`) | no; with `.exe` written, yes |
+     | a folder with backslashes and no ending (`sub\tool`), also quoted, with spaces, or as a full path | yes |
+     | the same with a dot at its end (`sub\tool.`), or a file that has no ending | no |
+     | a folder with backslashes and a dot in the name (`sub\other3.11`) | no; with `.\` in front, yes |
+     | a relative folder with forward slashes (`sub/tool`, `sub/tool.exe`) | yes; no where the variable below is set |
+     | the same with `./` in front, or as a full path | yes |
+     | a name without a folder that lies in the current folder only | yes; no where the variable below is set |
+
+   - The variable is `NoDefaultCurrentDirectoryInExePath`. This session's shells have it, and neither
+     your stored environment nor the machine's does: it comes from the Claude Code session or from the
+     app around it, and I did not look which. With it, Windows started neither a name without a folder
+     that lies in the current folder only, nor a relative name with forward slashes.
+   - `shutil.which` differs by Python's version. Up to 3.11 it always looks in the current folder, and
+     it takes a name with a folder as it is written, without trying the endings. From 3.12 it tries the
+     endings for such a name too, and asks Windows whether the current folder counts. That is why
+     `venv\Scripts\python` is refused under 3.11 and runs under 3.12.
+   - The reader's second case is `python3` in a virtual environment, where the check finds the Microsoft
+     Store's alias, which prints a hint and ends. On this machine's `PATH` `python3` is that alias. I
+     did not start it.
+   - The reader's note for Linux and macOS: there the check reads the `PATH` that the kit runs with, and
+     the start reads the command's own. Held in both directions, in WSL under Python 3.12.3 and 3.8.20.
+     With `PATH=` naming a folder in front of a program that lies in that folder only, the check refused
+     with "the final evaluation's program was not found" and recorded nothing, though a start with that
+     `PATH` runs the program. With `PATH=/nonexistent` in front of `python3`, the check passed, the
+     start failed with "could not start: [Errno 2]", the use was recorded, and the next call was refused
+     as single-use. Not repaired, with the rest of this finding; the reference has a sentence for it.
+     Not run on macOS.
+   - Why it is not repaired here. It is older than the commits that were read and outside their aim: the
+     first reading's line made the check accept what the start takes for a name that has an `.exe`
+     beside the interpreter, and that holds. A rule that says what Windows will start has the corners of
+     the table above; the one I tried against it differed from the start in two rows. And the cost of a
+     mismatch is bounded: a refusal before any use, or a recorded use that `--again "the reason"` gives
+     back, with the reason in the receipt. The reference has the limits now, and the repair is under
+     "What needs your decision".
+     (Added with point 45: repaired since, on your "Yes, repair it"; "The lookup's repair". The rule
+     built there agrees with the table above in every row but one: a name with a dot and `.\` in front,
+     which Windows starts and the check refuses.)
+   - Found in passing, older, not repaired: `expctl launch` starts its command the same way. In this
+     session's shells `launch -- venv/Scripts/python.exe ...` and `launch -- venv/Scripts/python ...`
+     ended with "could not start: [WinError 2]"; with backslashes, or with `./` in front, they ran; and
+     with the variable taken out of the environment all five forms ran (Python 3.11.7). The repair and
+     its readings left a name with a folder as it was, so this is as old as the kit's start without a
+     shell; I did not run it on the kit of `main`.
+     (Added with point 45: both forms start now, in those shells too; "The lookup's repair".)
+3. **The reference's entry was too broad in two places. True. Reworded.**
+   - "that is the environment's `Scripts` folder" and the sentence on `tqdm` hold for an environment
+     made by `venv`, virtualenv or uv. A conda environment has its interpreter in its own folder and the
+     commands that pip installs in its `Scripts` folder: only `python` and `pythonw` are found beside
+     the interpreter there, and the commands come from the `PATH` as before. The entry says so now, from
+     conda's layout: no conda was at hand.
+   - "any other program that pip put there" held only for a program with an `.exe`, which the commands
+     that pip installs have. The entry says "every other program with an `.exe` there" now.
+   - The reader went through the entry's other sentences and found them true to the code.
+4. **A slow `venv` ended the whole test file. Held. Test only. Repaired.**
+   - The reader's case. The first reading gave the call that makes the environment a limit of 300
+     seconds. A `venv` that takes longer raised an error that nothing caught, and the file ended with a
+     traceback and without its last line.
+   - When run on Windows, with the call made to run into its limit: the tests of `27fd0dd` ended in the
+     traceback, at the line of the call. Now the group gives "FAIL python -m venv makes the virtual
+     environment that the checks below need", then the skip's line, and the file goes on. Outside
+     Windows the code gives the skip's line alone; not run there.
+   - Left as it is, as the first reading left it: another fault inside the group still ends the file
+     with a traceback, as everywhere in that file.
+5. **The tests' cut of the `PATH` can cut every folder. True as inferred, and nothing fails. Test only.
+   No change.**
+   - The reader's case. The group cuts from the `PATH` every folder in which a `python` is found. Up to
+     Python 3.11 that lookup also finds a `python.exe` in the current folder, whichever folder it is
+     asked about: started from a folder that holds one, the tests cut everything.
+   - When run, from the `Scripts` folder of an environment: the cut kept none of the 58 folders of the
+     `PATH`, and the group's eight checks passed, under Python 3.11.7 and 3.8.20. The group needs
+     nothing from the `PATH`: it starts the kit by the interpreter's path.
+   - The reader's other case, a folder that holds `python` beside `git` (Scoop's, Chocolatey's), is the
+     first reading's trial without git: the eight pass.
+
+### What the reader checked and found right
+
+From reading alone, in the reader's words shortened:
+
+- **The call to Windows.** The handle that `OpenProcess` gives fits the 32 bits that `ctypes` takes by
+  default, which Windows documents; it is the pattern of the kit's older question for a start time. The
+  status is read as a signed number, and only 0 counts. The buffer of six pointer-sized fields matches
+  Windows' structure on 64-bit and on 32-bit Python, 32-bit Python on 64-bit Windows included, and the
+  parent's number is the sixth. The handle is closed on every path that does not raise, and the reader
+  found no way to a raise between the opening and the closing.
+- **Odd process numbers.** 0, a negative number, one near or above 2^32, something that is not a number:
+  nothing. The System process gives 0, and the walk ends there.
+- **The order in `proc_parent`.** Where psutil is installed and fails, Windows is asked in place of a
+  `/proc` that does not exist: never worse than before. Linux is unchanged. macOS gives nothing, and has
+  no `nvidia-smi`.
+- **The cost:** at most 25 questions for each process on a GPU at each `status`. Negligible.
+- **The callers.** `proc_parent` is used by `ancestors` only, and `ancestors` by `build_status` only.
+  The nearest parent that is a run's decides, so a run's child is matched to its own launcher. The walk
+  cannot loop.
+- **`final-eval`, within what the first reading set out to do:** what `in_env` gives is exactly what the
+  start is given. Outside Windows it behaves as before.
+- **The tests.** The names' check fails if `in_env` takes any ending or always gives nothing. The final
+  evaluation's check fails with the old code. The check without psutil runs in a process of its own, so
+  nothing needs restoring, and it holds where the tests' interpreter is itself a virtual environment's.
+  The counts of checks in the commit message are right. Paths with spaces are quoted.
+- **The other scripts.** The loop and the remote path pass their first word through `in_env` as the
+  supervisor does. Nothing in the run logger is affected.
+
+### What it could not judge by reading
+
+- **Whether Windows answers for a process that the shell has no right to open:** one run as
+  administrator, one of the system's, a protected one. **Measured in part.** With the kit's question put
+  to every process of the machine, beside psutil's: the two agreed for every process that the kit's
+  question answered, 325 to 340 of them from one count to the next, and never differed; for 176 to 178
+  the kit's question had no answer. By session: all 325 processes of your account in your session and
+  the 5 system processes of that session were answered, for the parent and for the start time; all 178
+  processes of the services' session were not. The reader's own trial, a process started from an
+  administrator's shell and asked about from a plain one, is not run: I do not raise my rights. Its
+  proposal, to read Windows' list of all processes once for each `status` as psutil does, would answer
+  for all at about twenty lines; not done, since a run's processes are answered for today.
+- **A 32-bit Python,** for the buffer's layout: none at hand.
+- **A virtual environment made from conda's Python,** where `ctypes` may not load while the environment
+  is not activated; the kit's question then gives nothing, quietly. No conda at hand.
+- **The Microsoft Store's Python** as the tests' interpreter: not run, as before.
+
+### Changes in the behaviour of existing features
+
+- **`expctl status` on Windows,** with psutil and without: the walk from a process on a GPU up to its
+  run ends at a process that began after the one below it. A GPU can go from a run's `gpus_observed`
+  where it stood only by a reused number, and an alert for a shared GPU with it.
+- **`docs/REFERENCE.md`:** the entry on a virtual environment on Windows is reworded for conda and for
+  programs without an `.exe`. A new entry after it says what Windows starts without a shell, and where
+  `final-eval`'s check differs from the start, on Windows and outside it.
+- **`tests/test_kit.py`:** a `venv` that runs into its time limit is a failed check on Windows and a
+  skip elsewhere, where it ended the file.
+- **`final-eval` and `launch`** do what they did, and so does the kit on Linux and macOS.
+  (Added with point 45: until the lookup's repair, which changes both on Windows, and `final-eval`'s
+  check outside it.)
+
+### Tests
+
+- **One new check** in the test file's main part, beside the parent's, on every system. The kit is given
+  made-up parents and start times for two chains of processes. On Windows the walk must end in front of
+  a number that a later process holds, also where the start time of the process before it is not known,
+  and it must keep a parent that began at the same instant as its child. Elsewhere the same numbers must
+  give both chains whole.
+- **With the change, or a part of it, taken out,** on copies of the kit, on Windows under Python 3.11.7.
+  The check wants the first row's answer:
+
+  | the kit | the two walks |
+  |---|---|
+  | as it is, also under Python 3.8.20 | `[[9], [19]]` |
+  | of `27fd0dd` | `[[9, 8, 7], [19, 18]]` |
+  | the start times are not asked | `[[9, 8, 7], [19, 18]]` |
+  | the last known time is not kept past a process without one | `[[9], [19, 18]]` |
+  | "began at the same instant or after" for "began after" | `[[], [19]]` |
+
+  (Added with point 47: a copy without the line that moves the compared time up, which is not among
+  these four, gave the first row's answer as well, so the check did not pin that line. It has a third
+  chain since; "The reading of the lookup's repair", finding 3.)
+
+- **The time limit of `venv`** has no check of its own: the trial under finding 4 stands for it. A check
+  would need the tests to fake their own call.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,911 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,898 | 0 |
+  | WSL | 3.12.3 | 1,925 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,912 | 0 |
+
+  `tests/test_kit.py` alone has 1,210 checks on Windows and 1,216 in WSL, one more than with the first
+  reading. The second row's interpreter has no psutil, so there the kit's own questions to Windows are
+  the ones in use. What is skipped, and why thirteen checks fewer run under Python 3.8.20, is as in the
+  first reading's section. The change to the kit and to the tests is the same in the working tree, in
+  the clone and in the commit, by its hash. The reference's new entry got its last sentence, and lost an
+  example, after the runs began; no test reads that file.
+
+### Verified by running, and not
+
+- **By running, on this machine:** the five findings, the first as a scan of the machine's processes
+  before the repair and after it, the others as trials; what Windows starts without a shell; which
+  processes Windows answers for; a run on the GPU from a virtual environment, with psutil and without;
+  everything under "Tests". Windows 11 with an NVIDIA GPU and Python from python.org; WSL with Ubuntu.
+- **Not run:** the first finding's case itself, a run whose process holds a reused number; a clock that
+  is set back; the Microsoft Store's alias and its Python; a conda environment; a 32-bit Python; a
+  process of an administrator's shell; macOS and GitHub's machines, since nothing is pushed.
+- **Read by one reader each:** the repair, `09af4a1`, and the first reading's repairs, `829d5b3`. **Read
+  by nobody but me:** what this reading changed.
+  (Added with point 47: a fresh reader has read the nine lines in the walk and their check since, and
+  the tests' group and the reference's two entries as they stood after the lookup's repair.)
+
+### Not done, and why
+
+- **`final-eval`'s check is not made to say what the start does** (finding 2), and `launch`'s
+  forward-slash form is not repaired: the reasons are with the finding.
+  (Added with point 45: both are done since; "The lookup's repair".)
+- **No list of all processes for the parent's question,** the reader's proposal: a run's processes are
+  answered for today.
+- **No allowance for a clock that is set back** in the walk up a process's parents.
+- **No further reader** for this reading's repairs. Your word covered one.
+  (Added with point 47: your "Yes, start reader" covered one since.)
+- **Nothing is pushed or merged,** and your real install is untouched. It has round 8's kit, which I
+  read on `main` for this and did not run: the walk without the test of finding 1, which matters there
+  where psutil is installed, and the check of finding 2.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this reading decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether the kit's way to a program on Windows is repaired, for `final-eval` and for `launch`.** What
+  I would build: a program that the command names by a folder is looked up from the project's root and
+  handed to the start as the file to start, which takes away the difference between the slashes and the
+  variable's effect; and for a name without a folder the check follows the rule of the start, `.exe` and
+  nothing else. Outside Windows the check would read the command's own `PATH`, which is one line. It
+  changes what the repair and the first reading left alone on purpose, a name with a folder, so it wants
+  its own tests on Windows and its own reader. Until then the reference states the limits.
+  (Added with point 45: decided by your "Yes, repair it", and built as described here but for a batch
+  file, which is not handed over. It has its own tests. Its reader is still to come, on your word.)
+- **Whether a reader goes through this reading's repairs:** nine lines in `expctl.py`, on the path that
+  both readers' first findings went through, and I am their only reader.
+  (Added with point 45: still open, and asked now as one reader for these lines and the lookup's
+  repair.)
+  (Added with point 47: decided by your "Yes, start reader". The reader found no fault in the nine
+  lines, and a test that did not pin one of them; "The reading of the lookup's repair".)
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds seven commits after
+  `5ccc2d4` now. A merge of `3784d0c` with `5ec95c6`, tried in memory with no branch, index or file
+  touched: the kit's code, the tests and the reference join by themselves, and the joined state has not
+  run. The records of both sides are joined by hand as before: points 39 and 40 of "Read this first" are
+  the other session's, and this branch has 38, 41, 42 and 43.
+  (Added with point 45: nine commits now. Point 44 is the other session's as well, written on its local
+  branch on 20 November, and this branch has point 45 too.)
+- Unchanged from the first reading: whether the manifest should record the interpreter of a run.
+  Unchanged from "The launcher's repair" and "The proof pilot": what those sections list.
+
+Sources: the reader's report, and runs on this machine on 20 November 2026. The eight test files on the
+final state, from 19:09 to 20:01 UTC on Windows and from 19:09 to 19:28 UTC in WSL; the trial of a
+`PATH=...` in front of the command, in WSL at 19:29 UTC. Before them, on the same day: the scans of the
+machine's processes; the trials of the findings and of what Windows starts, from scratch scripts that
+are not part of the kit; the copies with a part of the change taken out.
+
+## The lookup's repair (20 November 2026): on Windows a program named by its folder starts whichever way its slashes point, and `final-eval` refuses before a use what will not start
+
+Your word: "Yes, repair it", to my question at the end of the second reading, "Repair how final-eval and
+launch find a program on Windows?" I took the word to cover the repair as that section describes it
+under "What needs your decision", tests in the kit's own test file, the eight test files on the final
+state, and local commits with their record. Not covered: a push, a merge, your real install, and a
+reader. I had said that with the repair I would ask for one reader on both together afterwards, on your
+word then; it is under "What needs your decision". It is the work of the pilot's session on its local
+branch, `claude/brave-robinson-27cbd9`: the commit `7edd37d` for the code and one for this record, after
+`d50cc44`. No package was installed. Dates and times in this section are UTC.
+
+### In short
+
+1. **On Windows a program that a command names by a folder starts now whichever way its slashes point.**
+   `venv/Scripts/python train.py`, a relative path with forward slashes, was not started where the
+   environment holds the variable `NoDefaultCurrentDirectoryInExePath`. The shells of this Claude Code
+   session hold it; your stored environment does not. The kit now finds the file itself, the `.exe` or
+   `.com` at that path with `.exe` added to a name without an ending, and hands it to Windows as the
+   file to start. That holds at all five places where the kit starts a command of yours: a launched run,
+   the final evaluation, `env --python`, the loop's evaluator and a remote target's `on_finish`. The
+   command line and the run's record keep the command as you wrote it.
+2. **`final-eval` asks for its program as the start will look for it, and refuses before a use is
+   recorded what will not start.** Until now it asked Python's `shutil.which`, which says yes to more
+   than Windows starts without a shell. Refused now, with nothing recorded: a name that only a batch
+   file answers to (`foo` for `foo.cmd`), a name with a dot that only an `.exe` stands behind
+   (`tool3.11`), a script named without its interpreter, where that variable is set a program without a
+   folder that lies in the project root only, and a batch file by a relative path with forward slashes.
+   Four of the five passed before on this machine under Python 3.11.7: the start failed, and the single
+   use was spent. Where a shell would have taken a file for the name, the refusal names that file. In
+   the other direction `venv\Scripts\python`, which the check refused under Python 3.11 and older, is
+   accepted and starts.
+   (Added with point 47: the file that the refusal names is what Python's own search finds, not what a
+   shell takes, and which names get it differs with Python's version; "The reading of the lookup's
+   repair", finding 1.)
+3. **Outside Windows the check reads a `PATH=...` that is written in front of the command, as the start
+   does.** One line. Until now a program that only that `PATH` holds was refused, and one that it does
+   not hold was accepted, recorded and not started: the second reading's note for Linux.
+4. **A batch file is not handed over: it stays Windows' to find and `cmd.exe`'s to run.** Handed over, a
+   batch file at a quoted path with a space no longer ran, which I measured before I wrote the rule. So
+   a batch file by a relative path with forward slashes still does not start where the variable is set.
+   The check refuses it, and the reference says how to name it.
+   (Added with point 50: not so any more for the loop's evaluator, and not so for the program of the
+   loop's agent: since "The folder's repair" the kit makes a full path of a relative name there, and
+   a batch file starts by either slash. `final-eval`'s check refuses the form as before.)
+5. **Two of the new checks did not catch the fault they were written for, and the trial with the change
+   taken out showed it.** They named the environment as `../venv/Scripts/python`, and Windows starts a
+   path that begins with `./` or `../` also where the variable is set. The checks name a copy of the
+   environment inside the project now. After that I took each part of the change out of a copy of the
+   kit, ten copies in all, and each copy fails the checks that are there for it: nine on Windows, and
+   the tenth, whose part is for the other systems, in WSL.
+6. **What the check still does not see** is under "Limits". It sees that a file is there and not whether
+   Windows can start it; it does not ask the two places where Windows looks before the `PATH`; and it
+   refuses a few forms that Windows starts, a name with a dot behind a folder among them, which passed
+   before under Python 3.12.9.
+7. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,916 and 1,903 checks on Windows, 1,927 and 1,914 in WSL, none failed.
+   `tests/test_kit.py` has five checks more on Windows and two more elsewhere. **This repair is read by
+   nobody but me,** like the second reading's nine lines before it, and GitHub's machines, a Mac among
+   them, have run none of it.
+   (Added with point 47: on your "Yes, start reader" a fresh reader has read both since. With this
+   repair two rare forms of name started the wrong file, and both are repaired; "The reading of the
+   lookup's repair".)
+8. **Nothing is pushed or merged.** The branch holds nine local commits after `5ccc2d4`: the seven of
+   the second reading's section and this repair's two. Your real install is untouched.
+   (Added with point 47: eleven, with the two of the reading of this repair.)
+
+### What changed in the kit
+
+`expctl.py` only, 51 lines added and 14 removed; the loop and the remote path call the same helper and
+are not touched.
+
+- **`in_env`, the helper that says which file is handed to the start.** Until now it answered for a name
+  without a folder only: the `.exe` of that name beside the kit's interpreter (the launcher's repair).
+  For a name with a folder it now gives the file at that path, seen from the folder the kit's process is
+  in, as Windows sees it: `.exe` is added to a name without an ending, and the file must end in `.exe`
+  or `.com` and be there. Anything else is left to Windows as before: a batch file, a script, a name
+  with a dot, a file that is not there. Outside Windows it gives nothing, as before.
+  (Added with point 47: left to Windows as well, since the reading of this repair: a name whose last
+  part the full path does not keep, which is one that ends in a dot, a space or a slash, or in `.` or
+  `..`. Until then the kit handed over an `.exe` that such a name does not name: `tool.exe` for
+  `tools\tool.`, and `tools.exe` for `tools\`.)
+- **`startable`, new, the question that `final-eval` asks before it records a use.** Outside Windows: is
+  the program found by the `PATH` that the command will run with. On Windows, in the order of the start:
+  the file that `in_env` hands over; for a name with a folder, a batch file that is there and is named
+  with backslashes or by its full path; for a name without a folder, a file of that name, with `.exe`
+  where it has no ending and with no other ending than `.exe`, `.com`, `.bat` or `.cmd`, in the current
+  folder unless the variable is set, or in a folder of the kit's own `PATH`.
+- **`final-eval`** asks `startable` where it asked `in_env` or `shutil.which`, and starts with the file
+  that `in_env` gives. The refusal still comes before anything is recorded. On Windows, where
+  `shutil.which` finds a file for the name, the refusal goes on with what Windows starts without a shell
+  and with that file: for `foo`, "there is" and the path of `foo.CMD`.
+
+### What Windows does, measured for this repair
+
+The second reading's table says what Windows starts by itself. These are the measurements beside it, on
+Windows 11, from scratch scripts that start a program as the kit does.
+
+- **Handed over as the file to start, with the command line unchanged,** these all start, with the
+  variable set and without it, under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0: `sub/tool.exe`,
+  `sub/tool`, `sub\tool`, `sub\tool.com` and `"sp ace\tool"`.
+- **Handed over, two forms start that Windows by itself does not:** `sub\other3.11` for an
+  `other3.11.exe`, and a program file that has no ending. The kit does not hand them over: "What was
+  left as it is".
+  (Added with point 47: Windows does start a program file that has no ending by itself, by a name with
+  a dot at its end, `sub\tool.`, a form that I did not try here; "The reading of the lookup's repair",
+  finding 4.)
+- **A path that begins with `./` or `../` starts by itself, also where the variable is set.** Only a
+  relative path with forward slashes and without that beginning does not. A full path with forward
+  slashes starts either way.
+- **A batch file, handed over:** `"sp ace\run.cmd" "a b"` ended with 1. Left to Windows, the file ran,
+  got `a b` as one argument and ended with the 7 that it returns.
+- **A batch file, left to Windows** (Python 3.11.7):
+
+  | the batch file is named | the variable set | not set |
+  |---|---|---|
+  | with backslashes (`sub\run.cmd`), also in quotes, also with a space | runs | runs |
+  | by its full path with forward slashes, also in quotes | runs | runs |
+  | by a relative path with forward slashes | not found (error 2) | `cmd.exe` ends with 1 |
+  | the same in quotes | not found (error 2) | runs |
+  | by a relative path with both kinds of slash (`sub\in/run.cmd`) | `cmd.exe` ends with 1 | `cmd.exe` ends with 1 |
+  | without a folder, in the current folder only | not found (error 2) | runs |
+  | without a folder, in a folder of the `PATH` | runs | runs |
+
+- **Whose `PATH`.** On Windows the search for the program reads the `PATH` that the kit runs with, not
+  the one the command is given. A batch file that the kit's `PATH` holds is then looked for once more by
+  `cmd.exe`, by the command's `PATH`: in the command's only, not found (error 2); in the kit's only,
+  started, and `cmd.exe` ended with 1 and "is not recognized"; in both, it ran.
+- **A file that Windows cannot start,** `sub\final.py`: error 193 either way. A `.com` file without a
+  folder, in a folder of the `PATH`: starts.
+- **The Microsoft Store's alias.** `python3.exe` in the Store's folder is a stub on this machine, which
+  has no Python from the Store. Python sees a file there and cannot open it. Started by its path, it
+  prints "Python was not found" and ends with 9009, handed over or left to Windows alike.
+
+### What was left as it is, and why
+
+- **A name without a folder keeps Windows' own search.** The kit hands over only the `.exe` beside its
+  interpreter, as since the launcher's repair. The check reads the current folder and the kit's `PATH`
+  as that search does, and starts nothing; the two places it leaves out are under "Limits".
+- **A name with a dot, and a file without an ending, are not handed over,** though they would start so.
+  By a plain relative path they never started, left to Windows. By a full path or behind `.\`, `./` or
+  `..\` Windows starts the name with a dot itself: a launched run with such a name starts as before, and
+  `final-eval`'s check refuses it, which is under "Limits". The repair takes away the effect of the
+  slashes and of the variable, and adds no rule of the kit's own for what a program is.
+- **A batch file is not handed over,** by the measurement above, and one by a relative path with forward
+  slashes is not made to work: that would mean rewriting the command line, which stays as you wrote it.
+- **No check before `launch` starts.** A run that cannot start ends with "could not start" and the
+  system's error, and nothing is spent.
+- **The use is not given back when the start fails.** That every attempt is on record is the receipt's
+  rule, and `--again "the reason"` is the way, as before.
+- **No start on trial and no look into the file.** A trial start starts the program. Reading a file's
+  first bytes for the mark of a program would be a rule of its own, and the Store's alias cannot be
+  opened.
+- **Windows' own search is not asked** (`SearchPathW`). It would cover the two places of the first limit
+  below, with a second call into Windows through `ctypes`, for a limit that refuses before any use.
+
+### Limits
+
+- **Two places are not asked.** Before the `PATH` Windows looks beside the running program, which in a
+  virtual environment is the base interpreter's folder, and in its own folders. A program that only they
+  hold is refused by the check, as `shutil.which` refused it. System32 and the Windows folder are on an
+  ordinary `PATH`.
+- **The check sees that a file is there, not whether Windows can start it.** A file that is no program
+  under a program's ending passes, fails at the start, and the use is recorded: tried under Python
+  3.11.7 with an empty file named `empty.exe`, in a folder of the `PATH` and by its folder (error 193
+  both ways), and with a text file under that ending in a folder of the `PATH` (error 216). The Store's
+  `python3` alias on a machine without the Store's Python passes, prints its hint and ends, and the use
+  is recorded. Both as before, for a name that the check passed before.
+- **A batch file without a folder that the kit's `PATH` holds and a `PATH=...` in front of the command
+  does not** passes, and fails inside `cmd.exe` with the use recorded.
+- **Refused, though it would start:** three kinds of name, each before any use.
+  - A name with a dot and a folder, for an `.exe` of that name. Windows adds the `.exe` itself where the
+    path is a full one, with either slash, or begins with `.\`, `./` or `..\`, and not where it is a
+    plain relative one (`sub\other3.11`, the second reading's row). The kit hands none of them over and
+    the check refuses them all; written with `.exe` they pass. Under Python 3.12.9 the check passed them
+    until now, so there they worked and are refused now, with the file named in the refusal; under
+    3.11.7 they were refused before as well.
+  - A program under another ending than `.exe`, `.com`, `.bat` or `.cmd`. A copy of a system program
+    named `prog.scr` started without a folder from a folder of the `PATH`, and as `sub\prog.scr`.
+    Without a folder the check refused it before too, under both Pythons; as `sub\prog.scr` it passed
+    before under 3.11.7 and was refused under 3.12.9.
+  - A batch file by a relative path with forward slashes in quotes, where the variable is not set.
+
+  I found the first kind while the tests ran, in the form `.\sub\other3.11`, and measured its other
+  forms and the second kind after the code's commit: that commit's message names the one form only, and
+  the reference has both kinds from this record's commit.
+  (Added with point 47: one kind more since the reading of this repair: a name with a dot or a space
+  at its end, which the kit no longer hands over. The check refuses it also where Windows starts it.)
+- **In the snapshot mode `copy`** a launched run works in the copy, and a relative path to a program is
+  read from there, as before. For the loop's evaluator and a remote target's `on_finish` the path is
+  read from the folder the kit was called in.
+  (Added with point 47: the last sentence is wrong for `on_finish` and for the evaluator of a campaign
+  that is started with `--detach`: both read the path from the project root. On Linux the evaluator
+  and `env --python` read it from the project root in every case. The table is in "The reading of the
+  lookup's repair", finding 2.)
+  (Added with point 50: since "The folder's repair" the evaluator's path is read from the project root
+  on every system, however the campaign is started, and the path after `env --python` from the folder
+  the command is typed in.)
+
+### Changes in the behaviour of existing features
+
+- **A launched run, `env --python`, the loop's evaluator and a remote target's `on_finish`, on
+  Windows:** a program named with a folder is started from the `.exe` or `.com` file at that path. A
+  form that started before starts the same file; `venv/Scripts/python` starts now where the variable is
+  set. A name without a folder, a batch file and everything outside Windows are as they were.
+- **`final-eval` on Windows:** the same for its program. Its check refuses the five forms of point 2
+  above and the forms under "Limits", and accepts `venv\Scripts\python` under every Python. A refusal
+  can end with a sentence on what Windows starts and with the file a shell would have taken.
+  (Added with point 47: with the file that Python's own search finds; In short, 2.)
+- **`final-eval` outside Windows:** a `PATH=...` in front of the command decides the check. A program
+  that only it holds is accepted; one that it does not hold is refused before a use.
+- **`docs/REFERENCE.md`:** the entry on what Windows starts without a shell says what the kit does now,
+  what it did until 20 November 2026, how to name a batch file, what the check refuses and what it
+  leaves. The entry before it points to it for a name with a folder. With this record's commit the entry
+  has one sentence more, on the two kinds of name that the check refuses though Windows starts them; no
+  test reads that file.
+
+### Tests
+
+All in the group of `tests/test_kit.py` that makes a virtual environment, 70 lines added and 10 removed.
+
+- **The check of the names** that `in_env` hands over has four more names: the environment's interpreter
+  by its full path and by a relative path with forward slashes and no ending, which are handed over on
+  Windows now, and that relative path with `.bat` and with `3.11` at its end, which are not.
+- **Five new checks on Windows,** where the kit runs with the variable set and one more folder on its
+  `PATH`. `final-eval` with `env2/Scripts/python`, a copy of the environment inside the project, runs in
+  that copy and writes its two rows. Two launched runs, by that name and with `.exe`, run in the copy
+  and keep the command as written in the manifest. `final-eval` refuses five names, records nothing for
+  any, and names `onlycmd.cmd` and `tool3.11.exe` in its refusals. And `"sp ace\final.cmd"` with the
+  argument `a b` runs and gets both arguments whole.
+- **Two new checks elsewhere.** A program that only the `PATH=...` in front of the command holds is
+  found and runs. With `PATH=/nonexistent` in front of `python` the refusal comes before a use.
+- **With a part of the change taken out,** on copies of the kit, on Windows under Python 3.11.7. The
+  group has 13 checks there; the last column is the rows that `final-eval` wrote for the five names it
+  has to refuse:
+
+  | the copy | checks that fail | rows written |
+  |---|---|---|
+  | the kit as it is | 0 | 0, 0, 0, 0, 0 |
+  | without the whole repair: `expctl.py` of `d50cc44` | 5 | 2, 2, 0, 2, 2 |
+  | a name with a folder is not handed over | 4 | 0, 0, 0, 0, 0 |
+  | a batch file is handed over too | 3 | 0, 0, 0, 0, 2 |
+  | the check asks `shutil.which`, as before | 1 | 2, 2, 0, 2, 2 |
+  | a batch file by a relative path with forward slashes passes the check | 1 | 0, 0, 0, 0, 2 |
+  | the variable is not looked at | 1 | 0, 0, 0, 2, 0 |
+  | any ending counts for a name without a folder | 1 | 0, 0, 2, 0, 0 |
+  | the refusal does not name the file | 1 | 0, 0, 0, 0, 0 |
+  | `final-eval` starts without the file handed over | 2 | 0, 0, 0, 0, 0 |
+  | outside Windows the `PATH` in front of the command is not read | 0 | 0, 0, 0, 0, 0 |
+
+  The five names are in the order of point 2 of "In short". The third, the script, is let through by one
+  copy only: this machine's shell does not take a `.py` file for a command, so the old check refused it
+  too. The last copy fails nothing on Windows, as it should, and in WSL under Python 3.12.3 it fails the
+  two new checks there, as does the copy without the whole repair.
+- **The first trial of this kind is what found the weak checks** of point 5: the copy that started
+  `final-eval` without the file handed over still passed, because `../venv/Scripts/python` starts by
+  itself.
+- **The group alone** passes with 13 checks on Windows under Python 3.8.20, 3.11.7, 3.12.9 and 3.14.0,
+  and with 8 in WSL under 3.12.3.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,916 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,903 | 0 |
+  | WSL | 3.12.3 | 1,927 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,914 | 0 |
+
+  `tests/test_kit.py` alone has 1,215 checks on Windows and 1,218 in WSL, five and two more than with
+  the second reading. What is skipped, and why thirteen checks fewer run under Python 3.8.20, is as in
+  the first reading's section. The three files are the same in the working tree, in the clone and in
+  `7edd37d`, by their hashes. The sentence that this record's commit adds to the reference came after
+  the runs.
+
+### Verified by running, and not
+
+- **By running, on this machine:** everything under "What Windows does" and under "Tests"; for a file
+  that is no program and for the forms under "Limits" that are refused though they would start, the
+  check's answer beside the start's. Windows 11 and Python from python.org; WSL with Ubuntu.
+- **Not run:** a real run of the loop's evaluator or of a remote target's `on_finish` with a program
+  named by a folder, which go through the same helper; `env --python` with such a name; the Microsoft
+  Store's Python, as the kit's interpreter or as the program; a conda environment; a 32-bit Python; a
+  network path; macOS and GitHub's machines, since nothing is pushed.
+  (Added with point 47: `env --python` with such a name is tried since, on Windows and in WSL; the
+  rest is not.)
+- **Read by one reader each:** the launcher's repair, `09af4a1`, and the first reading's repairs,
+  `829d5b3`. **Read by nobody but me:** the second reading's repairs, `3784d0c`, and this repair.
+  (Added with point 47: a fresh reader has read this repair and the second reading's nine lines since.)
+
+### Not done, and why
+
+- **What "What was left as it is" lists,** for the reasons there.
+- **No reader.** Your word covered the repair; the reader is the first question below.
+  (Added with point 47: your "Yes, start reader" covered one since.)
+- **Nothing is pushed or merged,** and your real install is untouched. It has round 8's kit, without the
+  launcher's repair and what followed it.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this repair decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether one fresh reader goes through this repair and the second reading's nine lines together.** I
+  would. Together they are 60 lines of `expctl.py` on the way of every start that the kit makes on
+  Windows and of every `status`, and I am their only reader. The brief would be for correctness, as the
+  two before it.
+  (Added with point 47: decided by your "Yes, start reader"; "The reading of the lookup's repair".)
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds nine commits after
+  `5ccc2d4` now. The other session's branch moved while this repair's tests ran. After `5ec95c6`, where
+  the public `test/round-9` stands as this clone last saw it, its local branch has two commits of 20
+  November: `05f996f` for code and `fd589b2` for its record, which holds point 44. I looked at 21:40 UTC
+  and fetched nothing. A merge of `7edd37d` with `fd589b2`, tried in memory with no branch, index or
+  file touched: the kit's code, the tests and the reference join by themselves, `REPORT.md` and
+  `PROGRESS.md` conflict, and the joined state has not run. The records of both sides are joined by hand
+  as before: points 39, 40 and 44 of "Read this first" are the other session's, and this branch has 38,
+  41 to 43 and 45. On the test branch GitHub's six jobs would run the repair, its readings and this
+  section's checks for the first time on macOS, on bare Linux and on Windows machines other than this
+  one.
+  (Added with point 47: eleven commits now. The other session's branch stands at `409182f` since, one
+  commit more, a record with its point 46, and so does the public `test/round-9` as this clone has it.
+  This branch has point 47 too. The merge's state is in "The reading of the lookup's repair".)
+- **Whether a name with a dot and a folder should start without its `.exe`,** as Windows starts it by
+  most paths. I would leave it. The reference's rule for such a name is to write the `.exe`; the refusal
+  comes before any use and, under Python 3.12.9, names the file; and to hand it over would make the kit
+  start one form that Windows does not.
+- Unchanged from the first reading: whether the manifest should record the interpreter of a run.
+  Unchanged from "The launcher's repair" and "The proof pilot": what those sections list.
+
+Sources: runs on this machine on 20 November 2026. The eight test files on the final state, from 20:47
+to 21:37 UTC on Windows and from 20:47 to 21:06 UTC in WSL. Before them and while they ran, on the same
+day: the measurements of what Windows starts, from scratch scripts that are not part of the kit; the
+group alone under the other interpreters; the copies with a part of the change taken out.
+
+## The reading of the lookup's repair (20 November 2026): since that repair two rare forms of name started the wrong file, one named by the reader and one found while repairing it; both repaired
+
+Your word: "Yes, start reader", to my question at the end of the lookup's repair, "Start one fresh
+reader on this repair and the second reading's nine lines?" I took the word to cover that one reader,
+the check of each finding by running, the repair of what holds inside the two changes that were read,
+tests, and local commits with their record. Not covered: a push, a merge, your real install, a further
+reader, and the repair of older faults outside those two changes. It is the work of the pilot's session
+on its local branch, `claude/brave-robinson-27cbd9`: the commit `c85f96a` for the code and one for this
+record, after `09bcc5c`. No package was installed. Dates and times in this section are UTC.
+
+### In short
+
+1. **The reader found no fault that breaks what worked before, in its own words. Run, its fourth finding
+   was one.** Its first sentence: "I found no fault in either change that makes something wrong that
+   worked before." It read the lookup's repair, `7edd37d`, and the nine lines that the second reading
+   put into the walk up a process's parents, `3784d0c`. Six findings: two on what the reference and the
+   refusal's hint say, one weak test, one regression that it rated harmless, one older gap, and one
+   limit that was known. I ran each before I changed anything.
+2. **A name with a dot at its end started another file since the lookup's repair. Held, and not
+   harmless. Repaired.** To Windows `tools\tool.` is the program file `tool` that has no ending. Since
+   `7edd37d` the kit handed Windows `tools\tool.exe` for that name: where both files lie in the folder,
+   the other one ran, and `final-eval`'s check let the name pass. The reader had expected that such a
+   name started nothing before, so that only more names start now.
+3. **Found while I tried the sibling forms of that repair: a name that ends in a slash, or in `.` or
+   `..`, started an `.exe` beside the folder it names. A fault of the same commit, which the reader did
+   not name. Repaired with the first.** `tools\`, `tools/`, `tools\.` and `tools\sub\..` started
+   `tools.exe`, a file beside the folder `tools`, and `tools\..` started the `.exe` that is named like
+   the current folder and lies beside it, which for `final-eval` is outside the project. Left to
+   Windows, none of them starts anything. One rule covers both faults: the kit hands a file to Windows
+   only where the full path keeps the last part of the name as it is written. Both faults take a name
+   that nobody writes on purpose, and the second an `.exe` that is named like a folder and lies beside
+   it.
+4. **The refusal's hint is not what a shell would have taken, and which names get it differs with
+   Python's version. Held. Reworded in the kit and in the reference; not made the same under every
+   version.** The file in the hint is what Python's own search finds. Up to Python 3.11 that search gave
+   no hint for `tools\final` beside a `tools\final.cmd`, and for a program in the project's root it gave
+   a hint that spoke of endings where the cause was the current folder.
+5. **The reference named the folder that a relative path is read from for two of the five places that
+   start a program. Held; it names all five now, and one sentence of my own record was wrong.** In two
+   of the five Windows and Linux read the path from different folders, which is older than both changes:
+   `env --python`, and the evaluator of a campaign that is started without `--detach`. Not repaired:
+   "What needs your decision".
+   (Added with point 50: repaired on your "Yes, repair it" of 21 November, together with a third place
+   of the same kind, the program of the loop's agent. The reference names six callers now; "The
+   folder's repair".)
+6. **The walk's test did not pin the line that moves the compared time up. Held. The check has a third
+   chain now, and on Windows it fails without that line.**
+7. **An older gap and a known limit stay as they are, and both are stated.** Outside Windows the check
+   refuses an empty `PATH=` in front of the command, where the start would look in the current folder:
+   the reference says so now. A clock that is set back ends the walk early: that was in this record and
+   is in the code's comment now.
+8. **Of the four things the reader could not judge, three are tried.** Windows does not start a program
+   from a folder of the `PATH` that is written in quotes, and the check refuses it. The kit's two
+   sources of a process's start time agree to 0.0000017 s wherever both answer. What Python's search
+   does under four versions is finding 1. The Microsoft Store's Python is not tried: none is here.
+9. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,916 and 1,903 checks on Windows, 1,927 and 1,914 in WSL, none failed. No
+   check is new; two are changed, and each fails with its change taken out. **This reading's repairs are
+   read by nobody but me,** and GitHub's machines, a Mac among them, have run none of it.
+10. **Nothing is pushed or merged.** The branch holds eleven local commits after `5ccc2d4`: the nine of
+    the lookup's section and this reading's two. Your real install is untouched.
+    (Added with point 50: thirteen, with the two of the folder's repair.)
+
+### The reader and its brief
+
+- **One reader:** an agent of this session on Opus 5.5 with read access only, which here means the file
+  tools and git's commands that only read. By its brief it ran nothing: where a trial would settle a
+  question it wrote the trial into its report, and I ran it. 167,917 tokens of the subscription, 20 tool
+  calls, about eight minutes.
+- **What it read:** change A, the commit `7edd37d` against its parent, with the files as they stand at
+  the branch's head: `in_env`, the new `startable` and `cmd_final_eval` in `expctl.py`, the group
+  `env_tests` in the tests, and the reference's two entries, the second of which has one sentence more
+  at the head than in `7edd37d`. Change B, the nine lines of `3784d0c` in `expctl.ancestors`, with their
+  check. And the code around both in the kit's four scripts. The brief told it not to read
+  `docs/upgrade`, and not to take what commit messages and docstrings claim as true.
+- **What it was asked for:** faults in seven areas, each with a concrete case. `in_env` for a name with
+  a folder: a program that started before and does not now, or for which another file is started, with a
+  list of odd names to consider. The five callers: what reaches `in_env`, which folder the process is in
+  at that moment, and whether the kit resolves a relative name to the file that Windows resolved it to
+  before. `startable` against the start below it, in both directions, on Windows and elsewhere, and
+  whether the hint is right wherever it can appear. `ancestors`: whether a true parent can be taken for
+  a later process, what `status` then shows, every caller, the cost. The tests: whether each new or
+  changed check tests what its message says, and what it does on other machines. The reference's two
+  entries, sentence by sentence. And anything else that the two changes leave inconsistent in the kit's
+  four scripts, on the three systems or under Python 3.8.
+- **Not asked for:** ways past the guard. The brief said so, and the guard was outside its scope.
+- **Its report:** six findings, a list of what it checked and found right, and four things that reading
+  could not settle. All three parts are below.
+
+### The findings, each checked
+
+I ran each before I changed anything. "Held" means that the fault showed when run. Where nothing else is
+said, a trial ran on Windows 11 under Python 3.11.7, once with the variable
+`NoDefaultCurrentDirectoryInExePath` set and once without it.
+
+1. **The refusal's hint depends on Python's version, and where it appeared its words could mislead.
+   Held. Reworded; the dependence stays, and the reference says it.**
+   - The reader's case. Where `final-eval` refuses its program on Windows, it adds a hint if Python's
+     `shutil.which` finds a file for the name. The reference said "where a shell would have taken a file
+     for the name", and so did this record. `shutil.which` is no shell, and it differs by version: up to
+     3.11 it adds no ending to a name with a folder, and it always looks in the current folder; from
+     3.12 it adds the endings to such a name too, and asks Windows whether the current folder counts. So
+     up to 3.11 `tools\final`, beside a `tools\final.cmd`, got no hint, and a program in the project's
+     root, where the variable is set, got one that spoke of endings and batch files where the cause was
+     the current folder.
+   - When run on the kit of `09bcc5c`, with the variable set, in a folder that holds `onlyroot.exe` and
+     `tools\final.cmd`: the check refused both names, as it should; `shutil.which` found nothing for
+     `tools\final` and found `onlyroot.EXE` for `onlyroot`. The hint's text was: "Without a shell
+     Windows starts an .exe, whose ending may be left out, and a .com or a batch file by its full name
+     (a batch file by a relative path: with backslashes); there is ...". Nothing in it says why
+     `onlyroot.exe`, which is there, was not found.
+   - The hint says now: without a shell Windows starts an `.exe`, whose ending may be left out where the
+     name has no dot, and a `.com` or a batch file by its full name, a batch file by a relative path
+     with backslashes; a name without a folder it looks for in the current folder only where the
+     variable is not set; and then the file that Python found.
+   - After it, with `final-eval` itself, the variable set, in a project that also holds
+     `tools\tool3.11.exe`:
+
+     | the configured program | Python 3.8.20 and 3.11.7 | Python 3.12.9 and 3.14.0 |
+     |---|---|---|
+     | `onlyroot` | refused, with the hint: "There is .\onlyroot.EXE" | refused, no hint |
+     | `tools\final` | refused, no hint | refused, with the hint: "There is tools\final.CMD" |
+     | `.\tools\tool3.11` | refused, no hint | refused, with the hint: "There is .\tools\tool3.11.EXE" |
+     | `tools/final.cmd` | refused, with the hint | refused, with the hint |
+     | `tools\tool.` | refused, no hint | refused, no hint |
+
+     In each row where the hint appears, its text names the cause. The refusal comes before a use is
+     recorded: so the code reads, and the test group counts the receipt's rows for the names that it
+     refuses.
+   - Not done: a hint that is the same under every version. It would take a search of the kit's own in
+     place of `shutil.which`, for a sentence that only helps to read a refusal. The code's comment and
+     the reference say which names get it.
+2. **The reference named the folder that a relative path is read from for two of the five callers. Held,
+   as a gap of the reference. The behaviour is older than both changes. The reference names all five
+   now; where Windows and Linux differ, nothing is repaired.**
+   - The reader's case. On Windows the kit makes a full path of a relative name from the folder that its
+     own process is in, which is where Windows read the name from before. On Linux the start reads the
+     name from the folder that the program is given to work in. For `final-eval` and for a launched run
+     the two are one folder. For the other three the reader named the folder as it read it: the folder
+     of the user's shell for `env --python`, the loop's own for the evaluator, the controller's for
+     `on_finish`; and for the evaluator a case that works on Linux and not on Windows.
+   - What holds:
+
+     | the caller | Windows | Linux |
+     |---|---|---|
+     | `final-eval` | the project root | the project root |
+     | a launched run | the folder it works in | the same |
+     | a remote target's `on_finish` | the project root | the project root |
+     | the loop's evaluator, the campaign started with `--detach` | the project root | the project root |
+     | the loop's evaluator, the campaign started without `--detach` | the folder the loop was called in | the project root |
+     | `env --python` | the folder the command was typed in | the project root |
+
+     (Added with point 50: since "The folder's repair" the last two rows are the same on both systems:
+     the evaluator's path is read from the project root however the campaign is started, and the path
+     after `env --python` from the folder the command is typed in. The program of the loop's agent,
+     which has no row here, differed too and is repaired with them.)
+
+   - How I know. `on_finish` is started by the controller, and the kit starts the controller in the
+     project root on every system: by reading. With `--detach` the loop's own process is started in the
+     project root, and without it the loop stays where it was called: by reading. The mechanism under
+     both, tried with a start of the evaluator's kind outside a campaign: on Windows a relative program
+     was found from the kit's own folder and not from the folder given to the program, with either slash
+     and either state of the variable; in WSL it was found from the folder given to the program.
+     `env --python`, tried with the command itself, typed in a subfolder of a project: on Windows, under
+     Python 3.11.7 and 3.12.9, a path relative to that subfolder was probed and a path relative to the
+     project root failed as not found; in WSL, under 3.12.3, the reverse.
+   - Not tried: the evaluator of a real campaign, and a real `on_finish`, with a program named by a
+     folder.
+     (Added with point 50: the evaluator is tried since by the loop's own start of it, with the loop's
+     process in a subfolder, on Windows and in WSL; a whole campaign's evaluator and a real `on_finish`
+     are not.)
+   - One sentence of my own record was wrong. "The lookup's repair" says under "Limits" that for the
+     evaluator and for `on_finish` the path is read from the folder the kit was called in. That is wrong
+     for `on_finish` and for a campaign started with `--detach`. A note stands there now.
+   - Not repaired: it is older than the two changes that were read, and which folder is the right one is
+     a choice. It is under "What needs your decision".
+     (Added with point 50: repaired since, on your "Yes, repair it" of 21 November; "The folder's
+     repair".)
+3. **The walk's test did not pin the line that moves the compared time up. Held. Test only. Repaired.**
+   - The reader's case. `ancestors` compares the start of each parent with the start of the process
+     directly below it. A walk that compared every level with the start of the process it began at would
+     have given the check's two chains the same answers.
+   - When run: a copy of the kit without that line gave the two chains as the check of `3784d0c` wants
+     them, `[[9], [19]]`.
+   - The repair: a third chain, in which the process two steps up began before the one that the walk
+     begins at and after the one below itself. Process 30 began at 100, its parent 29 at 90, and 28,
+     which 29 names as its parent, at 95. On Windows the walk must end in front of 28.
+   - After it, on Windows under Python 3.11.7 and 3.8.20: the kit gives `[[9], [19], [29]]`, and the
+     copy without the line `[[9], [19], [29, 28]]`. In WSL, under 3.12.3 and 3.8.20, the kit and the
+     copy both give the three chains whole, which is what the check wants there. Outside Windows the
+     walk compares no times, so the chain pins the line on Windows only, which is where the line has an
+     effect.
+4. **A name with a dot at its end started another file. Held, as a regression of `7edd37d`, and not
+   harmless. Repaired, with a second fault of that commit that I found beside it.**
+   - The reader's case. Python's `os.path.abspath` drops a dot or a space from the end of a path, as
+     Windows does for the name of a file. So for `venv\Scripts\python.` the kit found `python.exe` and
+     handed it over. The reader expected that Windows did not start such a name before, marked the
+     finding "Regression of 7edd37d, but harmless: more names start now", and added: "Nothing that
+     started before stops starting."
+   - When run on the kit of `09bcc5c`, with a folder `tools` that holds `tool.exe` and a program file
+     `tool` without an ending, and a folder `only` that holds `tool.exe` alone:
+
+     | the name | left to Windows | as the kit started it | `final-eval`'s check |
+     |---|---|---|---|
+     | `tools\tool.` | the file without an ending | `tool.exe` | passed |
+     | `only\tool.` | nothing (error 2) | `tool.exe` | passed |
+     | `only\tool` with a space at its end, `only\tool.exe.` | `tool.exe` | `tool.exe` | passed |
+
+     The first row is another file than Windows starts, and than the kit started before `7edd37d`. A dot
+     at the end of a name is Windows' way to name a program file without an ending. This record did not
+     have that: its earlier tables have such a name only as one that starts no `.exe`.
+   - The reader's second case, a folder with a dot in its name (`my.tools/run`), did not hold: Windows
+     starts `my.tools\run` for a `run.exe` by itself, and the kit hands over that same file.
+   - Found while I tried the sibling forms of my first repair, and not named by the reader. The full
+     path also drops a slash from the end of a name and resolves `.` and `..`, so the kit added `.exe`
+     to the name of a folder. In the same trial, with a `tools.exe` beside the folder `tools`, and
+     beside the current folder an `.exe` of that folder's name:
+
+     | the name | left to Windows | as the kit started it | `final-eval`'s check |
+     |---|---|---|---|
+     | `tools\`, `tools/` | nothing (error 2) | `tools.exe` | passed |
+     | `tools\.`, `tools\sub\..` | nothing (error 5) | `tools.exe` | passed |
+     | `tools\..` | nothing (error 5) | the `.exe` beside the current folder | passed |
+
+   - The repair: `in_env` hands a file over only where the full path keeps the last part of the name as
+     it is written. Two lines. A name with a dot or a space at its end, with a slash at its end, or with
+     `.` or `..` as its last part goes to Windows as it did before `7edd37d`. My first repair looked at
+     the dot alone; the second table came from trying its siblings, and the one rule covers both.
+   - After it, the same names, with the variable set and without: none is handed over, the kit starts in
+     every row what Windows starts, and the check refuses every one of them. `tools\tool` and
+     `only/tool` are handed over and start, as since `7edd37d`.
+   - What it costs: `final-eval`'s check refuses, before any use, a name with a dot or a space at its
+     end also where Windows starts it: `tools\tool.` for a program file without an ending, and the two
+     forms of the first table's last row. The reference says so.
+5. **Outside Windows the check refuses an empty `PATH=` in front of the command, where the start would
+   look in the current folder. Held. Older than both changes. Not repaired; the reference says it.**
+   - When run in WSL under Python 3.12.3, in a folder that holds a program `prog`: with `PATH=` in
+     front, the check refused and a start with that environment ran `prog`; with `PATH=:/usr/bin` in
+     front, whose first entry is empty, the check passed and the start ran.
+   - Not repaired: it is a refusal before any use, of a form that I do not expect in a project's
+     settings, and it is outside the two changes. One more sentence in the reference.
+6. **A clock that is set back ends the walk early. A limit, as the reader says: known, and not worse
+   than stated.** This record has it three times in the second reading's section. The reader adds what
+   `status` then shows: the run has no GPU among its `gpus_observed` and the GPU counts as no run's, so
+   an alert can be missed and none is raised falsely. That sentence is in the docstring of `ancestors`
+   now. Not run, as before.
+
+### What the reader checked and found right
+
+From reading alone, in the reader's words shortened:
+
+- **`in_env` for a name without a folder:** the old code and the new give the same answer.
+- **`in_env` outside Windows** gives nothing, and it cannot raise on any system.
+- **Odd names:** `C:tool.exe`, a network path, a device's name, a folder named like the file, an ending
+  in capitals, an empty name: no wrong file is handed over.
+- **A name with a folder and no file there** falls back to Windows' own search as before.
+- **A launched run:** the supervisor's folder is the folder that the run works in, also in a snapshot
+  copy, so the kit and the child read a relative name from the same place, and that is where Windows
+  read it before.
+- **`final-eval`:** the change into the project root comes before the check, and the start works in the
+  root. A `NAME=value` in front changes the command's environment only. On Windows `startable` reads the
+  kit's own `PATH` and variable, as Windows does; outside Windows the command's `PATH`, as the start
+  does.
+- **`startable`'s rules on Windows** agree with `in_env` and with the limits that the reference states.
+- **Building the hint** cannot raise.
+- **`ancestors`:** a reused number belongs to a process that began after the true parent ended, and so
+  after the child began: the test is complete apart from clocks. The two sources of a start time read
+  one value of Windows. Equal times pass, and an unknown start time does not end the walk. Nothing
+  changes outside Windows. The only caller is `status`, which takes the first match. The cost is one
+  more question for a start time at each level.
+- **Python 3.8:** nothing newer is used.
+- **The tests:** each new check on Windows fails on the old code, since the checks set the variable
+  themselves whatever the shell has. The checks outside Windows are sound with paths that have spaces.
+
+One sentence of the report did not hold when run, and one list was short. Under its fourth finding the
+report says that nothing which started before stops starting: the program in the first row of that
+finding's table no longer started, and another ran in its place. And the list of odd names above is
+right for the names in it, and lacks the names of that finding's second table.
+
+### What it could not judge by reading
+
+- **Whether Windows starts a program from a folder of the `PATH` that is written in quotes.**
+  `startable` takes such an entry for no folder. **Tried:** with a quoted folder in front of the `PATH`,
+  Windows did not start a program that lies in it, the check refused it, and `shutil.which` found
+  nothing; with the same folder unquoted, all three found it.
+- **Whether psutil's start time of a process equals the kit's own.** **Tried:** over all processes of
+  the machine that the kit's question answers for, 460 and 464 at two counts, the largest difference was
+  0.0000017 s.
+- **The Microsoft Store's Python,** whose `python.exe` may not read as a file: not tried, none is here.
+- **`shutil.which` under Python 3.8, 3.11, 3.12 and 3.14:** tried, finding 1.
+- Not covered by the reader, in its words: whether the loop's evaluator command is always a list, and
+  whether the loop is ever started outside the project root on Windows. The second is answered under
+  finding 2: a campaign without `--detach` runs where it was called. The first I did not follow either.
+
+### Changes in the behaviour of existing features
+
+- **A start by the kit on Windows,** in all five places: a name with a dot or a space at its end, a
+  slash at its end, or `.` or `..` as its last part is no longer made into a file by the kit. Windows
+  gets it as before `7edd37d`. `tools\tool.` starts the program file without an ending again, where
+  `7edd37d` started `tool.exe`. A name that ends in a slash, in `\.` or in `\..` starts nothing, where
+  `7edd37d` started an `.exe` named like the folder. `only\tool.`, beside a `tool.exe` alone, no longer
+  starts, as before `7edd37d`.
+- **`final-eval`'s check on Windows** refuses those names before any use, three of them though Windows
+  starts them: finding 4, "What it costs".
+- **`final-eval`'s refusal on Windows:** the hint's wording. Which names get it is unchanged.
+- **`docs/REFERENCE.md`:** four sentences in the entry on a start without a shell on Windows. The folder
+  that a relative path is read from, for all five callers and where Linux differs; what the hint is and
+  how it differs by Python's version; a third kind of name that the check refuses though Windows starts
+  it; an empty `PATH=` outside Windows.
+- **Nothing changes outside Windows,** and `status` is as it was: `ancestors` has one sentence more in
+  its docstring.
+
+### Tests
+
+- **No check is new, and two are changed.** The names' check of `env_tests` has three names more that
+  must not be handed over: the environment's interpreter by a relative path with a dot at its end, with
+  a slash at its end, and with `/.` at its end. The walk's check in the test file's main part has the
+  third chain of finding 3.
+- **With the change taken out,** on copies of the kit, on Windows under Python 3.11.7:
+
+  | the kit | the two changed checks |
+  |---|---|
+  | as it is | both pass; the walk gives `[[9], [19], [29]]` |
+  | of `09bcc5c` | the names' check fails: the name with the dot is handed over as `python.exe` |
+  | with my first repair, for the dot alone | the names' check fails: the two names with a slash are handed over as `python.exe` |
+  | without the line that moves the compared time up | the walk's check fails: `[[9], [19], [29, 28]]` |
+
+  The second row ran with the check as it stood then, which had the first of the three names only.
+- **The group `env_tests` alone,** 13 checks on Windows and 8 in WSL: none failed on Windows under
+  Python 3.11.7, 3.8.20, 3.12.9 and 3.14.0 with the final code. In WSL, under 3.12.3 and 3.8.20, the
+  group alone ran before the last repair to `in_env`, which stands behind the line that returns outside
+  Windows; the run of all files below has the final state.
+- **The hint's wording** has no check of its own: the group's check wants a refusal and counts the
+  receipt's rows, and the table under finding 1 stands for the text.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,916 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,903 | 0 |
+  | WSL | 3.12.3 | 1,927 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,914 | 0 |
+
+  `tests/test_kit.py` alone has 1,215 checks on Windows and 1,218 in WSL, as many as with the lookup's
+  repair. The second row's interpreter has no psutil. What is skipped, and why thirteen checks fewer run
+  under Python 3.8.20, is as in the first reading's section. The three files are the same in the working
+  tree, in the clone and in `c85f96a`, by their hashes.
+
+### Verified by running, and not
+
+- **By running, on this machine:** the first five findings and my own find, each on the kit before the
+  change and after it; the folder that a relative path is read from, with `env --python` on Windows and
+  in WSL and with a start of the evaluator's kind; the quoted folder of the `PATH`; the two sources of a
+  start time; everything under "Tests". Windows 11 with Python from python.org; WSL with Ubuntu.
+- **By reading only:** where the controller and a detached loop are started, for the table under finding
+  2; that a refusal comes before the record of a use.
+- **Not run:** the evaluator of a real campaign and a real `on_finish` with a program named by a folder;
+  a clock that is set back; the Microsoft Store's Python; a conda environment; a 32-bit Python; a
+  network path; macOS and GitHub's machines, since nothing is pushed.
+  (Added with point 50: the evaluator with a program named by a folder is run since by the loop's own
+  start of it, not by a whole campaign; "The folder's repair".)
+- **Read by one reader each:** the launcher's repair, `09af4a1`; the first reading's repairs, `829d5b3`;
+  the lookup's repair, `7edd37d`; and of the second reading's repairs, `3784d0c`, the nine lines in
+  `ancestors` with their check and the reference's entries as they stand now. **Read by nobody but me:**
+  what this reading changed.
+
+### Not done, and why
+
+- **The folder that a relative path is read from is not made the same on Windows and on Linux** (finding
+  2): older than what was read, and a choice. The first decision below.
+  (Added with point 50: made the same since, on your "Yes, repair it" of 21 November; "The folder's
+  repair".)
+- **No hint that is the same under every version of Python** (finding 1), and **no change for an empty
+  `PATH=`** outside Windows (finding 5): the reasons are with the findings.
+- **No allowance for a clock that is set back** in the walk up a process's parents, as before.
+- **No reader for what this reading changed.** Your word covered one reader.
+- **Nothing is pushed or merged,** and your real install is untouched: the two changes that were read,
+  and this reading's, are on this local branch only.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this reading decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether a relative path to a program is read from the same folder on Windows and on Linux, in the
+  two places where it is not:** `env --python`, and the evaluator of a campaign that is started without
+  `--detach`. I would repair both in one small change of its own: the evaluator's path from the project
+  root on both systems, since it is a setting of the project, and the path after `--python` from the
+  folder the command is typed in on both, since it is typed there. On Windows that changes the evaluator
+  of a campaign that is called from a subfolder, and on Linux `env --python` typed in one. It wants its
+  own tests on both systems.
+  (Added with point 50: decided by your "Yes, repair it" of 21 November and built as these lines say,
+  with a third place that they do not name, the program of the loop's agent; "The folder's repair".)
+- **Whether a reader goes through this reading's repairs:** two lines in `in_env`, on the way of every
+  start that the kit makes on Windows, the hint's wording, and two changed checks. I would not start one
+  for these lines alone. If the first decision is built, its reader can take them along.
+  (Added with point 50: the first decision is built, and no reader has gone through it or through
+  these lines. Asked now as one reader for both; "The folder's repair".)
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds eleven commits after
+  `5ccc2d4` now. The other session's branch moved again while this reading ran. After `5ec95c6` it has
+  three commits of 20 November: `05f996f` for code, `fd589b2` for its record with point 44, and
+  `409182f`, a record with point 46, which says that its second reading's repairs are on the public test
+  branch and that all six of GitHub's jobs pass on them; that commit touches the ledger too. The public
+  `test/round-9` stands at `409182f` as well, as this clone has it. I looked at 23:47 UTC and fetched
+  nothing. A merge of `c85f96a` with `409182f`, tried in memory with no branch, index or file touched:
+  the kit's code, the tests and the reference join by themselves, `REPORT.md` and `PROGRESS.md`
+  conflict, and the joined state has not run. A third local branch, `claude/fervent-gould-8d0820`, has
+  one commit after `409182f` since 23:43 UTC, `81634a3`, which changes `expctl.py`, `runlog.py`, the
+  tests and the reference. Tried the same way, its kit files join with this branch's by themselves too,
+  and that state has not run either. The records of both sides are joined by hand as before: points 39,
+  40, 44 and 46 of "Read this first" are the other session's, and this branch has 38, 41, 42, 43, 45 and
+  47.
+  (Added with point 50: thirteen commits now. Two more local branches have a commit of code and one of
+  record since: `claude/fervent-gould-8d0820` with point 48 and `claude/sharp-faraday-6bd610` with
+  point 49. This branch has point 50 too. The merge's state is in "The folder's repair".)
+- Unchanged from "The lookup's repair": whether a name with a dot and a folder should start without its
+  `.exe` (I would leave it), and what that section lists besides, less the reader. Unchanged from the
+  sections before it: what they list.
+
+Sources: the reader's report, and runs on this machine on 20 November 2026. The eight test files on the
+final state, from 22:55 to 23:46 UTC on Windows and from 22:55 to 23:14 UTC in WSL. Before them, on the
+same day: the trials of the findings and of my own find, from scratch scripts that are not part of the
+kit, the two tables under finding 4 again after the repair; the copies with a part of the change taken
+out.
+
+## The folder's repair (21 November 2026): a relative path to a program is read from the same folder on Windows and on Linux, at three places, one more than the question named
+
+Your word: "Yes, repair it", to my question at the end of the reading of the lookup's repair, "Make
+Windows and Linux read a relative program path from the same folder?" I took the word to cover the
+repair as that section describes it under "What needs your decision", tests in the kit's own test files,
+the eight test files on the final state, and local commits with their record. Not covered: a push, a
+merge, your real install, and a reader. One thing I decided without you, and it is easy to undo: a third
+place has the same difference, the program of the loop's agent, and I repaired it in the same change (In
+short, 2). It is the work of the pilot's session on its local branch, `claude/brave-robinson-27cbd9`:
+the commit `31af10c` for the code and one for this record, after `df59ad2`. No package was installed.
+Dates and times in this section are UTC.
+
+### In short
+
+1. **At the two places that the question named, a relative path to a program is read from the same
+   folder on Windows and on Linux now.** The loop's evaluator is a setting of the project, and its path
+   is read from the project root on every system. Until now Windows read it from the folder the loop was
+   called in, which only `--detach` made the project root. The path after `env --python` is typed, and
+   it is read from the folder the command is typed in on every system. Until now Linux read it from the
+   project root. Two lines of code at each place.
+2. **A third place had the same difference, and I repaired it in the same change without asking: the
+   program of the loop's agent, named with `--agent-exe`.** I found it when I went through every start
+   that the kit gives a folder to work in. The question's words cover it and its two places do not, so
+   it is a part of its own that can be taken out again: "What needs your decision". Until now only the
+   check before the start read the path where the command was typed. A session starts in the campaign's
+   worktree. Outside Windows it looked for the path from there and did not find it, so the campaign
+   stopped with "the agent could not be started" at its first session, which in a new campaign comes
+   after the baseline has trained. On Windows a session found an `.exe` and did not find a batch file.
+   And a loop started with `--detach` read the path from the project root: the call answered `ok`, and
+   the loop in the background ended at once, with the refusal in its `loop.log`. Now the path is read
+   once, where the command is typed, and every later start gets it as a full path.
+3. **On Windows two forms start now that did not, because the kit makes a full path of the name.** The
+   agent's program by a relative path with forward slashes, where the variable
+   `NoDefaultCurrentDirectoryInExePath` is set. And an evaluator that is a batch file by a relative path
+   with forward slashes. For the kit's other starts "The lookup's repair" holds as it stands: there such
+   a batch file does not start.
+4. **What changes for a use that worked before.** On Windows, an evaluator that is named relative to a
+   subfolder, in a campaign that is called in that subfolder without `--detach`: its path is read from
+   the project root now. On Linux, `env --python` typed in a subfolder with a path relative to the
+   project root: the path is read from the subfolder now. Outside Windows, an agent program that the
+   project itself holds at the path that was typed: a session ran the worktree's copy of it, and runs
+   the file where the command was typed now. A command that is typed in the project root reads the first
+   two as before.
+5. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,920 and 1,907 checks on Windows, 1,931 and 1,918 in WSL, none failed. Four
+   checks are new, two in `tests/test_kit.py` and two in `tests/test_loop.py`, and each fails with its
+   change taken out. The agent's program is tried with the tests' stand-in agent and not with a real
+   one, and the evaluator by the loop's own start of it and not by a whole campaign. **This repair is
+   read by nobody but me,** like the last reading's repairs before it, and GitHub's machines, a Mac
+   among them, have run none of it.
+6. **Left as they are, and stated: three things of the same family and one corner.** A relative `--root`
+   with `--detach`, typed outside the project root, is read a second time from the project root by the
+   loop in the background. A relative `python` in the project's settings is read from three folders. A
+   name without a folder after `--agent-exe` is left to each system's search. And under Python 3.12 and
+   older a path on Windows that begins with a slash and has no drive is not made a full one. Each is the
+   same on Windows and on Linux or outside the question: "What was left as it is".
+7. **Nothing is pushed or merged.** The branch holds thirteen local commits after `5ccc2d4`: the eleven
+   of the last section and this repair's two. Your real install is untouched.
+
+### What changed in the kit
+
+- **`env --python`** (`cmd_env` in `expctl.py`): outside Windows, a path after `--python` that has a
+  folder and is not a full path is joined to the folder the command is typed in, before the start that
+  probes it. That start is given the project root to work in, and outside Windows a start reads a
+  relative program from the folder it is given. On Windows a start reads it from the folder of the kit's
+  own process, which is where the command is typed, so nothing changes there.
+- **The loop's evaluator** (`Campaign.evaluate` in `nnloop.py`): the first word of the evaluator's
+  command, where it has a folder, is joined to the project root, on every system. A name without a
+  folder goes to the system's search as before, and a full path stays what it is. On Linux with
+  bubblewrap the evaluator runs in its box, and the command's first word is the box's program by its
+  full path: nothing changes there, and the box, which is given the project root, reads the evaluator's
+  program from it as before.
+- **The agent's program** (`preflight` and `cmd_run` in `nnloop.py`): the path, where it has a folder
+  and is not a full path, is joined to the folder the command is typed in, before the check runs it with
+  `--help`. The campaign keeps the full path, so each session starts that file. With `--detach` the call
+  hands the path as it read it to the loop in the background, as one more `--agent-exe` at the end of
+  that loop's command line, where the last one counts. That also holds for a program that the kit found
+  by its own search, without `--agent-exe`: the loop in the background starts the file that the call
+  checked and does not search a second time.
+- **Joined, and not resolved.** All three use `os.path.join` and leave the name as it is written.
+  `os.path.abspath` drops a dot, a space or a slash from the end of a name on Windows, which is the
+  fault that the last reading found in `7edd37d`.
+- **A full path is left alone** by the two joins to the typed folder. Outside Windows the question for
+  the current folder fails where that folder was deleted, and a full path worked there before. By
+  reading, not tried.
+- **The size:** 66 lines added and 12 removed in five files: `expctl.py` 4, `nnloop.py` 10,
+  `tests/test_kit.py` 24, `tests/test_loop.py` 13 and 4, `docs/REFERENCE.md` 15 and 8. In the two
+  scripts that is seven lines of code and seven of comment.
+- **How I looked for further places:** every start in the kit's four scripts that is given a folder to
+  work in. The others start the kit's own interpreter by its full path, or change into the folder first,
+  as `final-eval` and a launched run's supervisor do, so that both systems read from one folder; a
+  remote target's `on_finish` is started by a controller that the kit starts in the project root. By
+  reading.
+
+### What the three places did, and do now
+
+Trials from scratch scripts that are not part of the kit. Windows 11 under Python 3.11.7, each once with
+the variable `NoDefaultCurrentDirectoryInExePath` set and once without it; WSL under Python 3.12.3 where
+nothing else is said. "Before" is the kit of `df59ad2`.
+
+- **`env --python`, the command itself, typed in a subfolder of a project.** "Probed" means that the
+  interpreter answered:
+
+  | the path after `--python` | Windows, before and now | WSL, before | WSL, now |
+  |---|---|---|---|
+  | relative to that subfolder | probed | not found | probed |
+  | relative to the project root | not found | probed | not found |
+
+  In WSL this is with an interpreter that lies under the home folder, Python 3.8.20 in a virtual
+  environment. With WSL's own interpreter in `/usr/bin` the first path was probed before as well: it
+  climbs to the top of the file system, where one step more or less changes nothing. The second row was
+  as in the table.
+- **The evaluator, by the loop's own start of it,** with the loop's process in a subfolder that holds
+  files of the same names as the project root, on Windows:
+
+  | the evaluator's program | before | now |
+  |---|---|---|
+  | `tools\prog`, `tools/prog`, `tools\prog.exe`, `.\tools\prog` | the subfolder's file | the root's |
+  | `..\p\tools\prog`, through the project's own folder `p` | no start | the root's |
+  | `tools\tool.`, a program file without an ending | no start | the root's |
+  | `tools\ev.cmd` | the root's batch file | the root's batch file |
+  | `tools/ev.cmd` | no start where the variable is set, else `cmd.exe` ends with 1 | the root's batch file |
+  | a full path; `cmd`, a name without a folder | the same file | the same file |
+
+  The batch file's two arguments, one of them with a space, arrived whole wherever it ran.
+  `tools\ev.cmd` ran the root's file before as well: Windows only needs a file of that name in the
+  loop's folder to see a batch file, and `cmd.exe` then looks for the name in the folder that it is
+  given. With the loop in the project root every row but `tools/ev.cmd` started the root's file before
+  too. The project's path had a space; earlier on the same day the same trial ran with a path without
+  one, with the same answers after the change. In WSL the evaluator was read from the project root
+  before, and the new check passes there on the kit before as well.
+- **The agent's program:** the loop's own check before the start, typed in a folder, and then a start of
+  what the check kept, in another folder, as a session starts it in the worktree. Two folders `a` and
+  `b` each hold `tools\agent.cmd`, and `a` alone holds `tools\prog.exe`. On Windows:
+
+  | the name after `--agent-exe` | before: the check | before: the start | now |
+  |---|---|---|---|
+  | `tools\agent.cmd`, `.\tools\agent.cmd` | passed | `cmd.exe`: "The system cannot find the path specified." | the batch file of the folder it is typed in |
+  | `tools/agent.cmd` | refused where the variable is set, else passed | `cmd.exe`: not recognized | the batch file of the folder it is typed in |
+  | `tools\prog`, typed in `a` | passed | the `.exe` | the `.exe` |
+  | `tools/prog`, `tools/prog.exe`, typed in `a` | refused where the variable is set, else passed | the `.exe` | the `.exe` |
+  | the same three, typed in `b` | refused | | refused |
+  | a full path | passed | that file | that file |
+
+  The batch file got its argument with a space whole. In WSL, with a script `tools/agent` in each
+  folder: before, `tools/agent` and `./tools/agent` passed the check and did not start in the other
+  folder, as not found; now each starts the script of the folder it is typed in. A name that climbs out
+  and back in, `..\a\tools\agent.cmd`, started `a`'s file before as well on both systems, which only
+  says that the trial's third folder lies beside `a`.
+- **With `--detach`,** by a whole campaign of the tests with the stand-in agent, the command typed in a
+  subfolder and the agent named by a relative path from there: before, the loop in the background wrote
+  "--help did not run" into `loop.log` and no run began; now the campaign runs. It is the first of the
+  two new checks in `tests/test_loop.py`.
+
+### What was left as it is, and why
+
+- **A relative `--root` with `--detach`,** typed outside the project root. The loop in the background
+  gets the call's command line, starts in the project root and reads `--root` from there, so it looks
+  for the project one level too deep. The same on Windows and on Linux, older than this change, and not
+  a program's path, which the question was about. By reading, not tried. One line of the same kind as
+  the agent's would repair it: "What needs your decision".
+- **A relative `python` in the project's settings** is read from three folders: from the loop's own for
+  the loop's check before the start, from the folder that a run works in for training, and from the
+  project root where the evaluator's command begins with it. The same on both systems. By reading; I did
+  not follow what such a setting does in each snapshot mode.
+- **A name without a folder after `--agent-exe`** goes to each system's own search as before and is not
+  made a full path. On Windows that search also looks in the folder the command is typed in, where the
+  variable is not set: an `.exe` that is found there starts in a session, and a batch file that is found
+  there passes the check and is not run by a session, since `cmd.exe` looks for the name in the
+  worktree. Tried, and the same before and now. Written as `.\agent.cmd`, the name is made a full path
+  and runs.
+- **A path on Windows that begins with a slash and has no drive,** `\tools\agent.cmd`: under Python 3.12
+  and older it counts as a full path and is left as written for the agent's program; from 3.13 it is
+  joined, and gets the drive of the folder the command is typed in. The two differ only where a detached
+  loop's project lies on another drive than that folder. By reading, not tried.
+- **`final-eval`, a launched run and a remote target's `on_finish`** read a relative path from one
+  folder on both systems already, by the table under finding 2 of the last section, and are not touched.
+
+### Changes in the behaviour of existing features
+
+- **The loop's evaluator, on Windows:** a relative path to its program is read from the project root,
+  where it was read from the folder the loop was called in. Nothing changes for a campaign that is
+  called in the project root or started with `--detach`. A batch file by a relative path with forward
+  slashes starts now.
+- **The loop's evaluator, outside Windows:** the file that started before starts. Without the
+  evaluator's box its program reaches the start as a full path; in the box nothing changes.
+- **`env --python`, outside Windows:** a relative path is read from the folder the command is typed in,
+  where it was read from the project root. Nothing changes for a command that is typed in the project
+  root, and nothing on Windows.
+- **The loop's agent program, on every system:** a relative path is read once, from the folder the
+  command is typed in, and the sessions and a loop in the background start that file. Outside Windows a
+  session no longer runs the worktree's copy of a file that the project holds at that path. On Windows a
+  relative path with forward slashes passes the check also where the variable is set, and a batch file
+  by a relative path runs in a session.
+- **A loop started with `--detach`** starts the agent program that the call checked, also where the kit
+  found it by its own search, and does not search again.
+- **`docs/REFERENCE.md`:** the entry on a start without a shell on Windows names the folder for each of
+  six callers, says since when it is the same on both systems and what it was until then, and names the
+  evaluator and the agent's program as the exception to its rule on batch files.
+- **Nothing changes** for `final-eval`, a launched run, a remote target's `on_finish`, `status` and the
+  guard.
+
+### Tests
+
+- **Four checks are new.**
+  - `tests/test_kit.py`, in the group `env_tests`, which has 15 checks on Windows and 10 in WSL now. The
+    first types `env --python` in a subfolder of the test project, once with the environment's
+    interpreter by a relative path from that subfolder and once by a relative path from the project
+    root: the first must be probed, the second must fail. The second makes a campaign in a process that
+    stands in that subfolder and lets the loop start its evaluator, without the evaluator's box and
+    named the same two ways: the path from the project root must start, the other must not.
+  - `tests/test_loop.py`, in campaign b, which runs whole campaigns with a stand-in agent. The first
+    resume with `--detach` is typed in a subfolder of the project, with the agent named by a relative
+    path from there: the call must answer `ok` and a run must begin. A later resume without `--detach`
+    names the agent by a relative path from the project root: a session must have run.
+- **With the change taken out:**
+
+  | the kit | `env_tests`, Windows | `env_tests`, WSL | the test project and campaign b, Windows and WSL |
+  |---|---|---|---|
+  | as it is | 15 pass | 10 pass | 14 pass |
+  | of `df59ad2` | the evaluator's check fails | the check of `env --python` fails | |
+  | without the join of the agent's path | | | 4 fail: the two new checks and two older ones that build on them |
+  | without the line that hands the path to the loop in the background | | | 2 fail: the check with `--detach` and one that builds on it; the session's check passes |
+
+  Each system fails the one check of `env_tests` whose fault it had. Windows under Python 3.11.7. WSL
+  under 3.12.3, and under 3.8.20 as well for `env_tests` and for campaign b on the kit as it is. Without
+  the join, the loop in the background wrote on Windows "..\..\agent.cmd --help did not run", and a
+  session's answer was "'..\agent.cmd' is not recognized as an internal or external command".
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,920 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,907 | 0 |
+  | WSL | 3.12.3 | 1,931 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,918 | 0 |
+
+  `tests/test_kit.py` alone has 1,217 checks on Windows and 1,220 in WSL, and `tests/test_loop.py` 266
+  and 277: two more each than with the last reading. The second row's interpreter has no psutil. What is
+  skipped, and why thirteen checks fewer run under Python 3.8.20, is as in the first reading's section.
+  The five files are the same in the working tree, in the clone and in `31af10c`, by their hashes.
+
+### Verified by running, and not
+
+- **By running, on this machine:** the three places on the kit before the change and after it, as the
+  tables say; the four new checks, each with its change taken out; a name without a folder after
+  `--agent-exe`; everything under "Tests". Windows 11 with Python from python.org; WSL with Ubuntu.
+- **By reading only:** which other starts are given a folder and why they need nothing; the evaluator in
+  its box on Linux, where the command's first word is the box's program; a program that the kit's own
+  search finds in the current folder, whose path Python gives with `.\` in front and which is then
+  joined like a typed one; a deleted current folder; a path with a slash in front and no drive; the
+  relative `--root` and the relative `python` under "What was left as it is"; that outside Windows a
+  session ran the worktree's copy of a file that the project holds at the typed path.
+- **Not run:** a real agent, in a campaign or alone; the evaluator of a real campaign with a program
+  named by a folder; the name forms of the three tables under another Python than the one named there;
+  macOS and GitHub's machines, since nothing is pushed.
+- **Read by one reader each:** the launcher's repair, `09af4a1`; the first reading's repairs, `829d5b3`;
+  the lookup's repair, `7edd37d`; and of the second reading's repairs, `3784d0c`, the nine lines in
+  `ancestors`. **Read by nobody but me:** the last reading's repairs, `c85f96a`, and this repair.
+
+### Not done, and why
+
+- **No reader.** Your word covered the repair; the reader is the second question below.
+- **The four things under "What was left as it is"** are not repaired: each is the same on both systems
+  or outside the question.
+- **No trial with a real agent.** It would be a session that is billed to your subscription, for a
+  change that the stand-in agent's campaigns cover on both systems.
+- **Nothing is pushed or merged,** and your real install is untouched: this repair and all that this
+  section's branch holds are on this local branch only.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this repair decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether the third place stays,** the agent's program. I would keep it: the fault showed on both
+  systems, as a campaign that stops at its first session or as a loop in the background that ends at
+  once after the call said `ok`, and the repair is three lines of code. To take it out: the five lines
+  in `preflight` and the one in `cmd_run`, the two checks in `tests/test_loop.py`, and the reference's
+  words on the agent's program.
+- **Whether one fresh reader goes through this repair and the last reading's repairs together.** I would
+  now. They are few lines, and they lie on the way of every start that the kit makes on Windows, of
+  every evaluation and of every session of a campaign, and I am their only reader. The brief would be
+  for correctness, as the three before it.
+- **Whether a relative `--root` with `--detach` is repaired.** I would, as a small change of its own
+  with one check: the call hands the project root to the loop in the background as it found it, the way
+  it hands the agent's program now.
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds thirteen commits after
+  `5ccc2d4` now. The other session's branch and the public `test/round-9`, as this clone has it, stand
+  at `409182f` as before; I looked at 02:37 UTC and fetched nothing. Two more local branches have a
+  commit of code and one of record after `409182f` now. `claude/fervent-gould-8d0820` has `81634a3`,
+  which the last section names, and since then `f68b71c`, its record with point 48.
+  `claude/sharp-faraday-6bd610` is new: `bcfab15` changes the guard, two test files and the reference,
+  and `b5331fb` is its record with point 49. A merge of `31af10c` with each of the three heads, tried in
+  memory with no branch, index or file touched: the kit's code, the tests and the reference join by
+  themselves each time, `REPORT.md` and `PROGRESS.md` conflict, and none of the joined states has run.
+  All four together are not tried. The records of all sides are joined by hand as before: points 39, 40,
+  44 and 46 of "Read this first" are the other session's, 48 and 49 those two branches', and this branch
+  has 38, 41, 42, 43, 45, 47 and 50.
+- Unchanged from "The reading of the lookup's repair": what that section lists, less its first question.
+  Unchanged from the sections before it: what they list.
+
+Sources: runs on this machine on 21 November 2026. The eight test files on the final state, from 01:45
+to 02:36 UTC on Windows and from 01:45 to 02:04 UTC in WSL. Before them, on the same day: the group
+`env_tests` and campaign b alone, on the kit as it is and on copies with a part of the change taken out,
+and the first trials of the three places. While they ran and after them: the trials of the three tables
+and of a name without a folder as they stand here, from scratch scripts that are not part of the kit,
+and campaign b once more on copies of the final state, in WSL and on Windows.
 
 ## 1. What changed and why
 
@@ -11532,6 +14551,9 @@ What limits the comparison:
 Everything is kept in `%TEMP%\nnkit-upgrade\pilot2`: `pilot.json`, the projects and transcripts, and the analysis
 scripts `analyze.py` and `power.py` with their output `pilot2-stats.json`. The first pilot is untouched in `pilot1`.
 The same command again continues after the last recorded arm-run.
+(Added on 20 November: no longer. `pilot.json`, the transcripts and the analysis scripts of both folders are gone
+since that day, and Windows' disk cleanup is the likely cause. The project folders are still there; I did not check
+them for completeness. "The proof pilot", "What needs your decision".)
 
 ## 3. What was verified, and how
 
@@ -12111,6 +15133,8 @@ to the kit with "Trustworthy decisions" (section 4). Still open:
    the noise, 4.1 million tokens from your subscription. More runs of the same comparison are not worth their usage
    (section 10, item 1); say if you want a second task or a stronger model instead. A second task exists since
    round 3 (`benchmarks/finetune/`); no comparison ran on it.
+   (Added on 20 November: one ran, on both tasks with five arm-runs per arm, and again found no difference beyond
+   the noise; "The proof pilot".)
 4. **Cursor**: install its terminal agent and say whether a container may be used for a loop test.
 5. **Codex**: approve the kit's hooks once in `/hooks` of a test project, or allow
    `--dangerously-bypass-hook-trust` in temporary test projects. That also lets me capture a real Codex payload.
@@ -12172,6 +15196,9 @@ round 5's independent review: they are checked by my own probes and tests only.
    kit protects (sealed data untouched, overfitting to the validation split) next to the final loss. The second
    task exists since round 3 (`benchmarks/finetune/`, 44 seconds a run with the model's loading); no comparison
    ran on it.
+   (Added on 20 November: one ran on both tasks, with five arm-runs per arm: "The proof pilot". The arms lie
+   within the noise of one another on the second task too, and to establish the edges seen would take about 29
+   and 63 arm-runs per arm.)
 2. A loop campaign on a task of your own, to see whether kept changes add up outside the benchmark. On the
    benchmark the campaign of 12 November (section 2) kept two of eleven trained changes and then ended itself
    with a third of its runs unused, because the agent saw no change that would clear the margin: what limits the

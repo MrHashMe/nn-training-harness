@@ -735,6 +735,70 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   project that tracks such files, or does not ignore them, changes once. The journal, the search's storage file
   and the runs folder no longer make a tree `dirty`.
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.
+- In a virtual environment on Windows, a program that a command names without a folder (`python` in a launched
+  command, in a final evaluation command, in the loop's evaluator, in an `on_finish` command, and after
+  `env --python`) is looked for first beside the interpreter that runs the kit, as `<name>.exe`. Where the
+  interpreter of an environment made by `venv`, virtualenv or uv runs the kit, that is the environment's `Scripts`
+  folder: `python` is the environment's interpreter, and so is every other program with an `.exe` there, which the
+  commands that pip installs have (`transformers`, `tqdm`), whether or not the environment is activated and
+  whatever `PATH` says. A conda environment has its interpreter in its own folder and those commands in its
+  `Scripts` folder, so there only `python` and `pythonw` come from beside the interpreter and the commands from
+  `PATH` as before (by conda's layout: no conda was at hand to run it). Until 20 November 2026 the base
+  interpreter's folder came first instead: `python` and `pythonw` were the base interpreter, which has none of the
+  environment's packages, and the environment's other programs were found through `PATH` only. A name with another
+  ending than `.exe` and a name with no `.exe` beside the interpreter are found as before; a name with a folder is
+  the file at its path (the next entry). Where another interpreter than the environment's runs the kit, `python` is
+  that interpreter: name the environment's interpreter by its path. A run that began with the kit as it was before
+  and is resumed with it as it is now has its first part from the base interpreter and its second from the
+  environment's: where the run logger is used, the two parts' `env.json` name the two, and the kit records a run's
+  interpreter nowhere else. A campaign of the loop that goes on across that change starts its later runs and its
+  evaluator in the environment's interpreter, and nothing records the evaluator's. The programs of a remote target's
+  `exec` and `hf` lists are found as before.
+- On Windows the kit starts a command without a shell, and what Windows then finds is narrower than what a shell
+  finds (measured on 20 November 2026 on Windows 11, under Python 3.8 to 3.14). A name without an ending is started
+  as its `.exe` and as nothing else: a command that only a `.cmd` or `.bat` file answers to (`npm`, for one) needs
+  that ending written, and `python3.12` needs its `.exe` written, because Windows takes the `.12` for an ending. A
+  program named with a folder (`venv/Scripts/python`) is the `.exe` or `.com` file at that path, `.exe` where the
+  name has no ending, and since 20 November 2026 the kit hands that file to Windows itself, so it starts whichever
+  way its slashes point. Until then a relative path with forward slashes, and without `./` or `../` in front, was
+  not started where the environment holds the variable `NoDefaultCurrentDirectoryInExePath`, which the shells of the
+  Claude Code session of that day did. A relative path is read from the same folder on Windows and elsewhere since
+  21 November 2026: from the project root for `final-eval`, for a remote target's `on_finish` command and for the
+  loop's evaluator, which are settings of the project; for a launched run from the folder it works in; and from the
+  folder the command is typed in for the path after `env --python` and after the loop's `--agent-exe`, which are
+  typed there. Until then Windows read the evaluator from the folder the loop was called in, which only `--detach`
+  made the project root; outside Windows the path after `env --python` was read from the project root; and the
+  agent's program was read where the command was typed by the check before the start only: a session, which starts
+  in the worktree, read it from there outside Windows and did not find a batch file on Windows, and a loop started
+  with `--detach` read it from the project root. (Tried on Windows and in WSL, not on a Mac: `env --python`; the
+  evaluator by the loop's own start of it, not by a whole campaign; the agent's program by campaigns with a stand-in
+  agent, not with a real one.) A batch file stays Windows' to find and `cmd.exe`'s to run: name it with backslashes
+  (`scripts\final.cmd`) or by its full path, because by a relative path with forward slashes it runs only in quotes,
+  and only where that variable is not set. The loop's evaluator and the agent's program are the exception since 21
+  November 2026: the kit makes their relative path a full one, so the program, a batch file too, starts whichever
+  way its slashes point. `final-eval` checks its program before it records the use, and since 20 November 2026 the
+  check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
+  a name with a dot that only an `.exe` stands behind, a script named without its interpreter (`eval.py`), a batch
+  file by a relative path with forward slashes and, where that variable is set, a program named without a folder
+  that lies in the project root only; where Python's own search (`shutil.which`) finds a file for the name, the
+  refusal names that file and says what Windows starts. Which names get that hint differs with Python's version:
+  only from 3.12 a name with a folder that needs an ending added (`tools\final`), only up to 3.11 the program in the
+  project root where that variable is set. Until then those passed: the use was recorded, the start failed, and the
+  next call needed `--again` with that reason; and under Python 3.11 and older the check refused
+  `venv\Scripts\python`, which would have started. What the check leaves: Windows also looks beside the running
+  program (in a virtual environment, the base interpreter's folder) and in its own folders before `PATH`, and the
+  check does not, so a program that only they hold is refused (System32 and the Windows folder are on an ordinary
+  `PATH`); it sees that a file is there and not whether Windows can start it, so a file that is no program under a
+  program's ending fails at the start with the use recorded, and the Microsoft Store's `python3` alias on a machine
+  without the Store's Python starts, prints a hint and ends; and a batch file that the kit's `PATH` holds is looked
+  for once more by `cmd.exe`, by the `PATH` of the command. The check also refuses, before any use, three kinds of
+  name that Windows starts: a name with a dot behind a folder, where the path is a full one or begins with `.\` or
+  `..\` (`.\tools\tool3.11`) and Windows adds the `.exe` itself, so write the `.exe`; a program under another ending
+  than `.exe`, `.com`, `.bat` or `.cmd` (tried with `.scr`); and a name with a dot or a space at its end, where
+  `tools\tool.` is Windows' name for a program file without an ending. A `PATH=...` written in front of the command
+  reaches the program that is started and not the search for it, which goes by the `PATH` the kit runs with. Outside
+  Windows the start searches by that `PATH=...`, and since that day the check does too (tried on Linux); an empty
+  `PATH=` it refuses, though the start then looks in the current folder.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

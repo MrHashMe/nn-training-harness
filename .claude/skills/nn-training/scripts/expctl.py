@@ -236,6 +236,58 @@ def py_cmd(cfg):
     return f'"{p}"' if " " in p else p
 
 
+def in_env(program):
+    """On Windows, the file to hand to Popen as `executable` where Windows would not find the program that a command
+    names, or would find another; None where the name is left to the system (elsewhere, a batch file, no such
+    file). The command line stays as the caller wrote it.
+    A name without a folder: the .exe of that name beside this interpreter. Windows looks for such a name first in
+    the folder of the program that is running. In a virtual environment that is the base interpreter, which the
+    environment's python.exe only starts: until 20 November 2026 a launched `python train.py` ran in the base
+    interpreter, without the environment's packages. Not the first on PATH instead: where the kit was not started by
+    PATH's interpreter (the `py` launcher, a full path) that is another program than the one such a command started
+    so far.
+    A name with a folder: that .exe or .com, seen from the current directory as Windows sees it, `.exe` added to a
+    name without an ending. Left to Windows, `venv/Scripts/python`, a relative path with forward slashes, did not
+    start where the variable NoDefaultCurrentDirectoryInExePath is set. A batch file is not handed over: cmd.exe,
+    which runs it, then no longer takes a quoted path that has a space. Nor is a name whose last part the full path
+    does not keep: a dot at its end, by which Windows means the file without an ending, a space or a slash there,
+    `.` or `..`. Handed over, `tools\\tool.` started tool.exe, and `tools\\..` the .exe that is named like the
+    current directory and lies beside it."""
+    folder = os.path.dirname(program)
+    if os.name != "nt" or not (folder or sys.executable):
+        return None
+    exe = os.path.abspath(program) if folder else os.path.join(os.path.dirname(sys.executable), program)
+    if os.path.basename(exe) != os.path.basename(program):
+        return None
+    exe += "" if os.path.splitext(exe)[1] else ".exe"
+    return exe if exe.lower().endswith((".exe", ".com") if folder else ".exe") and os.path.isfile(exe) else None
+
+
+def startable(program, env):
+    """Whether a start without a shell, with `env` and from the current directory, finds `program`: `final-eval` asks
+    before it records a use. Outside Windows the start reads the PATH of `env`. On Windows it reads the kit's own
+    PATH, takes a name without an ending as its .exe and as nothing else, takes a batch file by its full name, and
+    leaves out the current directory where NoDefaultCurrentDirectoryInExePath is set (measured 20 November 2026,
+    Python 3.8 to 3.14). shutil.which, asked until then, said yes to more: the other endings of PATHEXT, the current
+    directory in any case (Python 3.11 and older), a batch file by any path. Then the start failed, and the use was
+    recorded."""
+    if os.name != "nt":
+        return bool(shutil.which(program, path=env.get("PATH")))
+    if in_env(program):
+        return True
+    ext = os.path.splitext(program)[1].lower()
+    if os.path.dirname(program):  # what is left to Windows here, and starts: a batch file. Not by a relative path with
+        # a forward slash: cmd.exe reads an option there, and where the variable is set Windows does not find the file
+        return (ext in (".bat", ".cmd") and bool("/" not in program or os.path.splitdrive(program)[0])
+                and os.path.isfile(program))
+    # shortcut: Windows also looks beside the running program (in a virtual environment, the base interpreter) and in
+    # its own folders, before the PATH; a name that only they hold is refused here. Ask them too once that is met
+    dirs = [] if "NoDefaultCurrentDirectoryInExePath" in os.environ else ["."]
+    return ext in ("", ".exe", ".com", ".bat", ".cmd") and any(
+        d and os.path.isfile(os.path.join(d, program + ("" if ext else ".exe")))
+        for d in dirs + os.environ.get("PATH", "").split(os.pathsep))
+
+
 def read_json(path):
     for attempt in (1, 2, 3):
         try:
@@ -575,6 +627,25 @@ def holds_open(pid, path) -> bool:
     return False
 
 
+def _win_parent(pid):
+    """A Windows process's parent as the system records it, or None: psutil's ppid() where psutil is not installed.
+    A run that a virtual environment's python.exe started trains in a child of the process the kit knows, and the
+    GPU names that child: without its parent, status showed no run on the GPU."""
+    try:
+        import ctypes
+
+        k32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        h = k32.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return None
+        info = (ctypes.c_size_t * 6)()  # PROCESS_BASIC_INFORMATION: six pointer-sized fields, the parent's id the last
+        ok = ctypes.windll.ntdll.NtQueryInformationProcess(h, 0, info, ctypes.sizeof(info), None) == 0
+        k32.CloseHandle(h)
+        return int(info[5]) if ok else None
+    except Exception:
+        return None
+
+
 def proc_parent(pid):
     try:
         import psutil  # type: ignore
@@ -582,6 +653,8 @@ def proc_parent(pid):
         return psutil.Process(int(pid)).ppid()
     except Exception:
         pass
+    if os.name == "nt":
+        return _win_parent(pid)
     try:
         with open(f"/proc/{int(pid)}/stat", "r") as f:
             data = f.read()
@@ -591,12 +664,22 @@ def proc_parent(pid):
 
 
 def ancestors(pid, depth=25):
-    out, cur = [], pid
+    """A process's parent, that one's parent and so on. Windows keeps the number of a parent that has ended, and a
+    later process can hold it: one that began after the process below it is not its parent, and the walk ends there.
+    Otherwise status put the GPU of a program that belongs to no run on the run whose process got such a number.
+    A clock set back between a parent's start and its child's ends the walk there too: the GPU is then on no run,
+    which can miss an alert and raises none."""
+    win = os.name == "nt"
+    out, cur, born = [], pid, proc_start_time(pid) if win else None
     for _ in range(depth):
         cur = proc_parent(cur)
         if not cur or cur <= 1 or cur in out:
             break
+        began = proc_start_time(cur) if win else None
+        if born and began and began > born:
+            break
         out.append(cur)
+        born = began or born
     return out
 
 
@@ -2200,7 +2283,7 @@ def cmd_supervise(args):
     else:
         kw["start_new_session"] = True  # own process group so stop/deadline can signal the whole tree
     try:
-        child = subprocess.Popen(cmd, **kw)
+        child = subprocess.Popen(cmd, executable=in_env(cmd[0]), **kw)
     except OSError as e:
         write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": f"could not start: {e}",
                                                   "ended_ts": now(), "ended_at": iso(now())})
@@ -3000,8 +3083,17 @@ def cmd_final_eval(args):
     except ValueError as e:
         return fail(2, f"the final_eval_commands entry cannot be split into words: {e}")
     os.chdir(root)  # the command is the project's: its program and its paths are relative to the project root
-    if not words or not shutil.which(words[0].strip('"')):
-        return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}")
+    program = words[0].strip('"') if words else ""
+    if not program or not startable(program, env):
+        # a hint: the file Python finds for the name, which is not the same in every version (up to 3.11 it looks in
+        # the current folder whatever the variable says, from 3.12 it adds an ending to a name with a folder too)
+        there = os.name == "nt" and program and shutil.which(program)
+        return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}"
+                       + (". Without a shell Windows starts an .exe, whose ending may be left out where the name has no "
+                          "dot, and a .com or a batch file by its full name (a batch file by a relative path: with "
+                          "backslashes); a name without a folder it looks for in the current folder only where the "
+                          f"variable NoDefaultCurrentDirectoryInExePath is not set. There is {there}"
+                          if there else ""))
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"
     before, edited, shared, sub = final_uses(root)
@@ -3041,8 +3133,8 @@ def cmd_final_eval(args):
     try:
         with open(log, "wb") as f:  # Windows takes the command line as one string; elsewhere it is a word list
             code = subprocess.run(rest + " " + subprocess.list2cmdline(extra) if os.name == "nt" else words + extra,
-                                  cwd=str(root), env=env, stdin=subprocess.DEVNULL, stdout=f,
-                                  stderr=subprocess.STDOUT).returncode
+                                  executable=in_env(program), cwd=str(root), env=env,
+                                  stdin=subprocess.DEVNULL, stdout=f, stderr=subprocess.STDOUT).returncode
     except OSError as e:
         code, err = None, f"could not start: {e}"
     out = tail_bytes(log, 2000)
@@ -3375,9 +3467,13 @@ def cmd_env(args):
     for f in ("uv.lock", "pyproject.toml", "requirements.txt", "environment.yml", "pixi.toml", "poetry.lock", "setup.py"):
         if (root / f).exists():
             info.setdefault("env_files", []).append(f)
-    py = args.python
+    py = args.python and (in_env(args.python) or args.python)
     if py:
         try:
+            # a path after --python is read from the folder the command is typed in, as Windows reads it. Until
+            # 21 November 2026 the start below, which is given the project root, read it from there elsewhere
+            if os.name != "nt" and os.path.dirname(py) and not os.path.isabs(py):
+                py = os.path.join(os.getcwd(), py)
             r = subprocess.run([py, "-c", PROBE], capture_output=True, text=True, timeout=180, cwd=str(root))
             info["interpreter"] = json.loads(r.stdout.strip().splitlines()[-1]) if r.returncode == 0 and r.stdout.strip() \
                 else {"error": (r.stderr or r.stdout)[-400:]}

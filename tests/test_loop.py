@@ -149,12 +149,12 @@ def near(a, b, tol=1e-9):
     return isinstance(a, (int, float)) and abs(a - b) < tol
 
 
-def loop(proj, *args, env=None, timeout=600):
+def loop(proj, *args, env=None, timeout=600, cwd=None):
     e = {"FAKE_PLAN": str(proj.parent / "plan.json"), "FAKE_AGENT": "", "CLAUDECODE": "1",
          "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH": "1"}
     e.update(env or {})
     return tk.sh([PY, str(proj / ".claude/skills/nn-training/scripts/nnloop.py"), "--root", str(proj), *args],
-                 cwd=proj, env=e, timeout=timeout)
+                 cwd=cwd or proj, env=e, timeout=timeout)
 
 
 def plan(tmp, steps):
@@ -1319,10 +1319,15 @@ def campaign_b(tmp, proj, exe):
 
     plan(tmp, [edit("SLEEP = 0", "SLEEP = 30", title="slow")])
     before = {d.name for d in (proj / "runs").glob("*")}
-    r = loop(proj, "resume", "--campaign", "b", "--agent-exe", exe, "--max-runs", "20", "--detach")
+    # typed in a subfolder, with the agent's program named by a relative path from there
+    r = loop(proj, "resume", "--campaign", "b", "--agent-exe", os.path.relpath(exe, proj / "experiments"), "--max-runs", "20",
+             "--detach", cwd=proj / "experiments")
     info = json.loads(r.stdout) if r.stdout.strip().startswith("{") else {}
     new = tk.wait_for(lambda: [d for d in (proj / "runs").glob("*-b-i*") if d.name not in before
                                and (d / "pid.json").exists()], timeout=120)
+    check(bool(info.get("ok") and new),
+          "--detach, typed in a subfolder: the loop in the background reads a relative path to the agent's program from "
+          "that subfolder, as the call did (was: from the project root, where the loop in the background starts)")
     r2 = loop(proj, "stop", "--campaign", "b")
     done = tk.wait_for(lambda: state(proj, "b").get("status") == "stopped" and not nnloop.expctl.pid_alive(info.get("pid") or 0),
                        timeout=120) if info and new else None
@@ -1357,7 +1362,11 @@ def campaign_b(tmp, proj, exe):
         print("  loop.log:", nnloop.read_text(proj / "experiments/loop/b/loop.log")[-1500:], "\n  state:", st.get("stop_reason"))
     sp = proj / "experiments/loop/b/state.json"  # as if the campaign had scouted: the stopped change tested H2
     put(sp, json.dumps(dict(st, hypotheses=[{"id": "H2", "text": "try a warm-up schedule"}])))
-    r, st, new = resume(tmp, proj, exe, "b", [slow], "--max-runs", str(st["counters"]["runs"] + 2))
+    # the agent's program is named by a relative path here, typed in the project root
+    r, st, new = resume(tmp, proj, os.path.relpath(exe, proj), "b", [slow], "--max-runs", str(st["counters"]["runs"] + 2))
+    check(bool(sessions(tmp)) and len(new) == 1,
+          "a session, which starts in the worktree, reads a relative path to the agent's program from the folder the "
+          "command is typed in (was, outside Windows: from the worktree; on Windows a batch file was not found there)")
     got, p = [(e["status"], e["why"]) for e in new], (sessions(tmp) or [{"prompt": ""}])[0]["prompt"]
     if not check(r.returncode == 0 and len(got) == 1 and got[0][0] == "invalid" and "exceeded its 3 s budget" in got[0][1]
                  and "not been tried: H2: try a warm-up schedule" in p

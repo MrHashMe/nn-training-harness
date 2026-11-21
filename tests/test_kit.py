@@ -3003,7 +3003,7 @@ def main():
         # (a search's name too: the limits of that rule named these two forms)
         ("Bash", {"command": "g'r'ep -rn label ."}, "ask"),
         ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/grep.exe\" -rn label ."}, "ask"),
-        # From a fresh reader's reading of that repair, the same day. Were "ask" for some hours: a command line in
+        # From a fresh reader's reading of that repair, the same day. Were "ask" in its first form: a command line in
         # quotes behind cmd's /c or /k (it was named after the last part of its last path). And a list's item in
         # quotes stays an item, with a quoted item before it too (had no row)
         ("Bash", {"command": "cmd.exe /c \"type runs\\x\\patch\""}, None),
@@ -3020,7 +3020,7 @@ def main():
         ("Bash", {"command": "X=1 Y=2 \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
         ("Bash", {"command": "sudo -u me \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
         ("Bash", {"command": "cmd /k \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
-        # were None in those hours too, as before that day: the command behind a list that is closed, and in a
+        # were None in that form too, as before that day: the command behind a list that is closed, and in a
         # list's bracket behind a word that leads to a command (PowerShell runs that bracket). And a bracket in a
         # default is a part of the value: the command behind it is still asked about
         ("Bash", {"command": "a=(x) \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
@@ -3028,7 +3028,7 @@ def main():
         ("Bash", {"command": "X=${v:-(} \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
         # From the reading of that repair, 21 November 2026. Behind cmd's /c a quoted text with a blank that ends the
         # command and whose blank stands in no path is the line of commands that cmd makes of it, and no program's
-        # name (were "ask" for one commit, as the program patch: the last part of the text's last path)
+        # name (were "ask" in the repair's first form, as the program patch: the last part of the text's last path)
         ("Bash", {"command": "cmd /c \"type docs\\patch\""}, None),
         ("Bash", {"command": "cmd.exe /d /c \"dir C:\\tools\\patch\" & echo done"}, None),
         ("Bash", {"command": "cmd /c \"C:\\tools\\list.exe docs\\patch\" 2>nul | findstr x"}, None),
@@ -3040,6 +3040,12 @@ def main():
         ("Bash", {"command": "cmd /K tar -xf bundle.tar"}, "ask"),
         ("Bash", {"command": "cmd /C \"C:\\Program Files\\Git\\usr\\bin\\tar.exe\" -xf bundle.tar"}, "ask"),
         ("Bash", {"command": "cmd /C tar -tf bundle.tar & find /C \"install\" log.txt"}, None),
+        # From the reading of the two repairs joined, 21 November 2026 (had no row: with either test taken out of
+        # the guard, every row passed). Behind cmd's /c a quoted text with a blank is read as the program where an
+        # argument follows it, though no separator stands before its blank, and where its first blank stands
+        # inside a path, though nothing follows it
+        ("Bash", {"command": "cmd /c \"my tools\\touch.exe\" eval\\metrics.py"}, "ask"),
+        ("Bash", {"command": "cmd /c \"C:\\Program Files\\Git\\usr\\bin\\patch.exe\""}, "ask"),
         # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends
         # its command as well as at a blank (tar x) and patch<fix.patch), the shell's pipe into awk ends what its
         # own printf lends awk, and a quoted command behind awk's bar is one whatever stands behind it

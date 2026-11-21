@@ -311,17 +311,17 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   Two quoted texts where a command may start are no program's name, and stay as they are. One is a line of
   commands in quotes behind `cmd /c` and `cmd /k` (`cmd /c "type runs\x\patch"`), which the rules read as the
   line it is; where such a text counts as that line and where as a program's path stands further down, at
-  the reading of that repair. The other stands behind a word that sets a variable and leaves a bracket open:
-  there a quoted word is an item of a list (`steps=(train "install")`) or, on the bracket's line, an argument
-  of the command whose output the variable gets
-  (`b=$(basename "runs/x/install")`). That holds where plain words at most stand between the bracket and it,
+  the reading of that repair. The other stands behind a bracket that is left open before it: there a quoted
+  word is an item of a list that a variable is set to (`steps=(train "install")`) or, on the line of a `$(`,
+  an argument of the command inside it, with a word that sets a variable in front of that bracket or without
+  one (`b=$(basename "runs/x/install")`). That holds where plain words at most stand between the bracket and it,
   behind `$(` one at least, and not only words that lead to a command. Behind those it is a command's name
   (`v=$(sudo 'touch' x)`, and `steps=(wsl 'touch' x)`, whose bracket PowerShell runs), and so it is behind a
   sign in the bracket (`v=$(true; 'touch' x)`), behind a list that is closed (`a=(x) 'touch' x`) and behind a
-  bracket that is a part of the value (`X=${v:-(} 'touch' x`): a POSIX shell runs the command in both. For
-  some hours of 21 November 2026 both kinds of text were named, after the last part of their last path:
+  bracket that is a part of the value (`X=${v:-(} 'touch' x`): a POSIX shell runs the command in both. In its
+  first form, of 21 November 2026, this change named both kinds of text, after the last part of their last path:
   `cmd /c "type runs\x\patch"` was asked about in the main session, and a read-only subagent was refused it and
-  `n=$(echo "rm"); echo $n` (a fresh reader found both that day). In those hours any `=(` in front of the word
+  `n=$(echo "rm"); echo $n` (a fresh reader found both that day). In that form any `=(` in front of the word
   kept it in its quotes, so `a=(x) 'touch' notes.md` still passed for that subagent, as it had before that day.
   The cost falls on a read-only subagent, because the guard cannot tell which shell reads a line: a quoted word
   where a command may start is a program's name to a POSIX shell and a text to PowerShell, so
@@ -331,8 +331,10 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   (the last item of a list, written `'install'`), right behind `{` (`{ "rm" : 1 }`) or at a line's end behind
   a bracket that a blank leads to (`x = ("install"`). The same holds
   for a pattern of `case` behind `;;` (`… ;; 'install') …`), for the word of a default behind a blank
-  (`v=${x:- 'rm' }`), for a list's item on a line of its own behind the first or behind names that only lead
-  to a command (`steps=(env "install")`), for an argument behind a sign inside `$( )`
+  (`v=${x:- 'rm' }`), for a list's item behind a word that is not plain (`files=(*.txt "rm")`,
+  `steps=($x "install")`) or behind names that only lead to a command (`steps=(env "install")`), for one that
+  starts a line and is not the first word behind the one that holds the bracket (the second item of a list
+  that is written one item to a line), for an argument behind a sign inside `$( )`
   (`v=$(true;cat "runs/x/install")`) and for one inside backticks that a word follows
   (``b=`basename "runs/x/install" .txt` ``), which one reading takes for PowerShell's escapes. Each is read as
   the bare word is read in that place. The main session's answers on such lines are the ones it gave before
@@ -358,17 +360,21 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   A reading of that repair on the same day changed two things behind `cmd /c` and `cmd /k`. A quoted text with a
   blank in it may be a line of commands there, which cmd makes of it unless it is a program's file, and it is
   read as that line where it ends its command and its blank stands in no path: `cmd /c "type docs\patch"` and
-  `cmd /c "C:\tools\list.exe docs\patch" 2>nul` pass. For one commit they were asked about as the program
-  `patch`, the last part of the text's last path, and a read-only subagent was refused them and
-  `cmd /c "python train.py --out runs\touch"`. The text is the program where an argument or a `<` follows it
-  (`cmd /c "my tools\touch.exe" eval\metrics.py`) or where its first blank stands inside a path, behind a
-  folder's separator and a part without an ending (`cmd /c "C:\Program Files\Git\usr\bin\patch.exe"`). cmd
-  tells the two apart by looking for the file, which the guard does not do, so two forms are read wrongly: a
-  program without an argument passes as a line of commands where no separator stands before its first blank or
-  a dot stands in the part before that blank (`cmd /c "my tools\patch.exe"`,
-  `cmd /c "C:\tools.old dir\patch.exe"`), and a line of commands whose first word is a path without an ending
+  `cmd /c "C:\tools\list.exe docs\patch" 2>nul` pass. In the change's first form they were asked about as the
+  program `patch`, the last part of the text's last path, and a read-only subagent was refused them and
+  `cmd /c "python train.py --out runs\touch"`. The text is read as the program where an argument or a `<`
+  follows it (`cmd /c "my tools\touch.exe" eval\metrics.py`) or where its first blank stands inside a path,
+  behind a folder's separator and a part without an ending (`cmd /c "C:\Program Files\Git\usr\bin\patch.exe"`).
+  cmd tells the two apart by looking for the file, which the guard does not do, so three forms are read
+  wrongly: a program without an argument passes as a line of commands where no separator stands before its
+  first blank or a dot stands in the part before that blank (`cmd /c "my tools\patch.exe"`,
+  `cmd /c "C:\tools.old dir\patch.exe"`), a line of commands whose first word is a path without an ending
   is read as a program (`cmd /c "C:\Python311\python train.py --out runs\touch"` is refused to a read-only
-  subagent, and so is `cmd /c "dir/b runs\x\install"`, whose `/b` the guard takes for a part of a path).
+  subagent, and so is `cmd /c "dir/b runs\x\install"`, whose `/b` the guard takes for a part of a path), and
+  so is a line of commands with a word behind its closing quote, which cmd puts behind the line
+  (`cmd /c "type runs\x\patch" runs\y\log.txt`, to cmd `type runs\x\patch runs\y\log.txt`, is asked about in
+  the main session as the program `patch` and refused to a read-only subagent; a later reading of that day
+  found this third form, which this text had called the program until then).
   And `/C` and `/K` are cmd's `/c` and `/k`: until then the capital letter started no command for a name in
   quotes or for the rules that keep the case of a program's options, so
   `cmd /C "C:\Program Files\Git\usr\bin\touch.exe" eval\metrics.py` and `cmd /K tar -xf bundle.tar` passed

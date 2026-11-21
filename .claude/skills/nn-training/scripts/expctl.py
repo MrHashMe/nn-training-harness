@@ -2022,8 +2022,16 @@ def cmd_launch(args):
     # and no error at once, because what was seen comes and goes, and an error would have the caller, a campaign's
     # loop among them, count a run that never ran as a failed one. The answer and supervisor.log say so
     pid, start_error, ended, again, left, settled, noted, may_run = None, None, [], False, 50, None, False, False
+    lone = False  # the look goes on for a record, with no process of the supervisor's left that the launch holds
+
+    def ended_as(what):  # the error for a supervisor that left no record, with what its own log says last
+        said = log_reason(run_dir / "supervisor.log")
+        return (f"the supervisor ended before it recorded the run's process (exit code {', then '.join(ended)}); {what}"
+                + (f"; supervisor.log: {said}" if said and not said.startswith("expctl launch:") else ""))
+
     while True:
-        gone = sp.poll() if sp is not None else None  # asked before the records are read: it writes them, then ends
+        # asked before the records are read: it writes them, then ends
+        gone = sp.poll() if sp is not None and not lone else None
         pj = read_json(run_dir / "pid.json")
         if isinstance(pj, dict) and pj.get("pid"):
             pid = pj["pid"]
@@ -2039,7 +2047,7 @@ def cmd_launch(args):
             continue
         if gone is not None:
             ended.append(exit_text(gone))
-            began, said = (run_dir / "stdout.log").exists(), log_reason(run_dir / "supervisor.log")
+            began, shut = (run_dir / "stdout.log").exists(), None
             if not began and len(ended) == 1:
                 try:  # the line is for a reader of the log, and the start does not wait on it (was: a log that took
                     # no line, on a full disk, left the supervisor unstarted and read as "no second start")
@@ -2054,17 +2062,42 @@ def cmd_launch(args):
                     continue
                 except OSError as e:
                     ended.append(f"no second start: {e}")
-            start_error = (f"the supervisor ended before it recorded the run's process (exit code {', then '.join(ended)}); "
-                           + ("it had opened the run's log, so the command may have started: see stdout.log" if began
-                              else "the command was not started")
-                           + (f"; supervisor.log: {said}" if said and not said.startswith("expctl launch:") else ""))
-            if not began:  # for status: a run that failed to start, with this reason (was: unknown, with none)
-                write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
-                                                          "ended_at": iso(now())})
-            may_run = began
+            if not began:
+                # No supervisor has made the run's log, so the command has not started, and from here on none is to
+                # start it: the launch makes the log itself, and a supervisor that comes to it after this finds it
+                # there and ends. (Was: a look and no more. Where the process that the launch saw end is the small
+                # program of an environment's python.exe and its interpreter is still on its way, that one started the
+                # command after the launch had said that it was not started: the run read as failed while it ran, and
+                # `stop` refused it as not active. Run with stand-ins, not seen.) One that made the log since the look
+                # two lines up has started the command or is about to: as below
+                try:
+                    open(run_dir / "stdout.log", "xb").close()
+                except FileExistsError:
+                    began = True
+                except OSError as e:
+                    shut = e
+            if began:
+                # A supervisor of this run had opened the log, so the command may have started and nothing is started
+                # again. The record is looked for during five seconds more: where the process that ended was that small
+                # program, or a second supervisor that found the first one's log, the supervisor that has the log is
+                # at work and records the run's process a moment later. (Was: an error at once, though the run was
+                # supervised and went on; the loop then waited out its time and scored a good run as a crash.)
+                lone, left = True, 50
+                continue
+            start_error = ended_as("the command was not started" + (
+                " (the launch could not make the run's log, which would keep a late supervisor from starting it: "
+                f"{shut})" if shut else ""))
+            # for status: a run that failed to start, with this reason (was: unknown, with none)
+            write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
+                                                      "ended_at": iso(now())})
             break
         left -= 1
         if left <= 0:
+            if lone:  # no record in those seconds either. For an agent, what that leaves: nothing watches the command
+                start_error, may_run = ended_as(
+                    "it had opened the run's log, so the command may have started: see stdout.log. If it runs, no "
+                    "supervisor ends it after its deadline: look for it (status, the machine's processes) before you "
+                    "launch again"), True
             break
         time.sleep(0.1)
     me = Path(os.path.abspath(__file__))
@@ -2072,12 +2105,24 @@ def cmd_launch(args):
         me_rel = me.relative_to(root).as_posix()
     except ValueError:
         me_rel = str(me)
+    # The supervisor that the answer names, for a caller that waits until it has ended, as the loop does: the process
+    # that the launch started and holds, which no record of the run's can change. Not where that process has ended, or
+    # was the second of two: then the one that recorded the run's process is the supervisor, by the log that only one
+    # of them makes. (Was: the one held, whatever became of it. Where that was the small program of an environment's
+    # python.exe that ended before its interpreter, or a second supervisor that found the first one's log, the answer
+    # named a process that was gone or about to go, and for the loop an exit record alone then ended the run.) Through
+    # tmux the launch holds no process, and the answer names the record's supervisor, as it did.
+    # shortcut: in those cases the number is the record's, and the record is a file in the run's folder, which the
+    # run's command can write: a command that rewrote it in the moment since its start is believed, here and by the
+    # look of five seconds above; upgrade when a supervisor can show itself to the launch outside the run's folder
+    rec = read_json(run_dir / "pid.json")
+    rec = rec.get("supervisor_pid") if isinstance(rec, dict) else None
     out = {
         "ok": start_error is None,
         "run_id": run_id,
         "run_dir": rel_to(root, run_dir),
         "pid": pid,
-        "supervisor_pid": (sp.pid if sp else (read_json(run_dir / "pid.json") or {}).get("supervisor_pid")),
+        "supervisor_pid": rec if sp is None or (rec and (again or sp.poll() is not None)) else sp.pid,
         "via": via,
         "cwd": rel_to(root, cwd),
         "snapshot": mode,
@@ -2098,6 +2143,10 @@ def cmd_launch(args):
     if again and len(ended) == 1:
         warn.append(f"the supervisor's first process ended with exit code {ended[0]} before it started the command, "
                     "and was started once more" + (" (supervisor.log has the line)" if noted else ""))
+    if lone and start_error is None:
+        warn.append(f"the supervisor's process ended (exit code {', then '.join(ended)}) before it left a record of "
+                    "the run, and a record came after that from another process, which is taken for the run's "
+                    "supervisor")
     if start_error:
         out["error"] = start_error
         if may_run:  # for a caller that waits for its runs, as the loop does: this one may be running, unsupervised
@@ -2181,16 +2230,19 @@ def cmd_supervise(args):
     # {run_dir} in a command is this run's folder, which no caller knows before the launch: the loop binds it into the
     # sandbox of its run. The manifest keeps the placeholder, so `resume` fills in the folder of the new run
     cmd = [str(c).replace("{run_dir}", os.path.abspath(run_dir)) for c in cmd]
-    # The run's log is made here and by nothing else, and the supervisor that makes it is the one that starts the
-    # command: one that finds it there ends. So a launch's second start cannot run the command a second time where the
-    # first supervisor is still there after all. (Was: opened whether it was there or not. On Windows under a virtual
-    # environment's python.exe the launch sees that small program end, not the interpreter it started. The interpreter
-    # outlived it in none of 926 tries on one machine, which does not exclude it, and this does not depend on it.)
+    # The run's log is made here, and the supervisor that makes it is the one that starts the command: one that finds
+    # it there ends. So a launch's second start cannot run the command a second time where the first supervisor is
+    # still there after all. (Was: opened whether it was there or not. On Windows under a virtual environment's
+    # python.exe the launch sees that small program end, not the interpreter it started. The interpreter outlived it
+    # in none of 926 tries on one machine, which does not exclude it, and this does not depend on it.) The launch
+    # makes the log too, in one case: where it gives a run up as not started, so that no supervisor starts it after
+    # that. This rests on the file system making a new file in one step that fails where the file is there
     try:
         log = open(run_dir / "stdout.log", "xb", buffering=0)
     except FileExistsError:
-        sys.stderr.write("expctl supervisor: this run's log is there already, so another supervisor has started its "
-                         "command or is about to; this one starts nothing and ends\n")
+        sys.stderr.write("expctl supervisor: this run's log is there already: another supervisor has started its "
+                         "command or is about to, or the launch has given the run up as not started; this one starts "
+                         "nothing and ends\n")
         return 1
     t0, m0 = now(), time.monotonic()
     env = dict(os.environ, EXP_LAUNCH_TS=repr(t0))  # RunLog ignores a stop.json older than this launch

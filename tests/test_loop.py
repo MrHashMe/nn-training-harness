@@ -1286,9 +1286,13 @@ def campaign_b(tmp, proj, exe):
           f"loop because the wall clock was set back meanwhile ({got})")
 
     # A launch that failed after its supervisor had opened the run's log: the command may be running, with nobody to
-    # end it at its deadline. The loop waits out the run's time and stops the run before it goes on, and an exit
-    # record in the run's folder does not end the wait: with that supervisor gone, nothing says that it is true. (Was,
-    # for one commit: on at once.) A failed launch without that word in its answer started nothing: on at once
+    # end it at its deadline. The loop waits out the run's time and asks for the run's stop before it goes on, and an
+    # exit record in the run's folder does not end the wait: with that supervisor gone, nothing says that it is true.
+    # (Was, for one commit: on at once.) A failed launch without that word in its answer started nothing: on at once.
+    # The wait is the one for a run that does not end: here the run's 3 s, its grace of 5 s, the project's 2 s before
+    # a kill, and 60 s. It counts against the campaign's GPU time as a run's time does, since the command may have had
+    # the GPU. (The second reading of 21 November 2026 found neither number in a check: a wait cut to 61 s passed,
+    # and one that counted nothing.)
     def unrecorded(may_run):
         clocks, run, calls = Clocks(), tmp / "clocks" / f"norecord{may_run:d}", []
         nnloop.time = clocks
@@ -1305,17 +1309,18 @@ def campaign_b(tmp, proj, exe):
                     **({"command_may_run": True} if may_run else {}))))
 
             C.expctl = expctl
-            return list(C.train(1, "x")), calls
+            return list(C.train(1, "x")), calls, round(C.st["counters"]["gpu_s"] / max(1, len(C.gpus)), 1)
         finally:
             nnloop.time = time
 
-    (res, calls), (res0, calls0) = unrecorded(True), unrecorded(False)
+    (res, calls, gpu), (res0, calls0, gpu0) = unrecorded(True), unrecorded(False)
     check(res == res0 == ["crash", "launch failed: the supervisor ended", "r"] and calls0 == [["launch", 0]]
-          and [c[0] for c in calls] == ["launch", "stop"] and calls[1][1] > 60,
+          and calls == [["launch", 0], ["stop", 70]] and [gpu, gpu0] == [70.2, 0.0],
           "a launch that failed with its command perhaps running is not left behind: the loop waits out the run's time, "
-          "whatever exit record its folder holds, stops the run and then reports the launch's failure (was, for one "
-          "commit: on to the next run at once, with that command still on the machine); a failed launch that started "
-          f"nothing ends the step at once ({res} {calls}; {res0} {calls0})")
+          "whatever exit record its folder holds, asks for the run's stop and then reports the launch's failure (was, "
+          "for one commit: on to the next run at once, with that command still on the machine), and the wait counts as "
+          "GPU time; a failed launch that started nothing ends the step at once and counts none "
+          f"({res} {calls} {gpu} s; {res0} {calls0} {gpu0} s)")
 
     plan(tmp, [edit("SLEEP = 0", "SLEEP = 30", title="slow")])
     before = {d.name for d in (proj / "runs").glob("*")}

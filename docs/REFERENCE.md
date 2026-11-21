@@ -677,38 +677,63 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   five seconds for the supervisor's record and answers `ok` with a warning when there is none.) One that ended before
   it started the command is started once more, and the answer (`warning`) and `supervisor.log` say so; if the second
   one ends too, or the system refuses the second start, the launch answers `ok: false` and names both, its own exit
-  code is 9, and the run reads as `failed` with that reason. One that ended after it had opened the run's log, the
-  first or the second, is not started again, because the command may have run: the launch answers with the error and
-  `command_may_run: true` and writes no exit record, so the run reads as `unknown`. Where its command writes records
-  of its own, the run reads as `running` by its heartbeat and then as its result says; where the command ends without
-  a result, as `running` until the last heartbeat is `heartbeat_stale_seconds` old, then as `unknown`. The loop waits
-  out the time of such a run and stops it before its next step (since 21 November 2026; for one commit it went on at
-  once, with that command still on the machine). A supervisor makes the run's log and ends when the log is there
-  already, so one supervisor at most starts a run's command (since 21 November 2026). (Before 20 November the launch
-  never looked. On Windows under a virtual environment's `python.exe`, 2 of 650 runs never started while their launch
-  said `ok`, and they read as `unknown` for good. Why those supervisors ended is not established, so the launch deals
-  with what follows from it.) For a launched run that has a manifest and no other record after a minute,
-  `expctl status --run <id>` gives a reason and says whether the command can have run; it reads that from the records
-  alone, and the overall view only counts such a run. A heartbeat names the start time of the process that wrote it
-  (`proc_start`, and `proc_key` on Linux), and the process number in it counts as the run's only while the process
-  that holds the number is that one: not a process with another start time, and on Windows not one that was created
-  after the heartbeat was written. (Before, any live process with that number counted, for `heartbeat_stale_seconds`.
-  Windows gives a number out again within seconds, and where an environment's `python.exe` is the run's command the
-  heartbeat's number is never the recorded one, so a killed run read as `running` as soon as another program had the
-  number; `expctl stop` would then have ended that program after `kill_after_s`, which was read in the code and never
-  run.) A vendored `runlog.py` of before that day writes no start time: on Windows the creation time still protects
-  its heartbeat, elsewhere its number is taken as before, so copy the new file over it. A heartbeat that names its
-  writer's own start time counts as that writer's whatever its time of writing says (since 21 November 2026; for one
-  commit, on Windows, a clock that was set back soon after the writer's start made a run that is followed by its
-  heartbeat read as `lost` until it wrote a heartbeat after the clock had caught up). A heartbeat without a start time
-  still reads so there after such a step. On native Windows the supervisor has a console of its own without a window;
-  `expctl stop`, the deadline's kill, and Ctrl+C, Ctrl+Break and a closed terminal on the caller's side behave as
-  before (tried on Windows 11 under Python 3.11.7, and under 3.8.20 and 3.15.0rc3 in an environment). Not repaired:
-  the number in the launch's own record is compared by start time to within five seconds only, so on Windows a run
-  that is killed together with its supervisor within five seconds of its start still reads as alive where another
-  program gets its number within those seconds; `nnloop start --detach` and the controller of a remote run are started
-  as before, without a console, and nothing looks whether they came up. None of this has run on a Mac, where the first
-  heartbeat of a process now asks `ps` once for its start time.
+  code is 9, and the run reads as `failed` with that reason. Before it says so, the launch makes the run's log itself,
+  so that a supervisor which comes to the run after that starts nothing (since 21 November 2026; before, where what
+  the launch had seen end was the small program of an environment's `python.exe` on Windows and its interpreter was
+  still on its way, that one could start the command of a run that read as `failed`, which `expctl stop` refuses as
+  not active; run with stand-ins, not seen). One that ended after the run's log was made, the first or the second, is
+  not started again, because the command may have run. The launch then looks five seconds more for the record of the
+  run's process. Where it comes, from a supervisor that outlived the process the launch held or from the first one,
+  whose log the second one found, the launch answers `ok` and says so in `warning` (since 21 November 2026; before, an
+  error at once, though the run was supervised and went on). Where none comes, the launch answers with the error and
+  `command_may_run: true`, says what to look for before a second launch, and writes no exit record, so the run reads
+  as `unknown`. Where its command writes records of its own, the run reads as `running` by its heartbeat and then as
+  its result says; where the command ends without a result, as `running` until the last heartbeat is
+  `heartbeat_stale_seconds` old, then as `unknown`. The loop waits out the time of such a run and asks for its stop
+  before its next step (since 21 November 2026; for one commit it went on at once, with that command still on the
+  machine). The wait is the run's budget, its grace, `kill_after_s` and 60 s on the monotonic clock, which leaves out
+  time asleep on Linux and macOS; it counts as GPU-hours of the campaign, as a run's time does, and the campaign's
+  limit of hours ends it as it ends a run. With no supervisor left, that stop reaches the command only where a
+  heartbeat makes the run read as active: it leaves the request that a trainer which polls `RunLog.should_stop()`
+  obeys; on Windows it ends the tree of the process that the heartbeat names 20 s later; on Linux and macOS it sends
+  that process one SIGTERM under the rules of a graceful stop and kills nothing; and a run without a heartbeat it
+  refuses as not active. What does not end stays beside the next run (not repaired; tried on Windows 11 and in WSL on
+  a trial's own processes). The launch's answer names the supervisor for a caller that waits until it has ended
+  (`supervisor_pid`): the process that the launch started; or the one that recorded the run, where that process has
+  ended or was the second of two (since 21 November 2026; before, the process started, which could be gone while the
+  supervisor was at work), and through tmux, where the launch starts none. Not repaired: a small program that ends
+  after the answer, ahead of its interpreter, leaves the loop with the number of a process that is gone, and an exit
+  record alone then ends the run for it. Nor is this: the record that the launch takes in those cases, for its `ok`
+  after the look of five seconds and for the supervisor's number, is a file in the run's folder, which the run's
+  command can write. A command that wrote one itself, or rewrote it in the moment after its start, is believed, and
+  the loop then waits for the end of a process that the command named. A supervisor makes the run's log and ends when
+  the log is there already, so one supervisor at most starts a run's command (since 21 November 2026). This rests on
+  the file system making a new file in one step that fails where the file is there, which local file systems do and
+  NFS does from version 3 on (Linux's manual for `open`). (Before 20 November the launch never looked. On Windows
+  under a virtual environment's `python.exe`, 2 of 650 runs never started while their launch said `ok`, and they read
+  as `unknown` for good. Why those supervisors ended is not established, so the launch deals with what follows from
+  it.) For a launched run that has a manifest and no other record after a minute, `expctl status --run <id>` gives a
+  reason and says whether the command can have run; it reads that from the records alone, and the overall view only
+  counts such a run. A heartbeat names the start time of the process that wrote it (`proc_start`, and `proc_key` on
+  Linux), and the process number in it counts as the run's only while the process that holds the number is that one:
+  not a process with another start time, and on Windows not one that was created after the heartbeat was written.
+  (Before, any live process with that number counted, for `heartbeat_stale_seconds`. Windows gives a number out again
+  within seconds, and where an environment's `python.exe` is the run's command the heartbeat's number is never the
+  recorded one, so a killed run read as `running` as soon as another program had the number; `expctl stop` would then
+  have ended that program after `kill_after_s`, which was read in the code and never run.) A vendored `runlog.py` of
+  before that day writes no start time: on Windows the creation time still protects its heartbeat, elsewhere its
+  number is taken as before, so copy the new file over it. A heartbeat that names its writer's own start time counts
+  as that writer's whatever its time of writing says (since 21 November 2026; for one commit, on Windows, a clock that
+  was set back soon after the writer's start made a run that is followed by its heartbeat read as `lost` until it
+  wrote a heartbeat after the clock had caught up). A heartbeat without a start time still reads so there after such a
+  step. On native Windows the supervisor has a console of its own without a window; `expctl stop`, the deadline's
+  kill, and Ctrl+C, Ctrl+Break and a closed terminal on the caller's side behave as before (tried on Windows 11 under
+  Python 3.11.7, and under 3.8.20 and 3.15.0rc3 in an environment). Not repaired: the number in the launch's own
+  record is compared by start time to within five seconds only, so on Windows a run that is killed together with its
+  supervisor within five seconds of its start still reads as alive where another program gets its number within those
+  seconds; `nnloop start --detach` and the controller of a remote run are started as before, without a console, and
+  nothing looks whether they came up. None of this has run on a Mac, where the first heartbeat of a process now asks
+  `ps` once for its start time.
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.
 - What counts as a run's source, since 14 November 2026: agent configuration (`AGENTS.md`, `.mcp.json`, `.codex/`,

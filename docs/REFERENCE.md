@@ -680,8 +680,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   answers with the error and leaves the run's records as they are. (Before, the launch never looked. On Windows under
   a virtual environment's `python.exe`, 2 of 650 runs never started while their launch said `ok`, and they read as
   `unknown` for good. Why those supervisors ended is not established, so the launch deals with what follows from it.)
-  For a launched run that has a manifest and no other record after a minute, `expctl status` gives a reason and says
-  whether the command can have run; it reads that from the records alone. A heartbeat names the start time of the
+  For a launched run that has a manifest and no other record after a minute, `expctl status --run <id>` gives a
+  reason and says whether the command can have run; it reads that from the records alone, and the overall view only
+  counts such a run. A heartbeat names the start time of the
   process that wrote it (`proc_start`, and `proc_key` on Linux), and the process number in it counts as the run's only
   while the process that holds the number is that one: not a process with another start time, and on Windows not one
   that was created after the heartbeat was written. (Before, any live process with that number counted, for
@@ -690,6 +691,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   another program had the number; `expctl stop` would then have ended that program after `kill_after_s`, which was
   read in the code and never run.) A vendored `runlog.py` of before that day writes no start time: on Windows the
   creation time still protects its heartbeat, elsewhere its number is taken as before, so copy the new file over it.
+  On Windows a clock that was set back after a process started makes that process look younger than its own
+  heartbeat until one is written after the clock has caught up; a run that such a process took over reads as
+  `lost` for that long.
   On native Windows the supervisor has a console of its own without a window; `expctl stop`, the deadline's kill, and
   Ctrl+C, Ctrl+Break and a closed terminal on the caller's side behave as before (tried on Windows 11 under Python
   3.11.7, and under 3.8.20 and 3.15.0rc3 in an environment). Not repaired: the number in the launch's own record is

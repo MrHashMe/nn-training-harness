@@ -131,6 +131,16 @@ own ran" on, were written on the pilot's own branch, where "The proof pilot" fol
 branch"; "that day" in them is 20 November. In this file the pilot's seven sections stand together after
 "A program's name in quotes or behind backslashes", in the order given above, and "The folder's repair"
 is the last before "1. What changed and why".)
+On your "After the sessions" and "All three" of 21 November the three sessions' local branches are merged
+into this one, one fresh reader has gone through that merge and the five repairs that only their authors
+had read, and what held is repaired: a regression of the guard behind `cmd /c`, with an older gap beside
+it, and two faults of the controller. So the repairs that stood read by nobody but their authors when the
+statements above were written, `05f996f`, `5f600da`, `bcfab15`, `c85f96a` and `31af10c`, have had this
+reader since. Its section, "The merge of the three branches and its reading", follows "The folder's
+repair" and is the last before "1. What changed and why" now. It is two merge commits and two more local
+commits; the new repairs are read by nobody but me, and nothing is pushed. After the merge the pilot's
+branch took two commits more, the repair of a regression of its folder's repair that this reader did
+not report and that repair's record; this branch holds neither.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -837,6 +847,10 @@ Decision record: `docs/upgrade/LEDGER.md`.
     repeated once there, with the guard given the line as text.)
     (Added with point 51: one reader has read that commit since, on your word. What it found is
     repaired in a second local commit, which nobody but its author has read; point 51.)
+    (Added with point 53: this point's own repairs, `05f996f`, have had a reader since, with the
+    merged branches. It reported no fault in them, and beside them one of round 9 that their floor
+    of a billionth did not reach: the sentence about a metric's scatter spoke for values that differ
+    by rounding alone. Repaired; point 53.)
 45. **The kit's way to a program on Windows is repaired, on your word: a program named by its folder
     starts whichever way its slashes point, and `final-eval` refuses before a use what will not start**
     (20 November; "The lookup's repair"). The number is 45 because point 44 is the other session's,
@@ -900,6 +914,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     written and is not merged into this one. Of that point I read the text; I checked nothing of
     it.)
     (Added with point 49: the second of those sessions has recorded its repair there.)
+    (Added with point 53: the repairs of the second reading have had a reader since, and both
+    sessions' branches are merged into this one; point 53.)
 47. **A fresh reader went through the lookup's repair and the second reading's nine lines, on your word.
     Since that repair two rare forms of name started the wrong file on Windows: one the reader named and
     rated harmless, one I found while repairing it. Both are repaired** (20 November; "The reading of
@@ -936,6 +952,11 @@ Decision record: `docs/upgrade/LEDGER.md`.
     the reader.
     (Added with point 50: the first of these is decided by your "Yes, repair it" of 21 November and
     built, with a third place of the same kind; the record is "The folder's repair".)
+    (Added with point 53: this reading's repairs, `c85f96a`, have had a reader since, with the
+    merged branches. It reported no fault in them. Of the hint's words on a name without a dot it
+    said that they are incomplete for a name with a folder in it; that is left as it is here. A
+    second reader, in the pilot's own session, has read `c85f96a` since as well; that session's
+    later commit `042a985` words the hint anew and is not in this branch. Point 53.)
 48. **The two faults under a virtual environment on Windows are repaired in a local commit, by a
     session of its own that you started for them. Nothing is pushed or merged, and the repairs are
     read by nobody but me** (20 and 21 November; "The two faults under a virtual environment on
@@ -993,6 +1014,10 @@ Decision record: `docs/upgrade/LEDGER.md`.
     repaired since. And "nothing can run twice that way" rested on a trial that is not proof; it
     holds now, because a supervisor that finds the run's log there starts nothing. Of the open
     questions the first is answered for `81634a3` and open again for the commit that repairs these.)
+    (Added with point 53: this branch is merged with the two others since, on your "All three", and
+    nothing is pushed. The question on the loop's and the remote controller's starts stands as it
+    was: the reader of point 53 came to the same by reading, and the reference says now that each of
+    the two has a terminal window under an environment.)
 49. **A program's name in quotes or behind backslashes is that program for the guard now: both forms
     of point 44 are repaired in a local commit, at a cost for a read-only agent that is yours to
     accept. Read by nobody but me; nothing is pushed** (21 November; "A program's name in quotes or
@@ -1039,6 +1064,12 @@ Decision record: `docs/upgrade/LEDGER.md`.
     branch `claude/fervent-gould-8d0820`, which stood at `f68b71c`. Neither branch is merged into
     this one, and I pushed nothing. Of point 47 I read the first sentence, and of point 48 the
     heading and its session's note; I checked nothing of them.)
+    (Added with point 53, by the session that merged the branches: one reader has gone through this
+    repair since, and it found a regression that this point does not name. Behind `cmd /c` a quoted
+    line of commands was read as one program's name, the last part of its last path: `cmd /c "type
+    docs\patch"` was asked about in the main session too, as a patch, and refused to a read-only
+    agent. So the cost was not a read-only agent's alone. That is repaired; and the reader named
+    more harmless forms that a read-only agent is refused than the two kinds here. Point 53.)
 50. **A relative path to a program is read from the same folder on Windows and on Linux now, on your
     word, at three places: the two that the question named, and a third that I found and repaired with
     them without asking, the program of the loop's agent** (21 November; "The folder's repair"). Your
@@ -1070,6 +1101,13 @@ Decision record: `docs/upgrade/LEDGER.md`.
     loop in the background reads from the project root, is repaired too (I would, as a small change of
     its own); whether this branch, thirteen commits after `5ccc2d4` now, is merged with `test/round-9`;
     and what point 47 left open, less its first question.
+    (Added with point 53: this branch is merged with the three other local branches since, on your
+    "All three", and one reader has gone through this repair and the last reading's with them, on
+    your "After the sessions". It reported no fault in either. That was not the last word: a second
+    reader, which you started in the pilot's own session, led that session to a regression of this
+    repair, a batch-file evaluator that is no longer started on Windows in a project folder whose
+    name holds a comma or the like. By that session's commit it is repaired on the pilot's branch,
+    in `042a985`, which came after the merge and is not in this branch. Point 53.)
 51. **One fresh reader has gone through the repairs of point 48, on your word. It found a regression
     in the campaign's loop, which is repaired with what else held, in a second local commit. Nothing
     is pushed or merged, and the new repairs are read by nobody but me** (21 November; "The reading
@@ -1111,6 +1149,80 @@ Decision record: `docs/upgrade/LEDGER.md`.
     anywhere; whether the loop should wait a run's whole time for such a launch; whether the launch
     removes the environment file that a launch through tmux leaves where its supervisor never
     starts; whether these commits go to `test/round-9`; the questions of point 48 but the first.
+    (Added with point 53: this branch is merged with the two others since, on your "All three", and
+    one reader has gone through `5f600da` with them. It found one case in which the loop's wait of
+    this point was for nothing: a supervisor that could not start its command for an error that is
+    not the system's own left the run's log without a record, which a launch reads as a command
+    that may run. Repaired; point 53. The first open question is answered for `5f600da` and open
+    again for the repairs of point 53.)
+53. **The three sessions' branches are merged into this one, on your word, and one fresh reader has
+    gone through the merge and the five repairs that only their authors had read. It found a
+    regression of the guard, which is repaired with what else held. All of it is local commits, the
+    new repairs are read by nobody but me, and one of the three branches has two commits more since,
+    which this branch does not hold** (21 November; "The merge of the three branches and its
+    reading"). This point is 53 because 52 is the proof pilot's session's, for a reading of its
+    folder's repair, which that session committed on its local branch while this was written
+    (`0278baa`); this branch does not hold it. Your words were "After the sessions", to the question
+    when a reader should go through the second reading's repairs, and "All three", to the question
+    which sessions' branches I should merge into this one. The branch of the two faults came in as
+    it was; the guard session's is the merge commit `d4216b3` and the proof pilot's `f38c4d8`. Git
+    joined the code, the tests and the reference by itself; in this file and in `PROGRESS.md` I kept
+    every side's text, the points here in the order of their numbers. So points 38, 41 to 43, 45, 47
+    and 50 and their sections are the pilot's session's, 48 and 51 the session's for the two faults
+    and 49 the guard session's, and "I" in each is its session; where one says that a branch is not
+    merged or that this branch does not hold a point, that was so where it was written. The merged
+    state passes the eight test files on Windows under Python 3.11.7 (2,053 checks), the kit file
+    and the loop file from the 3.8.20 environment, and the kit file in WSL under 3.12.3. The reader,
+    a fresh session of Opus 5.5 with read access only, went through the merge and through `bcfab15`,
+    `5f600da`, `31af10c`, `c85f96a` and `05f996f` (93,125 tokens) and reported nine findings; I ran
+    each. The regression: since `bcfab15` a quoted line of commands behind `cmd /c` or `cmd /k` was
+    read as one program's name, the last part of its last path. So `cmd /c "type docs\patch"` was
+    asked about in the main session, as a patch, and a read-only agent was refused it and lines like
+    `cmd /c "python train.py --out runs\touch"`; the guard before let them pass. Now such a text is
+    the line of commands where it ends its command and its blank stands in no path, and the program
+    where an argument follows it or its first blank stands inside a path. cmd tells the two apart by
+    looking for the file, which the guard does not do. So two rare forms of a program without an
+    argument pass again that `bcfab15` had caught (`cmd /c "my tools\patch.exe"`, `cmd /c
+    "C:\tools.old dir\patch.exe"`), and a line of commands whose first word is a path without an
+    ending is still refused to a read-only agent. Beside it I found an older gap and repaired it
+    without asking: cmd takes `/C` and `/K` as `/c` and `/k`, and the guard took the small letter
+    only, so `cmd /K tar -xf bundle.tar` and `cmd /C "C:\Program Files\Git\usr\bin\touch.exe"
+    eval\metrics.py` passed unasked. That is three patterns in hunks of their own, and you can have
+    it taken out. Two faults of the controller are repaired: a supervisor that could not start its
+    command for an error that is not the system's own left no record, on which a campaign's loop
+    waited out the run's time; and the curve's sentence about scatter spoke for values that differ
+    by rounding alone. The reference is completed at two places that the merge had put out of date:
+    under an environment the detached loop and a remote run's controller each have a terminal
+    window, and the heartbeat's rule concerns every launched `python` there. Left, each named in the
+    section: the flag of those two starts, which the session for the two faults has put to you; more
+    harmless forms that a read-only agent is refused than point 49 names, which belong to its
+    choice; the guard's cost on a line of many words that set a variable, twice what it was before
+    `bcfab15`; a supervisor that is killed between the log and the start; three findings that are
+    wording, taste or no fault. Eighteen new checks, eleven in the kit's test file and seven in the
+    review-fixes file: sixteen fail on the code of `f38c4d8`, and two are controls. On 2,500
+    generated lines no answer changes. The eight test files pass on the repaired state on Windows
+    under Python 3.11.7 (2,071 checks), the kit file and the review-fixes file from the 3.8.20
+    environment, and the kit file in WSL under 3.12.3 (1,298), with no failed check. All of that on
+    this machine only: GitHub's machines, a Mac among them, have run neither the merged state nor
+    the repairs. The code is `f2338d6`, 103 lines added and 13 removed in five files, after
+    `f38c4d8`. What this reading did not find: at 08:05 the pilot's branch took a commit more,
+    `042a985`, and at 08:14 its record. A second reader, which you started in that session for
+    `31af10c` and `c85f96a`, led that session to a regression of `31af10c`: with the loop called in
+    the project root on Windows, an evaluator that is a batch file is not started in a project
+    folder whose path holds a comma, `;`, `=`, a bracket or `&` and no space. The reader of this
+    point had read the same two commits and reported no fault in them, and I found none. So this
+    branch has that regression, and its repair is on the pilot's branch; that is from that commit's
+    message, and I ran none of it. `test/round-9` on GitHub stays at `409182f` and `main` at
+    `e587b4f`; the branch of a fourth session, for the guard's search of a line's variables, is not
+    merged, because your word named three; your real install is untouched and no package was
+    installed. The test passes put terminal windows on your screen again. One older check of the
+    kit's test file depends on the file's own speed, which showed in a pass that ran beside my
+    probes; it is left and named. Open: whether I merge the pilot's branch again, as it stands now
+    (I would, before this branch goes anywhere); where this branch goes then, to `test/round-9` and
+    after it `main`; whether a reader goes through these new repairs; whether `/C` and `/K` stay (I
+    would keep them); whether the two forms that the repair gives back are acceptable; the flag of
+    the detached loop and the remote controller; the cost for a read-only agent, now with more
+    forms; the guard's cost on two kinds of long line; the fourth session's branch.
 
 ## Round 2 (12 November 2026)
 
@@ -9214,6 +9326,8 @@ In short:
    ones had: a re-read against the comments, the sibling forms, git itself for what an option does,
    timings against the guard before, old against new on 2,500 generated lines with no changed answer,
    and tests that fail with the change taken out.
+   (Added with point 53: they have had a reader since, with the merged branches, on your "After the
+   sessions"; "The merge of the three branches and its reading".)
 9. **Nothing is pushed.** The code is one local commit, `05f996f`, and this record a second.
    `test/round-9` on GitHub stays at `5ec95c6`, where GitHub's run on the record of the push passes in
    all six jobs (below). `main` stays at `e587b4f`, with round 8's guard, and your real install is
@@ -9717,6 +9831,8 @@ In short:
    (Added with point 48: both are repaired since, in a local commit; the section after this one.)
 5. **The repairs are still read by nobody but me.** A run shows that the tests pass on three systems. It
    is not a reading.
+   (Added with point 53: one reader has gone through them since; "The merge of the three branches
+   and its reading".)
 6. **Two of the decisions of the section before this one have a session of their own since.** You
    started one for the two faults under a virtual environment on Windows and one for how the guard reads
    a program's name in quotes. What they do and find is theirs to record.
@@ -10408,6 +10524,8 @@ In short:
 8. **These repairs are again read by nobody but me, and nothing is pushed or merged.** The code is one
    local commit, `5f600da`, on the branch `claude/fervent-gould-8d0820`, and this record a second.
    `test/round-9` on GitHub stays at `409182f`, and your real install is untouched.
+   (Added with point 53: the branch is merged with the two others since, on your "All three", and one
+   reader has gone through `5f600da`; "The merge of the three branches and its reading".)
 9. **The test passes and the copies put terminal windows on your screen again.** By a watcher's lists
    117 of them were mine, between 02:31 and 03:56: 36 beside each of the two passes under an
    environment, 34 of 1.5 to 9 seconds while the remote file ran and two of 7 to 8.5 seconds while the
@@ -10855,6 +10973,8 @@ passes on Windows ended at 02:36. None is from the time of my passes on Windows.
   commits go anywhere. They change how a supervisor starts a command, what a failed launch answers and
   how long the loop waits, and every reading of my own repairs since 16 November has found something,
   this one too. This one took 178,000 tokens.
+  (Added with point 53: one reader has gone through them since, with the merged branches, on your
+  "After the sessions"; "The merge of the three branches and its reading".)
 - **Whether the loop waits the run's whole time for a launch that failed with its command perhaps
   running.** It does now, as before the first repair, and for the same reason: without a supervisor's
   record the loop cannot tell whether the command runs. The other ways: stop the run at once, which
@@ -10873,6 +10993,8 @@ passes on Windows ended at 02:36. None is from the time of my passes on Windows.
   `nnloop start --detach` and the controller of a remote run get the new flag; whether this branch is
   merged with the proof pilot's and the guard session's, and where it goes; the questions of point 46 as
   far as they are not these.
+  (Added with point 53: merged with both since, on your "All three"; where the merged branch goes is
+  open. The flag for the loop's and the remote controller's starts is still yours to decide.)
 
 Sources: the reader's report of 21 November 2026, kept in this session's record; the kit's tests on this
 machine on 21 November 2026, on Windows under Python 3.11.7, 3.8.20 and 3.15.0rc3 and in WSL under
@@ -10917,6 +11039,11 @@ In short:
    (`if ('install' -in $steps) { 'yes' }`, also behind `powershell -c`), and a here-document of program
    text in which such a word stands alone on a line. The guard cannot tell which shell reads a line.
    Whether that price is right is your decision.
+   (Added with point 53, by the session that merged the branches: the cost was wider than this. A
+   reader found that behind `cmd /c` a quoted line of commands was read as one program's name, so
+   the main session was asked about `cmd /c "type docs\patch"` and a read-only agent was refused it:
+   a regression, repaired since. And it named more harmless forms that a read-only agent is refused,
+   which are left to this decision; "The merge of the three branches and its reading".)
 5. **On 5,500 generated lines every changed answer is of a kind that I can name.** On the 2,500 lines of
    this round's earlier comparisons no answer changes. On 3,000 lines made of this repair's forms the
    main session is asked about 223 lines that passed, each answered as the same line with the bare name
@@ -10943,6 +11070,8 @@ In short:
 10. **Read by nobody but me, and nothing is pushed.** The code is one local commit, `bcfab15`, on the
     branch `claude/sharp-faraday-6bd610`, and this record a second. `main` stays at `e587b4f` and your
     real install is untouched: both have the two gaps as they had them.
+    (Added with point 53: one reader has gone through `bcfab15` since, and the branch is merged with
+    the two others; "The merge of the three branches and its reading".)
 
 ### The first form, confirmed once
 
@@ -11311,10 +11440,17 @@ over it as a patch.
   there only behind `&` and `.`, because PowerShell takes a quoted word at a command's start for a
   text. For the second, it can leave the lines of a here-document that a program other than a shell
   reads as they are. Without either, the two forms stay closed and such a line is written another way.
+  (Added with point 53, by the session that merged the branches: the reader of that point named more
+  such forms, which are part of this decision: a bracket behind a `=` with a blank between them
+  (`$x = ('rm')`), a bracket or a brace behind a command's first word (`Write-Output ("rm")`,
+  `ForEach-Object { 'touch' }`), and `return ('rm')`.)
 - **Whether a reader goes through this repair before it goes further.** By this project's record each
   reading of a guard fix since 16 November has found something. I would give it one, with a brief about
   correctness in both directions as the reader of 20 November had, and not one to look for ways past
   the guard.
+  (Added with point 53: it has had one, with the merged branches, on your "After the sessions". It
+  found a regression behind `cmd /c`, which is repaired; "The merge of the three branches and its
+  reading".)
 - **Where these two commits go.** They stand on `409182f`, which is the head of `test/round-9` as this
   machine last fetched it; I fetched nothing. A push to that branch would run GitHub's six jobs on the
   repair: on macOS, on bare Linux and under Python 3.8 for the first time. Two other local
@@ -11327,6 +11463,8 @@ over it as a patch.
   joins the test file and the reference by itself. So the records need joining by hand, the numbered
   points among them. No test ran on a joined state, and what git joins by itself is not thereby
   right.
+  (Added with point 53: the three branches are merged in one local branch since, on your "All three",
+  the records joined by hand, and the tests ran on the joined state.)
 - **What is done about the loop over a line's assignments** ("Seen beside the repair, and left"). It is
   older than this round, it makes the guard slow on lines with many variables, and on a line without
   blanks the guard's timer answers long after the hook's time is over. What I would try: one search of
@@ -13434,6 +13572,8 @@ record, after `09bcc5c`. No package was installed. Dates and times in this secti
    two interpreters each: 1,916 and 1,903 checks on Windows, 1,927 and 1,914 in WSL, none failed. No
    check is new; two are changed, and each fails with its change taken out. **This reading's repairs are
    read by nobody but me,** and GitHub's machines, a Mac among them, have run none of it.
+   (Added with point 53: one reader has gone through `c85f96a` since, with the merged branches;
+   "The merge of the three branches and its reading".)
 10. **Nothing is pushed or merged.** The branch holds eleven local commits after `5ccc2d4`: the nine of
     the lookup's section and this reading's two. Your real install is untouched.
     (Added with point 50: thirteen, with the two of the folder's repair.)
@@ -13857,6 +13997,11 @@ Dates and times in this section are UTC.
    same on Windows and on Linux or outside the question: "What was left as it is".
 7. **Nothing is pushed or merged.** The branch holds thirteen local commits after `5ccc2d4`: the eleven
    of the last section and this repair's two. Your real install is untouched.
+   (Added with point 53: on your "All three" the branch is merged with the three other local branches
+   since, and one reader has gone through this repair and the last reading's; "The merge of the
+   three branches and its reading". It reported no fault in this repair; a second reader, in the
+   pilot's own session, led to a regression of it, which the pilot's branch repairs in `042a985`
+   and this branch does not hold. Nothing is pushed.)
 
 ### What changed in the kit
 
@@ -14082,6 +14227,9 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   now. They are few lines, and they lie on the way of every start that the kit makes on Windows, of
   every evaluation and of every session of a campaign, and I am their only reader. The brief would be
   for correctness, as the three before it.
+  (Added with point 53: answered by your "After the sessions". One reader went through both with the
+  merged branches and reported no fault in either. A second one, which you started in the pilot's own
+  session, led to a regression of `31af10c`; point 53 says where that stands.)
 - **Whether a relative `--root` with `--detach` is repaired.** I would, as a small change of its own
   with one check: the call hands the project root to the loop in the background as it found it, the way
   it hands the agent's program now.
@@ -14097,6 +14245,8 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   All four together are not tried. The records of all sides are joined by hand as before: points 39, 40,
   44 and 46 of "Read this first" are the other session's, 48 and 49 those two branches', and this branch
   has 38, 41, 42, 43, 45, 47 and 50.
+  (Added with point 53: answered by your "All three". The four are merged in one local branch, the
+  records joined by hand, and that state has run; nothing is pushed.)
 - Unchanged from "The reading of the lookup's repair": what that section lists, less its first question.
   Unchanged from the sections before it: what they list.
 
@@ -14106,6 +14256,515 @@ to 02:36 UTC on Windows and from 01:45 to 02:04 UTC in WSL. Before them, on the 
 and the first trials of the three places. While they ran and after them: the trials of the three tables
 and of a name without a folder as they stand here, from scratch scripts that are not part of the kit,
 and campaign b once more on copies of the final state, in WSL and on Windows.
+
+## The merge of the three branches and its reading (21 November 2026): a regression of the guard behind `cmd /c` repaired, an older gap beside it, and two faults of the controller
+
+Your words: "After the sessions" (01:11 on 21 November), to the question when a reader should go through
+the second reading's repairs, and "All three" (06:18), to the question which sessions' branches I should
+merge into this one. With the second question I had written what either answer covers: the named
+branches merged into this one locally, every side's record text kept in the order of the points and the
+ledger rebuilt; the eight test files on the merged state on Windows and the kit file in WSL; and one
+reader with read access only and a brief for correctness, on the repairs that only their authors had
+read and on how the controller's changes fit together, with what holds repaired and recorded as after
+the two earlier readings. Not covered: a push, `main`, your real install, the deletion of a branch or a
+worktree, a second reader, also for the repairs of this section, and the branch of a fourth session,
+which your word did not name. All of it is local commits: the two merge commits `d4216b3` and `f38c4d8`,
+the repairs' commit `f2338d6`, and this record. No package was installed. Dates and times in this
+section are UTC, and of 21 November where no day is named. "I" here is the session that keeps this
+record, which wrote points 39, 40, 44 and 46; in the sections of the three merged branches "I" is the
+session of that branch. "The merged guard" is the one of `f38c4d8`, which is that of `bcfab15`; "the
+guard before" is the one of `409182f`.
+
+In short:
+
+1. **The three branches, as they stood at 06:18, are one local branch now.** The branch of the two
+   faults stood on `409182f` and
+   came in as it was (`81634a3`, `f68b71c`, `5f600da`, `12876c9`). The guard session's branch (`bcfab15`,
+   `b5331fb`) is the merge commit `d4216b3`, and the proof pilot's, thirteen commits after `5ccc2d4`,
+   the merge commit `f38c4d8`. Git joined the kit's code, the tests and the reference by itself each
+   time. In this file and in `PROGRESS.md` I kept every side's text, the points of "Read this first" in
+   the order of their numbers. The ledger did not change.
+2. **The merged state passes its tests on this machine.** The eight test files on Windows under Python
+   3.11.7 (2,053 checks), the kit file and the loop file from the 3.8.20 environment (1,285 and 267), and
+   the kit file in WSL under 3.12.3 (1,287): no failed check.
+3. **The reader found a regression of the guard, and it is repaired.** Since `bcfab15` a quoted line of
+   commands behind `cmd /c` or `cmd /k` was read as one program's name, the last part of its last path.
+   So `cmd /c "type docs\patch"` was asked about in the main session as a patch, and a read-only agent
+   was refused that line, `cmd /c "type notes\install"` and `cmd /c "python train.py --out runs\touch"`.
+   The guard before let all of them pass. Now such a text is the line of commands that cmd makes of it
+   where it ends its command and its blank stands in no path, and the program where an argument follows
+   it or its first blank stands inside a path (`"C:\Program Files\Git\usr\bin\patch.exe"`). cmd tells
+   the two apart by looking for the file, which the guard does not do, so the rule reads two rare forms
+   wrongly in each direction ("The findings, each checked", 1).
+4. **Beside it I found an older gap and repaired it without asking: `/C` and `/K`.** cmd takes its
+   options in either case. The guard took the small letter only, for a name in quotes and for the rules
+   that keep the case of a program's options: `cmd /C "C:\Program Files\Git\usr\bin\touch.exe"
+   eval\metrics.py` and `cmd /K tar -xf bundle.tar` passed unasked, and a read-only agent was let run
+   them. Both are asked about and refused now. It is three patterns, in hunks of their own, and you can
+   have it taken out; I would keep it.
+5. **Two faults of the controller are repaired.** A supervisor that could not start its command for an
+   error that is not the system's own, as a null character in a word of the command gives, ended with the
+   run's log made and no record. A launch reads that as a command that may run, and a campaign's loop
+   waits out the run's time for it. It records now that it could not start the command, as it did for a
+   program that is not there. And the curve's sentence about a metric's scatter spoke of "121 % of all
+   it gained" for values that differ by rounding alone; it has the floor now that the two sentences
+   beside it got on 20 November.
+6. **The reference is made complete at two places that the merge had put out of date,** and says what
+   the two repairs change: under an environment the detached loop and a remote run's controller each
+   have a terminal window on the screen, and the rule for a heartbeat's number concerns every launched
+   `python` there, not only a run whose command names the environment's `python.exe`.
+7. **Left, each named below:** the flag of the detached loop and the remote controller, which the
+   session for the two faults has put to you (finding 2); more harmless forms that a read-only agent is
+   refused than point 49 names, which belong to the choice that point left to you (3); the guard's cost
+   on a line of many words that set a variable, twice what it was before `bcfab15` (4); a supervisor
+   that is killed between the log and the start (5); and three findings that are wording, taste or no
+   fault (6, 8 and the second half of 9).
+8. **Verified by running, on this machine only.** Eighteen new checks, eleven in the kit's test file
+   and seven in the review-fixes file. Sixteen fail on the guard and the controller of `f38c4d8`, and
+   two are controls that pass on both. On 2,500 generated lines no answer changes; on 60 lines of the
+   forms of finding 1 the answers of 22 change, each as intended. Through the hook on Windows the
+   earlier long lines take what they took. The eight test files pass on the repaired state on Windows
+   under Python 3.11.7 (2,071 checks), the kit file and the review-fixes file from the 3.8.20
+   environment (1,296 and 191), and the kit file in WSL under 3.12.3 (1,298): no failed check.
+   GitHub's machines, a Mac among them, have run neither the merged state nor the repairs.
+9. **The new repairs are read by nobody but me, and nothing is pushed.** `test/round-9` on GitHub stays
+   at `409182f` and `main` at `e587b4f`; your real install is untouched.
+10. **One of the three branches has two commits more since, which are not here: the repair of a
+    regression that this section's reader did not report, and that repair's record.** At 08:05 the
+    pilot's branch took `042a985`, and at 08:14 its record, `0278baa`. A second reader, which you
+    started in that session for `31af10c` and `c85f96a`, led that session to a regression of
+    `31af10c`: with the loop called in the project root on Windows, an evaluator that is a batch
+    file is not started in a project folder whose path holds a comma, `;`, `=`, a bracket or `&`
+    and no space. The reader of this section had read the same two commits and reported no fault in
+    them, and I found none. This branch holds `31af10c` as it was merged, so it has that regression
+    until the pilot's branch is merged again ("After the merge").
+11. **The test passes put terminal windows on your screen again,** fewer than before: I ran the loop
+    file under the environment once, on the merged state, and not the remote file ("Windows on your
+    screen").
+
+### The merge
+
+- **The order.** At 06:18 the three branches stood at `12876c9` (the two faults), `b5331fb` (the guard)
+  and `eded7ce` (the pilot). The first two stand there now (08:53); the pilot's has two commits
+  more, of 08:05 and 08:14 ("After the merge"). The first followed this branch's tip and came in as a
+  fast-forward. `d4216b3` (06:23) merges the second, `f38c4d8` (06:30) the third. After `409182f` that
+  is 21 commits, 6,762 lines added and 55 removed in 11 files.
+- **What git joined by itself:** the kit's code, the tests and `docs/REFERENCE.md`, both times.
+  `expctl.py`, `nnloop.py`, `tests/test_kit.py` and `tests/test_loop.py` were changed on both sides of
+  the second merge. What git joins by itself is not thereby right: that was the reader's first part, and
+  the tests' pass on the joined state.
+- **What I joined by hand:** this file and `PROGRESS.md`, where both sides had added text at one place:
+  nine places with the guard's branch, three in each file with the pilot's. Both texts are kept at
+  each. The points of "Read this first" stand in the order of their numbers, 38 to 51. Elsewhere the
+  faults session's text stands before the guard session's, and this branch's before the pilot's, so
+  the pilot's seven sections stand together after "A program's name in quotes or behind backslashes".
+- **What I reworded:** six statements of position that the new order had made untrue. Three notes of
+  the guard's branch said "the section after this one" of a section that no longer follows directly,
+  and name it now. The pilot's opening sentence said "On the same day" and names the day; a note
+  after the pilot's seven statements in the opening says where its sections stand; and a note in "The
+  reading of the reading's repairs" no longer calls the guard's section the last. Nothing else of any
+  side's record was changed by the merge. The notes that this section adds are marked "Added with
+  point 53".
+- **What "I" and "this branch" mean in this file since.** Points 38, 41 to 43, 45, 47 and 50 and their
+  sections are the pilot's session's; 48 and 51 the session's for the two faults; 49 the guard
+  session's; the others mine. Where one of them says that a branch is not merged, that this branch does
+  not hold a point, or that something is on its local branch only, that was so where it was written.
+- **The ledger** did not change in the merge: none of the three branches had touched `LEDGER.md` or
+  `scout/`.
+- **Not merged:** `claude/beautiful-bartik-32f1e5`, the branch of a fourth session, for the guard's
+  search of a line's variables. Your word named three, and that branch had no commit of its own when I
+  looked last (08:53); it stands at `b5331fb`. And `042a985` and `0278baa`, the two commits that
+  the pilot's branch took after the merge ("After the merge").
+
+### The passes on the merged state
+
+On a clone of `f38c4d8`, ended at 07:20. Checks are counted in the logs as the lines that begin with
+`PASS` and `FAIL`.
+
+| Where | Files | Checks | Failed |
+|---|---|---|---|
+| Windows, Python 3.11.7 | all eight | 2,053 (review-fixes 184, kit 1,285, live guard 6, ports 138, remote 100, benchmarks 54, runlog 19, loop 267) | 0 |
+| Windows, the 3.8.20 environment | kit, loop | 1,285 and 267 | 0 |
+| WSL, Python 3.12.3 | kit | 1,287 | 0 |
+
+Not run on the merged state: the six other files under the 3.8.20 environment, any file under 3.15, the
+seven other files in WSL, macOS, bare Linux.
+
+### The reader and its brief
+
+- One reader: a fresh session of Opus 5.5 with read access only, on a clone of its own that stood at
+  `f38c4d8`. The brief let it run short scripts of its own in a scratch folder, to call single functions
+  of the kit and to put lines to the guards of probe projects; it forbade the kit's test files and
+  anything that starts or ends a process. 93,125 tokens, 62 tool calls, 18 minutes (06:37 to 06:55). I
+  had named no estimate.
+- What it read: the merge itself (part A), and the five repair commits that only their authors had
+  read: `bcfab15` (B), `5f600da` (C), `31af10c` (D), `c85f96a` (E) and `05f996f` (F), each against its
+  parent, with what each touches as `git show --stat` gives it. The brief told it not to read
+  `docs/upgrade/`, which holds the authors' own accounts, and to read each commit's message and not to
+  trust it. It said that this is a reading for correctness and not a search for ways around the guard.
+- The questions, in short. A: under an environment on Windows a launched `python` now starts through
+  the environment's small program, on which side of the merge nobody had counted, so which number names
+  which process, and does anything read a live run as lost or an ended one as running; every way a
+  supervisor's start can fail, against what the launch answers and the loop then does; which sentences
+  of the reference one side's code makes untrue for the other; the older flags of the detached loop and
+  the remote controller. B: each statement about the quoted name against the code, in both directions;
+  regressions against the guard before; cost on long lines; tests that prove nothing. C: each path of
+  the launch's wait; the loop's wait; whether every way a supervisor is started makes the run's folder
+  anew; the rule for a heartbeat's start time at its edges. D: the three joins for each kind of program
+  word. E: `in_env` and `startable` for each kind of name. F: which inputs change their answer, and the
+  curve's sentences at their edges.
+- It reported nine findings, four of which it had confirmed by running and five found by reading. Found
+  right, in its list: which number names the small program and which the interpreter, with `load_run`,
+  `stop` and the GPU's owner, and "no case that mixes up two runs"; the heartbeat's rule at 0.04 and
+  0.06 seconds, with a clock set back and with no start time; every path of the launch's wait against
+  its comment, and that the log made by the supervisor itself means one supervisor at most starts a
+  run; the loop's wait, which is finite and counts the GPU time once; that launch and resume make a new
+  folder; every form that the guard's commit says is caught; the joins for a drive without a slash, a
+  slash without a drive and UNC paths, and that the `--agent-exe` added at the end wins; `in_env` and
+  `startable` against their docstrings; that every `--no-` option on a `git apply` line is asked about;
+  and, apart from two findings, the reference against the merged code.
+- Not checked or not reached, in its list: the tests were read only in part; the merge's overlap, which
+  was `cmd_supervise` alone, by reading only; the new tests were not run against copies with the change
+  taken out; nothing under Python 3.8 or 3.15 or outside Windows; and the window of finding 2 is from
+  reading.
+- With it, the readers of this work are thirteen and one second reading, about 2,017,000 tokens, the
+  proof pilot's first three among them; without those, ten and one second reading, about 1,534,000.
+  Beyond your word the count stays at six and one second reading, about 907,000: this one you asked
+  for. Not in these counts: a fourth reader of the pilot's session, on your word there, which read
+  `31af10c` and `c85f96a` while this record was written (185,672 tokens by that session's commit).
+
+### The findings, each checked
+
+I ran every finding, also those that the reader calls taste or low.
+
+| # | The reader's finding | What I found | Answer |
+|---|---|---|---|
+| 1 | Behind `cmd /c` a quoted line of commands is read as one program's name: the main session is asked about `cmd /c "type docs\patch"`, and a read-only agent is refused it and three lines more. Run. | Holds. A regression of `bcfab15`: the guard before and the released one let all five pass. | Repaired |
+| 2 | Under an environment's `python.exe` the detached loop and the remote controller get a terminal window, for the reason that the comment at the supervisor's new flags gives; the reference does not say so. Read. | Holds, and is known: the session for the two faults measured those windows and put the flag to you. | Reference completed; the flag stays your decision |
+| 3 | A read-only agent is refused harmless lines that the stated cost does not cover: a bracket behind a `=` with a blank between, `Write-Output ("rm")`, `ForEach-Object { 'touch' }`, two here-documents. Run. | Holds: eleven forms refused that the guard before let pass. The code does what its own comment says. | Left to the choice of point 49 |
+| 4 | `named()` doubles a cost that grows with each word that sets a variable: thirty of them take the main session 12.15 s where they took 5.93 s. Run. | Holds, at 24 and 26 words in my runs. The growth is older, in a pattern that the fourth session's task concerns. | Left, named |
+| 5 | A start that fails after the log is opened leaves the launch saying that the command may run, and the loop waits out the run's time: an error that is no `OSError`, or a supervisor killed between the log and the start. Read. | The first holds, with a null character in a word of the command. The second cannot be told from a command that runs. | The first repaired; the second left |
+| 6 | The remote side makes a run's folder with `exist_ok=True`, where the message of `5f600da` says that each run's folder is made anew. Read; low. | No fault in the code. The message's sentence is loose for the remote side. | Recorded here |
+| 7 | The sentence about a metric's scatter speaks for values that differ by rounding alone. Run. | Holds. A sentence of round 9; the floor that `05f996f` gave the two beside it did not reach it. | Repaired |
+| 8 | The hint of `final-eval` says that the ending "may be left out where the name has no dot", which is incomplete for a name with a folder. Read; taste. | No fault: the hint's "name" is the path's last part, and Windows does as it says. | Left |
+| 9 | One sentence of the reference is too narrow since the merge; and the launch's answer names the supervisor's small program where `pid.json` names its interpreter. Read. | Both hold. Nothing compares the two numbers. | The sentence completed; the numbers left, named |
+
+**1. A quoted line of commands behind `cmd /c`.** `bcfab15` reads a command word in quotes as its
+program's bare name, and behind `cmd /c` it takes a quoted text with blanks for such a word, which is
+what makes `cmd /c "C:\Program Files\Git\usr\bin\touch.exe" eval\metrics.py` the program `touch`. But
+`cmd /c "type docs\patch"` is a line of commands in quotes, and the same reading made it the program
+`patch`, the last part of the text's last path. cmd's own rule, from its help: the text behind `/c` or
+`/k` keeps its quotes only if there is no `/S`, it has exactly two quote characters, no special
+character stands between them, a blank does, and the text between them is the name of a file that can
+be started; otherwise the first and the last quote are taken off and the rest is a line of commands.
+The guard reads text and looks up no file, so the repair goes by the text:
+
+- Behind `/c` or `/k` of cmd, a quoted text with a blank in it stays as it is, and the rules read it
+  as the line of commands, as they did before `bcfab15`, where it ends its command (nothing follows
+  but a redirection or a separator) and its first blank stands in no path.
+- It is the program where an argument or a `<` follows it, or where its first blank stands inside a
+  path: behind a folder's separator and a part without a dot.
+
+| Line | Before `bcfab15` | Merged | Repaired |
+|---|---|---|---|
+| `cmd /c "type docs\patch"` | passes | asked; refused to a read-only agent | passes |
+| `cmd /c "C:\tools\list.exe docs\patch" 2>nul \| findstr x` | passes | asked; refused | passes |
+| `cmd /c "python train.py --out runs\touch"` | passes | refused to a read-only agent | passes |
+| `cmd /c "C:\Program Files\Git\usr\bin\patch.exe"` | passes | asked; refused | asked; refused |
+| `cmd /c "my tools\touch.exe" eval\metrics.py` | passes | asked; refused | asked; refused |
+| `cmd /c "C:\my tools\patch.exe"` | passes | asked; refused | asked; refused |
+| `cmd /c "my tools\patch.exe"` | passes | asked; refused | passes |
+| `cmd /c "C:\tools.old dir\patch.exe"` | passes | asked; refused | passes |
+| `cmd /c "C:\Python311\python train.py --out runs\touch"` | passes | refused to a read-only agent | refused to a read-only agent |
+| `cmd /c "C:\Python311\python.exe train.py --out runs\touch"` | passes | refused to a read-only agent | passes |
+
+So the rule gives back two forms that `bcfab15` had caught: a program that is given no argument, where
+no separator stands before its first blank (`"my tools\patch.exe"`) or a dot stands in the part before
+that blank (`"C:\tools.old dir\patch.exe"`). Both passed every guard before `bcfab15`. And it still
+reads one harmless form as a program: a line of commands whose first word is a path without an ending.
+Telling these apart takes a look at the files on the disk; the guard's comment names that as the
+shortcut's limit, and the reference names the forms. On 60 lines of these forms, put to the merged guard
+and the repaired one as the main session and under the read-only rules, the answers of 22 differ: 19
+lose a question or a refusal, and three with a capital `/C` or `/K` get one (below). Left as they were,
+and older than this reading: at a line's start `"type docs\patch"` is still read as the program
+`patch`, as a POSIX shell would take it; and cmd's form with doubled quotes, `cmd /c ""C:\Program
+Files\Git\usr\bin\touch.exe" eval\metrics.py"`, passes every guard unasked, the one before `bcfab15`
+too.
+
+**2. The windows of the detached loop and the remote controller.** `nnloop.py` starts a detached loop,
+and `nnremote.py` a remote run's controller, with no console (`DETACHED_PROCESS`). Under an
+environment's `python.exe` that gives each a terminal window for as long as it runs, which is why the
+session for the two faults gave the supervisor other flags. That session measured the windows of these
+two, left their flags as they are and put the change to you; its question is open in its own session,
+so I changed no flag. The reference said that the two are "started as before, without a console" and
+not what follows from it; it says now that each has a window of its own on the screen under an
+environment. The reader had this from reading; the measurement is in "The two faults under a virtual
+environment on Windows, repaired".
+
+**3. Harmless lines that a read-only agent is refused.** The cost that point 49 names is a PowerShell
+expression that starts with a quoted word that is a program's name, and a here-document in which such a
+word stands alone on a line. Refused as well on the merged guard, and not on the guard before, are
+eleven lines that I tried, among them
+`$x = ('rm'); Write-Output $x`, `$steps = ( 'install' )`, `$steps = ('install')`, `Write-Output
+("rm")`, `Get-ChildItem | ForEach-Object { 'touch' }`, `powershell -Command "Write-Output ('rm')"`,
+`return ('rm')`, a here-document for `python -` with the line `x = ('patch')`, and one for `cat` with
+the line `("rm")`. Not refused: `$steps=('install')` and `x=('patch')` without the blank, and
+`programs = ('rm', 'mv')`. The code agrees with its comment, which excepts a bracket "right behind" a
+name, a bracket or a `=`; a blank between them ends that. The main session is asked about none of
+these. They are more of the kind that the guard session left to your choice, and its two ways out
+would cover them: I repaired none.
+
+**4. The cost of many words that set a variable.** A pattern that is older than this round tries the
+words that may lead a command in every split, and its time grows about one and a half times with each
+such word; `named()` reads the line once more with it. Through the hook on Windows, a line of n words
+`a= ` and then `echo 'x'`:
+
+| Words | Session | Merged | Before |
+|---|---|---|---|
+| 24 | main | 0.87 s | 0.52 s |
+| 26 | main | 1.97 s | 1.07 s |
+| 26 | read-only | 0.94 s | 0.58 s |
+| 30, the reader's run | main | 12.15 s | 5.93 s |
+| 30, the reader's run | read-only | 5.11 s | 2.83 s |
+
+At thirty words the main session's time is past the 12 seconds after which the hook asks by itself. A
+line without a quote or a backslash is not read a second time. My repair changes none of these times.
+Left: the guard session named the search of a line's variables as slow, and the fourth session's task
+is that search; this pattern is beside it, and a change to it belongs with that work.
+
+**5. A start that fails with no record.** `cmd_supervise` makes the run's log, starts the command and
+writes the records. It caught the system's own errors of the start, a program that is not there among
+them, and wrote "could not start" as the run's end. For any other error the supervisor ended with the
+log made and no record, and since `5f600da` a launch reads that as a command that may run, on which a
+campaign's loop waits out the run's time. A null character in a word of the command gives such an
+error, a `ValueError`. No command line can carry one, so it takes a manifest that was written by other
+means; that is how the new check does it. Now every error of the start is recorded. The reader's
+second case stays: a supervisor that is killed after it made the log and before it started the command
+leaves what a supervisor leaves that was killed just after the start, and the records cannot tell the
+two apart.
+
+**6. The remote side's folder.** `op_run` in `nnremote.py` makes the run's folder with
+`exist_ok=True`. That starts no command twice: the supervisor makes the log itself and starts nothing
+where the log is there, and the reader notes that each try has a folder of a new name. What is loose is
+one sentence of the message of `5f600da`, that the launch and the remote side each make a run's folder
+anew. A commit's message is not changed after the fact; this is its correction.
+
+**7. Scatter by rounding.** For a metric that reads 0.3 and 0.30000000000000004 by turns, `curve`
+said that it "scatters by about 6.72e-17 from one evaluation to the next, 121 % of all it gained". The
+sentence compared the scatter with the gain and had no floor. It has the floor of a billionth of the
+last value's size now, which `05f996f` gave the sentences about a peak and a final level. Older and
+unchanged, as the reader notes: a rise of 0.001 at one evaluation is called a peak.
+
+**8. The hint of `final-eval`.** Tried on this Windows 11: a program named `d\tool` starts where
+`d\tool.exe` is there, `d\tool.v2` does not, and `my.tools\eval` starts. So the ending may be left out
+where the last part of the path has no dot, which is what the hint's "name" means. The reader calls it
+taste; I left the words.
+
+**9. A sentence of the reference, and two numbers.** The reference said that a heartbeat's number is
+never the recorded one "where an environment's `python.exe` is the run's command". Since the pilot's
+launcher repair the controller starts every launched `python` through the `python.exe` beside its own
+interpreter, so under an environment that is every such run; the sentence says so now. The second
+half: under an environment the launch's answer names the supervisor's small program as
+`supervisor_pid`, and `pid.json` names the interpreter that this program started. A trial of such a
+start shows it: the number that `Popen` gives for a started interpreter is that interpreter's own under
+Python 3.11.7 and another one under the 3.8.20 environment. Nothing compares the two: the loop follows
+the answer's number, the small program, which lives as long as its interpreter. Left, and named here.
+
+### Beside the findings: `/C` and `/K`
+
+While I tried the sibling forms of the repair of finding 1, the capital letter showed a gap that is
+older than `bcfab15`. cmd takes `/C` for `/c` and `/K` for `/k`. Three patterns of the guard took the
+small letter only:
+
+- `COMMAND_WORD`, of `bcfab15`: behind `cmd /C` a name in quotes was no command word, so `cmd /C
+  "C:\Program Files\Git\usr\bin\touch.exe" eval\metrics.py` passed both sets of rules.
+- `_START` and `_AT`, which say where a command starts. The rules that ignore case were not concerned.
+  Those that keep the case of a program's options were: the programs that write the file they name,
+  `patch` and `git apply`, the archive programs, and git's commands on the work tree. `cmd /K tar -xf
+  bundle.tar` passed unasked on the merged guard and on the guard before, and a read-only agent was let
+  run it; `cmd /k tar -xf bundle.tar` was asked about and refused.
+
+All three take either case now. Your word covered the repair of what the reading shows, and this is a
+place that no finding names: it is in hunks of its own, with five rows of its own in the kit's test
+file and three in the review-fixes file, and can be taken out without the rest. I repaired it because
+the repair of finding 1 widens the first of the three patterns anyway, and a capital letter that
+counts in one of them and not in the others would be a new difference. On 25 lines, those with `/C` or
+`/K` and siblings of them with the small letter, the answers of four change, each as intended: `cmd /C
+tar xf a.tar`, `cmd /K tar xf a.tar` and `cmd /C "C:\Program Files\Git\usr\bin\tar.exe" xf a.tar` are
+asked about and refused to a read-only agent, and that agent is refused `cmd.exe /D /C tar -xzf
+data.tgz -C runs`. The others get the answers they got: `find /C "install" log.txt`, `findstr
+/C:"install" log.txt`, `sort /C names.txt`, `choice /C YN /M "Go on"`, `dir /C runs`, `cmd /C echo
+done`, `cmd /K echo ready` and `cmd /C tar tf a.tar` pass, and `xcopy src dst /C /K /Y` passes in the
+main session and is refused to a read-only agent, as before.
+
+### After the merge: a regression of `31af10c` that this reader did not report
+
+At 08:05, an hour and a half after the merge and while this record was being written, the pilot's
+branch took one commit more, `042a985`: four files, 39 lines added and 16 removed (`expctl.py`,
+`nnloop.py`, `docs/REFERENCE.md`, `tests/test_kit.py`). At 08:14 its record followed, `0278baa`: 535
+lines added in `REPORT.md` and `PROGRESS.md`. What follows is from the two commits' messages and from
+that record's headings. I ran none of it.
+
+- In that session you answered "Yes, start reader" to "Start one fresh reader on 31af10c and c85f96a
+  together?" Those are the two commits that the reader of this section read as its parts D and E. That
+  reader (Opus 5.5, read access only, 185,672 tokens) reported no certain fault either. The fault that
+  it thought likely did not hold when the session ran it, and a sibling of it did: a regression of
+  `31af10c`.
+- The regression: `31af10c` joins the evaluator's relative path to the project root also where the loop
+  stands in that root. Windows hands a batch file to cmd, and a path without a space reaches cmd
+  without quotes, where cmd splits it at a comma, `;`, `=`, a bracket and `&`. So with the loop in the
+  project root, an evaluator that is a batch file is no longer started in a project folder whose path
+  holds one of those and no space. `042a985` joins the path only where the loop is called outside the
+  project root.
+- The reader of this section had the joins of `31af10c` in its list of what it found right, and I did
+  not find this either. Two readers read that commit for correctness and neither reported the fault; a
+  trial with odd folder names showed it.
+- This branch holds `31af10c` as it was merged, and neither `042a985` nor `0278baa`: it has that
+  regression. The two commits came after the merge and after the passes on the merged state, and your
+  word named the branches as they stood; by its message, that session's record leaves the merge to
+  your decision as well. By a trial in memory against this section's commit, before this record stood
+  in the two files, the pilot's branch joins by itself in the code, the tests, the reference and
+  `PROGRESS.md`; this file does not, and wants joining by hand again. No test has run on that joined
+  state.
+- That session's record takes point 52 of "Read this first" and a section "The reading of the folder's
+  repair". This section's point is 53 for that reason.
+
+### The change, and its tests
+
+One commit, `f2338d6`, 103 lines added and 13 removed in five files, after `f38c4d8`.
+
+- **`.claude/hooks/nn_guard.py`**, five places: in `named()` the rule of finding 1, in the function
+  that writes a command word as its bare name, with the docstring's account of it and of its limit;
+  `/C` and `/K` in `COMMAND_WORD`, `_START` and `_AT`, each with its comment.
+- **`.claude/skills/nn-training/scripts/expctl.py`**, two places: in `cmd_supervise` every error of
+  the start is recorded; in `curve_findings` the scatter's floor.
+- **`docs/REFERENCE.md`**, four places: the guard's entry on a name in quotes, with the rule behind
+  `cmd /c`, the forms it reads wrongly, and the capital letters; and in "How a launched run's processes
+  are followed" the supervisor's record of a failed start, every launched `python` under an
+  environment, and the windows of the detached loop and the remote controller.
+- **`tests/test_kit.py`**, eleven checks: four lines of commands behind `cmd /c` and `cmd /k` that
+  want no answer, four with `/C` or `/K` that want a question, one control with `/C` that wants none;
+  a supervisor whose manifest holds a null character; and a metric that differs by rounding alone.
+- **`tests/test_review_fixes.py`**, seven rows for the read-only rules: four lines of commands that
+  want no answer, two with `/C` that want a refusal, one control with `/K` that wants none.
+
+Each new check on the code before: I ran the two changed test files on a clone that holds the new
+tests with the guard and the controller of `f38c4d8`. Sixteen of the eighteen fail there, six in the
+review-fixes file and ten in the kit file, each with the answer that this section describes; the two
+controls pass on both, as they should. One more check of the kit file failed in that run, "session
+hook injects status after compaction", for a reason that is neither: it expects the test's two long
+runs to be still running when it is reached, and they had ended. That pass ran beside my own probes of
+the guard and took 18 minutes, where an undisturbed pass on this machine reaches the check with the
+runs at half their steps. It passes on the repaired state. On GitHub's last run, on `409182f`, the
+runs stood at 10 to 32 % of their steps at that check in the six jobs. The check is older than this
+round, and I left it as it is.
+
+### What was measured
+
+- **Generated lines.** The 2,500 lines of the earlier comparisons, with their fixed seed, put to the
+  merged guard and the repaired one: no answer changes. As the main session 2,009 pass and 491 are
+  asked about on both; under the read-only rules 1,323 pass and 1,177 are refused on both.
+- **Time, through the hook on Windows.** The 17 long lines of the earlier comparisons take what they
+  took. Four lines made for this change, the repaired guard against the merged one:
+
+| Line | Main session | Read-only |
+|---|---|---|
+| 1,500 times `cmd /c "type docs\patch<n>"`, 45 KB | 4.2 s against 7.2 s | 0.30 s against 0.35 s |
+| 1,500 times `cmd /C "C:\Program Files\Git\usr\bin\tar.exe" -tf a<n>.tar`, 92 KB | 1.9 s against 1.3 s | 0.46 s against 0.36 s |
+| 3,000 times `cmd /c "dir C:\tools\x<n>" 2>nul`, 110 KB | past 12 s on both: the hook asks by itself | 0.48 s against 0.62 s |
+| 2,000 times `cmd /K "C:\tools\list.exe docs\f<n>.txt" \| findstr x`, 111 KB | 9.1 s against 9.2 s | 0.48 s against 0.47 s |
+
+  The second line takes longer because its capital letter is read now. The third is past the hook's
+  time on the merged guard too: a line of thousands of commands that are each handed to cmd is slow in
+  the main session's rules, older than this change, and left. Each time is one run, on a machine that
+  other sessions may have been using.
+
+### The passes on the repaired state
+
+On a clone of the work tree's state as it was committed.
+
+| Where | Files | Checks | Failed |
+|---|---|---|---|
+| Windows, Python 3.11.7 | all eight | 2,071 (review-fixes 191, kit 1,296, the six others as on the merged state) | 0 |
+| Windows, the 3.8.20 environment | kit, review-fixes | 1,296 and 191 | 0 |
+| WSL, Python 3.12.3 | kit | 1,298 | 0 |
+
+Not run on the repaired state: the loop file and the five others under the 3.8.20 environment, whose
+code the repairs do not touch; any file under 3.15; the seven other files in WSL; macOS and bare Linux.
+
+### Windows on your screen
+
+I ran no watcher this time, so this is from what ran and from the earlier records' measures. The loop
+file ran once under the 3.8.20 environment, on the merged state: by the measure of "The reading of the
+two faults' repairs" that is two windows of 7 to 8.5 seconds, from its detached starts. The remote
+file did not run under an environment. A pass of the eight files under Python 3.11.7 gave about twenty
+flashes by the same record; there were two such passes, and one of the two changed test files alone on
+the code before. The kit file under the environment starts its supervisors with the new flag, which
+showed no window in that session's probes.
+
+### Not done, and why
+
+- **No second reader.** The repairs of this section are read by nobody but me; your word covered one
+  reader.
+- **The flag of the detached loop and the remote controller** (finding 2): the question is open in
+  the session that measured it.
+- **The forms of finding 3** and the two ways out that the guard session describes: your choice, which
+  that session put to you.
+- **The pattern of finding 4** and the line of thousands of `cmd /c` commands: older, and beside the
+  fourth session's work on the guard.
+- **Finding 5's second case,** the doubled quotes of cmd, a quoted line of commands at a line's start,
+  the two numbers of finding 9, the peak of 0.001 of finding 7, and the session hook's check that
+  depends on the test file's own speed: named above, none changed.
+- **The fourth session's branch** is not merged, and neither are **`042a985` and `0278baa`,** the two
+  commits that the pilot's branch took after the merge.
+- **Nothing is pushed,** and nothing ran on GitHub's machines. Your real install is untouched.
+- **The ledger's rows are not touched:** the merge and the repairs decide nothing that has a row. Its
+  head has one note more, on the state of the round.
+
+### What needs your decision
+
+- **Whether I merge the pilot's branch again,** as it stands now, at `0278baa`. I would, before this
+  branch goes anywhere: without `042a985` this branch has a regression that is known. It means the two
+  records joined by hand once more, and the passes on the joined state again.
+- **Where this branch goes.** It holds the round as one state now: `409182f`, the three sessions'
+  work as it stood at 06:18, and this reading's repairs. A push to `test/round-9` would run GitHub's
+  six jobs on all of it for the first time, on macOS, on bare Linux and on a second Windows; `main`
+  and the ninth installer run on your real install come after that, each on your word.
+- **Whether a reader goes through the repairs of this section.** By this project's record each reading
+  of a guard fix since 16 November has found something, this one too. The repair of finding 1 is a
+  rule that reads text where cmd looks at files, and I am its only reader.
+- **Whether `/C` and `/K` stay.** I would keep them. To take them out: the three patterns, the five
+  rows in the kit's test file and the three in the review-fixes file, and the reference's last two
+  sentences on them.
+- **Whether the two forms that the repair of finding 1 gives back are acceptable,** a program without
+  an argument in `"my tools\patch.exe"` and in `"C:\tools.old dir\patch.exe"` behind `cmd /c`. The
+  other way is to read every quoted text with a blank behind `cmd /c` as a program wherever it could be
+  one, which asks about `cmd /c "type docs\patch"` again.
+- **The flag of the detached loop and the remote controller.** I would give both the supervisor's
+  flags, with a probe that shows the window gone, as the session for the two faults proposes.
+- **The cost for a read-only agent,** now with the forms of finding 3.
+- **The guard's cost on long lines of two kinds:** many words that set a variable, and thousands of
+  commands handed to cmd. Both end in the hook's own question after 12 seconds, not in a wrong answer.
+- **The fourth session's branch,** and any commit that the three sessions make after this: they are
+  not in this branch.
+- **Whether the kit file's check of the session hook is made independent of the file's speed.** It
+  needs the test's two long runs to be still running when it is reached. An undisturbed pass on this
+  machine uses half of their life before it, GitHub's jobs a tenth to a third, and every round's
+  guard rows use more. I would start a run for that check alone; it is a change of the tests only.
+- Unchanged from the sections of the three branches: what they list, less the questions of a reader
+  for `05f996f`, `bcfab15`, `5f600da`, `c85f96a` and `31af10c` and of the merge, which your two words
+  answered.
+
+Sources: the reader's report of 21 November 2026, kept in this session's record; the guards of
+`e587b4f`, `409182f`, `f38c4d8` and of this section's commit in temporary projects that the kit's own
+test setup builds, each given command lines as text on its standard input on 21 November 2026, on this
+machine; the kit's tests on clones of `f38c4d8` and of the repaired state, on Windows under Python
+3.11.7 and the 3.8.20 environment and in WSL under 3.12.3; a clone with the new tests and the code of
+`f38c4d8`; cmd's own help for `/c`; the log of GitHub's run 44831691805; trials on this Windows 11 from
+scratch scripts that are not part of the kit; the tips of the sessions' local branches, read on this
+machine at 08:53; the messages and the file lists of `042a985` and `0278baa`, and that session's
+record, read in its work tree at 08:12, before it was committed, and not written to; the helpers that
+PROGRESS.md names.
 
 ## 1. What changed and why
 

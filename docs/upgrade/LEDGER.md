@@ -537,6 +537,16 @@ round are UTC.
   branch", and all six of GitHub's jobs pass on them; REPORT.md, "The reading of the reading's repairs on the test
   branch". The two checks that failed on this machine pass there, under interpreters that are no virtual
   environment's; the two faults are not repaired.)
+  (Added on 21 November: three sessions that the user started have worked on local branches since, and on the
+  user's "All three" their branches are merged into this one. They hold the proof pilot with a real agent on both
+  benchmark tasks, on neither of which the kit is shown ahead of the bare agent, with repairs of how the kit starts
+  a program on Windows; the repair of the two faults under a virtual environment on Windows, with its reading; and
+  the guard's repair for a program's name in quotes. On the user's "After the sessions" one fresh reader went
+  through the merge and the five repairs that only their authors had read. A regression of the guard behind
+  `cmd /c` is repaired, an older gap beside it (`/C` and `/K`), and two faults of the controller; REPORT.md, "The
+  merge of the three branches and its reading". None of it decides anything that has a row here. All of it is
+  local commits, and their tests ran on this machine only; the public branch `test/round-9` and `main` are
+  unchanged. The pilot's branch has two commits more since the merge, which this branch does not hold.)
 
 ## Coverage map
 

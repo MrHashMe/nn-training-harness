@@ -289,7 +289,8 @@ def startable(program, env):
 
 
 CMD_OWN = ("CD", "DATE", "TIME", "RANDOM", "ERRORLEVEL", "CMDEXTVERSION", "CMDCMDLINE", "HIGHESTNUMANODENUMBER",
-           "__CD__", "__APPDIR__", "PROMPT", "COMSPEC", "PATHEXT")  # the names that cmd.exe fills in by itself
+           "__CD__", "__APPDIR__", "PROMPT", "COMSPEC", "PATHEXT", "FIRMWARE_TYPE", "NUMBER_OF_PROCESSORS", "PROGRAMFILES",
+           "COMMONPROGRAMFILES")  # the names that have a value in cmd.exe though the start's environment lacks them
 
 
 def batch_split(word, env):
@@ -300,9 +301,11 @@ def batch_split(word, env):
     Measured on 21 November 2026 (Windows 11, Python 3.8 and 3.11). Outside quotes cmd.exe ends the path at `&`, a
     comma, `;`, `=`, `(` and at any other space sign than the two above; it drops `^`, and `@` in front; and it
     reads an option at `/` unless the path begins with a drive letter or with `/`. In quotes too it puts a
-    variable's value where its name stands between two `%`. The file is then not started, or another one is: for
-    `a^b\\x.cmd` the one at `ab\\x.cmd`."""
-    if os.name != "nt" or os.path.splitext(word.strip('"'))[1].lower() not in (".bat", ".cmd"):
+    variable's value where its name stands between two `%`, and it finds no file by a path that ends in a dot:
+    Windows, for which dots and spaces at a path's end do not count, gives it that path as the batch file's. The
+    file is then not started, or another one is: for `a^b\\x.cmd` the one at `ab\\x.cmd`."""
+    name = word.strip('"')
+    if os.name != "nt" or os.path.splitext(name.rstrip(". "))[1].lower() not in (".bat", ".cmd"):
         return None
     names = {k.upper() for k in env}.union(CMD_OWN)
     var = next((x for x in word.split("%")[1:-1] if x.upper() in names), None)
@@ -310,7 +313,7 @@ def batch_split(word, env):
         return f"%{var}%"
     bare = re.sub(r'"[^"]*"?', "", word)  # what stands outside quotes
     m = re.match("@", word) or re.search(r"[&(,;=^\s\u180e]" + ("" if re.match("[A-Za-z]:|/", bare) else "|/"), bare)
-    return m.group(0) if m else None
+    return m.group(0) if m else "." if name.endswith(".") else None
 
 
 def read_json(path):

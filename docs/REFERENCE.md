@@ -706,19 +706,28 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   that nothing puts it in quotes, `cmd.exe` ends it at a `&`, a comma, `;`, `=`, an opening bracket and a space sign
   other than a space or a tab (a no-break space, for one), drops a `^` anywhere and an `@` in front, and reads an
   option at a `/` unless the path begins with a drive letter or with `/`. In quotes too it puts a value where a
-  variable's name stands between two `%` signs: a variable of the start's environment, or one that `cmd.exe` fills
-  in by itself (`CD`, `DATE`, `RANDOM` and others). The batch file then does not start, or another file does: for
-  `a^b\x.cmd` the one at `ab\x.cmd`. Since 21 November 2026 the kit refuses such a path before it starts anything,
-  with a sentence that names the sign or the variable: `final-eval` before it records the use, where double quotes
-  around the path in `final_eval_commands` make it start, and the loop for its evaluator and for the agent's
-  program, each as the loop will hand it to Windows. (Measured on 21 November 2026 on Windows 11 under Python 3.8
-  and 3.11, by 526 starts with that variable set and 526 without it. The refusal reads the path only: a batch file's
-  arguments, which reach `cmd.exe` without quotes where they have no space, are not checked, and neither are the
-  programs of a launched run, of `on_finish` and of `env --python`. A path that begins `\\?\`, which `cmd.exe` took
-  in no form, is not refused. And `cmd.exe` was measured with delayed expansion off, as it is unless a machine's
-  settings turn it on.) The agent's program, and the loop's evaluator where the loop is called outside the project
-  root, need no backslashes since 21 November 2026: the kit makes their relative path a full one, so the program, a
-  batch file too, starts whichever way its slashes point, where the full path is none that is refused. Called in the
+  variable's name stands between two `%` signs: a variable of the start's environment, or one of seventeen that have
+  a value in `cmd.exe` without being there (`CD`, `DATE`, `RANDOM`, `FIRMWARE_TYPE` and others). And in quotes too
+  it finds no file by a path that ends in a dot, which Windows, for which dots and spaces at a path's end do not
+  count, hands it as the batch file's. The batch file then does not start, or another file does: for `a^b\x.cmd` the
+  one at `ab\x.cmd`. Since 21 November 2026 the kit refuses such a path before it starts anything, with a sentence
+  that names the sign or the variable: `final-eval` before it records the use, where double quotes around the path
+  in `final_eval_commands` make it start (a path that ends in a dot it refuses as not found, by its older check),
+  and the loop for its evaluator and for the agent's program, each as the loop will hand it to Windows. (Measured on
+  21 November 2026 on Windows 11 under Python 3.8 and 3.11, by 526 starts in each of three settings of that
+  variable: set for the kit and for `cmd.exe`, set for the kit alone, and not set. Four of the seventeen names and
+  the dot at the end were measured under Python 3.11 alone: `cmd.exe` was asked for 4,316 candidate words with an
+  empty environment and for each name of one environment with that name taken out, and the rule agrees with each of
+  696 further starts, with that variable set and not set. The refusal reads the path only: a batch file's arguments,
+  which reach `cmd.exe` without quotes where they have no space, are not checked, and neither are the programs of a
+  launched run, of `on_finish`, of `env --python` and of a remote target's `exec` and `hf` lists, nor the
+  interpreter of the `python` setting where the loop starts it itself, to compare the Python files of a change. A
+  path that begins `\\?\`, which `cmd.exe` took in no form, is not refused, and neither is one with `.` or `..`
+  as a folder behind the file's name (`a\x.cmd\.`), which Windows takes as the file's and `cmd.exe` found in none
+  of 148 starts. And `cmd.exe` was measured with delayed expansion off, as it is unless a machine's settings turn
+  it on.) The agent's program, and the loop's evaluator where the loop is called outside the project root, need
+  no backslashes since 21 November 2026: the kit makes their relative path a full one, so the program, a batch
+  file too, starts whichever way its slashes point, where the full path is none that is refused. Called in the
   project root, as a loop started with `--detach` is, the evaluator's path goes to Windows as written, so a
   batch-file evaluator named with forward slashes is refused there. `final-eval` checks its program before it
   records the use, and since 20 November 2026 the check asks as the start will. It refuses, with nothing recorded, a

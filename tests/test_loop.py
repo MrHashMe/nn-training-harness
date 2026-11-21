@@ -596,8 +596,14 @@ def batch_file_tests(tmp, proj, exe):
              ("a/x.cmd", "/"), ("\\\\box\\share\\a/x.cmd", "/"), ("p%OS%q\\x.BAT", "%OS%"), ('"p%os%q\\x.cmd"', "%os%"),
              ('"p %CD% q\\x.cmd"', "%CD%"), ("p%ComSpec%q\\x.cmd", "%ComSpec%"), ("a%b%Os%c\\x.cmd", "%Os%"),
              ("x,y.bat", ","),
-             # and what it takes: in quotes, the other signs, a slash behind a drive, a name that is no variable's, and
-             # a file that is no batch file
+             # a dot at the end, which Windows drops and cmd.exe does not; four names that have a value in cmd.exe
+             # though the environment lacks them
+             ("a\\x.cmd.", "."), ('"a b\\x.cmd."', "."), ('"a\\x.bat ."', "."), ("a,b\\x.cmd.", ","),
+             ("%Firmware_Type%\\x.cmd", "%Firmware_Type%"), ('"%NUMBER_OF_PROCESSORS%\\x.cmd"', "%NUMBER_OF_PROCESSORS%"),
+             ("%ProgramFiles%\\x.cmd", "%ProgramFiles%"), ('"%CommonProgramFiles%\\x.cmd "', "%CommonProgramFiles%"),
+             # and what it takes: in quotes, the other signs, a slash behind a drive, a name that is no variable's, a
+             # space at the end, and a file that is no batch file
+             ('"a,b\\x.cmd "', None), ('"a\\x.cmd. "', None),
              ('"a,b\\x.cmd"', None), ('"a b(1)\\x.cmd"', None), ("a)b\\x.cmd", None), ("a@b\\x.cmd", None),
              ("a!b~c[d]{e}'f\\x.cmd", None), ("a\u00e9b\\x.cmd", None), ("C:/a/x.cmd", None), ("C:a/x.cmd", None),
              ("/a/x.cmd", None), ("p%NOPE%q\\x.cmd", None), ("a%b\\x.cmd", None), ("a,b\\x.exe", None), ("a,b\\x", None)]
@@ -605,9 +611,11 @@ def batch_file_tests(tmp, proj, exe):
     check(got == [want for _, want in table],
           "a batch file's path: the rule names the sign or the variable that cmd.exe would act on, and nothing where "
           f"cmd.exe takes the path ({[w for (w, want), g in zip(table, got) if g != want]})")
-    # a project whose own path holds a comma. Made a full one, the evaluator's path would be cut there: refused where
-    # the loop is called in another folder, and taken as written with --detach and in the project root
-    proj2, here = tmp / "pro,j", os.getcwd()
+    # a project whose own path cmd.exe would not take. Made a full one, the evaluator's path is refused where the loop
+    # is called in another folder, and taken as written with --detach and in the project root. The folder's name holds
+    # a variable between two `%`, which cmd.exe acts on in quotes too, and no comma: where the temporary folder's own
+    # path has a space, Python puts the full path in quotes, and a comma in quotes is no sign
+    proj2, here = tmp / "pro%RANDOM%j", os.getcwd()
     shutil.copytree(proj, proj2)
     for name in ("eval.cmd", "ev,al.cmd"):
         put(proj2 / "data" / name, "@echo 1\n")
@@ -620,18 +628,18 @@ def batch_file_tests(tmp, proj, exe):
         os.chdir(here)
     got += [refuse(proj2, runs=5, detach=True, loop={"eval_command": [w, "{run_dir}"]})
             for w in ("data\\ev,al.cmd", "data/eval.cmd")]
-    want = ("acts on ',' in " + str(proj2 / "data" / "eval.cmd"), "--help did not run", "--help did not run",
+    want = ("acts on '%RANDOM%' in " + str(proj2 / "data" / "eval.cmd"), "--help did not run", "--help did not run",
             "acts on ',' in data\\ev,al.cmd", "acts on '/' in data/eval.cmd")
     check(all(w in g and ("loop.eval_command's program is a batch file" in g) == ("acts on" in w) for w, g in zip(want, got)),
           "a batch-file evaluator whose path cmd.exe would cut is refused before anything starts, and its path is "
           "asked as the loop will hand it over: with the project root's path in front only where the loop is called "
           f"in another folder and without --detach ({[g.strip()[-160:] for w, g in zip(want, got) if w not in g]})")
-    (tmp / "ag,ent").mkdir()
-    shutil.copy(exe, tmp / "ag,ent" / "agent.cmd")
-    got = [refuse(proj, runs=5, exe=str(tmp / "ag,ent" / "agent.cmd")),
+    (tmp / "ag%RANDOM%ent").mkdir()
+    shutil.copy(exe, tmp / "ag%RANDOM%ent" / "agent.cmd")
+    got = [refuse(proj, runs=5, exe=str(tmp / "ag%RANDOM%ent" / "agent.cmd")),
            refuse(proj, runs=5, exe=str(tmp / "ag ent, x" / "no-such-agent.cmd"))]
-    ok = ("the agent's program is a batch file" in got[0] and "acts on ','" in got[0] and "--help did not run" in got[1]
-          and "batch file" not in got[1])
+    ok = ("the agent's program is a batch file" in got[0] and "acts on '%RANDOM%'" in got[0]
+          and "--help did not run" in got[1] and "batch file" not in got[1])
     check(ok, "an agent's batch file whose path cmd.exe would cut is refused before it is started; a path with a space, "
           "which is handed over in quotes, is not" + ("" if ok else f" ({[g.strip()[-160:] for g in got]})"))
 

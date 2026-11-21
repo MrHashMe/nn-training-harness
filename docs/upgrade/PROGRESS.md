@@ -81,6 +81,8 @@ line that it asked about or refused pass again, and a command behind a closed li
 local commit on the same branch. The reader's first finding is repaired on the branch
 `claude/kit-commit-verification-e52f2b` as well, by the session that started this one; the two repairs are
 not merged ("The reading of the repair of names in quotes" below).
+(Added on 21 November with the join: merged since, in that session's branch; "The join of the two
+repairs of names in quotes" below.)
 "The proof pilot" below is the work of a session of its own on 20 November: the first of round 9's next
 steps, a comparison of the kit's loop, the kit before round 9 and no kit with a real agent on both
 benchmark tasks. It is one local commit, not pushed.
@@ -93,6 +95,14 @@ branch has two commits more since the merge, which this branch does not hold.
 On the user's "Yes, merge" of 21 November those two commits are merged into this branch as well, and
 the joined state passes its tests on this machine ("The second merge of the pilot's branch" below).
 Nothing is pushed.
+(Added on 21 November with the join, in the branch of the session for names in quotes: the lines above
+from "On the user's "After the sessions"" on were written on `claude/kit-commit-verification-e52f2b`,
+and "this one" and "this branch" in them are that branch.)
+On the user's "Yes, merge here" of 21 November, given in the session for names in quotes, that branch
+as it stood at `6f2812d` is merged into that session's branch `claude/sharp-faraday-6bd610`, where the
+two repairs of the readers' first finding are one function now, and the joined state passes its tests
+on this machine ("The join of the two repairs of names in quotes" below). No reader has gone through
+the joined function yet, and nothing of it is pushed.
 
 # Upgrade progress
 
@@ -3103,6 +3113,8 @@ Done on that word:
   for that reason. Neither is merged into this branch. A merge of this state with each of the two,
   tried in memory (`git merge-tree`), meets conflicts in `docs/upgrade/REPORT.md` and
   `docs/upgrade/PROGRESS.md` and in no other file; no test ran on a joined state.
+  (Added on 21 November with the join: the branch that holds both, as it stood at `6f2812d`, is
+  merged into this one since; "The join of the two repairs of names in quotes" below.)
 - Nothing pushed. Nothing on the real install. No reader: the repair is read by its author only.
   (Added on 21 November, by the session that merged the branches: merged since, and read with the
   merged branches. The reader found a regression behind `cmd /c`, which is repaired; "The merge of
@@ -3954,6 +3966,8 @@ Done on that word:
   for `cmd` in it. On a copy of that branch's tree at `c631d57` with that guard and both sessions'
   rows, `tests/test_review_fixes.py` and `tests/test_kit.py` pass on Windows under Python 3.11.7
   (219 and 1,312 checks, once). REPORT.md says how the two join. I merged nothing.
+  (Added on 21 November with the join: merged since in this branch, with that join, on the user's
+  "Yes, merge here"; "The join of the two repairs of names in quotes" below.)
 - REPORT.md has the section "The reading of the repair of names in quotes", point 55 of "Read this
   first", and a dated note at each place of the first repair's section that the reading shows
   wrong. The two record files were written after the passes; no test reads them. The ledger is
@@ -3978,6 +3992,78 @@ reader goes through this reading's repairs; whether the guard gives a refusal th
 when its time is up; whether the older fault is repaired by which a read-only agent is refused
 `n=$(echo rm); echo $n`; the questions of the entry "A program's name in quotes or behind
 backslashes" that are still open.
+(Added on 21 November with the join: the first is answered, "Yes, merge here", and the third,
+"After the merge": one reader, on the joined guard. "The join of the two repairs of names in
+quotes" below is the record.)
+
+## The join of the two repairs of names in quotes (21 November): the starting session's branch merged into this one, local only
+
+The user's word, 21 November: "Yes, merge here" (11:35), to my question whether I make the merge with
+the join here, on this branch. With the question I had said what a yes means: the starting session's
+branch merged into this one with the join of the entry before this one, the reference and the two
+records joined by hand, the eight test files on Windows and the kit file in WSL on the joined state,
+and a record with a numbered point, in local commits. It is not a word for a push, for `main`, for
+the real install, for another branch or for a deletion. The user's "After the merge" (11:12), to the
+question when a fresh reader should go through the last entry's repairs, covers one reader on the
+joined guard, which starts after this record. "I" in this entry is the session of the entry before
+it; "the other branch" is `claude/kit-commit-verification-e52f2b`. Dates and times are UTC.
+
+Done on that word:
+- The merge: `040d637` (12:38) merges `6f2812d` into `0f896a3`. It brings the other branch's 25
+  commits after `b5331fb`: the proof pilot's work as far as `0278baa`, the repairs of the two process
+  faults as far as `12876c9`, `f2338d6`, three merge commits and the records up to point 54. The
+  other branch stood at `6f2812d` when I looked (11:36) and when the merge was begun (11:38).
+- Joined by git itself: `expctl.py`, `nnloop.py`, `nnremote.py`, `runlog.py`, `tests/test_loop.py`,
+  the ledger and its head, which this branch had not changed since `b5331fb`, and
+  `docs/REFERENCE.md`.
+- Joined by hand, thirteen places in five files. `nn_guard.py`, three places in `named()`: this
+  branch's inner function with the other branch's clause for a line of commands behind `cmd /c` in
+  the place of mine, and one docstring out of the two. `tests/test_kit.py` and
+  `tests/test_review_fixes.py`, one place each: both sessions' rows, mine first. REPORT.md and this
+  file, four places each: both texts kept, the points of "Read this first" in the order of their
+  numbers, and the other branch's ten entries before the entry of the reading.
+- Changed after the join: four places of `docs/REFERENCE.md`, where git's join held both sessions'
+  accounts of `cmd /c` and mine described a clause that the joined guard does not have; and seven of
+  my notes in the two records that said "the section after this one" or the like of sections that
+  no longer follow one another. Against both parents 67 lines of the merge are new.
+- The joined function compared: `named()` of the merged guard, of the trial's copy and of both
+  parents on 3,042 different texts, in one process. The merged guard and the copy rewrite each
+  alike; against my guard of `24970e3` 12 differ, all behind `cmd`; against the other branch's 26,
+  all at a bracket or a list. 48 rows that the joined reference and the docstring name, as both
+  tools: the 29 with a wanted answer have it, and the 19 others answer as the two texts say.
+- Tests on the joined state, each once: the eight files on Windows under Python 3.11.7 (2,115
+  checks), on a copy whose 216 files are those of the merge commit, and the kit file in WSL under
+  3.12.3 (1,313), on a clone at `6f2812d` with the merge's difference from it laid on. None failed.
+  The kit file has 1,312 checks on Windows, the other branch's 1,297 and this session's 15; the
+  review-fixes file 219, 191 and 28. The check of the session hook, which depends on the kit file's
+  speed, passed in both passes of that file. Not run: the 3.8.20 environment, Python 3.15, the
+  seven other files in WSL, macOS, bare Linux, GitHub's machines.
+- REPORT.md has the section "The join of the two repairs of names in quotes", point 61 of "Read
+  this first", two statements in the opening with a note before them, and a note at nine places of
+  my two records that the merge makes out of date. This file has a statement at the end of the
+  summary at its top with a note before it, this entry, four notes more (in the summary, at the
+  entry of the first repair and two at the entry of its reading) and a working note. The two record
+  files were written after the passes; no test reads them. The ledger came in as the other branch
+  has it, and I added nothing.
+- Windows on the user's screen: I ran no watcher. The eight files ran once under Python 3.11.7
+  (about twenty flashes by the earlier entries' measure). By its note the session for the two
+  faults ran trials on this machine in the same half hour, so not every window then was mine.
+- Readers: none in this entry. The count of the entry before this one stands.
+- Not here: `f08b6dd`, the record of its push that the other branch took at 12:01, while I joined
+  (point 60); `1a277aa` and `9d01f95` on `claude/brave-robinson-27cbd9` (point 56); `74d1e22`,
+  `84d7285` and `ebda58d` on `claude/fervent-gould-8d0820` (point 57); `f471473` and `5b0b01f` on
+  `claude/beautiful-bartik-32f1e5` (point 58), of which the first changes the guard. Tried in the
+  scratch folder: `f08b6dd` joins with this file by itself and needs REPORT.md joined at two
+  places, as the files stood before this record; `f471473`'s guard and the merged one conflict at
+  two places.
+- Nothing pushed. Nothing on the real install. No package installed, nothing deleted. The other
+  branch is not touched.
+- Left on this machine: the scratch folder's `merge`, `rec2` and `kit-m1` ("Working notes"), and in
+  WSL the clone `~/nnkit-upgrade/kit-pq-m1`.
+
+Next: one fresh reader on the joined guard, on the user's "After the merge". Then, each a separate
+word of the user's: where this branch goes; whether `f08b6dd` is taken in here; the merge of
+`f471473`; and the questions of the entry before this one, less its first and its third.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -4697,6 +4783,19 @@ backslashes" that are still open.
   files are `logs\kit-join-test_review_fixes.log` and `logs\kit-join-test_kit.log`. `rec\` has the
   texts of the entry "The reading of the repair of names in quotes" and `apply_rec.py`, which put
   them into the two record files.
+- The join of the two repairs (21 November): its helpers are in the same folder, under `merge\`.
+  `resolve.py FILE CHOICE...` puts a text in the place of each conflict of a file: one side's
+  lines, both sides', or a file of lines in which a row names lines of a side. `heads.py` shows
+  each conflict's two sides, and the files as git left them are the `*.conflict.*` there.
+  `named-eq.py LABEL=GUARD.py ... -- FILE...` calls `named()` of several guards on every string of
+  test files and of row files and counts the texts that two guards rewrite differently;
+  `newlines.py REPO FILE REV...` prints a file's lines that stand in none of the named commits;
+  `same-tree.py REPO COPY [REV]` compares a copy with a commit's files. `lines-join.txt` holds
+  the 48 rows, and `m1.patch` is the merge against `6f2812d`, for the pass in WSL. `kit-m1` is
+  the copy that the passes ran on, with the logs `logs\kit-m1-*.log` and `logs\wsl-m1-*.log`.
+  `merge2\` and `merge3\` hold the trials with `f08b6dd` and with the guard of `f471473`.
+  `rec2\` has the texts of the entry "The join of the two repairs of names in quotes", with
+  `apply_rec2.py` and `notes61.py`, which put them and the notes into the two record files.
 - The second merge of the pilot's branch, 21 November: the joined state is on `claude/r9-snap-q`
   (`c631d57`), with the clone `kit-r9-q` in `%TEMP%\nnkit-upgrade\` and one of the same name in
   WSL; the logs of its passes are `q-*.log` in `r9\` there.

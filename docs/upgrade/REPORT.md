@@ -151,6 +151,19 @@ On your "Yes, merge" of 21 November those two commits are merged into this branc
 state passes its tests on this machine: its section, "The second merge of the pilot's branch", follows
 "The merge of the three branches and its reading" and is the last before "1. What changed and why" now.
 It is one merge commit and its record, local; nothing is read anew, and nothing is pushed.
+(Added with point 61, in the branch of the session for names in quotes: the statements above were
+written on `claude/kit-commit-verification-e52f2b`, and "this branch" in them is that one. In this file
+two sections of the session for names in quotes follow "The second merge of the pilot's branch", so that
+section is not the last before "1. What changed and why" here.)
+On your "Reader first" of 21 November, given in the session for names in quotes, a fresh reader went
+through that session's repair `bcfab15`, and what it found is repaired in a further local commit on that
+session's branch, `claude/sharp-faraday-6bd610`: its section is "The reading of the repair of names in
+quotes". On your "Yes, merge here" of that day, given in the same session, the branch of the statements
+above, as it stood at `6f2812d`, is merged into that session's branch, where the two repairs of the
+readers' first finding are joined into one function, and the joined state passes its tests on this
+machine: its section, "The join of the two repairs of names in quotes", follows that one and is the last
+before "1. What changed and why" now. It is one merge commit and its record, local; no reader has gone
+through the joined function yet, and nothing of the two sections is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -1368,6 +1381,50 @@ Decision record: `docs/upgrade/LEDGER.md`.
     its note in the sessions' shared folder, for a record that was not committed when this was
     written. This branch is merged into the starting session's up to `b5331fb`; none of those
     branches is merged into this one, and I checked nothing of those points.)
+    (Added with point 61: merged since. On your "Yes, merge here" the starting session's branch, as
+    it stood at `6f2812d`, is in this one, and that join is this branch's guard. The reader that
+    this point leaves open follows on your "After the merge", on the joined guard.)
+61. **The starting session's branch is merged into this one, on your "Yes, merge here", and the two
+    repairs of the readers' first finding are one function. The joined state passes its tests on
+    this machine. No reader has gone through the joined function yet; nothing is pushed** (21
+    November; "The join of the two repairs of names in quotes"; by the session of points 49 and 55,
+    and "I" in this point is that session). The merge commit is `040d637`, with `0f896a3` and
+    `6f2812d` as its parents: this branch took `claude/kit-commit-verification-e52f2b` as it stood
+    at `6f2812d`, with its 25 commits after `b5331fb`. Those are the proof pilot's work as far as
+    `0278baa`, the repairs of the two process faults on Windows as far as `12876c9`, that session's
+    own repairs `f2338d6`, its three merge commits and the records up to point 54. So points 50 to
+    54 stand in this file now, before point 55, and this branch holds what `test/round-9` on GitHub
+    held from 11:17 to 12:01. `named()` in the guard has this branch's inner function with that
+    branch's clause for a line of commands behind `cmd /c` in the place of mine, the join that
+    point 55 describes. On 3,042 different texts it rewrites each as the copy does on which that
+    join was tried. Against my guard of `24970e3` it differs on 12 of them, all behind `cmd`, and
+    against that branch's on 26, all at a bracket or a list; the two guards differ from each other
+    on 38, so on every text the joined function does what one of the two did. Git joined eight
+    files by itself. I joined the guard, its two test files and the two records by hand, at
+    thirteen places, with both sessions' rows and texts kept; and I changed four places of the
+    reference, where git's join had kept my account of a clause that the joined guard does not
+    have. The eight test files pass on Windows under Python 3.11.7 (2,115 checks) and the kit
+    file in WSL under 3.12.3 (1,313), with no failed check. Each count is that branch's
+    plus this session's: the kit file has 1,312 checks on Windows, 1,297 and 15, and the
+    review-fixes file 219, 191 and 28. No other interpreter, no Mac, no bare Linux and none of
+    GitHub's machines ran the joined state. The joined function is read by nobody but me; one
+    fresh reader goes through the joined guard next, on your "After the merge". Not here:
+    `f08b6dd`, the record of its push that the starting session's branch took at 12:01, while I
+    joined, with point 60 (I had asked about the branch as it stood, so taking that commit is
+    yours to say); the pilot's `1a277aa` and `9d01f95`, with point 56; `74d1e22`, `84d7285` and
+    `ebda58d` of the session for the two faults, with point 57; and the fourth session's
+    `f471473` and `5b0b01f`, with point 58: its guard and this one need joining by hand at two
+    places. Nothing is pushed and no other branch is touched; `main` stays at `e587b4f` and your
+    real install is untouched. The test passes put terminal windows on your screen again. Open:
+    where this branch goes; whether I take `f08b6dd` in here; the merge of `f471473`; and what
+    point 55 left open, less the merge and the reader.
+    (This point is 61 because the numbers between are other sessions'. 56 is the proof pilot's, in
+    `9d01f95` on `claude/brave-robinson-27cbd9`. 57 is that of the session for the two faults, in
+    `84d7285` on `claude/fervent-gould-8d0820`. 58 is the fourth session's, in `5b0b01f` on
+    `claude/beautiful-bartik-32f1e5`, which came at 12:27, while this record was written. 60 is
+    the starting session's, in `f08b6dd`. The sessions' shared notes take 59 and 62, for the
+    pilot's session and the session for the two faults; I found neither record committed when I
+    looked (12:42). This file holds none of points 56 to 60, and I checked nothing of them.)
 
 ## Round 2 (12 November 2026)
 
@@ -11662,6 +11719,8 @@ over it as a patch.
   right.
   (Added with point 53: the three branches are merged in one local branch since, on your "All three",
   the records joined by hand, and the tests ran on the joined state.)
+  (Added with point 61: that local branch, as it stood at `6f2812d`, is merged into this one since,
+  on your "Yes, merge here"; "The join of the two repairs of names in quotes".)
 - **What is done about the loop over a line's assignments** ("Seen beside the repair, and left"). It is
   older than this round, it makes the guard slow on lines with many variables, and on a line without
   blanks the guard's timer answers long after the hook's time is over. What I would try: one search of
@@ -15565,6 +15624,8 @@ In short:
     change the same lines, and git will not join them by itself. Neither rule for `cmd` is right on
     every line. I put the two together in the scratch folder, where the guard's two test files pass
     with both sessions' rows, and say below how they join; I merged nothing.
+    (Added with point 61: merged since, with that join, on your "Yes, merge here"; "The join of the
+    two repairs of names in quotes".)
 11. **The first repair's record is corrected where this reading shows it wrong**, with dated notes at
     its places: the cost, the sentence that a reading can only add a question or a refusal, and the
     limit of a blank that a backslash escapes, which a run shows to be none.
@@ -15936,9 +15997,13 @@ commits and its record. I ran its guard on my rows and on rows of its own, and n
   copy has that branch's `docs/REFERENCE.md`. The other six test files and WSL did not run on it,
   and nobody but me has read the joined function. That branch's later commit `6f2812d` (10:10)
   changes records only.
+  (Added with point 61: the merge is made with this join, and all eight test files ran on it on
+  Windows and the kit file in WSL; "The join of the two repairs of names in quotes".)
 - **So, at a merge**: this section's inner function with that branch's clause for `cmd` in the place
   of mine; that branch's passages on `cmd` in the docstring and in the reference in the place of
   mine; both sessions' rows. The merge is your word, and I merged nothing.
+  (Added with point 61: you gave that word, "Yes, merge here", and the merge is made as this point
+  says, in this branch.)
 
 ### Not done, and why
 
@@ -15949,6 +16014,8 @@ commits and its record. I ran its guard on my rows and on rows of its own, and n
 - **No second reader.** This reading's repairs are read by me only. A further reader is a word of
   yours, and with two repairs of one finding it would better go through the joined state than
   through this branch alone.
+  (Added with point 61: your "After the merge" covers one reader, on the joined guard; it starts
+  after the record of the merge.)
 - **The timer's question in the place of a refusal** on the second kind of line of finding 4. It
   takes a change of the guard's timer, which is no part of this repair.
 - **The older fault of how the rules read what leads to a command** (finding 2's twins without
@@ -15957,6 +16024,8 @@ commits and its record. I ran its guard on my rows and on rows of its own, and n
   the kinds that the reference now lists in full.
 - **No merge.** The trial above is a copy in the scratch folder, in no branch. Two of the eight test
   files ran on it, on Windows only.
+  (Added with point 61: merged since, in this branch; all eight test files ran on the merge on
+  Windows, and the kit file in WSL.)
 - **The ledger** (`docs/upgrade/LEDGER.md`) is not touched: this is the record of a reading, and it
   adds no row.
 - **Nothing deleted.** The scratch folder with the reader's report, the row files, the copies of the
@@ -15969,10 +16038,14 @@ commits and its record. I ran its guard on my rows and on rows of its own, and n
    `claude/kit-commit-verification-e52f2b`, has its own repair of the first finding, so a merge takes
    the join that is described above. I would merge there, with that join, and run the eight test
    files on the result, in WSL too, before it goes anywhere.
+   (Added with point 61: you answered "Yes, merge here" to my question whether I make that merge
+   in this branch. So that branch is merged into this one, and the tests ran on the result. Where
+   this branch goes is open; "The join of the two repairs of names in quotes".)
 2. **Whether the cost for a read-only agent is accepted**, with the kinds that this reading found
    beside the two that the first repair named. The reference lists them all now. The decision is the
    one of point 49; the list is longer.
 3. **Whether a reader goes through this reading's repairs.**
+   (Added with point 61: you answered "After the merge": one reader, on the joined guard.)
 4. **Whether the guard should give a refusal that it has found when its time is up**, in the place
    of its question. That would repair the second kind of line of finding 4.
 5. **Whether the older fault of finding 2's twins is repaired**: a read-only agent is refused
@@ -15992,6 +16065,214 @@ notes in the shared folder, read on this machine on 21 November between 09:10 an
 the shells do with a command behind a word that sets a variable, from seven lines with `echo` in the
 command's place, run in bash 5.2.37, and two with `Write-Host` in PowerShell 7.7.0 (`rd\sh` in the
 scratch folder).
+
+## The join of the two repairs of names in quotes (21 November 2026): the starting session's branch is merged into this one, and the joined state passes its tests
+
+Your word: "Yes, merge here" (11:35 on 21 November), to my question after the last section's work,
+"Should I make the merge with the join here, on this branch?" Beside the question I had written what a
+yes means: the starting session's branch merged into this one with the join that the last section
+describes; the reference and the two records joined by hand; the eight test files on Windows and the
+kit file in WSL on the joined state; a record with a numbered point; all of it in local commits, with
+the starting session's branch not touched and nothing pushed. Not covered, and not done: a push, `main`,
+your real install, a merge of any other branch, a deletion. Your "After the merge" (11:12), to my
+question when a fresh reader should go through the last section's repairs, covers one reader on the
+joined guard. That reader starts after this record, and its record follows this section. Dates and times
+in this section are UTC, and of 21 November. "I" is the session that you started for the repair of names
+in quotes, as in the last section. "The other branch" is the starting session's,
+`claude/kit-commit-verification-e52f2b`, and "the other session" is that one.
+
+In short:
+
+1. **The other branch is in this one, as it stood at `6f2812d`.** The merge commit is `040d637`
+   (12:38), with `0f896a3` and `6f2812d` as its parents. It brings that branch's 25 commits after
+   `b5331fb`, where it had taken this branch: the proof pilot's work as far as `0278baa`, the repairs of
+   the two process faults on Windows as far as `12876c9`, the other session's own repairs `f2338d6`,
+   its three merge commits and the records up to point 54. So this branch holds what `test/round-9` on
+   GitHub held from 11:17 to 12:01, and the last section's reading (`24970e3`) with it.
+2. **The two repairs of the readers' first finding are one function now.** `named()` in the guard has
+   this branch's inner function with the other branch's clause for a line of commands behind `cmd /c`
+   and `/k` in the place of mine, as the last section proposed and tried. On 3,042 different texts the
+   joined function rewrites each as the trial's copy does. Against this branch's guard of `24970e3` it
+   differs on 12 of them, all behind `cmd`, and against the other branch's on 26, all at a bracket or a
+   list. The two guards differ from each other on 38, so on every one of the texts the joined function
+   does what one of the two did.
+3. **Git joined eight files by itself, and I joined five by hand, at thirteen places.** At each place
+   both sessions' texts are kept, but for the guard's function and its docstring, which are one text
+   out of the two. In the reference, which git had joined by itself, I changed four places more: it
+   held both sessions' accounts of `cmd /c`, and mine described a clause that the joined guard does not
+   have. Against both parents 67 lines of the merge are new.
+4. **The joined state passes its tests on this machine.** The eight test files on Windows under Python
+   3.11.7 (2,115 checks) and the kit file in WSL under 3.12.3 (1,313): no failed check.
+   Every count is the other branch's plus this reading's: the kit file has 1,312 checks on Windows,
+   1,297 and 15, and the review-fixes file 219, 191 and 28. No check of either side is lost.
+5. **The joined function has had no reader yet.** It is read by nobody but me. One fresh reader goes
+   through the joined guard next, on your "After the merge".
+6. **The other branch has one commit more, which is not here:** `f08b6dd` (12:01), the record of its
+   push to `test/round-9`, with point 60. It came while I joined. I had asked about the branch as it
+   stood, and had written `6f2812d` into the sessions' shared notes at 11:37, so I left it: taking it
+   is your word.
+7. **Nothing is pushed, and no other branch is touched.** By the other session's record `test/round-9`
+   on GitHub is at `f08b6dd` and `main` at `e587b4f`; your real install is untouched.
+8. **Not merged either:** what the three other sessions committed on their local branches since the
+   other branch took them. One of those commits, `f471473` of the fourth session, changes the guard at
+   two places that this merge changed too.
+
+### The merge
+
+- **The state before.** This branch stood at `0f896a3`, the record of the last section, on `24970e3`.
+  The other branch stood at `6f2812d` when I looked (11:36) and when the merge was begun (11:38). The
+  two had parted at `b5331fb`, the record of the first repair, which the other branch took in its merge
+  `d4216b3`. Since then this branch got two commits and the other one 25.
+- **What git joined by itself:** `expctl.py`, `nnloop.py`, `nnremote.py`, `runlog.py`,
+  `tests/test_loop.py`, `LEDGER.md` and its head under `scout`, none of which this branch had changed
+  since `b5331fb`; and `docs/REFERENCE.md`, where the two sides had added text at different places.
+  In the guard the other branch's `/C` and `/K` in the three expressions for a command's start came
+  in the same way, and in this file the place of the last section, behind the other branch's ten
+  sections. What git joins by itself is not thereby right; the reference shows it, below.
+- **What I joined by hand**, thirteen places in five files where both sides had changed the same
+  lines:
+  - `.claude/hooks/nn_guard.py`, three places, all in `named()`. The inner function is this branch's,
+    which looks for the bracket that the lead of a word leaves open. In place of its own clause for
+    `cmd /c` it has the other branch's, which also asks what follows the quoted text, and so tells a
+    program that is given arguments from a line of commands. The docstring is one text out of the
+    two: this branch's passages on lists and brackets, the other branch's on `cmd`, one note of what
+    the first repair did for one commit, and the limits that each side names.
+  - `tests/test_kit.py` and `tests/test_review_fixes.py`, one place each: both sessions' rows, this
+    branch's first. One line is changed, the end of this branch's last row in the second file, because
+    the other branch's rows follow it in the same list now.
+  - this file, four places. In "Read this first" the other branch's note at point 49 and its points 50
+    to 54, then point 55. In "A program's name in quotes or behind backslashes" three places where each
+    session had put a note of its own reader behind the same sentence: the other session's note first,
+    then mine, and the question whether a reader goes through that repair once.
+  - `PROGRESS.md`, four places. The summary at its top and the working notes have this branch's lines
+    first, right behind the lines of the first repair that they follow; one note has the other
+    session's first; and the other branch's ten entries stand before the last section's entry.
+- **What I changed after the join**, at places that no conflict marked:
+  - `docs/REFERENCE.md`, four places. My account of `cmd /c` is replaced by a pointer to the other
+    session's paragraph, which gets one example more, `cmd /c "dir/b runs\x\install"`: a read-only
+    agent is refused it. The two kinds of quoted text that stay as they are, a line of commands behind
+    `cmd /c` and a word behind an open bracket, are named in one sentence. And the list of harmless
+    forms that a read-only agent is refused takes in four that the other session's reader had found:
+    `$x = ('rm')`, `Write-Output ("rm")`, `return ('rm')` and `ForEach-Object { 'touch' }`. I ran the
+    four on the joined guard: each is refused to a read-only agent and passes in the main session, as
+    that session's record says.
+  - this file, six notes, and `PROGRESS.md`, one. My notes said "the section after this one", "the
+    section before this one" and "the entry after this one" of my two sections, which no longer follow
+    one another; they name them now, and so do my notes at the places joined by hand. Where both
+    sessions had written that one reader went through `bcfab15`, my notes say "another fresh reader":
+    those are two readers.
+- **The joined function, compared before the merge was committed.** `named()` of four guards, run in
+  one process on every string of the guard's two test files and on sixteen files of rows from the two
+  readings: 3,042 different texts, 1,100 of them with a quote or a backslash. The merged guard and the
+  trial's copy rewrite each alike. Then 48 rows that the joined reference and the docstring name, put
+  to the merged guard as the Bash tool and as the PowerShell tool, in the main session and as a
+  read-only agent: the 29 with a wanted answer have it, and the 19 others, the limits and the forms
+  read wrongly that the two texts name, answer as the texts say. Read side by side, the three
+  functions leave a word as it is for these reasons: an `=` in the word, in all three; the test of
+  the open bracket, in this branch's and in the joined one; the test of the line behind `cmd`, in
+  the other branch's and in the joined one. So the joined function leaves no word for a reason that
+  neither of the two has.
+- **The notes of this section** are marked "Added with point 61". Nine stand at places of this file
+  where my records say that the two repairs are not merged, that the join is a copy in the scratch
+  folder, that a merge or a reader is open, or that this branch holds none of the other branches:
+  at point 55 of "Read this first", at one place of "A program's name in quotes or behind
+  backslashes" and at seven of "The reading of the repair of names in quotes". A tenth stands in
+  the opening, before this session's two statements. The other session's texts stand as they were
+  written. Where they say "this branch", that is the other branch, which does not hold this merge.
+- **The ledger** came in as the other branch has it, with its head; I added nothing to it. A merge
+  decides nothing that has a row.
+
+### The passes on the joined state
+
+The eight test files on Windows and the kit file in WSL, each once. The Windows pass ran on a copy of
+the merge's files, made before the merge was committed and compared with the commit file by file
+after it: all 216 are the same. The pass in WSL ran on a clone made for it at `6f2812d`
+(`~/nnkit-upgrade/kit-pq-m1`), with the merge's six changed files laid over it as a patch; that
+patch is, byte for byte, what `git diff` gives between `6f2812d` and the merge commit. Checks are
+counted in the logs as the lines that begin with `PASS` and `FAIL`.
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,312 | 219 | 138 | 267 | 100 | 54 | 6 | 2,115 |
+| WSL | 3.12.3 | not run | 1,313 | not run | not run | not run | not run | not run | not run | 1,313 |
+
+No check failed. Against the other branch's passes on `6f2812d`, by its record, that is 15 checks
+more in the kit file on both systems and 28 more in the review-fixes file, which are the last
+section's. Against the last section's passes it is 43 more in the kit file on Windows and 36 more
+in WSL, 7 more in the review-fixes file and 3 more in the loop file, which are the other branch's;
+the kit file's two numbers differ because some of its checks run on one of the two systems only.
+The other five files have the counts that they had on both sides. The Windows pass ran from 11:58
+to 12:30, the two files of the guard first, and the kit file in WSL from 12:31 to 12:34. The check
+of the session hook, which fails when the kit file is slowed, passed in both. Skipped on Windows,
+as in every pass on this machine: the checks with tmux in two files, the sandbox checks, and a
+link that this account cannot make. The logs' other lines are git's notes on line ends in the test
+projects and four tracebacks that the loop file provokes, as in the last section's pass.
+
+Not run on the joined state: the 3.8.20 environment and Python 3.15; the seven other files in WSL;
+macOS and bare Linux; GitHub's machines, since nothing is pushed. By the other session's record GitHub's
+six jobs pass on `6f2812d` (run 44898410092). The joined state differs from that one in six files: the
+guard, the two test files of the guard, the reference and the two records.
+
+### Windows on your screen
+
+I ran no watcher, so this is from what ran and from the earlier records' measures. The eight files ran
+once under Python 3.11.7, which is no virtual environment: about twenty flashes of a terminal window,
+from the loop file's and the remote file's detached starts. By its note in the sessions' shared
+folder the session for the two faults ran trials of its own on this machine in the same half hour,
+some of them under the two environments, so not every window of that time was mine.
+
+### Not done, and why
+
+- **No reader yet.** Your "After the merge" covers one, and it starts after this record. Until its
+  record the joined function is read by nobody but me, `f2338d6` by nobody but the other session, and
+  `24970e3` by nobody but me.
+- **`f08b6dd` is not merged.** It changes four files under `docs/upgrade` and nothing else: this file
+  and `PROGRESS.md`, with the section "The merged round on the test branch", point 60 and notes at
+  nineteen places, and the ledger and its head. Tried in the scratch folder against the merged files
+  as they stood before this record: `PROGRESS.md` joins by itself, and this file needs joining by hand
+  at two places. This record adds text where that commit does, so a join after it has more places.
+- **The other sessions' later commits are not here**, each on its own local branch: the pilot's
+  `1a277aa` and its record `9d01f95` (point 56); `74d1e22`, `84d7285` and `ebda58d` of the session for
+  the two faults (point 57); and `f471473` of the fourth session, the guard's search of a line's
+  variables, committed at 12:01, with its record `5b0b01f` (point 58, 12:27). I read their subjects
+  and which files they change, and checked nothing of them. `f471473` changes the guard,
+  `tests/test_kit.py` and the reference. Tried with `git merge-file` on the guard alone: it and the
+  merged guard conflict at two places, the expression for a command's start and the one for a
+  command word, where it has the small `/c` and `/k` of `b5331fb` and this guard the other branch's
+  capitals as well. That session's note in the shared folder says how it would join the two.
+- **No other interpreter and no other machine**, as the table says.
+- **Nothing is pushed**, and the other branch is not touched: it takes this one by a merge of its
+  own, on your word, in which the two records need joining by hand where `f08b6dd` and this record
+  add text at the same places.
+- **The ledger's rows are not touched.**
+- **Nothing deleted.** The scratch folder with the conflicted files, the helpers, the copy of the
+  joined state and the logs stays, and so do the clones in WSL.
+
+### What needs your decision
+
+1. **Where this branch goes.** It holds `6f2812d` whole, the last section's reading and the join. The
+   other branch is one record ahead of that, and `test/round-9` with it. I would have the reader's
+   findings handled here first, then one branch that holds both, and GitHub's six jobs on that state
+   before `main` moves. Each merge and each push is your word.
+2. **Whether I take `f08b6dd` in here**, so that this branch holds the other one whole again. It is a
+   record only.
+3. **The fourth session's `f471473`**, when it is merged: its guard and this one need joining by hand
+   at the two places named above, and the joined guard then wants its tests and, I would say, a
+   reader's look at those places.
+4. Unchanged from the last section: whether the cost for a read-only agent is accepted, with its
+   longer list; whether the guard gives a refusal that it has found when its time is up; whether the
+   older fault of how the rules read what leads to a command is repaired; the scratch folder and the
+   clones in WSL. Its first question is answered by this merge, and its third by your "After the
+   merge".
+
+Sources: the merge commit `040d637` and its two parents; the conflicted files as git left them, the
+texts that took the places of their conflicts, and the helpers that put them there, in this session's
+scratch folder (`merge` under the folder that PROGRESS.md has under "Working notes"); `named()` of the
+four guards on 3,042 texts and the 48 rows, run on this machine on 21 November; the kit's tests on a
+copy of the merge's files, on Windows under Python 3.11.7 and in WSL under 3.12.3, on that day; the
+tips of the sessions' local branches and of `origin`'s, and the sessions' shared notes, read on this
+machine at 12:42; the other session's record `f08b6dd` for what it says of GitHub's run and of the
+test branch, which I did not check.
 
 ## 1. What changed and why
 

@@ -881,6 +881,12 @@ Decision record: `docs/upgrade/LEDGER.md`.
     loop keeps the head of a launch's error; whether these commits go to `test/round-9`, or first
     into the record-keeping session's merged branch; the questions of point 51 that these do not
     replace.
+    (Added later that day: `test/round-9` was pushed to at 11:17 on 21 November, two minutes before
+    this record was committed, and not by me. It stands at `6f2812d`, the record-keeping session's
+    merged branch, which holds the repairs of points 48 and 51 and none of this point's three. So
+    the question of where these commits go has one way left: a merge of them with what is there,
+    which meets that branch's changes in the reference, in the kit's test file and in these two
+    records.)
 
 ## Round 2 (12 November 2026)
 
@@ -10752,6 +10758,11 @@ In short:
     `test/round-9` on GitHub stays at `409182f`, and your real install is untouched. The record-keeping
     session's branch, which holds this branch as it stood at `12876c9`, does not hold them, and has
     changed the same places since ("Beside the findings").
+    (Added later that day: out of date when this record was committed. `test/round-9` was pushed to from
+    this machine at 11:17, by another session or by you, between my last look at it (11:16) and this
+    record's commit (11:19). It stands at `6f2812d`, the record-keeping session's merged branch, so it
+    holds the first and the second repair now, with that branch's changes, and GitHub's six jobs for it
+    were running at 11:21. None of this reading's repairs is in it, and I pushed nothing.)
 11. **The test passes and the copies put terminal windows on your screen again.** A watcher listed 625
     between 07:47 and 10:39. By the process ids in its entries 137 of them are from my tests, 74 of
     those of 1.7 to 20.7 seconds: 36 beside each of the two passes under an environment, 34 while the
@@ -11359,6 +11370,11 @@ no window that is not that pass's own. That is what the folder held when I count
   of the earlier two repairs has run there either. The other way is the record-keeping session's merged
   branch first, which holds the two earlier repairs and its own changes of the same places ("Beside the
   findings").
+  (Added later that day: `test/round-9` stands at `6f2812d` since 11:17, which is that merged branch, so
+  the two ways are one. These two commits do not follow `6f2812d`; they reach `test/round-9` through a
+  merge with it, which has the conflicts that "Beside the findings" names. And the two earlier repairs
+  run on GitHub's machines with that push, in the merged state: its six jobs were running at 11:21, and
+  I did not wait for them.)
 - Unchanged from the section before this one: once more, or an error at once, for a supervisor that
   ended before the log; whether the launch removes `.launch-env.json` where a supervisor through tmux
   has not come up; and what that section's last bullet names.

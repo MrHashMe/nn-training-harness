@@ -3227,6 +3227,12 @@ a record and the record's supervisor in its answer stay on all three systems or 
 whether the loop keeps the head of a launch's error; whether these commits go to `test/round-9`, or
 first into the record-keeping session's merged branch; the questions of the entry before this one
 that these do not replace.
+(Added later on 21 November: `test/round-9` was pushed to at 11:17, two minutes before this entry
+was committed and not by this session, and stands at `6f2812d`, the record-keeping session's merged
+branch. It holds the repairs of the two entries before this one and none of this entry's; GitHub's
+six jobs for it were running at 11:21. The session's last look at GitHub's branch was at 11:16, and
+its look right before the commit took in the local branches and the notes only. These two commits
+reach `test/round-9` through a merge with `6f2812d`, with the conflicts that this entry names.)
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

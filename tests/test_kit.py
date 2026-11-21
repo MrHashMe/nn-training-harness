@@ -2871,6 +2871,77 @@ def main():
                                     + "}\" http://localhost:1/x"})
     check(got[0] is None, f"guard: a long text with an escaped quote every few characters (a JSON body of 2,000 fields) "
                           f"is read within the guard's own time and passes ({str(got[1])[:80]!r})")
+    # A line with many words that set a variable (21 November 2026). For each of them the whole line was searched
+    # twice, to know whether the line may run its text (1,500 lines of out7="sub/f7.txt"; cat "$out7": 10 s), and what
+    # leads to a command was read on from every sign to the next blank (1,000 of a=1; without a blank: the timer's
+    # answer after 12 s), and a row of variables set to nothing in as many ways as the row's words allow (30 of a=
+    # with a blank: the timer's answer). No row here waits for a clock: they count searches and read where a match
+    # begins
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "n, re = [0, ''], nn_guard.re\n"
+            "def counted(f):\n"
+            "    def g(pattern, text, *a, **k):\n"
+            "        n[0] += text == n[1]\n"
+            "        return f(pattern, text, *a, **k)\n"
+            "    return g\n"
+            "re.search, re.finditer, got = counted(re.search), counted(re.finditer), []\n"
+            "for c in ['; '.join('v%d=%d' % (i, i) for i in range(k)) + \"; c='rm x'; $c\" for k in (2, 200)] + [\n"
+            "        \"c='ls sub'; d='ls data'; X= $c $d\",\n"
+            "        \"c='ls sub'; X0= $c \" + ' '.join('X%d= $a%d' % (i, i) for i in range(1, 300))]:\n"
+            "    n[:] = [0, c]\n"
+            "    got.append([nn_guard.inner_code(c), n[0]])\n"
+            "print(json.dumps(got))")
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check(got[0][0] == got[1][0] == ["rm x"] and got[0][1] == got[1][1],
+          f"guard: a line that sets 200 variables is searched as often as one that sets two for the variables it may "
+          f"run, and the text of the one it runs (c='rm x'; $c) is found among them ({got[:2]})")
+    check(got[2][0] == ["ls sub", "ls data"],
+          f"guard: where a command's start reads in two ways (X= $c $d runs $c with an empty X, or $d with X set to "
+          f"$c), both variables count as ones that the line may run ({got[2]})")
+    check(got[3][0] == ["ls sub"] and got[3][1] < 10,
+          f"guard: a place where a command starts that reads in 300 ways (X0= $c X1= $a1 ... X299= $a299) is not "
+          f"searched once for each of them, and the variable that the few searches did not come to ($c, the "
+          f"shortest way) is found by a search of its own ({got[3]})")
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard as g\n"
+            "print(json.dumps([p.search(c).start() for p, c in ((g.WRITE_CMDS, 'a=1;b=2 touch x'), (g.FORMATS, "
+            "'a=1;b=2 black .'), (g.EXTRACT, 'a=1;b=2 tar -xf x.tar'), (g.HERE_RUN, 'a=1\\nb=2 sh <<EOF'))]))")
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check(got == [3, 3, 3, 4],
+          f"guard: a search that asks whether a command stands in a line finds it from the last sign or line break "
+          f"in front of it (a=1;b=2 touch x: from the ;), where the search from the line's beginning read each "
+          f"variable's value on to the next blank ({got})")
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard as g\n"
+            "print(json.dumps([g.WRITE_CMDS.search(c).start() for c in ('a=\\nb= touch x', 'a=\\nb touch x')]))")
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check(got == [3, 0],
+          f"guard: such a search takes the blank behind a variable's = only in front of a word that sets no variable "
+          f"(a= and then b= touch x is found from b=, a variable of its own; a= and then b touch x from a=, as a set "
+          f"to b), so a row of variables set to nothing (a= b= c= ...) is read in one way, where each word was a "
+          f"variable or the value of the one before it and 30 of them took the guard past its limit ({got})")
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "class Counted:\n"
+            "    def __init__(self, p):\n"
+            "        self.p, self.n = p, 0\n"
+            "    def __getattr__(self, name):\n"
+            "        self.n += 1\n"
+            "        return getattr(self.p, name)\n"
+            "names, got = ('CD', 'QUOTED_COMMAND', 'COMMAND_WORD', 'FORMATS_EACH', 'HERE_RUN_EACH'), []\n"
+            "for name in names:\n"
+            "    setattr(nn_guard, name, Counted(getattr(nn_guard, name, None)))\n"
+            "for c in (\"a=1;b=2 echo 'x' > out.txt; python train.py\",\n"
+            "          \"cd sub && 'ls' > out.txt; black .; sh <<< 'ls'\"):\n"
+            "    ctx = nn_guard.Ctx({'tool_name': 'Bash', 'tool_input': {'command': c}, 'cwd': sys.argv[2]})\n"
+            "    for name in names:\n"
+            "        getattr(nn_guard, name).n = 0\n"
+            "    nn_guard.check_readonly('Bash', {'command': c}), nn_guard.check_bash(ctx, c)\n"
+            "    got.append([getattr(nn_guard, name).n for name in names])\n"
+            "print(json.dumps(got))")
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks"), str(proj)], cwd=proj,
+                  env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check(got[0] == [0] * 5 and all(got[1]),
+          f"guard: the patterns that read all that leads to a command (for a cd's folder, a command word in quotes, a "
+          f"formatter's arguments, a here-string) are not used on a line that holds none of these, and each is used "
+          f"on a line that holds them all ({got})")
     # Each reading of a line looked every word up on disk again: a here-document with a script of 1,500 lines (69 KB)
     # took 23 s on Windows, the timer's answer (10 s before the readings of 17 November 2026, 8 s with one lookup)
     # The same file as a path object costs no lookup and by its full name one; a `~` word is the home's file; a lookup

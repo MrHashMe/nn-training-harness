@@ -683,6 +683,18 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   file there is asked about by the guard's own rule). Checked live with the two agents passed through `--agents` (Claude
   Code 2.1.322, native Windows, 12 November 2026): a hook that cannot run blocks the call with the setting and
   lets it through without. Not checked live: the agent files themselves in a trusted folder.
+- How long it takes: after 12 seconds the guard answers with a question by itself (the point before this one), and
+  that question can come later than the 12 seconds, because the timer cannot answer while one search of a pattern
+  runs. A line with many words that set a variable no longer takes the guard to that limit (since 21 November
+  2026; before, 1,000 of `a=1;` with no blank between them, 3,000 lines that each set a variable and read it, or
+  30 variables set to nothing in a row took the main session there): 20,000 of `a=1;` (80 KB) take the main
+  session about 3 seconds and a read-only agent half a second on the machine where this was measured, and a row
+  of 320 KB about 10 seconds and 1.5. Lines made up for it still reach the limit as the main session: 20,000
+  variables in front of a `cd`, a here-string or a quoted command word (the question then came after 14 to 24
+  seconds); a wrapper's option written 8,000 times with no blank (`env -i;env -i;...`; after 14 seconds, and
+  after 32 for a read-only agent); and a row of words that the guard reads in two ways each, where the time
+  grows 1.6 to 2 times with each of them (`a= env a= env ...` reached the limit at 21 pairs, one pair sooner
+  than before this change; 28 options of `sudo -u -u -u ...` took 3.5 seconds).
 - The receipt of the final evaluation is a record, not a seal: it counts the uses that went through
   `expctl final-eval` in this checkout and in every worktree that git has registered, and a copy of its rows in
   git's common folder (`.git/nn-training-final-eval.jsonl`) keeps the uses of a worktree that was removed.

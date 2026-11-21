@@ -356,7 +356,15 @@ def main():
                       ("$s = Get-Content runs\\x\\log.txt -Raw; $s.Contains('rm')", None),
                       ("find /c \"install\" runs\\x\\log.txt", None),
                       ("& \"C:\\Program Files\\Git\\usr\\bin\\head.exe\" -n 5 runs\\x\\log.txt; "
-                       ".\\.venv\\Scripts\\python.exe -c \"print('touch')\"", None)]:
+                       ".\\.venv\\Scripts\\python.exe -c \"print('touch')\"", None),
+                      # from the reading of that repair (21 November): behind cmd's /c a quoted text with a blank
+                      # that ends the command is a line of commands (were "deny" for one commit, as the programs
+                      # install, touch and patch), and /C is /c to cmd (was None)
+                      ("cmd /c \"type notes\\install\"", None), ("cmd /c \"type C:\\x\\touch.exe\"", None),
+                      ("cmd /c \"python train.py --out runs\\touch\"", None),
+                      ("cmd /c \"type docs\\patch\" | findstr x", None),
+                      ("cmd /C \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" notes.md", "deny"),
+                      ("cmd /C tar -xf bundle.tar", "deny"), ("cmd /K tar -tf bundle.tar", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
 

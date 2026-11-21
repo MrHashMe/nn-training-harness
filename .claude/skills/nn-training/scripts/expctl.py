@@ -2284,7 +2284,9 @@ def cmd_supervise(args):
         kw["start_new_session"] = True  # own process group so stop/deadline can signal the whole tree
     try:
         child = subprocess.Popen(cmd, executable=in_env(cmd[0]), **kw)
-    except OSError as e:
+    except Exception as e:  # not OSError alone: after any failed start the log is there, and with no record of the
+        # failure the launch says that the command may be running, on which the loop waits out the run's time
+        # (seen with a null character in a word of the command, which gives a ValueError)
         write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": f"could not start: {e}",
                                                   "ended_ts": now(), "ended_at": iso(now())})
         return 1
@@ -2655,7 +2657,9 @@ def curve_findings(loss, metric, direction, lname, mname):
                 out.append(f"{mname} reached its final level at {at(M, j)}, {100 * j / (n - 1):.0f} % into the run: "
                            "what came after gained nothing beyond the noise of an evaluation. A shorter run would do, "
                            "or the learning rate is too low to go further")
-        if total > 0 and sig > 0.15 * total:
+        # the scatter of values that differ by rounding alone is none (was until the reading of 21 November 2026: a
+        # metric of 0.3 and 0.30000000000000004 by turns "scatters by about 6.72e-17, 121 % of all it gained")
+        if total > 0 and sig > max(0.15 * total, 1e-9 * abs(last)):
             out.append(f"{mname} scatters by about {sig:.3g} from one evaluation to the next, {100 * sig / total:.0f} % "
                        "of all it gained in the run: the best value is partly a lucky evaluation, and differences of "
                        "that size between checkpoints or runs mean nothing. Evaluate on more examples")

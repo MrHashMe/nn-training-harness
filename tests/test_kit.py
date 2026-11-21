@@ -401,6 +401,10 @@ def compare_tests(tmp, proj):
              ["train/loss is not finite from step 8, and finite again later, after it had risen from 0.5 to 900: "
               "the training diverged"], ["one step went wrong"]),
             ("flat_metric", lambda i: 2.0 * e(-i / 60) + 0.3, lambda i: 0.1, {}, [], ["val/acc"]),
+            # (from the reading of 21 November 2026: nor does one whose values differ by rounding alone. Was, for 0.3
+            # and 0.1 + 0.2 by turns: "scatters by about 6.72e-17 from one evaluation to the next, 121 % of all it gained")
+            ("rounding_metric", lambda i: 2.0 * e(-i / 60) + 0.3, lambda i: 0.1 + 0.2 if i // 20 % 2 else 0.3, {}, [],
+             ["val/acc"]),
             ("eval_nan", fall, lambda i: rise(i) if i < 200 else nan, {},
              ["val/acc is not finite from step 219 on; the values before it were ordinary", "the fault lies in the evaluation"],
              ["was not finite by then", "one step went wrong", "train/loss"]),
@@ -1521,6 +1525,20 @@ def main():
     check([s.returncode for s in sups] == [0, 1] and ran == ["ran\n", 0] and "log is there already" in sups[1].stderr,
           "a supervisor that finds the run's log there starts nothing and ends, so a run's command is started by one "
           f"supervisor at most (was: run again by each) ({[s.returncode for s in sups]} {ran} {sups[1].stderr[-200:]})")
+    # A command that the system cannot be handed at all (a null character in a word: a ValueError, and no OSError) is
+    # recorded as a start that failed, like a program that is not there. (Was: the supervisor ended on the error with
+    # the run's log made and no record, which a launch reads as a command that may be running.)
+    nul = tmp / "nulsup"
+    nul.mkdir()
+    (nul / "manifest.json").write_text(json.dumps({"cmd": [PY, "-c", "pass\0"], "cwd": str(nul)}))
+    sup = sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "_supervise", str(nul)], cwd=proj)
+    try:
+        rec = json.loads((nul / "exit.json").read_text())
+    except (OSError, ValueError) as e:
+        rec = {"error": f"{type(e).__name__}: {e}"}
+    check(sup.returncode == 1 and "could not start" in str(rec.get("error")) and rec.get("returncode") is None,
+          "a supervisor whose command cannot be handed to the system records that it could not start it (was: no "
+          f"record beside the run's log, so the launch said the command may be running) ({sup.returncode} {rec})")
     # Status says why a launched run has a manifest and nothing else after a minute, and whether its command can have
     # run: a manifest of two minutes ago, the same beside the run's log, one of twenty seconds ago, and an old one
     # that no launch wrote. With them, an exit code in the launch's error reads as one looks it up
@@ -2970,6 +2988,20 @@ def main():
         # (a search's name too: the limits of that rule named these two forms)
         ("Bash", {"command": "g'r'ep -rn label ."}, "ask"),
         ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/grep.exe\" -rn label ."}, "ask"),
+        # From the reading of that repair, 21 November 2026. Behind cmd's /c a quoted text with a blank that ends the
+        # command and whose blank stands in no path is the line of commands that cmd makes of it, and no program's
+        # name (were "ask" for one commit, as the program patch: the last part of the text's last path)
+        ("Bash", {"command": "cmd /c \"type docs\\patch\""}, None),
+        ("Bash", {"command": "cmd.exe /d /c \"dir C:\\tools\\patch\" & echo done"}, None),
+        ("Bash", {"command": "cmd /c \"C:\\tools\\list.exe docs\\patch\" 2>nul | findstr x"}, None),
+        ("Bash", {"command": "bash -c 'cmd /k \"type docs\\patch\"'"}, None),
+        # (and /C is /c to cmd: were None, the small letter alone started a command, behind a quoted name and in
+        # the rules that keep the case of a program's options)
+        ("Bash", {"command": "cmd /C \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" eval\\metrics.py"}, "ask"),
+        ("Bash", {"command": "CMD.EXE /D /K \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" eval\\metrics.py"}, "ask"),
+        ("Bash", {"command": "cmd /K tar -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "cmd /C \"C:\\Program Files\\Git\\usr\\bin\\tar.exe\" -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "cmd /C tar -tf bundle.tar & find /C \"install\" log.txt"}, None),
         # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends
         # its command as well as at a blank (tar x) and patch<fix.patch), the shell's pipe into awk ends what its
         # own printf lends awk, and a quoted command behind awk's bar is one whatever stands behind it

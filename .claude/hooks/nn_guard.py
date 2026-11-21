@@ -289,8 +289,9 @@ AWK_WRITES = re.compile(r"\bprintf?\b(?:[^;}|\n\"']|\|(?!\s*[^\s;&|]*awk\b)|\"[^
                         r"(?:>(?!>?\s*\"/dev/(?:stderr|stdout|null|tty)\"\s*(?:[;}\n']|$))|\|&?\s*[\"'])|\bsystem\s*\(|"
                         r"\s-i\s*inplace\b|--include[= ]inplace\b")
 # PowerShell and cmd.exe forms of the write, delete and kill rules. Case is ignored; the short aliases count only
-# where a command starts (line start, after ; & | ( {, or after cmd's /c).
-_AT = r"(?:^|[;&|({`]|\s/[ck]\s)\s*"
+# where a command starts (line start, after ; & | ( {, or after cmd's /c or /k, in either case of the letter: was
+# until 21 November 2026 the small letter alone in the rules that keep the case, see _START).
+_AT = r"(?:^|[;&|({`]|\s/[ckCK]\s)\s*"
 PS_WRITE = re.compile(
     r"\b(?:(?:Set|Add|Clear)-Content|Out-File|Tee-Object|(?:Copy|Move|Remove|New|Rename|Set|Clear)-Item(?:Property)?|"
     r"Export-(?:Csv|Clixml)|Expand-Archive|xcopy|robocopy)\b|::(?:Write|Append|Delete|Move|Copy|Create|Replace)\w*\(|"
@@ -401,7 +402,9 @@ _W1 = r"[^\s;&|<>()'\"`]"  # a character of a word
 _NOTE = _W1 + "*" + NOTES + r"(?![\w.-])"
 # where a runner takes its script, a wildcard too that may name such a file (peek.*, pee*), but not run_*.py
 _SCRIPT = r"(?:" + _NOTE + r"|(?!" + _W1 + r"*\.\w+(?=[\s;&|<>()]|$))(?=" + _W1 + r"*[*?\[])" + _W1 + "+)"
-_START = r"(?:^|[;&|({`]|\s/[ck]\s)"
+# (/C and /K are cmd's /c and /k: was until 21 November 2026 the small letter alone, so that the rules which keep
+# the case of a program's options saw no command behind the capital one, and cmd /K tar xf a.tar passed unasked)
+_START = r"(?:^|[;&|({`]|\s/[ckCK]\s)"
 _LEADS = _LEAD % (_WRAP + r"|xargs|builtin|winpty|stdbuf|wsl|uvx|(?:uv|conda|mamba|micromamba|poetry|pipenv|pixi|"
                   r"pipx|pdm|hatch|rye)\s+run|uv\s+tool\s+run|(?:python[0-9.]*|py)\s+-m")
 _GO = _START + _LEADS + r"(?:" + _W1 + "*/)?"
@@ -440,9 +443,10 @@ _WEND = r"(?=[\s;&|)<>]|$)"
 # with the pieces of it that stand in quotes. Or a quoted text anywhere else, which named() passes over, so that it
 # looks at no word inside one. A bracket right behind a name, a ")", a "]" or a "=" opens the arguments of a call
 # or a list in program text (d.get("patch"), $s.Contains('rm'), steps=("install" "train")), and no command. And
-# /c or /k starts a command behind cmd alone: find /c "install" log.txt counts lines
+# /c or /k starts a command behind cmd alone: find /c "install" log.txt counts lines. In either case of the letter,
+# as cmd takes it (was until the reading of 21 November 2026: the small letter alone)
 COMMAND_WORD = re.compile(
-    r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ck]\s)" + _LEADS
+    r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ckCK]\s)" + _LEADS
     + r")(?=[^\s;&|<>()'\"`\\]*['\"\\])((?:" + QUOTED.pattern + "|" + _W1 + ")+)" + _WEND + "|" + QUOTED.pattern, re.M)
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
 # formatters, which rewrite a file unless they are told to check only, to print, or to say what they are. Each with
@@ -1243,6 +1247,14 @@ def named(text: str) -> str:
     word in a program's text stays one: print(\\"a > b\\"), d.get("patch"). A word that sets a variable (X="a/b") or
     stands in a list that one is set to (steps=(train "install")) stays as well, and so does one whose last part is
     no name ("my notes", "$tool").
+    Behind /c or /k of cmd a quoted text with a blank in it may be a line of commands, which cmd makes of it
+    unless it is a program's file. It stays, and the rules read it as that line, where it ends the command and its
+    blank stands in no path: cmd /c "type docs\\patch", cmd /c "C:\\tools\\list.exe docs\\patch". It is the program
+    where an argument or a < follows it (cmd /c "my tools\\touch.exe" x), or where its first blank stands inside a
+    path, behind a folder's separator and a part without an ending:
+    cmd /c "C:\\Program Files\\Git\\usr\\bin\\patch.exe".
+    (Was, for one commit: the first two read as the program patch as well, asked about, and refused to a read-only
+    agent.)
     Like every reading this may name more than the shell would: a quoted word where a command may start is a
     command's name to a POSIX shell and a text to PowerShell ('install' -in $steps, a switch's case 'patch'), and
     on a line of its own in a here-document it may be a program's text. Each is read as the bare word is read there.
@@ -1250,12 +1262,22 @@ def named(text: str) -> str:
     quotes here (plain() takes them off a name without a blank, for the main session's rules); a blank that a
     backslash escapes (/c/Program\\ Files/Git/usr/bin/touch.exe) and a quoted blank in what leads to the word
     (X="a b" 'touch' x) end the word or the search early, and a word that stays is passed over with all that leads
-    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words"""
+    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words.
+    shortcut: behind cmd's /c a program that is given no argument, which a pipe may feed, is read as a line of
+    commands where no separator stands before its first blank or a dot stands in the part before that blank
+    (cmd /c "my tools\\patch.exe", cmd /c "C:\\tools.old dir\\patch.exe"), and a line of commands whose first word
+    is a path without an ending is read as a program (cmd /c "C:\\Python311\\python train.py --out runs\\touch");
+    that takes a look at the files on the disk, which is how cmd itself tells the two apart"""
     def bare(m):
         w = m.group(2) or ""
         path = QUOTED.sub(lambda q: q.group()[1:-1], re.sub(r"\$(?=['\"])", "", w)).replace("\\", "/")
         name = path.rsplit("/", 1)[-1]
-        return m.group(1) + name if w and "=" not in QUOTED.sub("", w) and "=(" not in m.group(1) \
+        # behind /c or /k: a quoted text with a blank that stands in no path, and neither an argument nor a "<"
+        # behind it on its command
+        line = w and m.group(1).lstrip()[:1] == "/" and re.search(r"\s", w) \
+            and not re.match(r"\S*/[^\s./]*\s", path) \
+            and not re.match(r"[ \t]*(?!\d*>)[^\s;&|)]", m.string[m.end():])
+        return m.group(1) + name if w and not line and "=" not in QUOTED.sub("", w) and "=(" not in m.group(1) \
             and re.fullmatch(r"[\w.@+-]+", name) else m.group()
 
     return COMMAND_WORD.sub(bare, text) if re.search(r"['\"\\]", text) else text

@@ -323,6 +323,23 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   a quote is neither, so `bash -c 'kill 123'` is not refused by it, as before (an older gap, seen on
   21 November 2026 and left; the main session's rules, which read the line too, ask about it), and
   `bash -c '"kill" 123'` is refused.
+  A reading of that repair on the same day changed two things behind `cmd /c` and `cmd /k`. A quoted text with a
+  blank in it may be a line of commands there, which cmd makes of it unless it is a program's file, and it is
+  read as that line where it ends its command and its blank stands in no path: `cmd /c "type docs\patch"` and
+  `cmd /c "C:\tools\list.exe docs\patch" 2>nul` pass. For one commit they were asked about as the program
+  `patch`, the last part of the text's last path, and a read-only subagent was refused them and
+  `cmd /c "python train.py --out runs\touch"`. The text is the program where an argument or a `<` follows it
+  (`cmd /c "my tools\touch.exe" eval\metrics.py`) or where its first blank stands inside a path, behind a
+  folder's separator and a part without an ending (`cmd /c "C:\Program Files\Git\usr\bin\patch.exe"`). cmd
+  tells the two apart by looking for the file, which the guard does not do, so two forms are read wrongly: a
+  program without an argument passes as a line of commands where no separator stands before its first blank or
+  a dot stands in the part before that blank (`cmd /c "my tools\patch.exe"`,
+  `cmd /c "C:\tools.old dir\patch.exe"`), and a line of commands whose first word is a path without an ending
+  is read as a program (`cmd /c "C:\Python311\python train.py --out runs\touch"` is refused to a read-only
+  subagent). And `/C` and `/K` are cmd's `/c` and `/k`: until then the capital letter started no command for a
+  name in quotes or for the rules that keep the case of a program's options, so
+  `cmd /C "C:\Program Files\Git\usr\bin\touch.exe" eval\metrics.py` and `cmd /K tar -xf bundle.tar` passed
+  unasked, and a read-only subagent was let run them.
   Since 15 November 2026 a line whose only write is a redirect, or a `tee` at the start of a command, is asked
   about only where a target of it is such a file: `python eval/metrics.py > score.json` passes (it was asked
   about, and refused where nobody can be asked), `echo x > eval/metrics.py` is asked about as before. The
@@ -698,7 +715,10 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   one ends too, or the system refuses the second start, the launch answers `ok: false` and names both, its own exit
   code is 9, and the run reads as `failed` with that reason. One that ended after it had opened the run's log, the
   first or the second, is not started again, because the command may have run: the launch answers with the error and
-  `command_may_run: true` and writes no exit record, so the run reads as `unknown`. Where its command writes records
+  `command_may_run: true` and writes no exit record, so the run reads as `unknown`. (A supervisor that cannot start
+  the command writes the reason as the run's exit record, since 21 November 2026 for any error. Before, only for the
+  system's own: a manifest with a null character in a word, which no command line can hold, left the log without a
+  record, and a launch reads that as a command that may run.) Where its command writes records
   of its own, the run reads as `running` by its heartbeat and then as its result says; where the command ends without
   a result, as `running` until the last heartbeat is `heartbeat_stale_seconds` old, then as `unknown`. The loop waits
   out the time of such a run and stops it before its next step (since 21 November 2026; for one commit it went on at
@@ -713,7 +733,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   that holds the number is that one: not a process with another start time, and on Windows not one that was created
   after the heartbeat was written. (Before, any live process with that number counted, for `heartbeat_stale_seconds`.
   Windows gives a number out again within seconds, and where an environment's `python.exe` is the run's command the
-  heartbeat's number is never the recorded one, so a killed run read as `running` as soon as another program had the
+  heartbeat's number is never the recorded one (since 20 November that is also every launched `python …` where the
+  kit itself runs in an environment: the controller starts the `python.exe` beside its own interpreter), so a
+  killed run read as `running` as soon as another program had the
   number; `expctl stop` would then have ended that program after `kill_after_s`, which was read in the code and never
   run.) A vendored `runlog.py` of before that day writes no start time: on Windows the creation time still protects
   its heartbeat, elsewhere its number is taken as before, so copy the new file over it. A heartbeat that names its
@@ -726,7 +748,9 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   the number in the launch's own record is compared by start time to within five seconds only, so on Windows a run
   that is killed together with its supervisor within five seconds of its start still reads as alive where another
   program gets its number within those seconds; `nnloop start --detach` and the controller of a remote run are started
-  as before, without a console, and nothing looks whether they came up. None of this has run on a Mac, where the first
+  as before, without a console, and nothing looks whether they came up. Under an environment's `python.exe` each of
+  those two then has a terminal window of its own on the screen for as long as it runs, as the supervisor had (seen
+  beside the loop's and the remote module's tests on 21 November 2026). None of this has run on a Mac, where the first
   heartbeat of a process now asks `ps` once for its start time.
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.

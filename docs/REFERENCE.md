@@ -702,10 +702,15 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   evaluator by the loop's own start of it, not by a whole campaign; the agent's program by campaigns with a stand-in
   agent, not with a real one.) A batch file stays Windows' to find and `cmd.exe`'s to run: name it with backslashes
   (`scripts\final.cmd`) or by its full path, because by a relative path with forward slashes it runs only in quotes,
-  and only where that variable is not set. The loop's evaluator and the agent's program are the exception since 21
-  November 2026: the kit makes their relative path a full one, so the program, a batch file too, starts whichever
-  way its slashes point. `final-eval` checks its program before it records the use, and since 20 November 2026 the
-  check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
+  and only where that variable is not set. And `cmd.exe` reads the path it is given: where the path has no space, so
+  that nothing puts it in quotes, a `&`, a comma, `;`, `=`, `^`, a bracket or a variable's name between `%` signs in
+  it keeps the batch file from starting (measured on 21 November 2026 under Python 3.8 and 3.11: each of them in a
+  full path, the comma also in a relative one, which `final-eval`'s check passes). The agent's program, and the
+  loop's evaluator where the loop is called outside the project root, need no backslashes since 21 November 2026:
+  the kit makes their relative path a full one, so the program, a batch file too, starts whichever way its slashes
+  point, within that limit. Called in the project root, as a loop started with `--detach` is, the evaluator's path
+  goes to Windows as written. `final-eval` checks its program before it records the use, and since 20 November 2026
+  the check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
   a name with a dot that only an `.exe` stands behind, a script named without its interpreter (`eval.py`), a batch
   file by a relative path with forward slashes and, where that variable is set, a program named without a folder
   that lies in the project root only; where Python's own search (`shutil.which`) finds a file for the name, the

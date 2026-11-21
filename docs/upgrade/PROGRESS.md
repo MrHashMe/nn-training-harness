@@ -72,10 +72,14 @@ reading: a regression and two sentences that contradict each other are repaired 
 faults of round 9 beside them ("The reading of the reading's repairs" below).
 On the user's "Push test branch" both commits went to `test/round-9`, and all six of GitHub's jobs pass on
 them ("The reading of the reading's repairs on the test branch" below).
+For the second question of that reading, how the guard should read a program's name in quotes, the user
+started a session of its own on that day. Both forms are repaired in a local commit on the branch
+`claude/sharp-faraday-6bd610`, at a cost for a read-only agent that is the user's to accept; the repair is
+read by its author only and not pushed ("A program's name in quotes or behind backslashes" below).
 
 # Upgrade progress
 
-Last updated: 20 November 2026.
+Last updated: 21 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -2623,6 +2627,9 @@ Done on that word:
   rule, the main session's included, so with it a kept file is written unasked. That is the reader's
   run; I did not repeat it and changed no rule. The guard's comment names the first limit and
   `docs/REFERENCE.md` both; the decision is the user's.
+  (Added on 21 November: both are repaired since, in a local commit of the session that the user
+  started for that decision, on a local branch of its own; the reader's run of the name with a blank
+  is confirmed there. "A program's name in quotes or behind backslashes" below.)
 - Found beside them, both from round 9: `expctl curve` said of a metric that is the same at every
   evaluation that it "peaked" and "got worse" (24 of 96 constant series; none now); and the guard
   let `git apply --check --no-check fix.patch` pass unasked, which applies the patch with git 2.52
@@ -2995,6 +3002,88 @@ reading; whether the loop waits a run's whole time for a launch that failed with
 running; whether the launch removes `.launch-env.json` where a supervisor through tmux never starts;
 whether these commits go to `test/round-9`; the questions of the entry before this one but the
 first.
+## A program's name in quotes or behind backslashes (21 November): both forms repaired in a local commit, at a cost for a read-only agent
+
+The user's word, 20 November: a session of its own for the question how the guard should read a
+program's name in quotes, started from the proposal of the session that wrote the entries before
+this one. "I" in this entry is that new session. Its brief asks for a correctness repair of the two
+forms of finding 5 of "The reading of the reading's repairs" in the usual positions of a command
+word, with tests, a comparison of the guard before and after on generated lines, timings, the test
+passes, the reference and the guard's comment brought up to date, and local commits with their
+record. It rules out a search for ways past the guard, and an agent briefed for one. It is not a
+word for a push, for a merge, for `main`, for the real install, for a reader or for a deletion.
+Dates and times in this entry are UTC.
+
+Done on that word:
+- The first form confirmed, once: on the guard of `fd589b2`, given the line as text in a temporary
+  project, `"C:/Program Files/Git/usr/bin/touch.exe" eval/metrics.py` passes every rule, as the main
+  session, under the read-only rules alone and as a call of a read-only agent, where `touch.exe
+  eval/metrics.py` is asked about in the first and refused in the other two. No kept file was
+  written for it. A name put together from quoted pieces (`t'ou'ch`) passed in the same way, and is
+  repaired with it.
+- The repair, in `nn_guard.py`: one reading more, and no rule changed. A new function `named()`
+  gives the text with each command word that has a quote or a backslash in it written as its
+  program's bare name. `readings()` adds that form of the line and of each of its readings, so both
+  sets of rules read it beside the line as it came, and the read-only rules read a text that the
+  line hands to a shell once more as a line where naming changes it. The reading passes over quoted
+  text that is no command word, so the three harmless lines of finding 5 pass a read-only agent as
+  before. `plain()` is unchanged. The `shortcut:` comments and `docs/REFERENCE.md` say what is seen
+  now and name the limits that stay, which are read from the code and not run.
+- The code commit `bcfab15`: four files, 186 lines added and 27 removed (`nn_guard.py` 76 and 15,
+  `docs/REFERENCE.md`, `tests/test_kit.py`, `tests/test_review_fixes.py`). New checks: 31 in the kit
+  file, each a question about a kept file, and 51 in the review-fixes file, 41 refusals and ten
+  lines that must pass.
+- Each new check rests on the repair. The 72 that want a question or a refusal fail on the guard
+  before, and nothing else does there (each file run whole on a copy of the kit on Windows; the kit
+  file's run was made with six rows more in it, which pass on every guard and are not in the file).
+  The ten that want no answer are each refused by a copy of the guard with a piece of the repair
+  altered, or by the guard before with the repair that lay nearest: eleven such copies, the rows put
+  to each as text, and the review-fixes file run whole on two of them.
+- The guard before against the repaired one on 5,500 generated lines, the released guard beside
+  them. No answer changes on the 2,500 lines of this round's earlier comparisons. On 3,000 lines
+  made of the repair's forms the main session is asked about 223 lines that passed, each as the
+  same line with the bare name is. Under the read-only rules 822 lines are refused that passed: 807
+  as the line with the bare name is, twelve of the cost below, and three where the bare name
+  passes, by an older gap of another rule. No line with such a name is answered more mildly than
+  the same line with the bare name. The sample is made of the repair's forms and is no picture of a
+  session.
+- The cost, which is a read-only agent's: the guard cannot tell which shell reads a line, so that
+  agent is now refused a PowerShell expression that starts with a quoted word that is a program's
+  name (`if ('install' -in $steps) { 'yes' }`, also behind `powershell -c`) and a here-document of
+  program text in which such a word stands alone on a line. The main session is asked about
+  neither. Whether that price is right is the user's decision.
+- Timings on Windows through the hook, 35 lines against the guard before: ordinary lines and the 17
+  long lines of the earlier comparisons take what they took; 1,500 commands with such a name take
+  0.3 to 0.8 s more for the main session; the repair's slowest line, 5,000 shells that are each
+  handed a program in quotes, takes 8.1 s where it took 5.7 s, with the guard's limit at 12 s.
+- Seen beside the repair and left, each older than it. A loop in `inner_code()` searches the whole
+  line once for each word that sets a variable: 1,500 such lines take 10.4 s in both guards, and on
+  a line of assignments with no blank between them the guard's own timer answers after 12.4 s
+  (1,000 of them) to 86 s (20,000), long after the hook's time, in the released guard as well. A
+  read-only agent's rule for signals does not see `kill` right behind a quote. Three more are in
+  REPORT.md.
+- Tests on the commit's state, each once: the eight files on Windows under Python 3.11.7 (2,019
+  checks) and the kit file in WSL under 3.12.3 (1,262), none failed. That is 31 checks more in the
+  kit file and 51 more in the review-fixes file than on `409182f`. No other interpreter, no Mac, no
+  bare Linux, nothing on GitHub's machines.
+- REPORT.md has the section "A program's name in quotes or behind backslashes", point 49 of "Read
+  this first", and a sentence at each place that the repair puts out of date. The two record files
+  were written after the passes; no test reads them. The ledger is not touched: the brief names the
+  two record files.
+- Beside this session: the proof pilot's local branch `claude/brave-robinson-27cbd9` stood at
+  `df59ad2`, with point 47, and the branch of the session for the two faults under a virtual
+  environment, `claude/fervent-gould-8d0820`, at `f68b71c`, with point 48; this entry's point is 49
+  for that reason. Neither is merged into this branch. A merge of this state with each of the two,
+  tried in memory (`git merge-tree`), meets conflicts in `docs/upgrade/REPORT.md` and
+  `docs/upgrade/PROGRESS.md` and in no other file; no test ran on a joined state.
+- Nothing pushed. Nothing on the real install. No reader: the repair is read by its author only.
+- Left on this machine: the session's scratch folder with its helpers, copies of the kit and logs
+  ("Working notes"), and in WSL the clone `~/nnkit-upgrade/kit-pq-w3`.
+
+Next, each a separate word of the user's: whether the cost for a read-only agent is accepted;
+whether a reader goes through the repair; where its two commits go, beside the two other local
+branches; what is done about the loop over a line's assignments; whether a read-only agent's rule
+for signals should see `kill` behind a quote; the other questions of the entries before this one.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -3016,6 +3105,9 @@ first.
   reading of round 9's unread repairs" above. The repairs of that reading have no reader.)
   (Added later on 20 November: they have had one since, on the user's "Reader first"; "The reading of the reading's
   repairs" above. The repairs of that second reading have no reader.)
+  (Added on 21 November: the repair of a program's name in quotes, made by a session of its own on a local
+  branch of its own, has no reader either, and ran under one interpreter on Windows and one in WSL; "A program's
+  name in quotes or behind backslashes" above.)
 - On a Mac, after the test branch: the kit's tests ran on GitHub's macOS runner and pass, the checks for
   macOS only and Python 3.15 on Ubuntu and Windows among them. Not run on a Mac: an agent session, training
   and anything with PyTorch (so nothing on the Apple GPU, and the nine benchmark checks that need PyTorch
@@ -3415,6 +3507,12 @@ first.
   fresh reader goes through the repairs of that reading, whether the loop waits a run's whole time
   for a launch that failed with its command perhaps running, and whether the launch removes
   `.launch-env.json` where a supervisor through tmux never starts.)
+  (Added on 21 November, by the session that the user started for the second: both forms of that
+  question are repaired in a local commit on a local branch of its own; "A program's name in quotes
+  or behind backslashes" above. Open in its place: whether the cost of that repair for a read-only
+  agent is accepted, whether a reader goes through it, where its two commits go beside the two
+  other local branches, what is done about the guard's loop over a line's assignments, and whether
+  a read-only agent's rule for signals should see `kill` behind a quote.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -3626,3 +3724,25 @@ first.
   4, 6 and 8, and `f5_tmux.py KIT TMP` finding 5 where tmux is; `record2_texts.py`,
   `record2-section.md` and `apply_record2.py` hold and place the texts of this entry and of
   REPORT.md's section.
+- The repair of 21 November (a program's name in quotes): its helpers are in that session's scratch
+  folder, `%TEMP%\claude\56611934380b054a\f1a6d358-7c59-4866-9c1d-cf7241b94da7\scratchpad\pq\`,
+  which a restart or a cleanup may clear. `probe.py KIT LABEL LINES.txt` puts a file of lines to
+  the guard of a probe project `p-LABEL`, which it builds with the kit's own test setup: as the main
+  session, under the read-only rules alone and as a read-only agent's call (`--sync GUARD.py` lays
+  a guard into the project first, `--why` prints each answer's reason). `mkkit.py REPO REV DEST`
+  exports the kit of a commit. `compare2.py gen OLD NEW [RELEASED] --n N` puts generated lines, each
+  form beside its twin with the bare name, to two or three guards and sorts every changed answer;
+  `compare2.py time OLD NEW` times long lines through the hook; `cost.py` and `q.py` read single
+  lines' answers from a comparison's cache. `mkmut.py AFTER BEFORE OUT` writes the eleven altered
+  copies of the guard, and `run-mut.sh LINES.txt` puts rows to each. `mkwork.py REPO DEST
+  [GUARD.py]` makes a copy of the worktree's state, with another guard in the guard's place if one
+  is named, and `run-test.sh KIT TEST...` runs test files on such a copy. `wsl-kit.sh BASE PATCH
+  LABEL TEST...`, run inside WSL, clones the repository at a commit to `~/nnkit-upgrade/kit-pq-LABEL`,
+  applies a patch and runs test files. `syn38.py FILE...` parses files with the grammar of Python
+  3.8. For the two older slow lines: `scale.py GUARD...` times a guard's patterns on growing lines,
+  `prof.py` and `cprof.py` profile one check with the guard's timer out of reach, `one.py` times
+  one search of the loop's pattern, and `late.py LABEL MODE N...` times the timer's answer through
+  the hook. `merge-try.sh` tries a merge of the worktree's state with the two other local branches
+  in memory. `linelen.py`, `eol.py`, `points.sh` and `branches.sh` check the changed files' line
+  lengths and line ends and read the other branches' points and tips. The logs of the passes are in
+  `logs\` there, the timings in `time-out.txt` and the comparison's result in `gen-out.txt`.

@@ -297,14 +297,32 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   them (`(Get-Item f).Delete()`, `.MoveTo(`, `.CopyTo(`). A program's name counts in any case (`RM`, `SED`,
   `GIT`, `git.exe`), because Windows, and a Mac as it comes, find it so; and with `.exe`, which `touch.exe`,
   `install.exe` and the formatters (`black.exe`) count with since 20 November 2026 (they passed unasked before).
-  One limit stays for a read-only subagent: its extra rules read a program's name as it stands on the line, so
-  one that is named in quotes (`'touch' notes.md`), and `touch.exe`, `patch.exe` or `tar.exe` behind a path
-  with backslashes, is not refused there. A kept file is asked about all the same, because the main session's
-  rules read that line too. Not repaired: the reading that sees such a name would refuse harmless program text
-  to that subagent (found on 20 November 2026). And no rule that goes by a program's name, the main session's
-  or a subagent's, recognises one in quotes that holds a blank:
-  `"C:/Program Files/Git/usr/bin/touch.exe" eval/metrics.py` is not asked about. That limit is older; the
-  limits of the rule for searches, further down, name the same form.
+  And since 21 November 2026 a program's name counts in quotes too, also where the quotes hold a blank or stand
+  around a part of the word, and behind a path with backslashes, wherever a shell starts a command: at the
+  line's start, behind `;`, `|` and `&&`, inside `$( )`, behind a wrapper (`xargs`, `uv run`), behind `cmd /c`
+  and in the line that a shell is handed (`bash -c`, `powershell -c`).
+  `"C:/Program Files/Git/usr/bin/touch.exe" eval/metrics.py` and `t'ou'ch eval/metrics.py` are asked about like
+  `touch eval/metrics.py`: no rule saw either before, and the first is how a program under `C:\Program Files`
+  is called. A read-only subagent is refused `'touch' notes.md`, `"rm" notes.md` and
+  `C:\msys64\usr\bin\touch.exe notes.md` like `touch notes.md`: its extra rules read a name as it stood on the
+  line and let all three pass, `patch.exe` and `tar.exe` behind such a path too (found on 20 November 2026). A
+  quoted word in a program's text stays a text: `python -c 'd = {}; print(d.get("patch"))'` passes for that
+  subagent as before.
+  The cost falls on a read-only subagent, because the guard cannot tell which shell reads a line: a quoted word
+  where a command may start is a program's name to a POSIX shell and a text to PowerShell, so
+  `if ('install' -in $steps) { 'yes' }` is refused there, and so is a here-document of program text in which
+  such a word stands alone on a line (the last item of a list, written `'install'`). Both are read as the bare
+  word is read in that place, and the main session is asked about neither. Limits that stay, read from the code
+  and not run: a blank that a backslash escapes (`/c/Program\ Files/Git/usr/bin/touch.exe`), a quoted blank in
+  what stands before the word (`X="a b" 'touch' x`), and a command word in quotes behind a wrapper that is
+  itself in quotes (`"sudo" "rm" x`), which a read-only subagent's rules do not see, and the main session's
+  only where the word holds no blank. And in the line that a shell is handed, a read-only subagent's rules see
+  such a name only where that shell is the last word before its flag that ends like a program's name: not
+  behind `bash --rcfile x.py -c`. In one place of such a line the name in quotes is refused where the bare name
+  is not: that subagent's rule for signals looks for `kill` behind a blank or a sign that starts a command, and
+  a quote is neither, so `bash -c 'kill 123'` is not refused by it, as before (an older gap, seen on
+  21 November 2026 and left; the main session's rules, which read the line too, ask about it), and
+  `bash -c '"kill" 123'` is refused.
   Since 15 November 2026 a line whose only write is a redirect, or a `tee` at the start of a command, is asked
   about only where a target of it is such a file: `python eval/metrics.py > score.json` passes (it was asked
   about, and refused where nobody can be asked), `echo x > eval/metrics.py` is asked about as before. The
@@ -560,9 +578,10 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   about at the root as well, as is a search with a long option the guard does not know in front of its folders;
   behind a wrapper it does not know (`xargs`, `wsl`, `ssh`) a search of the root with a Unix tool is not
   questioned, only one of a folder below it; a path given through a variable (`$DIR/data`) is not followed; a
-  command word spliced from quoted pieces, quoted with a blank in its path or quoted behind a wrapper with a
-  word for an option (`g'r'ep`, `"C:/Program Files/Git/usr/bin/grep.exe"`, `sudo -u me "grep"`), is not
-  recognised, and a `**` that stands alone is not read as a
+  command word in quotes is recognised as far as the point above on the writes that the guard knows says
+  (`g'r'ep` and `"C:/Program Files/Git/usr/bin/grep.exe"` since 21 November 2026; `sudo -u me "grep"`, which
+  stood here as a limit beside them, was asked about before that day already), and a `**` that stands alone is
+  not read as a
   path (`ls **` under bash's globstar); a link that one line makes and reads through (`ln -s data d2; cat d2/…`)
   is not followed, as it is in every later call; a heredoc line that starts with `find` or `tree` is read as a command;
   a command line inside one quoted argument (`Start-Process -WorkingDirectory data cmd '/c type test\x.csv'`) is

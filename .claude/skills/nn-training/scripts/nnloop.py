@@ -1978,6 +1978,21 @@ def preflight(C: Campaign, agent, limits, args):
         # Windows (on Windows a batch file was not found), and a loop started with --detach from the project root
         if os.path.dirname(C.exe) and not os.path.isabs(C.exe):
             C.exe = os.path.join(os.getcwd(), C.exe)
+        # cmd.exe, which runs a batch file, does not take every path as written (expctl.batch_split): started, such a
+        # file fails or another one runs, so it is refused here, before any start. The evaluator's path is asked as
+        # evaluate() will hand it over: as written from the project root, where the loop in the background stands too
+        ev = C.fill(L["eval_command"])[0]
+        if os.name == "nt" and os.path.dirname(ev) and not (args.detach or os.path.samefile(".", root)):
+            ev = os.path.join(root, ev)
+        for what, word, env, cure in (
+                ("loop.eval_command's program", ev, C.run_env, "A path without it starts. Called in the project root "
+                 "or with --detach the loop hands Windows the path as loop.eval_command writes it, elsewhere with the "
+                 "project root's path in front"),
+                ("the agent's program", C.exe, os.environ, "Pass --agent-exe with a path without it")):
+            cut = expctl.batch_split(subprocess.list2cmdline([word]), env)
+            if cut:
+                fail(f"{what} is a batch file, and cmd.exe, which runs it, does not take its path as written: it acts "
+                     f"on {cut!r} in {word}, so the file would not start, or another one would. {cure}.")
         usage = subprocess.run([C.exe, "--help"], capture_output=True, encoding="utf-8", errors="replace",
                                timeout=60, **NOWIN).stdout
     except (OSError, subprocess.TimeoutExpired) as e:

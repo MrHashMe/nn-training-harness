@@ -288,6 +288,31 @@ def startable(program, env):
         for d in dirs + os.environ.get("PATH", "").split(os.pathsep))
 
 
+CMD_OWN = ("CD", "DATE", "TIME", "RANDOM", "ERRORLEVEL", "CMDEXTVERSION", "CMDCMDLINE", "HIGHESTNUMANODENUMBER",
+           "__CD__", "__APPDIR__", "PROMPT", "COMSPEC", "PATHEXT")  # the names that cmd.exe fills in by itself
+
+
+def batch_split(word, env):
+    """What keeps cmd.exe, which runs a batch file on Windows, from taking the file's path as written: the sign, or
+    the variable between two `%`, that it acts on. None where it takes the path, for a word that names no batch
+    file, and outside Windows. `word` is the path as the command line has it, in double quotes or not (Python puts a
+    word of a list in quotes where it has a space or a tab); `env` is the start's environment.
+    Measured on 21 November 2026 (Windows 11, Python 3.8 and 3.11). Outside quotes cmd.exe ends the path at `&`, a
+    comma, `;`, `=`, `(` and at any other space sign than the two above; it drops `^`, and `@` in front; and it
+    reads an option at `/` unless the path begins with a drive letter or with `/`. In quotes too it puts a
+    variable's value where its name stands between two `%`. The file is then not started, or another one is: for
+    `a^b\\x.cmd` the one at `ab\\x.cmd`."""
+    if os.name != "nt" or os.path.splitext(word.strip('"'))[1].lower() not in (".bat", ".cmd"):
+        return None
+    names = {k.upper() for k in env}.union(CMD_OWN)
+    var = next((x for x in word.split("%")[1:-1] if x.upper() in names), None)
+    if var:
+        return f"%{var}%"
+    bare = re.sub(r'"[^"]*"?', "", word)  # what stands outside quotes
+    m = re.match("@", word) or re.search(r"[&(,;=^\s\u180e]" + ("" if re.match("[A-Za-z]:|/", bare) else "|/"), bare)
+    return m.group(0) if m else None
+
+
 def read_json(path):
     for attempt in (1, 2, 3):
         try:
@@ -2967,6 +2992,11 @@ def cmd_final_eval(args):
                           "folder only where the variable NoDefaultCurrentDirectoryInExePath is not set. "
                           f"There is {there}"
                           if there else ""))
+    cut = batch_split(words[0], env)
+    if cut:
+        return fail(2, "the final evaluation's program is a batch file, and cmd.exe, which runs it, does not take its "
+                       f"path as written: it acts on {cut!r} in {words[0]}, so the file would not start, or another "
+                       "one would. Put the path in double quotes in final_eval_commands.")
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"
     before, edited, shared, sub = final_uses(root)

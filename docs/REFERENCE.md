@@ -702,36 +702,48 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   evaluator by the loop's own start of it, not by a whole campaign; the agent's program by campaigns with a stand-in
   agent, not with a real one.) A batch file stays Windows' to find and `cmd.exe`'s to run: name it with backslashes
   (`scripts\final.cmd`) or by its full path, because by a relative path with forward slashes it runs only in quotes,
-  and only where that variable is not set. And `cmd.exe` reads the path it is given: where the path has no space, so
-  that nothing puts it in quotes, a `&`, a comma, `;`, `=`, `^`, a bracket or a variable's name between `%` signs in
-  it keeps the batch file from starting (measured on 21 November 2026 under Python 3.8 and 3.11: each of them in a
-  full path, the comma also in a relative one, which `final-eval`'s check passes). The agent's program, and the
-  loop's evaluator where the loop is called outside the project root, need no backslashes since 21 November 2026:
-  the kit makes their relative path a full one, so the program, a batch file too, starts whichever way its slashes
-  point, within that limit. Called in the project root, as a loop started with `--detach` is, the evaluator's path
-  goes to Windows as written. `final-eval` checks its program before it records the use, and since 20 November 2026
-  the check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
-  a name with a dot that only an `.exe` stands behind, a script named without its interpreter (`eval.py`), a batch
-  file by a relative path with forward slashes and, where that variable is set, a program named without a folder
-  that lies in the project root only; where Python's own search (`shutil.which`) finds a file for the name, the
-  refusal names that file and says what Windows starts. Which names get that hint differs with Python's version:
-  only from 3.12 a name with a folder that needs an ending added (`tools\final`), only up to 3.11 the program in the
-  project root where that variable is set. Until then those passed: the use was recorded, the start failed, and the
-  next call needed `--again` with that reason; and under Python 3.11 and older the check refused
-  `venv\Scripts\python`, which would have started. What the check leaves: Windows also looks beside the running
-  program (in a virtual environment, the base interpreter's folder) and in its own folders before `PATH`, and the
-  check does not, so a program that only they hold is refused (System32 and the Windows folder are on an ordinary
-  `PATH`); it sees that a file is there and not whether Windows can start it, so a file that is no program under a
-  program's ending fails at the start with the use recorded, and the Microsoft Store's `python3` alias on a machine
-  without the Store's Python starts, prints a hint and ends; and a batch file that the kit's `PATH` holds is looked
-  for once more by `cmd.exe`, by the `PATH` of the command. The check also refuses, before any use, three kinds of
-  name that Windows starts: a name with a dot behind a folder, where the path is a full one or begins with `.\` or
-  `..\` (`.\tools\tool3.11`) and Windows adds the `.exe` itself, so write the `.exe`; a program under another ending
-  than `.exe`, `.com`, `.bat` or `.cmd` (tried with `.scr`); and a name with a dot or a space at its end, where
-  `tools\tool.` is Windows' name for a program file without an ending. A `PATH=...` written in front of the command
-  reaches the program that is started and not the search for it, which goes by the `PATH` the kit runs with. Outside
-  Windows the start searches by that `PATH=...`, and since that day the check does too (tried on Linux); an empty
-  `PATH=` it refuses, though the start then looks in the current folder.
+  and only where that variable is not set. And `cmd.exe` reads the path it is given. Where the path has no space, so
+  that nothing puts it in quotes, `cmd.exe` ends it at a `&`, a comma, `;`, `=`, an opening bracket and a space sign
+  other than a space or a tab (a no-break space, for one), drops a `^` anywhere and an `@` in front, and reads an
+  option at a `/` unless the path begins with a drive letter or with `/`. In quotes too it puts a value where a
+  variable's name stands between two `%` signs: a variable of the start's environment, or one that `cmd.exe` fills
+  in by itself (`CD`, `DATE`, `RANDOM` and others). The batch file then does not start, or another file does: for
+  `a^b\x.cmd` the one at `ab\x.cmd`. Since 21 November 2026 the kit refuses such a path before it starts anything,
+  with a sentence that names the sign or the variable: `final-eval` before it records the use, where double quotes
+  around the path in `final_eval_commands` make it start, and the loop for its evaluator and for the agent's
+  program, each as the loop will hand it to Windows. (Measured on 21 November 2026 on Windows 11 under Python 3.8
+  and 3.11, by 526 starts with that variable set and 526 without it. The refusal reads the path only: a batch file's
+  arguments, which reach `cmd.exe` without quotes where they have no space, are not checked, and neither are the
+  programs of a launched run, of `on_finish` and of `env --python`. A path that begins `\\?\`, which `cmd.exe` took
+  in no form, is not refused. And `cmd.exe` was measured with delayed expansion off, as it is unless a machine's
+  settings turn it on.) The agent's program, and the loop's evaluator where the loop is called outside the project
+  root, need no backslashes since 21 November 2026: the kit makes their relative path a full one, so the program, a
+  batch file too, starts whichever way its slashes point, where the full path is none that is refused. Called in the
+  project root, as a loop started with `--detach` is, the evaluator's path goes to Windows as written, so a
+  batch-file evaluator named with forward slashes is refused there. `final-eval` checks its program before it
+  records the use, and since 20 November 2026 the check asks as the start will. It refuses, with nothing recorded, a
+  name that only a batch file answers to, a name with a dot that only an `.exe` stands behind, a script named
+  without its interpreter (`eval.py`), a batch file by a relative path with forward slashes and, where that variable
+  is set, a program named without a folder that lies in the project root only; where Python's own search
+  (`shutil.which`) finds a file for the name, the refusal names that file and says what Windows starts. Which names
+  get that hint differs with Python's version: only from 3.12 a name with a folder that needs an ending added
+  (`tools\final`), only up to 3.11 the program in the project root where that variable is set. Until then those
+  passed: the use was recorded, the start failed, and the next call needed `--again` with that reason; and under
+  Python 3.11 and older the check refused `venv\Scripts\python`, which would have started. What the check leaves:
+  Windows also looks beside the running program (in a virtual environment, the base interpreter's folder) and in its
+  own folders before `PATH`, and the check does not, so a program that only they hold is refused (System32 and the
+  Windows folder are on an ordinary `PATH`); it sees that a file is there and not whether Windows can start it, so a
+  file that is no program under a program's ending fails at the start with the use recorded, and the Microsoft
+  Store's `python3` alias on a machine without the Store's Python starts, prints a hint and ends; and a batch file
+  that the kit's `PATH` holds is looked for once more by `cmd.exe`, by the `PATH` of the command. The check also
+  refuses, before any use, three kinds of name that Windows starts: a name with a dot behind a folder, where the
+  path is a full one or begins with `.\` or `..\` (`.\tools\tool3.11`) and Windows adds the `.exe` itself, so write
+  the `.exe`; a program under another ending than `.exe`, `.com`, `.bat` or `.cmd` (tried with `.scr`); and a name
+  with a dot or a space at its end, where `tools\tool.` is Windows' name for a program file without an ending. A
+  `PATH=...` written in front of the command reaches the program that is started and not the search for it, which
+  goes by the `PATH` the kit runs with. Outside Windows the start searches by that `PATH=...`, and since that day
+  the check does too (tried on Linux); an empty `PATH=` it refuses, though the start then looks in the current
+  folder.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

@@ -2978,6 +2978,102 @@ fetched; two more local branches have a commit of code and one of record after i
 `b5331fb` with point 49; a merge of `31af10c` with each of the three, tried in memory, joins the
 kit's files and conflicts in the two records; the records are joined by hand); and what the last
 entry lists, less its first question.
+(Added with "The reading of the folder's repair", the next entry: the reader is decided by the
+user's "Yes, start reader" of 21 November and has gone through both. A regression of this entry's
+repair came out of it and is repaired: the evaluator's path is joined on Windows only, and only
+where the loop does not stand in the project root, so an evaluator that is a batch file by forward
+slashes starts only where the loop is called outside the root.)
+
+## The reading of the folder's repair (21 November): one fresh reader on `c85f96a` and `31af10c`, a regression of the folder's repair for a batch-file evaluator on Windows repaired, two local commits, nothing pushed
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `eded7ce`. The
+user's word, 21 November: "Yes, start reader", to my question at the end of the folder's repair,
+"Start one fresh reader on 31af10c and c85f96a together?" Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The reading of the folder's repair", has it in full):
+- The reader: an agent of this session on Opus 5.5 with read access only and a brief for correctness
+  on `c85f96a` and `31af10c`, told not to read `docs/upgrade` and to run nothing. 185,672 tokens, 38
+  tool calls, about seven minutes. "I found no certain fault in either commit that breaks something
+  that worked before"; one fault that it thought likely; five findings; a list of what it found
+  right. I ran each finding before any change.
+- Finding 1 as the reader stated it did not hold: a batch-file evaluator in a project whose path has
+  a space starts on the kit of `df59ad2` and on the kit of `31af10c`, by the loop's own start of it,
+  and the run's folder arrives whole.
+- A sibling of it held, a regression of `31af10c`, found in the same trial with ten more project
+  folders. `Campaign.evaluate` joined the evaluator's relative path to the project root also where
+  the loop stands in the root. Windows gives a batch file to `cmd.exe`, and Python puts a path in
+  quotes only where it has a space: a path without quotes `cmd.exe` splits at a comma, `;`, `=`, a
+  bracket and `&`, it takes a `^` out and puts a variable's value for its name between `%` signs.
+  With the loop in the root and the evaluator `scripts\eval.cmd`: in folders named `a,b`, `a;b`,
+  `a=b` and `(x)` the batch file started before `31af10c` and was not started with it (`cmd.exe`
+  ends with 1); in `R&D`, `a^b` and `p%OS%q` it started before with its argument, the run's folder,
+  changed, and was not started with it; in `plain`, `with space`, `a!b` and `a b&c` it starts on
+  both.
+- The repair, one condition in `Campaign.evaluate`:
+  `os.name == "nt" and os.path.dirname(cmd[0]) and not os.path.samefile(".", self.root)`. On Windows
+  the path is joined only where the loop does not stand in the project root; in the root it goes to
+  Windows as written, as before `31af10c`; outside Windows nothing is joined, and the start reads
+  the path from `cwd=root`. After it, for all eleven folders, the names `scripts\eval.cmd` and
+  `scripts/eval.cmd`, and `NoDefaultCurrentDirectoryInExePath` set and not set: in the root what the
+  kit of `df59ad2` gave, in another folder what the kit of `31af10c` gave; under 3.8.20 from a
+  virtual environment the same as under 3.11.7 in all 44 rows.
+- What it takes back: an evaluator that is a batch file named with forward slashes starts only where
+  the loop is called outside the project root; in the root it does not, as before `31af10c`. The
+  limit that stays where the path is joined: a batch file is not started in a project whose path has
+  no space and holds `&`, a comma, `;`, `=`, `^`, a bracket or a variable's name between `%` signs
+  (nothing started there before `31af10c`); by the same mechanism for a batch file as the agent's
+  program, not tried through a session.
+- Finding 2, held, left as it is: in WSL (3.12.3), `env --python .venv/bin/python` with `--root`,
+  typed in a folder that was deleted after the shell entered it: the kit of `df59ad2` probed the
+  interpreter, the kit of `31af10c` answers
+  `FileNotFoundError: [Errno 2] No such file or directory`. It is the stated change of `31af10c` in
+  a folder that is gone; the answer does not name the folder.
+- Finding 3, by reading: the docstring of `ancestors` says "On Windows" now.
+- Finding 4, by reading, the tests: the names' check of `env_tests` has two names more (a space and
+  `/x/..` at the end); one check is new, on Windows only: a batch-file evaluator by a relative path
+  in a project folder named `a,b`, the loop's process in the root. No test for the two forms with
+  forward slashes; `tools\..` has no name in the check.
+- Finding 5, held (3.11.7 and 3.8.20: Windows starts `my.env\Scripts\python`, and the kit hands
+  `python.exe` over for it): the hint says "where the last part of the name has no dot".
+- Also measured: a batch file by a relative path that holds a comma itself (`a,b\eval.cmd`,
+  `.\a,b\eval.cmd`) is not started, and `startable` says yes to it: older, of `7edd37d`, not
+  repaired; the reference says it.
+- `tests/test_kit.py`, `env_tests` (16 checks on Windows, 10 in WSL): with the `nnloop.py` of
+  `31af10c` the new check fails; without the two lines of `c85f96a` the names' check fails, the last
+  five names handed over as `python.exe`.
+- `docs/REFERENCE.md`: the entry on a start without a shell on Windows says what `cmd.exe` does with
+  a batch file's path that has no space, and that the evaluator's path is made a full one only where
+  the loop is called outside the project root.
+- The eight test files on the final state, from 07:00 to 08:04 on Windows and from 07:00 to 07:20 in
+  WSL: Windows, Python 3.11.7, 1,921 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,908; WSL, 3.12.3, 1,931; WSL from a virtual environment, 3.8.20, 1,918. None failed.
+- The code is `042a985`, 39 lines added and 16 removed: `expctl.py` 7 and 6, `nnloop.py` 5 and 3,
+  `tests/test_kit.py` 18 and 3, `docs/REFERENCE.md` 9 and 4.
+- REPORT.md has the section "The reading of the folder's repair", point 52 of "Read this first" (51
+  is another session's, on a local branch), a sentence in the introduction, and a dated note at
+  fourteen places of the earlier sections and at point 50. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no further reader, so
+this reading's repair is read by nobody but me; GitHub's machines and macOS have run none of this
+branch; finding 2 is not repaired; a batch file's arguments and `final-eval`'s check of a batch
+file's path are as they were; no test for the two forms with forward slashes; a whole campaign with
+a batch-file evaluator, a batch file as the agent's program through a session in such a folder, and
+a drive without file numbers for `samefile` not tried.
+
+Next, each a separate word of the user's: whether a batch-file evaluator named with forward slashes
+should start also where the loop is called in the project root (I would leave it); whether the kit
+refuses, before any start, a batch file whose path or arguments `cmd.exe` will split (I would, as a
+small change of its own); whether a reader goes through this reading's repair (I would not for these
+lines alone); whether this branch is merged with `test/round-9` (fifteen commits after `5ccc2d4`;
+`origin/test/round-9` stands at `409182f`, looked at 08:08 and not fetched;
+`claude/fervent-gould-8d0820` stands at `12876c9` with points 48 and 51 and
+`claude/sharp-faraday-6bd610` at `b5331fb` with point 49; the session that started this one has
+joined both and this branch, as far as `eded7ce`, on its local branch
+`claude/kit-commit-verification-e52f2b` at `f38c4d8`, which therefore has the folder's repair
+without this reading's repair; a merge of `042a985` with `f38c4d8`, tried in memory, joins the four
+files by themselves, and with each of the other three heads the kit's files join and the two records
+conflict; none of the joined states has run; the records are joined by hand); and what the last
+entry lists, less the reader.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

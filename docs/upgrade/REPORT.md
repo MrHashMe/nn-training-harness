@@ -126,21 +126,27 @@ On your "Yes, repair it" of 21 November a relative path to a program is read fro
 Windows and on Linux, at the two places that the reading named and at a third that I found and repaired
 with them: its section, "The folder's repair", follows "The reading of the lookup's repair" and is the
 last before "1. What changed and why" now. It is two more local commits on the same branch, not pushed.
-(Added with the merge of 21 November: the seven statements above, from "On 20 November a session of its
+On your "Yes, start reader" of that day a fresh reader went through that repair and the last reading's
+repairs. It found no certain fault; the one it thought likely did not hold when run, and a sibling of it
+did, a regression of the folder's repair, which is repaired: its section, "The reading of the folder's
+repair", follows "The folder's repair" and is the last before "1. What changed and why" now. It is two
+more local commits on the same branch, not pushed.
+(Added with the merges of 21 November: the eight statements above, from "On 20 November a session of its
 own ran" on, were written on the pilot's own branch, where "The proof pilot" followed "Round 9 on the test
-branch"; "that day" in them is 20 November. In this file the pilot's seven sections stand together after
-"A program's name in quotes or behind backslashes", in the order given above, and "The folder's repair"
-is the last before "1. What changed and why".)
+branch"; "that day" in them is 20 November, and in the eighth 21 November. In this file the pilot's eight
+sections stand together after "A program's name in quotes or behind backslashes", in the order given
+above, and "The reading of the folder's repair" is not the last before "1. What changed and why": the
+sections of the statements below follow it.)
 On your "After the sessions" and "All three" of 21 November the three sessions' local branches are merged
 into this one, one fresh reader has gone through that merge and the five repairs that only their authors
 had read, and what held is repaired: a regression of the guard behind `cmd /c`, with an older gap beside
 it, and two faults of the controller. So the repairs that stood read by nobody but their authors when the
 statements above were written, `05f996f`, `5f600da`, `bcfab15`, `c85f96a` and `31af10c`, have had this
-reader since. Its section, "The merge of the three branches and its reading", follows "The folder's
-repair" and is the last before "1. What changed and why" now. It is two merge commits and two more local
-commits; the new repairs are read by nobody but me, and nothing is pushed. After the merge the pilot's
-branch took two commits more, the repair of a regression of its folder's repair that this reader did
-not report and that repair's record; this branch holds neither.
+reader since. Its section, "The merge of the three branches and its reading", follows "The reading of the
+folder's repair" and is the last before "1. What changed and why" now. It is two merge commits and two
+more local commits; the new repairs are read by nobody but me, and nothing is pushed. After the merge
+the pilot's branch took two commits more, the repair of a regression of its folder's repair that this
+reader did not report and that repair's record; this branch holds neither.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -1101,6 +1107,10 @@ Decision record: `docs/upgrade/LEDGER.md`.
     loop in the background reads from the project root, is repaired too (I would, as a small change of
     its own); whether this branch, thirteen commits after `5ccc2d4` now, is merged with `test/round-9`;
     and what point 47 left open, less its first question.
+    (Added with point 52: the reader is decided by your "Yes, start reader" of 21 November and has
+    gone through both. Since its reading an evaluator that is a batch file by a path with forward
+    slashes starts only where the loop is called outside the project root; "The reading of the
+    folder's repair".)
     (Added with point 53: this branch is merged with the three other local branches since, on your
     "All three", and one reader has gone through this repair and the last reading's with them, on
     your "After the sessions". It reported no fault in either. That was not the last word: a second
@@ -1155,6 +1165,49 @@ Decision record: `docs/upgrade/LEDGER.md`.
     not the system's own left the run's log without a record, which a launch reads as a command
     that may run. Repaired; point 53. The first open question is answered for `5f600da` and open
     again for the repairs of point 53.)
+52. **A fresh reader went through the folder's repair and the last reading's repairs, on your word. It
+    found no certain fault. The one it thought likely did not hold when run, and a sibling of it did:
+    since the folder's repair a batch-file evaluator was not started on Windows in a project whose path
+    holds a comma, `;`, `=` or a bracket and no space. Repaired** (21 November; "The reading of the
+    folder's repair"). On your "Yes, start reader" one agent on Opus 5.5 with read access only read
+    `c85f96a` and `31af10c`, without my record of them: 185,672 tokens, 38 tool calls. Its first
+    sentence: "I found no certain fault in either commit that breaks something that worked before." It
+    gave five findings, and I ran each before I changed anything. The first, which it rated likely: on
+    Windows a batch-file evaluator may stop starting where the project's path has a space. Run, it
+    starts, before `31af10c` and with it. The same trial with ten more project folders gave the sibling:
+    `31af10c` made the evaluator's relative path a full one also where the loop is called in the project
+    root, and `cmd.exe`, which runs a batch file, splits a path that nothing puts in quotes at a comma,
+    `;`, `=` and a bracket, so that in such a project an evaluator that ran before was not started. The
+    repair is one condition in `Campaign.evaluate`: the path is made a full one only on Windows and only
+    where the loop does not stand in the project root; in the root, as with `--detach`, it goes to
+    Windows as written, as before `31af10c`. What that takes back: an evaluator that is a batch file
+    named with forward slashes, which point 50 says starts now, starts only where the loop is called
+    outside the project root. The limit that stays where the path is made a full one, for the evaluator
+    and by the same mechanism for a batch file as the agent's program: no start in a project whose path
+    has no space and holds a `&`, a comma, `;`, `=`, `^`, a bracket or a variable's name between `%`
+    signs; nothing started there before `31af10c` either. The other findings: outside Windows
+    `env --python` with a relative path fails where the folder it is typed in has been deleted (held;
+    left as it is, since it is the stated change of the folder's repair in a folder that is gone); the
+    docstring of `ancestors` left out that the clock's clause holds on Windows only (it says so now);
+    gaps in the tests (the names' check has two names more and one check with a batch-file evaluator is
+    new; the two forms with forward slashes stay tried by hand); and the refusal's hint could be read as
+    speaking of the folder's part of a name (reworded). The eight test files pass on Windows under
+    Python 3.11.7 and, from a virtual environment, under 3.8.20, and in WSL under 3.12.3 and 3.8.20:
+    1,921, 1,908, 1,931 and 1,918 checks, none failed; one check is new and one is changed, and each
+    fails with its change taken out. The code is `042a985`, 39 lines added and 16 removed in four files,
+    after `eded7ce` on the pilot's local branch. Nothing is pushed, and this session merged nothing;
+    your real install is untouched; this reading's repair is read by nobody but me; GitHub's machines, a
+    Mac among them, have run none of this branch. Point 51 is another session's, on its local branch.
+    The session that started this one has joined this branch, as far as `eded7ce`, with the branches of
+    points 48, 49 and 51 on a local branch of its own, which has the folder's repair without this
+    reading's repair until it takes these two commits. In a trial in memory `042a985` joins with it by
+    itself; the joined state has not run. Open: whether a batch-file evaluator named with forward
+    slashes should start also where the loop is called in the project root (I would leave it); whether
+    the kit refuses, before it starts anything, a batch file whose path or arguments `cmd.exe` will
+    split, which is older than what was read (I would, as a small change of its own); whether a reader
+    goes through this reading's repair (I would not for these lines alone); whether this branch, fifteen
+    commits after `5ccc2d4` now, is merged with `test/round-9`; and what point 50 left open, less the
+    reader.
 53. **The three sessions' branches are merged into this one, on your word, and one fresh reader has
     gone through the merge and the five repairs that only their authors had read. It found a
     regression of the guard, which is repaired with what else held. All of it is local commits, the
@@ -13226,6 +13279,9 @@ branch, `claude/brave-robinson-27cbd9`: the commit `7edd37d` for the code and on
    (Added with point 50: not so any more for the loop's evaluator, and not so for the program of the
    loop's agent: since "The folder's repair" the kit makes a full path of a relative name there, and
    a batch file starts by either slash. `final-eval`'s check refuses the form as before.)
+   (Added with point 52: for the evaluator only where the loop is called outside the project root, and
+   for both not in a project whose path has no space and holds a `&`, a comma, `;`, `=`, `^`, a
+   bracket or a variable's name between `%` signs; "The reading of the folder's repair".)
 5. **Two of the new checks did not catch the fault they were written for, and the trial with the change
    taken out showed it.** They named the environment as `../venv/Scripts/python`, and Windows starts a
    path that begins with `./` or `../` also where the variable is set. The checks name a copy of the
@@ -13630,6 +13686,8 @@ said, a trial ran on Windows 11 under Python 3.11.7, once with the variable
      name has no dot, and a `.com` or a batch file by its full name, a batch file by a relative path
      with backslashes; a name without a folder it looks for in the current folder only where the
      variable is not set; and then the file that Python found.
+     (Added with point 52: "where the last part of the name has no dot" since the reading of the
+     folder's repair: Windows starts `my.env\Scripts\python`, where the folder's name has a dot.)
    - After it, with `final-eval` itself, the variable set, in a project that also holds
      `tools\tool3.11.exe`:
 
@@ -13975,6 +14033,10 @@ Dates and times in this section are UTC.
    `NoDefaultCurrentDirectoryInExePath` is set. And an evaluator that is a batch file by a relative path
    with forward slashes. For the kit's other starts "The lookup's repair" holds as it stands: there such
    a batch file does not start.
+   (Added with point 52: for the evaluator this holds only where the loop is called outside the project
+   root. Called in the root, as a loop started with `--detach` is, the evaluator's path goes to Windows
+   as written again, and a batch file named with forward slashes does not start there, as before
+   `31af10c`; "The reading of the folder's repair".)
 4. **What changes for a use that worked before.** On Windows, an evaluator that is named relative to a
    subfolder, in a campaign that is called in that subfolder without `--detach`: its path is read from
    the project root now. On Linux, `env --python` typed in a subfolder with a path relative to the
@@ -13989,6 +14051,9 @@ Dates and times in this section are UTC.
    one, and the evaluator by the loop's own start of it and not by a whole campaign. **This repair is
    read by nobody but me,** like the last reading's repairs before it, and GitHub's machines, a Mac
    among them, have run none of it.
+   (Added with point 52: one fresh reader has gone through this repair and the last reading's repairs
+   since, on your "Yes, start reader" of 21 November. A regression of this repair came out of it and
+   is repaired; "The reading of the folder's repair".)
 6. **Left as they are, and stated: three things of the same family and one corner.** A relative `--root`
    with `--detach`, typed outside the project root, is read a second time from the project root by the
    loop in the background. A relative `python` in the project's settings is read from three folders. A
@@ -13997,6 +14062,7 @@ Dates and times in this section are UTC.
    same on Windows and on Linux or outside the question: "What was left as it is".
 7. **Nothing is pushed or merged.** The branch holds thirteen local commits after `5ccc2d4`: the eleven
    of the last section and this repair's two. Your real install is untouched.
+   (Added with point 52: fifteen, with the two of the reading of this repair.)
    (Added with point 53: on your "All three" the branch is merged with the three other local branches
    since, and one reader has gone through this repair and the last reading's; "The merge of the
    three branches and its reading". It reported no fault in this repair; a second reader, in the
@@ -14016,6 +14082,9 @@ Dates and times in this section are UTC.
   bubblewrap the evaluator runs in its box, and the command's first word is the box's program by its
   full path: nothing changes there, and the box, which is given the project root, reads the evaluator's
   program from it as before.
+  (Added with point 52: joined on Windows only now, and only where the loop does not stand in the
+  project root. In the root the path goes to Windows as written, and outside Windows the start reads
+  it from the project root by itself, both as before `31af10c`; "The reading of the folder's repair".)
 - **The agent's program** (`preflight` and `cmd_run` in `nnloop.py`): the path, where it has a folder
   and is not a full path, is joined to the folder the command is typed in, before the check runs it with
   `--help`. The campaign keeps the full path, so each session starts that file. With `--detach` the call
@@ -14075,6 +14144,11 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   too. The project's path had a space; earlier on the same day the same trial ran with a path without
   one, with the same answers after the change. In WSL the evaluator was read from the project root
   before, and the new check passes there on the kit before as well.
+  (Added with point 52: the table is with the loop's process in a subfolder and holds as it stands.
+  With the loop in the project root `tools/ev.cmd` does not start again, as before `31af10c`. Neither
+  of this trial's two project paths held a comma, `;`, `=`, `&`, `^`, a bracket or a `%` sign: in a
+  project whose path holds one of them and no space, a batch file is not started where the kit makes
+  its path a full one; "The reading of the folder's repair".)
 - **The agent's program:** the loop's own check before the start, typed in a folder, and then a start of
   what the check kept, in another folder, as a session starts it in the worktree. Two folders `a` and
   `b` each hold `tools\agent.cmd`, and `a` alone holds `tools\prog.exe`. On Windows:
@@ -14128,8 +14202,15 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   where it was read from the folder the loop was called in. Nothing changes for a campaign that is
   called in the project root or started with `--detach`. A batch file by a relative path with forward
   slashes starts now.
+  (Added with point 52: "nothing changes" did not hold. In the root the path was made a full one too,
+  and a batch-file evaluator in a project whose path holds a comma, `;`, `=` or a bracket and no space
+  was no longer started. Repaired: in the root the path goes to Windows as written again, so that
+  evaluator starts, and a batch file named with forward slashes starts only where the loop is called
+  outside the project root; "The reading of the folder's repair".)
 - **The loop's evaluator, outside Windows:** the file that started before starts. Without the
   evaluator's box its program reaches the start as a full path; in the box nothing changes.
+  (Added with point 52: outside Windows nothing is joined any more, and the program reaches the start
+  as written, as before `31af10c`. The file that starts is the same.)
 - **`env --python`, outside Windows:** a relative path is read from the folder the command is typed in,
   where it was read from the project root. Nothing changes for a command that is typed in the project
   root, and nothing on Windows.
@@ -14143,6 +14224,8 @@ nothing else is said. "Before" is the kit of `df59ad2`.
 - **`docs/REFERENCE.md`:** the entry on a start without a shell on Windows names the folder for each of
   six callers, says since when it is the same on both systems and what it was until then, and names the
   evaluator and the agent's program as the exception to its rule on batch files.
+  (Added with point 52: the evaluator is that exception only where the loop is called outside the
+  project root now, and the entry says what `cmd.exe` does with a batch file's path that has no space.)
 - **Nothing changes** for `final-eval`, a launched run, a remote target's `on_finish`, `status` and the
   guard.
 
@@ -14204,10 +14287,14 @@ nothing else is said. "Before" is the kit of `df59ad2`.
 - **Read by one reader each:** the launcher's repair, `09af4a1`; the first reading's repairs, `829d5b3`;
   the lookup's repair, `7edd37d`; and of the second reading's repairs, `3784d0c`, the nine lines in
   `ancestors`. **Read by nobody but me:** the last reading's repairs, `c85f96a`, and this repair.
+  (Added with point 52: one reader has gone through both since. What its reading changed is read by
+  nobody but me; "The reading of the folder's repair".)
 
 ### Not done, and why
 
 - **No reader.** Your word covered the repair; the reader is the second question below.
+  (Added with point 52: the reader has gone through it since, on your "Yes, start reader" of 21
+  November.)
 - **The four things under "What was left as it is"** are not repaired: each is the same on both systems
   or outside the question.
 - **No trial with a real agent.** It would be a session that is billed to your subscription, for a
@@ -14227,6 +14314,8 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   now. They are few lines, and they lie on the way of every start that the kit makes on Windows, of
   every evaluation and of every session of a campaign, and I am their only reader. The brief would be
   for correctness, as the three before it.
+  (Added with point 52: decided by your "Yes, start reader" of 21 November; "The reading of the
+  folder's repair".)
   (Added with point 53: answered by your "After the sessions". One reader went through both with the
   merged branches and reported no fault in either. A second one, which you started in the pilot's own
   session, led to a regression of `31af10c`; point 53 says where that stands.)
@@ -14245,6 +14334,11 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   All four together are not tried. The records of all sides are joined by hand as before: points 39, 40,
   44 and 46 of "Read this first" are the other session's, 48 and 49 those two branches', and this branch
   has 38, 41, 42, 43, 45, 47 and 50.
+  (Added with point 52: fifteen commits now. `claude/fervent-gould-8d0820` has a second commit of code
+  and one of record since, with point 51. The session that started this one has joined that branch,
+  `claude/sharp-faraday-6bd610` and this branch, as far as `eded7ce`, on a local branch of its own,
+  `claude/kit-commit-verification-e52f2b`. This branch has point 52 too. The merge's state is in "The
+  reading of the folder's repair".)
   (Added with point 53: answered by your "All three". The four are merged in one local branch, the
   records joined by hand, and that state has run; nothing is pushed.)
 - Unchanged from "The reading of the lookup's repair": what that section lists, less its first question.
@@ -14256,6 +14350,352 @@ to 02:36 UTC on Windows and from 01:45 to 02:04 UTC in WSL. Before them, on the 
 and the first trials of the three places. While they ran and after them: the trials of the three tables
 and of a name without a folder as they stand here, from scratch scripts that are not part of the kit,
 and campaign b once more on copies of the final state, in WSL and on Windows.
+
+## The reading of the folder's repair (21 November 2026): the fault that the reader thought likely did not hold when run; a sibling of it did, a regression of that repair for a batch-file evaluator on Windows; repaired
+
+Your word: "Yes, start reader", to my question at the end of the folder's repair, "Start one fresh
+reader on 31af10c and c85f96a together?" I took the word to cover that one reader, the check of each
+finding by running, the repair of what holds inside the two commits that were read, tests, and local
+commits with their record. Not covered: a push, a merge, your real install, a further reader, and the
+repair of older faults outside those two commits. It is the work of the pilot's session on its local
+branch, `claude/brave-robinson-27cbd9`: the commit `042a985` for the code and one for this record, after
+`eded7ce`. No package was installed. Dates and times in this section are UTC.
+
+### In short
+
+1. **The reader found no certain fault, and one that it thought likely. Run, that one did not hold, and
+   a sibling of it did.** Its first sentence: "I found no certain fault in either commit that breaks
+   something that worked before." It read the last reading's repairs, `c85f96a`, and the folder's
+   repair, `31af10c`. Five findings: the likely one, one that is certain from the code and rare, one
+   imprecise sentence in a docstring, gaps in the tests, and one sentence of the refusal's hint that can
+   be misread. I ran each before I changed anything.
+2. **Since the folder's repair a batch-file evaluator was not started on Windows in a project whose path
+   holds a comma, `;`, `=` or a bracket and no space. A regression of `31af10c`, which I found beside
+   the reader's case. Repaired.** The reader's case was a project path with a space: that starts, before
+   the commit and with it. But `31af10c` made the evaluator's relative path a full one also where the
+   loop is called in the project root, and `cmd.exe`, which runs a batch file, splits a path that
+   nothing puts in quotes at those characters. Before the commit the path went to Windows as it is
+   written, `scripts\eval.cmd`, and the project's folder was no part of it.
+3. **The repair: the evaluator's path is made a full one only where it has to be, on Windows and where
+   the loop does not stand in the project root.** One condition in `Campaign.evaluate`. Called in the
+   project root, as a loop started with `--detach` is, the path goes to Windows as written, as before
+   `31af10c`. Outside Windows the start reads it from the project root by itself, and nothing is joined
+   there any more. In a trial with eleven project folders the kit answers in the root as it did before
+   `31af10c` and in another folder as it did with `31af10c`, in every row.
+4. **What the repair takes back, and the limit that stays.** With `31af10c` an evaluator that is a batch
+   file named with forward slashes started; "The folder's repair" says so in its third point. It starts
+   now only where the loop is called outside the project root, and in the root it does not, as before
+   `31af10c`. And where the path is made a full one, a batch file is not started in a project whose path
+   has no space and holds a `&`, a comma, `;`, `=`, `^`, a bracket or a variable's name between `%`
+   signs. That is no regression, since nothing started there before `31af10c`. By the same mechanism it
+   holds for a batch file as the agent's program by a relative path; that one I did not try through a
+   session.
+5. **The other four findings.** `env --python` typed in a folder that has been deleted, outside Windows:
+   held, left as it is, and stated. The docstring of `ancestors` says "On Windows" now. The tests: the
+   names' check has two names more, and one check with a batch-file evaluator is new; the two forms with
+   forward slashes stay tried by hand. The hint says "where the last part of the name has no dot" now.
+6. **Verified by running, on this machine only.** The eight test files pass on Windows and in WSL under
+   two interpreters each: 1,921 and 1,908 checks on Windows, 1,931 and 1,918 in WSL, none failed. One
+   check is new and one is changed, and each fails with its change taken out. **This reading's repair is
+   read by nobody but me,** and GitHub's machines, a Mac among them, have run none of it.
+7. **Nothing is pushed, and this session merged nothing.** The branch holds fifteen local commits after
+   `5ccc2d4`: the thirteen of the last section and this reading's two. Your real install is untouched.
+   The session that started this one has joined this branch, as far as `eded7ce`, with two other
+   branches on a local branch of its own: that branch has the folder's repair and not this reading's
+   repair, until it takes these two commits.
+
+### The reader and its brief
+
+- **One reader:** an agent of this session on Opus 5.5 with read access only, which here means the file
+  tools and git's commands that only read. By its brief it ran nothing: where a run would settle a
+  question it said so in its report, and I ran it. 185,672 tokens of the subscription, 38 tool calls,
+  about seven minutes.
+- **What it read:** `c85f96a` and `31af10c`, with the files as they stand at the branch's head,
+  `eded7ce`. In `expctl.py`: `in_env`, the hint at the end of `final-eval`'s refusal, one sentence in
+  the docstring of `ancestors`, and `cmd_env`. In `nnloop.py`: `Campaign.evaluate`, `preflight` and the
+  branch of `cmd_run` for `--detach`. The two test files, the reference's entry, `7edd37d` as far as it
+  needed it, and the callers of every changed function. The brief told it not to read `docs/upgrade`,
+  and to take what the commit messages say as claims to check.
+- **What it was asked for:** for each changed line, whether it does what its comment and the commit's
+  message say, on Windows and on POSIX, under Python 3.8 to 3.14, and the input for which it does not;
+  what worked before each commit and fails or behaves differently with it, beyond what the message
+  names; the two commits against each other, since `Campaign.evaluate` gives `in_env` a joined path now;
+  other starts in the kit's scripts with the same fault; errors that are newly possible; whether each
+  new or changed check tests what its name says and fails without its change; and whether the
+  reference's changed sentences agree with the code and with each other.
+- **Not asked for:** ways past the guard. The brief said that the guard is no part of the reading.
+- **Its report:** five findings, a list of what it checked and found right, and what it did not read.
+  All three parts are below.
+
+### The findings, each checked
+
+I ran each before I changed anything. "Held" means that the fault showed when run. Where nothing else is
+said, a trial ran on Windows 11 under Python 3.11.7, once with the variable
+`NoDefaultCurrentDirectoryInExePath` set and once without it.
+
+1. **On Windows a batch-file evaluator may stop starting where the project's path has a space. Did not
+   hold. A sibling of it held, as a regression of `31af10c`. Repaired.**
+   - The reader's case. A project whose path has a space, the evaluator `scripts\eval.cmd` with the
+     run's folder as its argument, the campaign started with `--detach` or typed in the project root.
+     Since `31af10c` the program reaches the start as a full path, which has the space and is put in
+     quotes, and so is the argument. The reader expected `cmd.exe` to take off the first quote and the
+     last and to try to run the part of the path in front of the space. It rated that likely and wrote
+     that only a run can settle it: it could not tell whether Windows puts quotes of its own around the
+     line, and "If it does, nothing breaks."
+   - When run, by the loop's own start of the evaluator, on the kit of `df59ad2` and on the kit of
+     `31af10c`: the batch file started on both, and the run's folder arrived whole. The reader's case
+     does not break.
+   - The sibling, from the same trial with ten more project folders. The loop's process stands in the
+     project root, and the evaluator is `scripts\eval.cmd`:
+
+     | the project's folder is named | before `31af10c` | with `31af10c` | now |
+     |---|---|---|---|
+     | `plain`, `with space`, `a!b`, `a b&c` | starts | starts | starts |
+     | `a,b`, `a;b`, `a=b`, `(x)` | starts | not started | starts |
+     | `R&D`, `a^b`, `p%OS%q` | starts, and the run's folder arrives changed | not started | as before `31af10c` |
+
+     "Not started": `cmd.exe` ends with 1. Of the part of the path in front of the character it says
+     that it "is not recognized as an internal or external command", and for `a^b` and `p%OS%q` that it
+     cannot find the path. The second row is the regression: the evaluator ran before `31af10c` and was
+     not started with it.
+   - Why. Without a shell Windows gives a batch file to `cmd.exe`, and Python puts a program's path in
+     quotes only where it has a space. A path without one `cmd.exe` reads as it reads a line that is
+     typed: it splits it at a comma, `;`, `=`, a bracket and `&`, takes a `^` out, and puts a variable's
+     value for its name between `%` signs. Before `31af10c` the path that `cmd.exe` read was
+     `scripts\eval.cmd`, as written; with `31af10c` it was the full path, with the project's folder in
+     it.
+   - The third row's "changed" is older than both commits and is not the program's path: the run's
+     folder is an argument, it lies in the project, and an argument without a space reaches `cmd.exe`
+     without quotes too. It arrived cut at the `&`, without the `^`, and with the variable's value in
+     place of its name, and in `R&D` the call then ended with 1. Not repaired: "What needs your
+     decision".
+   - The same trial with the evaluator named `scripts/eval.cmd`, and with the loop's process in another
+     folder:
+
+     | where the loop stands, and the name | before `31af10c` | with `31af10c` | now |
+     |---|---|---|---|
+     | in the project root, `scripts/eval.cmd` | not started, in all eleven | starts in the first row's four folders, not in the other seven | not started, in all eleven |
+     | in another folder, either slash | not found, in all eleven | starts in the first row's four folders, not in the other seven | as with `31af10c` |
+
+     Before `31af10c` the second row's path was read from the folder the loop stands in, where no such
+     file lay.
+   - The repair. `Campaign.evaluate` joins the path to the project root only on Windows, and only where
+     the loop does not stand in the project root, which it asks with `os.path.samefile`. In the root the
+     path goes to Windows as written, as before `31af10c`. Outside Windows nothing is joined any more:
+     the start reads the path from the project root there, as it did before `31af10c`.
+   - After it: for all eleven folders and both names the kit gives what the kit before `31af10c` gave
+     where the loop stands in the root, and what the kit of `31af10c` gave where it stands in another
+     folder, with the variable set and without it. Under Python 3.8.20, from a virtual environment and
+     with the variable not set, it gives in all 44 rows what it gives under 3.11.7.
+   - What the reader said of the reference: if its case breaks, the sentence "a batch file too, starts
+     whichever way its slashes point" is wrong in that case, and the agent's program has the same limit,
+     which is no regression for the agent. The sentence was wrong for the seven folders of the tables.
+     The reference has the limit now, and says where the evaluator's path is made a full one.
+2. **Outside Windows, `env --python` with a relative path fails where the current folder has been
+   deleted. Held. From `31af10c`. Left as it is, and stated.**
+   - The reader's case, certain from the code. The join asks for the current folder, and that raises an
+     error once the folder is gone. The error is caught, so the answer is
+     `"interpreter": {"error": "FileNotFoundError: ..."}`, with no word about the folder. Before the
+     commit the path was read from the project root, and the probe worked. The reader calls it rare.
+   - When run in WSL under Python 3.12.3, the command typed in a folder that was deleted after the shell
+     had entered it, with `--root` and a path relative to the project root: the kit of `df59ad2` probed
+     the interpreter, and the kit of `31af10c` answered "FileNotFoundError: [Errno 2] No such file or
+     directory". Typed in the project root, both probed it.
+   - Left as it is. Since `31af10c` the path after `--python` is read from the folder the command is
+     typed in, and "The folder's repair" names as a change that a path relative to the project root,
+     typed in another folder, is no longer found. This is that case, in a folder that is gone. What the
+     reader adds is that the answer does not name the folder; no sentence for it is written.
+3. **The docstring of `ancestors` leaves out that the clock's clause holds on Windows only. Held, by
+   reading. From `c85f96a`. Repaired.** The walk compares start times on Windows only. The sentence that
+   the last reading added begins "On Windows" now. The code is unchanged.
+4. **Gaps in the tests. Held, by reading. Two are closed, and the others are stated.**
+   - The names' check that `c85f96a` changed passes on any code outside Windows, where the kit hands
+     nothing over. That is so and stays: the lines that it guards have an effect on Windows only.
+   - No name in it had a space at its end or the forms `tools\..` and `tools\sub\..`, which the commit
+     names. The check has two names more: the environment's interpreter by a relative path with a space
+     at its end, and with `/x/..` at its end. Without the two lines of `c85f96a` both are handed over as
+     `python.exe`, like the three names of the last reading. The form `tools\..` has no name in the
+     check; the last reading tried it by hand.
+   - No test has the two forms that `31af10c` says start now on Windows: the agent's program by forward
+     slashes where the variable is set, and a batch-file evaluator by forward slashes. That stays. The
+     second is in the tables above, the first in "The folder's repair", both by hand.
+   - No test had a batch-file evaluator or a path with a space. One check is new, with the regression's
+     case: a batch-file evaluator by a relative path, in a project folder named `a,b`, with the loop's
+     process in the project root. A path with a space is in the trial and in no test.
+5. **The refusal's hint can be misread. Held. Wording only. Repaired.**
+   - The reader's case: "whose ending may be left out where the name has no dot" can be read as speaking
+     of the folder's part too, and Windows starts `my.tools\run`.
+   - When run under Python 3.11.7 and 3.8.20, with an environment in a folder named `my.env`: Windows
+     started its interpreter as `my.env\Scripts\python`, as `.\my.env\Scripts\python` and by its full
+     path without the ending, and the kit hands `python.exe` over for each of them and for
+     `my.env/Scripts/python`.
+   - The hint says now: "whose ending may be left out where the last part of the name has no dot".
+
+### What the reader checked and found right
+
+From reading alone, in the reader's words shortened:
+
+- **`in_env` after `c85f96a`:** the comparison of the last parts sends `tools\tool.`, a space at the
+  end, a slash at the end, `\.` and `..` back to Windows. It leaves forward slashes, `.\python`,
+  `C:python`, a network path and a plain name as before. On the joined path from `Campaign.evaluate` it
+  behaves as on a relative one, because the joined string keeps the last part as written. `startable`
+  refuses each of those forms.
+- **`Campaign.evaluate`:** on POSIX, joining to the root gives what the start's folder gave. A full
+  path, and a path that is relative to another drive, are untouched. The setting itself is not changed,
+  so `loop_eval.json` records the command as written. The project root is resolved, so the join is never
+  relative.
+- **`preflight` and `--detach`:** the join comes before the branch for `--detach`. The added
+  `--agent-exe` is the last one, and the last one counts. A name without a folder is left to each
+  system's search. A relative result of Python's search becomes a full path, which is what the check
+  ran.
+- **`cmd_env`:** the code that follows gets the joined interpreter. Windows is unchanged.
+- **The tests of `31af10c`:** each fails without its change on the system that the commit names.
+- **Other starts:** a remote target's `on_finish`, `exec` and `hf` run in the controller, which is
+  started in the project root. A launched run's supervisor has its own folder. `final-eval` changes into
+  the root first. None of them has the difference between Windows and Linux.
+- **An older sibling that the commit leaves:** a relative `python` in the settings is read from three
+  folders. "The folder's repair" has it under "What was left as it is".
+
+None of my runs contradicts this list. What it lacks is the second row of the first table under finding
+1: the reader asked what `cmd.exe` does with a path in quotes, and not what it does with a full path
+that needs none.
+
+### What it could not judge by reading
+
+- **Whether Windows puts quotes of its own around the line that it gives `cmd.exe` for a batch file**
+  (finding 1). Tried through the kit: a path with a space starts, with an argument in quotes behind it.
+  What Windows does inside I did not look at.
+- **Not read by the reader, in its words:** `docs/upgrade/`, the guard's hook, and of `7edd37d` all but
+  `in_env` and `startable`.
+
+### Changes in the behaviour of existing features
+
+Against the branch as it stood before this reading, which is the kit of `31af10c`:
+
+- **The loop's evaluator on Windows, the loop called in the project root or started with `--detach`:**
+  its path goes to Windows as written again, as before `31af10c`. A batch file in a project whose path
+  has no space and holds a comma, `;`, `=` or a bracket starts again. A batch file named with forward
+  slashes does not start there, as before `31af10c`.
+- **The loop's evaluator on Windows, the loop called in another folder:** unchanged. Its path is made a
+  full one, as since `31af10c`.
+- **The loop's evaluator outside Windows:** its path reaches the start as written again. The file that
+  starts is the same.
+- **`final-eval`'s refusal on Windows:** the hint's wording. Which names get it is unchanged.
+- **`docs/REFERENCE.md`,** the entry on a start without a shell on Windows: what `cmd.exe` does with a
+  batch file's path that has no space; that the evaluator's path is made a full one only where the loop
+  is called outside the project root; that in the root it goes to Windows as written.
+- **Nothing changes** for `env --python`, for the agent's program, for `final-eval`'s check, for
+  `status` and for the guard. The docstring of `ancestors` has two words more.
+
+### Tests
+
+- **One check is new and one is changed,** both in the group `env_tests` of `tests/test_kit.py`, which
+  has 16 checks on Windows and 10 in WSL now. The new one runs on Windows only: a campaign in a project
+  folder named `a,b`, in a process that stands in the project root, whose evaluator is the batch file
+  `scripts\eval.cmd`. The loop's own start of the evaluator must run that file. The changed one is the
+  names' check, with the two names of finding 4.
+- **With the change taken out,** on copies of the kit, on Windows under Python 3.11.7:
+
+  | the kit | the group `env_tests` |
+  |---|---|
+  | as it is | 16 pass |
+  | with the `nnloop.py` of `31af10c` | the new check fails: `cmd.exe` does not recognize the part of the path in front of the comma |
+  | without the two lines of `c85f96a` in `in_env` | the names' check fails: the last five names are handed over as `python.exe` |
+
+- **The group alone on the kit as it is:** 16 pass on Windows under Python 3.11.7 and 3.8.20, and 10 in
+  WSL under 3.12.3 and 3.8.20.
+- **The hint's wording** has no check of its own, as before.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,921 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,908 | 0 |
+  | WSL | 3.12.3 | 1,931 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,918 | 0 |
+
+  `tests/test_kit.py` alone has 1,218 checks on Windows and 1,220 in WSL: one more on Windows than with
+  the folder's repair, and as many in WSL. The second row's interpreter has no psutil. What is skipped,
+  and why thirteen checks fewer run under Python 3.8.20, is as in the first reading's section. The four
+  changed files and `tests/test_loop.py` are the same in the working tree, in the clone and in
+  `042a985`, by their hashes.
+
+### Verified by running, and not
+
+- **By running, on this machine:** finding 1 and its sibling, on the kit before `31af10c`, on the kit of
+  `31af10c` and on the kit as it is, with the variable set and without it, and the kit as it is under
+  Python 3.8.20 as well; finding 2, in WSL; finding 5; a batch file by a relative path that holds a
+  comma itself, which Windows does not start and which `final-eval`'s check passes; `in_env` on the
+  names of finding 4, before `c85f96a` and now; everything under "Tests". Windows 11 with Python from
+  python.org; WSL with Ubuntu.
+- **By reading only:** findings 3 and 4; that a loop started with `--detach` stands in the project root;
+  that the evaluator has a box on Linux only, so that on Windows the command's first word is the
+  evaluator's program.
+- **Not run:** a whole campaign with a batch-file evaluator; a batch file as the agent's program,
+  through a session, in a project folder with one of those characters; `final-eval`'s own start of a
+  batch file with a comma in its path, of which only the check before it was asked; a drive on which
+  Windows gives files no numbers, as a cloud drive that is shown as a disk can be, where `samefile` may
+  take two folders for one and the evaluator's path would then be read as before `31af10c`; macOS and
+  GitHub's machines, since nothing is pushed.
+- **Read by one reader each:** the launcher's repair, `09af4a1`; the first reading's repairs, `829d5b3`;
+  the lookup's repair, `7edd37d`; of the second reading's repairs, `3784d0c`, the nine lines in
+  `ancestors`; the last reading's repairs, `c85f96a`; and the folder's repair, `31af10c`. **Read by
+  nobody but me:** what this reading changed.
+
+### Not done, and why
+
+- **A batch-file evaluator named with forward slashes does not start where the loop is called in the
+  project root.** With `31af10c` it did, and it does where the loop is called in another folder. To keep
+  it in the root the kit would have to change the name that it hands to Windows there, which is a change
+  of its own with trials of its own: the first decision below.
+- **`env --python` typed in a deleted folder** (finding 2): the reason is with the finding.
+- **Nothing for a batch file's arguments,** which reach `cmd.exe` without quotes where they have no
+  space (the first table's third row), and **nothing for `final-eval`'s check,** which passes a batch
+  file whose path `cmd.exe` will split. Both are older than the two commits that were read. The
+  reference says the second now, in the sentence with the limit.
+- **No test for the two forms with forward slashes** (finding 4).
+- **No reader for what this reading changed.** Your word covered one reader.
+- **Nothing is pushed or merged by this session,** and your real install is untouched.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this reading decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether a batch-file evaluator named with forward slashes should start also where the loop is called
+  in the project root.** I would leave it: the reference says to name a batch file with backslashes, and
+  that holds everywhere. If you want it, the kit would hand Windows the name with backslashes there: one
+  line, and a trial of the name forms of "The reading of the lookup's repair" before and after.
+- **Whether the kit refuses, before it starts anything, a batch file whose path or arguments `cmd.exe`
+  will split.** Today such an evaluator is not started or gets a changed argument, and `final-eval`'s
+  check passes such a path. I would have `final-eval`'s check and the loop's check before the start
+  refuse it, with a sentence that says why, as a small change of its own. It is older than what was
+  read.
+- **Whether a reader goes through this reading's repair:** one condition in `Campaign.evaluate`, two
+  wordings, one new check and two names. I would not start one for these lines alone; the next change's
+  reader can take them along.
+- **Whether this branch is merged with `test/round-9`,** and by whom. It holds fifteen commits after
+  `5ccc2d4` now. The public `test/round-9`, as this clone has it, stands at `409182f` as before (looked
+  at 08:08 UTC, nothing fetched). `claude/fervent-gould-8d0820` has two commits more than the folder's
+  section names, `5f600da` for code and `12876c9`, its record with point 51;
+  `claude/sharp-faraday-6bd610` stands at `b5331fb` as before. The session that started this one has
+  joined those two branches and this branch, as far as `eded7ce`, on a local branch of its own,
+  `claude/kit-commit-verification-e52f2b`, which stands at `f38c4d8` and holds `409182f` too: that
+  branch has the folder's repair without this reading's repair until it takes these two commits. A merge
+  of `042a985` with each of the four heads, tried in memory with no branch, index or file touched: with
+  `f38c4d8`, which is all sides together, the four files join by themselves, and the joined state
+  differs from `f38c4d8` by this commit's 39 lines added and 16 removed alone; with each of the other
+  three the kit's code, the tests and the reference join by themselves, and `REPORT.md` and
+  `PROGRESS.md` conflict. None of the joined states has run, and a merge of this record's commit is not
+  tried here. The records of all sides are joined by hand as before: points 39, 40, 44 and 46 of "Read
+  this first" are the other session's, 48, 49 and 51 two more sessions', and this branch has 38, 41, 42,
+  43, 45, 47, 50 and 52.
+- Unchanged from "The folder's repair": whether the third place stays, and whether a relative `--root`
+  with `--detach` is repaired. Unchanged from the sections before it: what they list.
+
+Sources: the reader's report, and runs on this machine on 21 November 2026. The eight test files on the
+final state, from 07:00 to 08:04 UTC on Windows and from 07:00 to 07:20 UTC in WSL. Before them, on the
+same day: the trials of the findings, from scratch scripts that are not part of the kit; the group
+`env_tests` alone, on the kit as it is and on the two copies; and `tests/test_kit.py` once in WSL.
 
 ## The merge of the three branches and its reading (21 November 2026): a regression of the guard behind `cmd /c` repaired, an older gap beside it, and two faults of the controller
 

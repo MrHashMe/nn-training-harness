@@ -667,8 +667,8 @@ def ancestors(pid, depth=25):
     """A process's parent, that one's parent and so on. Windows keeps the number of a parent that has ended, and a
     later process can hold it: one that began after the process below it is not its parent, and the walk ends there.
     Otherwise status put the GPU of a program that belongs to no run on the run whose process got such a number.
-    A clock set back between a parent's start and its child's ends the walk there too: the GPU is then on no run,
-    which can miss an alert and raises none."""
+    On Windows a clock set back between a parent's start and its child's ends the walk there too: the GPU is then on
+    no run, which can miss an alert and raises none."""
     win = os.name == "nt"
     out, cur, born = [], pid, proc_start_time(pid) if win else None
     for _ in range(depth):
@@ -3093,10 +3093,11 @@ def cmd_final_eval(args):
         # the current folder whatever the variable says, from 3.12 it adds an ending to a name with a folder too)
         there = os.name == "nt" and program and shutil.which(program)
         return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}"
-                       + (". Without a shell Windows starts an .exe, whose ending may be left out where the name has no "
-                          "dot, and a .com or a batch file by its full name (a batch file by a relative path: with "
-                          "backslashes); a name without a folder it looks for in the current folder only where the "
-                          f"variable NoDefaultCurrentDirectoryInExePath is not set. There is {there}"
+                       + (". Without a shell Windows starts an .exe, whose ending may be left out where the last part "
+                          "of the name has no dot, and a .com or a batch file by its full name (a batch file by a "
+                          "relative path: with backslashes); a name without a folder it looks for in the current "
+                          "folder only where the variable NoDefaultCurrentDirectoryInExePath is not set. "
+                          f"There is {there}"
                           if there else ""))
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"

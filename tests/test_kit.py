@@ -499,11 +499,12 @@ def env_tests(tmp):
     # the names that stay the system's to find: with another ending than .exe, with no .exe beside the interpreter or
     # at the path that the name gives. The first four have one, the last of them by a relative path with forward
     # slashes and no ending, and only Windows is given it. Where Windows' full path does not keep the end of a name,
-    # the file at that path is not the one the name says: a dot there means the file without an ending, a slash or
-    # `/.` a folder. Those stay Windows' to find (the last three; were: handed over as the .exe)
+    # the file at that path is not the one the name says: a dot there means the file without an ending, a slash,
+    # `/.` or `/x/..` a folder, and a space there is dropped too. Those stay Windows' to find (the last five; were:
+    # handed over as the .exe)
     rel = f"../venv/{vbin.name}/python"
     names = ["python", "PYTHON.EXE", vpy, rel, "python.bat", "python3.11", "cmd", "nosuchprogram", os.path.join(".", "python"),
-             "C:python", rel + ".bat", rel + "3.11", rel + ".", rel + "/", rel + "/."]
+             "C:python", rel + ".bat", rel + "3.11", rel + ".", rel + "/", rel + "/.", rel + " ", rel + "/x/.."]
     if os.name == "nt":  # files of the two other endings lie beside the interpreter, and still are not started from there
         for n in ("python.bat", "python3.11"):
             (vbin / n).write_text("")
@@ -553,6 +554,20 @@ def env_tests(tmp):
     check(inside(got[0]) and got[1] is None,
           "the loop's evaluator, called in a subfolder: a relative path is read from the project root (was, on Windows: "
           f"from that subfolder) ({'started' if inside(got[0]) else got[0]}, {'not started' if got[1] is None else 'started'})")
+    if os.name == "nt":
+        # Called in the project root, the path goes to Windows as written: cmd.exe, which runs a batch file, splits a
+        # full path without a space at a comma, so made a full one this evaluator's path was not started
+        root2, name = tmp / "bare/a,b", "scripts\\eval.cmd"
+        (root2 / "scripts").mkdir(parents=True)
+        (root2 / name).write_text("@echo as %0\n")
+        r = sh([vpy, "-c", "import sys; sys.path.insert(0, sys.argv[1])\nfrom pathlib import Path\nimport argparse, nnloop\n"
+                "root = Path(sys.argv[2])\n"
+                "C = nnloop.Campaign(root, dict(nnloop.expctl.load_config(root), loop={}), 'bare', argparse.Namespace())\n"
+                "C.box_eval, C.L['eval_command'] = [], [sys.argv[3]]\nr = C.evaluate(root)\n"
+                "print(r.stdout + r.stderr)\n", str(scripts), str(root2), name], cwd=root2, env=env)
+        ok, said = f"as {name}" in r.stdout, " ".join((r.stderr or r.stdout).split())[-200:]
+        check(ok, "the loop's evaluator, called in the project root: a batch file by a relative path starts as "
+              "written, also where the project's path holds a comma" + ("" if ok else f" ({said})"))
     # The check before a use asks as the start will. On Windows with the variable that takes the current folder out
     # of the search, as an agent's shells have it and a user's terminal has not, and with one more folder on the PATH
     receipt, cfgp, onpath = proj / ".claude/state/final-eval/receipt.jsonl", proj / ".claude/nn-training.json", tmp / "bare/onpath"

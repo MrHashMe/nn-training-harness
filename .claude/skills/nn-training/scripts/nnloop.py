@@ -839,9 +839,11 @@ class Campaign:
         """The frozen evaluator on one folder, started by the harness itself; None when it timed out."""
         try:
             cmd = self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir)
-            # the evaluator is the project's: a relative path to its program is read from the project root. Until
-            # 21 November 2026 Windows read it from the folder the loop was called in, which --detach made the root
-            if os.path.dirname(cmd[0]):
+            # the evaluator is the project's: a relative path to its program is read from the project root. Outside
+            # Windows the start does that. Windows reads it from the folder the loop stands in, so where that is another
+            # folder the path is made a full one (since 21 November 2026). In the root it stays as written: cmd.exe,
+            # which runs a batch file, splits a full path without a space at a comma, `;`, `=` or a bracket
+            if os.name == "nt" and os.path.dirname(cmd[0]) and not os.path.samefile(".", self.root):
                 cmd[0] = os.path.join(self.root, cmd[0])
             return subprocess.run(cmd, executable=expctl.in_env(cmd[0]), cwd=str(self.root), env=self.run_env,
                                   capture_output=True, encoding="utf-8", errors="replace",

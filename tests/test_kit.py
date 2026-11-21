@@ -2875,8 +2875,8 @@ def main():
     # twice, to know whether the line may run its text (1,500 lines of out7="sub/f7.txt"; cat "$out7": 10 s), and what
     # leads to a command was read on from every sign to the next blank (1,000 of a=1; without a blank: the timer's
     # answer after 12 s), and a row of variables set to nothing in as many ways as the row's words allow (30 of a=
-    # with a blank: the timer's answer). No row here waits for a clock: they count searches and read where a match
-    # begins
+    # with a blank, in front of echo 'x': the timer's answer). No row here waits for a clock: they count searches
+    # and read where a match begins
     code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
             "n, re = [0, ''], nn_guard.re\n"
             "def counted(f):\n"
@@ -2904,20 +2904,24 @@ def main():
           f"shortest way) is found by a search of its own ({got[3]})")
     code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard as g\n"
             "print(json.dumps([p.search(c).start() for p, c in ((g.WRITE_CMDS, 'a=1;b=2 touch x'), (g.FORMATS, "
-            "'a=1;b=2 black .'), (g.EXTRACT, 'a=1;b=2 tar -xf x.tar'), (g.HERE_RUN, 'a=1\\nb=2 sh <<EOF'))]))")
+            "'a=1;b=2 black .'), (g.EXTRACT, 'a=1;b=2 tar -xf x.tar'), (g.HERE_RUN, 'a=1\\nb=2 sh <<EOF'), "
+            "(g.WRITE_CMDS, 'a=1; touch x'))]))")
     got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
-    check(got == [3, 3, 3, 4],
+    check(got == [3, 3, 3, 4, 3],
           f"guard: a search that asks whether a command stands in a line finds it from the last sign or line break "
-          f"in front of it (a=1;b=2 touch x: from the ;), where the search from the line's beginning read each "
-          f"variable's value on to the next blank ({got})")
+          f"in front of it (a=1;b=2 touch x: from the ;, and so with a blank behind the sign, a=1; touch x), where "
+          f"the search from the line's beginning read each variable's value on to the next blank ({got})")
     code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard as g\n"
-            "print(json.dumps([g.WRITE_CMDS.search(c).start() for c in ('a=\\nb= touch x', 'a=\\nb touch x')]))")
+            "print(json.dumps([g.WRITE_CMDS.search(c).start() for c in ('a=\\nb= touch x', 'a=\\nb touch x', "
+            "'a=\\n touch x')]))")
     got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
-    check(got == [3, 0],
+    check(got == [3, 0, 3],
           f"guard: such a search takes the blank behind a variable's = only in front of a word that sets no variable "
           f"(a= and then b= touch x is found from b=, a variable of its own; a= and then b touch x from a=, as a set "
-          f"to b), so a row of variables set to nothing (a= b= c= ...) is read in one way, where each word was a "
-          f"variable or the value of the one before it and 30 of them took the guard past its limit ({got})")
+          f"to b) and never in front of another blank (a= and then a line that begins with a blank: touch x is found "
+          f"from that line), so a row of variables set to nothing (a= b= c= ...) is read in one way, where each word "
+          f"was a variable or the value of the one before it and 30 of them in front of echo 'x' took the guard past "
+          f"its limit ({got})")
     code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
             "class Counted:\n"
             "    def __init__(self, p):\n"
@@ -2942,6 +2946,21 @@ def main():
           f"guard: the patterns that read all that leads to a command (for a cd's folder, a command word in quotes, a "
           f"formatter's arguments, a here-string) are not used on a line that holds none of these, and each is used "
           f"on a line that holds them all ({got})")
+    # The search in front of named() read the word too, and began inside quoted texts, where the word ran on over the
+    # quoted texts behind it: 3,000 lines of echo "runs/r${i}_7" "logs/$i-7.txt" went to the timer's question for a
+    # read-only agent (the first reading of this change, 21 November 2026)
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard as g\n"
+            "loop = 'for i in 1 2; do echo \"r${i}\" \"x\"; done'\n"
+            "m = [getattr(g, 'WORD_ANY', g.COMMAND_WORD).search(c) for c in (loop, \"a=1;'touch' x\")]\n"
+            "print(json.dumps([m[0] and m[0].span(), m[1] and m[1].span(), g.named(loop) == loop,\n"
+            "                  g.named(loop.replace('echo', \"'ec'ho\")) == loop]))")
+    got = jout(sh([PY, "-c", code, str(proj / ".claude/hooks")], cwd=proj, env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    check(got == [[25, 26], [3, 4], True, True],
+          f"guard: the search that says whether a line may hold a command word in quotes reads up to where such a "
+          f"word would begin and not the word (a=1;'touch' x: it ends in front of 'touch'), so at a place inside a "
+          f"quoted text (the {{ of \"r${{i}}\" in a loop's line) it stops as well, where the word ran on over the "
+          f"quoted texts behind it and a long loop took the square of its length; the line's words are named as "
+          f"they were, a word put together from quoted pieces ('ec'ho) too ({got})")
     # Each reading of a line looked every word up on disk again: a here-document with a script of 1,500 lines (69 KB)
     # took 23 s on Windows, the timer's answer (10 s before the readings of 17 November 2026, 8 s with one lookup)
     # The same file as a path object costs no lookup and by its full name one; a `~` word is the home's file; a lookup

@@ -400,20 +400,22 @@ def _lead(wrap: str, signs: str = "") -> str:
     signs: for a pattern that is only asked whether a command stands somewhere in the text, never where its lead
     begins or what it holds. The signs are those at which that pattern starts by itself, and it must start at a
     line's beginning (^ with re.M) as well. Then a value ends in front of a sign that a blank or another variable
-    follows, and the blanks between two words hold no line break: what stands behind such a place is found from
-    there, with the same words behind it, so the answer is the one it was, and a row of variables is read once and
-    no longer again from each of its signs.
+    follows, and the blanks in front of the lead and behind each variable or wrapper in it hold no line break (the
+    one behind a variable's `=`, those among a wrapper's options and inside a wrapper of two words, uv run, still
+    do): what stands behind such a place is found from there, with the same words behind it, so the answer is the
+    one it was, and a row of variables is read once and no longer again from each of its signs.
     And a blank behind a variable's `=` (X= cmd, which the lead also reads as X set to the next word) is taken only
     in front of a word that sets no variable itself. In a= b= c= ... cmd each word was a variable of its own or the
     value of the one before it, both with the same words behind them, so a search that found nothing took 1.6 times
-    as long with each word: thirty of them took the guard past its limit of time (21 November 2026).
+    as long with each word: thirty of them in front of echo 'x' took the guard past its limit (21 November 2026).
     Not so where the lead itself is read (the text a match holds, where it begins, how many there are): the lead
     without signs stays for that, behind a search with signs that says whether it has anything to find.
     What still takes the square: a wrapper's options, which run over the signs in both forms (env -i;env -i;...),
-    and the lead without signs on a row of variables in a text that has what it reads (a=1;a=1;... cd sub). And
+    and the lead without signs on a row of variables in a text that has what it reads (a=1;a=1;... cd sub), which
+    for a command word in quotes is every place where one could begin (a=1;a=1;... echo "r${i}": see WORD_ANY). And
     what still grows by a factor with each word: variables set to nothing with a wrapper's word between them (a= env
     a= env ...), a wrapper's options that read in two ways (sudo -u -u -u ...), and the lead without signs on a row
-    of variables set to nothing in a text that has what it reads (a= b= c= ... echo x and black . on the next line)."""
+    of variables set to nothing in such a text (a= b= c= ... echo x and black . on the next line)."""
     return _LEAD % ({"wrap": wrap, "gap": r"\s", "blank": r"\s?", "value": r"\S*"} if not signs else
                     {"wrap": wrap, "gap": r"[^\S\n]", "blank": r"(?:\s(?=\S)(?![A-Za-z_]\w*=))?",
                      "value": r"(?:(?![%s](?:[A-Za-z_]\w*=|\s))\S)*" % signs})
@@ -481,10 +483,20 @@ _WEND = r"(?=[\s;&|)<>]|$)"
 # looks at no word inside one. A bracket right behind a name, a ")", a "]" or a "=" opens the arguments of a call
 # or a list in program text (d.get("patch"), $s.Contains('rm'), steps=("install" "train")), and no command. And
 # /c or /k starts a command behind cmd alone: find /c "install" log.txt counts lines
-_WORD_AT = (r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ck]\s)%s"
-            r")(?=[^\s;&|<>()'\"`\\]*['\"\\])((?:" + QUOTED.pattern + "|" + _W1 + ")+)" + _WEND)
+_WORD_GO = (r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ck]\s)%s"
+            r")(?=[^\s;&|<>()'\"`\\]*['\"\\])")
+_WORD_AT = _WORD_GO + "((?:" + QUOTED.pattern + "|" + _W1 + ")+)" + _WEND
 COMMAND_WORD = re.compile(_WORD_AT % _LEADS + "|" + QUOTED.pattern, re.M)
-WORD_ANY = re.compile(_WORD_AT % _lead(_WRAPS, ";&|{`"), re.M)  # is there such a command word? (see _lead)
+# WORD_ANY: may there be such a command word? (see _lead) It reads up to where the word would begin (_WORD_GO), and
+# not the word. COMMAND_WORD passes over a quoted text; a search has nothing that does, so it begins inside one as
+# well, at the { of "r${i}", and from there the word ran on over one quoted piece after the other to the text's
+# end: the square of the length of a loop whose lines hold two quoted texts (3,000 such lines took this search 6 s,
+# and a read-only agent's call went to the timer's question, 21 November 2026). So it says yes where no such word
+# stands (echo "r${i}"), and never no where one does: what it finds is the beginning of every such word. Behind
+# such a yes named() reads the text as it did before this search stood here: a long row of variables in it with
+# the square, and variables set to nothing with a factor for each (see _lead; 39 of a= in front of echo x "r${i}"
+# went to the timer's question). And a run of { in a quoted text is read on from each of them (20,000: one second)
+WORD_ANY = re.compile(_WORD_GO % _lead(_WRAPS, ";&|{`"), re.M)
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
 # formatters, which rewrite a file unless they are told to check only, to print, or to say what they are. Each with
 # .exe too, in any case, as a shell on Windows may name it (was until 20 November 2026: touch.exe, install.exe and

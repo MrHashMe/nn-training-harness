@@ -147,6 +147,10 @@ folder's repair" and is the last before "1. What changed and why" now. It is two
 more local commits; the new repairs are read by nobody but me, and nothing is pushed. After the merge
 the pilot's branch took two commits more, the repair of a regression of its folder's repair that this
 reader did not report and that repair's record; this branch holds neither.
+On your "Yes, merge" of 21 November those two commits are merged into this branch as well, and the joined
+state passes its tests on this machine: its section, "The second merge of the pilot's branch", follows
+"The merge of the three branches and its reading" and is the last before "1. What changed and why" now.
+It is one merge commit and its record, local; nothing is read anew, and nothing is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -963,6 +967,7 @@ Decision record: `docs/upgrade/LEDGER.md`.
     said that they are incomplete for a name with a folder in it; that is left as it is here. A
     second reader, in the pilot's own session, has read `c85f96a` since as well; that session's
     later commit `042a985` words the hint anew and is not in this branch. Point 53.)
+    (Added with point 54: `042a985` is in this branch since, on your "Yes, merge"; point 54.)
 48. **The two faults under a virtual environment on Windows are repaired in a local commit, by a
     session of its own that you started for them. Nothing is pushed or merged, and the repairs are
     read by nobody but me** (20 and 21 November; "The two faults under a virtual environment on
@@ -1118,6 +1123,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     repair, a batch-file evaluator that is no longer started on Windows in a project folder whose
     name holds a comma or the like. By that session's commit it is repaired on the pilot's branch,
     in `042a985`, which came after the merge and is not in this branch. Point 53.)
+    (Added with point 54: `042a985` is in this branch since, on your "Yes, merge", and the joined
+    state has run and passes its tests; point 54.)
 51. **One fresh reader has gone through the repairs of point 48, on your word. It found a regression
     in the campaign's loop, which is repaired with what else held, in a second local commit. Nothing
     is pushed or merged, and the new repairs are read by nobody but me** (21 November; "The reading
@@ -1208,6 +1215,8 @@ Decision record: `docs/upgrade/LEDGER.md`.
     goes through this reading's repair (I would not for these lines alone); whether this branch, fifteen
     commits after `5ccc2d4` now, is merged with `test/round-9`; and what point 50 left open, less the
     reader.
+    (Added with point 54, by the session that keeps that branch: it has taken these two commits
+    since, on your "Yes, merge", and the joined state has run and passes its tests; point 54.)
 53. **The three sessions' branches are merged into this one, on your word, and one fresh reader has
     gone through the merge and the five repairs that only their authors had read. It found a
     regression of the guard, which is repaired with what else held. All of it is local commits, the
@@ -1276,6 +1285,32 @@ Decision record: `docs/upgrade/LEDGER.md`.
     would keep them); whether the two forms that the repair gives back are acceptable; the flag of
     the detached loop and the remote controller; the cost for a read-only agent, now with more
     forms; the guard's cost on two kinds of long line; the fourth session's branch.
+    (Added with point 54: the pilot's branch is merged again since, on your "Yes, merge", as it
+    stood at `0278baa`. This branch holds point 52 and the repair of that regression now; point
+    54.)
+54. **The pilot's two later commits are merged into this branch, on your word, so the regression of
+    the folder's repair is repaired here as well. The joined state passes its tests on this machine.
+    Nothing is read anew, and nothing is pushed** (21 November; "The second merge of the pilot's
+    branch"). Your word was "Yes, merge", to the question whether I merge the pilot branch's two
+    later commits into this one: `042a985`, which joins the evaluator's path to the project root on
+    Windows only where the loop does not stand in that root, and `0278baa`, its record with point
+    52. The merge commit is `c631d57`. Git joined the code, the tests, the reference and
+    `PROGRESS.md` by itself, and in the first three the pilot's change has the same patch id as on
+    its own branch. In this file I joined six places by hand and kept both texts at each, the
+    pilot's before mine and the points in the order of their numbers; two statements of position in
+    the opening are worded for the new order. The eight test files pass on the joined state on
+    Windows under Python 3.11.7 (2,072 checks), the kit file and the loop file from the 3.8.20
+    environment (1,297 and 267), and the kit file in WSL under 3.12.3 (1,298), with no
+    failed check. On Windows the kit file has one check more than on the state before, the pilot's
+    new one; in WSL, where that check does not run, it has the count of the state before. All of
+    that on this machine only: GitHub's machines, a Mac among them, have run nothing of this branch
+    after `409182f`. `042a985` is read by the pilot's session only and `f2338d6` by me only; no
+    reader went through the joined state, which your word did not cover. `test/round-9` on GitHub
+    stays at `409182f` and `main` at `e587b4f`; your real install is untouched and no package was
+    installed. The test passes put terminal windows on your screen again. Not merged: what the
+    pilot's session commits after `0278baa`, and the fourth session's branch. Open: where this
+    branch goes, to `test/round-9` and after it `main`; and what points 52 and 53 left open, less
+    the merge.
 
 ## Round 2 (12 November 2026)
 
@@ -14068,6 +14103,8 @@ Dates and times in this section are UTC.
    three branches and its reading". It reported no fault in this repair; a second reader, in the
    pilot's own session, led to a regression of it, which the pilot's branch repairs in `042a985`
    and this branch does not hold. Nothing is pushed.)
+   (Added with point 54: this branch holds `042a985` since, on your "Yes, merge"; "The second merge
+   of the pilot's branch".)
 
 ### What changed in the kit
 
@@ -14319,6 +14356,7 @@ nothing else is said. "Before" is the kit of `df59ad2`.
   (Added with point 53: answered by your "After the sessions". One reader went through both with the
   merged branches and reported no fault in either. A second one, which you started in the pilot's own
   session, led to a regression of `31af10c`; point 53 says where that stands.)
+  (Added with point 54: that regression's repair is in this branch since, on your "Yes, merge".)
 - **Whether a relative `--root` with `--detach` is repaired.** I would, as a small change of its own
   with one check: the call hands the project root to the loop in the background as it found it, the way
   it hands the agent's program now.
@@ -14403,6 +14441,8 @@ branch, `claude/brave-robinson-27cbd9`: the commit `042a985` for the code and on
    The session that started this one has joined this branch, as far as `eded7ce`, with two other
    branches on a local branch of its own: that branch has the folder's repair and not this reading's
    repair, until it takes these two commits.
+   (Added with point 54, by the session that keeps that branch: it has taken them, on your "Yes,
+   merge"; "The second merge of the pilot's branch".)
 
 ### The reader and its brief
 
@@ -14689,6 +14729,9 @@ Against the branch as it stood before this reading, which is the kit of `31af10c
   tried here. The records of all sides are joined by hand as before: points 39, 40, 44 and 46 of "Read
   this first" are the other session's, 48, 49 and 51 two more sessions', and this branch has 38, 41, 42,
   43, 45, 47, 50 and 52.
+  (Added with point 54, by the session that keeps that branch: it has taken both commits, this
+  record's too, on your "Yes, merge"; this file was joined by hand, and the joined state has run and
+  passes its tests. "The second merge of the pilot's branch".)
 - Unchanged from "The folder's repair": whether the third place stays, and whether a relative `--root`
   with `--detach` is repaired. Unchanged from the sections before it: what they list.
 
@@ -14778,6 +14821,8 @@ In short:
     and no space. The reader of this section had read the same two commits and reported no fault in
     them, and I found none. This branch holds `31af10c` as it was merged, so it has that regression
     until the pilot's branch is merged again ("After the merge").
+    (Added with point 54: it is merged again, on your "Yes, merge"; "The second merge of the
+    pilot's branch".)
 11. **The test passes put terminal windows on your screen again,** fewer than before: I ran the loop
     file under the environment once, on the merged state, and not the remote file ("Windows on your
     screen").
@@ -14815,6 +14860,7 @@ In short:
   search of a line's variables. Your word named three, and that branch had no commit of its own when I
   looked last (08:53); it stands at `b5331fb`. And `042a985` and `0278baa`, the two commits that
   the pilot's branch took after the merge ("After the merge").
+  (Added with point 54: those two commits are merged since; the fourth session's branch is not.)
 
 ### The passes on the merged state
 
@@ -15069,6 +15115,10 @@ that record's headings. I ran none of it.
 - That session's record takes point 52 of "Read this first" and a section "The reading of the folder's
   repair". This section's point is 53 for that reason.
 
+(Added with point 54: the two commits are merged into this branch since, on your "Yes, merge"; this
+file was joined by hand, and the joined state has run and passes its tests. "The second merge of the
+pilot's branch".)
+
 ### The change, and its tests
 
 One commit, `f2338d6`, 103 lines added and 13 removed in five files, after `f38c4d8`.
@@ -15157,6 +15207,7 @@ showed no window in that session's probes.
   depends on the test file's own speed: named above, none changed.
 - **The fourth session's branch** is not merged, and neither are **`042a985` and `0278baa`,** the two
   commits that the pilot's branch took after the merge.
+  (Added with point 54: `042a985` and `0278baa` are merged since, on your "Yes, merge".)
 - **Nothing is pushed,** and nothing ran on GitHub's machines. Your real install is untouched.
 - **The ledger's rows are not touched:** the merge and the repairs decide nothing that has a row. Its
   head has one note more, on the state of the round.
@@ -15166,6 +15217,8 @@ showed no window in that session's probes.
 - **Whether I merge the pilot's branch again,** as it stands now, at `0278baa`. I would, before this
   branch goes anywhere: without `042a985` this branch has a regression that is known. It means the two
   records joined by hand once more, and the passes on the joined state again.
+  (Added with point 54: answered by your "Yes, merge", and done; "The second merge of the pilot's
+  branch".)
 - **Where this branch goes.** It holds the round as one state now: `409182f`, the three sessions'
   work as it stood at 06:18, and this reading's repairs. A push to `test/round-9` would run GitHub's
   six jobs on all of it for the first time, on macOS, on bare Linux and on a second Windows; `main`
@@ -15205,6 +15258,135 @@ scratch scripts that are not part of the kit; the tips of the sessions' local br
 machine at 08:53; the messages and the file lists of `042a985` and `0278baa`, and that session's
 record, read in its work tree at 08:12, before it was committed, and not written to; the helpers that
 PROGRESS.md names.
+
+## The second merge of the pilot's branch (21 November 2026): its two later commits are in this branch, and the joined state passes its tests
+
+Your word: "Yes, merge" (about 09:00 on 21 November), to my question after the last section's work,
+"Merge the pilot branch's two later commits into this branch?" Beside the question I had written what a
+yes means: the two records joined by hand once more, and the passes on the joined state again. I took
+the word to cover the merge of `042a985` and `0278baa` into this branch locally, the joining of the
+records, the passes on the joined state, and this record, in local commits. Not covered: a push, `main`,
+your real install, a reader, the branch of the fourth session, and whatever a session commits after
+`0278baa`. Dates and times in this section are UTC, and of 21 November. "I" is the session that keeps
+this record, as in the last section.
+
+In short:
+
+1. **The pilot's two later commits are in this branch.** The merge commit is `c631d57` (09:09), with
+   `107aaa3` and `0278baa` as its parents; the pilot's branch stood at `0278baa` when I merged it (looked
+   at 09:05). So this branch has the repair of the regression that points 52 and 53 name: on Windows the
+   evaluator's path is joined to the project root only where the loop does not stand in that root, and
+   an evaluator that is a batch file starts again in a project folder whose path holds a comma, `;`,
+   `=`, a bracket or `&` and no space, with the loop called in the root. With it comes what point 52
+   says that repair takes back: such an evaluator named with forward slashes starts only where the loop
+   is called outside the root.
+2. **Git joined the code by itself, and the pilot's change arrives as it stands on its own branch.**
+   `expctl.py`, `nnloop.py`, `tests/test_kit.py` and `docs/REFERENCE.md`: the patch of those four files
+   against this branch's state before the merge has the same patch id as `042a985` against its parent.
+   Three of the four were changed on this side too, in `f2338d6`. `PROGRESS.md` joined by itself as
+   well, the pilot's entry before mine.
+3. **I joined this file by hand at six places and kept both texts at each,** the pilot's before mine,
+   and the points of "Read this first" in the order of their numbers. Two statements of position in the
+   opening are worded for the new order ("The merge").
+4. **The joined state passes its tests on this machine.** The eight test files on Windows under Python
+   3.11.7 (2,072 checks), the kit file and the loop file from the 3.8.20 environment (1,297 and
+   267), and the kit file in WSL under 3.12.3 (1,298): no failed check. On Windows the kit file
+   has one check more than on the state before, the pilot's new one; in WSL, where that check does not
+   run, it has the count of the state before.
+5. **Nothing is read anew.** `042a985` is read by the pilot's session only, and `f2338d6` by me only. No
+   reader went through the joined state; your word did not cover one.
+6. **Nothing is pushed.** `test/round-9` on GitHub stays at `409182f` and `main` at `e587b4f`; your real
+   install is untouched, and no package was installed. GitHub's machines, a Mac among them, have run
+   none of this branch after `409182f`.
+7. **Not merged:** whatever the pilot's session commits after `0278baa`, and the fourth session's
+   branch, which your words have not named.
+
+### The merge
+
+- **The state before.** This branch stood at `107aaa3`, the record of the last section, on `f2338d6`.
+  The pilot's branch stood at `0278baa`, two commits after `eded7ce`, where the first merge had taken
+  it: `042a985` (08:05), four files with 39 lines added and 16 removed, and `0278baa` (08:14), its
+  record, 535 lines added in this file and in `PROGRESS.md`.
+- **What git joined by itself:** `expctl.py`, `nnloop.py`, `tests/test_kit.py`, `docs/REFERENCE.md` and
+  `PROGRESS.md`. What git joins by itself is not thereby right; here the equal patch id says that the
+  pilot's lines arrive unchanged, and the passes below are the check of the whole.
+- **What I joined by hand:** this file, at six places where both sides had added text. In the opening
+  the pilot's eighth statement follows its seven, before the note of the merges and my statement. In
+  "Read this first" point 50 has the note of point 52 and then that of point 53, and points 51, 52 and
+  53 follow in that order. In "The folder's repair" three notes of point 52 stand before those of point
+  53. And the pilot's section "The reading of the folder's repair" stands before "The merge of the three
+  branches and its reading". Against the commit before, this file has the 439 lines of `0278baa` and ten
+  lines for nine at the two statements named next.
+- **What I reworded:** two statements of position in the opening that the new order had made untrue.
+  The note after the pilot's statements speaks of eight statements and eight sections, and says that
+  "The reading of the folder's repair" is not the last section; my statement on the first merge says
+  that its section follows "The reading of the folder's repair". Nothing else of either side's record
+  was changed by the merge.
+- **The notes of this section** are marked "Added with point 54". They stand at the thirteen places of
+  this file where one side or the other says that this branch does not hold the two commits, that their
+  merge is open, or that the joined state has not run: at points 47, 50, 52 and 53, twice in "The
+  folder's repair", twice in "The reading of the folder's repair", and five times in "The merge of the
+  three branches and its reading". The texts themselves stand as they were written.
+- **The ledger** did not change in the merge: neither commit touches `LEDGER.md` or `scout/`. Its head
+  has one note more, on the state of the round.
+
+### The passes on the joined state
+
+On a clone of `c631d57`. Checks are counted in the logs as the lines that begin with `PASS` and `FAIL`.
+
+| Where | Files | Checks | Failed |
+|---|---|---|---|
+| Windows, Python 3.11.7 | all eight | 2,072 (kit 1,297, the seven others as on the repaired state) | 0 |
+| Windows, the 3.8.20 environment | kit, loop | 1,297 and 267 | 0 |
+| WSL, Python 3.12.3 | kit | 1,298 | 0 |
+
+The kit file has 1,297 checks on Windows, one more than on the repaired state of the last section: the
+pilot's new check, "the loop's evaluator, called in the project root: a batch file by a relative path
+starts as written, also where the project's path holds a comma". It is for Windows only, so the count in
+WSL is that of the repaired state. The seven other files have the counts of the last section. The older
+check "session hook injects status after compaction", which depends on the kit file's own speed, passed
+in all three passes of the kit file. The passes ran one after the other: in WSL from 09:10, then on
+Windows under Python 3.11.7 from 09:14 to 09:46 and under the 3.8.20 environment to 10:07.
+
+Not run on the joined state: the six other files under the 3.8.20 environment; any file under 3.15; the
+seven other files in WSL; macOS and bare Linux. The pilot's session ran the eight files on its own
+branch under four interpreters, by its record (point 52); its branch has neither the two faults' repair
+nor the guard's.
+
+### Windows on your screen
+
+I ran no watcher, so this is from what ran and from the earlier records' measures. The loop file ran
+once under the 3.8.20 environment: two windows of 7 to 8.5 seconds, from its detached starts. The eight
+files ran once under Python 3.11.7: about twenty flashes.
+
+### Not done, and why
+
+- **No reader.** `042a985` is read by its author only, and so is `f2338d6`. Your word covered the merge
+  and its tests.
+- **The pilot's session's two open questions** are not answered here: whether a batch-file evaluator
+  named with forward slashes should start also where the loop is called in the project root, and whether
+  the kit refuses, before it starts anything, a batch file whose path or arguments `cmd.exe` will
+  split. They are point 52's.
+- **Later commits.** The pilot's session was at work when I merged; its branch stood at `0278baa` when
+  I looked last (10:10), and what it commits after that is not here. The other two sessions' branches
+  stood where the first merge took them, and the fourth session's at `b5331fb`, not merged.
+- **Nothing is pushed,** and nothing ran on GitHub's machines. Your real install is untouched.
+- **The ledger's rows are not touched.**
+
+### What needs your decision
+
+- **Where this branch goes.** It holds the round as one state: `409182f`, the three sessions' work as
+  far as `0278baa`, `12876c9` and `b5331fb`, and the last section's repairs. A push to `test/round-9`
+  would run GitHub's six jobs on all of it for the first time; `main` and the ninth installer run on
+  your real install come after that, each on your word.
+- Unchanged from "The merge of the three branches and its reading": what it lists, less its first
+  question, which your word answered.
+- Unchanged from "The reading of the folder's repair": its questions, less the merge with this branch.
+
+Sources: the merge commit `c631d57` and its two parents; `git patch-id` on the four files' patches; the
+kit's tests on clones of `c631d57`, on Windows under Python 3.11.7 and the 3.8.20 environment and in WSL
+under 3.12.3, on 21 November 2026, on this machine; the tips of the sessions' local branches, read on
+this machine at 09:05 and at 10:10; the earlier sections' measures of the windows.
 
 ## 1. What changed and why
 

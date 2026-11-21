@@ -547,6 +547,9 @@ round are UTC.
   merge of the three branches and its reading". None of it decides anything that has a row here. All of it is
   local commits, and their tests ran on this machine only; the public branch `test/round-9` and `main` are
   unchanged. The pilot's branch has two commits more since the merge, which this branch does not hold.)
+  (Added later on 21 November: on the user's "Yes, merge" those two commits are merged into this branch as
+  well, and the joined state passes its tests on this machine; REPORT.md, "The second merge of the pilot's branch".
+  They decide nothing that has a row here either. Nothing is pushed.)
 
 ## Coverage map
 

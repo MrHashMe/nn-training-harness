@@ -85,6 +85,9 @@ the five repairs that only their authors had read; and what held is repaired in 
 regression of the guard behind `cmd /c`, an older gap beside it, and two faults of the controller
 ("The merge of the three branches and its reading" below). Nothing is pushed. The pilot's
 branch has two commits more since the merge, which this branch does not hold.
+On the user's "Yes, merge" of 21 November those two commits are merged into this branch as well, and
+the joined state passes its tests on this machine ("The second merge of the pilot's branch" below).
+Nothing is pushed.
 
 # Upgrade progress
 
@@ -3700,6 +3703,9 @@ without this reading's repair; a merge of `042a985` with `f38c4d8`, tried in mem
 files by themselves, and with each of the other three heads the kit's files join and the two records
 conflict; none of the joined states has run; the records are joined by hand); and what the last
 entry lists, less the reader.
+(Added later on 21 November, by the session that keeps `claude/kit-commit-verification-e52f2b`: that
+branch has taken both commits since, on the user's "Yes, merge", and the joined state has run and
+passes its tests; "The second merge of the pilot's branch" below.)
 
 ## The merge of the three branches and its reading (21 November): local only
 
@@ -3788,6 +3794,8 @@ Done on those words:
   memory against this entry's code commit, the pilot's branch joins by itself in the code, the
   tests, the reference and this file as it stood before this entry; REPORT.md wants joining by
   hand again.
+  (Added later on 21 November: both commits are merged since, on the user's "Yes, merge"; the next
+  entry.)
 - REPORT.md has the section "The merge of the three branches and its reading", point 53 of "Read
   this first", a statement in the opening, and a note at 21 places that this reading puts out of
   date. The ledger's head has a note, and the ledger is built again (1,740 rows, as before).
@@ -3810,6 +3818,54 @@ acceptable; the flag of the detached loop and the remote controller; the cost fo
 agent, now with more forms; the guard's cost on long lines; the fourth session's branch; whether
 the kit file's check of the session hook is made independent of the file's speed; whether `main`
 takes the round; the ninth installer run; the other questions of the entries before this one.
+(Added later on 21 November: the first of these is answered by the user's "Yes, merge", and done; the
+next entry.)
+
+## The second merge of the pilot's branch (21 November): local only
+
+The user's word, 21 November: "Yes, merge" (about 09:00), to the question whether I merge the pilot
+branch's two later commits into this branch. With the question I had said what a yes means: the two
+records joined by hand once more, and the passes on the joined state again. It is not a word for a
+push, for `main`, for the real install, for a reader, for the fourth session's branch or for later
+commits of any session. Dates and times in this entry are UTC.
+
+Done on that word:
+- The merge: `c631d57` (09:09) merges `0278baa`, which brings `042a985` (the evaluator's path is
+  joined on Windows only where the loop does not stand in the project root, the repair of the
+  regression of `31af10c`) and its record with point 52. The pilot's branch stood at `0278baa` when
+  I merged (09:05). After `409182f` this branch holds 26 commits.
+- Joined by git itself: `expctl.py`, `nnloop.py`, `tests/test_kit.py`, `docs/REFERENCE.md` and this
+  file, where the pilot's entry stands before the entry of the first merge. In the four files of
+  code, tests and reference the pilot's change has the same patch id as on its own branch.
+- Joined by hand: REPORT.md at six places, both texts kept, the pilot's before this branch's and
+  the points of "Read this first" in the order of their numbers. Two statements of position in its
+  opening are worded for the new order; the merge commit's message names both.
+- Tests on the joined state `c631d57`: the eight files on Windows under Python 3.11.7 (2,072
+  checks), the kit file and the loop file from the 3.8.20 environment (1,297 and 267), the
+  kit file in WSL under 3.12.3 (1,298); no failed check. On Windows the kit file has one check
+  more than on the state before, the pilot's new one; in WSL that check does not run. The older
+  check of the session hook, which depends on the kit file's speed, passed in all three passes of
+  that file. Not run: the six other files under the environment, any file under 3.15, the seven
+  other files in WSL, macOS, bare Linux.
+- REPORT.md has the section "The second merge of the pilot's branch", point 54 of "Read this
+  first", a statement in the opening, and a note at thirteen places that said this branch does not
+  hold the two commits, that their merge is open, or that the joined state has not run. This file
+  has a sentence in the opening, this entry, three notes at the two entries before it, an answered
+  question, a note at the open ones and a working note. The ledger's head has a note, and the
+  ledger is built again (1,740 rows, as before).
+- Windows on the user's screen: I ran no watcher. The loop file ran once under the environment (two
+  windows of 7 to 8.5 seconds by the earlier entries' measure), the eight files once under Python
+  3.11.7 (about twenty flashes).
+- Nothing pushed. Nothing on the real install. No package installed, nothing deleted. No reader:
+  `042a985` is read by the pilot's session only, `f2338d6` by this one only. Not merged: what the
+  pilot's session commits after `0278baa`, where its branch stood when I looked last (10:10);
+  and `claude/beautiful-bartik-32f1e5`, which stood at `b5331fb`.
+- Left on this machine: `claude/r9-snap-q` with its clones ("Working notes").
+
+Next, each a separate word of the user's: whether the merged round goes to `test/round-9`; whether
+a reader goes through the repairs of the last entry or through `042a985`; the pilot's session's two
+questions, a batch-file evaluator by forward slashes in the project root and a refusal for a batch
+file that `cmd.exe` will split; and the other questions of the last entry, less its first.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -4218,6 +4274,12 @@ takes the round; the ninth installer run; the other questions of the entries bef
   record, in local commits, as I had said before it. It is not a word for a push, for `main`, for
   the real install, for the deletion of a branch or a worktree, for a second reader or for the
   branch of a fourth session.
+- Answered on 21 November ("Yes, merge"), from the merge of the three branches: whether the pilot
+  branch's two later commits are merged into this one. "The second merge of the pilot's branch"
+  above. The word covers that merge locally, the joining of the records, the tests on the joined
+  state and their record, as I had said with the question. It is not a word for a push, for
+  `main`, for the real install, for a reader, for the fourth session's branch or for later
+  commits of any session.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -4270,6 +4332,9 @@ takes the round; the ninth installer run; the other questions of the entries bef
   detached loop and the remote controller, the cost for a read-only agent, now with more forms,
   and the guard's cost on long lines. The snapshot branches are sixteen, with `claude/r9-snap-o`
   and `claude/r9-snap-p`.)
+  (Added later on 21 November, by the same session: the first of these is answered, "Yes, merge",
+  and done; "The second merge of the pilot's branch" above. The others stand. The snapshot
+  branches are seventeen, with `claude/r9-snap-q`.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted
@@ -4503,6 +4568,9 @@ takes the round; the ninth installer run; the other questions of the entries bef
   in memory. `linelen.py`, `eol.py`, `points.sh` and `branches.sh` check the changed files' line
   lengths and line ends and read the other branches' points and tips. The logs of the passes are in
   `logs\` there, the timings in `time-out.txt` and the comparison's result in `gen-out.txt`.
+- The second merge of the pilot's branch, 21 November: the joined state is on `claude/r9-snap-q`
+  (`c631d57`), with the clone `kit-r9-q` in `%TEMP%\nnkit-upgrade\` and one of the same name in
+  WSL; the logs of its passes are `q-*.log` in `r9\` there.
 - The merge and its reading of 21 November: the merged state is on `claude/r9-snap-o` and the
   repaired one on `claude/r9-snap-p`, with the clones `kit-r9-o` and `kit-r9-p` in
   `%TEMP%\nnkit-upgrade\`; `kit-r9-pold` there is the repaired state's tests with the guard and the

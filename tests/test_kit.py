@@ -2496,6 +2496,42 @@ def main():
         ("Bash", {"command": "7Z.EXE x bundle.7z"}, "ask"),
         ("Bash", {"command": "touch.exe sub/new.py; install.exe -m 644 x.py sub/y.py; ls touch.exe"}, None),
         ("Bash", {"command": "black.exe --check eval/metrics.py; ruff.exe format --diff eval/metrics.py"}, None),
+        # From the repair of 21 November 2026: a program's name in quotes that hold a blank, one put together from
+        # quoted pieces and one behind a path with backslashes is that program, wherever a command may start and
+        # whatever sign ends its word (were None: plain() leaves the quotes of a name with a blank in it, and no
+        # rule saw the program behind them)
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "'C:/Program Files/Git/usr/bin/TOUCH.EXE' eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "\"/c/Program Files/Git/usr/bin/touch\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "t'ou'ch eval/metrics.py"}, "ask"),
+        ("PowerShell", {"command": "& \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" eval\\metrics.py"}, "ask"),
+        ("PowerShell", {"command": "& 'C:\\Program Files\\Git\\usr\\bin\\touch.exe' eval\\metrics.py"}, "ask"),
+        ("Bash", {"command": "ls; \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "ls | \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "ls && \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "X=1;\"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "echo $(\"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py)"}, "ask"),
+        ("Bash", {"command": "echo eval/metrics.py | xargs \"C:/Program Files/Git/usr/bin/touch.exe\""}, "ask"),
+        ("Bash", {"command": "cmd /c \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "cmd.exe /d /c \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "bash -c '\"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py'"}, "ask"),
+        ("Bash", {"command": "powershell -c \"& 'C:/Program Files/Git/usr/bin/touch.exe' eval/metrics.py\""}, "ask"),
+        ("Bash", {"command": "uv run --frozen \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/install.exe\" -m 644 x.py eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/rm.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Python311/Scripts/black.exe\" eval/metrics.py"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/tar.exe\" -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/patch.exe\" -p1 -i fix.patch"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/patch.exe\"; ls"}, "ask"),
+        ("Bash", {"command": "(\"C:/Program Files/Git/usr/bin/patch.exe\")"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/patch.exe\"<fix.patch"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/patch.exe\">out.txt"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/patch.exe\"|cat"}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/patch.exe\""}, "ask"),
+        ("Bash", {"command": "'patch'<fix.patch"}, "ask"),
+        # (a search's name too: the limits of that rule named these two forms)
+        ("Bash", {"command": "g'r'ep -rn label ."}, "ask"),
+        ("Bash", {"command": "\"C:/Program Files/Git/usr/bin/grep.exe\" -rn label ."}, "ask"),
         # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends
         # its command as well as at a blank (tar x) and patch<fix.patch), the shell's pipe into awk ends what its
         # own printf lends awk, and a quoted command behind awk's bar is one whatever stands behind it

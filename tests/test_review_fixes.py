@@ -313,7 +313,50 @@ def main():
                       ("touch.exe notes.md", "deny"), ("patch.exe -p1 -i fix.patch", "deny"), ("black.exe .", "deny"),
                       ("install.exe -m 644 x.py sub/y.py; ruff.exe format .", "deny"),
                       ("ruff.exe format .", "deny"), ("isort.exe .", "deny"),  # each alone (the second reading)
-                      ("black.exe --check .; ruff.exe format --diff .; ls touch.exe", None)]:
+                      ("black.exe --check .; ruff.exe format --diff .; ls touch.exe", None),
+                      # were None until 21 November (the repair of that day): a program's name in quotes, put
+                      # together from quoted pieces or behind a path with backslashes is that program for these
+                      # rules too, wherever a command may start and whatever sign ends its word
+                      ("'touch' notes.md", "deny"), ("\"rm\" notes.md", "deny"), ("t'ou'ch notes.md", "deny"),
+                      ("C:\\msys64\\usr\\bin\\touch.exe notes.md", "deny"),
+                      ("C:\\msys64\\usr\\bin\\patch.exe -p1 -i fix.patch", "deny"),
+                      ("C:\\msys64\\usr\\bin\\tar.exe -xf bundle.tar", "deny"),
+                      ("\"C:/Program Files/Git/usr/bin/touch.exe\" notes.md", "deny"),
+                      ("'touch.exe' notes.md", "deny"), ("\"TOUCH.EXE\" notes.md", "deny"),
+                      ("'TOUCH' notes.md", "deny"), ("C:\\msys64\\usr\\bin\\TOUCH.EXE notes.md", "deny"),
+                      ("'install' -m 644 x.py sub/y.py", "deny"),
+                      ("C:\\msys64\\usr\\bin\\install.exe -m 644 x.py sub/y.py", "deny"),
+                      ("'black' .", "deny"), ("C:\\Python311\\Scripts\\black.exe .", "deny"),
+                      ("'tar' -xf bundle.tar", "deny"), ("'git' commit -m x", "deny"), ("'kill' 123", "deny"),
+                      ("ls; 'touch' notes.md", "deny"), ("ls | 'touch' notes.md", "deny"),
+                      ("ls && \"rm\" notes.md", "deny"), ("X=1;'touch' notes.md", "deny"),
+                      ("echo $('touch' notes.md)", "deny"), ("echo \"$('touch' notes.md)\"", "deny"),
+                      ("echo notes.md | xargs \"rm\"", "deny"),
+                      ("cmd /c C:\\msys64\\usr\\bin\\touch.exe notes.md", "deny"),
+                      ("bash -c \"'touch' notes.md\"", "deny"),
+                      ("bash -c 'C:\\msys64\\usr\\bin\\touch.exe notes.md'", "deny"),
+                      ("powershell -c \"& 'touch' notes.md\"", "deny"), ("uv run 'touch' notes.md", "deny"),
+                      ("& 'touch' notes.md", "deny"), ("& \"C:\\msys64\\usr\\bin\\touch.exe\" notes.md", "deny"),
+                      ("'patch'; ls", "deny"), ("('patch')", "deny"), ("'patch'<fix.patch", "deny"),
+                      ("'patch'|cat", "deny"), ("'patch'", "deny"),
+                      ("C:\\msys64\\usr\\bin\\patch.exe; ls", "deny"), ("(C:\\msys64\\usr\\bin\\patch.exe)", "deny"),
+                      ("C:\\msys64\\usr\\bin\\patch.exe<fix.patch", "deny"),
+                      ("C:\\msys64\\usr\\bin\\patch.exe|cat", "deny"),
+                      # and a quoted word in a program's text, in a list that a variable is set to, in a variable's
+                      # value or behind another program's /c is no command: these passed before, and the reading
+                      # that sees the names above lets them pass (the plain form would refuse the first three)
+                      ("python -c \"print(\\\"a > b\\\")\"", None),
+                      ("python -c 'd = {}; print(d.get(\"patch\"))'", None),
+                      ("python -c \"import json; print(json.load(open('runs/x/meta.json')).get('install'))\"", None),
+                      ("python -c \"import json; d = json.load(open('runs/x/meta.json')); "
+                       "'install' in d and print(d['install'])\"", None),
+                      ("bash -c \"python -c \\\"d = {}; print(d.get('patch'))\\\"\"", None),
+                      ("steps=(train \"install\"); echo \"${steps[@]}\"", None),
+                      ("ls runs/x; out=\"runs/x/install\"", None),
+                      ("$s = Get-Content runs\\x\\log.txt -Raw; $s.Contains('rm')", None),
+                      ("find /c \"install\" runs\\x\\log.txt", None),
+                      ("& \"C:\\Program Files\\Git\\usr\\bin\\head.exe\" -n 5 runs\\x\\log.txt; "
+                       ".\\.venv\\Scripts\\python.exe -c \"print('touch')\"", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
 

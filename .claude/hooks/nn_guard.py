@@ -387,7 +387,7 @@ _LEAD = (r"\s*(?:(?:(?:%s)(?:\s+(?:-[npuIC]|--(?:name|prefix|with|from|python|pr
          r"\s+-\S+|\s+\d\S*)*|[A-Za-z_]\w*=\s?\S*)\s+)*")
 COMMAND_START = re.compile(r"(?:^|.*[({`])" + _LEAD % _WRAP + r"(?:\S*/)?$", re.S)
 # a command word in quotes ("grep" -r x ., $'grep', behind xargs too) is the same command. Not one with a blank in
-# it: unquoted it would be two
+# it: unquoted it would be two (that one, and a word put together from quoted pieces, is read by named())
 QUOTED_COMMAND = re.compile(r"((?:^|[;&|({`])" + _LEAD % (_WRAP + "|xargs") + r")\$?(['\"])([\w./:-]+)\2"
                             r"(?=[\s;&|)]|$)", re.M)
 # Files of notes. The edit tools write their text unread, because documentation may name the test set, so a command
@@ -409,6 +409,13 @@ _PROG = (r"(?:(?:ba|z|da|k|c|tc|fi)?sh|cmd|python[0-9.]*|pypy[0-9.]*|py|node|den
          r"pwsh|powershell)(?:\.exe)?")
 # the word ends there: `source: notes.md` in a configuration file and `cmd = [...]` in a program are no commands
 _RUNNER = r"(?:" + _PROG + r"|source|\.)(?=\s|<|$|[;&|)])"
+# The program whose flag a text stands behind, by the end of its word, since lex() takes a path's backslashes off
+# (eval, trap and iex are their own flag). And those of them that are a shell, which reads the text as a line:
+# sh, bash, zsh, dash, ksh, csh, tcsh, fish, pwsh, cmd, powershell and the three.
+# shortcut: the last word before the flag that ends like one counts, so a word that only ends so (publish -c) is
+# taken for a shell, and behind bash --rcfile x.py -c the text counts as python's; that takes each command's words
+FLAG_PROG = re.compile(r"(?:" + _PROG + r"|eval|trap|iex|invoke-expression)$", re.I)
+SHELL_PROG = re.compile(r"\w{0,2}sh|cmd|powershell|eval|trap|iex|invoke", re.I)
 # a runner's options and their values, on its line: words without a dot or a slash, and none that was quoted text
 # with blanks in it (the code behind -c or -e, whose next argument is data). -m counts only with a module that runs
 # the file it is given
@@ -429,6 +436,14 @@ SPLICES_NOTES = re.compile(
 # Where a word ends: at a space, at the line's end, or at a sign that ends a command or opens a redirection (tar x;
 # patch<fix.patch). Not at "(": patch(x) is a call in program text, and install() { a function of the shell
 _WEND = r"(?=[\s;&|)<>]|$)"
+# A command word with a quote or a backslash in it, as a shell takes it where a command may start: the whole word,
+# with the pieces of it that stand in quotes. Or a quoted text anywhere else, which named() passes over, so that it
+# looks at no word inside one. A bracket right behind a name, a ")", a "]" or a "=" opens the arguments of a call
+# or a list in program text (d.get("patch"), $s.Contains('rm'), steps=("install" "train")), and no command. And
+# /c or /k starts a command behind cmd alone: find /c "install" log.txt counts lines
+COMMAND_WORD = re.compile(
+    r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ck]\s)" + _LEADS
+    + r")(?=[^\s;&|<>()'\"`\\]*['\"\\])((?:" + QUOTED.pattern + "|" + _W1 + ")+)" + _WEND + "|" + QUOTED.pattern, re.M)
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
 # formatters, which rewrite a file unless they are told to check only, to print, or to say what they are. Each with
 # .exe too, in any case, as a shell on Windows may name it (was until 20 November 2026: touch.exe, install.exe and
@@ -1218,6 +1233,34 @@ def unquoted_bodies(text: str, paired: bool = False) -> str:
     return "\n".join(lines)
 
 
+def named(text: str) -> str:
+    """The text with each command word that stands in quotes, is put together from quoted pieces or is written with
+    backslashes as its program's bare name, which is how the rules know a program:
+    "C:/Program Files/Git/usr/bin/touch.exe" x and C:\\msys64\\usr\\bin\\touch.exe x are touch.exe x, and t'ou'ch x
+    is touch x. Until 21 November 2026 no rule saw the first, whose quotes plain() leaves for the blank in them, or
+    the third, and a read-only agent's rules, which do not read the plain form, saw none of the three. Only a whole
+    command word changes, into a name without quotes, so every other quote of the text pairs as it did, and a quoted
+    word in a program's text stays one: print(\\"a > b\\"), d.get("patch"). A word that sets a variable (X="a/b") or
+    stands in a list that one is set to (steps=(train "install")) stays as well, and so does one whose last part is
+    no name ("my notes", "$tool").
+    Like every reading this may name more than the shell would: a quoted word where a command may start is a
+    command's name to a POSIX shell and a text to PowerShell ('install' -in $steps, a switch's case 'patch'), and
+    on a line of its own in a here-document it may be a program's text. Each is read as the bare word is read there.
+    shortcut: one pass, so behind a wrapper that is itself quoted ("sudo" "rm" x) the command word stays in its
+    quotes here (plain() takes them off a name without a blank, for the main session's rules); a blank that a
+    backslash escapes (/c/Program\\ Files/Git/usr/bin/touch.exe) and a quoted blank in what leads to the word
+    (X="a b" 'touch' x) end the word or the search early, and a word that stays is passed over with all that leads
+    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words"""
+    def bare(m):
+        w = m.group(2) or ""
+        path = QUOTED.sub(lambda q: q.group()[1:-1], re.sub(r"\$(?=['\"])", "", w)).replace("\\", "/")
+        name = path.rsplit("/", 1)[-1]
+        return m.group(1) + name if w and "=" not in QUOTED.sub("", w) and "=(" not in m.group(1) \
+            and re.fullmatch(r"[\w.@+-]+", name) else m.group()
+
+    return COMMAND_WORD.sub(bare, text) if re.search(r"['\"\\]", text) else text
+
+
 def readings(cmd: str):
     """The line as another shell reads it, where that is another text, and whether a word of it was too long to
     write out. check_bash reads a backslash as a folder separator, as PowerShell and cmd do. A POSIX shell leaves
@@ -1234,6 +1277,8 @@ def readings(cmd: str):
     Each reading may name more than the shell would (an escape that stands for a control character is read as its
     letter; a POSIX line with a command in backticks right before a closing quote, "`date`", is paired otherwise
     in PowerShell's reading): it is checked in addition to the line as it came.
+    The line and each of these readings is read once more with its command words named plainly, where that is
+    another text: see named().
     shortcut: text only, so a name put together from variables, {a..b} or a command's output passes; that takes
     running the line in a sandbox"""
     held, long, loose = [], [], []  # loose: the "..." of this form of the line that a substitution reaches out of
@@ -1330,6 +1375,7 @@ def readings(cmd: str):
     for win in dict.fromkeys((text, ps(PS_PART, text), uncommented(ps(PS_PART, bodies)), ps(PS_LINE, bodies))):
         win = re.sub(r"`u\{([0-9a-fA-F]{1,6})\}", lambda m: chr(min(int(m.group(1), 16), 0x10FFFF)), win)
         out.append(WIN_ESCAPE.sub("", win).replace("\0", ""))
+    out += [named(t) for t in dict.fromkeys([text] + out)]
     return [t for t in dict.fromkeys(out) if t != cmd], any(long)
 
 
@@ -1539,7 +1585,7 @@ def spliced(text: str):
         yield from commands(s)
 
 
-def inner_code(c: str):
+def inner_code(c: str, shell=None):
     """Text a command hands to a nested shell or an interpreter as one argument (bash -c '...', python -c "...",
     cmd /c "...", powershell -Command "...", eval "...", trap '...' EXIT), also where its flag stands in a group of
     letters or options come first (sh -ec '...', bash -c -- '...'), where it is attached to its flag
@@ -1549,10 +1595,16 @@ def inner_code(c: str):
     command whose output the line takes in ($(...), `...`), unless single quotes make it plain text, and a text
     that the line keeps in a variable and may run from there (c='rm x'; $c  and  $c = 'del x'; iex $c). The caller
     checks it like a command of its own. Not read: a qualifier e whose text is one bare word or a variable, and
-    (+name), which run what the line does not show, as a script does."""
+    (+name), which run what the line does not show, as a script does.
+    shell, a list, takes those of the texts that a shell reads as a line: a command whose output the line takes in,
+    and the text behind the flag of a program that is a shell (bash -c, cmd /c, powershell -Command, eval, trap,
+    iex). Not a program's text in another language (python -c), where a quoted word at a statement's start is no
+    command, and not what reaches a shell from a variable, from standard input or by zsh's qualifier."""
     out = [m.group(3) if m.group(2) else re.sub(r"\\(.)", r"\1", m.group(4)).rstrip(m.group(1) + "]}>")
            for m in ZSH_E.finditer(c)]
-    out += spliced(c)
+    shell, taken = [] if shell is None else shell, list(spliced(c))
+    shell += taken
+    out += taken
     toks, run = lex(c), SHELLS.search(c)
     # a text that the line keeps in a variable (c='rm x'; $c = 'del x') counts where the line may run it: the
     # variable stands where a command starts, also as zsh splits it (${=c}), or the text has more than one word and
@@ -1581,8 +1633,11 @@ def inner_code(c: str):
         out += [x for x in dict.fromkeys([read, " ".join(lits)]) if x]  # and as they stand, which a raw string means
     if not run:
         return out
+    prog = ""  # the program whose flag a text stands behind, up to the sign that ends its command
     for i, t in enumerate(toks):
-        after = "".join(toks[i + 1:i + 2])
+        p = FLAG_PROG.search(t[-24:])
+        prog = "" if re.fullmatch(r"[;&|()]+", t) else p.group() if p else prog
+        after, n = "".join(toks[i + 1:i + 2]), len(out)
         m = ATTACHED.match(t)
         out += [m.group(1)] if m else []
         flag = re.split(r"[{(]", t)[-1]  # PowerShell's block may hold the runner: &{iex '...'}, try{iex '...'}catch{}
@@ -1600,6 +1655,7 @@ def inner_code(c: str):
                 texts += [x for x in args if x[:1] not in ("-", "+", "")][:3]
             out += [x for x in texts if x]
         out += [decoded(after)] if ENCODED.match(t) and decoded(after) else []
+        shell += out[n:] if SHELL_PROG.match(prog) else []
     # a runner without a script takes its code from standard input (echo "..." | sh, bash <<< "..."): there every
     # argument of the line that is more than a plain word or path may be that code
     bare = QUOTED.sub(" '' ", c)
@@ -2694,20 +2750,25 @@ def audit(root: Path, entry):
 
 
 def check_readonly(tool, ti):
-    """Extra rules for the read-only subagents.
-    shortcut: the line is read as it stands and as a POSIX shell reads it, not in the form that plain() gives the
-    main session's rules, so a program that is named in quotes or by a path with backslashes is not seen as that
-    program here (a kept file is asked about all the same: the main rules read the line too). plain() here would
-    refuse harmless program text (print(\\"a > b\\"), d.get("patch") in single quotes); upgrade when a shell's
-    command word can be told from a quoted word in a program's text"""
+    """Extra rules for the read-only subagents. They read the line as it stands and as each shell may read it, and
+    since 21 November 2026 each of those, and each text that the line hands to a shell, once more with its command
+    words named plainly (see named()): until then a program in quotes or behind a path with backslashes was not
+    seen as that program here ('touch' notes.md, C:\\msys64\\usr\\bin\\touch.exe notes.md).
+    shortcut: not in the form that plain() gives the main session's rules, which turns every backslash into a slash
+    and takes the quotes off a word behind a bracket, and would refuse harmless program text here
+    (print(\\"a > b\\"), d.get("patch") in single quotes). So a quoted program is seen here where named() sees one
+    and no further: see its shortcut (a kept file is asked about all the same, because the main rules read the line
+    too). Upgrade with the shell's own splitting of words"""
     if tool in EDIT_TOOLS:
         return [(DENY, "Read-only agent: it may not edit files. Report what needs changing to the main session.")]
     if tool != "Bash":
         return []
-    why = None
-    for cmd in [ti["command"]] + readings(ti["command"])[0]:  # r\m is rm to a POSIX shell
-        c = GIT_GLOBAL.sub("git", GIT_WORD.sub("git", cmd))
-        texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c)]
+    why, lines = None, [ti["command"]] + readings(ti["command"])[0]  # r\m is rm to a POSIX shell, "rm" is rm
+    for cmd in lines:
+        c, shell = GIT_GLOBAL.sub("git", GIT_WORD.sub("git", cmd)), []
+        texts = [QUOTED.sub(" '' ", t) for t in [c] + inner_code(c, shell)]
+        # a text that the line hands to a shell (bash -c "'touch' notes.md") is a line too, where named() changes it
+        lines += [t for t in dict.fromkeys(map(named, shell)) if t not in shell and t not in lines]
         if any(WRITE_VERBS.search(t) or PS_WRITE.search(t) or WRITE_CMDS.search(t) or FORMATS.search(t)
                or EXTRACT.search(t) for t in texts) or PY_WRITES.search(c) \
                 or (any(LANG.search(t) for t in texts) and LANG_WRITES.search(c)) \

@@ -718,14 +718,34 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   variable: set for the kit and for `cmd.exe`, set for the kit alone, and not set. Four of the seventeen names and
   the dot at the end were measured under Python 3.11 alone: `cmd.exe` was asked for 4,316 candidate words with an
   empty environment and for each name of one environment with that name taken out, and the rule agrees with each of
-  696 further starts, with that variable set and not set. The refusal reads the path only: a batch file's arguments,
-  which reach `cmd.exe` without quotes where they have no space, are not checked, and neither are the programs of a
-  launched run, of `on_finish`, of `env --python` and of a remote target's `exec` and `hf` lists, nor the
-  interpreter of the `python` setting where the loop starts it itself, to compare the Python files of a change. A
-  path that begins `\\?\`, which `cmd.exe` took in no form, is not refused, and neither is one with `.` or `..`
-  as a folder behind the file's name (`a\x.cmd\.`), which Windows takes as the file's and `cmd.exe` found in none
-  of 148 starts. And `cmd.exe` was measured with delayed expansion off, as it is unless a machine's settings turn
-  it on.) The agent's program, and the loop's evaluator where the loop is called outside the project root, need
+  696 further starts, with that variable set and not set. The refusal is not made for the programs of a launched
+  run, of `on_finish`, of `env --python` and of a remote target's `exec` and `hf` lists, nor for the interpreter of
+  the `python` setting where the loop starts it itself, to compare the Python files of a change. A path that begins
+  `\\?\`, which `cmd.exe` took in no form, is not refused, and neither is one with `.` or `..` as a folder behind
+  the file's name (`a\x.cmd\.`), which Windows takes as the file's and `cmd.exe` found in none of 148 starts. And
+  `cmd.exe` was measured with delayed expansion off, as it is unless a machine's settings turn it on.) `cmd.exe`
+  reads a batch file's arguments too, and they reach it in quotes only where they have a space. Outside quotes it
+  ends the command at a `&` and a `|`, reads a redirection at `<` and `>` and drops a `^`;
+  every `"` is a quote for it, also one inside an argument, which Python writes as `\"`. In quotes too it ends the
+  line at a line break and puts a value for a variable between two `%` signs: for its name, for the name with `:~`
+  and numbers or with `:` and a text that has a `=` behind it (`%CD:~0,2%`), and for `%=C:%`, the folder `cmd.exe`
+  stands in. The program behind the batch file then gets other arguments, or none, or another command runs. Since
+  21 November 2026 the loop's check before a campaign refuses such arguments, with a sentence that names the sign
+  or the variable: its evaluator's as `loop.eval_command` gives them, with a run's folder and with the self-test's
+  for `{run_dir}`, and the agent's as a session hands them over, once the agent's `--help` has said whether the
+  worktree's settings file is among them. Those folders and that file lie in the project, so a batch file that gets
+  one of them is refused in a project whose path holds a variable's name between `%` signs, or a `&` or a `^` and no
+  space. `final-eval` needed no change: its older check refuses each of those signs, as needing a shell, in its
+  command and in the arguments behind it. (Measured on 21 November 2026 on Windows 11 under Python 3.8 and 3.11,
+  alike under both: 7,597 starts of three batch files, with 144 signs and words in up to nineteen forms of an
+  argument list. 2,835 of them were of a batch file that hands on all its arguments (`%*`): the rule names something
+  in each start where they did not arrive as written, and in 77 where they did, because it refuses whatever follows
+  `:~` behind a name (`%CD:~x%`) and `%=D:%` for every drive, so that it cannot miss a form. Not refused: a comma,
+  `;`, `=` and a space sign other than a space, which change nothing there and part two arguments for a batch file
+  that reads them by number (`%1`), which is that file's own affair; and the arguments of the other starts named
+  above, which no check reads. The agent's arguments were put to the check for Claude Code, with a stand-in agent;
+  Codex's and Cursor's reach it by reading alone. Delayed expansion was off here too.) The agent's program, and the
+  loop's evaluator where the loop is called outside the project root, need
   no backslashes since 21 November 2026: the kit makes their relative path a full one, so the program, a batch
   file too, starts whichever way its slashes point, where the full path is none that is refused. Called in the
   project root, as a loop started with `--detach` is, the evaluator's path goes to Windows as written, so a

@@ -103,6 +103,10 @@ as it stood at `6f2812d` is merged into that session's branch `claude/sharp-fara
 two repairs of the readers' first finding are one function now, and the joined state passes its tests
 on this machine ("The join of the two repairs of names in quotes" below). No reader has gone through
 the joined function yet, and nothing of it is pushed.
+On the user's "After the merge" of 21 November, given in the same session, one fresh reader went
+through the joined function and found no fault of the join. The guard's code stays as it is; nine
+checks are added where no row stood and texts are corrected, in one further local commit on that
+session's branch ("The reading of the join of names in quotes" below). Nothing of it is pushed.
 
 # Upgrade progress
 
@@ -4049,6 +4053,8 @@ Done on that word:
   (about twenty flashes by the earlier entries' measure). By its note the session for the two
   faults ran trials on this machine in the same half hour, so not every window then was mine.
 - Readers: none in this entry. The count of the entry before this one stands.
+  (Added on 21 November with the reading of the join: one reader since, on the joined guard; "The
+  reading of the join of names in quotes" below.)
 - Not here: `f08b6dd`, the record of its push that the other branch took at 12:01, while I joined
   (point 60); `1a277aa` and `9d01f95` on `claude/brave-robinson-27cbd9` (point 56); `74d1e22`,
   `84d7285` and `ebda58d` on `claude/fervent-gould-8d0820` (point 57); `f471473` and `5b0b01f` on
@@ -4064,6 +4070,89 @@ Done on that word:
 Next: one fresh reader on the joined guard, on the user's "After the merge". Then, each a separate
 word of the user's: where this branch goes; whether `f08b6dd` is taken in here; the merge of
 `f471473`; and the questions of the entry before this one, less its first and its third.
+(Added on 21 November with the reading of the join: the reader has read the joined function and
+found no fault of the join; "The reading of the join of names in quotes" below. Where this branch
+goes and whether `f08b6dd` is taken in here are answered by the user's "Yes, join here" in the
+other session, as its note of 12:30 in the sessions' shared folder has it.)
+
+## The reading of the join of names in quotes (21 November): no fault of the join; nine checks and corrected texts, local only
+
+The user's word, 21 November: "After the merge" (11:12), to my question when a fresh reader should go
+through the last reading's repairs. I took it as one reader with read access only and a correctness
+brief on the joined guard, my own run of each finding, the repair of what holds, tests, and local
+commits with their record; beside the question on the merge I had written that the reader and any
+repairs follow in the same place. It is not a word for a second reader, for a push, for `main`, for
+the real install, for a merge of any branch or for a deletion. "I" in this entry is the session of
+the entry before it; "the other branch" is `claude/kit-commit-verification-e52f2b`. Dates and times
+are UTC.
+
+Done on that word:
+- The reader: one fresh session of Opus 5.5, started with the Agent tool, 12:47 to 13:08, 246,436
+  tokens, 59 tool calls. Its brief: correctness of `named()` in the guard of `040d637` against both
+  parents' guards, in eight questions, with a search for ways past the guard ruled out; read access
+  only to the repository, its own files in one folder of the scratch folder, no test file run, four
+  processes at a time. Its report begins "No join fault found." and gives nine findings.
+- The findings, each run by me before I took it: 92 rows on five guards (the merge's, both parents',
+  the first repair's and the guard before), as the main session, under the read-only rules and as an
+  agent's call, through the Bash tool, 13:20 to 14:02; 14 rows more on the merge's guard and on
+  three altered copies of it. Every answer that the reader states holds. One finding is a gap in
+  the tests, four are places where the join answers as one parent did (two of them recorded
+  limits), one is a contrived form on which it is stricter than both parents, two are sentences
+  and one is older faults.
+- The code commit: `01c7bcd` (14:50), four files, 77 lines added and 45 removed. The guard changes
+  in the docstring of `named()` only: without its docstrings its syntax tree is that of `7f68b3d`
+  (`find3\same-code.py`). `docs/REFERENCE.md` at four places. `tests/test_kit.py`: two rows and
+  three comments. `tests/test_review_fixes.py`: six rows, one pair for `named()` and three comments.
+- The nine checks against altered guards. In one process: `named()` of 24 copies of the guard with
+  one piece taken out or changed, on every string of the two test files (`find3\mut.py`,
+  `mut2.py`); at `7f68b3d` eight copies rewrote every string as the guard does, now none. As test
+  files: `tests/test_review_fixes.py` on seven kit copies (14:07 to 14:16), one or two failed checks
+  on each, the ones that check the copy's piece and on one copy an older row that needs the same
+  piece; `tests/test_kit.py` on one copy without two of the tests (13:46 to 13:57), eight failed
+  checks, the two new rows and six older ones that need one of the two.
+- Tests on the commit's files, each once: the eight files on Windows under Python 3.11.7 (2,124
+  checks, 14:21 to 14:48), on a copy made before the commit and compared with it after (all 216
+  files the same), and the kit file and the review-fixes file in WSL under 3.12.3 (1,315 and 228,
+  14:07 to 14:11), on a clone at `7f68b3d` with the working tree's difference laid on. None failed.
+  Two checks more in the kit file and seven more in the review-fixes file than on the merge, on
+  both systems; for that count the review-fixes file ran in WSL on the merge's clone as well
+  (221). Not run: the 3.8.20 environment, Python 3.15, the six other files in WSL, macOS, bare
+  Linux, GitHub's machines.
+- REPORT.md has the section "The reading of the join of names in quotes", point 63 of "Read this
+  first" with a note at point 61, a statement in the opening with a note before it, and a note at
+  nine places: one in the other session's section "The merge of the three branches and its
+  reading", marked as mine, two in "The reading of the repair of names in quotes" and six in "The
+  join of the two repairs of names in quotes". This file has a statement at the end of the summary
+  at its top, this entry, two notes at the entry before it and a working note. The two record
+  files were written after the passes; no test reads them. The ledger is not touched.
+- Windows on the user's screen: I ran no watcher. The eight files ran once under Python 3.11.7
+  (about twenty flashes by the earlier entries' measure). By its note the session for the two
+  faults began test passes of its own at 12:38, some under the two environments, so not every
+  window since then was mine.
+- Readers: this one. With it nineteen and one second reading, about 3,244,000 tokens, by the
+  committed records on the local branches, which I did not check; beyond the user's word the count
+  stays at six and one second reading, about 907,000. The nineteenth is the third reader of the
+  session for the two faults (196,100 tokens), whose record `533690b` came at 14:55.
+- Not changed: any answer of the guard. The harmless lines of findings 2 and 3 stay asked about or
+  refused, the lines of finding 4 pass, and the form of finding 6 is answered more strictly than by
+  either parent; each is in the texts now. The older faults of finding 9 are left.
+- Not here: `f08b6dd` (point 60); `1a277aa`, `9d01f95`, `ebc28f0` and `2ec7149` on
+  `claude/brave-robinson-27cbd9` (points 56 and 59); `74d1e22`, `84d7285`, `ebda58d`, `965aa34`
+  and `533690b` on `claude/fervent-gould-8d0820` (points 57 and 62; the last two came at 14:42
+  and at 14:55, while my tests ran and this entry was written); `f471473` and `5b0b01f` on
+  `claude/beautiful-bartik-32f1e5` (point 58). By the other session's note of 12:30 the user
+  answered "Yes, join here" in that session: it joins the four sessions' branches into its own once
+  their readings are recorded, this branch once this record is committed, and joins `f08b6dd` by
+  hand there. I have that word from the note only.
+- Nothing pushed. Nothing on the real install. No package installed, nothing deleted. No other
+  branch is touched.
+- Left on this machine: the scratch folder's `rd3`, `reader3`, `find3`, `rec3` and the kit copies
+  `kit-n1*` and `kit-n2*` ("Working notes"), and in WSL the clone `~/nnkit-upgrade/kit-pq-n2`.
+
+Next, each a separate word of the user's: whether any of the four answers that the section names is
+changed (I would leave each); the merge of `f471473`; and the questions of the entry "The reading of
+the repair of names in quotes" that are still open. Where this branch goes is answered by the user's
+"Yes, join here" in the other session, as its note has it.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -4796,6 +4885,18 @@ word of the user's: where this branch goes; whether `f08b6dd` is taken in here; 
   `merge2\` and `merge3\` hold the trials with `f08b6dd` and with the guard of `f471473`.
   `rec2\` has the texts of the entry "The join of the two repairs of names in quotes", with
   `apply_rec2.py` and `notes61.py`, which put them and the notes into the two record files.
+- The reading of the join (21 November): in the same folder. `rd3\` has the reader's brief and its
+  report, word for word, and `reader3\` the reader's own files. `find3\` has my runs of its lines:
+  `probe.py` puts the rows of a file to a guard through the hook, as the main session, under the
+  read-only rules and as an agent's call; `run.sh` does that on five guards (`f.txt`, `h.txt`,
+  `k.txt` and `b.txt` are the rows, `*-joined.txt` and the like the answers); `mut.py` and
+  `mut2.py` make copies of a guard with one piece of `named()` taken out or changed and count the
+  strings of the test files that a copy rewrites differently; `same-code.py` compares two guards
+  without their docstrings. `kit-n1*` and `kit-n2*` are kit copies with such guards, `kit-n2` the
+  copy that the Windows pass ran on, with the logs `logs\kit-n2-*.log`, `logs\kit-n1-muts.out`,
+  `logs\kit-n2-muts.out` and `logs\wsl-n2-*.log`; `n2.patch` is the working tree against
+  `7f68b3d`, for the pass in WSL. `rec3\` has the texts of the entry "The reading of the join of
+  names in quotes", with `apply_rec3.py` and `notes63.py`.
 - The second merge of the pilot's branch, 21 November: the joined state is on `claude/r9-snap-q`
   (`c631d57`), with the clone `kit-r9-q` in `%TEMP%\nnkit-upgrade\` and one of the same name in
   WSL; the logs of its passes are `q-*.log` in `r9\` there.

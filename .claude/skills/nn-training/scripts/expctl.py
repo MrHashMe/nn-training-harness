@@ -525,16 +525,22 @@ def same_process(pid, expected_start, key=None) -> bool:
     return abs(actual - expected_start) < 5.0
 
 
-def born_after(pid, ts) -> bool:
+def born_after(pid, ts, start=None) -> bool:
     """Windows: whether the process that holds this number was created after the time `ts`, so that it cannot have
     written a record of that time. Windows gives a number out again within seconds, sooner than the five that
-    same_process allows. A clock that was set back between a process's start and its record makes the two read the
-    other way round, until a record is written after the clock has caught up. False elsewhere: a number comes back
-    late there, and on Linux the start time is the boot time plus ticks, which moves with the clock."""
+    same_process allows. Not asked of a record whose own start time (`start`) is this process's to within 0.05 s: that
+    process wrote it, whatever the clock did since. A later process with the number reads that close only where the
+    clock was set back by the very time between the two starts. (Was, for one commit: the time of writing alone. A
+    clock that was set back between a process's start and its record makes the two read the other way round, so a run
+    read as lost on every heartbeat that it wrote before the clock had caught up with its start.) A record without a
+    start time, as an older vendored runlog.py writes it, still reads so after such a step. False elsewhere: a number
+    comes back late there, and on Linux the start time is the boot time plus ticks, which moves with the clock."""
     if os.name != "nt" or not is_num(ts):
         return False
     actual = proc_start_time(pid)
-    return actual is not None and actual > ts + 0.1  # time.time() is up to a clock tick (16 ms) behind on Windows
+    if actual is None or (is_num(start) and abs(actual - start) < 0.05):
+        return False
+    return actual > ts + 0.1  # time.time() is up to a clock tick (16 ms) behind on Windows
 
 
 def proc_words(pid, what):
@@ -1293,14 +1299,16 @@ def load_run(root: Path, d: Path, cfg, t: float):
     # upgrade when RunLog records the namespace it runs in
     if not alive and hb_ok and hb_age is not None and hb_age <= stale and hb.get("pid") and hb.get("pid") != pid \
             and not man.get("remote") and "--unshare-pid" not in (man.get("cmd") or []) and pid_alive(hb["pid"]) \
-            and same_process(hb["pid"], hb.get("proc_start"), hb.get("proc_key")) and not born_after(hb["pid"], hb["ts"]):
+            and same_process(hb["pid"], hb.get("proc_start"), hb.get("proc_key")) \
+            and not born_after(hb["pid"], hb["ts"], hb.get("proc_start")):
         # A later process (e.g. an in-place resume) owns this run directory now. Only the process that wrote the
         # heartbeat: by its start time, which RunLog writes there since 20 November 2026, and on Windows no process
-        # that was created after the heartbeat was written. (Was: whatever process had the number. Where a virtual
-        # environment's python.exe starts a run on Windows, the recorded number is that small program's and the
-        # heartbeat's is the interpreter's, so after a kill a run read as running, for up to heartbeat_stale_seconds,
-        # as soon as another program had the interpreter's number, and `stop` would then have ended that program.)
-        # A heartbeat without a start time, as an older vendored runlog.py writes it, is taken as before elsewhere
+        # that was created after the heartbeat was written, unless its start time is the very one that the heartbeat
+        # names (born_after says why). (Was: whatever process had the number. Where a virtual environment's python.exe
+        # starts a run on Windows, the recorded number is that small program's and the heartbeat's is the
+        # interpreter's, so after a kill a run read as running, for up to heartbeat_stale_seconds, as soon as another
+        # program had the interpreter's number, and `stop` would then have ended that program.) A heartbeat without a
+        # start time, as an older vendored runlog.py writes it, is taken as before elsewhere
         pid, alive = hb["pid"], True
     # The supervisor writes the exit record a moment after the process has gone, so while it is there the run has not
     # ended. Only where its start time shows that the pid is still the supervisor's: a pid is given out again
@@ -2013,7 +2021,7 @@ def cmd_launch(args):
     # opens that before it starts the command, so the command has not run and nothing is done twice. One start more
     # and no error at once, because what was seen comes and goes, and an error would have the caller, a campaign's
     # loop among them, count a run that never ran as a failed one. The answer and supervisor.log say so
-    pid, start_error, ended, again, left, settled = None, None, [], False, 50, None
+    pid, start_error, ended, again, left, settled, noted, may_run = None, None, [], False, 50, None, False, False
     while True:
         gone = sp.poll() if sp is not None else None  # asked before the records are read: it writes them, then ends
         pj = read_json(run_dir / "pid.json")
@@ -2033,10 +2041,15 @@ def cmd_launch(args):
             ended.append(exit_text(gone))
             began, said = (run_dir / "stdout.log").exists(), log_reason(run_dir / "supervisor.log")
             if not began and len(ended) == 1:
-                try:
+                try:  # the line is for a reader of the log, and the start does not wait on it (was: a log that took
+                    # no line, on a full disk, left the supervisor unstarted and read as "no second start")
                     sup_log.write(f"expctl launch: the supervisor ended with exit code {ended[0]} before it started the "
                                   f"command; it is started once more\n".encode())
                     sup_log.flush()
+                    noted = True
+                except OSError:
+                    pass
+                try:
                     sp, again, left = subprocess.Popen(sup_cmd, **kw), True, 50
                     continue
                 except OSError as e:
@@ -2048,6 +2061,7 @@ def cmd_launch(args):
             if not began:  # for status: a run that failed to start, with this reason (was: unknown, with none)
                 write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
                                                           "ended_at": iso(now())})
+            may_run = began
             break
         left -= 1
         if left <= 0:
@@ -2080,10 +2094,14 @@ def cmd_launch(args):
     }
     if resume_of:
         out["resume_of"] = resume_of.name
-    warn = [f"the supervisor's first process ended with exit code {ended[0]} before it started the command, and was "
-            "started once more (supervisor.log has the line)"] if again and len(ended) == 1 else []
+    warn = []
+    if again and len(ended) == 1:
+        warn.append(f"the supervisor's first process ended with exit code {ended[0]} before it started the command, "
+                    "and was started once more" + (" (supervisor.log has the line)" if noted else ""))
     if start_error:
         out["error"] = start_error
+        if may_run:  # for a caller that waits for its runs, as the loop does: this one may be running, unsupervised
+            out["command_may_run"] = True
     elif pid is None:
         warn.append("child pid not reported yet; check status in a few seconds")
     if warn:
@@ -2163,7 +2181,17 @@ def cmd_supervise(args):
     # {run_dir} in a command is this run's folder, which no caller knows before the launch: the loop binds it into the
     # sandbox of its run. The manifest keeps the placeholder, so `resume` fills in the folder of the new run
     cmd = [str(c).replace("{run_dir}", os.path.abspath(run_dir)) for c in cmd]
-    log = open(run_dir / "stdout.log", "ab", buffering=0)
+    # The run's log is made here and by nothing else, and the supervisor that makes it is the one that starts the
+    # command: one that finds it there ends. So a launch's second start cannot run the command a second time where the
+    # first supervisor is still there after all. (Was: opened whether it was there or not. On Windows under a virtual
+    # environment's python.exe the launch sees that small program end, not the interpreter it started. The interpreter
+    # outlived it in none of 926 tries on one machine, which does not exclude it, and this does not depend on it.)
+    try:
+        log = open(run_dir / "stdout.log", "xb", buffering=0)
+    except FileExistsError:
+        sys.stderr.write("expctl supervisor: this run's log is there already, so another supervisor has started its "
+                         "command or is about to; this one starts nothing and ends\n")
+        return 1
     t0, m0 = now(), time.monotonic()
     env = dict(os.environ, EXP_LAUNCH_TS=repr(t0))  # RunLog ignores a stop.json older than this launch
     kw = dict(stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, cwd=cwd, env=env)

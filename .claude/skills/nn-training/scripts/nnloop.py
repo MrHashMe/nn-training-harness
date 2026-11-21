@@ -951,8 +951,14 @@ class Campaign:
         rid = out.get("run_id")
         if rid:
             c["runs"] += 1
-        if not out.get("ok"):
-            return "crash", f"launch failed: {str(out.get('error') or r.stderr or r.stdout)[-300:]}", rid
+        failed = None if out.get("ok") else f"launch failed: {str(out.get('error') or r.stderr or r.stdout)[-300:]}"
+        # A launch that failed after its supervisor had opened the run's log says that the command may be running
+        # (command_may_run), with no supervisor to end it at its deadline. The loop then waits out the run's time and
+        # stops the run, as it does for one that does not end, before it goes on. (Was, for one commit: on at once, and
+        # the next run shared the machine with that command; before 20 November 2026 such a launch said ok, and the loop
+        # waited like this.) No exit record ends that wait: with that supervisor gone, nothing says that one is true
+        if failed and not (out.get("command_may_run") and rid and out.get("run_dir")):
+            return "crash", failed, rid
         run_dir = self.root / out["run_dir"]
         # A run can write its own folder, an exit record among it. The supervisor that this launch started replaces it by
         # the true one as its last act, so the run has ended when that process has; and the GPU time is what this loop
@@ -966,7 +972,7 @@ class Campaign:
 
         end = t0 + budget + grace + float(self.cfg.get("kill_after_s") or 120) + 60
         try:
-            while not (run_dir / "exit.json").exists() or supervised():
+            while failed or not (run_dir / "exit.json").exists() or supervised():
                 late = time.monotonic() > end
                 lim = self.cap("hours")
                 up = lim is not None and self.used()["hours"] >= lim
@@ -974,7 +980,7 @@ class Campaign:
                     # the harness stops its own run, so no approval is involved: a request first, a kill after 20 s
                     self.expctl("stop", rid, "--kill-after", "20s", "--wait", "30s")
                     if late:
-                        return "crash", "the run did not end", rid
+                        return "crash", failed or "the run did not end", rid
                     self.check(hours_up=up)
                 time.sleep(0.25)
         finally:

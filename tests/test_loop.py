@@ -1285,6 +1285,38 @@ def campaign_b(tmp, proj, exe):
           "monotonic clock had counted as much); and a run that the limit ends is not called stopped from outside the "
           f"loop because the wall clock was set back meanwhile ({got})")
 
+    # A launch that failed after its supervisor had opened the run's log: the command may be running, with nobody to
+    # end it at its deadline. The loop waits out the run's time and stops the run before it goes on, and an exit
+    # record in the run's folder does not end the wait: with that supervisor gone, nothing says that it is true. (Was,
+    # for one commit: on at once.) A failed launch without that word in its answer started nothing: on at once
+    def unrecorded(may_run):
+        clocks, run, calls = Clocks(), tmp / "clocks" / f"norecord{may_run:d}", []
+        nnloop.time = clocks
+        try:
+            C = campaign()
+            C.wt, C.verify, C.st["limits"] = proj, lambda **kw: None, {}
+
+            def expctl(verb, *a, **kw):
+                calls.append([verb, round(clocks.mono - 500)])
+                run.mkdir(parents=True, exist_ok=True)
+                (run / "exit.json").write_text('{"returncode": 1}', encoding="utf-8")
+                return argparse.Namespace(stderr="", stdout=json.dumps(dict(
+                    {"ok": False, "error": "the supervisor ended", "run_id": "r", "run_dir": str(run), "supervisor_pid": 0},
+                    **({"command_may_run": True} if may_run else {}))))
+
+            C.expctl = expctl
+            return list(C.train(1, "x")), calls
+        finally:
+            nnloop.time = time
+
+    (res, calls), (res0, calls0) = unrecorded(True), unrecorded(False)
+    check(res == res0 == ["crash", "launch failed: the supervisor ended", "r"] and calls0 == [["launch", 0]]
+          and [c[0] for c in calls] == ["launch", "stop"] and calls[1][1] > 60,
+          "a launch that failed with its command perhaps running is not left behind: the loop waits out the run's time, "
+          "whatever exit record its folder holds, stops the run and then reports the launch's failure (was, for one "
+          "commit: on to the next run at once, with that command still on the machine); a failed launch that started "
+          f"nothing ends the step at once ({res} {calls}; {res0} {calls0})")
+
     plan(tmp, [edit("SLEEP = 0", "SLEEP = 30", title="slow")])
     before = {d.name for d in (proj / "runs").glob("*")}
     r = loop(proj, "resume", "--campaign", "b", "--agent-exe", exe, "--max-runs", "20", "--detach")

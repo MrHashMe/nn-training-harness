@@ -550,6 +550,9 @@ round are UTC.
   (Added later on 21 November: on the user's "Yes, merge" those two commits are merged into this branch as
   well, and the joined state passes its tests on this machine; REPORT.md, "The second merge of the pilot's branch".
   They decide nothing that has a row here either. Nothing is pushed.)
+  (Added later on 21 November: on the user's "Yes, push" the merged round is on the public branch `test/round-9`
+  (`409182f` to `6f2812d`), and all six of GitHub's jobs pass on it; REPORT.md, "The merged round on the test branch".
+  A push and a run decide nothing that has a row here. `main` is unchanged.)
 
 ## Coverage map
 

@@ -88,6 +88,10 @@ branch has two commits more since the merge, which this branch does not hold.
 On the user's "Yes, merge" of 21 November those two commits are merged into this branch as well, and
 the joined state passes its tests on this machine ("The second merge of the pilot's branch" below).
 Nothing is pushed.
+On the user's "Yes, push" of 21 November the merged round is on the public branch `test/round-9`
+(`409182f` to `6f2812d`), and all six of GitHub's jobs pass on it ("The merged round on the test
+branch" below). `main` is as it was. The three sessions' local branches hold seven commits more
+since, which the pushed branch does not hold.
 
 # Upgrade progress
 
@@ -3820,6 +3824,9 @@ the kit file's check of the session hook is made independent of the file's speed
 takes the round; the ninth installer run; the other questions of the entries before this one.
 (Added later on 21 November: the first of these is answered by the user's "Yes, merge", and done; the
 next entry.)
+(Added later on 21 November: whether the merged round goes to `test/round-9` is answered by the
+user's "Yes, push", and done, and all six of GitHub's jobs pass on the pushed state; "The merged
+round on the test branch" below.)
 
 ## The second merge of the pilot's branch (21 November): local only
 
@@ -3866,6 +3873,57 @@ Next, each a separate word of the user's: whether the merged round goes to `test
 a reader goes through the repairs of the last entry or through `042a985`; the pilot's session's two
 questions, a batch-file evaluator by forward slashes in the project root and a refusal for a batch
 file that `cmd.exe` will split; and the other questions of the last entry, less its first.
+(Added later on 21 November: the first of these is answered by the user's "Yes, push", and done, and
+all six of GitHub's jobs pass on the pushed state; the next entry.)
+
+## The merged round on the test branch (21 November): pushed, all six jobs pass
+
+The user's word, 21 November: "Yes, push" (about 11:13), to the question whether this branch goes to
+`test/round-9`. With the question I had said what a yes covers: the branch's 27 commits as a
+fast-forward, the reading of GitHub's six jobs, and follow-up pushes to that branch for repairs and
+for the record of the result. It is not a word for `main`, for the real install, for a reader, for
+a re-run of a job on GitHub, for a merge of the sessions' later commits or for a deletion. Dates
+and times in this entry are UTC.
+
+Done on that word:
+- Before the push: fetched (`test/round-9` at `409182f`, `main` at `e587b4f`; this branch 27 commits
+  ahead and none behind), and what the push makes public searched for private details: the 26,043
+  lines that the 27 commits add and the 1,294 lines of their messages. None; every commit has the
+  account's no-reply address and dates in UTC.
+- The push, at 11:17, as a fast-forward with no force: `409182f` to `6f2812d`.
+- GitHub's run 44898410092 on `6f2812d` (11:17 to 11:41): all six jobs pass at the first attempt,
+  with 2,055 to 2,069 checks a job and none failed. Against the run before (44831691805 on
+  `409182f`) every job has 127 to 135 checks more: the kit file 66 on macOS, 67 on Linux and 74 on
+  Windows, the review-fixes file 58, the loop file 3. No check of the run before is missing; the two
+  runs' logs are compared by the checks' names. The kit file has 1,297 checks on GitHub's Windows
+  and 1,298 on its Linux, as on this machine. The session hook's check, which depends on the kit
+  file's speed, passes in all six jobs, and the pilot's check of a batch file in a folder with a
+  comma in both Windows jobs, where alone it runs.
+- What the run does not show: a reading (`f2338d6` and `042a985` are each read by their author
+  only); the test files run from a virtual environment on Windows, which no job does; an agent
+  session; anything under PyTorch.
+- REPORT.md has the section "The merged round on the test branch", point 60 of "Read this first", a
+  statement in the opening, and a note at nineteen places that called the commits local, said that
+  nothing is pushed, or put the push as a question. This file has a sentence in the opening, this
+  entry, a note at each of the two entries before it, an answered question and a note at the open
+  ones. The ledger's head has a note, and the ledger is built again (1,740 rows, as before, and no
+  built entry without a row).
+- No test ran on this machine for this entry, so it put no window on the user's screen.
+- Beside this session, and not in the pushed branch: seven commits on the three sessions' local
+  branches (`24970e3` and `0f896a3`, with point 55; `1a277aa` and `9d01f95`, with point 56;
+  `74d1e22`, `84d7285` and `ebda58d`, with point 57), and the fourth session's uncommitted work.
+  The sessions' shared notes take 58, 59, 61 and 62 for records in draft; 60 is this entry's,
+  written into those notes at 11:25. By its note of 11:37 the session for names in quotes is
+  merging this branch, as it stood at `6f2812d`, into its own, on the user's word in that session.
+  Looked at 12:00.
+- Not done: no merge, no reader, no re-run of a job; nothing on `main`, nothing on the real
+  install; no package installed, nothing deleted. The push of this record starts a further run of
+  the six jobs, which this entry cannot hold.
+
+Next, each a separate word of the user's: how the round comes together again in one branch, with
+the sessions' later commits, and goes to `test/round-9`; `main`, after one run of the six jobs on
+that state; the ninth installer run; whether a reader goes through `f2338d6`; and the other
+questions of the last two entries, less the push.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -4280,6 +4338,12 @@ file that `cmd.exe` will split; and the other questions of the last entry, less 
   state and their record, as I had said with the question. It is not a word for a push, for
   `main`, for the real install, for a reader, for the fourth session's branch or for later
   commits of any session.
+- Answered on 21 November ("Yes, push"), from the second merge of the pilot's branch: whether the
+  merged round goes to `test/round-9`. "The merged round on the test branch" above. The word covers
+  the push of the 27 commits, the reading of GitHub's six jobs and follow-up pushes to that branch
+  for repairs and for the record of the result, as I had said with the question. It is not a word
+  for `main`, for the real install, for a reader, for a re-run of a job on GitHub, for a merge of
+  the sessions' later commits or for a deletion.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -4335,6 +4399,10 @@ file that `cmd.exe` will split; and the other questions of the last entry, less 
   (Added later on 21 November, by the same session: the first of these is answered, "Yes, merge",
   and done; "The second merge of the pilot's branch" above. The others stand. The snapshot
   branches are seventeen, with `claude/r9-snap-q`.)
+  (Added later on 21 November, by the same session: the push to `test/round-9` is answered, "Yes,
+  push", and done, and all six of GitHub's jobs pass; "The merged round on the test branch" above.
+  Open in its place: how the round comes together again in one branch, with the seven commits that
+  the three sessions made since, before `main` takes it. The others stand.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted

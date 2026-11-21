@@ -401,6 +401,10 @@ def compare_tests(tmp, proj):
              ["train/loss is not finite from step 8, and finite again later, after it had risen from 0.5 to 900: "
               "the training diverged"], ["one step went wrong"]),
             ("flat_metric", lambda i: 2.0 * e(-i / 60) + 0.3, lambda i: 0.1, {}, [], ["val/acc"]),
+            # (from the reading of 21 November 2026: nor does one whose values differ by rounding alone. Was, for 0.3
+            # and 0.1 + 0.2 by turns: "scatters by about 6.72e-17 from one evaluation to the next, 121 % of all it gained")
+            ("rounding_metric", lambda i: 2.0 * e(-i / 60) + 0.3, lambda i: 0.1 + 0.2 if i // 20 % 2 else 0.3, {}, [],
+             ["val/acc"]),
             ("eval_nan", fall, lambda i: rise(i) if i < 200 else nan, {},
              ["val/acc is not finite from step 219 on; the values before it were ordinary", "the fault lies in the evaluation"],
              ["was not finite by then", "one step went wrong", "train/loss"]),
@@ -442,6 +446,182 @@ def compare_tests(tmp, proj):
         check(all(w in got for w in want) and not any(w in got for w in never),
               f"curve findings, {rid}: " + ("says " + "; ".join(want) if want else "no finding")
               + (f" (and nothing of: {', '.join(never)})" if never and never != [" "] else "") + f" (got: {got[:300] or 'none'})")
+
+
+def env_tests(tmp):
+    """In a virtual environment, a program that a command names without a folder is the environment's, at each place
+    where the kit starts a caller's command: a launched run, the final evaluation, `env --python`, the loop's
+    evaluator and a remote target's on_finish. (Was, on Windows: the base interpreter's, which Windows finds first
+    beside the running program, so training ran without the environment's packages.) The last two are functions of
+    nnloop and nnremote, tried here because this file makes the environment. And on Windows a program named with
+    a folder is the file at that path, however its slashes point; and before `final-eval` records a use it asks
+    for the program as the start will look for it."""
+    print("== a program named without a folder, in a virtual environment ==")
+    (tmp / "bare").mkdir()
+    proj, venv = setup(tmp / "bare"), tmp / "bare/venv"
+    try:
+        made = subprocess.run([PY, "-m", "venv", "--without-pip", str(venv)], capture_output=True, timeout=300).returncode == 0
+    except subprocess.TimeoutExpired:  # a venv that takes too long made none: the check below fails, the file goes on
+        made = False
+    if not made:
+        if os.name == "nt":  # the fault was Windows': a skip there would hide the checks that guard its repair
+            check(False, "python -m venv makes the virtual environment that the checks below need")
+        print("SKIP virtual environment tests (python -m venv made none)")
+        return
+    vbin = venv / ("Scripts" if os.name == "nt" else "bin")
+    vpy, scripts = str(vbin / ("python.exe" if os.name == "nt" else "python")), proj / ".claude/skills/nn-training/scripts"
+    # Windows: no folder of the PATH holds a `python`, as in a shell where the environment is not activated, so the
+    # name can only come from beside the interpreter. Elsewhere the PATH decides, and an activated environment leads it
+    path = os.environ.get("PATH", "")
+    env = {"PATH": os.pathsep.join(p for p in path.split(os.pathsep) if p and not shutil.which("python", path=p))
+           if os.name == "nt" else str(vbin) + os.pathsep + path}
+    say = "import sys; print('prefix=' + sys.prefix)"
+
+    def inside(text, where=venv):  # the interpreter that printed its prefix is the environment's
+        got = [x[len("prefix="):].strip() for x in (text or "").splitlines() if x.startswith("prefix=")]
+        return bool(got) and os.path.isdir(got[-1]) and os.path.samefile(got[-1], where)
+
+    def kit(*args, timeout=60, env=env):  # expctl, run by the environment's interpreter
+        return sh([vpy, str(scripts / "expctl.py"), *args], cwd=proj, env=env, timeout=timeout)
+
+    for i, name in enumerate(("python", "python.exe", "PYTHON") if os.name == "nt" else ("python",)):
+        run = jout(kit("launch", "--name", f"bare{i}", "--snapshot", "none", "--", name, "-c", say))
+        wait_for(lambda: (proj / run["run_dir"] / "exit.json").exists(), 30)
+        check(inside((proj / run["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace"))
+              and json.loads((proj / run["run_dir"] / "manifest.json").read_text(encoding="utf-8"))["cmd"] == [name, "-c", say],
+              f"a launched `{name} ...` runs in the environment's interpreter, and its record keeps the command as written")
+    (proj / "eval/final.py").write_text(say + "\n")  # the config names it: NN_UNSEAL_TEST=1 python eval/final.py
+    out = jout(kit("final-eval"))
+    check(out.get("ok") and inside(out.get("output_tail")), "final-eval: `python` in the configured command is the environment's")
+    exe = (jout(kit("env", "--python", "python")).get("interpreter") or {}).get("executable") or ""
+    check(os.path.isfile(exe) and os.path.samefile(os.path.dirname(exe), vbin),
+          f"env --python python probes the environment's interpreter ({Path(exe).parent.name or 'none'})")
+    # the names that stay the system's to find: with another ending than .exe, with no .exe beside the interpreter or
+    # at the path that the name gives. The first four have one, the last of them by a relative path with forward
+    # slashes and no ending, and only Windows is given it. Where Windows' full path does not keep the end of a name,
+    # the file at that path is not the one the name says: a dot there means the file without an ending, a slash,
+    # `/.` or `/x/..` a folder, and a space there is dropped too. Those stay Windows' to find (the last five; were:
+    # handed over as the .exe)
+    rel = f"../venv/{vbin.name}/python"
+    names = ["python", "PYTHON.EXE", vpy, rel, "python.bat", "python3.11", "cmd", "nosuchprogram", os.path.join(".", "python"),
+             "C:python", rel + ".bat", rel + "3.11", rel + ".", rel + "/", rel + "/.", rel + " ", rel + "/x/.."]
+    if os.name == "nt":  # files of the two other endings lie beside the interpreter, and still are not started from there
+        for n in ("python.bat", "python3.11"):
+            (vbin / n).write_text("")
+    r = sh([vpy, "-c", "import json, sys; sys.path.insert(0, sys.argv[1]); import expctl\n"
+            "print(json.dumps([expctl.in_env(x) for x in sys.argv[2:]]))", str(scripts), *names], cwd=proj, env=env)
+    got = json.loads(r.stdout) if r.returncode == 0 else [r.stderr[-200:]]
+    mine = 4 if os.name == "nt" else 0
+    check(len(got) == len(names) and all(os.path.isfile(g or "") and os.path.samefile(g, vpy) for g in got[:mine])
+          and not any(got[mine:]),
+          "only an .exe beside the interpreter, or at the path that a name with a folder gives, is handed to the start "
+          f"({[Path(g).name if g else g for g in got]})")
+    for what, code in (
+            ("the loop's evaluator, with {python} from a config that says python",
+             "import argparse, nnloop\n"
+             "cfg = dict(nnloop.expctl.load_config(root), python='python', loop={'eval_command': ['{python}', '-c', say]})\n"
+             "C = nnloop.Campaign(root, cfg, 'bare', argparse.Namespace())\n"
+             "C.box_eval = []  # the environment lies outside the project, which is all that the evaluator's box shows\n"
+             "print(C.evaluate(root).stdout)\n"),
+            ("a remote target's on_finish command",
+             "import nnremote\n"
+             "print(nnremote.after_run(root, nnremote.expctl.load_config(root), ['python', '-c', say], root / 'runs/none', 'box'))\n")):
+        r = sh([vpy, "-c", "import sys; sys.path.insert(0, sys.argv[1])\nfrom pathlib import Path\n"
+                "root, say = Path(sys.argv[2]), sys.argv[3]\n" + code, str(scripts), str(proj), say], cwd=proj, env=env)
+        ok, said = inside(r.stdout), " ".join((r.stderr or r.stdout).split())[-200:]
+        check(ok, f"{what}: `python` is the environment's" + ("" if ok else f" ({said})"))
+    # A relative path to a program is read from the same folder on every system. After `env --python` that is the
+    # folder the command is typed in. The loop's evaluator is a setting of the project: the project root, wherever the
+    # loop is called. From the project's folder `eval`, `rel` leads to no file and `../` + rel to the interpreter
+    got = [jout(sh([vpy, str(scripts / "expctl.py"), "env", "--python", name], cwd=proj / "eval", env=env)).get("interpreter")
+           or {} for name in ("../" + rel, rel)]
+    exe = got[0].get("executable") or ""
+    check(os.path.isfile(exe) and os.path.samefile(os.path.dirname(exe), vbin) and "error" in got[1],
+          "env --python, typed in a subfolder: a relative path is read from that folder (was, outside Windows: from the "
+          "project root)")
+    r = sh([vpy, "-c", "import sys; sys.path.insert(0, sys.argv[1])\nfrom pathlib import Path\nimport argparse, json, nnloop\n"
+            "root, say, out = Path(sys.argv[2]), sys.argv[3], []\n"
+            "C = nnloop.Campaign(root, dict(nnloop.expctl.load_config(root), loop={}), 'bare', argparse.Namespace())\n"
+            "C.box_eval = []\n"
+            "for name in sys.argv[4:]:\n"
+            "    C.L['eval_command'] = [name, '-c', say]\n"
+            "    try:\n"
+            "        out.append(C.evaluate(root).stdout)\n"
+            "    except OSError:\n"
+            "        out.append(None)\n"
+            "print(json.dumps(out))\n", str(scripts), str(proj), say, rel, "../" + rel], cwd=proj / "eval", env=env)
+    got = json.loads(r.stdout) if r.returncode == 0 else [r.stderr[-200:], ""]
+    check(inside(got[0]) and got[1] is None,
+          "the loop's evaluator, called in a subfolder: a relative path is read from the project root (was, on Windows: "
+          f"from that subfolder) ({'started' if inside(got[0]) else got[0]}, {'not started' if got[1] is None else 'started'})")
+    if os.name == "nt":
+        # Called in the project root, the path goes to Windows as written: cmd.exe, which runs a batch file, splits a
+        # full path without a space at a comma, so made a full one this evaluator's path was not started
+        root2, name = tmp / "bare/a,b", "scripts\\eval.cmd"
+        (root2 / "scripts").mkdir(parents=True)
+        (root2 / name).write_text("@echo as %0\n")
+        r = sh([vpy, "-c", "import sys; sys.path.insert(0, sys.argv[1])\nfrom pathlib import Path\nimport argparse, nnloop\n"
+                "root = Path(sys.argv[2])\n"
+                "C = nnloop.Campaign(root, dict(nnloop.expctl.load_config(root), loop={}), 'bare', argparse.Namespace())\n"
+                "C.box_eval, C.L['eval_command'] = [], [sys.argv[3]]\nr = C.evaluate(root)\n"
+                "print(r.stdout + r.stderr)\n", str(scripts), str(root2), name], cwd=root2, env=env)
+        ok, said = f"as {name}" in r.stdout, " ".join((r.stderr or r.stdout).split())[-200:]
+        check(ok, "the loop's evaluator, called in the project root: a batch file by a relative path starts as "
+              "written, also where the project's path holds a comma" + ("" if ok else f" ({said})"))
+    # The check before a use asks as the start will. On Windows with the variable that takes the current folder out
+    # of the search, as an agent's shells have it and a user's terminal has not, and with one more folder on the PATH
+    receipt, cfgp, onpath = proj / ".claude/state/final-eval/receipt.jsonl", proj / ".claude/nn-training.json", tmp / "bare/onpath"
+    cfg, env2 = json.loads(cfgp.read_text()), env
+    onpath.mkdir()
+    if os.name == "nt":
+        env2 = dict(env, PATH=str(onpath) + os.pathsep + env["PATH"], NoDefaultCurrentDirectoryInExePath="1")
+
+    def final(program, *more):  # a further use with this program in the configured command: what it said, the rows it wrote
+        cfgp.write_text(json.dumps(dict(cfg, final_eval_commands=[f"NN_UNSEAL_TEST=1 {program} eval/final.py"]), indent=1))
+        n = len(receipt.read_bytes().splitlines())
+        out = jout(kit("final-eval", "--again", "another program", *more, env=env2))
+        return out, len(receipt.read_bytes().splitlines()) - n
+
+    if os.name != "nt":
+        (onpath / "onlyhere").write_text("#!/bin/sh\necho ran $1\n")
+        (onpath / "onlyhere").chmod(0o755)
+        out, n = final(f'PATH="{onpath}" onlyhere')
+        check(out.get("ok") and n == 2 and "ran eval/final.py" in (out.get("output_tail") or ""),
+              "final-eval: a program that only the PATH in front of the command holds is found (was: refused, by the kit's own PATH)")
+        out, n = final("PATH=/nonexistent python")
+        check("not found" in (out.get("error") or "") and n == 0, "final-eval: a program that the PATH in front of the "
+              "command does not hold is refused before a use is recorded (was: recorded, and then not started)")
+        return
+    # a copy of the environment inside the project: only a path without `./` or `../` in front is one that Windows,
+    # with that variable, does not find by forward slashes
+    shutil.copytree(venv, proj / "env2")
+    rel2 = f"env2/{vbin.name}/python"
+    out, n = final(rel2)
+    check(out.get("ok") and n == 2 and inside(out.get("output_tail"), proj / "env2"), "final-eval: a program named by a "
+          "relative path with forward slashes and no ending is the file at that path (was: refused, or recorded and not started)")
+    for i, name in enumerate((rel2, rel2 + ".exe")):
+        run = jout(kit("launch", "--name", f"rel{i}", "--snapshot", "none", "--", name, "-c", say, env=env2))
+        wait_for(lambda: (proj / run["run_dir"] / "exit.json").exists(), 30)
+        check(inside((proj / run["run_dir"] / "stdout.log").read_text(encoding="utf-8", errors="replace"), proj / "env2")
+              and json.loads((proj / run["run_dir"] / "manifest.json").read_text(encoding="utf-8"))["cmd"] == [name, "-c", say],
+              f"a launched `{name} ...` is the file at that path too (was: not started), and its record keeps the command as written")
+    # what a shell takes each of these names for: a batch file on the PATH, an .exe behind a dot in the name, a script
+    # on the PATH, a file of the project root, a batch file by forward slashes. Without a shell Windows starts none
+    (onpath / "onlycmd.cmd").write_text("@exit /b 0\n")
+    for name in ("tool3.11.exe", "tool.py"):
+        (onpath / name).write_text("")
+    (proj / "onlyroot.exe").write_text("")
+    for folder in ("tools", "sp ace"):
+        (proj / folder).mkdir(exist_ok=True)
+        (proj / folder / "final.cmd").write_text("@echo ran [%1] [%2]\n")
+    got = [final(p) for p in ("onlycmd", "tool3.11", "tool.py", "onlyroot", "tools/final.cmd")]
+    errs = [(o.get("error") or "").lower() for o, n in got]
+    check(all("not found" in e for e in errs) and not any(n for o, n in got) and "onlycmd.cmd" in errs[0] and "tool3.11.exe" in errs[1],
+          "final-eval: a name that the start will not find is refused before a use is recorded, and the refusal names "
+          f"the file a shell would have taken (was: recorded, and then not started; new rows {[n for o, n in got]})")
+    out, n = final('"sp ace\\final.cmd"', "--", "a b")
+    check(out.get("ok") and n == 2 and 'ran [eval/final.py] ["a b"]' in (out.get("output_tail") or ""),
+          "final-eval: a batch file stays Windows' to start, which takes its quoted path with a space (handed over: not)")
 
 
 def near(a, b, tol=1e-9):
@@ -1094,6 +1274,30 @@ def main():
     check(a and b and abs(a - b) < 1 and gone is None and same and other is False
           and (sys.platform.startswith("linux") or abs(now - a) < 60),
           f"a process's start time is known without psutil, to expctl and to the run logger alike, and tells a reused pid ({r.stdout.strip()} {r.stderr[-200:]})")
+    # and so is its parent, by which status finds the run of a process that holds a GPU. A run that a virtual
+    # environment's python.exe starts on Windows trains in a child of the process the kit recorded: without psutil
+    # Windows gave no parent, and status showed no run on that GPU. (macOS has no route, and no nvidia-smi to ask)
+    if sys.platform != "darwin":
+        code = ("import json, os, subprocess, sys\nsys.modules['psutil'] = None\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+                "p = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(20)'])\n"
+                "print(json.dumps([expctl.proc_parent(p.pid), os.getpid(), expctl.proc_parent(4294967292)]))\np.kill()\n")
+        r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
+        parent, me, gone = json.loads(r.stdout) if r.returncode == 0 else [None] * 3
+        check(parent and parent == me and gone is None,
+              f"a process's parent is known without psutil ({r.stdout.strip()} {r.stderr[-200:]})")
+    # Windows keeps the number of a parent that has ended, and a later process can hold it: status then put the GPU
+    # of a program of no run on the run that process belongs to. Such a process began after the one below it, and
+    # the walk ends there (8), also past a process whose start time is not known (19); one that began at the same
+    # instant is a parent still (9). The process directly below is the one that counts, not the one the walk began
+    # at: 28 began before 30 and after 29, whose parent its number says it is. Elsewhere a parent's number stays its own
+    code = ("import json, sys\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "expctl.proc_parent = {10: 9, 9: 8, 8: 7, 20: 19, 19: 18, 30: 29, 29: 28}.get\n"
+            "expctl.proc_start_time = {10: 100.0, 9: 100.0, 8: 105.0, 7: 80.0, 20: 100.0, 18: 101.0, 30: 100.0, 29: 90.0, 28: 95.0}.get\n"
+            "print(json.dumps([expctl.ancestors(10), expctl.ancestors(20), expctl.ancestors(30)]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts")], cwd=proj)
+    check(r.returncode == 0 and json.loads(r.stdout) == ([[9], [19], [29]] if os.name == "nt" else [[9, 8, 7], [19, 18], [29, 28]]),
+          "the walk up a process's parents ends, on Windows, at a number that a process which began later holds "
+          f"({r.stdout.strip()} {r.stderr[-200:]})")
     # macOS has no /proc, so there the start time comes from ps: asked in UTC whatever zone this process is in (here
     # one nine hours off), and it agrees with the other route where both exist
     if os.name != "nt":
@@ -1139,6 +1343,273 @@ def main():
     check(r.stdout.strip() == '["running", "lost"]',
           "the pid in a fresh heartbeat keeps a run alive whose launched process is gone, but not a run in a process "
           f"namespace of its own, whose heartbeat holds the namespace's pid (was: running) ({r.stdout.strip()} {r.stderr[-200:]})")
+    # ---- a run's processes where a virtual environment's python.exe starts it on Windows (20 November 2026) ----
+    # Whose number that is. There the recorded number is the environment's small program's and the heartbeat's is the
+    # interpreter's, and after a kill Windows gives the interpreter's number to another program within seconds: the
+    # run then read as running. So a heartbeat names its writer's start time as well, and on Linux its key, and its
+    # number stands for the run only while the process that holds it is that writer. `me` holds the number in each
+    # case: as the writer of the heartbeat; as a process whose start time is a minute off the heartbeat's; as one that
+    # was created two seconds after the heartbeat was written and three after its writer, which is within the five
+    # that same_process allows; the same with no start time in the heartbeat, as an older vendored runlog.py leaves it;
+    # and as the writer of a heartbeat whose time of writing is five seconds before its writer's start, which is what a
+    # clock that was set back in between leaves. (The third heartbeat keeps its writer's key, so on Linux the key
+    # answers for it and no start time is read; it stays, because a clock that is set moves the start times there.)
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl, runlog\n"
+            "me, base, out = os.getpid(), Path(sys.argv[2]), []\n"
+            "a, k = expctl.proc_start_time(me), expctl.proc_key(me)\n"
+            "rl = runlog.RunLog(str(base / 'own'), name='own', handle_signals=False)\nrl.heartbeat()\n"
+            "own = json.loads((base / 'own' / 'heartbeat.json').read_text())\n"
+            "for hb in (own, dict(own, proc_start=a - 60, proc_key=k and 'another-boot:1'),\n"
+            "           dict(own, ts=a - 2, proc_start=a - 3), {'ts': a - 2, 'pid': me}, dict(own, ts=a - 5)):\n"
+            "    d = base / str(len(out))\n    d.mkdir(parents=True)\n"
+            "    (d / 'manifest.json').write_text(json.dumps({'cmd': ['python', 'train.py'], 'launched_by': 'expctl'}))\n"
+            "    (d / 'pid.json').write_text(json.dumps({'pid': 2147480000}))\n"
+            "    (d / 'heartbeat.json').write_text(json.dumps(hb))\n"
+            "    out.append(expctl.load_run(d.parent, d, {}, time.time())['state'])\n"
+            "print(json.dumps([own.get('pid') == me, own.get('proc_start'), [a, expctl.proc_start_time(me)],\n"
+            "                  own.get('proc_key') == k, out]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "hbwho")], cwd=proj)
+    try:
+        mine, wrote, a, keyed, states = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        mine, wrote, a, keyed, states = None, None, [], None, r.stderr[-300:]
+    # against the start time as read before the heartbeat and after it: on Linux that time is the boot time plus
+    # ticks, and the boot time moves when the clock is set, which a VM's time sync does every few seconds
+    check(bool(mine and keyed and isinstance(wrote, float)
+               and min((abs(wrote - x) for x in a if isinstance(x, float)), default=9.0) < 1),
+          "a heartbeat names the start time of the process that wrote it, and on Linux its key, as the launch's record does "
+          f"for the launched command (was: the number alone) ({wrote} against {a}, key {keyed})")
+    check(states == ["running", "lost"] + (["lost", "lost"] if os.name == "nt" else ["running", "running"]) + ["running"],
+          "the number in a fresh heartbeat stands for a run whose launched process is gone only while the process that "
+          "holds it is the one that wrote the heartbeat: not one with another start time, and on Windows, where a number "
+          "comes back within seconds, not one that was created after the heartbeat was written, whether the heartbeat "
+          "names a start time or not (was: running for the first four); and a heartbeat that names its writer's own start "
+          "time is that writer's, also when a clock that was set back puts its time of writing before that start (was, "
+          f"for one commit: lost on Windows) ({states}, of [the writer, a minute off, created later, created later and "
+          "no start time, the writer after the clock was set back]; elsewhere the third and fourth are taken as before)")
+    # And `stop` ends nothing for such a run, which is not active. (Was: on Windows the tree of whatever program held
+    # the heartbeat's number was killed after kill_after_s, and where no /proc proves a process the run's own, as on
+    # macOS, that program was signalled at once.) `proc_words` answers as on macOS here, and the two signals are
+    # stand-ins that only count: the process that holds the number is this check's own
+    code = ("import json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "root, me, calls = Path(sys.argv[2]), os.getpid(), []\n"
+            "d = root / 'runs' / 'gone'\nd.mkdir(parents=True)\n(root / '.claude').mkdir()\n"
+            "(root / '.claude/nn-training.json').write_text(json.dumps({'runs_dir': 'runs', 'kill_after_s': 1,\n"
+            "    'metric': {'name': 'val/acc', 'direction': 'maximize'}}))\n"
+            "expctl.signal_group = expctl.signal_leader = lambda pid, sig: calls.append(pid) or True\n"
+            "expctl.proc_words = lambda pid, what: None\n"
+            "(d / 'manifest.json').write_text(json.dumps({'cmd': ['python', 'train.py'], 'launched_by': 'expctl'}))\n"
+            "(d / 'pid.json').write_text(json.dumps({'pid': 2147480000}))\n"
+            "(d / 'heartbeat.json').write_text(json.dumps({'ts': time.time(), 'pid': me,\n"
+            "                                              'proc_start': expctl.proc_start_time(me) - 60}))\n"
+            "code = expctl.main(['--root', str(root), 'stop', 'gone'])\n"
+            "print(json.dumps([code, len(calls), (d / 'stop.json').exists()]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "stopgone")], cwd=proj)
+    got = r.stdout.strip().splitlines() or [r.stderr[-300:]]
+    check(got[-1] == "[1, 0, false]" and "run is not active" in got[0] and '"lost"' in got[0],
+          "stop ends no process for a killed run whose heartbeat's number another program holds: the run is lost, not "
+          f"active, and no request is left in its folder (was: that program was ended) ({got})")
+    # The launch looks at the supervisor it started. (Was: never. There, in 2 of 650 launches, the supervisor ended
+    # before it ran any of its code; the launch said ok with no process number, and the run read as unknown for good.)
+    # Launches in a project of their own, so that no later check meets their runs. A stand-in takes the place of a
+    # supervisor's start, one program for each start, and ends at once: with exit code 3 (ENDS), with that code after
+    # it has opened the run's log as a supervisor does before it starts the command (OPENS), or after it has written an
+    # exit record (WROTE). The cases: the first start ends; the first two; the first, with the log opened; the first
+    # ends and the second has opened the log; the first ends and supervisor.log takes no line of the launch's, as on
+    # a full disk; the first ends and the system refuses the second start; and a stand-in whose exit record the
+    # launch cannot read at its first look after the stand-in's end
+    sup_root = tmp / "suplaunch"
+    code = ("import contextlib, io, json, os, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "root, real, real_read = Path(sys.argv[2]), expctl.subprocess.Popen, expctl.read_json\n"
+            "starts, procs, out = [], [], []\n"
+            "(root / '.claude').mkdir(parents=True)\n"
+            "(root / '.claude/nn-training.json').write_text(json.dumps({'runs_dir': 'runs', 'min_free_disk_gb': 0,\n"
+            "    'metric': {'name': 'val/acc', 'direction': 'maximize'}}))\n"
+            "class Seen:  # a stand-in's process, and whether the launch has seen it gone\n"
+            "    def __init__(self, p):\n        self.p, self.gone = p, False\n"
+            "    def poll(self):\n        rc = self.p.poll()\n        self.gone = self.gone or rc is not None\n        return rc\n"
+            "    def __getattr__(self, name):\n        return getattr(self.p, name)\n"
+            "class Full(io.FileIO):  # a supervisor.log that takes no line of the launch's\n"
+            "    def write(self, b):\n"
+            "        if bytes(b).startswith(b'expctl launch:'):\n            raise OSError(28, 'No space left on device')\n"
+            "        return super().write(b)\n"
+            "def start(cmd, **kw):\n"
+            "    if isinstance(cmd, list) and '_supervise' in cmd:\n"
+            "        starts.append(cmd)\n"
+            "        prog = progs[len(starts) - 1] if len(starts) <= len(progs) else None\n"
+            "        if isinstance(prog, Exception):\n            raise prog\n"
+            "        if prog:\n"
+            "            procs.append(Seen(real([sys.executable, '-c', prog, cmd[-1]], **kw)))\n"
+            "            return procs[-1]\n"
+            "    return real(cmd, **kw)\n"
+            "def opener(path, mode='r', *a, **k):\n"
+            "    if full and str(path).endswith('supervisor.log'):\n        return Full(str(path), 'a')\n"
+            "    return open(path, mode, *a, **k)\n"
+            "def read(path, *a, **k):  # the exit record: not before the launch has seen the stand-in gone, nor once after\n"
+            "    if hide and Path(path).name == 'exit.json' and procs:\n"
+            "        if procs[-1].gone:\n            hide.pop()\n"
+            "        return None\n"
+            "    return real_read(path, *a, **k)\n"
+            "expctl.subprocess.Popen, expctl.open, expctl.read_json = start, opener, read\n"
+            "ENDS = 'import sys; sys.exit(3)'\n"
+            "OPENS = 'import os, sys; open(os.path.join(sys.argv[1], \"stdout.log\"), \"ab\").close(); sys.exit(3)'\n"
+            "WROTE = ('import json, os, sys, time; json.dump({\"returncode\": 0, \"ended_ts\": time.time()}, '\n"
+            "         'open(os.path.join(sys.argv[1], \"exit.json\"), \"w\"))')\n"
+            "for name, progs, full, hide in (\n"
+            "        ('once', [ENDS], 0, []), ('twice', [ENDS, ENDS], 0, []), ('began', [OPENS], 0, []),\n"
+            "        ('later', [ENDS, OPENS], 0, []), ('nonote', [ENDS], 1, []),\n"
+            "        ('nostart', [ENDS, OSError(8, 'not enough memory')], 0, []), ('reread', [WROTE], 0, [1])):\n"
+            "    del starts[:], procs[:]\n    buf, raised = io.StringIO(), None\n"
+            "    try:\n"
+            "        with contextlib.redirect_stdout(buf):\n"
+            "            rc = expctl.main(['--root', str(root), 'launch', '--name', name, '--snapshot', 'none', '--',\n"
+            "                              sys.executable, '-c', 'print(%r)' % name])\n"
+            "    except Exception as e:  # what a launch that did not catch it shows\n"
+            "        rc, raised = None, '%s: %s' % (type(e).__name__, e)\n"
+            "    try:\n        la = json.loads(buf.getvalue())\n    except ValueError:\n        la = {}\n"
+            "    d = root / la['run_dir'] if la.get('run_dir') else None\n"
+            "    end = time.monotonic() + 20\n"
+            "    while d and la.get('ok') and time.monotonic() < end and not (d / 'exit.json').exists():\n"
+            "        time.sleep(0.2)\n"
+            "    run = expctl.load_run(root, d, {}, time.time()) if d else {}\n"
+            "    out.append({'rc': rc, 'raised': raised, 'ok': la.get('ok'), 'pid': la.get('pid'), 'warning': la.get('warning'),\n"
+            "                'error': la.get('error'), 'may_run': la.get('command_may_run'), 'starts': len(starts),\n"
+            "                'unread': len(hide), 'exit': real_read(d / 'exit.json') if d else None,\n"
+            "                'log': (d / 'supervisor.log').read_text(errors='replace').strip() if d else None,\n"
+            "                'state': run.get('state'), 'reason': run.get('reason')})\n"
+            "print(json.dumps(out))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(sup_root)], cwd=proj, timeout=180)
+    try:
+        once, twice, began, later, nonote, nostart, reread = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        once = twice = began = later = nonote = nostart = reread = {"error": (r.stdout + r.stderr)[-300:]}
+    check(once.get("rc") == 0 and once.get("ok") is True and isinstance(once.get("pid"), int) and once.get("starts") == 2
+          and "started once more (supervisor.log has the line)" in (once.get("warning") or "")
+          and "exit code 3 before it started the command" in (once.get("log") or "") and once.get("state") == "completed"
+          and once.get("may_run") is None,
+          "a launch whose supervisor ended before it started the command starts it once more and says so, in its answer "
+          "and in supervisor.log, and the run completes (was: ok with no process number, and a run that read as unknown "
+          f"for good) ({once})")
+    check(twice.get("rc") == 9 and twice.get("ok") is False and twice.get("starts") == 2
+          and "exit code 3, then 3" in (twice.get("error") or "") and "the command was not started" in twice["error"]
+          and (twice.get("exit") or {"returncode": 0}).get("returncode") is None and twice.get("state") == "failed"
+          and (twice.get("reason") or "").startswith("the supervisor ended before it recorded the run's process")
+          and twice.get("may_run") is None,
+          "a launch whose supervisor ended twice before it started the command answers with an error that names both "
+          f"exit codes, and the run reads as failed with that reason (was: ok, and unknown with no reason) ({twice})")
+    check(began.get("rc") == 9 and began.get("ok") is False and began.get("starts") == 1 and began.get("exit") is None
+          and "the command may have started" in (began.get("error") or ""),
+          "a supervisor that ended after it had opened the run's log is not started again, for the command may have run: "
+          f"the launch answers with an error and leaves the run's records as they are (was: ok) ({began})")
+    # What the reading of 21 November 2026 found in that launch, and the paths of it that no check had run
+    check(later.get("rc") == 9 and later.get("starts") == 2 and "exit code 3, then 3" in (later.get("error") or "")
+          and "the command may have started" in later["error"] and later.get("exit") is None
+          and later.get("state") == "unknown" and [began.get("may_run"), later.get("may_run")] == [True, True],
+          "a launch that fails after a supervisor of it had opened the run's log, the first or the one it started once "
+          "more, says in its answer that the command may be running (command_may_run), for a caller that waits for its "
+          "runs; it writes no exit record then, so the run reads as unknown, not as failed (was, for one commit: an error "
+          f"with no such word, on which the loop went on to its next run) ({later}; the first: {began.get('may_run')})")
+    check(nonote.get("rc") == 0 and nonote.get("ok") is True and nonote.get("starts") == 2
+          and "started once more" in (nonote.get("warning") or "") and "supervisor.log" not in nonote["warning"]
+          and nonote.get("state") == "completed",
+          "a supervisor.log that takes no line of the launch's, as on a full disk, does not keep the launch from its "
+          "second start: the run completes, and the answer points to no line that is not there (was, for one commit: no "
+          f"second start, and an error that read as if the system had refused one) ({nonote})")
+    check(nostart.get("rc") == 9 and nostart.get("raised") is None and nostart.get("starts") == 2
+          and "then no second start: [Errno 8]" in (nostart.get("error") or "")
+          and "the command was not started" in nostart["error"] and nostart.get("state") == "failed",
+          "a second start that the system refuses is the launch's error, which says so, and the run reads as failed "
+          f"({nostart})")
+    check(reread.get("rc") == 0 and reread.get("ok") is True and reread.get("starts") == 1 and reread.get("unread") == 0,
+          "a record of the supervisor's that the launch could not read at its first look after the supervisor's end is "
+          f"read a moment later, and nothing is started a second time ({reread})")
+    # One run folder and two supervisors, one after the other: the first runs the command, the second finds the run's
+    # log there and ends. (Was: it ran the command again. A launch's second start is such a second supervisor where
+    # the first is still there after all, which the launch cannot see on Windows under an environment's python.exe:
+    # what it sees end is the small program.)
+    two = tmp / "twosup"
+    two.mkdir()
+    (two / "manifest.json").write_text(json.dumps({"cmd": [PY, "-c", "open('ran.txt', 'a').write('ran\\n')"],
+                                                   "cwd": str(two)}))
+    sups = [sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "_supervise", str(two)], cwd=proj)
+            for _ in range(2)]
+    try:
+        ran = [(two / "ran.txt").read_text(), json.loads((two / "exit.json").read_text()).get("returncode")]
+    except (OSError, ValueError) as e:
+        ran = f"{type(e).__name__}: {e}"
+    check([s.returncode for s in sups] == [0, 1] and ran == ["ran\n", 0] and "log is there already" in sups[1].stderr,
+          "a supervisor that finds the run's log there starts nothing and ends, so a run's command is started by one "
+          f"supervisor at most (was: run again by each) ({[s.returncode for s in sups]} {ran} {sups[1].stderr[-200:]})")
+    # A command that the system cannot be handed at all (a null character in a word: a ValueError, and no OSError) is
+    # recorded as a start that failed, like a program that is not there. (Was: the supervisor ended on the error with
+    # the run's log made and no record, which a launch reads as a command that may be running.)
+    nul = tmp / "nulsup"
+    nul.mkdir()
+    (nul / "manifest.json").write_text(json.dumps({"cmd": [PY, "-c", "pass\0"], "cwd": str(nul)}))
+    sup = sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "_supervise", str(nul)], cwd=proj)
+    try:
+        rec = json.loads((nul / "exit.json").read_text())
+    except (OSError, ValueError) as e:
+        rec = {"error": f"{type(e).__name__}: {e}"}
+    check(sup.returncode == 1 and "could not start" in str(rec.get("error")) and rec.get("returncode") is None,
+          "a supervisor whose command cannot be handed to the system records that it could not start it (was: no "
+          f"record beside the run's log, so the launch said the command may be running) ({sup.returncode} {rec})")
+    # Status says why a launched run has a manifest and nothing else after a minute, and whether its command can have
+    # run: a manifest of two minutes ago, the same beside the run's log, one of twenty seconds ago, and an old one
+    # that no launch wrote. With them, an exit code in the launch's error reads as one looks it up
+    code = ("import json, sys, time\nfrom pathlib import Path\nsys.path.insert(0, sys.argv[1])\nimport expctl\n"
+            "base, t, out = Path(sys.argv[2]), time.time(), []\n"
+            "for man, log in (({'launched_by': 'expctl', 'created_ts': t - 120}, False),\n"
+            "                 ({'launched_by': 'expctl', 'created_ts': t - 120}, True),\n"
+            "                 ({'launched_by': 'expctl', 'created_ts': t - 20}, False), ({'created_ts': t - 120}, False)):\n"
+            "    d = base / str(len(out))\n    d.mkdir(parents=True)\n"
+            "    (d / 'manifest.json').write_text(json.dumps(dict(man, cmd=['python', 'train.py'])))\n"
+            "    if log:\n        (d / 'stdout.log').write_text('')\n"
+            "    run = expctl.load_run(d.parent, d, {}, t)\n    out.append([run['state'], run.get('reason') or ''])\n"
+            "print(json.dumps([out, [expctl.exit_text(c) for c in (3221225786, -15, 3)]]))\n")
+    r = sh([PY, "-c", code, str(proj / ".claude/skills/nn-training/scripts"), str(tmp / "nosup")], cwd=proj)
+    try:
+        why, texts = json.loads(r.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        why, texts = [["", r.stderr[-300:]]] * 4, []
+    check([w[0] for w in why] == ["unknown"] * 4 and "Nothing ran; launch it again" in why[0][1]
+          and "the command may have run" in why[1][1] and [w[1] for w in why[2:]] == ["", ""],
+          "status says of a launched run with a manifest and no other record after a minute that its supervisor left "
+          "no record of the command's process, and whether the command can have run; not within the first minute, "
+          f"and not of a run that no launch made (was: unknown with no reason) ({why})")
+    check(texts == ["0xC000013A", "-15, signal 15", "3"],
+          f"an exit code reads as one looks it up: a Windows status in hex, a signal by its number ({texts})")
+    if os.name == "nt":
+        # The supervisor's console: one of its own that has no window, for the program the launch started and for the
+        # interpreter that runs the supervisor, which is another process where a virtual environment's python.exe is
+        # the program. (Was: no console. Windows gives a console program that such a process starts a new console with
+        # a window: the interpreter under an environment, for the run's whole life, and taskkill at each kill.)
+        # AttachConsole fails with error 6 for a process that has no console. A window is one that Windows reports as
+        # visible. (Was, for one commit: any window of the console's. The console had none where this was run, on
+        # Windows 11; whether another Windows gives such a console a window that is not shown was not tried.)
+        code = ("import ctypes, json, sys\nfrom ctypes import wintypes\n"
+                "k, u, out = ctypes.WinDLL('kernel32', use_last_error=True), ctypes.WinDLL('user32'), []\n"
+                "k.GetConsoleWindow.restype, u.IsWindowVisible.argtypes = wintypes.HWND, [wintypes.HWND]\n"
+                "for pid in map(int, sys.argv[1:]):\n"
+                "    k.FreeConsole()\n"
+                "    ok = k.AttachConsole(pid)\n"
+                "    err, h = ctypes.get_last_error(), k.GetConsoleWindow() if ok else None\n"
+                "    out.append([True, bool(h and u.IsWindowVisible(h))] if ok else [False, err])\n"
+                "k.FreeConsole()\nprint(json.dumps(out))\n")
+        con = sh([PY, str(proj / ".claude/skills/nn-training/scripts/expctl.py"), "--root", str(sup_root), "launch", "--name",
+                  "console", "--snapshot", "none", "--", PY, "-c", "import time; time.sleep(8)"], cwd=proj)
+        try:
+            la = json.loads(con.stdout)
+            pids = [la["supervisor_pid"], json.loads((sup_root / la["run_dir"] / "pid.json").read_text())["supervisor_pid"]]
+            seen = json.loads(sh([PY, "-c", code] + [str(p) for p in pids], cwd=proj).stdout.strip() or "null")
+        except (ValueError, KeyError, OSError) as e:
+            seen = f"{type(e).__name__}: {e} {(con.stdout + con.stderr)[-200:]}"
+        check(seen == [[True, False]] * 2,
+              "on Windows a launched run's supervisor has a console of its own without a window, as the program the launch "
+              "started and as the interpreter that runs it (was: no console, [False, 6], and where an environment's "
+              f"python.exe is that program, a console with a window for the interpreter) ({seen}, of [console, a window "
+              "that is shown])")
+    # ---- end of that block ----
     # expctl's own writes leave no temporary file beside the record when they give up, whether the replace was refused
     # to the end or the write itself failed (a full disk)
     wdir = tmp / "wjson"
@@ -2555,6 +3026,20 @@ def main():
         ("Bash", {"command": "a=(x) \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
         ("Bash", {"command": "steps=(wsl \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py)"}, "ask"),
         ("Bash", {"command": "X=${v:-(} \"C:/Program Files/Git/usr/bin/touch.exe\" eval/metrics.py"}, "ask"),
+        # From the reading of that repair, 21 November 2026. Behind cmd's /c a quoted text with a blank that ends the
+        # command and whose blank stands in no path is the line of commands that cmd makes of it, and no program's
+        # name (were "ask" for one commit, as the program patch: the last part of the text's last path)
+        ("Bash", {"command": "cmd /c \"type docs\\patch\""}, None),
+        ("Bash", {"command": "cmd.exe /d /c \"dir C:\\tools\\patch\" & echo done"}, None),
+        ("Bash", {"command": "cmd /c \"C:\\tools\\list.exe docs\\patch\" 2>nul | findstr x"}, None),
+        ("Bash", {"command": "bash -c 'cmd /k \"type docs\\patch\"'"}, None),
+        # (and /C is /c to cmd: were None, the small letter alone started a command, behind a quoted name and in
+        # the rules that keep the case of a program's options)
+        ("Bash", {"command": "cmd /C \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" eval\\metrics.py"}, "ask"),
+        ("Bash", {"command": "CMD.EXE /D /K \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" eval\\metrics.py"}, "ask"),
+        ("Bash", {"command": "cmd /K tar -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "cmd /C \"C:\\Program Files\\Git\\usr\\bin\\tar.exe\" -xf bundle.tar"}, "ask"),
+        ("Bash", {"command": "cmd /C tar -tf bundle.tar & find /C \"install\" log.txt"}, None),
         # From a comparison of round 8's guard with this one on 19 November 2026: a word ends at the sign that ends
         # its command as well as at a blank (tar x) and patch<fix.patch), the shell's pipe into awk ends what its
         # own printf lends awk, and a quoted command behind awk's bar is one whatever stands behind it
@@ -3053,6 +3538,7 @@ def main():
     # cleanup live runs
     for x in (active, live):
         expctl(proj, "stop", x["run_id"], "--wait", "20s", timeout=40)
+    env_tests(tmp)  # in a project of its own, and after the cleanup: a fault in it leaves no run alive
     print("\nRESULT:", "ALL PASS" if not FAILS else f"{len(FAILS)} FAILURES")
     for f in FAILS:
         print("  -", f)

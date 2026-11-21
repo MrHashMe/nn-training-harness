@@ -695,7 +695,8 @@ def after_run(root, cfg, cmd, d, target):
     if busy:
         return {"skipped": f"not ended on this target: {', '.join(busy[:5])}"}
     try:  # its output goes where the controller's goes: supervisor.log
-        return {"returncode": subprocess.run(cmd, stdin=subprocess.DEVNULL, timeout=120, **NOWIN).returncode}
+        return {"returncode": subprocess.run(cmd, executable=expctl.in_env(cmd[0]), stdin=subprocess.DEVNULL, timeout=120,
+                                             **NOWIN).returncode}
     except Exception as e:  # noqa: BLE001  whatever the command does, this run's exit record is written
         return {"error": f"{type(e).__name__}: {e}"[:300]}
 

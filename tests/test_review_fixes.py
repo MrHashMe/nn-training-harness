@@ -383,7 +383,15 @@ def main():
                       # bracket). And a bracket in a default or behind a backslash is a part of the value: the
                       # command behind it stays refused
                       ("a=(x) 'touch' notes.md", "deny"), ("steps=(wsl 'touch' notes.md)", "deny"),
-                      ("X=${v:-(} 'touch' notes.md", "deny"), ("X=a\\(b 'touch' notes.md", "deny")]:
+                      ("X=${v:-(} 'touch' notes.md", "deny"), ("X=a\\(b 'touch' notes.md", "deny"),
+                      # from the reading of that repair (21 November): behind cmd's /c a quoted text with a blank
+                      # that ends the command is a line of commands (were "deny" for one commit, as the programs
+                      # install, touch and patch), and /C is /c to cmd (was None)
+                      ("cmd /c \"type notes\\install\"", None), ("cmd /c \"type C:\\x\\touch.exe\"", None),
+                      ("cmd /c \"python train.py --out runs\\touch\"", None),
+                      ("cmd /c \"type docs\\patch\" | findstr x", None),
+                      ("cmd /C \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" notes.md", "deny"),
+                      ("cmd /C tar -xf bundle.tar", "deny"), ("cmd /K tar -tf bundle.tar", None)]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
     # named() itself, where the hook's answer does not show it, because the text of a $( ) is read as a line of

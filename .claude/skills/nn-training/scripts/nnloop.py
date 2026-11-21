@@ -838,8 +838,15 @@ class Campaign:
     def evaluate(self, run_dir):
         """The frozen evaluator on one folder, started by the harness itself; None when it timed out."""
         try:
-            return subprocess.run(self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir), cwd=str(self.root),
-                                  env=self.run_env, capture_output=True, encoding="utf-8", errors="replace",
+            cmd = self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir)
+            # the evaluator is the project's: a relative path to its program is read from the project root. Outside
+            # Windows the start does that. Windows reads it from the folder the loop stands in, so where that is another
+            # folder the path is made a full one (since 21 November 2026). In the root it stays as written: cmd.exe,
+            # which runs a batch file, splits a full path without a space at a comma, `;`, `=` or a bracket
+            if os.name == "nt" and os.path.dirname(cmd[0]) and not os.path.samefile(".", self.root):
+                cmd[0] = os.path.join(self.root, cmd[0])
+            return subprocess.run(cmd, executable=expctl.in_env(cmd[0]), cwd=str(self.root), env=self.run_env,
+                                  capture_output=True, encoding="utf-8", errors="replace",
                                   timeout=float(self.L.get("eval_timeout_s") or 600), **NOWIN)
         except subprocess.TimeoutExpired:
             return None
@@ -951,8 +958,14 @@ class Campaign:
         rid = out.get("run_id")
         if rid:
             c["runs"] += 1
-        if not out.get("ok"):
-            return "crash", f"launch failed: {str(out.get('error') or r.stderr or r.stdout)[-300:]}", rid
+        failed = None if out.get("ok") else f"launch failed: {str(out.get('error') or r.stderr or r.stdout)[-300:]}"
+        # A launch that failed after its supervisor had opened the run's log says that the command may be running
+        # (command_may_run), with no supervisor to end it at its deadline. The loop then waits out the run's time and
+        # stops the run, as it does for one that does not end, before it goes on. (Was, for one commit: on at once, and
+        # the next run shared the machine with that command; before 20 November 2026 such a launch said ok, and the loop
+        # waited like this.) No exit record ends that wait: with that supervisor gone, nothing says that one is true
+        if failed and not (out.get("command_may_run") and rid and out.get("run_dir")):
+            return "crash", failed, rid
         run_dir = self.root / out["run_dir"]
         # A run can write its own folder, an exit record among it. The supervisor that this launch started replaces it by
         # the true one as its last act, so the run has ended when that process has; and the GPU time is what this loop
@@ -966,7 +979,7 @@ class Campaign:
 
         end = t0 + budget + grace + float(self.cfg.get("kill_after_s") or 120) + 60
         try:
-            while not (run_dir / "exit.json").exists() or supervised():
+            while failed or not (run_dir / "exit.json").exists() or supervised():
                 late = time.monotonic() > end
                 lim = self.cap("hours")
                 up = lim is not None and self.used()["hours"] >= lim
@@ -974,7 +987,7 @@ class Campaign:
                     # the harness stops its own run, so no approval is involved: a request first, a kill after 20 s
                     self.expctl("stop", rid, "--kill-after", "20s", "--wait", "30s")
                     if late:
-                        return "crash", "the run did not end", rid
+                        return "crash", failed or "the run did not end", rid
                     self.check(hours_up=up)
                 time.sleep(0.25)
         finally:
@@ -1966,6 +1979,11 @@ def preflight(C: Campaign, agent, limits, args):
     if not C.exe:
         fail(f"the {agent} command-line agent was not found on PATH (pass --agent-exe PATH)")
     try:
+        # a relative path to the agent's program is read from the folder the command is typed in. Until 21 November
+        # 2026 only this check read it there: a session, which starts in the worktree, read it from there outside
+        # Windows (on Windows a batch file was not found), and a loop started with --detach from the project root
+        if os.path.dirname(C.exe) and not os.path.isabs(C.exe):
+            C.exe = os.path.join(os.getcwd(), C.exe)
         usage = subprocess.run([C.exe, "--help"], capture_output=True, encoding="utf-8", errors="replace",
                                timeout=60, **NOWIN).stdout
     except (OSError, subprocess.TimeoutExpired) as e:
@@ -1999,6 +2017,7 @@ def cmd_run(args, resume):
     if args.detach:
         C.dir.mkdir(parents=True, exist_ok=True)
         argv = [sys.executable, os.path.abspath(__file__)] + [a for a in sys.argv[1:] if a != "--detach"]
+        argv += ["--agent-exe", C.exe]  # as this call read it: the loop in the background starts in the project root
         kw = {"creationflags": 0x00000008 | 0x00000200} if os.name == "nt" else {"start_new_session": True}
         with open(C.dir / "loop.log", "ab") as log:
             p = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, cwd=str(root), **kw)

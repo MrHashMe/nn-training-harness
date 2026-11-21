@@ -119,7 +119,7 @@ OpenCode are not ported.
 | Tests of 15 and 16 Nov 2026, on one machine | not run on bare Linux; WSL2 Ubuntu 24.04 stands in | all pass: Python 3.8 and 3.15.0b3 without third-party packages, 3.12 with psutil | not run | all pass: Python 3.8 and 3.15.0rc3 without third-party packages, 3.11 with psutil |
 | Tests of 16 Nov 2026, on GitHub's runners, without third-party packages | all pass: Ubuntu 26.04 with Python 3.15.2, Ubuntu 24.04 with 3.8.18 (that image has no bubblewrap, so the loop's sandbox checks ran on 26.04 only) | not a runner | all pass: macOS 26 on arm64, with Python 3.14.10 and with the system's own 3.9.6 | all pass: Windows Server 2025 with Python 3.8.10 and 3.15.2 |
 | Run contract, guard, installer, session status | works | works | the tests pass; no agent session has run on a Mac | works |
-| `launch --via tmux` | works | works | the tests pass, with tmux 3.8 from Homebrew | missing (no tmux): runs are detached processes |
+| `launch --via tmux` | works | works | the tests pass, with tmux 3.8 from Homebrew | missing (no tmux): runs are detached processes. Their supervisor has a console of its own without a window (since 20 Nov 2026; before, no console, and where a virtual environment's `python.exe` started it, a terminal window stood on the screen for the run's life) |
 | Graceful stop | SIGTERM and `stop.json`, which the run's supervisor acts on by itself. The signal goes only to a process that `/proc` shows was started for this run, whatever pid the run's own records name (since 15 Nov 2026) | same | SIGTERM and `stop.json`; the signal goes to the pid in the run's records (no `/proc` to ask) | `stop.json` only: a loop that does not poll `RunLog.should_stop()` is killed after `kill_after_s` |
 | Source snapshot | symlinks | symlinks | symlinks | symlinks where the account may create them; junctions and hard links where it lacks that privilege (local NTFS) |
 | Loop: no network for the run, sealed data hidden from the run, and the file system read-only for it apart from its worktree, its own run folder and a `/tmp` of its own | enforced with bubblewrap; the read-only file system (since 15 Nov 2026; before, only the project) ran on bare Linux on 16 Nov 2026, on GitHub's Ubuntu 26.04 runner | enforced with bubblewrap (tried on 15 Nov 2026) | missing: offline variables and a scan of the change only | missing: same |
@@ -308,12 +308,12 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   line and let all three pass, `patch.exe` and `tar.exe` behind such a path too (found on 20 November 2026). A
   quoted word in a program's text stays a text: `python -c 'd = {}; print(d.get("patch"))'` passes for that
   subagent as before.
-  Two quoted texts where a command may start are no program's name, and stay as they are. Behind `cmd /c` and
-  `cmd /k`, a text in quotes with a blank in it is a program's path only where a slash or a backslash stands
-  before its first blank (`cmd /c "C:\Program Files\Git\usr\bin\touch.exe" x`); any other is a command line in
-  quotes (`cmd /c "type runs\x\patch"`), which the rules read as the line it is. And behind a word that sets a
-  variable and leaves a bracket open, a quoted word is an item of a list (`steps=(train "install")`) or, on the
-  bracket's line, an argument of the command whose output the variable gets
+  Two quoted texts where a command may start are no program's name, and stay as they are. One is a line of
+  commands in quotes behind `cmd /c` and `cmd /k` (`cmd /c "type runs\x\patch"`), which the rules read as the
+  line it is; where such a text counts as that line and where as a program's path stands further down, at
+  the reading of that repair. The other stands behind a word that sets a variable and leaves a bracket open:
+  there a quoted word is an item of a list (`steps=(train "install")`) or, on the bracket's line, an argument
+  of the command whose output the variable gets
   (`b=$(basename "runs/x/install")`). That holds where plain words at most stand between the bracket and it,
   behind `$(` one at least, and not only words that lead to a command. Behind those it is a command's name
   (`v=$(sudo 'touch' x)`, and `steps=(wsl 'touch' x)`, whose bracket PowerShell runs), and so it is behind a
@@ -325,9 +325,11 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   kept it in its quotes, so `a=(x) 'touch' notes.md` still passed for that subagent, as it had before that day.
   The cost falls on a read-only subagent, because the guard cannot tell which shell reads a line: a quoted word
   where a command may start is a program's name to a POSIX shell and a text to PowerShell, so
-  `if ('install' -in $steps) { 'yes' }` is refused there, and so is a here-document of program text in which
-  such a word stands alone on a line (the last item of a list, written `'install'`), right behind `{`
-  (`{ "rm" : 1 }`) or at a line's end behind a bracket that a blank leads to (`x = ("install"`). The same holds
+  `if ('install' -in $steps) { 'yes' }` is refused there, and so are `$x = ('rm')`, `Write-Output ("rm")`,
+  `return ('rm')` and `ForEach-Object { 'touch' }` (a command may start behind a bracket that a blank leads
+  to and behind a brace); so is a here-document of program text in which such a word stands alone on a line
+  (the last item of a list, written `'install'`), right behind `{` (`{ "rm" : 1 }`) or at a line's end behind
+  a bracket that a blank leads to (`x = ("install"`). The same holds
   for a pattern of `case` behind `;;` (`… ;; 'install') …`), for the word of a default behind a blank
   (`v=${x:- 'rm' }`), for a list's item on a line of its own behind the first or behind names that only lead
   to a command (`steps=(env "install")`), for an argument behind a sign inside `$( )`
@@ -342,12 +344,8 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   the guard does not know to lead to a command, which makes the quoted word behind it its argument, whatever
   that word runs (`v=$(watch 'touch' x)` passes, as `watch 'touch' x` and `watch touch x` do; the bare
   `v=$(watch touch x)` is refused to a read-only subagent, because an older rule takes what stands before the
-  name for a word that sets a variable). Behind `cmd /c`, a command line in quotes whose first word is a path
-  itself (`".\tools\show.exe runs\x\install"`, `"dir/b runs\x\install"`) is taken for one path and named after
-  its last part, so a read-only subagent is refused these two, and the main session is asked where that part is
-  a name that its rules ask about (`"C:\tools\list.exe docs\patch"`); and a program's path whose first folder
-  holds the blank (`cmd /c "my tools\patch.exe" < fix.patch`) is taken for a command line and passes, as it
-  did before that day. Telling these apart takes looking for the file, as cmd does. (A blank that a backslash
+  name for a word that sets a variable). The limits behind `cmd /c` are named further down, with the reading
+  of that repair, which changed what the rules read there. (A blank that a backslash
   escapes stood among these limits until that day, read from the code and not run. Run, it is none:
   `/c/Program\ Files/Git/usr/bin/touch.exe eval/metrics.py` is asked about like the bare name, in the reading
   that takes the backslash off.) And in the line that a shell is handed, a read-only subagent's rules see
@@ -357,6 +355,24 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   a quote is neither, so `bash -c 'kill 123'` is not refused by it, as before (an older gap, seen on
   21 November 2026 and left; the main session's rules, which read the line too, ask about it), and
   `bash -c '"kill" 123'` is refused.
+  A reading of that repair on the same day changed two things behind `cmd /c` and `cmd /k`. A quoted text with a
+  blank in it may be a line of commands there, which cmd makes of it unless it is a program's file, and it is
+  read as that line where it ends its command and its blank stands in no path: `cmd /c "type docs\patch"` and
+  `cmd /c "C:\tools\list.exe docs\patch" 2>nul` pass. For one commit they were asked about as the program
+  `patch`, the last part of the text's last path, and a read-only subagent was refused them and
+  `cmd /c "python train.py --out runs\touch"`. The text is the program where an argument or a `<` follows it
+  (`cmd /c "my tools\touch.exe" eval\metrics.py`) or where its first blank stands inside a path, behind a
+  folder's separator and a part without an ending (`cmd /c "C:\Program Files\Git\usr\bin\patch.exe"`). cmd
+  tells the two apart by looking for the file, which the guard does not do, so two forms are read wrongly: a
+  program without an argument passes as a line of commands where no separator stands before its first blank or
+  a dot stands in the part before that blank (`cmd /c "my tools\patch.exe"`,
+  `cmd /c "C:\tools.old dir\patch.exe"`), and a line of commands whose first word is a path without an ending
+  is read as a program (`cmd /c "C:\Python311\python train.py --out runs\touch"` is refused to a read-only
+  subagent, and so is `cmd /c "dir/b runs\x\install"`, whose `/b` the guard takes for a part of a path).
+  And `/C` and `/K` are cmd's `/c` and `/k`: until then the capital letter started no command for a name in
+  quotes or for the rules that keep the case of a program's options, so
+  `cmd /C "C:\Program Files\Git\usr\bin\touch.exe" eval\metrics.py` and `cmd /K tar -xf bundle.tar` passed
+  unasked, and a read-only subagent was let run them.
   Since 15 November 2026 a line whose only write is a redirect, or a `tee` at the start of a command, is asked
   about only where a target of it is such a file: `python eval/metrics.py > score.json` passes (it was asked
   about, and refused where nobody can be asked), `echo x > eval/metrics.py` is asked about as before. The
@@ -729,6 +745,50 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   the other finds the first one's row ahead of its own in the record, gives way before it starts the command,
   and stays in the receipt as an attempt, which counts as a use afterwards (since 15 November 2026; both ran
   before).
+- How a launched run's processes are followed, since 20 November 2026. `expctl launch` looks at the supervisor it
+  started, for five seconds, and five more where it starts a second one. (Through tmux it starts none itself: it waits
+  five seconds for the supervisor's record and answers `ok` with a warning when there is none.) One that ended before
+  it started the command is started once more, and the answer (`warning`) and `supervisor.log` say so; if the second
+  one ends too, or the system refuses the second start, the launch answers `ok: false` and names both, its own exit
+  code is 9, and the run reads as `failed` with that reason. One that ended after it had opened the run's log, the
+  first or the second, is not started again, because the command may have run: the launch answers with the error and
+  `command_may_run: true` and writes no exit record, so the run reads as `unknown`. (A supervisor that cannot start
+  the command writes the reason as the run's exit record, since 21 November 2026 for any error. Before, only for the
+  system's own: a manifest with a null character in a word, which no command line can hold, left the log without a
+  record, and a launch reads that as a command that may run.) Where its command writes records
+  of its own, the run reads as `running` by its heartbeat and then as its result says; where the command ends without
+  a result, as `running` until the last heartbeat is `heartbeat_stale_seconds` old, then as `unknown`. The loop waits
+  out the time of such a run and stops it before its next step (since 21 November 2026; for one commit it went on at
+  once, with that command still on the machine). A supervisor makes the run's log and ends when the log is there
+  already, so one supervisor at most starts a run's command (since 21 November 2026). (Before 20 November the launch
+  never looked. On Windows under a virtual environment's `python.exe`, 2 of 650 runs never started while their launch
+  said `ok`, and they read as `unknown` for good. Why those supervisors ended is not established, so the launch deals
+  with what follows from it.) For a launched run that has a manifest and no other record after a minute,
+  `expctl status --run <id>` gives a reason and says whether the command can have run; it reads that from the records
+  alone, and the overall view only counts such a run. A heartbeat names the start time of the process that wrote it
+  (`proc_start`, and `proc_key` on Linux), and the process number in it counts as the run's only while the process
+  that holds the number is that one: not a process with another start time, and on Windows not one that was created
+  after the heartbeat was written. (Before, any live process with that number counted, for `heartbeat_stale_seconds`.
+  Windows gives a number out again within seconds, and where an environment's `python.exe` is the run's command the
+  heartbeat's number is never the recorded one (since 20 November that is also every launched `python …` where the
+  kit itself runs in an environment: the controller starts the `python.exe` beside its own interpreter), so a
+  killed run read as `running` as soon as another program had the
+  number; `expctl stop` would then have ended that program after `kill_after_s`, which was read in the code and never
+  run.) A vendored `runlog.py` of before that day writes no start time: on Windows the creation time still protects
+  its heartbeat, elsewhere its number is taken as before, so copy the new file over it. A heartbeat that names its
+  writer's own start time counts as that writer's whatever its time of writing says (since 21 November 2026; for one
+  commit, on Windows, a clock that was set back soon after the writer's start made a run that is followed by its
+  heartbeat read as `lost` until it wrote a heartbeat after the clock had caught up). A heartbeat without a start time
+  still reads so there after such a step. On native Windows the supervisor has a console of its own without a window;
+  `expctl stop`, the deadline's kill, and Ctrl+C, Ctrl+Break and a closed terminal on the caller's side behave as
+  before (tried on Windows 11 under Python 3.11.7, and under 3.8.20 and 3.15.0rc3 in an environment). Not repaired:
+  the number in the launch's own record is compared by start time to within five seconds only, so on Windows a run
+  that is killed together with its supervisor within five seconds of its start still reads as alive where another
+  program gets its number within those seconds; `nnloop start --detach` and the controller of a remote run are started
+  as before, without a console, and nothing looks whether they came up. Under an environment's `python.exe` each of
+  those two then has a terminal window of its own on the screen for as long as it runs, as the supervisor had (seen
+  beside the loop's and the remote module's tests on 21 November 2026). None of this has run on a Mac, where the first
+  heartbeat of a process now asks `ps` once for its start time.
 - A plain `expctl launch` hands the run your whole environment. The loop withholds variables whose names look like
   secrets, and a remote run gets only the variables you name.
 - What counts as a run's source, since 14 November 2026: agent configuration (`AGENTS.md`, `.mcp.json`, `.codex/`,
@@ -736,6 +796,75 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   project that tracks such files, or does not ignore them, changes once. The journal, the search's storage file
   and the runs folder no longer make a tree `dirty`.
 - An interpreter path with spaces is quoted in hook commands; PowerShell and Codex on Windows cannot run that form.
+- In a virtual environment on Windows, a program that a command names without a folder (`python` in a launched
+  command, in a final evaluation command, in the loop's evaluator, in an `on_finish` command, and after
+  `env --python`) is looked for first beside the interpreter that runs the kit, as `<name>.exe`. Where the
+  interpreter of an environment made by `venv`, virtualenv or uv runs the kit, that is the environment's `Scripts`
+  folder: `python` is the environment's interpreter, and so is every other program with an `.exe` there, which the
+  commands that pip installs have (`transformers`, `tqdm`), whether or not the environment is activated and
+  whatever `PATH` says. A conda environment has its interpreter in its own folder and those commands in its
+  `Scripts` folder, so there only `python` and `pythonw` come from beside the interpreter and the commands from
+  `PATH` as before (by conda's layout: no conda was at hand to run it). Until 20 November 2026 the base
+  interpreter's folder came first instead: `python` and `pythonw` were the base interpreter, which has none of the
+  environment's packages, and the environment's other programs were found through `PATH` only. A name with another
+  ending than `.exe` and a name with no `.exe` beside the interpreter are found as before; a name with a folder is
+  the file at its path (the next entry). Where another interpreter than the environment's runs the kit, `python` is
+  that interpreter: name the environment's interpreter by its path. A run that began with the kit as it was before
+  and is resumed with it as it is now has its first part from the base interpreter and its second from the
+  environment's: where the run logger is used, the two parts' `env.json` name the two, and the kit records a run's
+  interpreter nowhere else. A campaign of the loop that goes on across that change starts its later runs and its
+  evaluator in the environment's interpreter, and nothing records the evaluator's. The programs of a remote target's
+  `exec` and `hf` lists are found as before.
+- On Windows the kit starts a command without a shell, and what Windows then finds is narrower than what a shell
+  finds (measured on 20 November 2026 on Windows 11, under Python 3.8 to 3.14). A name without an ending is started
+  as its `.exe` and as nothing else: a command that only a `.cmd` or `.bat` file answers to (`npm`, for one) needs
+  that ending written, and `python3.12` needs its `.exe` written, because Windows takes the `.12` for an ending. A
+  program named with a folder (`venv/Scripts/python`) is the `.exe` or `.com` file at that path, `.exe` where the
+  name has no ending, and since 20 November 2026 the kit hands that file to Windows itself, so it starts whichever
+  way its slashes point. Until then a relative path with forward slashes, and without `./` or `../` in front, was
+  not started where the environment holds the variable `NoDefaultCurrentDirectoryInExePath`, which the shells of the
+  Claude Code session of that day did. A relative path is read from the same folder on Windows and elsewhere since
+  21 November 2026: from the project root for `final-eval`, for a remote target's `on_finish` command and for the
+  loop's evaluator, which are settings of the project; for a launched run from the folder it works in; and from the
+  folder the command is typed in for the path after `env --python` and after the loop's `--agent-exe`, which are
+  typed there. Until then Windows read the evaluator from the folder the loop was called in, which only `--detach`
+  made the project root; outside Windows the path after `env --python` was read from the project root; and the
+  agent's program was read where the command was typed by the check before the start only: a session, which starts
+  in the worktree, read it from there outside Windows and did not find a batch file on Windows, and a loop started
+  with `--detach` read it from the project root. (Tried on Windows and in WSL, not on a Mac: `env --python`; the
+  evaluator by the loop's own start of it, not by a whole campaign; the agent's program by campaigns with a stand-in
+  agent, not with a real one.) A batch file stays Windows' to find and `cmd.exe`'s to run: name it with backslashes
+  (`scripts\final.cmd`) or by its full path, because by a relative path with forward slashes it runs only in quotes,
+  and only where that variable is not set. And `cmd.exe` reads the path it is given: where the path has no space, so
+  that nothing puts it in quotes, a `&`, a comma, `;`, `=`, `^`, a bracket or a variable's name between `%` signs in
+  it keeps the batch file from starting (measured on 21 November 2026 under Python 3.8 and 3.11: each of them in a
+  full path, the comma also in a relative one, which `final-eval`'s check passes). The agent's program, and the
+  loop's evaluator where the loop is called outside the project root, need no backslashes since 21 November 2026:
+  the kit makes their relative path a full one, so the program, a batch file too, starts whichever way its slashes
+  point, within that limit. Called in the project root, as a loop started with `--detach` is, the evaluator's path
+  goes to Windows as written. `final-eval` checks its program before it records the use, and since 20 November 2026
+  the check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
+  a name with a dot that only an `.exe` stands behind, a script named without its interpreter (`eval.py`), a batch
+  file by a relative path with forward slashes and, where that variable is set, a program named without a folder
+  that lies in the project root only; where Python's own search (`shutil.which`) finds a file for the name, the
+  refusal names that file and says what Windows starts. Which names get that hint differs with Python's version:
+  only from 3.12 a name with a folder that needs an ending added (`tools\final`), only up to 3.11 the program in the
+  project root where that variable is set. Until then those passed: the use was recorded, the start failed, and the
+  next call needed `--again` with that reason; and under Python 3.11 and older the check refused
+  `venv\Scripts\python`, which would have started. What the check leaves: Windows also looks beside the running
+  program (in a virtual environment, the base interpreter's folder) and in its own folders before `PATH`, and the
+  check does not, so a program that only they hold is refused (System32 and the Windows folder are on an ordinary
+  `PATH`); it sees that a file is there and not whether Windows can start it, so a file that is no program under a
+  program's ending fails at the start with the use recorded, and the Microsoft Store's `python3` alias on a machine
+  without the Store's Python starts, prints a hint and ends; and a batch file that the kit's `PATH` holds is looked
+  for once more by `cmd.exe`, by the `PATH` of the command. The check also refuses, before any use, three kinds of
+  name that Windows starts: a name with a dot behind a folder, where the path is a full one or begins with `.\` or
+  `..\` (`.\tools\tool3.11`) and Windows adds the `.exe` itself, so write the `.exe`; a program under another ending
+  than `.exe`, `.com`, `.bat` or `.cmd` (tried with `.scr`); and a name with a dot or a space at its end, where
+  `tools\tool.` is Windows' name for a program file without an ending. A `PATH=...` written in front of the command
+  reaches the program that is started and not the search for it, which goes by the `PATH` the kit runs with. Outside
+  Windows the start searches by that `PATH=...`, and since that day the check does too (tried on Linux); an empty
+  `PATH=` it refuses, though the start then looks in the current folder.
 - Not verified live: the loop with Claude Code on Linux (it ran live on native Windows only); a loop stop caused
   by a rate limit, a usage cap or paid usage (tests only); Codex and Cursor sessions; the Hugging Face Jobs route
   (it needs your account and a paid canary: `references/remote.md`); on macOS and bare Linux everything but

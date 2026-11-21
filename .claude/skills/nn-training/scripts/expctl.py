@@ -236,6 +236,58 @@ def py_cmd(cfg):
     return f'"{p}"' if " " in p else p
 
 
+def in_env(program):
+    """On Windows, the file to hand to Popen as `executable` where Windows would not find the program that a command
+    names, or would find another; None where the name is left to the system (elsewhere, a batch file, no such
+    file). The command line stays as the caller wrote it.
+    A name without a folder: the .exe of that name beside this interpreter. Windows looks for such a name first in
+    the folder of the program that is running. In a virtual environment that is the base interpreter, which the
+    environment's python.exe only starts: until 20 November 2026 a launched `python train.py` ran in the base
+    interpreter, without the environment's packages. Not the first on PATH instead: where the kit was not started by
+    PATH's interpreter (the `py` launcher, a full path) that is another program than the one such a command started
+    so far.
+    A name with a folder: that .exe or .com, seen from the current directory as Windows sees it, `.exe` added to a
+    name without an ending. Left to Windows, `venv/Scripts/python`, a relative path with forward slashes, did not
+    start where the variable NoDefaultCurrentDirectoryInExePath is set. A batch file is not handed over: cmd.exe,
+    which runs it, then no longer takes a quoted path that has a space. Nor is a name whose last part the full path
+    does not keep: a dot at its end, by which Windows means the file without an ending, a space or a slash there,
+    `.` or `..`. Handed over, `tools\\tool.` started tool.exe, and `tools\\..` the .exe that is named like the
+    current directory and lies beside it."""
+    folder = os.path.dirname(program)
+    if os.name != "nt" or not (folder or sys.executable):
+        return None
+    exe = os.path.abspath(program) if folder else os.path.join(os.path.dirname(sys.executable), program)
+    if os.path.basename(exe) != os.path.basename(program):
+        return None
+    exe += "" if os.path.splitext(exe)[1] else ".exe"
+    return exe if exe.lower().endswith((".exe", ".com") if folder else ".exe") and os.path.isfile(exe) else None
+
+
+def startable(program, env):
+    """Whether a start without a shell, with `env` and from the current directory, finds `program`: `final-eval` asks
+    before it records a use. Outside Windows the start reads the PATH of `env`. On Windows it reads the kit's own
+    PATH, takes a name without an ending as its .exe and as nothing else, takes a batch file by its full name, and
+    leaves out the current directory where NoDefaultCurrentDirectoryInExePath is set (measured 20 November 2026,
+    Python 3.8 to 3.14). shutil.which, asked until then, said yes to more: the other endings of PATHEXT, the current
+    directory in any case (Python 3.11 and older), a batch file by any path. Then the start failed, and the use was
+    recorded."""
+    if os.name != "nt":
+        return bool(shutil.which(program, path=env.get("PATH")))
+    if in_env(program):
+        return True
+    ext = os.path.splitext(program)[1].lower()
+    if os.path.dirname(program):  # what is left to Windows here, and starts: a batch file. Not by a relative path with
+        # a forward slash: cmd.exe reads an option there, and where the variable is set Windows does not find the file
+        return (ext in (".bat", ".cmd") and bool("/" not in program or os.path.splitdrive(program)[0])
+                and os.path.isfile(program))
+    # shortcut: Windows also looks beside the running program (in a virtual environment, the base interpreter) and in
+    # its own folders, before the PATH; a name that only they hold is refused here. Ask them too once that is met
+    dirs = [] if "NoDefaultCurrentDirectoryInExePath" in os.environ else ["."]
+    return ext in ("", ".exe", ".com", ".bat", ".cmd") and any(
+        d and os.path.isfile(os.path.join(d, program + ("" if ext else ".exe")))
+        for d in dirs + os.environ.get("PATH", "").split(os.pathsep))
+
+
 def read_json(path):
     for attempt in (1, 2, 3):
         try:
@@ -525,6 +577,24 @@ def same_process(pid, expected_start, key=None) -> bool:
     return abs(actual - expected_start) < 5.0
 
 
+def born_after(pid, ts, start=None) -> bool:
+    """Windows: whether the process that holds this number was created after the time `ts`, so that it cannot have
+    written a record of that time. Windows gives a number out again within seconds, sooner than the five that
+    same_process allows. Not asked of a record whose own start time (`start`) is this process's to within 0.05 s: that
+    process wrote it, whatever the clock did since. A later process with the number reads that close only where the
+    clock was set back by the very time between the two starts. (Was, for one commit: the time of writing alone. A
+    clock that was set back between a process's start and its record makes the two read the other way round, so a run
+    read as lost on every heartbeat that it wrote before the clock had caught up with its start.) A record without a
+    start time, as an older vendored runlog.py writes it, still reads so after such a step. False elsewhere: a number
+    comes back late there, and on Linux the start time is the boot time plus ticks, which moves with the clock."""
+    if os.name != "nt" or not is_num(ts):
+        return False
+    actual = proc_start_time(pid)
+    if actual is None or (is_num(start) and abs(actual - start) < 0.05):
+        return False
+    return actual > ts + 0.1  # time.time() is up to a clock tick (16 ms) behind on Windows
+
+
 def proc_words(pid, what):
     """Linux: the words a process was started with, its command line ("cmdline") or its environment ("environ"). [] when
     they cannot be read, None where there is no /proc to ask (macOS, Windows). A run's records name whatever pid their
@@ -557,6 +627,25 @@ def holds_open(pid, path) -> bool:
     return False
 
 
+def _win_parent(pid):
+    """A Windows process's parent as the system records it, or None: psutil's ppid() where psutil is not installed.
+    A run that a virtual environment's python.exe started trains in a child of the process the kit knows, and the
+    GPU names that child: without its parent, status showed no run on the GPU."""
+    try:
+        import ctypes
+
+        k32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        h = k32.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return None
+        info = (ctypes.c_size_t * 6)()  # PROCESS_BASIC_INFORMATION: six pointer-sized fields, the parent's id the last
+        ok = ctypes.windll.ntdll.NtQueryInformationProcess(h, 0, info, ctypes.sizeof(info), None) == 0
+        k32.CloseHandle(h)
+        return int(info[5]) if ok else None
+    except Exception:
+        return None
+
+
 def proc_parent(pid):
     try:
         import psutil  # type: ignore
@@ -564,6 +653,8 @@ def proc_parent(pid):
         return psutil.Process(int(pid)).ppid()
     except Exception:
         pass
+    if os.name == "nt":
+        return _win_parent(pid)
     try:
         with open(f"/proc/{int(pid)}/stat", "r") as f:
             data = f.read()
@@ -573,13 +664,31 @@ def proc_parent(pid):
 
 
 def ancestors(pid, depth=25):
-    out, cur = [], pid
+    """A process's parent, that one's parent and so on. Windows keeps the number of a parent that has ended, and a
+    later process can hold it: one that began after the process below it is not its parent, and the walk ends there.
+    Otherwise status put the GPU of a program that belongs to no run on the run whose process got such a number.
+    On Windows a clock set back between a parent's start and its child's ends the walk there too: the GPU is then on
+    no run, which can miss an alert and raises none."""
+    win = os.name == "nt"
+    out, cur, born = [], pid, proc_start_time(pid) if win else None
     for _ in range(depth):
         cur = proc_parent(cur)
         if not cur or cur <= 1 or cur in out:
             break
+        began = proc_start_time(cur) if win else None
+        if born and began and began > born:
+            break
         out.append(cur)
+        born = began or born
     return out
+
+
+def exit_text(rc) -> str:
+    """An exit code as one looks it up: with the signal's number where a signal ended the process, and in hex where
+    it is a Windows status, such as 0xC000013A for a process that an event of its console ended."""
+    if is_num(rc) and rc < 0:
+        return f"{rc}, signal {-int(rc)}"
+    return f"0x{int(rc):08X}" if is_num(rc) and rc > 0xFFFF else str(rc)
 
 
 def signal_leader(pid, sig) -> bool:
@@ -1272,8 +1381,17 @@ def load_run(root: Path, d: Path, cfg, t: float):
     # shortcut: only bubblewrap's flag in the run's command is recognised, not a namespace from docker or unshare;
     # upgrade when RunLog records the namespace it runs in
     if not alive and hb_ok and hb_age is not None and hb_age <= stale and hb.get("pid") and hb.get("pid") != pid \
-            and not man.get("remote") and "--unshare-pid" not in (man.get("cmd") or []) and pid_alive(hb["pid"]):
-        # a later process (e.g. an in-place resume) owns this run directory now
+            and not man.get("remote") and "--unshare-pid" not in (man.get("cmd") or []) and pid_alive(hb["pid"]) \
+            and same_process(hb["pid"], hb.get("proc_start"), hb.get("proc_key")) \
+            and not born_after(hb["pid"], hb["ts"], hb.get("proc_start")):
+        # A later process (e.g. an in-place resume) owns this run directory now. Only the process that wrote the
+        # heartbeat: by its start time, which RunLog writes there since 20 November 2026, and on Windows no process
+        # that was created after the heartbeat was written, unless its start time is the very one that the heartbeat
+        # names (born_after says why). (Was: whatever process had the number. Where a virtual environment's python.exe
+        # starts a run on Windows, the recorded number is that small program's and the heartbeat's is the
+        # interpreter's, so after a kill a run read as running, for up to heartbeat_stale_seconds, as soon as another
+        # program had the interpreter's number, and `stop` would then have ended that program.) A heartbeat without a
+        # start time, as an older vendored runlog.py writes it, is taken as before elsewhere
         pid, alive = hb["pid"], True
     # The supervisor writes the exit record a moment after the process has gone, so while it is there the run has not
     # ended. Only where its start time shows that the pid is still the supervisor's: a pid is given out again
@@ -1372,6 +1490,17 @@ def load_run(root: Path, d: Path, cfg, t: float):
         state = "running" if hb_age <= stale else "unknown"
     else:
         state = "unknown"
+        # A launched run with a manifest and no record of a process after a minute. Its supervisor writes that record
+        # within a second of its start, so it has most likely ended; its own number is in no record before that one,
+        # so this is read from the records alone. The launch notices a supervisor that ends within its first seconds;
+        # this is for one that the launch did not see end (--via tmux, a start slower than those seconds) and for a
+        # run of before 20 November 2026 (was: unknown with no reason, for good)
+        if man.get("launched_by") == "expctl" and is_num(man.get("created_ts")) and t - man["created_ts"] > 60:
+            reason = (f"launched {fmt_secs(t - man['created_ts'])} ago, and its supervisor left no record of the command's "
+                      "process: " + ("it had opened the run's log, so the command may have run (stdout.log, "
+                                     "supervisor.log)" if (d / "stdout.log").exists() else
+                                     "it had not opened the run's log, which it does before it starts the command "
+                                     "(supervisor.log may say why). Nothing ran; launch it again"))
     run["state"] = state
     if reason:
         run["reason"] = str(reason)[:300]
@@ -1954,15 +2083,30 @@ def cmd_launch(args):
         kw = dict(stdin=subprocess.DEVNULL, stdout=sup_log, stderr=subprocess.STDOUT, cwd=str(cwd), env=env,
                   close_fds=True)
         if os.name == "nt":
-            kw["creationflags"] = 0x00000008 | 0x00000200  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+            # CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP: a console of its own that has no window, apart from the
+            # caller's. (Was DETACHED_PROCESS, no console at all, and Windows gives a console program that such a
+            # process starts a new console with a window. Under a virtual environment's python.exe that program is
+            # the supervisor's interpreter, so a terminal window stood on the screen for the run's whole life; without
+            # an environment one came up at each kill, for taskkill.)
+            kw["creationflags"] = 0x08000000 | 0x00000200
         else:
             kw["start_new_session"] = True
         try:
             sp = subprocess.Popen(sup_cmd, **kw)
         except OSError as e:
             return fail(7, f"could not start supervisor: {e}", run_dir=rel_to(root, run_dir))
-    pid, start_error = None, None
-    for _ in range(50):
+    # The supervisor's first record, looked for during five seconds: the number of the command's process, or why the
+    # command could not start. And whether the supervisor is there at all (was: never asked, so a supervisor that had
+    # ended before it began left a launch that said ok, with no process number, and a run that read as unknown for
+    # good; seen on Windows under a virtual environment's python.exe, in 2 of 650 launches, where one such process
+    # ended after 0.16 s with the status 0xC000013A, the one for an event of its console, having run none of its code).
+    # A supervisor that ended without a record is started once more, when it had not opened the run's log either: it
+    # opens that before it starts the command, so the command has not run and nothing is done twice. One start more
+    # and no error at once, because what was seen comes and goes, and an error would have the caller, a campaign's
+    # loop among them, count a run that never ran as a failed one. The answer and supervisor.log say so
+    pid, start_error, ended, again, left, settled, noted, may_run = None, None, [], False, 50, None, False, False
+    while True:
+        gone = sp.poll() if sp is not None else None  # asked before the records are read: it writes them, then ends
         pj = read_json(run_dir / "pid.json")
         if isinstance(pj, dict) and pj.get("pid"):
             pid = pj["pid"]
@@ -1971,6 +2115,39 @@ def cmd_launch(args):
         if isinstance(ex, dict):
             if ex.get("returncode") is None:
                 start_error = ex.get("error") or "the command could not start"
+            break
+        if gone is not None and settled is not sp:
+            settled = sp  # the records once more after a moment, for one that could not be read just now
+            time.sleep(0.2)
+            continue
+        if gone is not None:
+            ended.append(exit_text(gone))
+            began, said = (run_dir / "stdout.log").exists(), log_reason(run_dir / "supervisor.log")
+            if not began and len(ended) == 1:
+                try:  # the line is for a reader of the log, and the start does not wait on it (was: a log that took
+                    # no line, on a full disk, left the supervisor unstarted and read as "no second start")
+                    sup_log.write(f"expctl launch: the supervisor ended with exit code {ended[0]} before it started the "
+                                  f"command; it is started once more\n".encode())
+                    sup_log.flush()
+                    noted = True
+                except OSError:
+                    pass
+                try:
+                    sp, again, left = subprocess.Popen(sup_cmd, **kw), True, 50
+                    continue
+                except OSError as e:
+                    ended.append(f"no second start: {e}")
+            start_error = (f"the supervisor ended before it recorded the run's process (exit code {', then '.join(ended)}); "
+                           + ("it had opened the run's log, so the command may have started: see stdout.log" if began
+                              else "the command was not started")
+                           + (f"; supervisor.log: {said}" if said and not said.startswith("expctl launch:") else ""))
+            if not began:  # for status: a run that failed to start, with this reason (was: unknown, with none)
+                write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
+                                                          "ended_at": iso(now())})
+            may_run = began
+            break
+        left -= 1
+        if left <= 0:
             break
         time.sleep(0.1)
     me = Path(os.path.abspath(__file__))
@@ -2000,10 +2177,18 @@ def cmd_launch(args):
     }
     if resume_of:
         out["resume_of"] = resume_of.name
+    warn = []
+    if again and len(ended) == 1:
+        warn.append(f"the supervisor's first process ended with exit code {ended[0]} before it started the command, "
+                    "and was started once more" + (" (supervisor.log has the line)" if noted else ""))
     if start_error:
         out["error"] = start_error
+        if may_run:  # for a caller that waits for its runs, as the loop does: this one may be running, unsupervised
+            out["command_may_run"] = True
     elif pid is None:
-        out["warning"] = "child pid not reported yet; check status in a few seconds"
+        warn.append("child pid not reported yet; check status in a few seconds")
+    if warn:
+        out["warning"] = "; ".join(warn)
     if mode == "copy" and optuna_storage_file(cfg):
         out["note"] = ("relative Optuna storage paths resolve inside the snapshot; build the storage URL from "
                        "$EXP_PROJECT_ROOT so every run writes to the shared study")
@@ -2079,7 +2264,17 @@ def cmd_supervise(args):
     # {run_dir} in a command is this run's folder, which no caller knows before the launch: the loop binds it into the
     # sandbox of its run. The manifest keeps the placeholder, so `resume` fills in the folder of the new run
     cmd = [str(c).replace("{run_dir}", os.path.abspath(run_dir)) for c in cmd]
-    log = open(run_dir / "stdout.log", "ab", buffering=0)
+    # The run's log is made here and by nothing else, and the supervisor that makes it is the one that starts the
+    # command: one that finds it there ends. So a launch's second start cannot run the command a second time where the
+    # first supervisor is still there after all. (Was: opened whether it was there or not. On Windows under a virtual
+    # environment's python.exe the launch sees that small program end, not the interpreter it started. The interpreter
+    # outlived it in none of 926 tries on one machine, which does not exclude it, and this does not depend on it.)
+    try:
+        log = open(run_dir / "stdout.log", "xb", buffering=0)
+    except FileExistsError:
+        sys.stderr.write("expctl supervisor: this run's log is there already, so another supervisor has started its "
+                         "command or is about to; this one starts nothing and ends\n")
+        return 1
     t0, m0 = now(), time.monotonic()
     env = dict(os.environ, EXP_LAUNCH_TS=repr(t0))  # RunLog ignores a stop.json older than this launch
     kw = dict(stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, cwd=cwd, env=env)
@@ -2088,8 +2283,10 @@ def cmd_supervise(args):
     else:
         kw["start_new_session"] = True  # own process group so stop/deadline can signal the whole tree
     try:
-        child = subprocess.Popen(cmd, **kw)
-    except OSError as e:
+        child = subprocess.Popen(cmd, executable=in_env(cmd[0]), **kw)
+    except Exception as e:  # not OSError alone: after any failed start the log is there, and with no record of the
+        # failure the launch says that the command may be running, on which the loop waits out the run's time
+        # (seen with a null character in a word of the command, which gives a ValueError)
         write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": f"could not start: {e}",
                                                   "ended_ts": now(), "ended_at": iso(now())})
         return 1
@@ -2460,7 +2657,9 @@ def curve_findings(loss, metric, direction, lname, mname):
                 out.append(f"{mname} reached its final level at {at(M, j)}, {100 * j / (n - 1):.0f} % into the run: "
                            "what came after gained nothing beyond the noise of an evaluation. A shorter run would do, "
                            "or the learning rate is too low to go further")
-        if total > 0 and sig > 0.15 * total:
+        # the scatter of values that differ by rounding alone is none (was until the reading of 21 November 2026: a
+        # metric of 0.3 and 0.30000000000000004 by turns "scatters by about 6.72e-17, 121 % of all it gained")
+        if total > 0 and sig > max(0.15 * total, 1e-9 * abs(last)):
             out.append(f"{mname} scatters by about {sig:.3g} from one evaluation to the next, {100 * sig / total:.0f} % "
                        "of all it gained in the run: the best value is partly a lucky evaluation, and differences of "
                        "that size between checkpoints or runs mean nothing. Evaluate on more examples")
@@ -2888,8 +3087,18 @@ def cmd_final_eval(args):
     except ValueError as e:
         return fail(2, f"the final_eval_commands entry cannot be split into words: {e}")
     os.chdir(root)  # the command is the project's: its program and its paths are relative to the project root
-    if not words or not shutil.which(words[0].strip('"')):
-        return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}")
+    program = words[0].strip('"') if words else ""
+    if not program or not startable(program, env):
+        # a hint: the file Python finds for the name, which is not the same in every version (up to 3.11 it looks in
+        # the current folder whatever the variable says, from 3.12 it adds an ending to a name with a folder too)
+        there = os.name == "nt" and program and shutil.which(program)
+        return fail(2, f"the final evaluation's program was not found: {words[0] if words else '(none)'}"
+                       + (". Without a shell Windows starts an .exe, whose ending may be left out where the last part "
+                          "of the name has no dot, and a .com or a batch file by its full name (a batch file by a "
+                          "relative path: with backslashes); a name without a folder it looks for in the current "
+                          "folder only where the variable NoDefaultCurrentDirectoryInExePath is not set. "
+                          f"There is {there}"
+                          if there else ""))
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"
     before, edited, shared, sub = final_uses(root)
@@ -2929,8 +3138,8 @@ def cmd_final_eval(args):
     try:
         with open(log, "wb") as f:  # Windows takes the command line as one string; elsewhere it is a word list
             code = subprocess.run(rest + " " + subprocess.list2cmdline(extra) if os.name == "nt" else words + extra,
-                                  cwd=str(root), env=env, stdin=subprocess.DEVNULL, stdout=f,
-                                  stderr=subprocess.STDOUT).returncode
+                                  executable=in_env(program), cwd=str(root), env=env,
+                                  stdin=subprocess.DEVNULL, stdout=f, stderr=subprocess.STDOUT).returncode
     except OSError as e:
         code, err = None, f"could not start: {e}"
     out = tail_bytes(log, 2000)
@@ -3263,9 +3472,13 @@ def cmd_env(args):
     for f in ("uv.lock", "pyproject.toml", "requirements.txt", "environment.yml", "pixi.toml", "poetry.lock", "setup.py"):
         if (root / f).exists():
             info.setdefault("env_files", []).append(f)
-    py = args.python
+    py = args.python and (in_env(args.python) or args.python)
     if py:
         try:
+            # a path after --python is read from the folder the command is typed in, as Windows reads it. Until
+            # 21 November 2026 the start below, which is given the project root, read it from there elsewhere
+            if os.name != "nt" and os.path.dirname(py) and not os.path.isabs(py):
+                py = os.path.join(os.getcwd(), py)
             r = subprocess.run([py, "-c", PROBE], capture_output=True, text=True, timeout=180, cwd=str(root))
             info["interpreter"] = json.loads(r.stdout.strip().splitlines()[-1]) if r.returncode == 0 and r.stdout.strip() \
                 else {"error": (r.stderr or r.stdout)[-400:]}

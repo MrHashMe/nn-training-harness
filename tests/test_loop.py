@@ -149,12 +149,12 @@ def near(a, b, tol=1e-9):
     return isinstance(a, (int, float)) and abs(a - b) < tol
 
 
-def loop(proj, *args, env=None, timeout=600):
+def loop(proj, *args, env=None, timeout=600, cwd=None):
     e = {"FAKE_PLAN": str(proj.parent / "plan.json"), "FAKE_AGENT": "", "CLAUDECODE": "1",
          "CLAUDE_CODE_SDK_HAS_HOST_AUTH_REFRESH": "1"}
     e.update(env or {})
     return tk.sh([PY, str(proj / ".claude/skills/nn-training/scripts/nnloop.py"), "--root", str(proj), *args],
-                 cwd=proj, env=e, timeout=timeout)
+                 cwd=cwd or proj, env=e, timeout=timeout)
 
 
 def plan(tmp, steps):
@@ -1285,12 +1285,49 @@ def campaign_b(tmp, proj, exe):
           "monotonic clock had counted as much); and a run that the limit ends is not called stopped from outside the "
           f"loop because the wall clock was set back meanwhile ({got})")
 
+    # A launch that failed after its supervisor had opened the run's log: the command may be running, with nobody to
+    # end it at its deadline. The loop waits out the run's time and stops the run before it goes on, and an exit
+    # record in the run's folder does not end the wait: with that supervisor gone, nothing says that it is true. (Was,
+    # for one commit: on at once.) A failed launch without that word in its answer started nothing: on at once
+    def unrecorded(may_run):
+        clocks, run, calls = Clocks(), tmp / "clocks" / f"norecord{may_run:d}", []
+        nnloop.time = clocks
+        try:
+            C = campaign()
+            C.wt, C.verify, C.st["limits"] = proj, lambda **kw: None, {}
+
+            def expctl(verb, *a, **kw):
+                calls.append([verb, round(clocks.mono - 500)])
+                run.mkdir(parents=True, exist_ok=True)
+                (run / "exit.json").write_text('{"returncode": 1}', encoding="utf-8")
+                return argparse.Namespace(stderr="", stdout=json.dumps(dict(
+                    {"ok": False, "error": "the supervisor ended", "run_id": "r", "run_dir": str(run), "supervisor_pid": 0},
+                    **({"command_may_run": True} if may_run else {}))))
+
+            C.expctl = expctl
+            return list(C.train(1, "x")), calls
+        finally:
+            nnloop.time = time
+
+    (res, calls), (res0, calls0) = unrecorded(True), unrecorded(False)
+    check(res == res0 == ["crash", "launch failed: the supervisor ended", "r"] and calls0 == [["launch", 0]]
+          and [c[0] for c in calls] == ["launch", "stop"] and calls[1][1] > 60,
+          "a launch that failed with its command perhaps running is not left behind: the loop waits out the run's time, "
+          "whatever exit record its folder holds, stops the run and then reports the launch's failure (was, for one "
+          "commit: on to the next run at once, with that command still on the machine); a failed launch that started "
+          f"nothing ends the step at once ({res} {calls}; {res0} {calls0})")
+
     plan(tmp, [edit("SLEEP = 0", "SLEEP = 30", title="slow")])
     before = {d.name for d in (proj / "runs").glob("*")}
-    r = loop(proj, "resume", "--campaign", "b", "--agent-exe", exe, "--max-runs", "20", "--detach")
+    # typed in a subfolder, with the agent's program named by a relative path from there
+    r = loop(proj, "resume", "--campaign", "b", "--agent-exe", os.path.relpath(exe, proj / "experiments"), "--max-runs", "20",
+             "--detach", cwd=proj / "experiments")
     info = json.loads(r.stdout) if r.stdout.strip().startswith("{") else {}
     new = tk.wait_for(lambda: [d for d in (proj / "runs").glob("*-b-i*") if d.name not in before
                                and (d / "pid.json").exists()], timeout=120)
+    check(bool(info.get("ok") and new),
+          "--detach, typed in a subfolder: the loop in the background reads a relative path to the agent's program from "
+          "that subfolder, as the call did (was: from the project root, where the loop in the background starts)")
     r2 = loop(proj, "stop", "--campaign", "b")
     done = tk.wait_for(lambda: state(proj, "b").get("status") == "stopped" and not nnloop.expctl.pid_alive(info.get("pid") or 0),
                        timeout=120) if info and new else None
@@ -1325,7 +1362,11 @@ def campaign_b(tmp, proj, exe):
         print("  loop.log:", nnloop.read_text(proj / "experiments/loop/b/loop.log")[-1500:], "\n  state:", st.get("stop_reason"))
     sp = proj / "experiments/loop/b/state.json"  # as if the campaign had scouted: the stopped change tested H2
     put(sp, json.dumps(dict(st, hypotheses=[{"id": "H2", "text": "try a warm-up schedule"}])))
-    r, st, new = resume(tmp, proj, exe, "b", [slow], "--max-runs", str(st["counters"]["runs"] + 2))
+    # the agent's program is named by a relative path here, typed in the project root
+    r, st, new = resume(tmp, proj, os.path.relpath(exe, proj), "b", [slow], "--max-runs", str(st["counters"]["runs"] + 2))
+    check(bool(sessions(tmp)) and len(new) == 1,
+          "a session, which starts in the worktree, reads a relative path to the agent's program from the folder the "
+          "command is typed in (was, outside Windows: from the worktree; on Windows a batch file was not found there)")
     got, p = [(e["status"], e["why"]) for e in new], (sessions(tmp) or [{"prompt": ""}])[0]["prompt"]
     if not check(r.returncode == 0 and len(got) == 1 and got[0][0] == "invalid" and "exceeded its 3 s budget" in got[0][1]
                  and "not been tried: H2: try a warm-up schedule" in p

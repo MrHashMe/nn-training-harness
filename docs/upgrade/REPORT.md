@@ -670,6 +670,10 @@ Decision record: `docs/upgrade/LEDGER.md`.
     the kit finds a program on Windows, which its session recorded on 20 November on its local
     branch. That branch stood at `09bcc5c` when this was written. Of that point I read the first
     sentence; I checked nothing of it.)
+    (Added with point 49, by the session that you started for it: the two limits of how the guard
+    reads a program's name are repaired since, in a local commit that is not pushed, at a cost for a
+    read-only agent that is yours to accept. The run of a name in quotes that holds a blank is
+    repeated once there, with the guard given the line as text.)
 46. **The repairs of the second reading are on the public test branch, on your word, and all six of
     GitHub's jobs pass on them** (20 November; "The reading of the reading's repairs on the test
     branch"). On your "Push test branch" the two commits of point 44 went to `test/round-9` as a
@@ -687,6 +691,53 @@ Decision record: `docs/upgrade/LEDGER.md`.
     with round 8's guard, and your real install is untouched. The record of this goes to the same
     branch, as the word covers; that push starts a further run, which the record cannot hold. Open:
     the questions of point 44 but the first, and those two as far as their sessions leave them.
+    (Added with point 49: the second of those sessions has recorded its repair there.)
+49. **A program's name in quotes or behind backslashes is that program for the guard now: both forms
+    of point 44 are repaired in a local commit, at a cost for a read-only agent that is yours to
+    accept. Read by nobody but me; nothing is pushed** (21 November; "A program's name in quotes or
+    behind backslashes"; by the session that you started for it, and "I" in this point is that
+    session). Until now a name in quotes that hold a blank (`"C:/Program
+    Files/Git/usr/bin/touch.exe" eval/metrics.py`) was seen by no rule, so with it a kept file was
+    written unasked; I confirmed that once, on the guard of `fd589b2` given the line as text. And a
+    read-only agent was not refused `'touch' notes.md`, `"rm" notes.md`, or `touch.exe`, `patch.exe`
+    and `tar.exe` behind a path with backslashes. Now every rule reads the line once more with each
+    such command word written as its program's bare name: in Bash and PowerShell lines, alone and
+    behind `;`, `|`, `&&`, inside `$( )`, behind `xargs`, `cmd /c`, `bash -c`, `powershell -c` and
+    `uv run`. No rule is changed, and `plain()` is not. The reading passes over quoted text that is
+    no command word, so the three harmless lines of that finding pass a read-only agent as before.
+    The cost: the guard does not know which shell reads a line, so a read-only agent is now refused
+    a PowerShell expression that starts with a quoted word that is a program's name (`if ('install'
+    -in $steps) { 'yes' }`, also behind `powershell -c`), and a here-document of program text in
+    which such a word stands alone on a line. The main session is asked about neither. On 5,500
+    generated lines every changed answer is of a kind that I can name. None changes on the 2,500
+    lines of the earlier comparisons. On 3,000 lines made of these forms there are 223 questions and
+    807 refusals that the same line with the bare name gets too, twelve refusals of the cost, and
+    three refusals where the bare name passes, by an older gap: a read-only agent's rule for signals
+    does not see `kill` right behind a quote. Through the hook on Windows, ordinary lines and the
+    earlier long lines take what they took; 1,500 commands with such a name take 0.3 to 0.8 s more,
+    and the repair's slowest line, 5,000 shells that are each handed a program in quotes, 8.1 s
+    where it took 5.7 s, with the guard's limit at 12 s. Seen beside the repair and left: a loop of
+    the guard that is older than this round searches the whole line once for each word that sets a
+    variable. 1,500 such lines take 10.4 s in both guards, and on a line of assignments with no
+    blank between them the guard's timer answers after 12.4 s (1,000 of them) to 86 s (20,000),
+    long after the hook's time; the released guard does the same. 82 rows more, 31 in the kit file
+    and 51 in the review-fixes file: the 72 that want a question or a refusal fail on the guard
+    before, and the ten that want no answer are each refused by a copy with a piece of the repair
+    altered. The eight test files pass on Windows under Python 3.11.7 (2,019 checks) and the kit
+    file in WSL under 3.12.3 (1,262), with no failed check; no other interpreter, no Mac and no
+    bare Linux ran. Limits that stay are read from the code and named in the guard's comments and
+    the reference. The code is `bcfab15` on the local branch `claude/sharp-faraday-6bd610`, which
+    stands on `409182f`. `main` stays at `e587b4f`
+    and your real install is untouched: both have the two gaps as they had them. Open: whether the
+    cost for a read-only agent is accepted; a reader for this repair; where these two commits go,
+    beside the two other local branches; what is done about the loop over a line's assignments;
+    whether a read-only agent's rule for signals should see `kill` behind a quote.
+    (Points 47 and 48 are other sessions'. 47 is the proof pilot's, a reading of its lookup's repair,
+    on the local branch `claude/brave-robinson-27cbd9`, which stood at `df59ad2` when this was
+    written. 48 is the repair of the two faults under a virtual environment on Windows, on the local
+    branch `claude/fervent-gould-8d0820`, which stood at `f68b71c`. Neither branch is merged into
+    this one, and I pushed nothing. Of point 47 I read the first sentence, and of point 48 the
+    heading and its session's note; I checked nothing of them.)
 
 ## Round 2 (12 November 2026)
 
@@ -8765,6 +8816,9 @@ In short:
    passing: a name in quotes that holds a blank is recognised by no rule, the main session's included,
    so with it a kept file is written unasked. The repair that lies nearest for the first would refuse
    harmless program text to that agent, and a repair of either changes how every rule reads a line.
+   (Added on 21 November by the session that you started for it: both are repaired since, in a local
+   commit, at a cost for a read-only agent; "A program's name in quotes or behind backslashes", point 49
+   of "Read this first".)
 6. **Two findings changed nothing**: the cost of three kinds of long line, which through the hook is 0.2
    s more on one of them than before the first reading and ten seconds less on another, and a grace
    written as text in a manifest edited by hand.
@@ -8903,6 +8957,12 @@ as it stands and as a POSIX shell reads it, and not in that form.
 - **What is done.** The guard's comment at the read-only rules names the first limit in the form that
   the code uses for a known shortcut, and `docs/REFERENCE.md` names both where it lists what counts as a
   program's name.
+  (Added on 21 November by the session that you started for it: both forms are repaired since, by a
+  reading of the kind that this finding asks for, and the three harmless lines above pass as before. The
+  reader's run of a name in quotes that holds a blank is repeated once there, on the guard of `fd589b2`
+  given the line as text: the line passes every rule. The comment and the reference are brought up to
+  date. "A program's name in quotes or behind backslashes", the last section before "1. What changed and
+  why".)
 
 **6. Cost.** The reader timed the changed patterns by themselves on lines of 8,000 repeats of a
 near-miss. I put the same lines to the guard through the hook, as a session meets it (Windows, Python
@@ -9124,6 +9184,7 @@ could be.
   series and the six harmless lines of finding 5 are my own choice. The timings are one machine's, on
   Windows only. The reader's statements under "found right" I did not check again, nor its run of a name
   in quotes that holds a blank.
+  (Added on 21 November: that run is repeated once since, by the session that repaired the form.)
 
 ### GitHub's run on the record of the push
 
@@ -9143,6 +9204,8 @@ have not run on GitHub's machines or on a Mac.
   lines together, they change the guard in 18 lines and the controller in 13.
 - How the guard reads a program's name, in a read-only agent's rules and for a name in quotes that holds
   a blank: left, as said at finding 5. It is the second decision below.
+  (Added on 21 November: done since, in a session of its own; "A program's name in quotes or behind
+  backslashes".)
 - A repair of the two faults that the failed checks show ("Two failed checks", above): what the
   controller makes of a run's processes is no part of what this reading read, the cause of one is not
   established, a change there wants its own tests, passes and reader, and the proof pilot's session is
@@ -9176,6 +9239,9 @@ have not run on GitHub's machines or on a Mac.
   comparison on generated lines, and I would give it a reader.
   (Added later on 20 November: you started a session of its own for this on that day, from a proposal of
   mine. What it does and finds is that session's to record.)
+  (Added on 21 November by that session: both parts are repaired in a local commit, with tests and that
+  comparison, and recorded in "A program's name in quotes or behind backslashes". Yours to decide there:
+  whether the cost for a read-only agent is accepted, and a reader, which the repair has not had.)
 - **What is done about the two faults under a virtual environment on Windows** ("Two failed checks",
   above). The rule that misreads a killed run is in every state of the kit since its first published
   commit, and so is a launch that does not look at its supervisor's process. The misread run is the
@@ -9262,6 +9328,8 @@ In short:
 6. **Two of the decisions of the section before this one have a session of their own since.** You
    started one for the two faults under a virtual environment on Windows and one for how the guard reads
    a program's name in quotes. What they do and find is theirs to record.
+   (Added on 21 November by the second of them: its record is the section after this one, "A program's
+   name in quotes or behind backslashes".)
 7. **`main` is as it was**, at `e587b4f`, and your real install is untouched. Both hold round 8's guard,
    with the hole in the tee rule and the `.exe` gap.
 8. **This record goes to the same branch, as your word covers.** That push starts a further run of the
@@ -9323,6 +9391,8 @@ eight more in the review-fixes file, and the counts of that run in the other six
   one for the two faults under a virtual environment on Windows, one for how the guard reads a program's
   name in quotes. Each works on a local branch of its own that is cut from `fd589b2`. What they change
   and find is theirs to record, and nothing of it is in this branch.
+  (Added on 21 November by the second of them: its branch, `claude/sharp-faraday-6bd610`, follows this
+  section's record `409182f` since, and holds its repair and the section after this one.)
 - **The proof pilot's branch** `claude/brave-robinson-27cbd9` stood at `09bcc5c` when this was written,
   nine local commits after `5ccc2d4`. Since the section before this one it holds a repair of how the kit
   finds a program on Windows (`7edd37d`) and that repair's record, with point 45 of its "Read this
@@ -9335,6 +9405,7 @@ eight more in the review-fixes file, and the counts of that run in the other six
   below.
 - A repair of the two faults under a virtual environment on Windows, and a change to how the guard reads
   a program's name in quotes: each is the task of a session of its own, which you started.
+  (Added on 21 November: the second is done, in a local commit; the section after this one.)
 - A re-run of a job on GitHub: none was called for, since every job got a machine and passes.
 - `main`, the ninth installer run, a merge of another session's branch and every deletion: each needs
   your word.
@@ -9364,6 +9435,472 @@ log, its checks counted as the lines that begin with `PASS`, `FAIL` and `SKIP` a
 six logs; run 44765640552, read the same way, for the comparison; `.github/workflows/tests.yml` for how
 each job gets its interpreter; the tips of the other sessions' local branches, read on this machine on
 that day.
+
+## A program's name in quotes or behind backslashes (21 November 2026): both forms of finding 5 repaired, at a cost for a read-only agent
+
+Your word: on 20 November you started a session of its own for the second decision of "The reading of
+the reading's repairs", "How the guard should read a program's name in quotes", from a proposal of the
+session that wrote that section. This section is that session's record: "I" here is the session that
+you started for this, and the sections before this one are another session's. Its brief asks for a
+correctness repair of the two forms of finding 5 in the usual positions of a command word, with tests, a
+comparison of the guard before and after on generated lines, timings, the test passes, the reference and
+the guard's comment brought up to date, and local commits with their record. It rules out a search for
+ways past the guard. So I put to the rules those forms in those positions, harmless lines that must keep
+passing, and the generated lines that are described below, and nothing beyond; and I briefed no agent.
+Not covered, and not done: a push, a merge, `main`, your real install, a reader, a deletion. Dates and
+times in this section are UTC. "The guard before" is the one of `fd589b2`, which `409182f`, the commit
+that this branch stands on, holds unchanged. "The released guard" is the one of `main` at `e587b4f`.
+
+In short:
+
+1. **Both forms are answered as the same name without quotes is, by both sets of rules.** That is a name
+   in quotes that hold a blank (`"C:/Program Files/Git/usr/bin/touch.exe" eval/metrics.py`), a name in
+   quotes or in quoted pieces (`'touch' notes.md`, `t'ou'ch`), and a name behind a path with backslashes
+   (`C:\msys64\usr\bin\touch.exe notes.md`, and so `patch.exe` and `tar.exe`): in Bash and PowerShell
+   lines, alone and behind `;`, `|`, `&&`, inside `$( )`, behind `xargs`, `cmd /c`, `bash -c`,
+   `powershell -c` and `uv run`. The main session is asked where a kept file would be written, and a
+   read-only agent is refused the write.
+2. **The first form is confirmed, once.** On the guard of `fd589b2`, given the line as text in a
+   temporary project, the line with a name in quotes that hold a blank passes every rule, where
+   `touch.exe eval/metrics.py` is asked about. No kept file was written for it.
+3. **The repair is one reading more, and no rule is changed.** A new function writes each command word
+   that has a quote or a backslash in it as its program's bare name, and every rule reads that text
+   beside the line as it came. It passes over quoted text that is no command word, so the three harmless
+   lines of finding 5 pass a read-only agent as before. `plain()` is unchanged.
+4. **It has a cost, and the cost is a read-only agent's.** Two kinds of harmless line that passed are
+   refused to it now: a PowerShell expression that starts with a quoted word that is a program's name
+   (`if ('install' -in $steps) { 'yes' }`, also behind `powershell -c`), and a here-document of program
+   text in which such a word stands alone on a line. The guard cannot tell which shell reads a line.
+   Whether that price is right is your decision.
+5. **On 5,500 generated lines every changed answer is of a kind that I can name.** On the 2,500 lines of
+   this round's earlier comparisons no answer changes. On 3,000 lines made of this repair's forms the
+   main session is asked about 223 lines that passed, each answered as the same line with the bare name
+   is. Under the read-only rules 822 lines are refused that passed: 807 as the line with the bare name
+   is, twelve of the cost above, and three where the bare name passes, by an older gap of another rule.
+   The released guard answers each of these lines as the guard before does.
+6. **Time: up to 0.8 s more on 1,500 commands with such a name, and 2.3 s more on the repair's slowest
+   line.** Through the hook on Windows, ordinary lines and the 17 long lines of the earlier comparisons
+   take what they took. A line of 5,000 shells that are each handed a program in quotes takes 8.1 s
+   where it took 5.7 s; after 12 s the guard asks by itself.
+7. **Seen beside the repair and left: an older loop that makes the guard slow on lines with many
+   variables, and its timer late.** 1,500 lines that each set a variable take 10.4 s in both guards. A
+   line of assignments with no blank between them is answered by the timer after 12.4 s (1,000 of them)
+   to 86 s (20,000), long after the hook's time; the released guard does the same. Also left: a
+   read-only agent's rule for signals does not see `kill` right behind a quote.
+8. **82 rows more, and each rests on the repair.** 31 in `tests/test_kit.py` and 51 in
+   `tests/test_review_fixes.py`. The 72 that want a question or a refusal fail on the guard before. The
+   ten that want no answer are each refused by a copy of the guard with a piece of the repair altered.
+   The eight test files pass on Windows under Python 3.11.7 (2,019 checks) and the kit file in WSL
+   under 3.12.3 (1,262), with no failed check.
+9. **Limits stay, read from the code and not run**: a blank that a backslash escapes, a command word in
+   quotes behind a wrapper that is in quotes too, a name two shells deep, and three more. The guard's
+   comments and `docs/REFERENCE.md` name them.
+10. **Read by nobody but me, and nothing is pushed.** The code is one local commit, `bcfab15`, on the
+    branch `claude/sharp-faraday-6bd610`, and this record a second. `main` stays at `e587b4f` and your
+    real install is untouched: both have the two gaps as they had them.
+
+### The first form, confirmed once
+
+The brief asks for one confirmation of the reader's run of a name in quotes that holds a blank: with the
+guard given the line as text, in a temporary project, never by writing a real kept file. The project is
+one that the kit's own test setup builds, under this session's scratch folder, with the guard of
+`fd589b2` in it; `eval/metrics.py` is a kept file there. The guard got each line on its standard input,
+as the hook gives it, and nothing ran.
+
+- `"C:/Program Files/Git/usr/bin/touch.exe" eval/metrics.py` passes unasked: as the main session, under
+  the read-only rules alone, and as a call of the read-only agent `run-analyst`, which gets both sets of
+  rules. `touch.exe eval/metrics.py` is asked about in the first and refused in the other two. So the
+  reader's note holds: with that form no rule saw a program, and a kept file would be written unasked.
+- The second form is as finding 5 says: `'touch' notes.md`, `"rm" notes.md` and
+  `C:\msys64\usr\bin\touch.exe notes.md` pass the read-only rules of that guard, and `touch notes.md` is
+  refused.
+- One form more than the brief names behaves like the first, and I count it with it: a name that is put
+  together from quoted pieces, `t'ou'ch eval/metrics.py`, passed every rule too. I did not look for it
+  as a way past. A reading that names a quoted word has to decide where that word ends, and a word that
+  goes on behind its closing quote is the first case it meets: a shell joins the pieces.
+
+### The change
+
+- **One reading more, and no rule changed.** The new function `named()` gives a text with each command
+  word that has a quote or a backslash in it written as its program's bare name: `"C:/Program
+  Files/Git/usr/bin/touch.exe" x` and `C:\msys64\usr\bin\touch.exe x` become `touch.exe x`, and `t'ou'ch
+  x` becomes `touch x`. Nothing else of the text changes. That is the line as it would be written
+  without the quotes and the folders, so every answer that the reading adds is one that the bare name
+  gets from the rules as they are. Like every reading of the guard it is checked in addition to the line
+  as it came: it can add a question or a refusal and take none away.
+- **Where a command word is looked for**: at a line's start, behind `;`, `&`, `|`, `{` and a backtick,
+  behind an opening bracket (`$(`, a subshell), behind `/c` and `/k` of `cmd`, and in each of these
+  places behind what may lead to the word: a wrapper with its options (`sudo -u me`, `xargs`, `uv run`,
+  `env A=1`) and words that set a variable. The word is taken whole, with every piece of it that stands
+  in quotes, up to a blank or to a sign that ends a command or opens a redirection.
+- **What tells it from a quoted word in a program's text.** The reading goes through the text once, and
+  it passes over every quoted text that is no command word as a whole. So it looks at no word inside
+  one: the `"patch"` of `python -c 'd = {}; print(d.get("patch"))'` stands inside the single quotes of
+  python's argument and is never met. A bracket right behind a name, a `)`, a `]` or a `=` opens the
+  arguments of a call or a list (`d.get("patch")`, `$s.Contains('rm')`, `steps=(train "install")`) and
+  starts no command. A word that sets a variable stays as it is (`out="runs/x/install"`), and so does
+  one whose last part is no name (`"my notes"`, `"$tool"`). And `/c` starts a command behind `cmd`
+  alone: `find /c "install" log.txt` counts lines.
+- **Who reads it.** `readings()`, which gives the line as each shell may read it, adds the named form of
+  the line and of each of those readings. Both sets of rules take their readings from there. The main
+  session's rules get it for the line and for each text that the line hands to a shell or an
+  interpreter, which they read as a line of its own already. The read-only rules get it for the line.
+  The texts that a line hands on they read in their own way, with every quoted text blanked; they now
+  read a text that the line hands to a shell (`bash -c`, `cmd /c`, `powershell -Command`, `eval`,
+  `trap`, a `$( )`) once more as a line where naming changes it. Not a program's text in another
+  language (`python -c`): a quoted word at a statement's start is no command there, and a refusal costs
+  a read-only agent more than a question costs the main session.
+- **What stays as it was.** `plain()`, the form that the main session's rules read, is unchanged, and
+  the read-only rules still do not read it. It turns every backslash into a slash and takes the quotes
+  off a word behind a bracket, which is what would refuse the three lines of finding 5.
+
+### The tests, and what each new row rests on
+
+- **`tests/test_kit.py`: 31 rows more, in one block**, put to the guard as the main session. Each wants
+  a question. They are a kept file (`eval/metrics.py`) touched, removed, installed over or formatted, an
+  archive unpacked and a patch applied by a program whose name stands in quotes that hold a blank
+  (`"C:/Program Files/Git/usr/bin/touch.exe"`, the same in single quotes and capitals, `"/c/Program
+  Files/Git/usr/bin/touch"`), in quoted pieces (`t'ou'ch`) or, in a PowerShell line, behind `&` and a
+  path with backslashes: alone; behind `;`, `|`, `&&` and a variable that is set; inside `$( )`; behind
+  `xargs`, `cmd /c`, `cmd.exe /d /c`, `bash -c`, `powershell -c` and `uv run --frozen`; with each sign
+  that may end the word (`;`, `)`, `<`, `>`, `|`, the line's end); and the two forms that the limits of
+  the rule for searches named (`g'r'ep`, `grep.exe` under `C:/Program Files`).
+- **`tests/test_review_fixes.py`: 51 lines more**, put to the read-only rules alone. 41 want a refusal:
+  the lines of finding 5; the name in capitals, with `.exe`, with a blank and in pieces; further
+  programs (`install`, `black`, `tar`, `git commit`, `kill`); the positions (behind `;`, `|`, `&&` and
+  a variable that is set, inside `$( )` with and without quotes around it, behind `xargs`, `cmd /c`,
+  `bash -c`, `powershell -c`, `uv run` and PowerShell's `&`); and the signs that may end the word. Ten
+  want no answer: the three lines of the brief, and seven more with a quoted word that is no command.
+- **Each of the 72 rows that want a question or a refusal fails on the guard before, and nothing else
+  does.** With the guard of `fd589b2` in the kit's place the kit file fails exactly its 31 new rows,
+  each as `-> None (want ask)`, and the review-fixes file exactly its 41, each as `-> None (want deny)`
+  (Windows, Python 3.11.7, each file run whole on a copy of the kit). One row of my first draft did not
+  rest on the repair, and that run showed it: `uv run "…touch.exe" eval/metrics.py` was asked about by
+  the guard before as well, because the test's project has live runs and `uv run` without `--frozen` is
+  asked about for those. The row has `--frozen` now, and fails on the guard before like the others.
+- **A row that wants no answer cannot fail on the guard before, which answered none of them.** For
+  those the change taken out is a piece of the repair. I made eleven copies: nine of the repaired guard
+  with one piece altered each, one of it with six pieces altered at once, and one of the guard before
+  with the repair that lay nearest. I put the rows to each copy as text, under the read-only rules:
+
+| The row passes, and is refused by the copy in which | Row |
+|---|---|
+| the read-only rules read `plain()`'s form, on the guard before: the repair that lay nearest (copy P) | the three lines of the brief: `python -c "print(\"a > b\")"`, `python -c 'd = {}; print(d.get("patch"))'`, `python -c "import json; print(json.load(open('runs/x/meta.json')).get('install'))"` |
+| a quoted text is not passed over as a whole, or python's text is read as a shell's line | `python -c "import json; d = json.load(open('runs/x/meta.json')); 'install' in d and print(d['install'])"` |
+| a bracket behind a name starts a command | `$s = Get-Content runs\x\log.txt -Raw; $s.Contains('rm')` |
+| a list that a variable is set to starts a command | `steps=(train "install"); echo "${steps[@]}"` |
+| a word that sets a variable is named | `ls runs/x; out="runs/x/install"` |
+| `/c` starts a command behind any program | `find /c "install" runs\x\log.txt` |
+| all six of these pieces are altered at once, and by no copy with one of them | the second and third line of the brief, `bash -c "python -c \"d = {}; print(d.get('patch'))\""`, and `& "C:\Program Files\Git\usr\bin\head.exe" -n 5 runs\x\log.txt; .\.venv\Scripts\python.exe -c "print('touch')"` |
+
+  Copy P refuses eight of the ten (not the lines with `out=` and `find /c`). The first line of the brief
+  is refused by copy P alone: no piece of this repair is what lets it pass, and the row is there against
+  the repair that lay nearest. Three further copies take out a piece that only rows of a refusal rest
+  on: `readings()` without the named form (the rows of a line fail), the read-only rules without the
+  line that a shell is handed (`bash -c "'touch' notes.md"` and `echo "$('touch' notes.md)"` fail), and
+  the reading without its look at whether a word has a quote in it (`X=1;'touch' notes.md` fails).
+
+  The file itself, run whole as it is now on three copies of the kit (Windows, Python 3.11.7): with the
+  guard before in the guard's place its 41 rows that want a refusal fail and nothing else, 143 pass;
+  with copy P eight of the ten rows that want no answer fail, and five that want a refusal; with the
+  copy of six altered pieces nine of the ten fail and nothing else. Between those two, each of the ten
+  fails in a run of the file.
+- **Six rows of my draft are not in the files, because they failed on no copy.** They were harmless
+  lines with a program in quotes or behind backslashes: four for the main session (`cat.exe` on a kept
+  file, `black.exe --check` on one, `patch.exe --dry-run` with `tar.exe -tf`, `touch.exe` on a file that
+  is not kept) and two for a read-only agent (`cat.exe` with `C:\Python311\python.exe
+  scripts\expctl.py status`, `black.exe --check .` with `tar.exe -tf`). Every guard here lets them
+  pass, the altered copies too, so as rows they would have passed with the change taken out. What they
+  say is in the comparison below: a line with such a name is answered as its twin, also where the twin
+  passes.
+
+### The guard before against the guard after on generated lines
+
+- **What the lines are.** 5,500 lines in two blocks, drawn with fixed seeds, each put as text to three
+  guards in temporary projects (the guard before, the repaired one, the released one), as the main
+  session and under the read-only rules alone: 36,520 answers with the twins below, every one an allow,
+  a question or a refusal. Block A is the sample of this round's earlier comparisons, with the same
+  templates and seed: 2,500 ordinary commands over the test project's files. Block B is made for this
+  repair, 3,000 lines. 2,050 have a program's name in one of fourteen written forms (in quotes of either
+  kind, with and without a blank, with `.exe` and `.EXE`, as `$'…'`, in quoted pieces, behind a path
+  with backslashes with and without quotes, behind `.\tools\`, behind a folder with only the name in
+  quotes), for 46 commands of 32 programs in 22 positions, and each of them has a twin, the same line
+  with the bare name, which went to the repaired guard too. 729 have a quoted word that is no command,
+  from 37 templates with twelve words, nine of them programs' names. 221 are common lines of a session
+  on Windows, from 30 templates.
+- **It is no picture of a session.** Block B is made of the forms that this repair is about, so the
+  share of its lines whose answer changes says nothing about how often an agent meets one.
+- **Block A: no answer changes**, for the main session or under the read-only rules.
+- **Block B, the main session: 223 lines are asked about that passed, each a line with a name in one of
+  the forms, and each is answered as its twin.** 2,514 pass as before and 263 were asked about before.
+  By program: `kill` 47, `tar` 29, `patch` 27, `mv` 13, `rm` and `rsync` 12 each, and fourteen more
+  with one to ten lines each. No text line and no Windows line changes.
+- **Block B, the read-only rules: 822 lines are refused that passed.** 1,923 pass as before and 255 were
+  refused before. The 822 are of three kinds:
+  - 807 lines with a name in one of the forms, each answered as its twin: `patch` 88, `touch` 84, `rm`
+    68, `kill` 55, `tar` 50, and fourteen more programs with 26 to 41 lines each.
+  - 12 lines of the cost that is written down ("The cost", below): 5 of the 18 lines of the form `if
+    ('black' -in $steps) { 'yes' }`, and 7 of the 10 here-documents of python text in which a list's
+    last item stands alone on its line. The other 16 hold a word that is no program (`loss`, `train`,
+    `label`) or a program that the rules refuse only with what follows it (`git`, `tar`).
+  - 3 lines that are refused where their twin passes: `bash -c '"kill" 123'`, `bash -c '"C:/Program
+    Files/Git/usr/bin/kill.exe" 123'` and `bash -c "C:/msys64/usr/bin/'kill' 123"`. The fault is the
+    twin's, and older than this repair ("Seen beside the repair, and left", below).
+- **No line with a name in one of the forms is answered more mildly than its twin**, by either set of
+  rules. Of the other 717 text lines and of the 221 Windows lines none changes its answer.
+- **Where an answer changes, the released guard answers as the guard before does**, in all 223 cases of
+  the main session and all 822 of the read-only rules. So `main` and your install have both gaps as
+  they had them.
+
+### The cost: two kinds of harmless line that a read-only agent is refused now
+
+The guard reads a line without knowing which shell will run it. A quoted word where a command may start
+is a program's name to a POSIX shell (`'touch' notes.md` runs touch) and a text to PowerShell, and on a
+line of its own in a here-document it may be a program's text. The reading cannot tell these apart, and
+names the word in each. So two kinds of line that passed are refused to a read-only agent, each as the
+bare word is refused in that place:
+
+- **A PowerShell expression that starts with a quoted word that is a program's name**: `if ('install'
+  -in $steps) { 'yes' }`. A quoted word behind the first word of its command stays a text: `$steps =
+  'install', 'train'; $steps` and `Select-String -Path runs\x\log.txt -Pattern 'install'` pass as
+  before. The kit's own read-only agents have the Bash tool only, and the cost reaches them where they
+  hand such an expression to PowerShell: `powershell -c "if ('install' -in $steps) { 'yes' }"` and the
+  same behind `pwsh -NoProfile -Command` passed and are refused now. With `'loss'` in the word's place
+  the line passes, and so does `powershell -c "$steps = 'install', 'train'; $steps"`. A `switch` whose
+  case is such a word is of this kind too: `switch ($kind) { 'patch' { 'p' } default { 'other' } }`
+  passed the read-only rules and is refused now, bare and behind `powershell -c` (the main session was
+  asked about that line before as well, because `plain()` takes the quotes off a word behind `{`).
+- **A here-document of program text in which such a word stands alone on a line**: the last item of a
+  list that is written one item a line, without a comma behind it (with the comma the line passes), or
+  a docstring that is one such word (`"""Install"""`).
+
+The main session is asked about neither: in the sample its answer changes on no text line. An agent
+that is refused such a line can write it another way; but it is a refusal of a line that does no harm,
+and whether that price is right for what the repair closes is your decision (below). Beside the sample
+I put together 23 harmless lines that a reviewer or an analyst writes, on Windows and elsewhere (the
+controller's status behind an interpreter's path with backslashes or in quotes, `Get-Content`,
+`Select-String`, `grep`, `jq`, `awk`, python text in `-c` and in a here-document): each passes the
+read-only rules before and after.
+
+### Seen beside the repair, and left
+
+None of these is new with the repair, and none is repaired: the brief is for the two forms, and each of
+these is a rule of its own.
+
+- **A read-only agent's rule for signals does not see `kill` right behind a quote.** It looks for the
+  word behind a blank or a sign that starts a command. So under the read-only rules alone `bash -c
+  'kill 123'` passes, where `kill 123` is refused; the main session's rules, which a read-only agent
+  gets as well, ask about it. I did not look for this: the comparison showed it, as the twin of three
+  lines that the repair refuses (a text that a line hands to a shell is read as a line of its own where
+  naming changes it, and there `kill` stands at the start). The released guard answers the same. I
+  tried no other program in that place and no other rule.
+- **The main session is asked about `python -c 'd = {}; print(d.get("patch"))'`**, the second line of
+  the brief, before and after: `plain()` takes the quotes off a word behind a bracket, and what is left
+  reads as a patch applied (the question's first words are "Applies a patch"). The brief's lines must
+  pass for a read-only agent, and they do.
+- **A read-only agent is refused `$p="runs/x/install"; Get-Content $p`**, before and after.
+- **`find /c "install" eval/metrics.py` is asked about, and refused to a read-only agent**, before and
+  after, where `find /c "install" runs\x\log.txt` passes: the `eval` in the kept file's path is read as
+  the shell's word.
+- **Two kinds of long line are slow in the guard before as well, and one of them is answered far past
+  the guard's 12 seconds** ("Timings", below). Both are made of words that set a variable, and both come
+  from one loop that is older than this round. For each such word `inner_code()` builds a pattern with
+  that variable's name and searches the whole line with it, to see whether the variable stands where a
+  command starts (`c='rm x'; $c`).
+  - 1,500 lines of the form `out7="sub/f7.txt"; cat "$out7"` take 10.4 s on both guards as the main
+    session, 1.6 s under the limit, and 3.0 s under the read-only rules. Under Python's profiler 88 % of
+    the main session's check on the guard before is in that loop: 9,000 patterns built and searched,
+    for 1,500 variables.
+  - A line of 20,000 times `a=1;` with no blank between them (80 KB) is answered by the guard's own
+    timer only after 65 to 86 s, on both guards and under either set of rules. The hooks give the guard
+    15 to 20 s, and what an agent program does with a call whose hook ran out of time is not established
+    (round 4's record says so). I made that line to time the reading where assignments stand without a
+    blank; nobody writes it. But the timer is late on shorter lines of the kind too. Under the read-only
+    rules of the guard before its question comes after 12.4 s for 1,000 such assignments (4 KB), 12.9 s
+    for 2,000, 17.2 s for 5,000 and 31.7 s for 10,000. The released guard answers the lines of 2,000 and
+    5,000 after 12.9 and 17.9 s, and the repaired one after 13.0 and 17.9 s; as the main session the
+    guard before and the repaired one both answer the 2,000 after 12.9 s.
+  - Where the time goes: with the timer taken away, the read-only check of 2,000 such assignments takes
+    118 s on the guard before, all but 0.4 s of it in 2,000 searches of that one pattern. One search
+    takes 0.06 s there, 0.36 s on 5,000 assignments, 1.4 s on 10,000 and 6.2 s on 20,000: four times as
+    long on twice the line, because the pattern for what may lead to a command word reads a variable's
+    value up to the next blank and goes back over it for every place where a command may start. So the
+    whole check grows with the cube of such a line. Eleven patterns of the guard before hold that lead,
+    nine of the released guard and twelve of the repaired one.
+  - Why the timer is late I measured only from outside. From 2,000 assignments on, its answer comes the
+    time of 12 to 15 such searches after the 12 s, at every size (0.9, 5.2, 19.7 and 74 s late). That
+    fits the limit that the record of 18 November names, "the timer cannot answer during one search of
+    a pattern", if the timer's thread gets the interpreter only between two searches and needs about a
+    dozen turns to give its answer. I did not look into the interpreter to confirm that.
+  - On the 20,000 the main session's answer came 13 s later with the repaired guard than with the guard
+    before (77.8 against 64.8 s), and the read-only rules' 2.5 s earlier. I take that for which searches
+    the timer's turns fell on, the repaired guard having one slow pattern more; both answers are five
+    to seven times past the limit, and the hook's time is over long before either.
+
+### Limits that stay
+
+Read from the code, and not run: the brief rules out trying further forms against the rules.
+
+- A blank that a backslash escapes (`/c/Program\ Files/Git/usr/bin/touch.exe`) ends the word early, and
+  a quoted blank in what leads to the word (`X="a b" 'touch' x`) ends the search early.
+- A command word in quotes behind a wrapper that is itself in quotes (`"sudo" "rm" x`) stays in its
+  quotes: the reading makes one pass. The main session's rules see such a word where it holds no blank,
+  because `plain()` takes those quotes off; a read-only agent's rules do not see it.
+- A word that stays as it is (`"my notes"`) is passed over with all that leads to it, a command word
+  among it (`a=1;'touch' "my notes"`).
+- In the line that a shell is handed, a read-only agent's rules see a name only where the shell is the
+  last word before its flag that ends like a program's name. A word that only ends so (`publish -c`) is
+  taken for a shell, and behind `bash --rcfile x.py -c` the text counts as python's. The main session's
+  rules read every such text as a line, whoever gets it.
+- The read-only rules read a text that a line hands on one level deep, as they did. A name in quotes
+  two shells deep is read where naming changed the text around it, and otherwise as little as the bare
+  name is. And a text that reaches a shell from a variable, from standard input or through zsh's
+  qualifier is read as before.
+- The guard's comments name the first four, each as a `shortcut:`, and `docs/REFERENCE.md` names the
+  first, the second and the fourth. Each wants the shell's own splitting of words, which the guard's
+  comment names as the upgrade.
+
+### Timings of long lines, through the hook on Windows
+
+Each line went to the guard as a program, as the hook starts it: three times as the main session and
+three times under the read-only rules alone, in temporary projects with the guard before and with the
+repaired one. The figures are the best of the three (Windows, Python 3.11.7, the interpreter's start
+included). Other sessions' tests ran on the machine at the same time. After 12 s the guard answers with
+a question by itself. 35 lines: the 17 of this round's earlier comparisons, three ordinary lines and
+fifteen that I made for this repair. The table has the eighteen that are not of the earlier
+comparisons. Where a line is counted in lines, the number in it counts up from line to line.
+
+| Line | Characters | Main session, the guard before | Main session, repaired | Read-only rules, before | Read-only rules, repaired |
+|---|---|---|---|---|---|
+| 750 lines `"C:/Program Files/Git/usr/bin/cat.exe" sub/f7.txt; 'head' -5 sub/f7.txt` | 56,779 | allowed, 0.70 s | allowed, 1.00 s | allowed, 0.25 s | allowed, 0.29 s |
+| 750 lines `C:\msys64\usr\bin\cat.exe sub\f7.txt; .\.venv\Scripts\python.exe sub\f7.py` | 59,029 | allowed, 1.37 s | allowed, 1.76 s | allowed, 0.32 s | allowed, 0.38 s |
+| 750 lines `c'a't sub/f7.txt; "wc" -l sub/f7.txt` | 30,529 | allowed, 0.59 s | allowed, 0.87 s | allowed, 0.23 s | allowed, 0.26 s |
+| A here-document of 1,500 lines of python text for `.\.venv\Scripts\python.exe` | 71,320 | allowed, 1.99 s | allowed, 2.72 s | allowed, 0.35 s | allowed, 0.45 s |
+| The same for `"C:/Program Files/Python311/python.exe"` | 71,333 | allowed, 1.28 s | allowed, 2.06 s | allowed, 0.28 s | allowed, 0.39 s |
+| 1,500 lines `& "C:\Program Files\Git\usr\bin\cat.exe" sub\f7.txt` | 81,389 | allowed, 1.46 s | allowed, 2.01 s | allowed, 0.33 s | allowed, 0.41 s |
+| 1,500 lines `bash -c "'cat' sub/f7.txt"` | 43,889 | allowed, 3.79 s | allowed, 4.48 s | allowed, 0.93 s | allowed, 0.96 s |
+| 5,000 times `bash -c "'cat' sub/f7.txt"` in one line | 153,888 | allowed, 5.72 s | allowed, 8.05 s | allowed, 0.46 s | allowed, 0.70 s |
+| 20,000 quoted words, each a command of its own: `'w1';'w2';` and so on | 168,889 | allowed, 4.27 s | allowed, 5.90 s | allowed, 0.39 s | allowed, 0.57 s |
+| `python -c` with 3,000 quoted words in its text | 46,901 | allowed, 1.36 s | allowed, 1.37 s | allowed, 0.27 s | allowed, 0.27 s |
+| `cat` with 5,000 quoted files | 78,893 | allowed, 1.51 s | allowed, 1.50 s | allowed, 0.24 s | allowed, 0.24 s |
+| `"C:/Program Files/Git/usr/bin/echo.exe"` with a text of 400 escaped quotes | 2,442 | allowed, 0.22 s | allowed, 0.25 s | allowed, 0.17 s | allowed, 0.18 s |
+| `echo 'x'` and 120,000 opening brackets | 120,009 | allowed, 1.50 s | allowed, 1.50 s | allowed, 0.46 s | allowed, 0.47 s |
+| 1,500 lines `out7="sub/f7.txt"; cat "$out7"` | 56,669 | allowed, 10.36 s | allowed, 10.40 s | allowed, 3.02 s | allowed, 3.02 s |
+| 20,000 times `a=1;`, then `echo 'x'` | 80,008 | the timer's question, 64.77 s | the timer's question, 77.78 s | the timer's question, 86.05 s | the timer's question, 83.59 s |
+| `python .claude/skills/nn-training/scripts/expctl.py status` | 58 | allowed, 0.18 s | allowed, 0.18 s | allowed, 0.17 s | allowed, 0.17 s |
+| `.\.venv\Scripts\python.exe scripts\expctl.py status` | 51 | allowed, 0.19 s | allowed, 0.18 s | allowed, 0.18 s | allowed, 0.18 s |
+| `& "C:\Program Files\Git\cmd\git.exe" status` | 43 | allowed, 0.18 s | allowed, 0.18 s | allowed, 0.17 s | allowed, 0.18 s |
+
+- **The 17 lines of the earlier comparisons take what they took.** The main session's time differs by
+  0.04 s at most on sixteen of them and by 0.12 s on one (a here-document of 1,500 lines for node, 1.69
+  to 1.81 s), a read-only agent's by 0.03 s at most. Their answers are the same.
+- **An ordinary line takes 0.17 to 0.19 s before and after**, nearly all of it the interpreter's start.
+- **Where naming changes a line, the rules read that line once more, and that is what the repair
+  costs.** On 1,500 commands with a program in one of the forms the main session's check takes 0.3 to
+  0.8 s more (the first seven rows), and a read-only agent's 0.03 to 0.11 s more. On 20,000 quoted words
+  that each stand where a command starts it takes 1.6 s more.
+- **The repair's slowest line takes 8.1 s where it took 5.7 s**: 5,000 calls of a shell that is handed
+  a program in quotes, in one line of 154 KB. Each handed text is read once more as a line. The time
+  that is added grows with the number of texts and not faster: 0.46 ms a text on 1,500 of them, 0.47 ms
+  on 5,000. That line stays 3.9 s under the guard's 12 s on this machine, with other tests running
+  beside it; I did not time a longer one.
+- **A quoted word that is no command word costs nothing**: the lines with 3,000 quoted words in python's
+  text, with 5,000 quoted files and with 120,000 brackets take what they took, within 0.01 s.
+- **The two lines of assignments are slow in both guards alike**, and the second is answered long after
+  the guard's 12 s. They are older than the repair ("Seen beside the repair, and left", above).
+
+### The passes
+
+The brief asks for the eight test files on Windows and for the kit file in WSL, and that is what ran,
+each once, on a fresh copy of the commit's state: the guard, the two test files and `docs/REFERENCE.md`
+are the commit's files byte for byte. The two record files were written after the passes; no test reads
+them.
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,254 | 184 | 138 | 264 | 100 | 54 | 6 | 2,019 |
+| WSL | 3.12.3 | not run | 1,262 | not run | not run | not run | not run | not run | not run | 1,262 |
+
+No check failed. Against `409182f` under the same interpreters, whose counts are in the table of "The
+reading of the reading's repairs", that is 31 checks more in the kit file on both systems and 51 more in
+the review-fixes file on Windows; the other six files have that table's counts there. The Windows pass
+ran on 21 November from 01:06 to 01:31 UTC, beside other sessions' tests, on a copy of the worktree. The
+kit file in WSL ran from 01:32, on a clone made for it at `409182f` with the commit's four files laid
+over it as a patch.
+
+### Not done, and why
+
+- **A reader.** The brief leaves a reader to your word, and I started none. So this repair is read by
+  nobody but me. It changes the guard in 91 lines, added and removed counted together, and it changes
+  what every rule sees of a line. It had what my brief and this project's record ask of a guard fix: a
+  re-read of the diff against its comments, the sibling positions and each sign that may end the word,
+  the two sets of rules and the agent's call side by side, old against new and against the released
+  guard on generated lines, timings through the hook, and rows that fail with their change taken out.
+- **A push, a merge, `main`, your real install, a deletion**: each needs your word. Left on this machine:
+  this session's scratch folder with its helpers, copies of the kit and logs, and in WSL the clone
+  `~/nnkit-upgrade/kit-pq-w3`.
+- **The things seen beside the repair**: left, each a rule of its own, as said there.
+- **The limits that stay**: read from the code and not run, as said there.
+- **Further forms against the rules.** I put to them the two named forms, the form in quoted pieces that
+  the reading meets first, their positions and the signs that end the word. No program named with
+  `.cmd`, `.bat` or `.com`, and no other way of writing a name.
+- **Other interpreters and systems.** The tests ran under Python 3.11.7 on Windows and 3.12.3 in WSL.
+  Nothing ran under Python 3.8 or 3.15, on a Mac, on bare Linux or on GitHub's machines; GitHub's six
+  jobs run on a push. For 3.8 I did one thing: the guard and the two test files parse with the grammar
+  of Python 3.8 (under 3.11, the syntax only), and they hold none of the few later calls that I looked
+  for.
+- **The whole-file runs on the guard before** ("The tests", above) were made when the six rows that are
+  not in the files were still in them. Those six pass on every guard, so the counts of failed rows are
+  the same; the review-fixes file I ran once more as it is now (above), the kit file not.
+- **The ledger** (`docs/upgrade/LEDGER.md`): untouched. The brief names the two record files.
+- **Reduced, to spend less of your usage**: no agent of any kind; one pass on each system and not three
+  interpreters on each; one seed for each block of the comparison; and the profile of the older slow
+  lines on the guard before only.
+
+### What needs your decision
+
+- **Whether the cost for a read-only agent is accepted** ("The cost", above). The repair refuses two
+  kinds of harmless line to it. If that is too much, I see one way for each kind, and each is a change
+  of its own with its own comparison. For the first, the guard can tell a text that PowerShell reads
+  (the PowerShell tool's line, and what a line hands to `powershell` or `pwsh`) and name a quoted word
+  there only behind `&` and `.`, because PowerShell takes a quoted word at a command's start for a
+  text. For the second, it can leave the lines of a here-document that a program other than a shell
+  reads as they are. Without either, the two forms stay closed and such a line is written another way.
+- **Whether a reader goes through this repair before it goes further.** By this project's record each
+  reading of a guard fix since 16 November has found something. I would give it one, with a brief about
+  correctness in both directions as the reader of 20 November had, and not one to look for ways past
+  the guard.
+- **Where these two commits go.** They stand on `409182f`, which is the head of `test/round-9` as this
+  machine last fetched it; I fetched nothing. A push to that branch would run GitHub's six jobs on the
+  repair: on macOS, on bare Linux and under Python 3.8 for the first time. Two other local
+  branches stand beside this one and are not merged: the proof pilot's, `claude/brave-robinson-27cbd9`
+  (at `df59ad2` when this was written), and the one that repairs the two process faults,
+  `claude/fervent-gould-8d0820` (at `f68b71c`). All three add to the same places of the two record
+  files, and each adds rows to `tests/test_kit.py` and lines to `docs/REFERENCE.md`. A merge of this
+  section's state with each of the two, tried in memory on 21 November (`git merge-tree`, which
+  touches no branch and no folder), meets conflicts in the two record files and in no other file: git
+  joins the test file and the reference by itself. So the records need joining by hand, the numbered
+  points among them. No test ran on a joined state, and what git joins by itself is not thereby
+  right.
+- **What is done about the loop over a line's assignments** ("Seen beside the repair, and left"). It is
+  older than this round, it makes the guard slow on lines with many variables, and on a line without
+  blanks the guard's timer answers long after the hook's time is over. What I would try: one search of
+  the line for the variables that stand where a command starts, in the place of one search for each
+  variable. That is a change to the guard with its own tests and timings, and by this section's numbers
+  it concerns `main` and your install as well.
+- **Whether a read-only agent's rule for signals should see `kill` right behind a quote** (the same
+  place). The main session's rules, which that agent gets as well, ask about such a line.
+- Unchanged, and the other sessions' to record: `main`, the ninth installer run, the proof pilot's
+  branch, the snapshot branches and the scratch clones.
+
+Sources: the guards of `fd589b2`, of this section's commit and of `e587b4f` in temporary projects that
+the kit's own test setup builds, each given command lines as text on its standard input on 20 and 21
+November 2026 (UTC), on this machine; eleven altered copies of the guard, made by a script from the
+repaired one and from the guard before; the kit's tests on copies of the commit's state, on Windows
+under Python 3.11.7 and in WSL under 3.12.3, their checks counted in the logs as the lines that begin
+with `PASS` and `FAIL`; Python's profiler and a timer around each call of a pattern, for the two older
+slow lines; the tips of the other sessions' local branches and the notes that they left in the shared
+folder, read on this machine on 21 November; the helpers that PROGRESS.md names.
 
 ## 1. What changed and why
 

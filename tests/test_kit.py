@@ -495,6 +495,30 @@ def env_tests(tmp):
                 "root, say = Path(sys.argv[2]), sys.argv[3]\n" + code, str(scripts), str(proj), say], cwd=proj, env=env)
         ok, said = inside(r.stdout), " ".join((r.stderr or r.stdout).split())[-200:]
         check(ok, f"{what}: `python` is the environment's" + ("" if ok else f" ({said})"))
+    # A relative path to a program is read from the same folder on every system. After `env --python` that is the
+    # folder the command is typed in. The loop's evaluator is a setting of the project: the project root, wherever the
+    # loop is called. From the project's folder `eval`, `rel` leads to no file and `../` + rel to the interpreter
+    got = [jout(sh([vpy, str(scripts / "expctl.py"), "env", "--python", name], cwd=proj / "eval", env=env)).get("interpreter")
+           or {} for name in ("../" + rel, rel)]
+    exe = got[0].get("executable") or ""
+    check(os.path.isfile(exe) and os.path.samefile(os.path.dirname(exe), vbin) and "error" in got[1],
+          "env --python, typed in a subfolder: a relative path is read from that folder (was, outside Windows: from the "
+          "project root)")
+    r = sh([vpy, "-c", "import sys; sys.path.insert(0, sys.argv[1])\nfrom pathlib import Path\nimport argparse, json, nnloop\n"
+            "root, say, out = Path(sys.argv[2]), sys.argv[3], []\n"
+            "C = nnloop.Campaign(root, dict(nnloop.expctl.load_config(root), loop={}), 'bare', argparse.Namespace())\n"
+            "C.box_eval = []\n"
+            "for name in sys.argv[4:]:\n"
+            "    C.L['eval_command'] = [name, '-c', say]\n"
+            "    try:\n"
+            "        out.append(C.evaluate(root).stdout)\n"
+            "    except OSError:\n"
+            "        out.append(None)\n"
+            "print(json.dumps(out))\n", str(scripts), str(proj), say, rel, "../" + rel], cwd=proj / "eval", env=env)
+    got = json.loads(r.stdout) if r.returncode == 0 else [r.stderr[-200:], ""]
+    check(inside(got[0]) and got[1] is None,
+          "the loop's evaluator, called in a subfolder: a relative path is read from the project root (was, on Windows: "
+          f"from that subfolder) ({'started' if inside(got[0]) else got[0]}, {'not started' if got[1] is None else 'started'})")
     # The check before a use asks as the start will. On Windows with the variable that takes the current folder out
     # of the search, as an agent's shells have it and a user's terminal has not, and with one more folder on the PATH
     receipt, cfgp, onpath = proj / ".claude/state/final-eval/receipt.jsonl", proj / ".claude/nn-training.json", tmp / "bare/onpath"

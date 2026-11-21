@@ -3342,6 +3342,10 @@ def cmd_env(args):
     py = args.python and (in_env(args.python) or args.python)
     if py:
         try:
+            # a path after --python is read from the folder the command is typed in, as Windows reads it. Until
+            # 21 November 2026 the start below, which is given the project root, read it from there elsewhere
+            if os.name != "nt" and os.path.dirname(py) and not os.path.isabs(py):
+                py = os.path.join(os.getcwd(), py)
             r = subprocess.run([py, "-c", PROBE], capture_output=True, text=True, timeout=180, cwd=str(root))
             info["interpreter"] = json.loads(r.stdout.strip().splitlines()[-1]) if r.returncode == 0 and r.stdout.strip() \
                 else {"error": (r.stderr or r.stdout)[-400:]}

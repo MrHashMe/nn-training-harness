@@ -839,6 +839,10 @@ class Campaign:
         """The frozen evaluator on one folder, started by the harness itself; None when it timed out."""
         try:
             cmd = self.eval_box(run_dir) + self.fill(self.L["eval_command"], run_dir=run_dir)
+            # the evaluator is the project's: a relative path to its program is read from the project root. Until
+            # 21 November 2026 Windows read it from the folder the loop was called in, which --detach made the root
+            if os.path.dirname(cmd[0]):
+                cmd[0] = os.path.join(self.root, cmd[0])
             return subprocess.run(cmd, executable=expctl.in_env(cmd[0]), cwd=str(self.root), env=self.run_env,
                                   capture_output=True, encoding="utf-8", errors="replace",
                                   timeout=float(self.L.get("eval_timeout_s") or 600), **NOWIN)
@@ -1967,6 +1971,11 @@ def preflight(C: Campaign, agent, limits, args):
     if not C.exe:
         fail(f"the {agent} command-line agent was not found on PATH (pass --agent-exe PATH)")
     try:
+        # a relative path to the agent's program is read from the folder the command is typed in. Until 21 November
+        # 2026 only this check read it there: a session, which starts in the worktree, read it from there outside
+        # Windows (on Windows a batch file was not found), and a loop started with --detach from the project root
+        if os.path.dirname(C.exe) and not os.path.isabs(C.exe):
+            C.exe = os.path.join(os.getcwd(), C.exe)
         usage = subprocess.run([C.exe, "--help"], capture_output=True, encoding="utf-8", errors="replace",
                                timeout=60, **NOWIN).stdout
     except (OSError, subprocess.TimeoutExpired) as e:
@@ -2000,6 +2009,7 @@ def cmd_run(args, resume):
     if args.detach:
         C.dir.mkdir(parents=True, exist_ok=True)
         argv = [sys.executable, os.path.abspath(__file__)] + [a for a in sys.argv[1:] if a != "--detach"]
+        argv += ["--agent-exe", C.exe]  # as this call read it: the loop in the background starts in the project root
         kw = {"creationflags": 0x00000008 | 0x00000200} if os.name == "nt" else {"start_new_session": True}
         with open(C.dir / "loop.log", "ab") as log:
             p = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, cwd=str(root), **kw)

@@ -690,15 +690,22 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   name has no ending, and since 20 November 2026 the kit hands that file to Windows itself, so it starts whichever
   way its slashes point. Until then a relative path with forward slashes, and without `./` or `../` in front, was
   not started where the environment holds the variable `NoDefaultCurrentDirectoryInExePath`, which the shells of the
-  Claude Code session of that day did. The path is read as Windows reads it, from the folder that the kit's own
-  process is in: the project root for `final-eval`, for a remote target's `on_finish` command and for the evaluator
-  of a campaign started with `--detach`; for a launched run the folder it works in; and for `env --python`, and for
-  the evaluator of a campaign started without `--detach`, the folder the command was typed in, where Linux reads
-  those two from the project root (tried on both with `env --python` and with a start of the evaluator's kind, not
-  with a campaign). A batch file stays Windows' to find and `cmd.exe`'s to run: name it with backslashes
+  Claude Code session of that day did. A relative path is read from the same folder on Windows and elsewhere since
+  21 November 2026: from the project root for `final-eval`, for a remote target's `on_finish` command and for the
+  loop's evaluator, which are settings of the project; for a launched run from the folder it works in; and from the
+  folder the command is typed in for the path after `env --python` and after the loop's `--agent-exe`, which are
+  typed there. Until then Windows read the evaluator from the folder the loop was called in, which only `--detach`
+  made the project root; outside Windows the path after `env --python` was read from the project root; and the
+  agent's program was read where the command was typed by the check before the start only: a session, which starts
+  in the worktree, read it from there outside Windows and did not find a batch file on Windows, and a loop started
+  with `--detach` read it from the project root. (Tried on Windows and in WSL, not on a Mac: `env --python`; the
+  evaluator by the loop's own start of it, not by a whole campaign; the agent's program by campaigns with a stand-in
+  agent, not with a real one.) A batch file stays Windows' to find and `cmd.exe`'s to run: name it with backslashes
   (`scripts\final.cmd`) or by its full path, because by a relative path with forward slashes it runs only in quotes,
-  and only where that variable is not set. `final-eval` checks its program before it records the use, and since that
-  day the check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
+  and only where that variable is not set. The loop's evaluator and the agent's program are the exception since 21
+  November 2026: the kit makes their relative path a full one, so the program, a batch file too, starts whichever
+  way its slashes point. `final-eval` checks its program before it records the use, and since 20 November 2026 the
+  check asks as the start will. It refuses, with nothing recorded, a name that only a batch file answers to,
   a name with a dot that only an `.exe` stands behind, a script named without its interpreter (`eval.py`), a batch
   file by a relative path with forward slashes and, where that variable is set, a program named without a folder
   that lies in the project root only; where Python's own search (`shutil.which`) finds a file for the name, the

@@ -959,10 +959,13 @@ class Campaign:
         # and the loop waited like this.) No exit record ends that wait: with that supervisor gone, nothing says that
         # one is true. The wait counts on the monotonic clock, which on Linux and macOS leaves out time asleep (the
         # command has had its time awake), and against the campaign's GPU time, as if the command had run.
-        # shortcut: with no supervisor left, that stop reaches a command only where its heartbeat makes the run read
-        # as active: it then ends the command's tree on Windows and sends the command one SIGTERM elsewhere, and a run
-        # without a heartbeat it refuses. What does not end stays beside the next run; upgrade when `expctl stop` can
-        # end a run's processes without the run's supervisor
+        # shortcut: with no supervisor left, that stop reaches a process only where status takes the one that the run's
+        # heartbeat names for the run's: it ends that one's tree on Windows and sends it one SIGTERM elsewhere. Under a
+        # wrapper (`uv run`, a script with more steps) that is the trainer: the wrapper is not ended, and a script goes
+        # on with its next step. A run without a heartbeat it refuses. In the loop's sandbox the command ends with its
+        # supervisor (bubblewrap's --die-with-parent), and with it what it started where the box has a process
+        # namespace; without one, a process that the command started goes on. What does not end stays beside the next
+        # run; upgrade when `expctl stop` can end a run's processes without the run's supervisor
         if failed and not (out.get("command_may_run") and rid and out.get("run_dir")):
             return "crash", failed, rid
         run_dir = self.root / out["run_dir"]

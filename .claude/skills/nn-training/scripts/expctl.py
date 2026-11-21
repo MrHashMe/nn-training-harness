@@ -2024,10 +2024,16 @@ def cmd_launch(args):
     pid, start_error, ended, again, left, settled, noted, may_run = None, None, [], False, 50, None, False, False
     lone = False  # the look goes on for a record, with no process of the supervisor's left that the launch holds
 
+    # The kit's own lines in supervisor.log, which no error quotes: the launch's, and that of a supervisor which found
+    # the run's log there. (Was: the second one was quoted. It ends "this one starts nothing and ends", and it was the
+    # end of an error which says that the command may be running, and most of the 300 characters that the loop keeps
+    # of an error. The third reading of 21 November 2026.)
+    own = ("expctl launch:", "expctl supervisor: this run's log is there")
+
     def ended_as(what):  # the error for a supervisor that left no record, with what its own log says last
         said = log_reason(run_dir / "supervisor.log")
         return (f"the supervisor ended before it recorded the run's process (exit code {', then '.join(ended)}); {what}"
-                + (f"; supervisor.log: {said}" if said and not said.startswith("expctl launch:") else ""))
+                + (f"; supervisor.log: {said}" if said and not said.startswith(own) else ""))
 
     while True:
         # asked before the records are read: it writes them, then ends
@@ -2088,8 +2094,19 @@ def cmd_launch(args):
                 " (the launch could not make the run's log, which would keep a late supervisor from starting it: "
                 f"{shut})" if shut else ""))
             # for status: a run that failed to start, with this reason (was: unknown, with none)
-            write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
-                                                      "ended_at": iso(now())})
+            try:
+                write_json_atomic(run_dir / "exit.json", {"returncode": None, "error": start_error, "ended_ts": now(),
+                                                          "ended_at": iso(now())})
+            except OSError as e:  # the answer goes out all the same
+                # (Was: a traceback and no answer, so a caller had no run id and the loop did not count the run. This
+                # is for a disk that is full or takes no write, where the log above fails for the same reason, or is
+                # made because an empty file still fits; run with stand-ins, on no such disk. The third reading of
+                # 21 November 2026.) The run then reads as unknown, and after a minute status takes a log that the
+                # launch made for a supervisor's
+                start_error += (
+                    f"; the launch could not write the run's exit record ({e}), so the run reads as unknown, not as "
+                    "failed" + ("" if shut else ", and status will say that the command may have run, for the log that "
+                                "this launch made"))
             break
         left -= 1
         if left <= 0:
@@ -2110,8 +2127,11 @@ def cmd_launch(args):
     # was the second of two: then the one that recorded the run's process is the supervisor, by the log that only one
     # of them makes. (Was: the one held, whatever became of it. Where that was the small program of an environment's
     # python.exe that ended before its interpreter, or a second supervisor that found the first one's log, the answer
-    # named a process that was gone or about to go, and for the loop an exit record alone then ended the run.) Through
-    # tmux the launch holds no process, and the answer names the record's supervisor, as it did.
+    # named a process that was gone or about to go, and for the loop an exit record alone then ended the run.) With no
+    # record of the run's process there is no such one to name, and the number stays that of the process started, also
+    # where it has ended: in the launch's errors, after which the loop does not wait on it, and in an ok that rests on
+    # an exit record alone, which a supervisor of the kit's does not leave. Through tmux the launch holds no process,
+    # and the answer names the record's supervisor, as it did.
     # shortcut: in those cases the number is the record's, and the record is a file in the run's folder, which the
     # run's command can write: a command that rewrote it in the moment since its start is believed, here and by the
     # look of five seconds above; upgrade when a supervisor can show itself to the launch outside the run's folder
@@ -2236,7 +2256,9 @@ def cmd_supervise(args):
     # python.exe the launch sees that small program end, not the interpreter it started. The interpreter outlived it
     # in none of 926 tries on one machine, which does not exclude it, and this does not depend on it.) The launch
     # makes the log too, in one case: where it gives a run up as not started, so that no supervisor starts it after
-    # that. This rests on the file system making a new file in one step that fails where the file is there
+    # that. This rests on the file system making a new file in one step that fails where the file is there: so it was
+    # on NTFS, on ext4 and on a Windows folder as WSL mounts it, with eight makers at one moment. It is not established
+    # for a runs folder on a mount that a program serves (sshfs, a mounted object store) or on NFS version 2
     try:
         log = open(run_dir / "stdout.log", "xb", buffering=0)
     except FileExistsError:

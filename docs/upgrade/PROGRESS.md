@@ -3077,6 +3077,8 @@ entry lists, less the reader.
 (Added with "The refusal of a batch file's path", the next entry: the refusal is decided by the
 user's "Yes, add it" of 21 November and is in the kit, for a batch file's path; its arguments are
 as they were.)
+(Added with "The refusal of a batch file's arguments": the arguments that the loop hands a batch
+file are refused too now, on a second "Yes, add it" of that day.)
 
 ## The refusal of a batch file's path (21 November): on Windows `final-eval` and the loop refuse, before any start, a batch file whose path `cmd.exe` would not take as written; two local commits, nothing pushed
 
@@ -3171,6 +3173,8 @@ other three heads the kit's files join and the two records conflict; none of the
 run; the records are joined by hand); and what the last entry lists, less its second question.
 (Added with "The reading of the refusal", the next entry: the reader is decided by the user's "Yes,
 start reader" of 21 November and has read this change and the reading's repair.)
+(Added with "The refusal of a batch file's arguments": the first of these is decided by a second
+"Yes, add it" of 21 November and done, for the arguments that the loop hands a batch file.)
 
 ## The reading of the refusal (21 November): one fresh reader on `1a277aa` and `042a985`; two checks that depended on the temporary folder's path, a dot at a path's end and four names repaired; two local commits, nothing pushed by this session
 
@@ -3274,6 +3278,101 @@ points 49, 55 and 61 and a merge of that branch as it stood at `6f2812d`,
 at `5b0b01f` with 58; a merge of `ebc28f0` with each of the four heads, tried in memory, joins in
 the kit's code, the tests and the reference and conflicts in the two records; none of the joined
 states has run; the records are joined by hand.
+(Added with "The refusal of a batch file's arguments", the next entry: the first of these is decided
+by the user's "Yes, add it" of 21 November and done, for the arguments that the loop hands a batch
+file. Finding 2 was not taken along with it: the user's word was for the arguments.)
+
+## The refusal of a batch file's arguments (21 November): on Windows the loop refuses, before any start, the arguments of a batch file that `cmd.exe` would not hand on as written; two local commits, nothing pushed by this session
+
+The work of the pilot's session, on its branch `claude/brave-robinson-27cbd9`, after `2ec7149`. The
+user's word, 21 November: "Yes, add it", to my question at the end of the reading of the refusal,
+"Refuse a batch file's arguments that cmd.exe would change?" Dates and times in this entry are UTC.
+
+Done (REPORT.md, "The refusal of a batch file's arguments", has it in full):
+- The measurement, from a scratch script that is not part of the kit, on Windows 11: three batch
+  files of one line each (`%*`; `%1` to `%9`; `"%~1"` to `"%~9"`) start one Python program that
+  writes down the arguments it got; every start is without a shell and from a list; what `cmd.exe`
+  wrote, its exit code and the files that a start left are kept. First set: 90 signs and words (6
+  control characters, 37 with a `%`, 47 others) in eleven forms of an argument list, 4,232 starts,
+  1,260 of them by a full path, by a path in quotes or as one line, which gave what the relative
+  path gave. Second set: 59 signs and words in those forms and eight more, 3,365 starts. Together
+  7,597 starts and 144 distinct signs and words, under Python 3.11.7 and 3.8.20, which agree in
+  every start: the arguments arrived as written in 4,495, changed in 2,751, and nothing reached the
+  program in 351.
+- What `cmd.exe` does, with the batch file that hands on all its arguments: it reads the line twice,
+  so `^&` acts as `&`; outside quotes it ends the command at `&` (the rest is a second command) and
+  at a pipe sign, reads a redirection at `<` and `>` (a file is made), and drops `^`; in quotes too
+  it ends the line at a line feed, drops a carriage return, and puts a value for `%NAME%`,
+  `%NAME:~0,2%`, `%NAME:A=Z%` and `%=C:%`; every `"` opens or closes its quotes, also Python's `\"`.
+  As written: a comma, `;`, `=`, brackets, a tab and the other control characters, six further space
+  signs and signs without a width, a name that no variable has, `%NAME:~x%`, `%=D:%` for a drive
+  without a folder, and `!NAME!` (delayed expansion was off). Read by number, the arguments are
+  parted at a comma, `;`, `=` and some space signs; with `"%~1"` the batch file's own line is read
+  again: both are the batch file's affair and not the rule's.
+- The rule: `batch_split(word, env, rest)` in `expctl.py`. With `rest`, the arguments' line, it
+  answers with a variable between `%` signs, with a line break, or with one of `&`, `<`, `>`, `^`
+  and the pipe sign outside quotes as `cmd.exe` reads them, and with nothing where `cmd.exe` hands
+  the arguments on, for a word that names no `.bat` or `.cmd` file, and outside Windows. Against the
+  2,835 starts of the batch file with `%*`: it names something in each of the 942 in which the
+  arguments did not arrive as written, nothing in 1,816 in which they did, and something in 77 in
+  which they did (whatever follows `:~`, and `%=X:%` for every drive: on purpose).
+- The loop asks the rule in `preflight`, for `start` and `resume`, through `batch_args`: the
+  evaluator's arguments with `0` in the runs' folder and with `selftest-0` in the campaign's folder
+  for `{run_dir}`, and with the run's environment; the agent's arguments after its `--help`, as
+  `agent_argv` gives them for a worker, with the model and the effort of the call or of the state,
+  and with the kit's environment and the two names of a session. Through the command line,
+  `nnloop.py start` in a project named `pro%RANDOM%j` with a stand-in agent's batch file: exit code
+  2, the sentence, no campaign folder, no branch. `final-eval` is not changed: its older check
+  refuses each of the rule's signs, by reading.
+- My four readings of the word: the rule is for a batch file that hands on all its arguments; it
+  refuses more than was seen to change; the agent's arguments are asked too; `final-eval` is left.
+- Tests: five new checks in `tests/test_loop.py` on Windows (the rule on 25 argument lines; the
+  evaluator's arguments in four cases; the two folders; the agent's arguments in five cases; `start`
+  through the command line); two older checks and a helper changed. 27 parts of the change taken out
+  or changed on copies under 3.11.7: each fails at least one new check, and the kit as it is passes
+  all 41 of the group, in eight runs under six temporary folders. `tests/test_loop.py` alone: 274
+  checks on Windows, 278 in WSL.
+- `docs/REFERENCE.md`: the entry on a start without a shell on Windows says what `cmd.exe` does with
+  a batch file's arguments, that the loop's check refuses them and for which programs, why
+  `final-eval` needed no change, how it was measured, and what is not refused.
+- The eight test files on the final state, from 16:11 to 17:08 on Windows and from 16:09 to 16:28 in
+  WSL: Windows, Python 3.11.7, 1,931 checks; Windows from a virtual environment without psutil,
+  3.8.20, 1,918; WSL, 3.12.3, 1,932; WSL from a virtual environment, 3.8.20, 1,919. None failed.
+- The code is `8628536`, 145 lines added and 17 removed: `expctl.py` 19 and 2, `nnloop.py` 23 and 0,
+  `tests/test_loop.py` 75 and 7, `docs/REFERENCE.md` 28 and 8.
+- REPORT.md has the section "The refusal of a batch file's arguments", point 64 of "Read this first"
+  (57, 58 and 60 to 63 are other sessions', on their branches, and 65 is taken in a session's note
+  for a record that is not committed), a sentence in the introduction, and a dated note at ten
+  places of the three sections before it and at points 52, 56 and 59. This file has a note at the
+  three entries before this one. The ledger is not touched.
+
+Not done: no push, no merge, nothing on the real install, nothing installed; no reader, so this
+change and what the reading of the refusal changed are read by nobody but me; GitHub's machines and
+macOS have run none of it; finding 2 is not taken along, though the last entry said that I would
+with the next change of the loop's check (my recommendation, and not the user's word); a batch file
+that reads its arguments by number or takes their quotes off is not refused; the kit's other starts
+are not checked; Codex's and Cursor's lists, `--effort`, the state's model at `resume` and a scout's
+list reach the check by reading alone; delayed expansion was off; a whole campaign with a batch file
+not run; one machine's `cmd.exe`. Removed without asking: my trial script made its work folder new
+at its second and third run and so cleared files of its own making in this session's scratch folder;
+nothing else.
+
+Next, each a separate word of the user's: whether a reader goes through this change (I would start
+one, and it can take `ebc28f0` along); whether the refusal goes to the other starts of a program
+that the user names (I would leave them until one is met); whether finding 2 is repaired (I would,
+on the user's word); and from the last entry what this one does not restate: the family with `.` or
+`..` behind the file's name, finding 4, a batch-file evaluator named with forward slashes, and what
+the entries before it list. The merge is no question of this entry: by the note of the session that
+started this one the user answered "Yes, join here" there at about 12:28, for local merges of the
+four sessions' branches into `claude/kit-commit-verification-e52f2b` once their readings are
+recorded, so this branch is merged there and not here; that branch and `origin/test/round-9` stand
+at `f08b6dd`, looked at 17:09 and not fetched, and hold this branch as far as `0278baa`, with points
+53, 54 and 60; `claude/sharp-faraday-6bd610` stands at `5424b57` with points 49, 55, 61 and 63,
+`claude/fervent-gould-8d0820` at `533690b` with 48, 51, 57 and 62, and
+`claude/beautiful-bartik-32f1e5` at `5b0b01f` with 58, and 65 is taken in a note; a merge of
+`8628536` with each of the four heads, tried in memory, joins in the kit's code, the tests and the
+reference and conflicts in the two records; none of the joined states has run; the records are
+joined by hand.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs

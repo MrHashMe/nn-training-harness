@@ -308,15 +308,49 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   line and let all three pass, `patch.exe` and `tar.exe` behind such a path too (found on 20 November 2026). A
   quoted word in a program's text stays a text: `python -c 'd = {}; print(d.get("patch"))'` passes for that
   subagent as before.
+  Two quoted texts where a command may start are no program's name, and stay as they are. Behind `cmd /c` and
+  `cmd /k`, a text in quotes with a blank in it is a program's path only where a slash or a backslash stands
+  before its first blank (`cmd /c "C:\Program Files\Git\usr\bin\touch.exe" x`); any other is a command line in
+  quotes (`cmd /c "type runs\x\patch"`), which the rules read as the line it is. And behind a word that sets a
+  variable and leaves a bracket open, a quoted word is an item of a list (`steps=(train "install")`) or, on the
+  bracket's line, an argument of the command whose output the variable gets
+  (`b=$(basename "runs/x/install")`). That holds where plain words at most stand between the bracket and it,
+  behind `$(` one at least, and not only words that lead to a command. Behind those it is a command's name
+  (`v=$(sudo 'touch' x)`, and `steps=(wsl 'touch' x)`, whose bracket PowerShell runs), and so it is behind a
+  sign in the bracket (`v=$(true; 'touch' x)`), behind a list that is closed (`a=(x) 'touch' x`) and behind a
+  bracket that is a part of the value (`X=${v:-(} 'touch' x`): a POSIX shell runs the command in both. For
+  some hours of 21 November 2026 both kinds of text were named, after the last part of their last path:
+  `cmd /c "type runs\x\patch"` was asked about in the main session, and a read-only subagent was refused it and
+  `n=$(echo "rm"); echo $n` (a fresh reader found both that day). In those hours any `=(` in front of the word
+  kept it in its quotes, so `a=(x) 'touch' notes.md` still passed for that subagent, as it had before that day.
   The cost falls on a read-only subagent, because the guard cannot tell which shell reads a line: a quoted word
   where a command may start is a program's name to a POSIX shell and a text to PowerShell, so
   `if ('install' -in $steps) { 'yes' }` is refused there, and so is a here-document of program text in which
-  such a word stands alone on a line (the last item of a list, written `'install'`). Both are read as the bare
-  word is read in that place, and the main session is asked about neither. Limits that stay, read from the code
-  and not run: a blank that a backslash escapes (`/c/Program\ Files/Git/usr/bin/touch.exe`), a quoted blank in
-  what stands before the word (`X="a b" 'touch' x`), and a command word in quotes behind a wrapper that is
-  itself in quotes (`"sudo" "rm" x`), which a read-only subagent's rules do not see, and the main session's
-  only where the word holds no blank. And in the line that a shell is handed, a read-only subagent's rules see
+  such a word stands alone on a line (the last item of a list, written `'install'`), right behind `{`
+  (`{ "rm" : 1 }`) or at a line's end behind a bracket that a blank leads to (`x = ("install"`). The same holds
+  for a pattern of `case` behind `;;` (`… ;; 'install') …`), for the word of a default behind a blank
+  (`v=${x:- 'rm' }`), for a list's item on a line of its own behind the first or behind names that only lead
+  to a command (`steps=(env "install")`), for an argument behind a sign inside `$( )`
+  (`v=$(true;cat "runs/x/install")`) and for one inside backticks that a word follows
+  (``b=`basename "runs/x/install" .txt` ``), which one reading takes for PowerShell's escapes. Each is read as
+  the bare word is read in that place. The main session's answers on such lines are the ones it gave before
+  that day: it is asked where the word is one that its rules ask about there (`patch`, `kill`), because they
+  took the quotes off a word without a blank already. Limits that stay, each run on 21 November 2026: a quoted
+  blank in what stands before the word (`X="a b" 'touch' x`), which neither set of rules sees; a command word
+  in quotes behind a wrapper that is itself in quotes (`"sudo" "rm" x`), which a read-only subagent's rules do
+  not see, and the main session's only where the word holds no blank; and behind an open bracket a word that
+  the guard does not know to lead to a command, which makes the quoted word behind it its argument, whatever
+  that word runs (`v=$(watch 'touch' x)` passes, as `watch 'touch' x` and `watch touch x` do; the bare
+  `v=$(watch touch x)` is refused to a read-only subagent, because an older rule takes what stands before the
+  name for a word that sets a variable). Behind `cmd /c`, a command line in quotes whose first word is a path
+  itself (`".\tools\show.exe runs\x\install"`, `"dir/b runs\x\install"`) is taken for one path and named after
+  its last part, so a read-only subagent is refused these two, and the main session is asked where that part is
+  a name that its rules ask about (`"C:\tools\list.exe docs\patch"`); and a program's path whose first folder
+  holds the blank (`cmd /c "my tools\patch.exe" < fix.patch`) is taken for a command line and passes, as it
+  did before that day. Telling these apart takes looking for the file, as cmd does. (A blank that a backslash
+  escapes stood among these limits until that day, read from the code and not run. Run, it is none:
+  `/c/Program\ Files/Git/usr/bin/touch.exe eval/metrics.py` is asked about like the bare name, in the reading
+  that takes the backslash off.) And in the line that a shell is handed, a read-only subagent's rules see
   such a name only where that shell is the last word before its flag that ends like a program's name: not
   behind `bash --rcfile x.py -c`. In one place of such a line the name in quotes is refused where the bare name
   is not: that subagent's rule for signals looks for `kill` behind a blank or a sign that starts a command, and
@@ -673,7 +707,11 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   failed); an unreadable config or an internal error turns every
   action, reads included, into a question (a refusal where nobody can be asked). So does a check that takes the
   guard longer than 12 seconds (a path on a server that does not answer, a line with very many different
-  searches): its hooks give it 15 to 20, and not every agent blocks a call whose hook ran out of time. Claude Code
+  searches): its hooks give it 15 to 20, and not every agent blocks a call whose hook ran out of time. That
+  question stands alone: a refusal that one set of rules had found while the other was still reading is not
+  given with it (seen on 21 November 2026, for a read-only subagent, on a generated line of 7,500 commands
+  that each hand a shell a program's name in quotes, `bash -c "'cat' f1.txt";`, with `touch notes.md` behind
+  them; left as it is). Claude Code
   older than 2.1.295 lacks the `onFailure` setting that blocks tool calls when the hook cannot run at all. Run
   `expctl selftest` after changes.
   The two subagents' own hook carries the same setting. Claude Code runs a project subagent's own hooks only in a

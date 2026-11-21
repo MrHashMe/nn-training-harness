@@ -1240,9 +1240,21 @@ def named(text: str) -> str:
     is touch x. Until 21 November 2026 no rule saw the first, whose quotes plain() leaves for the blank in them, or
     the third, and a read-only agent's rules, which do not read the plain form, saw none of the three. Only a whole
     command word changes, into a name without quotes, so every other quote of the text pairs as it did, and a quoted
-    word in a program's text stays one: print(\\"a > b\\"), d.get("patch"). A word that sets a variable (X="a/b") or
-    stands in a list that one is set to (steps=(train "install")) stays as well, and so does one whose last part is
-    no name ("my notes", "$tool").
+    word in a program's text stays one: print(\\"a > b\\"), d.get("patch"). A word that sets a variable (X="a/b")
+    stays as well, and so does one whose last part is no name ("my notes", "$tool"). So does a word behind one
+    that sets a variable and leaves a bracket open: an item of a list (steps=(train "install")), or on the
+    bracket's line an argument of the command whose output the variable gets (v=$(cat "runs/x/best.txt")). That
+    holds where plain words at most stand between the bracket and it, behind $( one at least, and not only words
+    that lead to a command. Behind those it is a command's name (v=$(sudo 'touch' x), and steps=(wsl 'touch' x),
+    whose bracket PowerShell runs), and so it is behind a sign in the bracket (v=$(true; 'touch' x)) and behind
+    a bracket that is a part of the value (X=${v:-(} 'touch' x, X=a\\(b 'touch' x, which run the command, and
+    a=(x) 'touch' x, whose list is closed). And behind cmd's /c or /k a text in quotes with a blank in it is a
+    program's path only where a slash or a backslash stands before its first blank
+    (cmd /c "C:\\Program Files\\Git\\usr\\bin\\touch.exe" x). Any other is a command line in quotes
+    (cmd /c "type runs\\x\\patch"), which stays, and which inner_code() gives the rules as a line of its own.
+    (On 21 November 2026 both were named for some hours, the line after the last part of its last path: cmd /c
+    patch was asked about, and a read-only agent was refused it and n=$(echo "rm"). A fresh reader's reading. In
+    those hours any "=(" in what leads to the word kept it, a closed list's and a default's too.)
     Like every reading this may name more than the shell would: a quoted word where a command may start is a
     command's name to a POSIX shell and a text to PowerShell ('install' -in $steps, a switch's case 'patch'), and
     on a line of its own in a here-document it may be a program's text. Each is read as the bare word is read there.
@@ -1250,13 +1262,42 @@ def named(text: str) -> str:
     quotes here (plain() takes them off a name without a blank, for the main session's rules); a blank that a
     backslash escapes (/c/Program\\ Files/Git/usr/bin/touch.exe) and a quoted blank in what leads to the word
     (X="a b" 'touch' x) end the word or the search early, and a word that stays is passed over with all that leads
-    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words"""
+    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words. (The escaped blank is seen all
+    the same: readings() gives the line as a POSIX shell reads it too, with that blank in quotes.) Behind cmd's /c a
+    command line in quotes whose first word is a path itself (".\\tools\\show.exe runs\\x\\install",
+    "dir/b runs\\x\\install") is taken for one path and named after its last part, and a program's path whose
+    first folder holds the blank ("my tools\\patch.exe") for a command line; that takes looking for the file, as
+    cmd does. Behind an open bracket a word that is not among those that lead to a command makes the next word its
+    argument, whatever that word runs (v=$(watch 'touch' x) stays, as watch 'touch' x does). And a harmless word
+    is named, and read as the bare word is read there, where a list's item stands on a line of its own behind the
+    first or behind names that only lead to a command (steps=(env "install")), and where an argument that a word
+    follows stands inside backticks (b=`basename "runs/x/install" .txt`), which one reading takes for PowerShell's
+    escapes"""
     def bare(m):
-        w = m.group(2) or ""
+        w = m.group(2)
+        if not w:  # a quoted text where no command starts
+            return m.group()
         path = QUOTED.sub(lambda q: q.group()[1:-1], re.sub(r"\$(?=['\"])", "", w)).replace("\\", "/")
         name = path.rsplit("/", 1)[-1]
-        return m.group(1) + name if w and "=" not in QUOTED.sub("", w) and "=(" not in m.group(1) \
-            and re.fullmatch(r"[\w.@+-]+", name) else m.group()
+        # what leads to the word, without the sign that starts the command and without its quoted texts: up to the
+        # last bracket that it leaves open (head), and what stands between that bracket and the word (rest)
+        lead = QUOTED.sub("", re.sub(r"^[;&|{`(]", "", m.group(1)))
+        at, depth = -1, 0
+        for i in range(len(lead) - 1, -1, -1):
+            depth += (lead[i] == ")") - (lead[i] == "(")
+            if depth < 0:
+                at = i
+                break
+        head, rest = lead[:at + 1], lead[at + 1:]
+        words = rest.split()
+        # an item of a list, or on the bracket's line an argument behind $( and a first word: with plain words at
+        # most between, each with a letter or a digit in it, and not only words that lead to a command
+        inside = (re.search(r"(?:^|\s)[A-Za-z_]\w*=\($", head) or head.endswith("$(") and words and "\n" not in rest) \
+            and re.fullmatch(r"[\w\s./~=:@%+,-]*", rest) and all(re.search(r"\w", x) for x in words) \
+            and not (words and re.fullmatch(_LEADS, rest))
+        stays = "=" in QUOTED.sub("", w) or inside \
+            or lead.lstrip()[:1] == "/" and re.match(r"[^\s/]*\s", path)  # behind cmd's /c or /k: a line in quotes
+        return m.group() if stays or not re.fullmatch(r"[\w.@+-]+", name) else m.group(1) + name
 
     return COMMAND_WORD.sub(bare, text) if re.search(r"['\"\\]", text) else text
 

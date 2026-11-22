@@ -76,6 +76,13 @@ For the second question of that reading, how the guard should read a program's n
 started a session of its own on that day. Both forms are repaired in a local commit on the branch
 `claude/sharp-faraday-6bd610`, at a cost for a read-only agent that is the user's to accept; the repair is
 read by its author only and not pushed ("A program's name in quotes or behind backslashes" below).
+On the user's "Reader first" of 21 November a fresh reader went through that repair: two kinds of harmless
+line that it asked about or refused pass again, and a command behind a closed list is seen, in a further
+local commit on the same branch. The reader's first finding is repaired on the branch
+`claude/kit-commit-verification-e52f2b` as well, by the session that started this one; the two repairs are
+not merged ("The reading of the repair of names in quotes" below).
+(Added on 21 November with the join: merged since, in that session's branch; "The join of the two
+repairs of names in quotes" below.)
 "The proof pilot" below is the work of a session of its own on 20 November: the first of round 9's next
 steps, a comparison of the kit's loop, the kit before round 9 and no kit with a real agent on both
 benchmark tasks. It is one local commit, not pushed.
@@ -92,6 +99,18 @@ On the user's "Yes, push" of 21 November the merged round is on the public branc
 (`409182f` to `6f2812d`), and all six of GitHub's jobs pass on it ("The merged round on the test
 branch" below). `main` is as it was. The three sessions' local branches hold seven commits more
 since, which the pushed branch does not hold.
+(Added on 21 November with the join, in the branch of the session for names in quotes: the lines above
+from "On the user's "After the sessions"" on were written on `claude/kit-commit-verification-e52f2b`,
+and "this one" and "this branch" in them are that branch.)
+On the user's "Yes, merge here" of 21 November, given in the session for names in quotes, that branch
+as it stood at `6f2812d` is merged into that session's branch `claude/sharp-faraday-6bd610`, where the
+two repairs of the readers' first finding are one function now, and the joined state passes its tests
+on this machine ("The join of the two repairs of names in quotes" below). No reader has gone through
+the joined function yet, and nothing of it is pushed.
+On the user's "After the merge" of 21 November, given in the same session, one fresh reader went
+through the joined function and found no fault of the join. The guard's code stays as it is; nine
+checks are added where no row stood and texts are corrected, in one further local commit on that
+session's branch ("The reading of the join of names in quotes" below). Nothing of it is pushed.
 
 # Upgrade progress
 
@@ -3074,6 +3093,10 @@ Done on that word:
   name (`if ('install' -in $steps) { 'yes' }`, also behind `powershell -c`) and a here-document of
   program text in which such a word stands alone on a line. The main session is asked about
   neither. Whether that price is right is the user's decision.
+  (Added on 21 November with the reading of this repair: that holds for these two kinds and not
+  for the repair. The main session was asked about a harmless line of commands in quotes behind
+  `cmd /c`, and a read-only agent is refused more kinds than these two; "The reading of the repair
+  of names in quotes" below.)
 - Timings on Windows through the hook, 35 lines against the guard before: ordinary lines and the 17
   long lines of the earlier comparisons take what they took; 1,500 commands with such a name take
   0.3 to 0.8 s more for the main session; the repair's slowest line, 5,000 shells that are each
@@ -3098,10 +3121,14 @@ Done on that word:
   for that reason. Neither is merged into this branch. A merge of this state with each of the two,
   tried in memory (`git merge-tree`), meets conflicts in `docs/upgrade/REPORT.md` and
   `docs/upgrade/PROGRESS.md` and in no other file; no test ran on a joined state.
+  (Added on 21 November with the join: the branch that holds both, as it stood at `6f2812d`, is
+  merged into this one since; "The join of the two repairs of names in quotes" below.)
 - Nothing pushed. Nothing on the real install. No reader: the repair is read by its author only.
   (Added on 21 November, by the session that merged the branches: merged since, and read with the
   merged branches. The reader found a regression behind `cmd /c`, which is repaired; "The merge of
   the three branches and its reading" below.)
+  (Added on 21 November: another fresh reader has gone through it since, on the user's "Reader first";
+  "The reading of the repair of names in quotes" below.)
 - Left on this machine: the session's scratch folder with its helpers, copies of the kit and logs
   ("Working notes"), and in WSL the clone `~/nnkit-upgrade/kit-pq-w3`.
 
@@ -3109,6 +3136,10 @@ Next, each a separate word of the user's: whether the cost for a read-only agent
 whether a reader goes through the repair; where its two commits go, beside the two other local
 branches; what is done about the loop over a line's assignments; whether a read-only agent's rule
 for signals should see `kill` behind a quote; the other questions of the entries before this one.
+(Added on 21 November: the second is answered, "Reader first", and "The reading of the repair of
+names in quotes" below is its record. The cost has more kinds than the two named above, and the main
+session was asked about a harmless line as well; that entry says which.)
+
 ## The proof pilot (20 November): run with a real agent on both tasks, one local commit, nothing pushed
 
 The work of a session of its own, which the session that keeps these records started for it, on the
@@ -3925,6 +3956,262 @@ the sessions' later commits, and goes to `test/round-9`; `main`, after one run o
 that state; the ninth installer run; whether a reader goes through `f2338d6`; and the other
 questions of the last two entries, less the push.
 
+## The reading of the repair of names in quotes (21 November): two kinds of harmless line pass again, a command behind a closed list is seen
+
+The user's word, 21 November: "Reader first", to the question at the end of the report of the entry
+"A program's name in quotes or behind backslashes", whether a fresh reader should go through that
+repair. "I" in this entry is that entry's session. I took the word as the "Reader first" of
+20 November was taken: one reader with read access only and a brief on correctness, my own check
+of each finding, the repair of what holds, tests, and local commits with their record. It is not a
+word for a push, for a merge, for `main`, for the real install, for a further reader or for a
+deletion. Dates and times in this entry are UTC. "The first repair" is `bcfab15`, and "the guard
+before" the one of `409182f`.
+
+Done on that word:
+- One reader, a fresh session of Opus 5.5 with read access only, went through `bcfab15` against
+  `409182f`: 221,502 tokens, 82 tool calls, about 19 minutes, with a brief on correctness in both
+  directions that ruled out a search for ways past the guard. It reported six findings. I ran every
+  line of each on three guards, as both tools, before I took it, and each holds.
+- Finding 1, repaired: behind `cmd /c` the first repair read a whole line of commands in quotes as
+  one program's name, after the last part of its last path. `cmd.exe /c "type runs\x\patch"` was
+  asked about in the main session and refused to a read-only agent. Now a quoted text with a blank
+  in it, behind `/c` or `/k`, is a program's path only where a slash or a backslash stands before
+  its first blank; any other stays as it is, and the rules read it as a line of its own, as they
+  did before. Two limits stay and are named: a command line whose first word is a path itself is
+  still taken for one path, and a program whose first folder holds the blank for a command line.
+- Finding 2, repaired: a quoted argument of the command whose output a variable gets was read as a
+  command's name, so a read-only agent was refused `b=$(basename "runs/x/install"); echo "$b"`. Now
+  a quoted word stays behind a word that sets a variable and leaves a bracket open: as an item of
+  a list, or on the bracket's line as an argument behind `$(` and a first word.
+- Finding 3, gone with the repair of 2: 900 commands that each set a variable from a quoted path
+  take 5.4 to 5.5 s in the main session, where the guard before takes 5.3 to 5.4 s and the first
+  repair's took 7.9 to 8.4 s.
+- Finding 4, half repaired: on very long lines the guard's timer had taken a refusal from a
+  read-only agent and asked in its place. 1,300 and 1,400 commands of finding 3's kind with a write
+  behind them are refused again, in the guard before's time. On 7,500 shells that are each handed
+  a program in quotes, with a write behind them, the timer's question still comes after 12.1 s,
+  where the guard before refuses in 9.6 to 11.6 s. That takes a change of the timer and is left.
+  `docs/REFERENCE.md` says now what the timer's question leaves out.
+- Finding 5, the gaps in the tests: 43 checks more, 15 in the kit file and 28 in the review-fixes
+  file. Fourteen fail on the first repair's guard. Each of the other 29 fails on the guard before
+  or on one of 21 copies of this reading's guard with one piece altered; every check was run
+  against the copies.
+- Finding 6, three older things on lines that nobody writes: each holds in the guard before as
+  well, and none is repaired.
+- Beside the findings. The first repair did not see a command behind a closed list, behind a
+  default whose text is a bracket, or behind `wsl` in a list (`a=(x) 'touch' notes.md`, `X=${w:=(}
+  'touch' notes.md`, `steps=(wsl 'touch' notes.md)`): these are answered as the bare lines are
+  now, which is stricter than both earlier guards. My first form of the repair let two lines pass
+  that the first repair refused (`X=${v:-(} 'touch' notes.md`, `X=a\(b 'touch' notes.md`); sibling
+  rows showed it before any test file ran, and it was never committed. The repair costs a
+  read-only agent one kind of harmless line of its own, `steps=(env "install")`. And the first
+  repair's cost for that agent has seven kinds more than the two that its record names; the
+  reference lists them all.
+- The code commit `24970e3`: four files, 157 lines added and 15 removed (`nn_guard.py` 48 and 7,
+  all in `named()`; `docs/REFERENCE.md`, `tests/test_kit.py`, `tests/test_review_fixes.py`). No
+  pattern and no rule is changed.
+- 636 rows, put to the guards as text: this reading's guard answers none more mildly than the
+  guard before. Against the first repair's guard it is milder on 29 different lines, on each as
+  the guard before: 26 harmless ones and three of two named limits (`cmd /c "my tools\patch.exe" <
+  fix.patch`, `v=$(watch 'touch' notes.md)`), and stricter on twelve. On the 5,500 generated lines
+  of the first repair's comparison no answer differs from the first repair's guard; those lines
+  hold none of this reading's kinds.
+- Tests on the commit's state, each once: the eight files on Windows under Python 3.11.7 (2,062
+  checks) and the kit file in WSL under 3.12.3 (1,277), none failed. No other
+  interpreter, no Mac, no bare Linux, nothing on GitHub's machines.
+- The first finding is repaired twice. While this reading was under way, the session that started
+  this one merged this branch up to `b5331fb` into `claude/kit-commit-verification-e52f2b` and
+  repaired the first finding there, on another reader's finding (`f2338d6`, that branch's point
+  53). The two repairs change the same lines of `named()`, of the reference and of the two test
+  files, and git will not join them by itself. Neither rule for `cmd` is right on every line.
+  I put the two together in the scratch folder, this reading's function with that branch's rule
+  for `cmd` in it. On a copy of that branch's tree at `c631d57` with that guard and both sessions'
+  rows, `tests/test_review_fixes.py` and `tests/test_kit.py` pass on Windows under Python 3.11.7
+  (219 and 1,312 checks, once). REPORT.md says how the two join. I merged nothing.
+  (Added on 21 November with the join: merged since in this branch, with that join, on the user's
+  "Yes, merge here"; "The join of the two repairs of names in quotes" below.)
+- REPORT.md has the section "The reading of the repair of names in quotes", point 55 of "Read this
+  first", and a dated note at each place of the first repair's section that the reading shows
+  wrong. The two record files were written after the passes; no test reads them. The ledger is
+  not touched.
+- The point is 55 because 50 and 52 are the proof pilot's (`claude/brave-robinson-27cbd9`), 51 is
+  that of the session for the two faults on Windows (`claude/fervent-gould-8d0820`), and 53 and 54
+  are the starting session's (`claude/kit-commit-verification-e52f2b`; 54 came at 10:10 UTC on 21
+  November, in `6f2812d`). The session for the two faults takes 56 in its note in the sessions'
+  shared folder, for a record that is not committed.
+- Readers of this work, with this one: fifteen and one second reading, about 2,425,000 tokens, by
+  the committed records on the local branches; beyond the user's word six and one second reading,
+  about 907,000, as before. I checked none of the other sessions' readers.
+- Nothing pushed. Nothing on the real install. No second reader: this reading's repairs are read
+  by their author only.
+- Left on this machine: the session's scratch folder with the reader's report, the row files, the
+  copies of the kit and the logs ("Working notes"), and in WSL the clones
+  `~/nnkit-upgrade/kit-pq-w3` and `~/nnkit-upgrade/kit-pq-w5`.
+
+Next, each a separate word of the user's: where this reading's two commits go, with the join of the
+two repairs; whether the cost for a read-only agent is accepted, with its longer list; whether a
+reader goes through this reading's repairs; whether the guard gives a refusal that it has found
+when its time is up; whether the older fault is repaired by which a read-only agent is refused
+`n=$(echo rm); echo $n`; the questions of the entry "A program's name in quotes or behind
+backslashes" that are still open.
+(Added on 21 November with the join: the first is answered, "Yes, merge here", and the third,
+"After the merge": one reader, on the joined guard. "The join of the two repairs of names in
+quotes" below is the record.)
+
+## The join of the two repairs of names in quotes (21 November): the starting session's branch merged into this one, local only
+
+The user's word, 21 November: "Yes, merge here" (11:35), to my question whether I make the merge with
+the join here, on this branch. With the question I had said what a yes means: the starting session's
+branch merged into this one with the join of the entry before this one, the reference and the two
+records joined by hand, the eight test files on Windows and the kit file in WSL on the joined state,
+and a record with a numbered point, in local commits. It is not a word for a push, for `main`, for
+the real install, for another branch or for a deletion. The user's "After the merge" (11:12), to the
+question when a fresh reader should go through the last entry's repairs, covers one reader on the
+joined guard, which starts after this record. "I" in this entry is the session of the entry before
+it; "the other branch" is `claude/kit-commit-verification-e52f2b`. Dates and times are UTC.
+
+Done on that word:
+- The merge: `040d637` (12:38) merges `6f2812d` into `0f896a3`. It brings the other branch's 25
+  commits after `b5331fb`: the proof pilot's work as far as `0278baa`, the repairs of the two process
+  faults as far as `12876c9`, `f2338d6`, three merge commits and the records up to point 54. The
+  other branch stood at `6f2812d` when I looked (11:36) and when the merge was begun (11:38).
+- Joined by git itself: `expctl.py`, `nnloop.py`, `nnremote.py`, `runlog.py`, `tests/test_loop.py`,
+  the ledger and its head, which this branch had not changed since `b5331fb`, and
+  `docs/REFERENCE.md`.
+- Joined by hand, thirteen places in five files. `nn_guard.py`, three places in `named()`: this
+  branch's inner function with the other branch's clause for a line of commands behind `cmd /c` in
+  the place of mine, and one docstring out of the two. `tests/test_kit.py` and
+  `tests/test_review_fixes.py`, one place each: both sessions' rows, mine first. REPORT.md and this
+  file, four places each: both texts kept, the points of "Read this first" in the order of their
+  numbers, and the other branch's ten entries before the entry of the reading.
+- Changed after the join: four places of `docs/REFERENCE.md`, where git's join held both sessions'
+  accounts of `cmd /c` and mine described a clause that the joined guard does not have; and seven of
+  my notes in the two records that said "the section after this one" or the like of sections that
+  no longer follow one another. Against both parents 67 lines of the merge are new.
+- The joined function compared: `named()` of the merged guard, of the trial's copy and of both
+  parents on 3,042 different texts, in one process. The merged guard and the copy rewrite each
+  alike; against my guard of `24970e3` 12 differ, all behind `cmd`; against the other branch's 26,
+  all at a bracket or a list. 48 rows that the joined reference and the docstring name, as both
+  tools: the 29 with a wanted answer have it, and the 19 others answer as the two texts say.
+- Tests on the joined state, each once: the eight files on Windows under Python 3.11.7 (2,115
+  checks), on a copy whose 216 files are those of the merge commit, and the kit file in WSL under
+  3.12.3 (1,313), on a clone at `6f2812d` with the merge's difference from it laid on. None failed.
+  The kit file has 1,312 checks on Windows, the other branch's 1,297 and this session's 15; the
+  review-fixes file 219, 191 and 28. The check of the session hook, which depends on the kit file's
+  speed, passed in both passes of that file. Not run: the 3.8.20 environment, Python 3.15, the
+  seven other files in WSL, macOS, bare Linux, GitHub's machines.
+- REPORT.md has the section "The join of the two repairs of names in quotes", point 61 of "Read
+  this first", two statements in the opening with a note before them, and a note at nine places of
+  my two records that the merge makes out of date. This file has a statement at the end of the
+  summary at its top with a note before it, this entry, four notes more (in the summary, at the
+  entry of the first repair and two at the entry of its reading) and a working note. The two record
+  files were written after the passes; no test reads them. The ledger came in as the other branch
+  has it, and I added nothing.
+- Windows on the user's screen: I ran no watcher. The eight files ran once under Python 3.11.7
+  (about twenty flashes by the earlier entries' measure). By its note the session for the two
+  faults ran trials on this machine in the same half hour, so not every window then was mine.
+- Readers: none in this entry. The count of the entry before this one stands.
+  (Added on 21 November with the reading of the join: one reader since, on the joined guard; "The
+  reading of the join of names in quotes" below.)
+- Not here: `f08b6dd`, the record of its push that the other branch took at 12:01, while I joined
+  (point 60); `1a277aa` and `9d01f95` on `claude/brave-robinson-27cbd9` (point 56); `74d1e22`,
+  `84d7285` and `ebda58d` on `claude/fervent-gould-8d0820` (point 57); `f471473` and `5b0b01f` on
+  `claude/beautiful-bartik-32f1e5` (point 58), of which the first changes the guard. Tried in the
+  scratch folder: `f08b6dd` joins with this file by itself and needs REPORT.md joined at two
+  places, as the files stood before this record; `f471473`'s guard and the merged one conflict at
+  two places.
+- Nothing pushed. Nothing on the real install. No package installed, nothing deleted. The other
+  branch is not touched.
+- Left on this machine: the scratch folder's `merge`, `rec2` and `kit-m1` ("Working notes"), and in
+  WSL the clone `~/nnkit-upgrade/kit-pq-m1`.
+
+Next: one fresh reader on the joined guard, on the user's "After the merge". Then, each a separate
+word of the user's: where this branch goes; whether `f08b6dd` is taken in here; the merge of
+`f471473`; and the questions of the entry before this one, less its first and its third.
+(Added on 21 November with the reading of the join: the reader has read the joined function and
+found no fault of the join; "The reading of the join of names in quotes" below. Where this branch
+goes and whether `f08b6dd` is taken in here are answered by the user's "Yes, join here" in the
+other session, as its note of 12:30 in the sessions' shared folder has it.)
+
+## The reading of the join of names in quotes (21 November): no fault of the join; nine checks and corrected texts, local only
+
+The user's word, 21 November: "After the merge" (11:12), to my question when a fresh reader should go
+through the last reading's repairs. I took it as one reader with read access only and a correctness
+brief on the joined guard, my own run of each finding, the repair of what holds, tests, and local
+commits with their record; beside the question on the merge I had written that the reader and any
+repairs follow in the same place. It is not a word for a second reader, for a push, for `main`, for
+the real install, for a merge of any branch or for a deletion. "I" in this entry is the session of
+the entry before it; "the other branch" is `claude/kit-commit-verification-e52f2b`. Dates and times
+are UTC.
+
+Done on that word:
+- The reader: one fresh session of Opus 5.5, started with the Agent tool, 12:47 to 13:08, 246,436
+  tokens, 59 tool calls. Its brief: correctness of `named()` in the guard of `040d637` against both
+  parents' guards, in eight questions, with a search for ways past the guard ruled out; read access
+  only to the repository, its own files in one folder of the scratch folder, no test file run, four
+  processes at a time. Its report begins "No join fault found." and gives nine findings.
+- The findings, each run by me before I took it: 92 rows on five guards (the merge's, both parents',
+  the first repair's and the guard before), as the main session, under the read-only rules and as an
+  agent's call, through the Bash tool, 13:20 to 14:02; 14 rows more on the merge's guard and on
+  three altered copies of it. Every answer that the reader states holds. One finding is a gap in
+  the tests, four are places where the join answers as one parent did (two of them recorded
+  limits), one is a contrived form on which it is stricter than both parents, two are sentences
+  and one is older faults.
+- The code commit: `01c7bcd` (14:50), four files, 77 lines added and 45 removed. The guard changes
+  in the docstring of `named()` only: without its docstrings its syntax tree is that of `7f68b3d`
+  (`find3\same-code.py`). `docs/REFERENCE.md` at four places. `tests/test_kit.py`: two rows and
+  three comments. `tests/test_review_fixes.py`: six rows, one pair for `named()` and three comments.
+- The nine checks against altered guards. In one process: `named()` of 24 copies of the guard with
+  one piece taken out or changed, on every string of the two test files (`find3\mut.py`,
+  `mut2.py`); at `7f68b3d` eight copies rewrote every string as the guard does, now none. As test
+  files: `tests/test_review_fixes.py` on seven kit copies (14:07 to 14:16), one or two failed checks
+  on each, the ones that check the copy's piece and on one copy an older row that needs the same
+  piece; `tests/test_kit.py` on one copy without two of the tests (13:46 to 13:57), eight failed
+  checks, the two new rows and six older ones that need one of the two.
+- Tests on the commit's files, each once: the eight files on Windows under Python 3.11.7 (2,124
+  checks, 14:21 to 14:48), on a copy made before the commit and compared with it after (all 216
+  files the same), and the kit file and the review-fixes file in WSL under 3.12.3 (1,315 and 228,
+  14:07 to 14:11), on a clone at `7f68b3d` with the working tree's difference laid on. None failed.
+  Two checks more in the kit file and seven more in the review-fixes file than on the merge, on
+  both systems; for that count the review-fixes file ran in WSL on the merge's clone as well
+  (221). Not run: the 3.8.20 environment, Python 3.15, the six other files in WSL, macOS, bare
+  Linux, GitHub's machines.
+- REPORT.md has the section "The reading of the join of names in quotes", point 63 of "Read this
+  first" with a note at point 61, a statement in the opening with a note before it, and a note at
+  nine places: one in the other session's section "The merge of the three branches and its
+  reading", marked as mine, two in "The reading of the repair of names in quotes" and six in "The
+  join of the two repairs of names in quotes". This file has a statement at the end of the summary
+  at its top, this entry, two notes at the entry before it and a working note. The two record
+  files were written after the passes; no test reads them. The ledger is not touched.
+- Windows on the user's screen: I ran no watcher. The eight files ran once under Python 3.11.7
+  (about twenty flashes by the earlier entries' measure). By its note the session for the two
+  faults began test passes of its own at 12:38, some under the two environments, so not every
+  window since then was mine.
+- Readers: this one. With it nineteen and one second reading, about 3,244,000 tokens, by the
+  committed records on the local branches, which I did not check; beyond the user's word the count
+  stays at six and one second reading, about 907,000. The nineteenth is the third reader of the
+  session for the two faults (196,100 tokens), whose record `533690b` came at 14:55.
+- Not changed: any answer of the guard. The harmless lines of findings 2 and 3 stay asked about or
+  refused, the lines of finding 4 pass, and the form of finding 6 is answered more strictly than by
+  either parent; each is in the texts now. The older faults of finding 9 are left.
+- Not here: `f08b6dd` (point 60); `1a277aa`, `9d01f95`, `ebc28f0` and `2ec7149` on
+  `claude/brave-robinson-27cbd9` (points 56 and 59); `74d1e22`, `84d7285`, `ebda58d`, `965aa34`
+  and `533690b` on `claude/fervent-gould-8d0820` (points 57 and 62; the last two came at 14:42
+  and at 14:55, while my tests ran and this entry was written); `f471473` and `5b0b01f` on
+  `claude/beautiful-bartik-32f1e5` (point 58). By the other session's note of 12:30 the user
+  answered "Yes, join here" in that session: it joins the four sessions' branches into its own once
+  their readings are recorded, this branch once this record is committed, and joins `f08b6dd` by
+  hand there. I have that word from the note only.
+- Nothing pushed. Nothing on the real install. No package installed, nothing deleted. No other
+  branch is touched.
+- Left on this machine: the scratch folder's `rd3`, `reader3`, `find3`, `rec3` and the kit copies
+  `kit-n1*` and `kit-n2*` ("Working notes"), and in WSL the clone `~/nnkit-upgrade/kit-pq-n2`.
+
+Next, each a separate word of the user's: whether any of the four answers that the section names is
+changed (I would leave each); the merge of `f471473`; and the questions of the entry "The reading of
+the repair of names in quotes" that are still open. Where this branch goes is answered by the user's
+"Yes, join here" in the other session, as its note has it.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not
@@ -4636,6 +4923,48 @@ questions of the last two entries, less the push.
   in memory. `linelen.py`, `eol.py`, `points.sh` and `branches.sh` check the changed files' line
   lengths and line ends and read the other branches' points and tips. The logs of the passes are in
   `logs\` there, the timings in `time-out.txt` and the comparison's result in `gen-out.txt`.
+- The reading of that repair (21 November): its helpers are in the same folder. `reader\probe.py KIT
+  LABEL LINES.txt` is the probe above for row files in which a sign before each line says what
+  answer is wanted (a twin's, the bare line's, a pass under the read-only rules, or none);
+  `rd\mkmut2.py` writes the 21 altered copies of the guard and `rd\run-mut2.sh` puts rows to each;
+  `rd\tm.py --labels A,B --mode main|ro|agent --n N NAME...` times generated long lines through the
+  hook on the probe projects' guards, and `rd\prof.py` profiles one check; `rd\pairs.py
+  LABEL=GUARD.py ...` calls `named()` of several guards on twenty texts; `rd\milder.py OUTDIR A B
+  [TOOL]` prints the rows that one guard answers more mildly than another; `rd\cmp2.py` compares
+  the generated lines' answers between three guards; `rd\sh\run.sh` and `rd\sh\run-ps.sh` run the
+  small shell trials, which only print. The reader's report is `reader\REPORT-reader.md` and its
+  brief `rd\out2\brief.txt`; the row files are under `rd\` and `reader\`, each guard's answers and
+  the timings (`tm-final.txt`, `tm-quiet.txt`) under `rd\out2\`, and the generated lines' result in
+  `rd\out2-gen.txt`. `join\guard-joined.py` is the trial of the two repairs joined, and `kit-join`
+  the other branch's tree with that guard and with both sessions' rows; the logs of its two test
+  files are `logs\kit-join-test_review_fixes.log` and `logs\kit-join-test_kit.log`. `rec\` has the
+  texts of the entry "The reading of the repair of names in quotes" and `apply_rec.py`, which put
+  them into the two record files.
+- The join of the two repairs (21 November): its helpers are in the same folder, under `merge\`.
+  `resolve.py FILE CHOICE...` puts a text in the place of each conflict of a file: one side's
+  lines, both sides', or a file of lines in which a row names lines of a side. `heads.py` shows
+  each conflict's two sides, and the files as git left them are the `*.conflict.*` there.
+  `named-eq.py LABEL=GUARD.py ... -- FILE...` calls `named()` of several guards on every string of
+  test files and of row files and counts the texts that two guards rewrite differently;
+  `newlines.py REPO FILE REV...` prints a file's lines that stand in none of the named commits;
+  `same-tree.py REPO COPY [REV]` compares a copy with a commit's files. `lines-join.txt` holds
+  the 48 rows, and `m1.patch` is the merge against `6f2812d`, for the pass in WSL. `kit-m1` is
+  the copy that the passes ran on, with the logs `logs\kit-m1-*.log` and `logs\wsl-m1-*.log`.
+  `merge2\` and `merge3\` hold the trials with `f08b6dd` and with the guard of `f471473`.
+  `rec2\` has the texts of the entry "The join of the two repairs of names in quotes", with
+  `apply_rec2.py` and `notes61.py`, which put them and the notes into the two record files.
+- The reading of the join (21 November): in the same folder. `rd3\` has the reader's brief and its
+  report, word for word, and `reader3\` the reader's own files. `find3\` has my runs of its lines:
+  `probe.py` puts the rows of a file to a guard through the hook, as the main session, under the
+  read-only rules and as an agent's call; `run.sh` does that on five guards (`f.txt`, `h.txt`,
+  `k.txt` and `b.txt` are the rows, `*-joined.txt` and the like the answers); `mut.py` and
+  `mut2.py` make copies of a guard with one piece of `named()` taken out or changed and count the
+  strings of the test files that a copy rewrites differently; `same-code.py` compares two guards
+  without their docstrings. `kit-n1*` and `kit-n2*` are kit copies with such guards, `kit-n2` the
+  copy that the Windows pass ran on, with the logs `logs\kit-n2-*.log`, `logs\kit-n1-muts.out`,
+  `logs\kit-n2-muts.out` and `logs\wsl-n2-*.log`; `n2.patch` is the working tree against
+  `7f68b3d`, for the pass in WSL. `rec3\` has the texts of the entry "The reading of the join of
+  names in quotes", with `apply_rec3.py` and `notes63.py`.
 - The second merge of the pilot's branch, 21 November: the joined state is on `claude/r9-snap-q`
   (`c631d57`), with the clone `kit-r9-q` in `%TEMP%\nnkit-upgrade\` and one of the same name in
   WSL; the logs of its passes are `q-*.log` in `r9\` there.

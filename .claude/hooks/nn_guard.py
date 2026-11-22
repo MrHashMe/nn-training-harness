@@ -1244,17 +1244,25 @@ def named(text: str) -> str:
     is touch x. Until 21 November 2026 no rule saw the first, whose quotes plain() leaves for the blank in them, or
     the third, and a read-only agent's rules, which do not read the plain form, saw none of the three. Only a whole
     command word changes, into a name without quotes, so every other quote of the text pairs as it did, and a quoted
-    word in a program's text stays one: print(\\"a > b\\"), d.get("patch"). A word that sets a variable (X="a/b") or
-    stands in a list that one is set to (steps=(train "install")) stays as well, and so does one whose last part is
-    no name ("my notes", "$tool").
+    word in a program's text stays one: print(\\"a > b\\"), d.get("patch"). A word that sets a variable (X="a/b")
+    stays as well, and so does one whose last part is no name ("my notes", "$tool"). So does a word behind a
+    bracket that is left open before it: an item of a list that a variable is set to (steps=(train "install")),
+    or on the line of a $( an argument of the command inside it (v=$(cat "runs/x/best.txt")), with a word that
+    sets a variable in front of that bracket or without one (env -C $(dirname "runs/x/install") ls). That
+    holds where plain words at most stand between the bracket and it, behind $( one at least, and not only words
+    that lead to a command. Behind those it is a command's name (v=$(sudo 'touch' x), and steps=(wsl 'touch' x),
+    whose bracket PowerShell runs), and so it is behind a sign in the bracket (v=$(true; 'touch' x)) and behind
+    a bracket that is a part of the value (X=${v:-(} 'touch' x, X=a\\(b 'touch' x, which run the command, and
+    a=(x) 'touch' x, whose list is closed).
     Behind /c or /k of cmd a quoted text with a blank in it may be a line of commands, which cmd makes of it
     unless it is a program's file. It stays, and the rules read it as that line, where it ends the command and its
-    blank stands in no path: cmd /c "type docs\\patch", cmd /c "C:\\tools\\list.exe docs\\patch". It is the program
-    where an argument or a < follows it (cmd /c "my tools\\touch.exe" x), or where its first blank stands inside a
-    path, behind a folder's separator and a part without an ending:
+    blank stands in no path: cmd /c "type docs\\patch", cmd /c "C:\\tools\\list.exe docs\\patch". It is read as
+    the program where an argument or a < follows it (cmd /c "my tools\\touch.exe" x), or where its first blank
+    stands inside a path, behind a folder's separator and a part without an ending:
     cmd /c "C:\\Program Files\\Git\\usr\\bin\\patch.exe".
-    (Was, for one commit: the first two read as the program patch as well, asked about, and refused to a read-only
-    agent.)
+    (Was, in this function's first form, of 21 November 2026: the first two read as the program patch as well,
+    asked about, and refused to a read-only agent, who was refused n=$(echo "rm") too; and any "=(" in what leads
+    to the word kept it, a closed list's and a default's too. A fresh reader's reading.)
     Like every reading this may name more than the shell would: a quoted word where a command may start is a
     command's name to a POSIX shell and a text to PowerShell ('install' -in $steps, a switch's case 'patch'), and
     on a line of its own in a here-document it may be a program's text. Each is read as the bare word is read there.
@@ -1262,23 +1270,51 @@ def named(text: str) -> str:
     quotes here (plain() takes them off a name without a blank, for the main session's rules); a blank that a
     backslash escapes (/c/Program\\ Files/Git/usr/bin/touch.exe) and a quoted blank in what leads to the word
     (X="a b" 'touch' x) end the word or the search early, and a word that stays is passed over with all that leads
-    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words.
+    to it (a=1;'touch' "my notes"). Those take the shell's own splitting of words. (The escaped blank is seen all
+    the same: readings() gives the line as a POSIX shell reads it too, with that blank in quotes.) Behind an open
+    bracket a word that is not among those that lead to a command makes the next word its argument, whatever that
+    word runs (v=$(watch 'touch' x) stays, as watch 'touch' x does). And a harmless word is named, and read as the
+    bare word is read there, where a list's item stands behind a word that is not plain (files=(*.txt "rm"),
+    steps=($x "install")) or behind names that only lead to a command (steps=(env "install")), where it starts a
+    line and is not the first word behind the one that holds the bracket (the second item of a list that is
+    written one item to a line), and where an argument that a word follows stands inside backticks
+    (b=`basename "runs/x/install" .txt`), which one reading takes for PowerShell's escapes.
     shortcut: behind cmd's /c a program that is given no argument, which a pipe may feed, is read as a line of
     commands where no separator stands before its first blank or a dot stands in the part before that blank
-    (cmd /c "my tools\\patch.exe", cmd /c "C:\\tools.old dir\\patch.exe"), and a line of commands whose first word
-    is a path without an ending is read as a program (cmd /c "C:\\Python311\\python train.py --out runs\\touch");
-    that takes a look at the files on the disk, which is how cmd itself tells the two apart"""
+    (cmd /c "my tools\\patch.exe", cmd /c "C:\\tools.old dir\\patch.exe"), and a line of commands is read as a
+    program where its first word is a path without an ending (cmd /c "dir/b runs\\x\\install",
+    cmd /c "C:\\Python311\\python train.py --out runs\\touch") or where a word follows its closing quote, which
+    cmd puts behind the line (cmd /c "type runs\\x\\patch" x, to cmd type runs\\x\\patch x, is read as the program
+    patch); that takes a look at the files on the disk, which is how cmd itself tells the two apart"""
     def bare(m):
-        w = m.group(2) or ""
+        w = m.group(2)
+        if not w:  # a quoted text where no command starts
+            return m.group()
         path = QUOTED.sub(lambda q: q.group()[1:-1], re.sub(r"\$(?=['\"])", "", w)).replace("\\", "/")
         name = path.rsplit("/", 1)[-1]
+        # what leads to the word, without the sign that starts the command and without its quoted texts: up to the
+        # last bracket that it leaves open (head), and what stands between that bracket and the word (rest)
+        lead = QUOTED.sub("", re.sub(r"^[;&|{`(]", "", m.group(1)))
+        at, depth = -1, 0
+        for i in range(len(lead) - 1, -1, -1):
+            depth += (lead[i] == ")") - (lead[i] == "(")
+            if depth < 0:
+                at = i
+                break
+        head, rest = lead[:at + 1], lead[at + 1:]
+        words = rest.split()
+        # an item of a list, or on the bracket's line an argument behind $( and a first word: with plain words at
+        # most between, each with a letter or a digit in it, and not only words that lead to a command
+        inside = (re.search(r"(?:^|\s)[A-Za-z_]\w*=\($", head) or head.endswith("$(") and words and "\n" not in rest) \
+            and re.fullmatch(r"[\w\s./~=:@%+,-]*", rest) and all(re.search(r"\w", x) for x in words) \
+            and not (words and re.fullmatch(_LEADS, rest))
         # behind /c or /k: a quoted text with a blank that stands in no path, and neither an argument nor a "<"
         # behind it on its command
         line = w and m.group(1).lstrip()[:1] == "/" and re.search(r"\s", w) \
             and not re.match(r"\S*/[^\s./]*\s", path) \
             and not re.match(r"[ \t]*(?!\d*>)[^\s;&|)]", m.string[m.end():])
-        return m.group(1) + name if w and not line and "=" not in QUOTED.sub("", w) and "=(" not in m.group(1) \
-            and re.fullmatch(r"[\w.@+-]+", name) else m.group()
+        stays = "=" in QUOTED.sub("", w) or inside or line
+        return m.group() if stays or not re.fullmatch(r"[\w.@+-]+", name) else m.group(1) + name
 
     return COMMAND_WORD.sub(bare, text) if re.search(r"['\"\\]", text) else text
 

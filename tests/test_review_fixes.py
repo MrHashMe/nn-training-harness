@@ -357,16 +357,72 @@ def main():
                       ("find /c \"install\" runs\\x\\log.txt", None),
                       ("& \"C:\\Program Files\\Git\\usr\\bin\\head.exe\" -n 5 runs\\x\\log.txt; "
                        ".\\.venv\\Scripts\\python.exe -c \"print('touch')\"", None),
+                      # From a fresh reader's reading of that repair, the same day. Were "deny" in its first form: a
+                      # command line in quotes behind cmd's /c or /k, and an argument of the command whose output a
+                      # variable gets (each was named after the last part of its last path)
+                      ("cmd.exe /c \"type runs\\x\\patch\"", None), ("cmd /k \"dir C:\\tools\\kill\"", None),
+                      ("cmd /c \"type C:/Program Files/app/install\"", None),
+                      ("n=$(echo \"rm\"); echo $n", None), ("b=$(basename \"runs/x/install\"); echo \"$b\"", None),
+                      # (had no row: a list's first item, a text with a blank where a command may start, which is
+                      # no name, and a bracket behind a name in program text that stands in no quotes)
+                      ("files=( \"install\" train ); echo \"${files[@]}\"", None),
+                      ("\"install finished\" | Out-Host", None),
+                      ("python - <<'EOF'\nd = {}\nprint(d.get(\"install\"))\nEOF", None),
+                      # and behind cmd's /c a program's path in quotes with a blank is still that program
+                      ("cmd /c \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" notes.md", "deny"),
+                      # places where a command starts that had no row: behind {, in backticks, behind a lone &, in
+                      # the text of eval, of trap and of iex, behind a word that sets a variable, behind a
+                      # wrapper's option with a value, behind cmd's /k
+                      ("{ 'touch' notes.md; }", "deny"), ("echo `'touch' notes.md`", "deny"),
+                      ("ls & 'touch' notes.md", "deny"), ("eval \"'touch' notes.md\"", "deny"),
+                      ("trap \"'touch' notes.md\" EXIT", "deny"), ("iex \"& 'touch' notes.md\"", "deny"),
+                      ("X=1 'touch' notes.md", "deny"), ("sudo -u me 'touch' notes.md", "deny"),
+                      ("cmd /k C:\\msys64\\usr\\bin\\touch.exe notes.md", "deny"),
+                      # were None in that form too, as before that day: the command behind a list that is closed,
+                      # and in a list's bracket behind a word that leads to a command (PowerShell runs that
+                      # bracket). And a bracket in a default or behind a backslash is a part of the value: the
+                      # command behind it stays refused
+                      ("a=(x) 'touch' notes.md", "deny"), ("steps=(wsl 'touch' notes.md)", "deny"),
+                      ("X=${v:-(} 'touch' notes.md", "deny"), ("X=a\\(b 'touch' notes.md", "deny"),
                       # from the reading of that repair (21 November): behind cmd's /c a quoted text with a blank
-                      # that ends the command is a line of commands (were "deny" for one commit, as the programs
-                      # install, touch and patch), and /C is /c to cmd (was None)
+                      # that ends the command is a line of commands (were "deny" in the repair's first form, as the
+                      # programs install, touch and patch), and /C is /c to cmd (was None)
                       ("cmd /c \"type notes\\install\"", None), ("cmd /c \"type C:\\x\\touch.exe\"", None),
                       ("cmd /c \"python train.py --out runs\\touch\"", None),
                       ("cmd /c \"type docs\\patch\" | findstr x", None),
                       ("cmd /C \"C:\\Program Files\\Git\\usr\\bin\\touch.exe\" notes.md", "deny"),
-                      ("cmd /C tar -xf bundle.tar", "deny"), ("cmd /K tar -tf bundle.tar", None)]:
+                      ("cmd /C tar -xf bundle.tar", "deny"), ("cmd /K tar -tf bundle.tar", None),
+                      # from the reading of the two repairs joined (21 November; had no row: with either test
+                      # taken out of the guard, every row passed): behind cmd's /c a quoted text with a blank is
+                      # read as the program where an argument follows it, though no separator stands before its
+                      # blank, and where its first blank stands inside a path, though nothing follows it
+                      ("cmd /c \"my tools\\touch.exe\" notes.md", "deny"),
+                      ("cmd /c \"C:\\Program Files\\Git\\usr\\bin\\patch.exe\"", "deny"),
+                      # (and the smaller parts of the first of the two tests, which had no row either: a < behind
+                      # the text makes it the program, and a bracket that closes or a ; ends its command, as & and |
+                      # do; and the test before the two, which had none: a text without a blank is no line of
+                      # commands, so a path with backslashes that nothing follows is the program there as well)
+                      ("cmd /c \"my tools\\touch.exe\" < notes.md", "deny"),
+                      ("v=$(cmd /c \"type runs\\x\\patch\")", None),
+                      ("cmd /c \"type docs\\patch\"; echo done", None),
+                      ("cmd /c C:\\tools\\touch.exe", "deny")]:
         got = readonly(proj, cmd)
         check(got == want, f"read-only hook: {cmd[:50]} -> {got} (want {want})")
+    # named() itself, where the hook's answer does not show it, because the text of a $( ) is read as a line of
+    # its own too: behind a bracket that a variable's word leaves open a quoted word stays behind plain words
+    # only, behind a $( on the bracket's line and behind one word at least, and a list's bracket follows a name
+    # at a word's start. Quoted texts before the word are no words. And behind $( and words that only lead to a
+    # command the word is that command's name (had no pair: the reading of the two repairs joined)
+    pairs = [("v=$( 'touch' x)", "v=$( touch x)"), ("v=$(cat\n'touch' x)", "v=$(cat\ntouch x)"),
+             ("v=$(true; 'touch' x)", "v=$(true; touch x)"), ("steps=(. 'touch' x)", "steps=(. touch x)"),
+             ("X=${w:=( 'touch' x}", "X=${w:=( touch x}"), ("steps=(\"a\" \"install\")", "steps=(\"a\" \"install\")"),
+             ("v=$(sudo 'touch' x)", "v=$(sudo touch x)")]
+    code = ("import json, sys; sys.path.insert(0, sys.argv[1]); import nn_guard\n"
+            "print(json.dumps([nn_guard.named(t) for t in json.loads(sys.argv[2])]))")
+    got = tk.jout(tk.sh([PY, "-c", code, str(proj / ".claude/hooks"), json.dumps([t for t, _ in pairs])], cwd=proj,
+                        env={"CLAUDE_PROJECT_DIR": str(proj)}))
+    for (text, want), have in zip(pairs, got):
+        check(have == want, f"read-only hook: named({text!r}) -> {have!r} (want {want!r})")
 
     # 11. selftest
     frag = json.loads((tk.KIT / "settings.fragment.json").read_text())

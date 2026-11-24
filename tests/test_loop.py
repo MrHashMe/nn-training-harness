@@ -616,11 +616,14 @@ def batch_file_tests(tmp, proj, exe):
     # the arguments, as the command line has them behind the path. Outside quotes four signs and the caret; in quotes
     # too a line break and a variable, also with `:~` or with a `=` behind its colon. Python writes a quote inside a
     # word as `\"`, which opens or shuts cmd.exe's quotes like any other. The text that the `=` follows may reach
-    # over a `%`, or two, and into a later word, where a `%` follows that `=`. Then what cmd.exe hands on as written
+    # over a `%`, or two, and into a later word, where a `%` follows that `=`: the variable is named as far as that
+    # `%`, which is what cmd.exe acts on (it was named to its first `%`), and no farther where another `%` comes
+    # behind it. Then what cmd.exe hands on as written
     table = [("a&b", "&"), ("a|b", "|"), ("a<b", "<"), ("a>b", ">"), ("a^b", "^"), ('"a b\\" &c"', "&"), ("a\nb", "\n"),
              ('"a \r\nb"', "\r"), ("p%OS%q", "%OS%"), ('"p %os% q"', "%os%"), ("%CD:~0,2%", "%CD:~0,2%"),
-             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"), ("%Os:junk%x=y%", "%Os:junk%"),
-             ('"p %os:junk% x=y% q"', "%os:junk%"), ("%Os:a%x%y=z%", "%Os:a%"), ("%NOPE:a%Os:b%c=d%", "%Os:b%"),
+             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"), ("%Os:junk%x=y%", "%Os:junk%x=y%"),
+             ('"p %os:junk% x=y% q"', "%os:junk% x=y%"), ("%Os:a%x%y=z%", "%Os:a%x%y=z%"),
+             ("%NOPE:a%Os:b%c=d%", "%Os:b%c=d%"), ("%Os:a%b=%c%", "%Os:a%b=%"),
              ('"a &b|c<d>e^f"', None), ('a\\"&b', None), ("a,b;c=d (e) !f @g h", None), ("%OS:junk%", None),
              ("%OS:%", None), ("%NOPE%", None), ("%NOPE:~0,2%", None), ("p%OS", None), ("OS%q", None), ("100%", None),
              ("%Os:junk%x=y", None), ("%Os:%x=y%", None), ("%Os:j%x%y%", None), ("%NOPE:a%b=c%", None), ("", None)]
@@ -688,20 +691,26 @@ def batch_file_tests(tmp, proj, exe):
     # link leads to, of which the project's own path shows nothing: here a junction to a folder beside the project
     # whose name holds a variable. (Windows' own call makes it: `cmd /c mklink` would act on that name itself.) With
     # the runs' folder in the project it passes: unless the temporary folder's own path holds a `&` or a `^` and no
-    # space, which a run's folder then has either way
+    # space, which a run's folder then has either way. That path counts in both its forms, as the system gives it and
+    # as it resolves, since a short name or a link in it can hide the sign: a run's folder is asked by the second,
+    # the self-test's by the first. On a volume that makes no junction the check is left out
     import _winapi
     proj4, far = tmp / "linked", tmp / "f%RANDOM%r"
     shutil.copytree(proj2, proj4)
     far.mkdir()
-    _winapi.CreateJunction(str(far), str(proj4 / "far"))
-    got = [refuse(proj4, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]}, over={"runs_dir": d})
-           for d in ("far", "runs")]
-    cut = bool(bare and re.search(r"[&^]", str(tmp)))
-    ok = ("acts on '%RANDOM%' in " in got[0] and ("--help did not run" in got[1]) != cut
-          and ("batch file" in got[1]) == cut)
-    check(ok, "a run's folder is asked by the path a launch reports: a runs folder that is a link to a folder whose "
-          "name holds a variable is refused, though the project's own path holds none; with the runs folder in the "
-          "project it passes" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
+    try:
+        _winapi.CreateJunction(str(far), str(proj4 / "far"))
+    except OSError:  # the whole file ended here on such a volume
+        print("SKIP a runs folder that is a link to a folder whose name holds a variable: this volume makes no junction")
+    else:
+        got = [refuse(proj4, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]},
+                      over={"runs_dir": d}) for d in ("far", "runs")]
+        cut = any(re.search(r"[&^]", p) and not re.search(r"\s", p) for p in (str(tmp), str(tmp.resolve())))
+        ok = ("acts on '%RANDOM%' in " in got[0] and ("--help did not run" in got[1]) != cut
+              and ("batch file" in got[1]) == cut)
+        check(ok, "a run's folder is asked by the path a launch reports: a runs folder that is a link to a folder whose "
+              "name holds a variable is refused, though the project's own path holds none; with the runs folder in the "
+              "project it passes" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
 
     def quiet(C):  # the kit's own self-test follows the checks, and is not what is asked here
         C.expctl = lambda *a: argparse.Namespace(returncode=0)
@@ -786,6 +795,36 @@ def refusal_tests(tmp, proj, exe):
     check("--help did not run" in got, "a sound configuration passes every check up to the agent's own program"
           + ("" if "--help did not run" in got else f" (got: {got.strip()[:200]})"))
     check(py in " ".join(nnloop.expctl.load_config(proj)["final_eval_commands"]), "the config names the interpreter")
+    # a runs folder whose path is not to be had is the launch's to report, not this check's: links that lead back to
+    # each other, a name that Windows refuses, a NUL in the name, a value that is no path. Windows' own call makes
+    # the links, as junctions, and wants the folder a junction leads to in place: that one is renamed afterwards
+    loops, places = tmp / "loops", ["ru<n|s", "ru\0ns", 5]
+    loops.mkdir()
+    try:
+        if os.name == "nt":
+            import _winapi
+            (loops / "b").mkdir()
+            _winapi.CreateJunction(str(loops / "b"), str(loops / "a"))
+            (loops / "b").rename(loops / "c")
+            _winapi.CreateJunction(str(loops / "a"), str(loops / "b"))
+        else:
+            os.symlink("b", loops / "a")
+            os.symlink("a", loops / "b")
+        places.append(str(loops / "a"))
+    except OSError:
+        print("SKIP a runs folder whose links lead back to each other: this volume makes no link")
+
+    def passes(d):
+        try:
+            return bool(re.search(r"--help did not run: \[(WinError|Errno) 2\]", refuse(proj, runs=5, over={"runs_dir": d})))
+        except Exception as e:  # an error that leaves the check is the fault
+            return repr(e)
+    got = [passes(d) for d in places]
+    check(got == [True] * len(places),
+          "a runs folder whose path is not to be had passes every check up to the agent's own program, as one in the "
+          "project does: a name that Windows refuses, a NUL in the name, a number, and links that lead back to each "
+          "other (was, after 24 November 2026's change to the path a launch reports: a traceback, or that error "
+          f"given as the reason why the agent's --help did not run) ({got})")
     if os.name == "nt":
         batch_file_tests(tmp, proj, exe)
     else:

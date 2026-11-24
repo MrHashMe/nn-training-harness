@@ -4212,6 +4212,278 @@ changed (I would leave each); the merge of `f471473`; and the questions of the e
 the repair of names in quotes" that are still open. Where this branch goes is answered by the user's
 "Yes, join here" in the other session, as its note has it.
 
+## Lines with many words that set a variable (21 November): three kinds answered in time in a local commit; no rule's answer changed, and the timer's question came in on two made-up lines
+
+Another session's brief, 21 November: a session of its own for the fourth question of the entry
+before this one, "what is done about the loop over a line's assignments". "I" in this entry is that
+new session. I have the brief of the session that started this one and not the user's own words,
+which are that session's to record. The brief asks that the guard answer lines with many words that
+set a variable in time, without changing any answer: both kinds of line of that entry well inside
+the guard's 12 seconds through the hook on Windows under both sets of rules, the times before and
+after, a plain statement of what still grows faster than the line, the guard before against the
+guard after on generated lines and on lines made for this change, timings of the earlier long
+lines, rows where a row can rest on the change without depending on wall time, the test passes,
+the comment at the loop and the reference brought up to date, and local commits with their record.
+It rules out a search for ways past the guard, and an agent briefed for one. It is not a word for a
+push, for a merge, for `main`, for the real install, for a reader or for a deletion. Dates and
+times in this entry are UTC.
+
+Done on that brief:
+- The change, in `nn_guard.py`, with no rule and no message touched. `inner_code()` asks the new
+  `run_vars()` once for the variables that stand where a command starts, where it searched the whole
+  line twice for each word that sets a variable to a text; four searches at most, and a name that
+  they did not find gets a search of its own. `_lead()` builds what leads to a command word in two
+  forms: where a pattern is only asked whether a command is there, a variable's value ends in front
+  of a sign that a blank or another variable follows, and the blanks between two words hold no line
+  break. Where a match is read (five calls, and the search for a change of folder), the old form
+  stays, behind a search that says whether there is one. Eight patterns have the new form and five
+  patterns are new.
+- A third kind of line, which the brief does not name, and my decision beside it: variables set to
+  nothing in front of a command (`a= a= a= ... cmd`), read in a number of ways that grows 1.6 times
+  with each word. The session that joined the three other branches has it as the fourth finding of
+  its reading and left it to this work, and my change as first written made it a tenth to a fifth
+  slower. The blank behind a variable's `=` is now taken only in front of a word that sets no
+  variable, which reads such a row in one way. It is one key of `_lead()` and one test row, and can
+  be taken out by itself.
+- The times, through the hook on Windows under Python 3.11.7, the guard of `bcfab15` against this
+  one, as the main session and under the read-only rules: 20,000 of `a=1;` with no blank, the
+  timer's question after 78 and 98 s, now 2.8 s and 0.5 s; 3,000 lines that each set a variable and
+  read it, the timer's question after 12.3 s and an answer after 11.2 s, now 2.6 s and 0.4 s; 30
+  variables set to nothing, the timer's question after 12.2 s and an answer after 5.4 s, now 0.2 s
+  under both.
+- The guard before against the guard after, with no rule's answer changed. In one process:
+  300,000 texts for what the changed functions and patterns give, 40,000 for the whole check, no
+  difference. Through the hook: 5,500 generated lines under both sets of rules, no changed answer;
+  1,254 lines made for this change (a variable that holds a command and is run, alone, behind `;`,
+  inside `$( )`, with 120 other variables around it; the kit's own rows on kept files in the same
+  forms; rows of variables set to nothing), of which 1,233 get the same answer and reason and 21
+  get the rules' answer where the guard before asked its timer's question. With its limit out of
+  reach the guard before gives that answer on 18 of the 21, and three I stopped after 300 s each.
+- The other way round, on two made-up lines that stood at the limit of the guard before: they get
+  the timer's question where they were allowed. A row of 21 pairs `a= env` in front of a command
+  (allowed after 10.7 to 10.8 s, asked about now after 12.7 to 12.9 s, three runs each), and a place
+  that reads in 2,000 ways with as many variables set (allowed in one run of three after 11.8 s,
+  asked about now in all three). With the limit out of reach the rules of both guards allow both.
+  Not repaired: a question in place of "allowed" is the safe side, and a repair is a change to the
+  guard, with every comparison and timing again. It is among the decisions in REPORT.md.
+- The 35 long lines of the earlier comparisons, through the hook against the guard before: best of
+  three runs, and the same answers on all but the line of 20,000 of `a=1;`, which is allowed after
+  2.73 s where the timer's question came after 64 s. The 1,500 lines of the brief take 1.38 s for
+  9.77 s. Of the other 33, 31 are within a tenth of a second, one takes 0.13 s less and one 0.18 s
+  more, which is less than two runs of one guard differ by.
+- What still grows faster than the line, all of it measured on made-up lines and named in REPORT.md:
+  words that are read in two ways each, by a factor with each word (`sudo -u -u -u ...`, untouched;
+  `a= env a= env ...`, a sixth to a fifth slower than it was and at the limit one pair sooner); a
+  wrapper's option written thousands of times with no blank, whose question comes late as before;
+  the calls that read their matches behind thousands of variables; a place that reads in four ways
+  or more.
+- The code commit `f471473`: three files, 193 insertions and 32 deletions. Six new checks in the kit
+  file, which count searches and read where a match begins, in a process of their own; none waits
+  for a clock. Each fails on a copy with its change taken out (twelve copies, made by a script), and
+  four of them fail on the guard before. `tests/test_review_fixes.py` gets no row: the only answer
+  that changes is the timer's, and a row for it would wait for a clock.
+- Tests on the commit's state, each once: the eight files on Windows under Python 3.11.7 (2,025
+  checks) and the kit file in WSL under 3.12.3 (1,268), none failed. That is six checks more in the
+  kit file than on `b5331fb`. No other interpreter, no Mac, no bare Linux, nothing on GitHub's
+  machines.
+- The comment at the loop and the docstrings of `_lead()` and `run_vars()` say what is searched and
+  why; `docs/REFERENCE.md` has a point "How long it takes" behind "It fails safe", which says that
+  the guard's question can come late, what these lines took and take, and which lines still reach
+  the limit.
+- REPORT.md has the section "Lines with many words that set a variable" and point 58 of "Read this
+  first", in one block, the section right behind its point: the brief asks that this session's
+  additions to each record stand together. For the same reason this entry is all that this file
+  gets: the summary at its top does not name the entry, and I changed no sentence of another
+  section or entry. The section lists the earlier statements that this change puts out of date, in
+  both files. The two record files were written after the passes; no test reads them. The ledger
+  is not touched: the brief names the two record files.
+- Beside this session, while I worked: the branch that this one was cut from,
+  `claude/sharp-faraday-6bd610`, went on from `b5331fb` to `0f896a3` (a reading of the repair of
+  names in quotes, its repair `24970e3` in `named()` of the guard, point 55); the local branch
+  `claude/kit-commit-verification-e52f2b` joined the other sessions' branches (code at `c631d57`,
+  points 50 to 54 and 60; it stood at `f08b6dd` when this was written), and its session's note says
+  that it pushed that branch to `test/round-9` at 11:17 UTC on the user's word, so `b5331fb` is in
+  the pushed test branch now and this change is not; the pilot's branch got point 56 (`9d01f95`);
+  and the branch of the two faults on Windows got a second reading of its repairs, with point 57
+  (`74d1e22`, `84d7285`). So this entry's point is 58, which my note in the sessions' shared folder
+  (`guard-variable-lines-notes.md`) took at 10:56 UTC. 59, 61 and 62 are taken by three notes in the
+  sessions' shared folder, each for a record that no commit held when this was written. None of
+  those branches holds this change, and this branch holds none of their work. The join of the code
+  commit with each of the four, tried in memory at 12:01 UTC with `git merge-tree`, and nothing run
+  on a joined state: with `claude/sharp-faraday-6bd610` every file joins by itself; with
+  `claude/kit-commit-verification-e52f2b` the guard has two conflicts, at `_START` and at
+  `COMMAND_WORD`, where its `f2338d6` writes `/[ckCK]`, and the join is this change's lines with
+  `[ckCK]` in `_START` and in `_WORD_AT`, which makes `COMMAND_WORD` and `WORD_ANY`; with the other
+  two only the two record files conflict, as they do without the change. This record adds one
+  conflict with each of the first two, in REPORT.md behind the note under point 49, and this file
+  joins with them by itself; with the other two it adds none and stands inside one that is there
+  without it, in each file (tried the same way at 12:18 and 12:23 UTC on this record as first
+  committed).
+- Nothing pushed. Nothing on the real install. No reader and no agent of any kind: the change is
+  read by its author only.
+- Left on this machine: this session's scratch folder with its helpers, copies of the kit, logs and
+  results (`%TEMP%\claude\525daf0e7e844287\71b50a6c-8085-4c41-b182-512c986f4bb4\scratchpad\sp`,
+  which a cleanup of the temporary folder can clear), and in WSL the clone
+  `~/nnkit-upgrade/kit-sp-final`. The helpers: `shapes.py` makes the lines, `base.sh`, `shapes2.sh`,
+  `late.py`, `lines1.py` and `timefinal.sh` time them through the hook, `compare2.py` times the 35
+  long lines and puts the generated lines to both guards, `difffn.py` compares the functions, the
+  patterns and the whole check in one process, `both.py` and `onefull.py` put the made lines to the
+  guards, `rows.sh` with `mut2.py` makes the altered copies and runs the six rows on each,
+  `plain.py` with `oneproc2.sh` and `oneproc3.sh` times a line in one process with the limit out of
+  reach, `fbc.py` builds and searches the loop's own patterns, `mkvariant.py` makes the two copies
+  of this guard that I tried, `merge-mine.sh` tries the joins in memory, and `tab.py` makes the
+  tables.
+
+Next, each a separate word of the user's: whether a reader goes through this change; whether the
+bound on the blank stays; whether the two made-up lines that get the timer's question now get a
+repair; where these two commits go, and whether they join the branch that holds the other sessions'
+work; what is done about what still grows faster than the line; the other questions of the entries
+before this one, but the fourth of the entry before it.
+
+(Added on 21 November: a reader went through this change since, on the user's word. The entry behind
+this one says what it found, what is repaired, and which of this entry's sentences are inexact or no
+longer hold. But for this note the entry stands as it was written.)
+
+## The reading of the lines with many words that set a variable (21 November): a reader found that the change had made long loops slow; repaired in a local commit, at a price on other long lines; no rule's answer changed
+
+The user's word, 21 November: "Yes, start a reader", in answer to my question at the end of the work
+of the entry before this one, whether a fresh reader should go through the change. "I" in this entry
+is the session of that entry. I took the word as the earlier words of this kind were taken in this
+project: one reader with read access only and a brief on correctness, my own run of each of its
+findings, the repair of what holds, the tests on Windows and in WSL, and local commits with their
+record. It is not a word for a push, for a merge, for `main`, for the real install, for a further
+reader or for a deletion. Dates and times in this entry are UTC.
+
+Done on that word:
+- The reader: one, a fresh session of Opus 5.5 with the app's general agent type and none of my
+  working context, from 14:56 to 15:24, 209,111 tokens, 71 tool calls. Its brief of 95 lines names
+  `f471473` against its parent, gives my account of the change as claims to check, asks nine
+  questions on correctness in both directions and rules out a search for ways past the guard. Read
+  access only was the brief's word and no lock, since the agent type has every tool. I went through
+  its tool calls afterwards: it wrote only into the scratch folder that I gave it, and it removed
+  one file there, a copy of a script of its own, which the user's word did not cover.
+- It found no line that passes on the change and that the guard before asked about or refused, and
+  five other things, each of which I ran myself. The first is a fault of the change. The search that
+  it put in front of the naming of command words in quotes (`WORD_ANY`) was the first half of the
+  naming's pattern tried at every place, with nothing that passes over a quoted text: it began at
+  the `{` of `"r${i}"` and read on over one quoted text after the other to the line's end, the
+  square of a loop's length. Through the hook on Windows a loop of 3,000 lines `echo "runs/r${i}_N"
+  "logs/$i-N.txt"` took the change 8.4 to 8.9 s as the main session where the guard before takes 2.3
+  to 2.4 s, and as a read-only agent's call the timer's question after 14.7 to 14.9 s where it was
+  allowed after 2.5 s; on a training loop of 2,000 lines with a redirect such a call stood at the
+  limit, and in two of my three series the timer's question took the place of the rules' refusal.
+- The repair, in `nn_guard.py`, with no rule and no message touched: `WORD_ANY` is that pattern cut
+  off in front of the word, the first 587 of its 655 characters. It finds something wherever the
+  change's search did, and `COMMAND_WORD`, which names the words, is the guard before's character
+  for character, so the repair can change time and no answer. Of the change's 122 compiled patterns
+  121 are as they were. The loops take what they take on the guard before (the 3,000 lines: 2.3 to
+  2.4 s as the main session, 0.4 s under the read-only rules alone and 2.5 to 2.6 s as a read-only
+  agent's call).
+- The price, on lines that I made up to find it. The repaired search says yes in every line that
+  holds a quoted text like `"r${i}"` or `"a;b"`, and behind a yes the line is read for command words
+  as the guard before read it. 8,000 of `a=1; ` in front of `echo x "r${i}"` take 5.0 s as the main
+  session and 9.5 to 9.8 s as a read-only agent's call, where the change took 0.7 s and the guard
+  before asked its timer's question at 2,000; 36 variables set to nothing in front of the same take
+  the main session 10.7 to 11.1 s and get a read-only agent's call the timer's question, and 39 get
+  the main session the timer's question too, after 45.4 to 45.8 s, where the change took 0.2 s; a
+  here-document of 8,000 lines of settings in front of such a text takes the main session 11.4 to
+  11.8 s, and as a read-only agent's call it gets the timer's question where the change refused it
+  after 3.2 to 3.3 s. The change had the same limit where a second quoted text with a blank in it
+  follows the first.
+- The other findings are sentences, corrected where they stand in the code and the reference. "30
+  variables set to nothing in front of a command" holds in front of `echo 'x'`; in front of a plain
+  word the guard before reaches its limit at 32 (the helper that I wrote for the reader made `echo
+  x`, which is my fault and not the reader's). The reference's "a read-only agent half a second" was
+  the time of the read-only rules alone; a read-only agent's call is put to both sets of rules in
+  one process and takes about the two times together. "The blanks between two words hold no line
+  break" left out three places where one is still read. And three things had no test row.
+- From my own runs, measured and left: the row of 320 KB that the entry before this one has "inside
+  the limit" is at it (10.5 to 10.6 s as the main session, 1.5 s under the read-only rules alone,
+  and a read-only agent's call allowed after 11.8 s in one run and given the timer's question after
+  12.2 s in the other); a run of 20,000 `{` in a quoted text takes 1.4 s since the change where it
+  took 0.3 s; and the same run outside quotes takes all three guards to the limit, which is older
+  than both changes.
+- The rows: seven checks in the kit file's block where there were six. The fourth and the fifth read
+  one line more each (a command behind a sign and its blank; a line that begins with a blank behind
+  `a=`), and the seventh is new: the search ends in front of the word, at a place inside a quoted
+  text too, and the naming gives a loop as it is. The seventh fails on the change and on a copy of
+  the repaired guard with the change's search put back; the two added lines fail on copies with
+  their bound taken out. No row shows the speed: such a row would wait for a clock, and a count of
+  searches would not show it, because the slow search was one search.
+- The comparisons, with no changed answer. In one process: the search and the naming on 600,000
+  texts under Python 3.11.7, 3.8.20 and 3.15.0rc3; the changed functions and patterns on 300,000,
+  where the one difference is that the repaired search says yes and no such word stands there; the
+  whole check on 200,000, the change and the guard before each against the repaired guard. Through
+  the hook, the change against the repaired guard: the 1,254 lines made for the change, each in
+  three ways (as the main session, under the read-only rules alone, as a read-only agent's call),
+  and the 5,500 generated lines under both sets of rules.
+- The times of REPORT.md's tables are of one series that ran with no pass, comparison or other
+  series of this session beside it (21 November, 18:19 to 18:44 UTC). Series that ran beside my
+  comparisons and passes were a fifth to two fifths longer and took three lines past the limit as
+  the main session that stay inside it alone.
+- The code commit `26f9c9a`: three files, 73 lines added and 29 removed
+  (`.claude/hooks/nn_guard.py`, `docs/REFERENCE.md`, `tests/test_kit.py`). The eight test files on
+  Windows under Python 3.11.7: 2,026 checks, none failed. The kit file in WSL under Python 3.12.3:
+  1,269 checks, none failed. Each ran once; that is one check more in the kit file than in the entry
+  before this one. They ran on copies of the committed state but for one number in one comment of
+  the guard (the same program by its syntax tree) and two sentences of the reference, which I made
+  exact after the passes. No other interpreter ran the tests, and nothing ran on a Mac, on bare
+  Linux or on GitHub's machines.
+- `docs/REFERENCE.md`, "How long it takes": the read-only rules alone where it said a read-only
+  agent, a sentence on an agent's call, `echo 'x'` named, and the price of the repair with its
+  figures. The docstring of `_lead()` names the blanks that hold no line break and the three that
+  still do; the comment over `WORD_ANY` says what the search reads, why it ends in front of the word
+  and what a yes costs.
+- REPORT.md has the section "The reading of the lines with many words that set a variable" and point
+  65 of "Read this first", in this session's one block: the section in front of the section of point
+  58, the point behind point 58. The section lists the sentences of point 58's record that are
+  inexact or no longer hold; that record stands as it was written and has two notes, one in its
+  point and one under its section's first paragraph, and the entry before this one has one. I
+  changed no other word of another section or entry, and the ledger is not touched. The two record
+  files were written after the passes; no test reads them.
+- Beside this session, while I worked: the local branches `claude/sharp-faraday-6bd610` (at
+  `5424b57` now, with points 61 and 63), `claude/brave-robinson-27cbd9` (`f5aa600`, points 59 and
+  64) and `claude/fervent-gould-8d0820` (`533690b`, point 62) went on;
+  `claude/kit-commit-verification-e52f2b` stood at `f08b6dd` still, and so did the local ref
+  `origin/test/round-9`. None of them holds a commit of this branch's four on `b5331fb`, and nothing
+  of theirs is merged into this branch. I read their tips, where their points stand and their
+  sessions' notes in the shared folder, and checked nothing of them. This record is point 65 because
+  the numbers between are theirs: my note in that folder took 65 at 14:58 UTC, and no note there
+  takes a higher number.
+- Nothing pushed, nothing fetched, nothing merged. Nothing on the real install. One reader, and none
+  for the repair: the repair, its rows, the reference's new sentences and this record are read by
+  their author only.
+- Removed and stopped, which the entry before this one does not say of its own work: in that work my
+  helper for the test rows removed each run's temporary project, the script for the altered copies
+  made its folder new at each run until I changed it, and five timing scripts and one command
+  removed temporary files of their own. In this reading no command of mine removes anything; I
+  overwrote one scratch helper by writing another under its name and put the first back from the
+  transcript. I stopped one series of timings on a row that the guard before does not answer in
+  minutes, with the one guard process and the two shell processes that the stop left, and one
+  profile that did not end. All of it was this session's own scratch.
+- Left on this machine: the scratch folder that the entry before this one names, with a folder `rd`
+  for this reading (helpers, logs, the altered copies, the tables' sources) and a folder `reader`
+  (the brief, the reader's report, its scripts and its eighteen texts, and the test projects); two
+  more copies of the kit there (`work-rd1`, `work-rd2`); and in WSL the clones
+  `~/nnkit-upgrade/kit-sp-rd1` and `kit-sp-rd2`. The helpers of this reading: `tm.py` times a text
+  on several guards in turn, in the three ways; `run1.sh` to `run6.sh` are the series, `sumtm.py`
+  and `mktab.py` make the tables; `cmpgate.py` compares the search and the naming of the three
+  guards; `difffn-dir.py` is the entry before's `difffn.py` for two guard files, and says which of
+  the two said yes; `run-cmp.sh` and `run-cmp2.sh` run those comparisons, and `run4.sh` puts the
+  made and the generated lines through the hook with the entry before's `both.py` and `compare2.py`;
+  `alter.py` makes the altered copies and `rowrun.py` runs the rows on each; `sameast.py` compares
+  two files' syntax trees; `reader-tools.py` counts the reader's tool calls, and `rmscan.py` and
+  `calls.py` search this session's own commands; `insert.py` and `fill.py` put this record together;
+  `look.sh` reads the branches' tips and the notes' times, `trial-commit.sh` makes the record's
+  commit as an object that no branch holds, for the try of the joins, and `commit-rec.sh` looks once
+  more and commits.
+
+Next, each a separate word of the user's: whether a reader goes through the repair; whether the cut
+stays, or a form that keeps more of the change's speed; whether the naming of command words gets a
+bounded form of its own; whether `{` goes out of what the search's look ahead reads, and what is
+done about the run of `{` outside quotes; where the four commits of this branch go; and the
+questions of the entry before this one but its first.
+
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
   (needs the user's go-ahead for a paid job), the loop with Claude Code in WSL (the CLIs there are old and not

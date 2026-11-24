@@ -1425,6 +1425,76 @@ Decision record: `docs/upgrade/LEDGER.md`.
     (Added with point 61: merged since. On your "Yes, merge here" the starting session's branch, as
     it stood at `6f2812d`, is in this one, and that join is this branch's guard. The reader that
     this point leaves open follows on your "After the merge", on the joined guard.)
+58. **Lines with many words that set a variable are answered in time now, three kinds of them. No
+    rule's answer changed: the timer's question went away on 21 lines made for this change and came
+    in on two made-up lines. Read by nobody but me; nothing is pushed** (21 November; "Lines with
+    many words that set a variable"; by the session that another session started for it, and "I" in
+    this point is that session; I have that session's brief and not your own words). Point 49 left a
+    loop of the guard that searches the whole line once for each word that sets a variable. Three
+    kinds of line ran the guard into its 12 seconds for it, and the timer's question then came late:
+    1,000 of `a=1;` with no blank between them (asked after 12.3 s, and 20,000 after 64 to 98 s),
+    3,000 lines that each set a variable and read it (12.3 s), and 30 variables set to nothing in
+    front of a command (`a= a= a= ... cmd`, 12.2 s). The third is not in the brief: the session that
+    joined the three other branches found it in its reading and left it to this work, and that I
+    took it in is my decision beside the brief. Now the line is searched once for all its variables;
+    what leads to a command word ends at a sign where a pattern only asks whether a command is
+    there; and the blank behind a variable's `=` is taken only in front of a word that sets no
+    variable. Through the hook on Windows, as the main session and under the read-only rules: 20,000
+    of `a=1;` take 2.8 s and 0.5 s, 3,000 such lines 2.6 s and 0.4 s, and 10,000 of `a= ` 1.0 s and
+    0.3 s. No rule and no message is changed. Both guards were put to the same texts. In one
+    process: 300,000 made of the pieces that the changed code reads, for what the changed functions
+    and patterns give, and 40,000 for the whole check, with no difference. Through the hook: 5,500
+    generated lines under both sets of rules, with no changed answer, and 1,254 lines made for this
+    change, a variable that holds a command and is run, alone, behind `;`, inside `$( )` and with
+    120 other variables around it. On 1,233 of them nothing changed, and on 21 the timer's question
+    became the rules' answer, which the guard before gives too with its limit out of reach, on the
+    18 of them that I did not stop after 300 s. The other way round on two made-up lines, which
+    stood at the limit of the guard before and get the timer's question now where they were allowed:
+    a row of 21 pairs `a= env` in front of a command (allowed after 10.7 to 10.8 s, asked about now
+    after 12.7 to 12.9 s), and a place that reads in 2,000 ways with as many variables set (allowed
+    in one run of three after 11.8 s, asked about now in all three). With the limit out of reach the
+    rules of both guards allow both. I repaired neither. The 35 long lines of the earlier
+    comparisons take what they took (the two of this change far less, 31 of the other 33 within a
+    tenth of a second, one 0.13 s less and one 0.18 s more, which is less than two runs of one guard
+    differ by). What still grows faster than the line, all of it on made-up lines: some 20 to 30
+    words that are read in two ways each reach the limit (`sudo -u -u -u ...`, which this change
+    does not touch, and `a= env a= env ...`, which is a sixth to a fifth slower than it was and
+    reaches the limit one pair sooner); a wrapper's option written 8,000 times is answered late as
+    before; and 20,000 variables in front of a `cd`, a here-string or a quoted command word reach
+    the limit (the timer's question after 24.0, 18.7 and 14.0 s). With the line's length alone the
+    main session's time grows too, as fast as the line and no faster: 80,000 of `a=1;` (320 KB) take
+    10.3 s and 12,000 lines of the second kind (483 KB) 10.2 s, inside the limit and close to it.
+    Six rows more in the kit's test file, which count searches and read where a match begins and
+    wait for no clock: each fails on a copy with its change taken out, and four of them on the guard
+    before. The review-fixes file gets none, because a row there would wait for a clock. The eight
+    test files pass on Windows under Python 3.11.7 (2,025 checks) and the kit file in WSL under
+    3.12.3 (1,268), with no failed check; no other interpreter, no Mac and no bare Linux ran. The
+    code is `f471473` on the local branch `claude/beautiful-bartik-32f1e5`, which stands on
+    `b5331fb`. `main` stays at `e587b4f` and your real install is untouched: both have the loop as
+    it was. Open: a reader for this change; whether the bound on the blank stays; whether the two
+    made-up lines get a repair; where these two commits go, since neither the branch that this one
+    was cut from, which went on to `0f896a3` while I worked, nor the one that joins the other
+    sessions' work holds them (tried in memory: the code joins with the first by itself and has two
+    conflicts in the guard with the second, where its `f2338d6` writes `/[ckCK]`, and this record
+    conflicts with both in `REPORT.md`; nothing ran on a joined state); what is done about what
+    still grows.
+    (This point is 58 because the numbers between are other sessions'. 47 and 48 are as the note
+    under point 49 says. 50 to 54 and 60 are on the local branch
+    `claude/kit-commit-verification-e52f2b`, which joins the other sessions' branches and stood at
+    `f08b6dd` when this was written. 55 is on `claude/sharp-faraday-6bd610` (`0f896a3`), for the
+    reading of the repair of names in quotes, 56 on `claude/brave-robinson-27cbd9` (`9d01f95`), and
+    57 on `claude/fervent-gould-8d0820` (`84d7285`), for the second reading of the repairs of the
+    two faults on Windows. 59, 61 and 62 are taken by three notes in the sessions' shared folder,
+    each for a record that no commit held when this was written. None of those branches is merged
+    into this one, nor this one into any of them, and I pushed nothing. Of their records I read the
+    fourth finding of the joining session's reading, the first lines of points 53 to 57 and what
+    `24970e3` and `f2338d6` change in the guard; I checked nothing of them.)
+    (Added with point 65: a reader went through this change since, on your word, and one fault of it
+    is repaired: it had made ordinary long loops slow, up to the timer's question. Point 65 and its
+    section say what the reader found and what is repaired, and which sentences of this point are
+    inexact: "came in on two made-up lines", "30 variables set to nothing in front of a command",
+    "The 35 long lines of the earlier comparisons take what they took" and "inside the limit and
+    close to it". "Read by nobody but me" holds of the repair now, and of this change no longer.)
 60. **The merged round is on the public test branch, on your word, and all six of GitHub's jobs pass
     on it at the first attempt** (21 November; "The merged round on the test branch"). The number is
     60 because points 55, 56 and 57 are in the three sessions' local records, which this branch does
@@ -1549,6 +1619,1794 @@ Decision record: `docs/upgrade/LEDGER.md`.
     take 64 for the pilot's session (14:53) and 65 for the fourth session (14:58), each for a record
     that is not committed. This file holds none of points 56 to 60 and 62, and I checked nothing
     of them.)
+65. **A reader went through the change of point 58 and found a fault of it: it had made ordinary
+    long loops slow, up to the timer's question. Repaired, at a price on other long lines, and the
+    record of point 58 is corrected. The repair is read by nobody but me; nothing is pushed** (21
+    November; "The reading of the lines with many words that set a variable"; by the session of
+    point 58, and "I" in this point is that session). At the end of that work I asked whether a
+    fresh reader should go through the change, and you answered "Yes, start a reader". One reader
+    read `f471473`: a fresh session of Opus 5.5 with a brief on correctness and read access only by
+    that brief (209,111 tokens, 71 tool calls, 28 minutes). It removed one scratch file of its own,
+    which your word did not cover. It found no line that passes now and that the guard before asked
+    about or refused, and five other things, each of which I ran myself. The first is a fault. The
+    search that the change put in front of the naming of command words in quotes began inside quoted
+    texts as well, at the `{` of `"r${i}"`, and read on from there over one quoted text after the
+    other: the square of the length of a loop whose lines hold two quoted texts. Through the hook on
+    Windows a loop of 3,000 lines `echo "runs/r${i}_N" "logs/$i-N.txt"` took 8.4 to 8.9 s as the
+    main session where the guard before takes 2.3 to 2.4 s, and as a read-only agent's call it got
+    the timer's question after 14.7 to 14.9 s where it was allowed after 2.5 s. On a training loop
+    of 2,000 lines with a redirect such a call stood at the limit, and in two of my three series the
+    timer's question took the place of the rules' refusal. So the timer's question had come in on
+    ordinary lines, and not only on the two made-up ones of point 58. Repaired in `26f9c9a`: the
+    search reads up to where such a word would begin, and not the word. It is the beginning of the
+    pattern that it was, so it finds something wherever that one did, and the pattern that names the
+    words is the guard before's: no answer can change by the repair, only time. The loops take what
+    they took before point 58 (the 3,000 lines: 2.3 to 2.4 s as the main session, 0.4 s under the
+    read-only rules alone and 2.5 to 2.6 s as a read-only agent's call). The price: the repaired
+    search says yes in every line that holds a quoted text like `"r${i}"` or `"a;b"`, and there the
+    line is read for command words as the guard before read it. So a long row of variables in such a
+    line takes the square again: 8,000 of `a=1; ` in front of `echo x "r${i}"` take 5.0 s as the
+    main session and 9.5 to 9.8 s as a read-only agent's call, where the change of point 58 took 0.7
+    s and the guard before asked its timer's question at 2,000. And variables set to nothing in such
+    a line take their factor again: 36 of them take the main session 10.7 to 11.1 s and get a
+    read-only agent's call the timer's question, and 39 get the main session the timer's question
+    too, after 45.4 to 45.8 s. A here-document of 8,000 lines of settings in front of such a text
+    takes the main session 11.4 to 11.8 s, and as a read-only agent's call it gets the timer's
+    question where the change of point 58 refused it after 3.2 to 3.3 s. I made those lines up to
+    find the price; they are still faster than on the guard before, and the change of point 58 had
+    the same limit where a second quoted text with a blank in it follows. The other findings are
+    sentences. "30 variables set to nothing in front of a command" holds in front of `echo 'x'`; in
+    front of a plain word the guard before reaches its limit at 32. The reference's "a read-only
+    agent half a second" was the time of the read-only rules alone; a read-only agent's call is put
+    to both sets of rules and takes about the two times together. "The blanks between two words hold
+    no line break" left out three places. And three things had no test row. From my own runs: the
+    row of 320 KB of point 58 is at the limit and not inside it (10.5 to 10.6 s as the main session,
+    1.5 s under the read-only rules alone, and a read-only agent's call allowed after 11.8 s in one
+    run and given the timer's question after 12.2 s in the other), and a run of 20,000 `{` in a
+    quoted text takes 1.4 s since the change of point 58 where it took 0.3 s, which I left. One
+    check more in the kit's test file, and two rows read one line more each. The new row fails on
+    the guard of point 58 and on a copy of the repaired guard with that search put back; no row
+    shows the speed, because such a row would wait for a clock. Compared, with no changed answer: in
+    one process the search and the naming on 600,000 texts under Python 3.11.7, 3.8.20 and
+    3.15.0rc3, the changed functions on 300,000 texts and the whole check on 200,000, the guard of
+    point 58 and the guard before each against the repaired one; through the hook the 1,254 lines
+    made for point 58, in three ways, and the 5,500 generated lines under both sets of rules. The
+    eight test files pass on Windows under Python 3.11.7 (2,026 checks) and the kit file in WSL
+    under Python 3.12.3 (1,269), each once, on the committed state but for one number in a comment
+    of the guard and two sentences of the reference; no other interpreter ran the tests, and nothing
+    ran on a Mac, on bare Linux or on GitHub's machines. The comments, the reference and the words
+    of the test rows are corrected where they stand; the record of point 58 stands as it was written
+    and has notes that send the reader here. The code is `26f9c9a` on the local branch
+    `claude/beautiful-bartik-32f1e5`, on `5b0b01f`. `main` stays at `e587b4f` and your real install
+    is untouched. Open: a reader for the repair; whether the cut stays, or a form that keeps more of
+    the speed of point 58; whether the naming of command words gets a bounded form of its own; the
+    two runs of `{`; where the four commits of this branch go (tried in memory: with
+    `claude/sharp-faraday-6bd610` and with the branch that joins the other sessions' work the guard
+    conflicts at the two places of point 58 and REPORT.md at one, and with the two other branches
+    the code joins by itself and the two record files conflict; nothing ran on a joined state); and
+    the open decisions of point 58 but its first.
+    (This point is 65 because the numbers between are other sessions'. 59 and 64 are on the local
+    branch `claude/brave-robinson-27cbd9` (`f5aa600`), 60 on `claude/kit-commit-verification-e52f2b`
+    (`f08b6dd`), 61 and 63 on `claude/sharp-faraday-6bd610` (`5424b57`), and 62 on
+    `claude/fervent-gould-8d0820` (`533690b`), each as it stood when this was written. My note in
+    the sessions' shared folder took 65 at 14:58 UTC, and no note there takes a higher number. None
+    of those branches is merged into this one, nor this one into any of them, and I pushed nothing.
+    Of their records I read where each point stands and its first line, and the notes of their
+    sessions in the sessions' shared folder; I checked nothing of them.)
+
+## The reading of the lines with many words that set a variable (21 November 2026): the change had made long loops slow; repaired, at a price on other long lines; its record corrected
+
+At the end of the work that point 58 records I asked whether a fresh reader should go through the
+change, and you answered "Yes, start a reader" (21 November). This section is the record of what
+followed. "I" here is the session of point 58, which another session started; the sections around this
+one are other sessions'. I took your word as the earlier words of this kind were taken in this project:
+one reader with read access only and a brief on correctness; my own run of each of its findings; the
+repair of what holds; the tests on Windows and in WSL; and local commits with their record. I did not
+take it for a push, a merge, `main`, your real install, a further reader or a deletion. The task's ban
+stands for the reader as for me: this is no search for ways past the guard, and the reader's brief says
+so. Dates and times in this section are UTC.
+
+The words of this section. "The guard before" is the one of `bcfab15`, as in the section of point 58.
+"The first change" is the guard of `f471473`, the commit that the reader read. "The repaired guard" is
+the one of `26f9c9a`, this section's commit. "The search" is the one that the first change put in front
+of the naming of command words in quotes (`WORD_ANY` in the code): it says whether a line may hold such
+a word (`'touch' x`), and only where it says yes is the line read for them. A line is put to the guard
+in three ways, and the tables name them: as the main session; under the read-only rules alone
+(`--readonly`, which the two subagents' own hook runs); and as a read-only agent's call, which the
+project-wide guard puts to both sets of rules, one after the other in one process, under the one limit
+of 12 seconds. "The timer's question" is the guard's own question after those 12 seconds. Every time is
+the whole of one guard process that got the line as the hook gives it, on Windows under Python 3.11.7.
+The hooks give the guard 15 to 20 seconds. My timing lets the process run to its end, so a time beyond
+that is the guard's own, and what an agent program does with a call whose hook ran out of time is not
+established, as the earlier records say.
+
+The tables of this section are of one series (21 November, 18:19 to 18:44 UTC) that ran with no test
+pass, comparison or other series of this session beside it, which is what "alone" means below: two runs
+of each line, the guards in turn within each run, one process at a time, and the repaired guard as the
+file that is committed. Beside it I read its logs and wrote on this record, with short commands that
+read files. Some series before it ran beside comparisons and test passes of mine, which made their times
+a fifth to two fifths longer and took three lines past the limit as the main session that stay inside it
+alone (the 36 words, the here-document of 8,000 lines and the row of 320 KB, each of them below); I name
+a figure of those series only where I say so. Other sessions' work may have run on the machine during
+any of them.
+
+Where this stands. The repair is `26f9c9a`, on `5b0b01f`, the record of point 58, and this record is the
+commit behind it: this branch is `b5331fb` with four commits of its own, which no other branch holds.
+Three of the four branches that the section of point 58 names went on since that record:
+`claude/sharp-faraday-6bd610` from `0f896a3` to `5424b57` (points 61 and 63; it holds the branch of the
+next sentence as that stood at `6f2812d`, merged in `040d637`), `claude/brave-robinson-27cbd9` from
+`9d01f95` to `f5aa600` (points 59 and 64) and `claude/fervent-gould-8d0820` from `84d7285` to `533690b`
+(point 62). `claude/kit-commit-verification-e52f2b`, which joins the other sessions' branches, stood at
+`f08b6dd` still, and so did the local ref `origin/test/round-9`; I fetched nothing. Nothing of those
+branches is merged into this one: every figure of this section is of this branch's own guards, and
+nothing ran on a joined state.
+
+In short:
+
+1. **Of the reader's five findings one is a fault of the first change, and an ordinary kind of line
+   shows it.** The search began inside quoted texts as well, at the `{` of `"r${i}"`, and from there it
+   read on over one quoted text after the other to the line's end: the square of the length of a loop
+   whose lines hold two quoted texts. A loop of 3,000 lines `echo "runs/r${i}_N" "logs/$i-N.txt"` (130
+   KB) took the first change 8.4 to 8.9 s as the main session where the guard before takes 2.3 to 2.4 s,
+   and as a read-only agent's call it got the timer's question after 14.7 to 14.9 s where it was allowed
+   after 2.5 s. So "the timer's question came in on two made-up lines", as point 58 has it, was too
+   little: it came in on ordinary long loops as well. The reader found no line that passes now and that
+   the guard before asked about or refused, and my comparisons show none.
+2. **Repaired in `26f9c9a`: the search reads up to where such a word would begin, and not the word.** It
+   is the beginning of the first change's own pattern, so it finds something wherever that one did, and
+   the pattern that names the words is untouched: no answer can change by the repair, only time. The
+   loops take what they take on the guard before (the 3,000 lines: 2.3 to 2.4 s as the main session, 0.4
+   s under the read-only rules alone and 2.5 to 2.6 s as a read-only agent's call), and the reader's
+   twelve other texts take what they took on the first change: timed in turn with it, in a series beside
+   comparisons of mine, none is slower by more than 0.15 s.
+3. **The repair has a price, on lines that I made up to find it.** The repaired search says yes more
+   often than the first change's, and behind a yes the line is read for command words as the guard
+   before read it: a row of variables in it with the square of its length, and variables set to nothing
+   1.6 to 1.7 times as long with each of them. That is so in a line that also holds a quoted text like
+   `"r${i}"`, `"${var}"` or `"a;b"`. 8,000 of `a=1; ` in front of `echo x "r${i}"` take 5.0 s as the
+   main session where the first change took 0.7 s; 36 of `a= ` in front of the same take the main
+   session 10.7 to 11.1 s and get a read-only agent's call the timer's question, and 39 get the main
+   session the timer's question too, after 45.4 to 45.8 s, where the first change took 0.2 s. A
+   here-document of 8,000 lines of settings in front of `echo "r${n}"` takes the main session 11.4 to
+   11.8 s, and as a read-only agent's call it gets the timer's question where the first change refused
+   it after 3.2 to 3.3 s. The guard before got the timer's question on 2,000 of the first and took 6.9
+   to 7.1 s on 30 of the second, so the repaired guard is still faster on such lines than the guard
+   before, and slower than the first change. And the first change had the same limit one step further
+   on, where a second quoted text with a blank in it stands behind the first (`echo x "r${i}" "hello
+   world"`).
+4. **Sentences of the first record were inexact, and the reader named three of them.** "30 variables set
+   to nothing in front of a command" is true of the line I timed, whose command is `echo 'x'`, a word in
+   quotes; in front of `echo x` the guard before reaches its limit at 32 words. The reference's "a
+   read-only agent half a second" is the time of the read-only rules alone; a read-only agent's call is
+   put to both sets of rules and takes about the two times together. And "the blanks between two words
+   hold no line break" left out three places where one is still read. From my own runs: the row of 320
+   KB that the record calls "inside the limit and close to it" is at the limit (10.5 to 10.6 s as the
+   main session, 1.5 s under the read-only rules alone, and a read-only agent's call allowed after 11.8
+   s in one run and given the timer's question after 12.2 s in the other). The comments and the
+   reference are corrected where they stand; the record of point 58 stands as it was written and has
+   notes that send the reader here ("What this corrects in the record of point 58").
+5. **One check more in the kit's test file, and two rows read one line more each.** The new row holds
+   the form of the repair: the search ends in front of the word, at a place inside a quoted text too. It
+   fails on the first change and on a copy with the first change's search put back. No row shows the
+   speed: such a row would wait for a clock.
+6. **The comparisons show no changed answer.** In one process: the search and the naming on 600,000
+   texts under three interpreters, the changed functions on 300,000 and the whole check on 200,000, the
+   first change and the guard before each against the repaired guard, with no difference but the one
+   that is the repair: the search says yes where no such word stands. Through the hook: the 1,254 lines
+   made for the first change and the 5,500 generated lines, the first change against the repaired guard,
+   with no changed answer.
+7. **The passes.** The eight test files pass on Windows under Python 3.11.7 (2,026 checks) and the kit
+   file in WSL under Python 3.12.3 (1,269), each once and with no failed check; that is one check more
+   in the kit file than in the passes of point 58. They ran on the committed state but for one number in
+   one comment of the guard, which leaves the program the same by its syntax tree, and two sentences of
+   the reference, which I made exact after them ("The passes").
+8. **The repair is read by nobody but me.** The reader read the first change. The repair, its comment,
+   its rows and this record have had no reader, and whether they get one is your word.
+
+### The reader, and what it was given
+
+One reader, on your word: a fresh session of Opus 5.5 (`claude-opus-5-5`), started with the app's
+general agent type, with none of my working context. It worked from 14:56 to 15:24, about 28 minutes,
+used 209,111 tokens, where its brief aimed at about 150,000, and made 71 tool calls. Its brief has 95
+lines. It names the commit `f471473` against its parent `b5331fb` and the lines under review. It gives
+what the change is for and how it works as claims to check and not as facts, lists five claims of mine,
+and asks nine questions on correctness in both directions: whether a pattern in its new form misses a
+text in which its old form found a match; whether the one search for a line's variables gives what the
+loop gave; whether the eight patterns are really only asked whether a command is there; the new search
+for a change of folder; harmless lines that are slower now; the times; the test rows; Python 3.8 to
+3.15; and whether the comments and the reference are true of the code, sentence by sentence. Under "Not
+wanted" it rules out a search for ways past the guard: no further forms of a variable that is run than
+those that the comment at the loop itself names. And it tells the reader to form its own view from the
+code before it reads my record.
+
+The reader had a scratch folder with three helpers of mine (one puts lines to a guard and prints its
+three answers, one times a text on two guards in turn, one writes the three kinds of line) and two test
+projects, built already, one for each guard. The brief told it: read access only to the repository;
+writing only inside its folder; sample lines only in files and never in a command of its own; no value
+of the environment; no network, no further agents, no installer, "no deletion outside your folder"; and
+"ran it" kept apart from "read it" in every statement. The agent type has every tool, so these were the
+brief's word and no lock.
+
+I went through its tool calls afterwards, each once by its id: Bash 31, Write 15, Read 12, Grep 6, Edit
+5, ToolSearch 1, Monitor 1. All 20 uses of the two writing tools lie in its folder. Of its 31 shell
+commands five write a log or a file with a redirect, into that folder, and one removes a file:
+`fuzz1u.py`, a copy of its own `fuzz1.py` that the command before had made. That is inside what the
+brief allowed, and it is a deletion, which your word did not cover: I say it here so that "nothing
+deleted" is not read into this record. No command of it writes into the repository. It reports that none
+of its tool calls was refused or asked about, and that it used Python 3.11.7 unless it names another
+version.
+
+### The first finding: the first change made an ordinary long loop slow
+
+The report begins: "I found (a) nothing that passes on this guard that the guard before asked about or
+refused, but (b) yes, one harmless kind of line that this guard asks about and the guard before allowed:
+a read-only agent gets the timer's question after about 15.8 s on an ordinary 3,000-line loop that the
+guard before allowed in 2.6 s."
+
+The line is a loop of 3,000 lines between `for i in 1 2 3; do` and `done`, each of them `echo
+"runs/r${i}_N" "logs/$i-N.txt"` with the line's number for N. The reader's figures, two runs of each: as
+the main session allowed after 8.9 and 9.2 s on the first change, after 2.5 s on the guard before; under
+the read-only rules alone allowed after 6.6 and 6.9 s, against 0.4 s; as a read-only agent's call the
+timer's question after 15.7 and 15.8 s, against allowed after 2.6 s. With 2,500 lines the agent's call
+took 11.6 to 11.8 s against 2.2 s. A training loop of 2,000 lines, `python train.py --seed $i --out
+"runs/r${i}_N" > "logs/$i-N.txt" 2>&1`, took an agent's call 11.9 to 12.0 s against 3.3 s, refused on
+both guards for the redirect, and a loop of 300 such lines 1.08 s against 0.76 to 0.90 s. It names the
+cause from a profile of its own: on 2,000 lines of `echo "r${i}" "x"` the search took 0.98 s and found
+nothing, and the naming behind it 0.002 s. And it says what this contradicts: my claim that none of the
+long lines of the earlier comparisons is slower by more than 0.18 s, "and the brief's premise that a
+gate costs little. No sentence in the docstring or in `REFERENCE.md` names it."
+
+All of it holds in my runs. The table has the reader's six texts of this kind on the three guards:
+
+| Line | Put to the guard as | The guard before | The first change | The repaired guard |
+|---|---|---|---|---|
+| Loop of 3,000 lines `echo "runs/r${i}_7" "logs/$i-7.txt"` (129,803 characters) | the main session | allowed, 2.3 to 2.4 s | allowed, 8.4 to 8.9 s | allowed, 2.3 to 2.4 s |
+|  | the read-only rules alone | allowed, 0.4 s | allowed, 6.4 to 6.6 s | allowed, 0.4 s |
+|  | a read-only agent's call | allowed, 2.5 s | the timer's question, 14.7 to 14.9 s | allowed, 2.5 to 2.6 s |
+| The same loop with 2,500 lines (107,803) | the main session | allowed, 2.0 s | allowed, 6.1 s | allowed, 2.0 s |
+|  | the read-only rules alone | allowed, 0.3 s | allowed, 4.5 s | allowed, 0.3 s |
+|  | a read-only agent's call | allowed, 2.1 s | allowed, 10.7 s | allowed, 2.1 to 2.2 s |
+| Loop of 2,000 lines `python train.py --seed $i --out "runs/r${i}_7" > "logs/$i-7.txt" 2>&1` (153,803) | the main session | allowed, 3.0 s | allowed, 6.9 to 7.4 s | allowed, 2.9 to 3.0 s |
+|  | the read-only rules alone | refused, 0.4 s | refused, 4.3 s | refused, 0.4 s |
+|  | a read-only agent's call | refused, 3.2 s | refused, 11.2 to 11.6 s | refused, 3.2 s |
+| The same loop with 1,000 lines (75,803) | the main session | allowed, 1.6 s | allowed, 2.6 s | allowed, 1.6 to 1.7 s |
+|  | the read-only rules alone | refused, 0.3 s | refused, 1.2 to 1.3 s | refused, 0.3 s |
+|  | a read-only agent's call | refused, 1.7 s | refused, 3.6 s | refused, 1.7 s |
+| A loop of 300 such lines, each with `--lr 0.N` as well (25,800) | the main session | allowed, 0.7 s | allowed, 0.8 s | allowed, 0.7 s |
+|  | the read-only rules alone | refused, 0.2 s | refused, 0.3 s | refused, 0.2 s |
+|  | a read-only agent's call | refused, 0.7 s | refused, 0.9 s | refused, 0.7 s |
+| Here-document of 1,500 lines `echo "lr=${LR}_7"` (30,416) | the main session | allowed, 4.1 to 4.2 s | allowed, 1.6 s | allowed, 0.9 s |
+|  | the read-only rules alone | refused, 1.3 s | refused, 0.9 s | refused, 0.2 s |
+|  | a read-only agent's call | refused, 5.3 to 5.4 s | refused, 2.3 s | refused, 1.0 s |
+
+Three things in my runs go beyond the report:
+
+- **It reached the main session alone too.** The reader wrote that some 3,500 lines probably would, and
+  that it did not run that. With 3,500 lines the first change still allowed the loop as the main
+  session, after 11.4 to 11.7 s (the guard before: 2.9 s; an earlier series that ran alone); with 4,000
+  lines it asks the timer's question.
+- **One quoted text in a line was slow as well.** The reader wrote: "With a single quoted text per line,
+  or with `"a;b"`, `"a|b"` or a backtick, it stays fast. I measured that; it is not explained from the
+  code." In my runs 3,000 lines `echo "runs/r${i}_N"` are slower on the first change than on the guard
+  before too, though less than with two texts in a line; and one quoted text that holds `${a}` 20,000
+  times (80 KB) took the first change far past the limit, as the main session and under the read-only
+  rules alone.
+- **On the training loop the first change stood at the limit, and in two of my three series the timer's
+  question took the place of the refusal.** The reader measured a refusal after 11.9 to 12.0 s for the
+  agent's call on the 2,000 lines. In the series of the tables it is refused after 11.2 to 11.6 s. In an
+  earlier series that ran alone the first change went past the limit there and asked the timer's
+  question after 12.4 to 12.7 s, and in one beside comparisons of mine after 16.7 s, where the rules
+  refuse the redirect. That question is no pass: it is asked of you, or refused where nobody can be
+  asked. But it is not the rule's answer, and it names no rule.
+
+| Line | Put to the guard as | The guard before | The first change | The repaired guard |
+|---|---|---|---|---|
+| The first loop with 4,000 lines (173,803 characters) | the main session | allowed, 3.0 s | the timer's question, 13.8 to 14.2 s | allowed, 3.0 to 3.1 s |
+|  | the read-only rules alone | allowed, 0.4 s | allowed, 11.1 to 11.7 s | allowed, 0.4 s |
+|  | a read-only agent's call | allowed, 3.3 s | the timer's question, 12.1 s | allowed, 3.3 s |
+| 3,000 lines with one quoted text each, `echo "runs/r${i}_7"` (73,913) | the main session | allowed, 1.3 s | allowed, 4.5 to 4.6 s | allowed, 1.3 s |
+|  | the read-only rules alone | allowed, 0.3 s | allowed, 3.4 s | allowed, 0.3 s |
+|  | a read-only agent's call | allowed, 1.4 to 1.5 s | allowed, 7.9 to 8.0 s | allowed, 1.4 s |
+| One quoted text that holds `${a}` 20,000 times (80,007) | the main session | allowed, 0.8 s | the timer's question, 28.6 to 28.7 s | allowed, 0.8 s |
+|  | the read-only rules alone | allowed, 0.3 to 0.4 s | the timer's question, 28.0 to 28.8 s | allowed, 0.3 to 0.4 s |
+
+The cause. The pattern that names command words (`COMMAND_WORD`) has two halves: a command word that
+holds a quote or a backslash, and any quoted text, which it passes over. So it never begins inside a
+quoted text. The first change put a search in front of it that was its first half alone, tried at every
+place of the line. A search has nothing that passes over a quoted text, so it began inside one as well:
+at the `{` of `"runs/r${i}_7"`, which is one of the signs at which a command can start. From there the
+word ran on over what it took for quoted texts, from the quote that ends one text to the quote that
+begins the next, on to the line's end, where no word ended; and it did so again from the `{` of every
+line. So the time grew with the square of the number of lines. The four other searches that the first
+change put in front of a reading (for a quoted command, a formatter's arguments, a here-string, the
+shell's `eval`) read no word of quoted pieces, and none of them has the fault.
+
+Why my comparisons did not show it. The 35 long lines of the earlier comparisons and the lines that I
+made for the change hold rows of variables, here-documents, quoted command words and changes of folder,
+and no loop whose lines hold quoted texts with `${...}` in them. I looked for slowdowns of the changed
+pattern, and took the search in front of the naming for cheap because it was quick on those lines. That
+is the premise that the reader names, and it was mine.
+
+### The repair, and why no answer can change by it
+
+The search now ends where the word would begin. `WORD_ANY` is the first change's pattern cut off in
+front of the word: the place where a command starts, what leads to the word, and the look ahead that
+finds a quote or a backslash in the word's first piece. It is the first 587 of that pattern's 655
+characters, and the pattern that names the words is built from the same piece. Three things follow, and
+I checked each:
+
+- **Where the first change's search found something, the repaired one does.** It asks for less at the
+  same place. On 200,000 texts made of quoted texts, `${...}` inside them and rows of variables, under
+  each of Python 3.11.7, 3.8.20 and 3.15.0rc3 (three sets of texts), there is none on which the first
+  change's search finds something and the repaired one does not.
+- **Behind a yes the naming is the guard before's.** `COMMAND_WORD` is, character for character and with
+  its flags, the pattern of the guard before, and it is put to the same text. Where it finds no such
+  word it changes nothing. So a yes too many costs time and no answer; `named()` gave the same text on
+  all three guards for every one of those texts.
+- **Nothing else is changed.** Of the 122 compiled patterns of the first change the repaired guard has
+  121 as they were, with their flags, and no new one. No rule and no message is touched.
+
+So the repair can lose a difference to the guard before and cannot add one. What it changes is how often
+the search says yes: at the `{` of `"r${i}"` it finds the place where a command could start and a quote
+behind a word, and stops there. On the 200,000 texts under Python 3.11.7 the first change's search said
+yes on 148,326 and the repaired one on 161,470, which is 13,144 more. On those the naming runs and
+changes nothing.
+
+The loops take what they take on the guard before (the table above), because the naming passes over each
+quoted text once.
+
+I chose the cut because its argument needs no measurement: a pattern that asks for less finds at least
+as much. Two other forms are in "What needs your decision".
+
+### What the repair gives back of the first change
+
+The first change was fast on its three kinds of line because its searches said no quickly, and the
+readings behind them never ran. For the naming that holds only while the search says no. The repaired
+search says yes in every line that holds, anywhere, a place where a command can start (a line's
+beginning, `;`, `&`, `|`, `{`, a backtick, an opening bracket) with a word behind it that runs up to a
+quote or holds a backslash. Inside a quoted text that is `"r${i}"`, `"${var}"`, `"a;b"`, `"x|y"`: a
+common kind of text. Then the naming reads the whole line with what leads to a command in its old form,
+as the guard before did: a row of variables with the square of its length, and variables set to nothing
+1.6 to 1.7 times as long with each word.
+
+So a line of the three kinds that also holds such a text is slower on the repaired guard than on the
+first change. It is faster than on the guard before, because the other readings keep the first change's
+form and this one alone goes back. The lines of this table I made up to find where that ends ("not run":
+I did not put the line to that guard):
+
+| Line | Put to the guard as | The guard before | The first change | The repaired guard |
+|---|---|---|---|---|
+| 2,000 of `a=1; ` in front of `echo x "r${i}"` (10,014 characters) | the main session | the timer's question, 15.0 to 15.3 s | allowed, 0.3 s | allowed, 0.6 s |
+|  | the read-only rules alone | the timer's question, 15.2 s | allowed, 0.2 s | allowed, 0.5 s |
+|  | a read-only agent's call | the timer's question, 15.1 to 15.2 s | allowed, 0.3 s | allowed, 0.9 s |
+| 4,000 of them (20,014) | the main session | not run | allowed, 0.5 s | allowed, 1.5 s |
+|  | the read-only rules alone | not run | allowed, 0.2 s | allowed, 1.3 s |
+|  | a read-only agent's call | not run | allowed, 0.5 s | allowed, 2.6 s |
+| 8,000 of them (40,014) | the main session | not run | allowed, 0.7 s | allowed, 5.0 s |
+|  | the read-only rules alone | not run | allowed, 0.3 s | allowed, 4.6 s |
+|  | a read-only agent's call | not run | allowed, 0.8 s | allowed, 9.5 to 9.8 s |
+| 14,000 of `a=1;` with no blank, in front of the same (56,014) | the main session | not run | allowed, 1.1 s | allowed, 4.1 to 4.2 s |
+|  | the read-only rules alone | not run | allowed, 0.3 s | allowed, 3.3 s |
+|  | a read-only agent's call | not run | allowed, 1.2 s | allowed, 7.4 to 7.5 s |
+| 20,000 of them (80,014) | the main session | not run | allowed, 1.4 to 1.5 s | allowed, 7.8 to 8.1 s |
+|  | the read-only rules alone | not run | allowed, 0.4 s | allowed, 6.7 to 6.8 s |
+|  | a read-only agent's call | not run | allowed, 1.6 s | the timer's question, 14.5 to 15.7 s |
+| Here-document of 3,000 lines `KEY_7=7`, then `echo "r${n}"` (39,814) | the main session | the timer's question, 23.0 to 24.1 s | allowed, 1.3 s | allowed, 2.4 s |
+|  | the read-only rules alone | the timer's question, 23.3 to 24.4 s | refused, 0.2 s | refused, 1.3 s |
+|  | a read-only agent's call | the timer's question, 23.4 to 24.4 s | refused, 1.3 s | refused, 3.5 to 3.6 s |
+| The same with 8,000 lines (109,814) | the main session | not run | allowed, 3.1 s | allowed, 11.4 to 11.8 s |
+|  | the read-only rules alone | not run | refused, 0.3 s | refused, 8.5 s |
+|  | a read-only agent's call | not run | refused, 3.2 to 3.3 s | the timer's question, 20.3 to 20.4 s |
+| 30 of `a= ` in front of `echo x "r${i}"` (104) | the main session | allowed, 6.9 to 7.1 s | allowed, 0.2 s | allowed, 0.7 to 0.8 s |
+|  | the read-only rules alone | allowed, 3.0 s | allowed, 0.2 s | allowed, 0.7 to 0.8 s |
+|  | a read-only agent's call | allowed, 9.9 to 10.1 s | allowed, 0.2 s | allowed, 1.3 s |
+| 33 of them (113) | the main session | not run | allowed, 0.2 s | allowed, 2.6 s |
+|  | the read-only rules alone | not run | allowed, 0.2 s | allowed, 2.6 s |
+|  | a read-only agent's call | not run | allowed, 0.2 s | allowed, 5.1 s |
+| 36 of them (122) | the main session | not run | allowed, 0.2 s | allowed, 10.7 to 11.1 s |
+|  | the read-only rules alone | not run | allowed, 0.2 s | allowed, 10.7 to 11.1 s |
+|  | a read-only agent's call | not run | allowed, 0.2 s | the timer's question, 21.4 to 21.8 s |
+| 39 of them (131) | the main session | not run | allowed, 0.2 s | the timer's question, 45.4 to 45.8 s |
+
+The here-document is `cat > c.env <<EOF`, the lines `KEY_N=N`, `EOF`, and `echo "r${n}"` behind it: a
+file of settings written by a here-document, and a quoted text with a variable in braces somewhere
+behind it. It is the row of this table that is closest to an ordinary line, and the read-only rules
+refuse it, because it writes a file. With 3,000 lines it is inside the limit in each of the three ways
+on the repaired guard (2.4 s as the main session, 3.5 to 3.6 s as a read-only agent's call), where the
+guard before got the timer's question in each. With 8,000 lines the main session is close to the limit
+(11.4 to 11.8 s), and a read-only agent's call gets the timer's question in place of the refusal (after
+20.3 to 20.4 s), where the first change refuses it after 3.2 to 3.3 s.
+
+Where the limit lies on these lines. Variables set to nothing in front of such a text are inside it at
+36 words as the main session (10.7 to 11.1 s) and past it at 39; as a read-only agent's call, which
+reads the line under both sets of rules, they are inside it at 33 words (5.1 s) and past it at 36. The
+guard before took 6.9 to 7.1 s for 30 of them as the main session, and the first change takes 0.2 s for
+each number of them that I tried. A row of 8,000 of `a=1; ` takes the main session 5.0 s and a read-only
+agent's call 9.5 to 9.8 s, which is close to the limit; the guard before asked its timer's question on
+2,000, and the first change took 0.7 s for the 8,000. Three rows of the table are inside the limit as
+the main session and past it as a read-only agent's call: the 36 words, 20,000 of `a=1;` with no blank
+(7.8 to 8.1 s as the main session, and the timer's question after 14.5 to 15.7 s as an agent's call),
+and the here-document of 8,000 lines.
+
+The first change had the same limit, one step further on. Its search said yes as well where the word
+that began inside a quoted text found an end, which it does behind a second quoted text with a blank in
+it. With `"hello world"` behind `"r${i}"` the two guards take the same:
+
+| Line | Put to the guard as | The first change | The repaired guard |
+|---|---|---|---|
+| 8,000 of `a=1; ` in front of `echo "r${i}" "hello world"` (40,026 characters) | the main session | allowed, 5.1 s | allowed, 5.0 to 5.1 s |
+|  | the read-only rules alone | allowed, 4.5 s | allowed, 4.6 s |
+| 8,000 of `a=1; ` in front of `echo "hello world"` (40,018) | the main session | allowed, 0.7 s | allowed, 0.7 s |
+|  | the read-only rules alone | allowed, 0.3 s | allowed, 0.3 s |
+| 36 of `a= ` in front of `echo x "r${i}" "hello world"` (136) | the main session | allowed, 10.7 s | allowed, 10.7 to 11.0 s |
+| 36 of `a= ` in front of `echo "r${i}" "hello world"` (134) | the main session | allowed, 0.2 s | allowed, 0.2 s |
+
+In the first and the third of these lines the search of both guards says yes and the naming reads the
+row in its old form. In the second no quoted text holds a sign with a word behind it, and both stay
+fast. In the fourth one reading of the row makes the quoted text a command word (`a= echo "r${i}"` also
+reads as `a` set to `echo` in front of the command `"r${i}"`), the naming finds it at its first try, and
+both stay fast.
+
+### The second finding: "30 variables set to nothing in front of a command" was in front of `echo 'x'`
+
+The reader put 30 words `a= ` in front of `echo x` to the guard before and got no timer's question:
+allowed after 6.2 to 6.6 s as the main session, 9.2 to 9.4 s as an agent's call and 2.5 s under the
+read-only rules. "At 1.6 times per word it would take some 32 words. Perhaps the authored line had
+another command behind it." It had. The line of my record and of my test row is 30 of `a= ` in front of
+`echo 'x'`, with the word in quotes, and the helper that I wrote for the reader made `echo x`. That
+fault is mine and not the reader's. The guard before on both lines, with 30, 31 and 32 words (three runs
+of the lines of 30 words, two of the others; an earlier series that ran alone):
+
+| Words `a= ` | In front of | The main session | The read-only rules alone | A read-only agent's call |
+|---|---|---|---|---|
+| 30 | `echo 'x'` | the timer's question, 12.7 to 12.8 s | allowed, 5.1 to 5.4 s | the timer's question, 18.0 to 18.5 s |
+| 30 | `echo x` | allowed, 6.5 to 6.8 s | allowed, 2.5 s | allowed, 9.0 to 9.3 s |
+| 31 | `echo 'x'` | the timer's question, 20.5 to 22.3 s | allowed, 8.4 to 8.5 s | the timer's question, 18.4 to 18.8 s |
+| 31 | `echo x` | allowed, 10.2 to 10.5 s | allowed, 3.9 s | the timer's question, 14.5 to 15.0 s |
+| 32 | `echo 'x'` | the timer's question, 16.1 to 17.2 s | the timer's question, 13.9 to 14.5 s | the timer's question, 13.5 to 13.9 s |
+| 32 | `echo x` | the timer's question, 16.8 to 17.2 s | allowed, 6.3 s | the timer's question, 24.4 to 24.7 s |
+
+So the record's figure holds for its own line, and its words "in front of a command" were too wide: with
+a plain word behind them the guard before reaches its limit at 32 words as the main session, as the
+reader reckoned. The first change and the repaired guard take 0.2 s on both lines of 30 words. The
+docstring of `_lead()`, the comment over the test rows, one row's words and the reference now say "in
+front of `echo 'x'`"; the first record gets a note.
+
+### The third finding: "a read-only agent half a second"
+
+The reference said that 20,000 of `a=1;` take "the main session about 3 seconds and a read-only agent
+half a second". The reader measured 0.51 s under the read-only rules alone and 3.0 to 3.1 s as an
+agent's call, and wrote that the sentence uses "a read-only agent" for both kinds of time. I read the
+sentence again: the half second is the read-only rules alone, and so is its "after 32 for a read-only
+agent" further on, which the first record has as "under the read-only rules after 31.5 to 32.4 s". So
+the two uses did match each other, and both were the wrong words for what they give: a read-only agent's
+call is put to both sets of rules by the project-wide guard and takes about the two times together. The
+reference now says "the read-only rules alone" at both places and has a sentence on the agent's call.
+The first record's tables have the two columns "the main session" and "the read-only rules" and no time
+of an agent's call anywhere; the tables of this section have one.
+
+### The fourth finding: three places where a line break is still read
+
+The docstring of `_lead()` said of the new form that "the blanks between two words hold no line break".
+The reader found three places where one is still read: behind a variable's `=`, among a wrapper's
+options, and inside a wrapper of two words (`uv run`). I put twelve lines with a line break at one place
+each to the search for a write command on the guard before and on the repaired guard, and read where the
+match begins. With the line break behind `a=` in front of `b touch x`, between `sudo` and `-u me`,
+between `sudo -u` and `me`, between `env` and `-i`, between `uv` and `run`, and between `nice` and `5`,
+the match begins at the line's beginning on both guards: the line break is read as a blank. With it
+behind `a=1`, behind `sudo`, behind `uv run`, behind `a=1;`, between `a=` and `b= touch x`, and between
+`a=` and a line that begins with a blank, it begins at the line's beginning on the guard before and
+behind the line break on the repaired guard: the line break is not read, and the command is found from
+the next line. The command is found in all twelve, so this was a sentence that said too much and no
+fault of a rule. The docstring now names the blanks that hold no line break (in front of what leads to a
+command, and behind each variable or wrapper in it) and the three that still do.
+
+### The fifth finding: sentences with no test row
+
+The reader read the rows and did not run the test files, which the brief ruled out. It named three
+things that no row held: that the blank behind a variable's `=` is never taken in front of another
+blank; that a search finds a command behind a sign with a blank behind it (`a=1; touch x`); and what the
+search in front of the naming costs on quoted text. It found the zsh half of the search for a line's
+variables covered by an older row (line 2189 of the test file), and that two of the six rows pass on the
+guard before, which the first record says too ("four of them on the guard before").
+
+The block has seven checks now, one more:
+
+- **The fourth row reads a fifth line**, `a=1; touch x`: the search for a write command finds it from
+  behind the sign and its blank. On a copy without the bound at the signs it is found from the line's
+  beginning, and the row fails (`[3, 3, 3, 4, 0]` for `[3, 3, 3, 4, 3]`).
+- **The fifth row reads a third line**, `a=` and then a line that begins with a blank and `touch x`:
+  found from that line. On a copy without "never in front of another blank" it is found from the line's
+  beginning, and the row fails (`[3, 0, 0]` for `[3, 0, 3]`).
+- **The seventh row is new.** On `a=1;'touch' x` the search ends in front of `'touch'` (from 3 to 4); in
+  a loop's line, `for i in 1 2; do echo "r${i}" "x"; done`, it stops at the `{` inside the quoted text
+  (from 25 to 26); and the naming gives the loop as it is, and a word put together from quoted pieces
+  (`'ec'ho`) as its plain word. It fails on the first change, whose search finds nothing in the loop and
+  reads the word in the other line (`[None, [3, 11], True, True]`), on a copy of the repaired guard with
+  that search put back, and on the guard before, which has no such search.
+
+The seventh row holds the form of the repair: a search that reads the word again fails it. It does not
+show the speed. No row does: a row for the speed would wait for a clock, which the task rules out, and a
+count of searches would not show it, because the slow search was one search. All seven pass on the
+repaired guard; the guard before fails the first, fourth, fifth, sixth and seventh.
+
+### What the reader found right, and what it did not check
+
+This is the reader's word, and I ran none of it again but the times. By its own runs: the patterns that
+keep the old form are the old ones character for character, and each of the eight in the new form is its
+old self with only the lead swapped, with the same flags; a pattern in the new form finds something
+wherever its old form does, on 500,000 texts made of the pieces that the brief names, with about a fifth
+of the matches beginning later; the searches that the first change put in front of a reading find
+something wherever that reading does; `inner_code()` gives the same on 100,000 texts heavy in variables,
+and the one search for a line's variables gives what the old searches gave on 100,000, with the fallback
+taken 76 times; the two whole checks give the same on 15,000 texts with kept files in many forms; and
+the comparisons of the patterns and of the variables give the same under Python 3.8.20 and 3.15.0rc3. By
+reading: every use of the eight patterns only asks whether a command is there. By reading and then by
+its runs: the search for a change of folder is complete for what stands behind it. Its times of the
+three kinds on the first change are close to those of the first record (2.7 s and 0.51 s for 20,000 of
+`a=1;`, 2.6 s and 0.39 s for the 3,000 lines, 0.2 s for 30 of `a= `), but for 10,000 of `a= `, which
+took it 0.55 s and 0.25 s where the record has 1.0 s and 0.3 s. Its line ends in `echo x`, as in the
+second finding, and the record's in `echo 'x'`. On the reader's line my runs give what the reader's
+give, 0.55 to 0.56 s and 0.25 to 0.26 s, on the first change and on the repaired guard alike (a series
+beside comparisons of mine). It names ordinary lines that the first change made faster with the same
+answers (a Python here-document of 1,500 lines, from the timer's question to an answer after 4.0 s;
+1,000 lines that each set a variable to a command and run it; 300 words `A=1` in front of a command) and
+four kinds that stay within the spread of its runs (a JSON body of 2,000 fields, 400 of `cd`, 500 quoted
+command words, 1,000 commands in one line).
+
+Not checked, by its own list: the other lines that the docstrings and the reference give times for; the
+two made-up lines at the old limit, and my comparing helper; the test files; WSL, macOS and Linux; and
+whether its first finding reaches the main session alone, which my runs answer above.
+
+### What my own runs showed beside the findings, and what stays
+
+Three things that neither the reader's report nor the first record has. None is repaired.
+
+- **The row of 320 KB is at the limit.** 80,000 of `a=1;` in front of `echo 'x'`: the first record has
+  10.3 s as the main session and 1.5 s under the read-only rules, "inside the limit and close to it",
+  and no time of an agent's call. In the series that ran alone, on the repaired guard: 10.5 to 10.6 s as
+  the main session, 1.5 s under the read-only rules alone, and a read-only agent's call allowed after
+  11.8 s in one run and given the timer's question after 12.2 s in the other. The first change took 10.5
+  to 10.8 s and 1.5 s there, and its agent's call was allowed after 11.8 to 12.0 s in both runs. In an
+  earlier series that ran alone it was the other way round: the first change's agent's call got the
+  timer's question in one run of two, after 12.2 s, and the repaired guard's was allowed after 11.8 s in
+  both. Beside my comparisons the main session got the timer's question too, after 12.3 to 12.4 s, on
+  the first change and on the repaired guard alike. The repair does not touch this row: the two guards
+  take the same on it.
+- **A run of `{` in a quoted text takes the square of its length since the first change.** `echo "`,
+  20,000 of `{`, a blank and `x"`: 1.4 s as the main session and 1.3 s under the read-only rules alone
+  on the first change and on the repaired guard, where the guard before takes 0.3 s and 0.2 s. By a
+  profile of the guard's own check, 1.1 s of that is the search, in one call: it is tried from each `{`,
+  and each try reads the run on to the blank and fails. The repair leaves this as the first change made
+  it. Taking `{` out of what the search's look ahead reads would end it, and is in "What needs your
+  decision".
+- **A run of `{` outside quotes took all three guards to the limit**, `echo`, 20,000 of `{` and `'x'`:
+  the timer's question as the main session after 12.4 to 16.0 s, and 9.7 to 11.9 s under the read-only
+  rules (an earlier series that ran alone). That is older than both changes.
+
+Neither of the last two is an ordinary line.
+
+### The comparisons
+
+Each comparison gives the guards the same text and reads what they give. No command of a text ran. The
+checks are positive: the repaired guard must say what the other says. The texts are the generated lines
+of the earlier comparisons, the lines made for the first change, and texts made of the pieces that the
+changed code reads; none is a form against a rule beyond those that the task names.
+
+- **The search and the naming, the three guards in one process: 600,000 texts, no difference.** 200,000
+  texts made of quoted texts, `${...}` inside them and rows of variables, under each of Python 3.11.7,
+  3.8.20 and 3.15.0rc3, with a set of its own for each. Checked: every compiled pattern of the repaired
+  guard but the search is the text it is in the first change, with its flags; `COMMAND_WORD` is the text
+  it is in the guard before; the search is the beginning of the first change's; where the first change's
+  search finds something, the repaired one does; where the first half of `COMMAND_WORD`, tried at every
+  place, finds something, the repaired search does; and `named()` gives the same text on all three
+  guards.
+- **The changed functions and patterns, one by one: 300,000 texts, and the one difference is the
+  repair.** With the first record's helper: the first change against the repaired guard on 100,000
+  texts, the guard before against it on 200,000. On 8,259, 8,379 and 8,117 of them the repaired search
+  says yes and the pattern that it stands in front of finds no command word; never the other way round;
+  and what the functions return is the same. (With the first change as its first guard the helper also
+  reports four differences of its own making, the same four when I put the first change against itself:
+  three pairs of patterns that it takes for one text, and a count of here-strings.)
+- **The whole check, in one process: 200,000 texts, no difference.** The answers and reasons of the
+  read-only rules and of the main session's rules as the hook runs them for a Bash line, with the limit
+  of time out of reach: the first change against the repaired guard on 100,000 texts (94,749 of them
+  distinct), the guard before against it on 100,000 others (94,625 distinct). Each run took an hour.
+- **Through the hook, the lines made for the first change: 1,254, no changed answer.** The three files
+  of the first record, 268, 384 and 602 lines, each line as the main session, under the read-only rules
+  alone and as a read-only agent's call, on the first change and on the repaired guard: no line with an
+  answer or a reason that is not the same.
+- **Through the hook, the generated lines: 5,500, no changed answer.** As the main session 4,523 pass
+  and 977 are asked about on both guards; under the read-only rules 3,246 pass and 2,254 are refused on
+  both. The three lines that are refused where their twin with the bare name passes are those of the
+  first record, older than both changes.
+
+Which file each comparison ran on. Those in one process ran on the repaired guard as it first stood, and
+those through the hook on it as it stood before the last two edits of the comment over the search.
+Against the file that is committed the first differs in that comment and in sentences of the docstring
+of `_lead()`, and the second in that comment alone. The compiled program is the same in each: I compared
+the files' syntax trees with their docstrings left out, and the guard reads no docstring.
+
+### The passes
+
+The eight test files on Windows and the kit file in WSL, each once, on a fresh copy of the state that is
+committed, but for one number in one comment of the guard and two sentences of the reference, as said
+under the table:
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,261 | 184 | 138 | 264 | 100 | 54 | 6 | 2,026 |
+| WSL | 3.12.3 | not run | 1,269 | not run | not run | not run | not run | not run | not run | 1,269 |
+
+No check failed. Against the passes of point 58 that is one check more in the kit file on both systems,
+the new seventh row; the other seven files have the counts that they had. The Windows pass ran on 21
+November from 17:53 to 18:19 UTC, on a copy of the worktree. The kit file in WSL ran from 17:53 to
+17:56, beside the first minutes of the Windows pass, on a clone made for it at `5b0b01f` with the
+commit's three files laid over it as a patch. The Windows pass ran under the plain Python 3.11.7 and
+under no virtual environment.
+
+What each pass ran on. Both copies hold the kit's test file as it is committed, byte for byte. Their
+guard is the committed one but for one number in one comment, which I corrected while the passes ran,
+after the line that it names was measured alone ("39 of a=" for "36 of a="): the two files differ in
+that line, their syntax trees are the same, and no test reads the guard's text. Their
+`docs/REFERENCE.md` is the committed one but for two sentences of "How long it takes", which I made
+exact after the passes, from the series of this section's tables. The one had "36 variables set to
+nothing ... take 11 seconds, and 39 get the question after 45" and 12 seconds for the here-document of
+8,000 lines as the main session; it has now that the 36 take the main session 11 seconds and a read-only
+agent's call to the question, that 39 take the main session to it too, after about 45, and 11.5 seconds
+for the here-document. The other had of the row of 320 KB "10 seconds as the main session" and "with
+other work on the machine the question came"; it has now 10.5 seconds, that a read-only agent's call got
+the question in some runs, and that with other work on the machine the main session got it too. The test
+files name that file once, in a comment, and I found no check that rests on a sentence of it. The two
+record files were written after the passes; no test reads them. Before the comparisons through the hook
+I had run the kit file alone on each system, on the same test file and on the guard as it was before the
+last edits of its comments, the same program by the same check: 1,261 checks on Windows and 1,269 in
+WSL, none failed.
+
+### What this corrects in the record of point 58
+
+The section "Lines with many words that set a variable", its point 58 and its entry in PROGRESS.md stand
+as they were written. Each has one note now, marked as added with this point, that sends the reader
+here; I changed no other word of them. These sentences of theirs are inexact or no longer hold:
+
+- **"The timer's question ... came in on two made-up lines"** (the section's heading, point 58 and point
+  5 of its "In short", with "Nothing else got slower through the hook"). It came in on ordinary long
+  loops as well, until this section's repair ("The first finding").
+- **"The 35 long lines of the earlier comparisons take what they took."** True of the 35. None of them
+  is a loop whose lines hold quoted texts with `${...}` in them, so the sentence showed less than it
+  seems to.
+- **"Three kinds of line ... are answered in time"** holds where the search says no. In a line that also
+  holds a quoted text like `"r${i}"` the first two kinds take the square again and the third its factor,
+  for the naming alone ("What the repair gives back of the first change").
+- **"30 variables set to nothing in front of a command (`a= a= a= ... cmd`, 12.2 s)"** (point 58, point
+  1 of "In short"). The command is `echo 'x'`, as the section's table of the third kind says; in front
+  of a plain word the guard before reaches its limit at 32 words ("The second finding").
+- **"The blanks between two words hold no line break"** ("The change", and the entry in PROGRESS.md).
+  Three kinds of blank still hold one ("The fourth finding").
+- **"They run only on a line that holds a quoted command word, a formatter, a runner with a here-string,
+  the shell's `eval` or a word of `cd`"** ("What still grows faster than the line"). For the naming of
+  command words that was not exact of the first change, whose search also said yes behind a second
+  quoted text with a blank in it, and it is less so now: the naming runs on every line in which a word
+  with a quote or a backslash in it stands where a command can start, inside a quoted text too.
+- **"80,000 of `a=1;` (320 KB) take 10.3 s ..., inside the limit and close to it"** (point 58, point 6
+  of "In short", and under the tables of times). At the limit ("What my own runs showed beside the
+  findings").
+- **The tables of that section have no time of a read-only agent's call**, only "the main session" and
+  "the read-only rules". Such a call takes about the two together, so a line that the section shows
+  inside the limit under each can be past it as an agent's call. The tables of this section have the
+  three.
+- **The message of the commit `f471473`** has the same sentences on the 30 words, on the line breaks, on
+  the 35 long lines and on the row of 320 KB. A commit's message cannot be changed without making the
+  commit anew, so it stands, and the message of this section's commit names it.
+
+In the code and the reference the same sentences are corrected where they stand: the docstring of
+`_lead()`, the comment over the test rows with the words of one row, and the reference's point "How long
+it takes", which now also names the price of the repair with its figures.
+
+### Not done, and why
+
+- **A reader for the repair.** Your word was for one reader, and it read the first change. The repair,
+  its comment, its rows, the reference's new sentences and this record are read by nobody but me. They
+  had what the first change had and what this reading added: the repair's argument checked on 600,000
+  texts under three interpreters; the changed functions and the whole check against both guards before
+  it; the made and the generated lines through the hook; timings of ordinary loops as well as of the
+  rows that the change is about, each in the three ways; and a row that fails on a copy with the repair
+  taken out.
+- **A push, a merge, `main`, your real install**: each needs your word, and none happened. I fetched
+  nothing.
+- **A deletion: your word covered none, and scratch files of this work were removed.** I went through
+  the reader's commands and through this session's own, with the scripts that it wrote, for every word
+  that removes or moves a file. The reader removed one file of its own, as said under "The reader, and
+  what it was given". In this reading no command of mine removes anything; I overwrote one scratch
+  helper by writing another under its name, and put the first back from this session's transcript, with
+  no result lost. In the work of point 58, which its record does not say: my helper for the test rows
+  removed the temporary project of each of its runs at the run's end; the script that made the altered
+  copies of the guard made its folder new at each run, and so cleared the copies of the run before,
+  until I changed it to keep them; and five timing scripts and one command removed temporary files that
+  they had written themselves. All of that was this session's own scratch, and nothing of the
+  repository, of another session or of yours. Of the helpers of this reading the one for the rows keeps
+  each run's folder, the one for the altered copies leaves a copy that is there, and the series' scripts
+  from the third on leave a log that is there; the helper that tries the joins writes one working file
+  anew at each try. Left on this machine: this session's scratch folder with its helpers, logs, altered
+  copies of the guard, copies of the kit and the reader's folder with its test projects; and in WSL the
+  clones `~/nnkit-upgrade/kit-sp-rd1` and `kit-sp-rd2` beside the one of point 58.
+- **Processes that I stopped.** A series of timings put the guard before to a row of 10,000 variables
+  set to nothing, which that guard does not answer in minutes. I stopped the series in that text and ran
+  the rest without the guard before on such rows. The stop left one guard process and the series' two
+  shell processes running, which I found by their command lines and stopped; no other process was
+  stopped. And a profile that put the patterns to a line's raw text did not end in three minutes and was
+  stopped; the profile that this section names puts them to the text that the guard itself gives them.
+- **Forms against the rules.** None. The lines that I made for this reading are loops, rows of variables
+  and here-documents with `echo` behind them. The reader made eighteen texts of ordinary kinds to time
+  them: the three kinds of the first change, loops and here-documents, rows of `cd sub && ls -la`, of
+  `echo ... | tee -a out.txt` and of `"python" train.py`, a `curl` with a long body, and `cmd0="ls sub";
+  $cmd0`, which is the form that the task names with a harmless command in it. Each is a text that was
+  put to a guard, and no command of any ran. The lines made for the first change and the generated lines
+  went through the hook again as they were.
+- **A row for the speed.** None, as said under "The fifth finding".
+- **The other forms of the repair.** I built the cut alone. The two forms under "What needs your
+  decision" are not built, and this record has no measurement of them.
+- **What I found beside the findings** (the row of 320 KB, the two runs of `{`): measured and left.
+- **The guard before through the hook on the made and the generated lines.** That comparison is the
+  first record's, of the guard before against the first change. In this reading the first change stood
+  against the repaired guard there, and the guard before against the repaired guard in one process and
+  in the timings.
+- **Other interpreters and systems.** The tests ran under Python 3.11.7 on Windows and 3.12.3 in WSL.
+  Under 3.8.20 and 3.15.0rc3 ran the comparison of the search and the naming, and no test file. Nothing
+  ran on a Mac, on bare Linux or on GitHub's machines; GitHub's six jobs run on a push.
+- **Timings elsewhere.** Every time of this section is from this one machine, on Windows under Python
+  3.11.7, through the hook. Nothing was timed in WSL. A figure near the limit is of this machine, in a
+  series that ran alone; another machine or other work on this one moves it across the limit, as my own
+  series beside comparisons showed on three lines.
+- **The released guard**: not timed and not compared. It has the loop as it was, and neither change.
+- **The joined state.** I put neither commit on any other branch and ran nothing on a joined state. The
+  joins are tried in memory only ("What needs your decision").
+- **The ledger** (`docs/upgrade/LEDGER.md`): untouched, as in point 58.
+- **Reduced, to spend less of your usage**: one reader, and no second one for the repair; one full pass
+  of the tests on each system; two runs of each timed line.
+
+### What needs your decision
+
+- **Whether a reader goes through the repair.** The first reading of this work found a fault that my own
+  checks had not, in a search that I had taken for cheap. The repair is smaller than the first change:
+  one pattern is cut short, and its argument is that a pattern which asks for less finds at least as
+  much. But it is a change of the guard that nobody else has read, and so are the new sentences of the
+  reference.
+- **Whether the cut stays, or a form that keeps more of the first change's speed.** The cut gives the
+  speed back in every line that holds a quoted text like `"r${i}"` beside a long row of variables ("What
+  the repair gives back of the first change"). A search that reads the word as the first change's did,
+  and gives up with a yes after a set number of quoted pieces, would say no more often and keep the
+  first change's times on more of those lines. Its argument is weaker than the cut's, since it rests on
+  how the word is read and not on a pattern that only asks for less, and the comparisons of this section
+  would be run again on it. I would keep the cut unless such lines turn up in real use: the ones that I
+  found slow are made up, and they are still faster than on the guard before.
+- **Whether the naming of command words gets a bounded form of its own.** That is the root of the price.
+  `named()` reads its matches, so it keeps the old form of what leads to a command, and every yes of the
+  search costs what the guard before paid. A form that reads the match and still ends a variable's value
+  at a sign changes where a match begins and so which word is named. It needs its own proof and its own
+  comparison, and it would touch the two repairs of `named()` that other branches hold.
+- **Whether `{` goes out of what the search's look ahead reads.** That would end the square on a run of
+  `{` in a quoted text, which came with the first change (1.4 s for 20,000 of them). A word with a `{`
+  in front of its quote is still found from behind its last `{`, which is a place where a command can
+  start; that is my reading of the pattern and is not tried. The line is made up, and the cost is a
+  second.
+- **The run of `{` outside quotes**, which takes all three guards to the limit at 20,000: older than
+  both changes, made up, and left as I found it.
+- **Where these commits go.** This branch is `b5331fb` with four commits: the first change and its
+  record (`f471473`, `5b0b01f`), the repair (`26f9c9a`) and this record. They are on the local branch
+  `claude/beautiful-bartik-32f1e5` and in no other branch, local or pushed. I tried a join of this
+  record's commit with each of the four branches beside it, in memory, with `git merge-tree`. With
+  `claude/sharp-faraday-6bd610` (`5424b57`) and with `claude/kit-commit-verification-e52f2b` (`f08b6dd`)
+  the guard conflicts at two places, the two of point 58: the lines that set where a command starts and
+  what leads to it, and the pattern for command words in quotes, where `f2338d6` of those branches
+  writes `/[ckCK]` for `/[ck]` and this branch has the line as `_WORD_GO` now, with `WORD_ANY` behind
+  it. Both changes are wanted at both places: the capital letters, in this branch's form of the lines.
+  The test file, the reference and PROGRESS.md join by themselves with those two, and REPORT.md
+  conflicts at one place. With `claude/brave-robinson-27cbd9` (`f5aa600`) and with
+  `claude/fervent-gould-8d0820` (`533690b`) the code joins by itself, and the two record files conflict
+  where the sessions wrote into the same places: PROGRESS.md at three places with each, REPORT.md at
+  three with the first and at six with the second. Nothing ran on a joined state. After a join the tests
+  run on the joined guard, and the pattern for command words in its joined form wants the comparisons of
+  this section run again. Which branch takes these commits, and when, is your word.
+- **The decisions of point 58**, which stand as they were, but the first: whether the bound on the blank
+  stays; whether the two made-up lines that get the timer's question get a repair; what is done about
+  what still grows faster than the line; and whether the calls that read their matches should read a
+  command that stands inside a variable's value without a blank.
+
+Sources: the guards of `bcfab15`, `f471473` and this section's commit in temporary projects that the
+kit's own test setup builds, each given command lines as text on its standard input or loaded as a
+module, on 21 November 2026 (UTC), on this machine; the reader's report and its texts; this session's
+transcript, for the reader's tool calls and for my own commands; altered copies of the repaired guard,
+made by a script; the kit's tests on copies of the committed state, on Windows under Python 3.11.7 and
+in WSL under 3.12.3, their checks counted in the logs as the lines that begin with `PASS` and `FAIL`;
+Python's profiler; the tips of the other local branches and the other sessions' notes in their shared
+folder, read on this machine on 21 November; `git merge-tree` for the joins, which writes to no branch;
+the helpers that PROGRESS.md names.
+
+## Lines with many words that set a variable (21 November 2026): three kinds answered in time; no rule's answer changed, and the timer's question came in on two made-up lines
+
+Another session started this one on 21 November, for the fourth of the decisions that "A program's name
+in quotes or behind backslashes" leaves open: "What is done about the loop over a line's assignments". I
+have that session's brief and not your own words, which are its to record. This section is this
+session's record: "I" here is the session that was started for this, and the sections around it are
+other sessions'. The brief asks that the guard answer lines with many words that set a variable in
+time, without changing any answer: both kinds of line of that section well inside the guard's 12
+seconds through the hook on Windows, as the main session and under the read-only rules, with the times
+before and after and a plain statement of what still grows faster than the line's length; the guard
+before against the guard after on generated lines and on lines made for this change; timings of the
+long lines of the earlier comparisons; rows in the test files where a row can rest on the change
+without depending on wall time; the test passes; the comment at the loop and the reference brought up
+to date; and local commits with their record. It rules out a search for ways past the guard. So I put
+to the rules the forms that it names, the generated lines of the earlier comparisons and lines of the
+kit's own test rows, and nothing beyond; and I briefed no agent. Not covered, and not done: a push, a
+merge, `main`, your real install, a reader, a deletion. Dates and times in this section are UTC. "The
+guard before" is the one of `bcfab15`, which `b5331fb`, the commit that this branch stands on, holds
+unchanged. "The released guard" is the one of `main` at `e587b4f`.
+
+(Added with point 65: a reader went through this change on 21 November, on your word, and the section in
+front of this one is the record of that. One fault of the change is repaired there: the search that it
+put in front of the naming of command words had made ordinary long loops slow, up to the timer's
+question. That section's "What this corrects in the record of point 58" lists the sentences of this
+section that are inexact or no longer hold. But for this note the section stands as it was written.)
+
+This change stands on `b5331fb`, and four branches went on beside it while I worked. None of them
+holds it, and this branch holds none of theirs: every figure of this section is of the guard of
+`b5331fb` against that guard with my change, and nothing ran on a joined state.
+
+- `claude/sharp-faraday-6bd610`, the branch that the brief names, stood at `b5331fb` when I started and
+  my branch is cut there. It got two commits since (`24970e3`, `0f896a3`): a reader went through the
+  repair of names in quotes, and what held is repaired in `named()` of the guard, with point 55. Its
+  session's note in the sessions' shared folder (11:37 UTC) says that it is merging the branch of the
+  next bullet into its own, in its own worktree and on your word, and takes point 61 for that record;
+  its branch stood at `0f896a3` still when this was written.
+- `claude/kit-commit-verification-e52f2b` joins the other sessions' branches (the code at `c631d57`, its
+  records up to `f08b6dd`, with points 50 to 54 and 60). It did not merge this branch and says so. Its
+  session's notes in the sessions' shared folder say that it pushed that branch to `test/round-9` at
+  11:17 UTC and its record of the push at 12:01 UTC, on your word; the local ref `origin/test/round-9`
+  stood at `f08b6dd` when this was written, and I fetched nothing. So `b5331fb` is in the pushed test
+  branch now, where the brief has it two local commits ahead of that branch, and this change is in no
+  pushed branch.
+- `claude/brave-robinson-27cbd9`, the pilot's, got point 56 (`9d01f95`).
+- `claude/fervent-gould-8d0820`, of the two faults on Windows, got three commits (`74d1e22`, `84d7285`,
+  `ebda58d`): a second reading of its repairs, with what held repaired in the kit's two programs, and
+  the record with point 57.
+
+So this point is 58, which my note in the sessions' shared folder took at 10:56 UTC. 59, 61 and 62 are
+taken by three notes in the sessions' shared folder, each for a record that no commit held when this was
+written.
+
+The brief names two kinds of line, and this section has three. The fourth finding of the joining
+session's reader is a line of thirty words `a= ` in front of a command, which takes the main session
+past the 12 seconds, and that session left it with the words "the fourth session's task is that search;
+this pattern is beside it, and a change to it belongs with that work". The fourth session is this one.
+I measured the line under my change, found it a tenth to a fifth slower than under the guard before,
+and took it in as the third kind ("The change", "Three slowdowns of my own"). That is my decision
+beside the brief, and it can be taken out by itself.
+
+This section stands right behind its point of "Read this first" and not among the sections by their
+date. The brief asks that what this session adds to each record stand together in one block, because
+other sessions add to the same files on branches of their own. Whoever joins the branches can move it
+in front of "## 1. What changed and why", where the section that it follows stands.
+
+In short:
+
+1. **Three kinds of line that ran the guard into its 12 seconds are answered in time, as the main
+   session and under the read-only rules.** N times `a=1;` with no blank between them: 20,000 of them
+   (80 KB) take 2.8 s as the main session and 0.5 s under the read-only rules, where the timer's
+   question came after 64 to 98 s. Lines that each set a variable and read it: 3,000 take 2.6 s and 0.4
+   s, where the main session got the timer's question after 12.3 s. Variables set to nothing in front of
+   a command (`a= a= a= ... cmd`): 30 take 0.2 s under both, where the main session got the timer's
+   question after 12.2 s, and 10,000 take 1.0 s and 0.3 s.
+2. **The third kind is my decision beside the brief.** The brief names the first two. The session that
+   merged the three other branches found the third in its reading and left it to this work, and my
+   change as first written made it a tenth to a fifth slower. It is one key of one function and one
+   test row, and can be taken out by itself.
+3. **The change is in how the guard searches; no rule and no message is touched.** The line is searched
+   once for all the variables that it may run, where each variable had two searches. What leads to a
+   command word ends at a sign, for a pattern that is only asked whether a command is there. The blank
+   behind a variable's `=` is taken only in front of a word that sets no variable. Where a match is
+   read, the old form stays, behind a search that says whether there is one.
+4. **No rule's answer changed.** In one process the changed functions and patterns give the same on
+   300,000 texts, and the whole check on 40,000. Through the hook 5,500 generated lines get the same
+   answer under both sets of rules. Of 1,254 lines made for this change, 1,233 get the same answer and
+   reason, and 21 get the rules' answer where the guard before asked its timer's question. With its
+   limit out of reach the guard before gives that answer too, on the 18 of them that I did not stop
+   after 300 s.
+5. **The other way round on two made-up lines: the timer's question where the guard before answered by
+   its rules.** Both stood at its limit. A row of 21 pairs `a= env` in front of a command was allowed
+   after 10.7 to 10.8 s and is asked about after 12.7 to 12.9 s: both guards read such a row in two ways
+   for each pair, and this one takes a sixth to a fifth longer over it. A place where a command starts
+   that reads in 2,000 ways, with as many variables set, was allowed in one run of three (11.8 s) and is
+   asked about in all three. With the limit out of reach the rules of both guards allow both lines. A
+   question in place of "allowed" is the safe side, and I repaired neither ("Three slowdowns of my own",
+   "What needs your decision"). Nothing else got slower through the hook: the 35 long lines of the
+   earlier comparisons take what they took (the two of this change far less, and of the other 33 none
+   more than 0.18 s more or 0.13 s less).
+6. **What still grows faster than the line, all of it on made-up lines.** By a factor with each word:
+   words that are read in two ways each, of which some 20 to 30 reach the limit (`sudo -u -u -u ...`,
+   which no part of this change touches, and `a= env a= env ...`, the row of point 5). The square: a
+   wrapper's option written thousands of times with no blank, whose question comes late as before; and
+   the calls that read their matches, behind thousands of variables, which reach the limit at 20,000 of
+   them (the question then comes after 14 to 24 s). As fast as the line and no faster: the main
+   session's own work on each word, with which a row of 320 KB takes 10.3 s, inside the limit and close
+   to it.
+7. **Six rows more in the kit's test file, and none that waits for a clock.** They count searches and
+   read where a match begins. Each fails on a copy with its change taken out, and four of them fail on
+   the guard before. `tests/test_review_fixes.py` gets none: a row there would wait for a clock. The
+   eight test files pass on Windows under Python 3.11.7 (2,025 checks) and the kit file in WSL under
+   3.12.3 (1,268), with no failed check.
+8. **Read by nobody but me, and nothing is pushed.** The code is one local commit, `f471473`, on the
+   branch `claude/beautiful-bartik-32f1e5`, which stands on `b5331fb`, and this record a second. `main`
+   stays at `e587b4f` and your real install is untouched: both have the loop as it was. Neither the
+   branch that this one was cut from, which went on to `0f896a3` while I worked, nor the branch that
+   joins the other sessions' work holds this change.
+
+### The change
+
+The guard changes in 142 lines, added and removed counted together; no rule and no message is among
+them.
+
+- **One search of the line for all its variables, where each had two.** `inner_code()` collects the texts
+  that a line hands on as code. A text that the line keeps in a variable counts where the line may run
+  it: where the variable stands at a command's start (`c='rm x'; $c`, also `"$c"`, `${c}`, and as zsh
+  splits it, `${=c}`), where zsh reads it with flags anywhere (`echo ${(e)c}`), or where the text has
+  more than one word and the line has a runner (`eval "$c"`, `iex $c`). For the first two, the loop
+  built two patterns with the variable's name for every word that sets a variable to a text, and
+  searched the whole line with each. The new function `run_vars()` searches the line for every variable
+  that stands where a command starts, and once more for every one that zsh reads with flags. The loop
+  asks it at the first such word and looks each name up in what it gave. A line that sets no variable
+  to a text is not searched for this, as before.
+- **A place that reads in more than one way.** `X= $c $d` runs `$c` with an empty `X`, or `$d` with `X`
+  set to `$c`: the pattern for what leads to a command word allows both, and the guard before found
+  each name by its own search. One search shows one name for each place. So `run_vars()` searches again
+  without the names that it has, until a search finds no new one: once where no variable stands at a
+  command's start, twice where some do, three times for the line above.
+- **Four searches at most; a name that they did not find gets a search of its own, as every name had.**
+  A place can be made up that reads in as many ways as it has words (`X0= $a0 X1= $a1 ...`).
+  `run_vars()` says whether it has all the names, and where it stopped before that, the loop searches
+  the line for a name that is not among them, with a pattern built for that name as in the guard
+  before. So on any line the loop takes the same texts for ones that the line may run. ("Three
+  slowdowns of my own", below, is why the four, and what that search costs.)
+- **What leads to a command word ends at a sign, for a pattern that is only asked whether.** A wrapper
+  with its options and words that set a variable may stand in front of a command (`sudo -u me X=1
+  cmd`), and one piece of pattern, `_LEAD`, reads them, in twelve compiled patterns of the guard
+  before. It reads a variable's value up to the next blank, with every sign in it, and the blanks
+  between two words with the line breaks in them. So in `a=1;a=1;...` every `;` begins a lead that runs
+  on to the line's one blank, and in a text of lines that each set a variable every line begins one
+  that runs on to the last: a search that finds nothing takes the square of the text's length.
+  `_lead(wrap, signs)` now builds the piece in two forms. With `signs`, a value ends in front of a sign
+  that a blank or another variable follows, and the blanks between two words hold no line break. A
+  pattern that gets this form begins by itself at each of those signs and at a line's beginning, so a
+  command that the old form found behind such a place is found from there, with the same words behind
+  it. Whether the pattern finds something stays; where its match begins does not. Ten compiled patterns
+  have this form (`WRITE_CMDS`, `PATCHES`, `EXTRACT`, `FORMATS`, `RUNS_NOTES`, `SPLICES_NOTES`,
+  `NOTES_CMD`, `HERE_RUN`, and the new `QUOTED_ANY` and `WORD_ANY`), and so have the searches of
+  `run_vars()` and of the loop. Each is only asked whether it finds something.
+- **A blank behind a variable's `=` is taken only in front of a word that sets no variable: the third
+  kind of line, and my decision beside what the brief names.** The lead reads `X= cmd` in two ways: `X`
+  set to nothing in front of the command `cmd`, or `X` set to `cmd`, because one blank may stand behind
+  the `=` of a word that sets a variable. In a row `a= b= c= ... cmd` each word is then a variable of
+  its own or the value of the one before it, and both readings come to the same place behind it. The
+  number of readings grows 1.6 times with each word, and a search that finds nothing goes through all of
+  them: 30 such words took the guard to its limit. The session that merged the three other branches has
+  this line as the fourth finding of its reading, with times that agree with mine for the guard before
+  (30 words: 12.15 s as the main session, 5.11 s under the read-only rules), and left it to this work.
+  In the form with signs, that blank is now taken only where a word follows that does not begin as a
+  variable does (`name=`), and never in front of another blank. Each reading that this takes away comes
+  to the same place as one that stays: the next word as a variable of its own, or, where the blank is a
+  line break, the search that begins at the next line. So whether a pattern finds something stays, and
+  the row is read in one way. The form without signs keeps the blank as it was, since its matches are
+  read. Why this is my decision and not the brief's: the brief names two kinds of line, and this is a
+  third; but it is a line with many words that set a variable, the merged record hands it to this work,
+  and my change as first written made it a tenth to a fifth slower ("Three slowdowns of my own"). It is
+  one key of `_lead()`, `blank`, and one test row, and can be taken out by itself: with `\s?` there, the
+  third kind is as slow as in the guard before and that tenth or fifth more.
+- **Where a match is read, the old form stays, behind a search that says whether there is one.** Five
+  calls read each match: its text, where it begins, or how many there are. `plain()` takes the quotes
+  off a command word (`QUOTED_COMMAND`), `named()` writes a command word as its bare name
+  (`COMMAND_WORD`), the main session's rules read what each formatter is given (`FORMATS_EACH`),
+  `inner_code()` reads whether a runner gets a here-string (`HERE_RUN_EACH`), and the main session's
+  rules count the shell's own `eval`. Each of the five now runs only where the same pattern in the new
+  form finds something, so a line that holds none of these is not searched in the old form.
+- **A change of folder is searched for only in a text that holds one of its words.** `CD` has a lead of
+  its own, of the same kind, and its matches are read. The new `MAY_CD` asks whether `cd`, `pushd`,
+  `popd`, `chdir`, `sl`, `Set-Location`, `Push-Location` or `Pop-Location` stands where a word begins.
+  In a text without one, `CD` and the three searches of `saves()` for a change of folder can find
+  nothing, and they are passed over.
+- **Unchanged**: every rule and every message, the limit of 12 seconds and its timer, and two patterns
+  that keep the old form with no search in front of them. `PIPED` begins only at a `|`. `COMMAND_START`
+  is not searched with: it is put once to the text in front of each search tool's word, from that
+  text's beginning.
+- **The comment at the loop and the docstrings** of `_lead()` and `run_vars()` say what is searched and
+  why, with the figures of 21 November, and `_lead()` names what still takes the square and what still
+  grows by a factor with each word; `docs/REFERENCE.md` has a point "How long it takes" behind "It fails
+  safe", which says that the guard's question can come late, what these lines took and take, and which
+  lines still reach the limit. It is a point of its own so that it joins by itself with what two other
+  branches changed in the lines around it.
+
+### The times of the three kinds of line, before and after
+
+Through the hook on Windows, under Python 3.11.7: each line is given to the guard as the hook gives it,
+to a process of its own, once as the main session and once with `--readonly`, and the time is the whole
+of that process. "The timer's question" is the guard's own question after 12 seconds, "the guard could
+not finish checking this call in 12 seconds". The hooks give the guard 15 to 20 seconds. One run of each
+line, with nothing else of this session running; the guard before is the one of `bcfab15`, and the guard
+after is the one of this section's commit.
+
+N times `a=1;` with no blank, then `echo 'x'` (the brief's first kind):
+
+| Times `a=1;` | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|
+| 1,000 | 4,008 | the timer's question, 12.3 s | allowed, 0.3 s | the timer's question, 12.4 s | allowed, 0.2 s |
+| 2,000 | 8,008 | the timer's question, 13.0 s | allowed, 0.5 s | the timer's question, 13.0 s | allowed, 0.2 s |
+| 5,000 | 20,008 | the timer's question, 16.9 s | allowed, 0.8 s | the timer's question, 17.0 s | allowed, 0.3 s |
+| 10,000 | 40,008 | the timer's question, 32.4 s | allowed, 1.5 s | the timer's question, 31.1 s | allowed, 0.4 s |
+| 20,000 | 80,008 | the timer's question, 77.6 s | allowed, 2.8 s | the timer's question, 97.6 s | allowed, 0.5 s |
+| 40,000 | 160,008 | not run | allowed, 5.2 s | not run | allowed, 0.9 s |
+| 80,000 | 320,008 | not run | allowed, 10.3 s | not run | allowed, 1.5 s |
+
+N lines `out7="sub/f7.txt"; cat "$out7"` (the brief's second kind):
+
+| Lines | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|
+| 500 | 18,169 | allowed, 1.9 s | allowed, 0.6 s | allowed, 0.6 s | allowed, 0.2 s |
+| 1,000 | 36,669 | allowed, 5.2 s | allowed, 1.0 s | allowed, 1.6 s | allowed, 0.2 s |
+| 1,500 | 56,669 | allowed, 10.0 s | allowed, 1.4 s | allowed, 3.1 s | allowed, 0.3 s |
+| 3,000 | 116,669 | the timer's question, 12.3 s | allowed, 2.6 s | allowed, 11.2 s | allowed, 0.4 s |
+| 6,000 | 236,669 | not run | allowed, 5.1 s | not run | allowed, 0.6 s |
+| 12,000 | 482,669 | not run | allowed, 10.2 s | not run | allowed, 1.0 s |
+
+N words `a= `, each with its blank, then `echo 'x'` (the third kind):
+
+| Words `a= ` | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|
+| 16 | 56 | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s |
+| 20 | 68 | allowed, 0.3 s | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s |
+| 24 | 80 | allowed, 0.9 s | allowed, 0.2 s | allowed, 0.5 s | allowed, 0.2 s |
+| 26 | 86 | allowed, 2.0 s | allowed, 0.2 s | allowed, 0.9 s | allowed, 0.2 s |
+| 28 | 92 | allowed, 4.8 s | allowed, 0.2 s | allowed, 2.1 s | allowed, 0.2 s |
+| 30 | 98 | the timer's question, 12.2 s | allowed, 0.2 s | allowed, 5.4 s | allowed, 0.2 s |
+| 100 | 308 | not run | allowed, 0.2 s | not run | allowed, 0.2 s |
+| 1,000 | 3,008 | not run | allowed, 0.3 s | not run | allowed, 0.2 s |
+| 10,000 | 30,008 | not run | allowed, 1.0 s | not run | allowed, 0.3 s |
+
+So all three kinds are answered well inside the 12 seconds at every length at which the guard before was
+measured. Beyond those lengths the time grows as the line does: 80,000 of `a=1;` (320 KB) take 10.3 s
+and 1.5 s, and 12,000 such lines (483 KB) take 10.2 s and 1.0 s, inside the limit and, for the main
+session, close to it.
+
+The third kind also comes without anybody making it up: a here-document of N lines `K7=`, a file of
+settings with nothing behind each `=` (`cat > sub/x.env <<'EOF'`, the lines, `EOF`). The guard before
+reads each line break as the blank behind a `=` and the next line as the value:
+
+| Lines `K7=` | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|
+| 16 | 97 | allowed, 0.2 s | allowed, 0.2 s | refused, 0.2 s | refused, 0.2 s |
+| 20 | 117 | allowed, 0.4 s | allowed, 0.2 s | refused, 0.2 s | refused, 0.2 s |
+| 24 | 137 | allowed, 1.3 s | allowed, 0.2 s | refused, 0.3 s | refused, 0.2 s |
+| 28 | 157 | allowed, 7.6 s | allowed, 0.2 s | refused, 0.7 s | refused, 0.2 s |
+| 30 | 167 | the timer's question, 16.9 s | allowed, 0.2 s | refused, 1.6 s | refused, 0.2 s |
+| 1,000 | 5,917 | not run | allowed, 0.4 s | not run | refused, 0.2 s |
+| 10,000 | 68,917 | not run | allowed, 2.1 s | not run | refused, 0.3 s |
+
+### Other made-up lines, before and after
+
+I made these to see what else the change touches: the same rows with a blank, on lines of their own,
+with different names, behind `export`, in front of one command; a variable that is run on each line; and
+a row with something behind it that a pattern reads. The first column is the shape, by the name that it
+has in this session's helper; under the table is what each one is. 500 and 2,000 units under both
+guards; under the guard after 8,000 as well, 20,000 of `herelast`, `cdlast` and `quoted`, and 4,000
+and 16,000 lines of `newlinecd`. One run of each line, except where a cell names more.
+
+| Shape | N | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|---|
+| `spaced` | 500 | 2,508 | the timer's question, 12.4 s | allowed, 0.2 s | allowed, 7.6 s | allowed, 0.2 s |
+| `spaced` | 2,000 | 10,008 | the timer's question, 15.3 s | allowed, 0.3 s | the timer's question, 15.0 s | allowed, 0.2 s |
+| `spaced` | 8,000 | 40,008 | not run | allowed, 0.7 s | not run | allowed, 0.3 s |
+| `newline` | 500 | 4,286 | the timer's question, 12.4 s | allowed, 0.4 s | allowed, 9.8 s | allowed, 0.2 s |
+| `newline` | 2,000 | 19,786 | the timer's question, 16.1 s | allowed, 0.9 s | the timer's question, 16.6 s | allowed, 0.2 s |
+| `newline` | 8,000 | 85,786 | not run | allowed, 3.0 s | not run | allowed, 0.3 s |
+| `names` | 500 | 4,286 | the timer's question, 12.3 s | allowed, 0.4 s | allowed, 4.7 s | allowed, 0.2 s |
+| `names` | 2,000 | 19,786 | the timer's question, 14.0 s | allowed, 0.9 s | the timer's question, 14.0 s | allowed, 0.2 s |
+| `names` | 8,000 | 85,786 | not run | allowed, 3.1 s | not run | allowed, 0.3 s |
+| `noquote` | 500 | 2,006 | allowed, 5.9 s | allowed, 0.2 s | allowed, 2.1 s | allowed, 0.2 s |
+| `noquote` | 2,000 | 8,006 | the timer's question, 12.9 s | allowed, 0.3 s | the timer's question, 12.9 s | allowed, 0.2 s |
+| `noquote` | 8,000 | 32,006 | not run | allowed, 0.7 s | not run | allowed, 0.3 s |
+| `export` | 500 | 6,006 | allowed, 0.5 s | allowed, 0.3 s | allowed, 0.3 s | allowed, 0.2 s |
+| `export` | 2,000 | 24,006 | allowed, 5.0 s | allowed, 0.5 s | allowed, 1.6 s | allowed, 0.2 s |
+| `export` | 8,000 | 96,006 | not run | allowed, 1.3 s | not run | allowed, 0.4 s |
+| `envs` | 500 | 4,286 | allowed, 1.1 s | allowed, 0.4 s | allowed, 0.4 s | allowed, 0.2 s |
+| `envs` | 2,000 | 19,786 | allowed, 7.6 s | allowed, 0.9 s | allowed, 2.1 s | allowed, 0.2 s |
+| `envs` | 8,000 | 85,786 | not run | allowed, 3.1 s | not run | allowed, 0.3 s |
+| `run` | 500 | 10,279 | allowed, 0.9 s | allowed, 0.4 s | allowed, 0.5 s | allowed, 0.2 s |
+| `run` | 2,000 | 43,779 | allowed, 7.5 s | allowed, 1.1 s | allowed, 2.4 s | allowed, 0.3 s |
+| `run` | 8,000 | 181,779 | not run | allowed, 4.1 s | not run | allowed, 0.6 s |
+| `fmtlast` | 500 | 2,007 | asked, 6.1 s | asked, 0.2 s | refused, 2.1 s | refused, 0.2 s |
+| `fmtlast` | 2,000 | 8,007 | the timer's question, 13.1 s | asked, 0.4 s | the timer's question, 13.0 s | refused, 0.2 s |
+| `fmtlast` | 8,000 | 32,007 | not run | asked, 1.7 s | not run | refused, 0.3 s |
+| `evallast` | 500 | 2,007 | allowed, 6.4 s | allowed, 0.2 s | allowed, 2.4 s | allowed, 0.2 s |
+| `evallast` | 2,000 | 8,007 | the timer's question, 12.9 s | allowed, 0.3 s | the timer's question, 13.0 s | allowed, 0.2 s |
+| `evallast` | 8,000 | 32,007 | not run | allowed, 0.8 s | not run | allowed, 0.3 s |
+| `greplast` | 500 | 2,013 | allowed, 6.1 s | allowed, 0.2 s | allowed, 2.4 s | allowed, 0.2 s |
+| `greplast` | 2,000 | 8,013 | the timer's question, 12.9 s | allowed, 0.3 s | the timer's question, 12.8 s | allowed, 0.2 s |
+| `greplast` | 8,000 | 32,013 | not run | allowed, 0.7 s | not run | allowed, 0.3 s |
+| `herelast` | 500 | 2,011 | allowed, 6.4 s | allowed, 0.3 s | allowed, 2.2 s | allowed, 0.2 s |
+| `herelast` | 2,000 | 8,011 | the timer's question, 12.9 s | allowed, 0.6 s | the timer's question, 12.9 s | allowed, 0.3 s |
+| `herelast` | 8,000 | 32,011 | not run | allowed, 3.6 s | not run | allowed, 1.2 s |
+| `herelast` | 20,000 | 80,011 | not run | the timer's question, 18.7 s | not run | allowed, 6.2 s |
+| `cdlast` | 500 | 2,012 | allowed, 5.9 s | allowed, 0.3 s | allowed, 2.2 s | allowed, 0.2 s |
+| `cdlast` | 2,000 | 8,012 | the timer's question, 12.8 s | allowed, 0.6 s | the timer's question, 12.9 s | allowed, 0.2 s |
+| `cdlast` | 8,000 | 32,012 | not run | allowed, 4.5 s | not run | allowed, 0.3 s |
+| `cdlast` | 20,000 | 80,012 | not run | the timer's question, 24.0 s | not run | allowed, 0.4 s |
+| `quoted` | 500 | 2,015 | allowed, 11.8 s | allowed, 0.3 s | allowed, 4.0 s | allowed, 0.2 s |
+| `quoted` | 2,000 | 8,015 | the timer's question, 12.9 s | allowed, 0.6 s | the timer's question, 12.8 s | allowed, 0.3 s |
+| `quoted` | 8,000 | 32,015 | not run | allowed, 3.2 s | not run | allowed, 1.3 s |
+| `quoted` | 20,000 | 80,015 | not run | the timer's question, 14.0 s | not run | allowed, 6.9 s |
+| `newlinecd` | 500 | 4,292 | the timer's question, 12.4 s | allowed, 0.5 s | allowed, 10.4 s | allowed, 0.2 s |
+| `newlinecd` | 2,000 | 19,792 | the timer's question, 16.6 s | allowed, 1.8 s | the timer's question, 16.6 s | allowed, 0.2 s |
+| `newlinecd` | 4,000 | 41,792 | not run | allowed, 4.4 s | not run | allowed, 0.3 s |
+| `newlinecd` | 8,000 | 85,792 | not run | allowed, 10.9 s | not run | allowed, 0.3 s |
+| `newlinecd` | 16,000 | 185,792 | not run | the timer's question, 33.4 s | not run | allowed, 0.5 s |
+
+- `spaced`: `a=1; ` with a blank behind each, then `echo 'x'`. `newline`: lines `a7=7` and a last line
+  `echo x`. `names`: `v0=0;v1=1;...` with no blank, then `echo x`. `noquote`: `a=1;` with no blank, then
+  `echo x`. `export`: `export a=1; ` each, then `echo x`. `envs`: `a0=0 a1=1 ...` and then `echo x`, one
+  command with N variables in front of it. `run`: lines `c7='ls sub'; $c7`, each of which runs its
+  variable.
+- `fmtlast`, `herelast`, `evallast`, `greplast`, `cdlast`, `quoted`: `a=1;` with no blank, and behind
+  the row `black .`, `sh <<< 'ls'`, `eval ls`, `grep -r x sub`, `cd sub && ls`, or `echo x;'ls' sub`.
+  `newlinecd`: lines `a7=7` and a last line `cd sub && ls`.
+- On `fmtlast` the main session is asked about the formatter and the read-only rules refuse it: that is
+  the rules' answer, which the guard before gives at 500 too and the timer's question replaced at
+  2,000.
+
+Places that read in more than one way, a wrapper's options and a row of pipes:
+
+| Shape | N | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|---|
+| `chain` | 500 | 5,791 | allowed, 0.4 s | allowed, 0.4 s | allowed, 0.2 s | allowed, 0.2 s |
+| `chain` | 2,000 | 25,791 | allowed, 1.1 s | allowed, 1.0 s | allowed, 0.2 s | allowed, 0.3 s |
+| `chain` | 8,000 | 109,791 | not run | allowed, 3.6 s | not run | allowed, 0.5 s |
+| `chain2` | 500 | 12,670 | allowed, 1.2 to 1.3 s (3 runs) | allowed, 1.3 s | allowed, 0.6 s (3 runs) | allowed, 0.6 s |
+| `chain2` | 2,000 | 54,670 | allowed once, 11.8 s; the timer's question twice, 12.3 s | the timer's question, 12.3 s (3 runs) | allowed, 3.5 to 4.2 s (3 runs) | allowed, 5.4 to 5.6 s (3 runs) |
+| `chain2` | 8,000 | 228,670 | not run | the timer's question, 12.3 s | not run | the timer's question, 12.4 s |
+| `runall` | 500 | 3,400 | allowed, 0.3 to 0.4 s (3 runs) | allowed, 0.4 s | allowed, 0.2 s (3 runs) | allowed, 0.2 s |
+| `runall` | 2,000 | 14,900 | allowed, 0.7 s (3 runs) | allowed, 0.9 s | allowed, 0.2 s (3 runs) | allowed, 0.2 s |
+| `runall` | 8,000 | 62,900 | not run | allowed, 2.4 s | not run | allowed, 0.4 s |
+| `piped` | 500 | 2,003 | allowed, 6.0 to 7.1 s (3 runs) | allowed, 0.3 s | allowed, 2.1 to 2.2 s (3 runs) | allowed, 0.2 s |
+| `piped` | 2,000 | 8,003 | the timer's question, 12.9 to 13.0 s (3 runs) | allowed, 0.4 s | the timer's question, 12.9 to 13.5 s (3 runs) | allowed, 0.2 s |
+| `piped` | 8,000 | 32,003 | not run | allowed, 0.8 s | not run | allowed, 0.3 s |
+| `wrapopt` | 500 | 3,506 | allowed, 0.6 to 0.7 s (3 runs) | allowed, 0.6 s | allowed, 0.3 s (3 runs) | allowed, 0.3 s |
+| `wrapopt` | 2,000 | 14,006 | allowed, 6.2 to 6.9 s (3 runs) | allowed, 6.1 s | allowed, 2.2 s (3 runs) | allowed, 2.1 s |
+| `wrapopt` | 8,000 | 56,006 | the timer's question, 13.6 to 13.8 s (2 runs) | the timer's question, 13.7 s | the timer's question, 31.5 to 32.4 s (2 runs) | the timer's question, 31.8 s |
+| `rowways` | 500 | 2,021 | allowed, 6.7 s | allowed, 0.4 s | allowed, 2.3 s | allowed, 0.2 s |
+| `rowways` | 2,000 | 8,021 | the timer's question, 12.9 s | allowed, 2.8 s | the timer's question, 12.9 s | allowed, 1.0 s |
+| `rowways` | 8,000 | 32,021 | not run | the timer's question, 12.3 s | not run | the timer's question, 12.3 s |
+| `rowways` | 20,000 | 80,021 | not run | the timer's question, 12.3 s | not run | the timer's question, 12.3 s |
+
+- `chain`: `c='ls sub'; X0= $a0 X1= $a1 ...`, one place where a command starts that reads in N ways.
+  `chain2`: the same with each of the N variables set ("Three slowdowns of my own"). `runall`: `c='ls
+  sub'; $a0; $a1; ...`, N different variables that each stand where a command starts. `piped`:
+  `a=1|a=1|...` and then `cat`. `wrapopt`: `env -i;env -i;...` and then `echo x`. `rowways`: `a=1;` with
+  no blank, then ` X= $b Y= $c Z= $d $e`, a place that reads in four ways. The last two and `chain2` are
+  under "What still grows faster than the line".
+
+### The comparisons: the guard before against the guard after
+
+Each comparison gives both guards the same text and reads the two results. No command of a line ran: the
+guards read text. The lines are generated in files and given to the guard on its standard input, as the
+hook gives them, or to its functions in one process. None is a form against a rule beyond those that the
+brief names; the generated lines are the ones of the earlier comparisons of this round, and the texts
+for the functions are made of the pieces that the changed code reads (words that set a variable, signs,
+wrappers with options, line breaks, variables where a command starts, quotes, `cd`, formatters,
+here-strings). I ran the comparisons three times, each after a change to the program, the last after the
+bound on the blank. The figures here are the last run's. The guard after of that run is the guard of
+this section's commit, byte for byte: the run keeps a copy of the guard that it read, and that copy has
+the hash of the commit's file.
+
+- **The changed functions and patterns, in one process: 300,000 texts, no difference.** For each text:
+  what `plain()`, `named()`, `readings()`, `saves()` and `runs_notes()` return, and `inner_code()` with
+  its list of the texts for a shell; whether each pattern that begins where a command starts finds
+  anything; what the calls that read their matches get (the folders of `CD` with their places, the ends
+  of `FORMATS`, the here-strings of `HERE_RUN`, the count of `eval`); and for every word of the text
+  whether the old loop's two searches for that name find it, against what `run_vars()` and the loop's
+  own search say. The patterns that are to stay as they were are the same text in both guards. 281,732
+  of the texts are distinct. In 11,737 of them the four searches of `run_vars()` did not have all the
+  names, so the loop's own search was used.
+- **The whole check, in one process: 40,000 texts, no difference.** The answers and reasons of
+  `check_readonly()` and of `check_bash()` as the hook runs them for a Bash line, with the guard's limit
+  of time out of reach. 38,150 of the texts are distinct.
+- **Through the hook: 5,500 generated lines, no changed answer.** The 2,500 lines of this round's earlier
+  comparisons and the 3,000 lines of the repair of a program's name in quotes, each as the main session
+  and under the read-only rules. Main session: 4,523 lines pass and 977 are asked about, in both guards.
+  Read-only rules: 3,246 pass and 2,254 are refused, in both. The released guard, beside them, answers
+  632 lines otherwise than the guard before as the main session and 1,443 under the read-only rules:
+  those are the repairs of this round, and the guard after answers each of these lines as the guard
+  before does. (Three lines are refused where their twin with the bare name passes, `bash -c '"kill"
+  123'` and two like it: the older gap of the read-only rule for signals that the section named above
+  holds. Both guards do the same.)
+- **Lines made for this change: 1,254. On 1,233 no answer and no reason changed; on 21 the timer's
+  question became the rules' answer.** The brief names the lines: a variable that holds a command and
+  is run (`c='rm x'; $c`, `${=c}`, `$c = 'del x'; iex $c`), alone, behind `;`, inside `$( )`, and with
+  many other variables set before and after it. Each made line is put to both guards three times: as
+  the main session, under the read-only rules, and as a call of a read-only agent, which gets both sets
+  of rules.
+  - 268 lines are 22 forms of a text that a variable holds and the line runs or does not run, each
+    alone, behind `ls sub; ` and inside `echo $( )`, and each of those once more with 60 variables in
+    front of it and 60 behind: with no blank between them, with a blank, and on lines of their own; and
+    four lines as they are. Every one of the 268 is allowed to the main session, because their targets
+    are no kept files. No answer and no reason changed, and the released guard, put beside them, does
+    the same.
+  - 384 lines are 32 lines of the kit's own test rows that touch a kept file or the sealed data, in
+    the same twelve forms: the main session is asked about 286 of them and refused 48, the read-only
+    rules refuse 272. No answer and no reason changed. (The released guard answers 56 of these
+    otherwise than both: lines that the repairs of this round are about.)
+  - 602 lines are for the bound on the blank: 50 lines in the twelve forms and two as they are. They
+    are variables set to nothing in front of a command that touches a kept file; with more blanks; with
+    a line break for the blank; with a wrapper's word of one word and of more behind the blank; in
+    front of each kind of command that a pattern with the lead looks for (a patch, an archive, a
+    formatter, a here-string, `eval`, `cd`, a quoted command word, the notes file, the sealed data); a
+    variable that holds a command and is run behind variables set to nothing; and rows of 20 and 24
+    variables set to nothing. On 581 of them no answer and no reason changed. On the other 21 the
+    guard before asked its timer's question and the guard after gives the rules' answer. They are the
+    three rows of 20 and 24 variables set to nothing with 120 other variables around them, where both
+    of the guard's old costs meet: it searches the line twice for each of the variables around, and
+    each search goes through the row's thousands of readings. The main session is asked about each of
+    the 21 because of the kept file, and the read-only rules refuse each. In 9 of them the guard before
+    had refused under the read-only rules as well, and in 12 it ran into its limit there too.
+- **The answer that changes is the timer's, and the rules' own answer is what the guard before would
+  have given.** Where the guard before ran into its 12 seconds it asked "the guard could not finish
+  checking this call in 12 seconds", and the guard after gives what its rules say. With the limit of the
+  guard before put out of reach, its rules allow 1,000 of `a=1;` with `echo 'x'` behind them (as the
+  main session after 100 s and under the read-only rules after 31 s, both under a profiler) and 3,000
+  lines of `out7="sub/f7.txt"; cat "$out7"` (58 s and 18 s): the answers that the guard after gives in
+  0.3 s and 0.2 s, and in 2.6 s and 0.4 s. The same check of 2,000 of `a=1;` I stopped before its end.
+  For the 602 lines of the third set I took the limit of both guards out of reach, each line in a
+  process of its own that I stopped after 300 s. The guard before then gives the answers and reasons of
+  the guard after on 599 lines, 18 of the 21 among them, after 13 to 192 s where the guard after takes
+  0.3 to 0.7 s. The other three I stopped: the row of 24 variables alone with the 120 around it, in the
+  three ways of writing them. The other way round it happens on two made-up lines, which stood at the
+  limit of the guard before and on which the guard after is the slower one: a row of 21 pairs `a= env`
+  in front of a command, and a place that reads in 2,000 ways with as many variables set. There the
+  timer's question takes the place of "allowed" ("Three slowdowns of my own", "What still grows faster
+  than the line"). Neither is among the generated lines or the lines made for this change: I made them
+  to look for what the change makes slower.
+
+### Three slowdowns of my own
+
+Two are on made-up lines with a place where a command starts that reads in very many ways, and the
+third is on the third kind of line. I found them with the shapes that I made to look for what this
+change makes slower. The first and the third I repaired before any commit. What is left, of the second
+and of the third, is on the two made-up lines that stood at the limit of the guard before and get the
+timer's question now.
+
+- **The first version searched without a bound, and I bounded it before any commit.** `run_vars()` first
+  searched again until a search found no new name. On a place that reads in N ways (`X0= $a0 X1= $a1
+  ...`) that is N searches, each with all the names in it that the ones before it found: one call of
+  `inner_code()` took 10.10 s at 1,600 ways when I measured it then. The bound is four searches, and the
+  loop's own search for a name that they did not find. With it the same call takes 0.03 s at 2,000 ways
+  and 0.12 s at 8,000, where the guard before takes 0.01 and 0.05 s.
+- **The loop's own search is slower than the search that it replaces, on a place that reads in four ways
+  or more with thousands of variables set.** On `a0='ls sub';a1='ls sub';...; X0= $a0 X1= $a1 ...` the
+  four searches do not have all the names, so each of the N words that set a variable gets a search of
+  the line for its name, as in the guard before; but with the lead in its new form, which is the longer
+  pattern and takes longer over each search of this line. In one process, on that line with 1,000 ways
+  (25,670 characters), the 1,000 patterns of that search take 1.18 s to build and search in the new form
+  and 0.94 s in the old, a quarter more. The whole check, best of three in each of two runs, takes 4.14
+  and 4.57 s for 3.40 and 3.55 s as the main session and 1.25 and 1.32 s for 0.97 and 1.05 s under the
+  read-only rules, a fifth to three tenths more. Through the hook:
+
+  | Ways | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+  |---|---|---|---|---|---|
+  | 500 | 12,670 | allowed, 1.2 to 1.3 s (3 runs) | allowed, 1.3 s | allowed, 0.6 s (3 runs) | allowed, 0.6 s |
+  | 2,000 | 54,670 | allowed once, 11.8 s; the timer's question twice, 12.3 s | the timer's question, 12.3 s (3 runs) | allowed, 3.5 to 4.2 s (3 runs) | allowed, 5.4 to 5.6 s (3 runs) |
+  | 8,000 | 228,670 | not run | the timer's question, 12.3 s | not run | the timer's question, 12.4 s |
+
+  So at 2,000 ways the guard before stood at its limit and was inside it in one run of three, and the
+  guard after is outside it in all three: on this line the timer's question takes the place of an answer
+  of the rules, the other way round from everything else in this section. With the limit out of reach
+  both guards' rules allow the line, after 13.1 s and 19.4 s in one process (one run each). Under the
+  read-only rules the same line takes 5.4 to 5.6 s where it took 3.5 to 4.2 s. In both guards the time
+  grows with the number of ways times the length of the line.
+- **What I tried instead, and why this stays.** A copy with the old form of the lead in the loop's own
+  search takes what the guard before takes on that line: 3.67 s for 3.55 s as the main session and 1.06
+  s for 1.05 s under the read-only rules, at 1,000 ways in one process, best of three, where the state
+  that I copied, the one before the blank was bounded, took 4.45 s and 1.32 s. But the old form is what
+  takes the square on a row of variables without a blank. With it, a line that has such a row and one
+  place that reads in four ways or more would be searched as the guard before searches it: once for each
+  word of the row, each search the square. The row `rowways` is that line with a place that reads in
+  four ways: this guard takes 0.4 s at 500 words and 2.8 s at 2,000, where the guard before took 6.7 s
+  and ran into its limit. I kept the new form: slower by a fifth to a half on a line that nobody writes,
+  and never the cube.
+- **The lead with signs, as I first wrote it, made a row of variables set to nothing slower, and I
+  bounded the blank before any commit.** A row of `a= ` is read in a number of ways that grows 1.6
+  times with each word, in both forms, and each of them cost the form with signs a little more.
+  Through the hook, the guard before against that first form:
+
+  | Words `a= ` | Characters | Main session, the guard before | Main session, my first form | Read-only rules, before | Read-only rules, my first form |
+  |---|---|---|---|---|---|
+  | 16 | 56 | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s |
+  | 20 | 68 | allowed, 0.3 s | allowed, 0.3 s | allowed, 0.2 s | allowed, 0.3 s |
+  | 24 | 80 | allowed, 0.9 s | allowed, 1.0 s | allowed, 0.5 s | allowed, 0.5 s |
+  | 26 | 86 | allowed, 2.0 s | allowed, 2.3 s | allowed, 0.9 s | allowed, 1.1 s |
+  | 28 | 92 | allowed, 4.8 s | allowed, 5.8 s | allowed, 2.1 s | allowed, 2.5 s |
+  | 30 | 98 | the timer's question, 12.2 s | the timer's question, 14.7 s | allowed, 5.4 s | allowed, 6.0 s |
+
+  So at 30 words, where the guard before asks its timer's question after 12.2 s, my first form asked it
+  after 14.7 s, close to the 15 seconds that the shortest of the hooks gives the guard. The merged
+  record had left this pattern to this work, so I did not leave it a tenth to a fifth slower: the blank
+  behind a `=` is now taken only in front of a word that sets no variable ("The change"), and the row is
+  read in one way (the third table of "The times of the three kinds of line"). What is left of it: a row
+  with a wrapper's word between such variables (`a= env a= env ...`) still reads in two ways for each
+  pair, in both guards, and there the form with signs is still the slower one, by a sixth to a fifth. At
+  21 pairs that is the difference between "allowed" after 10.7 to 10.8 s and the timer's question after
+  12.7 to 12.9 s ("What still grows faster than the line").
+- **Writing a value's pattern in another way repairs neither of the two that are left.** The form with
+  signs reads a variable's value one character at a time, with a look ahead at each, where the old form
+  takes it in one step, and I took that for what costs the time. So I timed four copies that read the
+  value in runs of characters, with a look ahead only at a sign, in two ways of writing it: two copies
+  of the state before the blank was bounded, and two of this guard. At 1,000 ways of the place that
+  reads in many ways, in one process and best of three, the first two took 4.27 and 4.32 s for 4.45 s as
+  the main session and 1.23 and 1.24 s for 1.32 s under the read-only rules, and the second two 4.42 and
+  4.52 s for 4.57 s and 1.30 s twice for 1.32 s: 1 to 7 percent less, where the new form takes a fifth
+  to three tenths more than the guard before. On the row of pairs `a= env` the two copies of this guard
+  showed no gain, in one run each: 7.3 and 7.4 s for 6.9 s at 20 pairs and 15.0 and 14.4 s for 16.1 s at
+  21 as the main session, 2.9 and 3.2 s for 2.9 s and 7.2 and 7.1 s for 6.9 s under the read-only rules.
+  Single runs of that row differ by more than these do (this guard's best of three at 21 pairs, in a
+  later run, is 12.6 and 13.6 s), so the cells show neither a gain nor a loss. So the look ahead at each
+  character is not shown to be the cause, and I took none of the copies. They were timed on these two
+  made-up lines only, and compared on nothing.
+
+### What still grows faster than the line
+
+The brief asks for a plain statement. Each of these is measured on this machine; the lines are made up,
+and none of them is a line that a session writes. First what grows by a factor with each word, then
+what takes the square, in the order of what it costs, and at the end what grows as the line does.
+
+- **By a factor with each word: words that the lead reads in two ways each, where neither bound
+  reaches.** Three rows of some 20 to 30 words and one text of two lines. Through the hook, one run of
+  each, and three of the row of 21 pairs:
+
+  | Shape | N | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+  |---|---|---|---|---|---|---|
+  | `emptywrap` | 12 | 92 | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s | allowed, 0.2 s |
+  | `emptywrap` | 16 | 120 | allowed, 0.5 s | allowed, 0.6 s | allowed, 0.3 s | allowed, 0.4 s |
+  | `emptywrap` | 18 | 134 | allowed, 1.5 s | allowed, 1.8 s | allowed, 0.8 s | allowed, 0.9 s |
+  | `emptywrap` | 20 | 148 | allowed, 5.6 s | allowed, 6.5 s | allowed, 2.5 s | allowed, 2.9 s |
+  | `emptywrap` | 21 | 155 | allowed, 10.7 to 10.8 s (3 runs) | the timer's question, 12.7 to 12.9 s (3 runs) | allowed, 4.7 to 5.0 s (3 runs) | allowed, 5.5 to 5.6 s (3 runs) |
+  | `emptywrap` | 22 | 162 | the timer's question, 21.8 s | the timer's question, 23.3 s | allowed, 9.6 s | allowed, 11.1 s |
+  | `optwords` | 12 | 128 | allowed, 0.3 s | allowed, 0.3 s | allowed, 0.2 s | allowed, 0.2 s |
+  | `optwords` | 16 | 168 | allowed, 1.3 s | allowed, 1.4 s | allowed, 0.6 s | allowed, 0.7 s |
+  | `optwords` | 18 | 188 | allowed, 4.4 s | allowed, 4.9 s | allowed, 1.9 s | allowed, 2.1 s |
+  | `optwords` | 19 | 198 | allowed, 8.6 s | allowed, 9.6 s | allowed, 3.5 s | allowed, 3.9 s |
+  | `optwords` | 20 | 208 | the timer's question, 17.1 s | the timer's question, 18.9 s | allowed, 6.8 s | allowed, 7.6 s |
+  | `optrow` | 20 | 71 | allowed, 0.3 s | allowed, 0.3 s | allowed, 0.2 s | allowed, 0.2 s |
+  | `optrow` | 24 | 83 | allowed, 0.7 s | allowed, 0.7 s | allowed, 0.4 s | allowed, 0.4 s |
+  | `optrow` | 26 | 89 | allowed, 1.4 s | allowed, 1.5 s | allowed, 0.6 s | allowed, 0.6 s |
+  | `optrow` | 28 | 95 | allowed, 3.4 s | allowed, 3.5 s | allowed, 1.4 s | allowed, 1.4 s |
+  | `emptiesfmt` | 20 | 74 | asked, 0.2 s | asked, 0.2 s | refused, 0.2 s | refused, 0.2 s |
+  | `emptiesfmt` | 24 | 86 | asked, 0.5 s | asked, 0.3 s | refused, 0.3 s | refused, 0.2 s |
+  | `emptiesfmt` | 26 | 92 | asked, 0.9 s | asked, 0.4 s | refused, 0.4 s | refused, 0.2 s |
+  | `emptiesfmt` | 28 | 98 | asked, 2.1 s | asked, 0.6 s | refused, 0.8 s | refused, 0.2 s |
+  | `emptiesfmt` | 32 | 110 | not run | asked, 3.2 s | not run | refused, 0.2 s |
+
+  - `emptywrap`: N pairs `a= env` and then `echo 'x'`. The blank behind `a=` stands in front of a word
+    that sets no variable, so it is still taken: each pair is `a` set to nothing in front of the wrapper
+    `env`, or `a` set to `env`. Both guards go through all of these readings, twice as many with each
+    pair, and the guard after is the slower one: through the hook it takes 6.5 s for 5.6 s at 20 pairs
+    as the main session and 11.1 s for 9.6 s at 22 pairs under the read-only rules, a sixth more. In one
+    process, with the limit out of reach, best of three and in each order of the two guards, it takes
+    6.27 and 6.52 s for 5.52 and 5.68 s at 20 pairs and 12.55 and 13.61 s for 10.66 and 11.29 s at 21 as
+    the main session, and 2.85 and 2.76 s for 2.39 and 2.61 s and 5.78 and 6.18 s for 4.85 and 4.99 s
+    under the read-only rules: 14 to 21 percent more in six of the eight cells, and 6 and 24 percent in
+    the other two. Its form of the lead does a little more at each step, and the steps are as many as
+    the readings; which part of the form it is I did not find ("Three slowdowns of my own"). At 21 pairs
+    the guard before allows the line after 10.7 to 10.8 s and this guard asks its timer's question after
+    12.7 to 12.9 s, three runs each; under the read-only rules both allow it, after 4.7 to 5.0 s and 5.5
+    to 5.6 s. With the limit out of reach this guard's rules allow it as well. It is the second line on
+    which the timer's question takes the place of the rules' answer. To refuse the blank in front of a
+    wrapper's word as well would read this row in one way. I did not do it: a wrapper of more than one
+    word (`uv run`, `python -m`) can then lose a reading that nothing else gives back, so it needs a
+    list of the wrappers of one word and a proof for each pattern, and this change is to be the smallest
+    that does what the brief asks.
+  - `optwords`: N times `env -u a=` and then `echo 'x'`. `-u a=` is an option with its word, or an
+    option by itself in front of `a` set to nothing. In both guards, as above. 19 units take 9.6 s for
+    8.6 s and are allowed by both; 20 get the timer's question from both (after 18.9 s and 17.1 s).
+  - `optrow`: `sudo` with N times `-u` and then `echo x`, with no variable in it: the same in both
+    guards ("Seen beside the change, and left").
+  - `emptiesfmt`: N words `a= `, then `echo x`, and `black .` on a second line. The search that asks
+    whether a formatter stands in the text is short and says yes; then the main session's rules read
+    each formatter's arguments in the old form and go through the row's readings, as every pattern
+    with the lead did before. So as the main session it is faster than it was (0.6 s for 2.1 s at 28
+    words) and still grows about 1.6 times with each word (3.2 s at 32). The read-only rules only ask
+    whether a formatter is there, and no longer grow with the row (0.2 s, where 28 words took 0.8 s).
+    The main session is asked about the formatter and the read-only rules refuse it, in both guards.
+- **A wrapper's option written thousands of times with no blank behind its sign** (`env -i;env -i;...`
+  and then `echo x`; the row `wrapopt` of the last table under "Other made-up lines"). A wrapper's
+  option is read up to the next blank, with the signs in it, in both forms of the lead: I bounded a
+  variable's value and not an option, because what stands behind a sign in an option can be a wrapper
+  itself, and the same bound would need its own proof that no answer changes. Every pattern with the
+  lead takes the square here, and one search takes seconds, so the timer's question comes late in both
+  guards. 500 of them take 0.6 to 0.7 s and 2,000 take 6.1 to 6.9 s as the main session in both guards.
+  At 8,000 the question comes after 13.6 to 13.8 s, and under the read-only rules after 31.5 to 32.4 s,
+  later than the hooks wait.
+- **The lead in its old form, where a match is read and the line has what it reads.** The five calls
+  that read each match and the search for a change of folder keep the old form. They run only on a line
+  that holds a quoted command word, a formatter, a runner with a here-string, the shell's `eval` or a
+  word of `cd`; on such a line with a row of variables in front they take the square as before. All of
+  these are far faster than they were, because the other patterns no longer take it (the rows
+  `herelast`, `cdlast`, `quoted` and `newlinecd` of the first table under "Other made-up lines"). 8,000
+  variables in front of a here-string, a `cd` or a quoted command word take the main session 3.6, 4.5
+  and 3.2 s, where the guard before ran into its limit at 2,000. 20,000 reach the limit: the question
+  comes after 18.7, 24.0 and 14.0 s. Under the read-only rules the `cd` costs nothing (0.4 s at 20,000)
+  and the other two take 6.2 and 6.9 s. The worst of them is a text of lines that each set a variable
+  with a change of folder behind them. 2,000 such lines take 1.8 s, 4,000 take 4.4 s and 8,000 take 10.9
+  s; at 16,000 the timer's question comes after 33.4 s, later than the hooks wait. The guard before
+  asked its timer's question at 500 lines. Under the read-only rules it is 0.2 to 0.5 s.
+- **A place where a command starts that reads in four ways or more.** Then the loop searches the line
+  once for each word that sets a variable to a text, as the guard before did for every line: the number
+  of such words times the line's length. The row `rowways` takes 0.4 s at 500 words and 2.8 s at 2,000,
+  where the guard before took 6.7 s and ran into its limit; at 8,000 this guard reaches the limit under
+  both sets of rules (12.3 s). ("Three slowdowns of my own" has the line on which that search is slower
+  than it was.)
+- **Thousands of different variables at places that each read in two ways** (`c='ls sub'; X0= $a0 $b0;
+  X1= $a1 $b1; ...`): the second search of `run_vars()` leaves out the names that the first found, one
+  by one. In one process it takes 0.06 s for 2,000 such places and 0.51 s for 8,000 (134 KB), where the
+  guard before takes 0.02 and 0.07 s: 8.5 times the time for four times the places. I did not time it
+  through the hook.
+- **Older, in both guards, and not of the lead**: a row of thousands of pipes (`a=1|a=1|...`) costs the
+  pattern for a pipe into a runner 0.35 s for 16 KB, the square; and a word of thousands of `{` with no
+  blank costs two patterns for wildcards 1.2 to 1.6 s each for 16 KB. The first of these lines took the
+  guard before 6.0 to 7.1 s at 500 words and ran it into its limit at 2,000; it now takes 0.3 s at 500
+  words, 0.4 s at 2,000 and 0.8 s at 8,000 as the main session, and 0.2 to 0.3 s under the read-only
+  rules.
+
+And one thing grows as fast as the line and no faster, but by much for each word: the main session's own
+work. Without any of the above, the main session's check of a row of variables takes 0.8 s for 5,000 of
+`a=1;`, 1.5 s for 10,000, 2.8 s for 20,000, 5.2 s for 40,000 and 10.3 s for 80,000, about 1.3 s for each
+10,000 words; and 2.6, 5.1 and 10.2 s for 3,000, 6,000 and 12,000 lines of the second kind. So a line of
+the brief's two kinds reaches the limit as the main session by its length alone, at some 370 KB of the
+first kind and 570 KB of the second if the time goes on as measured; I timed nothing beyond the sizes
+above. The read-only rules take a seventh to a tenth of that. Where it goes I looked at once, under a
+profiler, on 20,000 of `a=1;`: of 29.56 s there, 0.85 s are in patterns, in a million calls, and no
+pattern takes more than 0.09 s; a pattern for `name=value` is put to the words 240,012 times, twelve
+times for each. The rest is the guard's own work on each word, which I did not look into further.
+
+### Timings of long lines, through the hook on Windows
+
+The brief asks for timings of the long lines of the earlier comparisons against the guard before, so
+that nothing else got slower. They are the 35 lines of "A program's name in quotes or behind
+backslashes": the 17 of this round's earlier comparisons, three ordinary lines and the fifteen made
+for that repair, two of which are the brief's two kinds of line. Each line went to both guards three
+times as the main session and three times under the read-only rules, each time to a process of its own
+as the hook starts it, and a cell is the best of the three. Windows, Python 3.11.7, 21 November from
+10:52 to 11:07 UTC, with nothing else of this session running.
+
+| Line | Characters | Main session, the guard before | Main session, this guard | Read-only rules, before | Read-only rules, this guard |
+|---|---|---|---|---|---|
+| `echo` with a text of 400 escaped quotes | 2,407 | allowed, 0.23 s | allowed, 0.24 s | allowed, 0.18 s | allowed, 0.18 s |
+| A here-document of 1,500 lines of python text for `python` | 71,300 | allowed, 1.37 s | allowed, 1.41 s | allowed, 0.31 s | allowed, 0.31 s |
+| `echo` and 120,000 opening brackets | 120,005 | allowed, 1.55 s | allowed, 1.47 s | allowed, 0.48 s | allowed, 0.48 s |
+| `echo` and 15,000 times `$(echo "`, none of them closed | 120,005 | asked, 0.83 s | asked, 0.82 s | asked, 0.27 s | asked, 0.27 s |
+| A here-document of 1,500 lines of a program for `node` | 105,824 | allowed, 1.82 s | allowed, 1.82 s | allowed, 0.38 s | allowed, 0.39 s |
+| 750 lines `tar -tf a7.tar; git apply --check p7.patch` | 35,029 | allowed, 0.74 s | allowed, 0.73 s | refused, 0.23 s | refused, 0.24 s |
+| A `tee` behind a pipe, with 5,000 files | 68,902 | allowed, 1.71 s | allowed, 1.75 s | refused, 0.26 s | refused, 0.25 s |
+| A `tee` behind a pipe, with 2,000 files and `2>/dev/null` behind each | 50,902 | allowed, 1.19 s | allowed, 1.17 s | refused, 0.24 s | refused, 0.25 s |
+| `awk` with 2,000 rules `{print $1 " -> " $2}` | 42,238 | allowed, 0.38 s | allowed, 0.38 s | allowed, 0.21 s | allowed, 0.22 s |
+| 1,500 times a `printf` piped to `awk '{print $1}'`, in one line | 64,887 | allowed, 1.01 s | allowed, 0.97 s | allowed, 0.32 s | allowed, 0.26 s |
+| 500 lines `unzip -o a7.zip -d sub/o7; tar -xOf a7.tar m.txt; cpio -it < a7.cpio` | 38,059 | allowed, 1.06 s | allowed, 1.07 s | refused, 0.22 s | refused, 0.22 s |
+| `node -e` with 3,000 calls `console.log(7);` | 55,899 | allowed, 1.50 s | allowed, 1.49 s | allowed, 0.29 s | allowed, 0.29 s |
+| `node -e` whose one word holds `write` 4,000 times | 20,010 | allowed, 2.73 s | allowed, 2.77 s | allowed, 0.30 s | allowed, 0.30 s |
+| `awk` with `print` 3,333 times in one statement | 20,014 | allowed, 0.74 s | allowed, 0.74 s | allowed, 0.68 s | allowed, 0.68 s |
+| `node -e` with 2,000 calls `c.createHash('md5');` | 42,009 | allowed, 0.86 s | allowed, 0.83 s | allowed, 0.28 s | allowed, 0.27 s |
+| 1,000 lines `patch -C -p1 < p7.patch; git am -h` | 36,889 | allowed, 0.72 s | allowed, 0.72 s | refused, 0.22 s | refused, 0.23 s |
+| `awk` with 2,000 rules `{print $1 > "/dev/stderr"}` | 54,016 | allowed, 0.45 s | allowed, 0.46 s | allowed, 0.23 s | allowed, 0.23 s |
+| `python .claude/skills/nn-training/scripts/expctl.py status` | 58 | allowed, 0.18 s | allowed, 0.19 s | allowed, 0.17 s | allowed, 0.18 s |
+| `.\.venv\Scripts\python.exe scripts\expctl.py status` | 51 | allowed, 0.19 s | allowed, 0.19 s | allowed, 0.17 s | allowed, 0.18 s |
+| `& "C:\Program Files\Git\cmd\git.exe" status` | 43 | allowed, 0.19 s | allowed, 0.19 s | allowed, 0.18 s | allowed, 0.18 s |
+| 750 lines `"C:/Program Files/Git/usr/bin/cat.exe" sub/f7.txt; 'head' -5 sub/f7.txt` | 56,779 | allowed, 1.01 s | allowed, 1.01 s | allowed, 0.29 s | allowed, 0.30 s |
+| 750 lines `C:\msys64\usr\bin\cat.exe sub\f7.txt; .\.venv\Scripts\python.exe sub\f7.py` | 59,029 | allowed, 1.77 s | allowed, 1.77 s | allowed, 0.39 s | allowed, 0.39 s |
+| 750 lines `c'a't sub/f7.txt; "wc" -l sub/f7.txt` | 30,529 | allowed, 0.92 s | allowed, 0.91 s | allowed, 0.27 s | allowed, 0.28 s |
+| A here-document of 1,500 lines of python text for `.\.venv\Scripts\python.exe` | 71,320 | allowed, 2.80 s | allowed, 2.80 s | allowed, 0.47 s | allowed, 0.47 s |
+| The same for `"C:/Program Files/Python311/python.exe"` | 71,333 | allowed, 2.13 s | allowed, 2.15 s | allowed, 0.40 s | allowed, 0.42 s |
+| `python -c` with 3,000 quoted words in its text | 46,901 | allowed, 1.39 s | allowed, 1.35 s | allowed, 0.29 s | allowed, 0.28 s |
+| `"C:/Program Files/Git/usr/bin/echo.exe"` with a text of 400 escaped quotes | 2,442 | allowed, 0.25 s | allowed, 0.26 s | allowed, 0.18 s | allowed, 0.19 s |
+| `cat` with 5,000 quoted files | 78,893 | allowed, 1.53 s | allowed, 1.50 s | allowed, 0.24 s | allowed, 0.25 s |
+| 20,000 quoted words, each a command of its own: `'w1';'w2';` and so on | 168,889 | allowed, 5.92 s | allowed, 5.79 s | allowed, 0.58 s | allowed, 0.61 s |
+| 1,500 lines `out7="sub/f7.txt"; cat "$out7"` | 56,669 | allowed, 9.77 s | allowed, 1.38 s | allowed, 3.08 s | allowed, 0.29 s |
+| 20,000 times `a=1;`, then `echo 'x'` | 80,008 | the timer's question, 64.17 s | allowed, 2.73 s | the timer's question, 81.01 s | allowed, 0.51 s |
+| `echo 'x'` and 120,000 opening brackets | 120,009 | allowed, 1.55 s | allowed, 1.49 s | allowed, 0.49 s | allowed, 0.49 s |
+| 1,500 lines `& "C:\Program Files\Git\usr\bin\cat.exe" sub\f7.txt` | 81,389 | allowed, 2.13 s | allowed, 2.13 s | allowed, 0.43 s | allowed, 0.42 s |
+| 1,500 lines `bash -c "'cat' sub/f7.txt"` | 43,889 | allowed, 4.55 s | allowed, 4.46 s | allowed, 0.99 s | allowed, 1.00 s |
+| 5,000 times `bash -c "'cat' sub/f7.txt"` in one line | 153,888 | allowed, 7.75 s | allowed, 7.93 s | allowed, 0.72 s | allowed, 0.72 s |
+
+- **The two lines of this change**: 1,500 lines that each set a variable and read it take 1.38 s for
+  9.77 s as the main session and 0.29 s for 3.08 s under the read-only rules. 20,000 of `a=1;` are
+  allowed after 2.73 s and 0.51 s, where the guard before asked its timer's question after 64 s and
+  81 s. That is the one line of the 35 whose answer differs.
+- **The other 33 take what they took, with the same answers.** As the main session 31 of them differ by
+  less than a tenth of a second (from 0.09 s less to 0.04 s more). One takes 0.13 s less (20,000 quoted
+  words, 5.79 s for 5.92 s) and one 0.18 s more (5,000 shells that are handed a quoted program, 7.93 s
+  for 7.75 s). Under the read-only rules the largest differences are 0.06 s less and 0.03 s more.
+- **What 0.18 s is on this machine**: less than two runs of one guard differ by. In the run of 09:30
+  UTC, best of three as here, the same guard before took 8.77 s for that line of 5,000 shells, a
+  second more than in this run, and 2.67 s for the line of 3,000 calls of `node -e`, which takes 1.50
+  s here; and in that run this change, as it then stood, took 0.07 s less than the guard before on
+  the line of 5,000 shells. So I cannot tell the 0.18 s from the machine. It may also be real: on a
+  line with quoted command words, the search that says whether there is one is a search more in
+  front of the pattern that reads them.
+- **An ordinary line** takes 0.18 to 0.19 s as the main session and 0.17 to 0.18 s under the read-only
+  rules, before and after.
+
+### The tests, and what each new row rests on
+
+The brief asks for rows where a row can rest on the change without depending on wall time, and for none
+that waits for a clock. A change of speed has no answer to ask for: the one answer that changes is the
+timer's, and a row that wants "no question within the guard's own time" is a row that waits for a clock
+(the kit file has such rows from earlier rounds, for other long lines; I added none). So the rows count
+searches and read where a match begins, in a process of their own with the guard loaded as a module,
+and no row puts a line to the hook.
+
+- **`tests/test_kit.py`: six rows more, in one block** behind the row for a long JSON body and in front
+  of the rows for a here-document's lookups.
+  1. A line that sets 200 variables is searched as often as one that sets two for the variables that it
+     may run, and the text of the one that it runs (`c='rm x'; $c`) is found among them. The row counts
+     the calls of `re.search` and `re.finditer` on the whole line during `inner_code()`. It fails on the
+     guard before, which has two searches for each variable, and on a copy with the loop's old two
+     searches put back.
+  2. Where a command's start reads in two ways (`c='ls sub'; d='ls data'; X= $c $d`), both texts count as
+     ones that the line may run. It passes on the guard before too, which found each by its own search:
+     the row rests on the new search's repeat, and fails on a copy that searches once and takes what it
+     found for all.
+  3. A place where a command starts that reads in 300 ways (`X0= $c X1= $a1 ... X299= $a299`) is not
+     searched once for each of them (fewer than ten searches), and the variable that the few searches did
+     not come to is found by a search of its own. It passes on the guard before as well, where the one
+     variable that is set gets its two searches. It fails on a copy without the limit of four searches, on
+     one that stops after four and takes the names for all, and on one whose loop does not search for a
+     name that was not found.
+  4. A search that asks whether a command stands in a line finds it from the last sign or line break in
+     front of it: `WRITE_CMDS`, `FORMATS` and `EXTRACT` on `a=1;b=2 touch x` and its like begin at
+     character 3, the `;`, and `HERE_RUN` on two lines begins at the second. It fails on the guard before
+     and on a copy whose lead has no signs, where each begins at the line's beginning.
+  5. Such a search takes the blank behind a variable's `=` only in front of a word that sets no
+     variable. On `a=` with `b= touch x` on the next line, `WRITE_CMDS` begins at character 3, at `b=`
+     as a variable of its own; on `a=` with `b touch x` on the next line it begins at character 0, with
+     `a` set to `b`. It fails on the guard before, on a copy whose lead takes that blank in front of any
+     word, and on the copy whose lead has no signs: each of them begins at character 0 on the first
+     text too, with `a` set to `b=`. This is the row of the third kind of line: a row of variables set
+     to nothing is read in one way because of what it pins.
+  6. The patterns that read all that leads to a command (`CD`, `QUOTED_COMMAND`, `COMMAND_WORD`,
+     `FORMATS_EACH`, `HERE_RUN_EACH`) are not used on a line that holds none of what they read, and each
+     is used on a line that holds them all (`cd sub && 'ls' > out.txt; black .; sh <<< 'ls'`), by both sets
+     of rules. It fails on the guard before, which has no such names, and on five copies that each take
+     one of the searches in front away.
+- **Each row was run on copies with its change taken out**, twelve copies and the guard before:
+
+  | Copy | Row 1 | Row 2 | Row 3 | Row 4 | Row 5 | Row 6 |
+  |---|---|---|---|---|---|---|
+  | the guard after | passes | passes | passes | passes | passes | passes |
+  | the guard before | fails | passes | passes | fails | fails | fails |
+  | the loop's old two searches back | fails | passes | passes | passes | passes | passes |
+  | one search, taken for all | passes | fails | fails | passes | passes | passes |
+  | no limit of four searches | passes | passes | fails | passes | passes | passes |
+  | stops after four and takes the names for all | passes | passes | fails | passes | passes | passes |
+  | the loop does not search for a name not found | passes | passes | fails | passes | passes | passes |
+  | the lead without signs | passes | passes | passes | fails | fails | passes |
+  | the blank behind `=` in front of any word | passes | passes | passes | passes | fails | passes |
+  | `MAY_CD` finds something in any text | passes | passes | passes | passes | passes | fails |
+  | no search in front of `QUOTED_COMMAND` | passes | passes | passes | passes | passes | fails |
+  | no search in front of `COMMAND_WORD` | passes | passes | passes | passes | passes | fails |
+  | no search in front of `FORMATS_EACH` | passes | passes | passes | passes | passes | fails |
+  | no search in front of `HERE_RUN_EACH` | passes | passes | passes | passes | passes | fails |
+
+- **What has no row**: the search in front of the count of the shell's own `eval`, which no name of the
+  module holds; and the answers themselves, which the comparisons above cover and no row can, because
+  none changes.
+- **`tests/test_review_fixes.py`: no row.** That file puts lines to the hook and reads the answer. The
+  only answer that this change alters is the timer's question on a line that took more than 12 seconds,
+  and a row for it would wait for a clock on a machine whose clock the brief warns of.
+
+### The passes
+
+The brief asks for the eight test files on Windows and for the kit file in WSL, and that is what ran,
+each once, on a fresh copy of the commit's state: the guard, the kit's test file and `docs/REFERENCE.md`
+are the commit's files byte for byte. The two record files were written after the passes; no test reads
+them.
+
+| Where | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Windows | 3.11.7 | 19 | 1,260 | 184 | 138 | 264 | 100 | 54 | 6 | 2,025 |
+| WSL | 3.12.3 | not run | 1,268 | not run | not run | not run | not run | not run | not run | 1,268 |
+
+No check failed. Against `b5331fb` under the same interpreters, whose counts are in the table of "A
+program's name in quotes or behind backslashes", that is six checks more in the kit file on both
+systems, the six rows of this change; the other seven files have that table's counts. The Windows pass
+ran on 21 November from 11:17 to 11:44 UTC, on a copy of the worktree. The kit file in WSL ran from
+11:17 to 11:20, beside the first minutes of the Windows pass, on a clone made for it at `b5331fb` with
+the commit's three files laid over it as a patch. Before the last timings I had run the kit file once on
+Windows on the same guard and test file, from 10:34 to 10:41 UTC: 1,260 checks, none failed.
+
+### Seen beside the change, and left
+
+- **The timer is as it was.** It cannot answer while one search of a pattern runs, as the record of
+  18 November says. This change makes the searches short on the lines above; a line on which one search
+  still takes seconds is still answered late ("What still grows faster than the line": a wrapper's
+  option, 8,000 times).
+- **A wrapper's options that read in two ways each, in a line with no variable at all.** In `sudo -u -u
+  -u ... echo x` the lead reads each `-u` as an option that takes the next word or as an option by
+  itself, so a row of them is read in as many ways as a row of `a= ` was, and a search that finds
+  nothing goes through them all. Both guards take the same time on it (the table under "What still
+  grows faster than the line"): no word of it sets a variable, so neither the bound on a value nor the
+  one on the blank comes to it. I made the line because it has the shape of the third kind, measured
+  it, and changed nothing: it is older than this change and outside what the brief names.
+- **Where the lead is read in its old form, it passes over a command that stands inside a variable's
+  value without a blank.** The old form reads a value up to the next blank, with the signs in it. On
+  `X=1;sh<<<a; Y=2 bash <<EOF` the pattern that reads each runner with a here-string gives one match,
+  the `bash`, and not the `sh` with its here-string; and on `X= 'y';b=2 'z'` the pattern that takes the
+  quotes off a command word leaves `'y'` in its quotes. I met both while I looked at which calls read a
+  match and so cannot take the new form. They are as in the guard before and in the released guard. I
+  put the two texts to the patterns alone and to no rule, tried no further form, and wrote no row that
+  pins them: whether an answer of a rule hangs on it is a search that the brief rules out. A search in
+  the new form finds both. To read the matches in the new form there would change what the rules get
+  on such a text, and this change is to alter no answer; so it is a decision of its own.
+
+### What this puts out of date in the sections around it
+
+The brief asks that this session's additions to each record stand together in one block, so I changed
+no sentence of another section. These statements hold for the guard of `bcfab15` and for the released
+guard, and no longer for this branch's guard:
+
+- **Point 49 of "Read this first"**: "Seen beside the repair and left: a loop of the guard that is
+  older than this round searches the whole line once for each word that sets a variable", with its
+  times; and among its open questions "what is done about the loop over a line's assignments".
+- **"A program's name in quotes or behind backslashes"**: point 7 of its "In short"; under "Seen beside
+  the repair, and left" the bullet "Two kinds of long line are slow in the guard before as well", with
+  the times under it (what it says of why the timer is late stays); in its table of timings the rows
+  of 1,500 lines `out7="sub/f7.txt"; cat "$out7"` and of 20,000 times `a=1;`, and under that table the
+  bullet "The two lines of assignments are slow in both guards alike"; and among its decisions "What
+  is done about the loop over a line's assignments". The patterns that hold the lead, twelve in the
+  guard of `bcfab15`, are sixteen in this guard, ten of them in the new form.
+- **PROGRESS.md**: in the entry of the same name the bullet "Seen beside the repair and left" as far as
+  it speaks of the loop, and in its line "Next" the words "what is done about the loop over a line's
+  assignments"; and the same words in the note "Added on 21 November" under "Not done, and why". The
+  summary at the top of that file names each entry and does not name this session's: whoever joins
+  the branches can add its sentence there.
+
+What the same places say of the read-only rule for signals, of the cost for a read-only agent and of
+the other decisions is not touched by this change.
+
+### Not done, and why
+
+- **A reader.** The brief leaves a reader to your word, and I started none. So this change is read by
+  nobody but me. It stands on the repair of `bcfab15` as its author left it. Two readers went through
+  that repair since, each for another branch, and what they found is repaired there and not here: on
+  the joining session's branch (`f2338d6`) and on the branch that this one was cut from (`24970e3`).
+  Both repairs are in `named()`, where this change puts a search in front of the one call that reads
+  a match. This change had what the brief and this project's record ask of a change to the guard:
+  the diff read again against its comments; for each call that reads a match, why the old form stays
+  there; for the bound on the blank, why each reading that it takes away comes to the same place as
+  one that stays; the two forms of the lead and the old loop against the new one on 300,000 texts;
+  the whole check on 40,000; the generated lines through the hook under both sets of rules, the
+  released guard beside them; timings through the hook; and rows that fail on copies with their
+  change taken out.
+- **A push, a merge, `main`, your real install, a deletion**: each needs your word. Left on this
+  machine: this session's scratch folder with its helpers, copies of the kit and results, and in WSL the
+  clone `~/nnkit-upgrade/kit-sp-final`.
+- **Forms against the rules.** None beyond the brief's: a variable that holds a command and is run, in
+  the forms and places that it names, on harmless targets and on the targets of the kit's own test rows;
+  and for the third kind the same targets behind variables set to nothing. The lines that I made to
+  time the guard are rows of variables, wrappers' words and options with a harmless command behind them.
+- **The two made-up lines that get the timer's question where the guard before allowed them**: not
+  repaired. The row with a wrapper's word between variables set to nothing (`a= env a= env ...`) is a
+  sixth to a fifth slower than it was and reaches the limit at 21 pairs, one pair sooner ("What still
+  grows faster than the line"). The place that reads in 2,000 ways with as many variables set stood at
+  the limit and is past it ("Three slowdowns of my own"). A repair of either is a change to the guard,
+  and every comparison and timing of this section would have to be run again on it.
+- **The limit seen beside the change, and the wrapper's options that read in two ways**: left, and put
+  to no rule, as said there.
+- **The guard before with its limit out of reach**: on 2,000 of `a=1;` I stopped it before its end (the
+  1,000 took 100 s under the profiler, and the rules' answer there is the one that counts); and on
+  three of the 21 made lines whose answer was the timer's I stopped it after 300 s each, so for those
+  three what its rules would say is not shown ("The comparisons").
+- **Other interpreters and systems.** The tests ran under Python 3.11.7 on Windows and 3.12.3 in WSL.
+  Nothing ran under Python 3.8 or 3.15, on a Mac, on bare Linux or on GitHub's machines; GitHub's six
+  jobs run on a push. For 3.8 I did one thing: the guard and the kit's test file parse with the grammar
+  of Python 3.8 (under 3.11, the syntax only), and they hold none of the few later calls that I looked
+  for.
+- **Timings elsewhere.** Every time in this section is from this one machine, on Windows, through the
+  hook or in one process. Nothing was timed in WSL or under another interpreter. The tables of made-up
+  lines hold one run of each line, except where a cell names more.
+- **The released guard's times.** I did not time `main`'s guard again: the brief gives its figures and
+  says that it behaves as the guard before does on these lines. It stood beside the guard before in
+  the comparison of answers through the hook.
+- **The copies that I tried and did not take** ("Three slowdowns of my own"): timed on two made-up
+  lines, and compared on nothing.
+- **The joined state.** I did not put this change on any of the branches that hold later work, and
+  ran nothing on such a state: a merge is your word's. I tried the joins in memory only, with `git
+  merge-tree`, which writes to no branch, index or folder. What they met is under "What needs your
+  decision".
+- **The ledger** (`docs/upgrade/LEDGER.md`): untouched. The brief names the two record files.
+- **Reduced, to spend less of your usage**: no agent of any kind; one pass of the tests on each system;
+  one seed for each comparison.
+
+### What needs your decision
+
+- **Whether a reader goes through this change before it goes further.** By this project's record each
+  reading of a guard fix since 16 November has found something, and this one gives eight patterns a
+  new form of what leads to a command, adds five patterns, bounds a blank, and changes a loop of
+  `inner_code()`, which reads every Bash line. I would give it one with a brief about correctness in
+  both directions, as the reader of 20 November had, and not one to look for ways past the guard.
+- **Whether the bound on the blank stays.** It is my decision beside the brief ("The change"): it
+  answers the third kind of line, which the brief does not name and the merged record hands to this
+  work. Without it the first two kinds are answered as fast, and the third takes a tenth to a fifth
+  longer than in the guard before. It is one key of `_lead()` and one test row.
+- **Whether the two made-up lines that get the timer's question now get a repair.** Both stood at the
+  limit of the guard before, and a question in place of "allowed" is the safe side. But the brief asks
+  that no answer change, and on these two the guard's answer does. No rule's answer does: with the limit
+  out of reach, in one process, the rules of both guards allow both lines (the row of 21 pairs after
+  10.7 s and 12.6 s, best of three; the place of 2,000 ways after 13.1 s and 19.4 s, one run each). For
+  the row `a= env a= env ...` I see one way: to refuse the blank behind a variable's `=` in front of a
+  wrapper's word as well. That reads the row in one way and takes it out of what grows by a factor, and
+  it needs a list of the wrappers of one word and, for each pattern, the proof that the reading taken
+  away comes to the same place as one that stays. Writing a value's pattern in another way is not one:
+  the copies that I timed were no faster on that row ("Three slowdowns of my own"). For the place that
+  reads in thousands of ways it is the question of the loop's own search, below. Each of these is a
+  change to the guard, so the comparisons and timings of this section would be run again on it.
+- **Where these commits go.** They stand on `b5331fb` on a branch of their own,
+  `claude/beautiful-bartik-32f1e5`; I touched no other branch and fetched nothing. `main` and your
+  install have the loop as it was, and so the late answers that the section before this one measured.
+  Two local branches hold later work on the guard, and neither holds this change:
+  `claude/sharp-faraday-6bd610`, which this branch was cut from and which went on to `0f896a3` while I
+  worked, and `claude/kit-commit-verification-e52f2b`, which joins the other sessions' work (its code at
+  `c631d57`, its records up to `f08b6dd`). I tried the join of `f471473` with each of the four branches
+  in memory (`git merge-tree`, 12:01 UTC). That is a reading and no test: nothing ran on a joined state.
+  With `claude/sharp-faraday-6bd610` every file joins by itself. Its `24970e3` changes `named()` above
+  the one line of that function that this change touches, and it changes what is done with a word that
+  the pattern found, not the pattern; so the search that I put in front, which asks whether the pattern
+  finds a word, stands there as it stands here. With `claude/kit-commit-verification-e52f2b` the guard
+  has two conflicts, both where its `f2338d6` writes `/[ckCK]` for `cmd`'s `/c` and `/k` in a line that
+  this change builds anew: at `_START` and at `COMMAND_WORD`. The join is this change's lines with
+  `[ckCK]` in `_START` and in `_WORD_AT`, which makes both `COMMAND_WORD` and the new `WORD_ANY`. With
+  the small letters left in `_WORD_AT`, `WORD_ANY` would find no word behind `cmd /C`, and `named()`
+  would pass over a name that `f2338d6` made it read. `_AT`, the reference and the kit's test file join
+  by themselves there. With the pilot's branch and with the branch of the two faults only the two record
+  files conflict, and they do so without this change: `b5331fb` has the same conflicts with them, six
+  with the pilot's and nine with the other. This record adds none there; it stands inside one of them in
+  each file. With the first two branches it adds one conflict each, in `docs/upgrade/REPORT.md` behind
+  the note under point 49, where each session puts its point; `docs/upgrade/PROGRESS.md` joins with
+  those two by itself (tried the same way at 12:18 and 12:23 UTC on this record as first committed; the
+  commit's message says what changed since). The comparisons of this section hold for the guard of
+  `b5331fb` with this change and for no joined guard: whoever joins them can run `difffn.py` on the
+  joined one.
+- **The loop's own search on a place that reads in four ways or more** ("Three slowdowns of my own"). As
+  it is, that search has the new form of the lead: never the square, and slower than it was on a made-up
+  line with thousands of such ways (the timer's question at 2,000 ways, where the guard before stood at
+  its limit, and 5.4 to 5.6 s for 3.5 to 4.2 s under the read-only rules). With the old search in its
+  place nothing that I measured would be slower than before, and a row of variables without blanks that
+  stands in a line with such a place would take what it took, the timer's late question included. I kept
+  the first.
+- **What still grows faster than the line** (the section of that name): whether any of it gets a change
+  of its own. The ones that still reach the limit on few words are the rows that are read in two ways
+  for each word: a wrapper's options (`sudo -u -u -u ...`), which no part of this change touches, and
+  a wrapper's word between variables set to nothing. The one that still answers late is a wrapper's
+  option written thousands of times with no blank behind its sign.
+- **The limit seen beside the change**: whether the calls that read their matches should read a command
+  that stands inside a variable's value without a blank. That changes answers, so it wants its own
+  comparison.
+- Unchanged, and the other sessions' to record: `main`, the installer runs, the other local branches,
+  the snapshot branches and the scratch clones; and the open decisions of the section that this one
+  follows, but the fourth.
+
+Sources: the guards of `bcfab15`, of this section's commit and of `e587b4f` in temporary projects that
+the kit's own test setup builds, each given command lines as text on its standard input or loaded as a
+module, on 21 November 2026 (UTC), on this machine; twelve altered copies of the guard, made by a script
+from the guard after; the kit's tests on copies of the commit's state, on Windows under Python 3.11.7
+and in WSL under 3.12.3, their checks counted in the logs as the lines that begin with `PASS` and
+`FAIL`; Python's profiler and a timer around each call of a pattern; the brief of the session that
+started this one, with its figures of the guard of `fd589b2`; the tips of the other local branches, the
+record of `claude/kit-commit-verification-e52f2b` and the other sessions' notes in their shared folder,
+read on this machine on 21 November; `git merge-tree` for the joins, which writes to no branch; the
+helpers that PROGRESS.md names.
 
 ## Round 2 (12 November 2026)
 

@@ -370,6 +370,10 @@ _CD_AT = (r"(?:^|[;&|({)])\s*(?:(?:if|then|else|elif|while|until|do|time|command
 # The folder ends at a redirection (cd data</dev/null), and a shell lets one splice it from pieces (d"at"a, 'da'ta)
 CD = re.compile(_CD_AT + _CD_WORD + r"\s+(?:-[lpe]\w*(?::|\s+)|(?:/d|--)\s+)*((?:\"[^\"]*\"|'[^']*'|[^\s;&|)<>'\"]+)+)",
                 re.I | re.M)
+# MAY_CD: one of these words stands where a word begins. A text without one holds nothing for CD or for what saves()
+# asks about a change of folder, and is not searched for it: such a search begins at every separator and reads a
+# variable's value on to the next blank, which takes the square of the length of a=1;b=2;c=3;... (see _lead)
+MAY_CD = re.compile(r"(?<![\w./-])(?:popd|Pop-Location|" + _CD_WORD + ")", re.I)
 ASSIGN = re.compile(r"^[A-Za-z_]\w*=")  # NAME=value in front of a command
 # file filters of search commands, each tool's own: rg -g/--glob/-t, grep --include/--exclude/--exclude-dir, find -name
 _VAL = r"(\"[^\"]*\"|'[^']*'|[^\s;&|]+)"
@@ -384,13 +388,47 @@ FIND_END = re.compile(r"(\s-(?:exec|execdir|ok|okdir)\s(?:[^;&|\n'\"]|'[^']*'|\"
 _WRAP = "sudo|time|timeout|nice|command|exec|env|nohup|setsid|caffeinate|if|then|else|elif|while|until|do|!"
 # a wrapper's options, of which some take a value (conda run -n ml, uv run --with black, sudo -u me, xargs -I {},
 # and since 19 November 2026 env -C <folder>: a program that counts where a command starts stood unseen behind it)
-_LEAD = (r"\s*(?:(?:(?:%s)(?:\s+(?:-[npuIC]|--(?:name|prefix|with|from|python|project|directory|chdir|cd))\s+[^\s;&|]+|"
-         r"\s+-\S+|\s+\d\S*)*|[A-Za-z_]\w*=\s?\S*)\s+)*")
-COMMAND_START = re.compile(r"(?:^|.*[({`])" + _LEAD % _WRAP + r"(?:\S*/)?$", re.S)
+_LEAD = (r"%(gap)s*(?:(?:(?:%(wrap)s)(?:\s+(?:-[npuIC]|--(?:name|prefix|with|from|python|project|directory|chdir|cd))"
+         r"\s+[^\s;&|]+|\s+-\S+|\s+\d\S*)*|[A-Za-z_]\w*=%(blank)s%(value)s)%(gap)s+)*")
+
+
+def _lead(wrap: str, signs: str = "") -> str:
+    """The pattern of what leads to a command's word, with these wrappers. It reads a variable's value (X=1 cmd) up
+    to the next blank, with every sign in it, and the blanks behind each of its words with the line breaks in them.
+    So in a=1;b=2;c=3 ... cmd each `;` begins a lead that runs on to that one blank, and in a text of lines that each
+    set a variable each line begins one that runs on to the last: a search that finds nothing took the square of the
+    text's length (0.06 s for 2,000 of a=1; and 6.2 s for 20,000, in each of a dozen patterns, 21 November 2026).
+    signs: for a pattern that is only asked whether a command stands somewhere in the text, never where its lead
+    begins or what it holds. The signs are those at which that pattern starts by itself, and it must start at a
+    line's beginning (^ with re.M) as well. Then a value ends in front of a sign that a blank or another variable
+    follows, and the blanks in front of the lead and behind each variable or wrapper in it hold no line break (the
+    one behind a variable's `=`, those among a wrapper's options and inside a wrapper of two words, uv run, still
+    do): what stands behind such a place is found from there, with the same words behind it, so the answer is the
+    one it was, and a row of variables is read once and no longer again from each of its signs.
+    And a blank behind a variable's `=` (X= cmd, which the lead also reads as X set to the next word) is taken only
+    in front of a word that sets no variable itself. In a= b= c= ... cmd each word was a variable of its own or the
+    value of the one before it, both with the same words behind them, so a search that found nothing took 1.6 times
+    as long with each word: thirty of them in front of echo 'x' took the guard past its limit (21 November 2026).
+    Not so where the lead itself is read (the text a match holds, where it begins, how many there are): the lead
+    without signs stays for that, behind a search with signs that says whether it has anything to find.
+    What still takes the square: a wrapper's options, which run over the signs in both forms (env -i;env -i;...),
+    and the lead without signs on a row of variables in a text that has what it reads (a=1;a=1;... cd sub), which
+    for a command word in quotes is every place where one could begin (a=1;a=1;... echo "r${i}": see WORD_ANY). And
+    what still grows by a factor with each word: variables set to nothing with a wrapper's word between them (a= env
+    a= env ...), a wrapper's options that read in two ways (sudo -u -u -u ...), and the lead without signs on a row
+    of variables set to nothing in such a text (a= b= c= ... echo x and black . on the next line)."""
+    return _LEAD % ({"wrap": wrap, "gap": r"\s", "blank": r"\s?", "value": r"\S*"} if not signs else
+                    {"wrap": wrap, "gap": r"[^\S\n]", "blank": r"(?:\s(?=\S)(?![A-Za-z_]\w*=))?",
+                     "value": r"(?:(?![%s](?:[A-Za-z_]\w*=|\s))\S)*" % signs})
+
+
+COMMAND_START = re.compile(r"(?:^|.*[({`])" + _lead(_WRAP) + r"(?:\S*/)?$", re.S)
 # a command word in quotes ("grep" -r x ., $'grep', behind xargs too) is the same command. Not one with a blank in
-# it: unquoted it would be two (that one, and a word put together from quoted pieces, is read by named())
-QUOTED_COMMAND = re.compile(r"((?:^|[;&|({`])" + _LEAD % (_WRAP + "|xargs") + r")\$?(['\"])([\w./:-]+)\2"
-                            r"(?=[\s;&|)]|$)", re.M)
+# it: unquoted it would be two (that one, and a word put together from quoted pieces, is read by named()).
+# QUOTED_ANY: is there one? (see _lead)
+_QUOTED_AT = r"((?:^|[;&|({`])%s)\$?(['\"])([\w./:-]+)\2(?=[\s;&|)]|$)"
+QUOTED_COMMAND = re.compile(_QUOTED_AT % _lead(_WRAP + "|xargs"), re.M)
+QUOTED_ANY = re.compile(_QUOTED_AT % _lead(_WRAP + "|xargs", ";&|({`"), re.M)
 # Files of notes. The edit tools write their text unread, because documentation may name the test set, so a command
 # line or a file's new text that runs one as code is asked about: see runs_notes()
 NOTES = r"\.(?:md|mdx|rst)"
@@ -405,9 +443,13 @@ _SCRIPT = r"(?:" + _NOTE + r"|(?!" + _W1 + r"*\.\w+(?=[\s;&|<>()]|$))(?=" + _W1 
 # (/C and /K are cmd's /c and /k: was until 21 November 2026 the small letter alone, so that the rules which keep
 # the case of a program's options saw no command behind the capital one, and cmd /K tar xf a.tar passed unasked)
 _START = r"(?:^|[;&|({`]|\s/[ckCK]\s)"
-_LEADS = _LEAD % (_WRAP + r"|xargs|builtin|winpty|stdbuf|wsl|uvx|(?:uv|conda|mamba|micromamba|poetry|pipenv|pixi|"
-                  r"pipx|pdm|hatch|rye)\s+run|uv\s+tool\s+run|(?:python[0-9.]*|py)\s+-m")
-_GO = _START + _LEADS + r"(?:" + _W1 + "*/)?"
+_WRAPS = (_WRAP + r"|xargs|builtin|winpty|stdbuf|wsl|uvx|(?:uv|conda|mamba|micromamba|poetry|pipenv|pixi|"
+          r"pipx|pdm|hatch|rye)\s+run|uv\s+tool\s+run|(?:python[0-9.]*|py)\s+-m")
+_LEADS, _LEADS_ANY = _lead(_WRAPS), _lead(_WRAPS, ";&|({`")
+# _GO: where a command starts, for a pattern that is asked whether its command stands in a text (see _lead).
+# _GO_EACH: the same with all that leads to the command, for one whose matches are counted or read
+_GO = _START + _LEADS_ANY + r"(?:" + _W1 + "*/)?"
+_GO_EACH = _START + _LEADS + r"(?:" + _W1 + "*/)?"
 _PROG = (r"(?:(?:ba|z|da|k|c|tc|fi)?sh|cmd|python[0-9.]*|pypy[0-9.]*|py|node|deno|bun|perl|ruby|php|lua|Rscript|julia|"
          r"pwsh|powershell)(?:\.exe)?")
 # the word ends there: `source: notes.md` in a configuration file and `cmd = [...]` in a program are no commands
@@ -445,9 +487,20 @@ _WEND = r"(?=[\s;&|)<>]|$)"
 # or a list in program text (d.get("patch"), $s.Contains('rm'), steps=("install" "train")), and no command. And
 # /c or /k starts a command behind cmd alone: find /c "install" log.txt counts lines. In either case of the letter,
 # as cmd takes it (was until the reading of 21 November 2026: the small letter alone)
-COMMAND_WORD = re.compile(
-    r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ckCK]\s)" + _LEADS
-    + r")(?=[^\s;&|<>()'\"`\\]*['\"\\])((?:" + QUOTED.pattern + "|" + _W1 + ")+)" + _WEND + "|" + QUOTED.pattern, re.M)
+_WORD_GO = (r"((?:^|[;&|{`]|(?<![\w)\]=])\(|(?i:(?<=\bcmd)|(?<=\bcmd\.exe))(?:\s+/\w+)*?\s/[ckCK]\s)%s"
+            r")(?=[^\s;&|<>()'\"`\\]*['\"\\])")
+_WORD_AT = _WORD_GO + "((?:" + QUOTED.pattern + "|" + _W1 + ")+)" + _WEND
+COMMAND_WORD = re.compile(_WORD_AT % _LEADS + "|" + QUOTED.pattern, re.M)
+# WORD_ANY: may there be such a command word? (see _lead) It reads up to where the word would begin (_WORD_GO), and
+# not the word. COMMAND_WORD passes over a quoted text; a search has nothing that does, so it begins inside one as
+# well, at the { of "r${i}", and from there the word ran on over one quoted piece after the other to the text's
+# end: the square of the length of a loop whose lines hold two quoted texts (3,000 such lines took this search 6 s,
+# and a read-only agent's call went to the timer's question, 21 November 2026). So it says yes where no such word
+# stands (echo "r${i}"), and never no where one does: what it finds is the beginning of every such word. Behind
+# such a yes named() reads the text as it did before this search stood here: a long row of variables in it with
+# the square, and variables set to nothing with a factor for each (see _lead; 39 of a= in front of echo x "r${i}"
+# went to the timer's question). And a run of { in a quoted text is read on from each of them (20,000: one second)
+WORD_ANY = re.compile(_WORD_GO % _lead(_WRAPS, ";&|{`"), re.M)
 # Programs that write the file they name, where a command starts ("install" and "patch" are also plain words), and
 # formatters, which rewrite a file unless they are told to check only, to print, or to say what they are. Each with
 # .exe too, in any case, as a shell on Windows may name it (was until 20 November 2026: touch.exe, install.exe and
@@ -488,9 +541,11 @@ EXTRACT = re.compile(
     r"(?![^;&|\n]*?\s(?:-[a-zABLSV]*t|--list\b|--to-stdout\b)))", re.M)
 _NO_WRITE = r"(?![^;&|\n]*\s(?:--(?:check(?:-only)?|diff|version|help)|(?-i:-[cdhV]))(?=[\s;&|)]|$))"
 _VER = r"(?:\.exe)?(?:@[\w.]+)?"  # black.exe, and the version that uvx takes: ruff@0.6
-FORMATS = re.compile(_GO + r"(?:(?:(?:black|isort)" + _VER + r"|ruff" + _VER + r"\s+format)(?=\s|$)" + _NO_WRITE +
-                     r"|ruff" + _VER + r"(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)"
-                     r"(?![^;&|\n]*\s--(?:diff|help)\b))", re.I | re.M)
+_FORMATS = (r"(?:(?:(?:black|isort)" + _VER + r"|ruff" + _VER + r"\s+format)(?=\s|$)" + _NO_WRITE +
+            r"|ruff" + _VER + r"(?:\s+check)?(?=\s)(?=[^;&|\n]*\s--(?:fix|unsafe-fixes)\b)"
+            r"(?![^;&|\n]*\s--(?:diff|help)\b))")
+FORMATS = re.compile(_GO + _FORMATS, re.I | re.M)  # is there one?
+FORMATS_EACH = re.compile(_GO_EACH + _FORMATS, re.I | re.M)  # each one, to where its arguments begin
 PY_FILES = ("*.py", "*.pyi", "*.ipynb")  # what they rewrite below a folder
 # Commands that change a folder as a whole when they are given one: a move, a removal, a copy onto it, a link,
 # git's checkout of it and its forced clean. PowerShell's and cmd's follow, the short names where a command starts
@@ -522,7 +577,7 @@ NO_OUT = re.compile(r"(?:^|/)(?:python[\d.]*|pypy[\d.]*|py|ls)(?:\.exe)?$", re.I
 # zsh runs the text of the glob qualifier e as a command: ls *(e:'rm -rf runs':), ls *(e:rm\ -rf\ runs:)
 ZSH_E = re.compile(r"\((?:#q)?[^()\s'\"]*?e([^\s()'\"\\])(?:(['\"])(.*?)\2|((?:[^\s'\"()\\]|\\.)*\\.(?:[^\s'\"()\\]|\\.)*))")
 # the file as the command itself (./notes.md with a first line that names its interpreter)
-NOTES_CMD = re.compile(_START + _LEADS + _W1 + "*/" + _NOTE + r"(?=\s|$|[;&|)])", re.I | re.M)
+NOTES_CMD = re.compile(_START + _LEADS_ANY + _W1 + "*/" + _NOTE + r"(?=\s|$|[;&|)])", re.I | re.M)
 # in program text, a call that executes text or a file, on a line that also holds a literal with such a file's name
 EXECS =re.compile(r"(?<![\w.])(?:exec|eval|compile|Function)\s*\(|\b(?:execfile|run_path|SourceFileLoader|"
                    r"spec_from_file_location|load_source|loadfile)\s*\(")
@@ -538,7 +593,9 @@ LOADS = re.compile(r"(?<![\w.])(?:require|import|load|dofile|do|include|include_
 # shutil.copytree, shutil.make_archive). Not ast.walk, which walks no folder
 PY_WALK = re.compile(r"(?<!\w)(?:(?<!ast\.)walk|fwalk|rglob|copytree|make_archive)(?=\s*\()")
 # a runner that takes a here-document, or a here-string (group 1), as its code
-HERE_RUN = re.compile(_GO + _PROG + r"(?=[\s<])(?:[^;&|\n<]|<(?!<))*<<(<?)", re.I | re.M)
+_HERE = _PROG + r"(?=[\s<])(?:[^;&|\n<]|<(?!<))*<<(<?)"
+HERE_RUN = re.compile(_GO + _HERE, re.I | re.M)  # is there one?
+HERE_RUN_EACH = re.compile(_GO_EACH + _HERE, re.I | re.M)  # each one, with its group
 # ** (zsh's *** too) as a whole part of a path outside quotes: a shell that reads it so (bash's globstar, zsh, fish)
 # walks the tree. Not a ** that stands alone, which in a line of program text is a power
 _W = r"[^\s;&|<>()'\"]*"
@@ -1316,7 +1373,7 @@ def named(text: str) -> str:
         stays = "=" in QUOTED.sub("", w) or inside or line
         return m.group() if stays or not re.fullmatch(r"[\w.@+-]+", name) else m.group(1) + name
 
-    return COMMAND_WORD.sub(bare, text) if re.search(r"['\"\\]", text) else text
+    return COMMAND_WORD.sub(bare, text) if re.search(r"['\"\\]", text) and WORD_ANY.search(text) else text
 
 
 def readings(cmd: str):
@@ -1542,11 +1599,11 @@ def saves(cmd: str, c: str):
     None where a target is missing or is a pattern, or a tee stands where no command starts. A tee's files are read
     to the end of its command, past the redirections that stand among them (tee >/dev/null f, tee <<< "{}" f); a
     descriptor's digit in front of one counts as a file of that name, which adds a name and hides none."""
-    if re.search(r"[$`\\~]|(?<!<)<<(?!<)", cmd) or re.search(
+    if re.search(r"[$`\\~]|(?<!<)<<(?!<)", cmd) or (MAY_CD.search(c) and (re.search(
             r"(?:^|[\s;&|({])(?:popd|Pop-Location|" + _CD_WORD + r"\s+[-+]\d*)(?=[\s;&|)}]|$)|" + _CD_AT
-            + _CD_WORD + r"(?:[ \t]+-[^\s;&|)}<>:]*)*(?=[ \t]*(?:[;&|)}<>]|\d+[<>]|$))", c, re.I | re.M) \
-            or any(m.group(1)[:1] in "-+" for m in CD.finditer(c)) \
-            or re.search(r"(?<![\w./-])" + _CD_WORD + r"[ \t]+[^\s;&|)}<>]", CD.sub(";", c), re.I):
+            + _CD_WORD + r"(?:[ \t]+-[^\s;&|)}<>:]*)*(?=[ \t]*(?:[;&|)}<>]|\d+[<>]|$))", c, re.I | re.M)
+            or any(m.group(1)[:1] in "-+" for m in CD.finditer(c))
+            or re.search(r"(?<![\w./-])" + _CD_WORD + r"[ \t]+[^\s;&|)}<>]", CD.sub(";", c), re.I))):
         return None
     quoted, out = [], []
     masked = QUOTED.sub(lambda q: quoted.append(q.group()[1:-1]) or "\0%d\0" % (len(quoted) - 1), c)
@@ -1643,6 +1700,31 @@ def spliced(text: str):
         yield from commands(s)
 
 
+# where a command starts with a variable: $c, "$c", ${c}, also as zsh splits or changes it (${=c}, ${(z)c})
+_VAR_AT = _GO + r"[\"']?\$\{?(?:\([^)]*\))?[=~^]*"
+
+
+def run_vars(c: str) -> tuple:
+    """The names of the variables that a line may run from where they stand: one where a command starts (_VAR_AT),
+    and one that zsh reads with flags anywhere, of which (e) runs the text: echo ${(e)c}. The line is searched for
+    all of them at once. Until 21 November 2026 every word that sets a variable had two searches of the line to itself,
+    each with a pattern built for its name: 1,500 lines that each set one took ten seconds so, and a thousand of
+    a=1; without a blank took the guard past its own limit of time, to a question that told of no rule.
+    A place where a command starts can be read in more than one way (X= $c $d runs $c with an empty X, or $d with X
+    set to $c), and a search shows one name for each place: so the line is searched again without the names that
+    are found, until a search finds no new one. Four times at most, because a place can be made up that reads in
+    as many ways as it has words (X0= $a0 X1= $a1 ...): with a search for each way, 1,600 of them would take ten
+    seconds. Returns the names, and whether they are all of them: where they are not, the caller gives a name
+    that is not among them a search of its own, as every name had before."""
+    found, new, left = set(), True, 4
+    while new and left:
+        rest = r"(?!(?:%s)\b)" % "|".join(sorted(found)) if found else ""
+        new = {m.group(1) for m in re.finditer(r"(?=" + _VAR_AT + rest + r"(\w+)\b)", c, re.M)}
+        found |= new
+        left -= 1
+    return found | {m.group(1) for m in re.finditer(r"\$\{\([^)]*\)[=~^]*(\w+)\b", c)}, not new
+
+
 def inner_code(c: str, shell=None):
     """Text a command hands to a nested shell or an interpreter as one argument (bash -c '...', python -c "...",
     cmd /c "...", powershell -Command "...", eval "...", trap '...' EXIT), also where its flag stands in a group of
@@ -1665,9 +1747,11 @@ def inner_code(c: str, shell=None):
     out += taken
     toks, run = lex(c), SHELLS.search(c)
     # a text that the line keeps in a variable (c='rm x'; $c = 'del x') counts where the line may run it: the
-    # variable stands where a command starts, also as zsh splits it (${=c}), or the text has more than one word and
-    # the line has a runner (eval "$c", iex $c, $c | sh). A variable set from another one has its text: d=$c
-    kept = {}
+    # variable stands where a command starts, also as zsh splits it (${=c}), or zsh reads it with flags (run_vars()
+    # finds both, for all the line's variables at once; where it stopped before it had them all, a name that it
+    # has not found is searched for by itself), or the text has more than one word and the line has a runner
+    # (eval "$c", iex $c, $c | sh). A variable set from another one has its text: d=$c
+    kept, may_run, whole = {}, None, True
     for i, t in enumerate(toks):
         m = re.match(r"\$?(\w+)=(.+)", t, re.S)
         name, text = m.groups() if m else ("", "")
@@ -1676,8 +1760,9 @@ def inner_code(c: str, shell=None):
         if not name:
             continue
         text = kept[name] = re.sub(r"\$\{?(\w+)\}?", lambda v: kept.get(v.group(1), v.group()), text)
-        if text and (re.search(_GO + r"[\"']?\$\{?(?:\([^)]*\))?[=~^]*" + name + r"\b", c, re.M)
-                     or re.search(r"\$\{\([^)]*\)[=~^]*" + name + r"\b", c)  # zsh's flags, of which (e) runs the text
+        if text and may_run is None:
+            may_run, whole = run_vars(c)
+        if text and (name in may_run or (not whole and re.search(_VAR_AT + name + r"\b", c, re.M))
                      or (run and re.search(r"\s", text))):
             out.append(text)
     # PowerShell makes code of a text: [scriptblock]::Create('...'), with its namespace too, and so do the engine's
@@ -1717,7 +1802,7 @@ def inner_code(c: str, shell=None):
     # a runner without a script takes its code from standard input (echo "..." | sh, bash <<< "..."): there every
     # argument of the line that is more than a plain word or path may be that code
     bare = QUOTED.sub(" '' ", c)
-    if PIPED.search(bare) or any(m.group(1) for m in HERE_RUN.finditer(bare)):
+    if PIPED.search(bare) or (HERE_RUN.search(bare) and any(m.group(1) for m in HERE_RUN_EACH.finditer(bare))):
         out += [t for t in toks if re.search(r"\w", t) and re.search(r"[^\w./:@%+,-]", t)]
     return out
 
@@ -2298,7 +2383,8 @@ def plain(cmd: str) -> str:
     of a command are one, a command word in quotes is the same command, and .NET's AllDirectories, which mostly
     comes as a string, stands bare."""
     raw = FIND_END.sub(r"\1+", cmd.replace("\\", "/"))
-    return GIT_WORD.sub("git", re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", QUOTED_COMMAND.sub(r"\1\3", raw)))
+    raw = QUOTED_COMMAND.sub(r"\1\3", raw) if QUOTED_ANY.search(raw) else raw
+    return GIT_WORD.sub("git", re.sub(r"(?i)(['\"])(AllDirectories)\1", r"\2", raw))
 
 
 def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True, lang=False):
@@ -2336,7 +2422,8 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True, lang=False):
     toks += joined(cmd, 0 if code else 2, "<<" in cmd)
     here = cur = ctx.cwd
     dirs = [here]
-    moves += [(m.start(), True, [re.sub(r"[\"']", "", m.group(1))]) for m in CD.finditer(raw)]
+    moves += [(m.start(), True, [re.sub(r"[\"']", "", m.group(1))])
+              for m in (CD.finditer(raw) if MAY_CD.search(raw) else ())]
     for _, cd, ds in sorted(moves):  # a cd earlier in the line: what follows is relative to it
         for d in ds:
             ctx.cwd = cur if d is ds[0] else dirs[-1]
@@ -2602,7 +2689,9 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True, lang=False):
     kept, whole = [*ctx.frozen(), *(cfg.get("harness_paths") or [])], []
     went = {d for _, cd, ds in moves if cd for d in ds}  # where a cd goes is no folder that the line changes
     if TREE_VERBS.search(flat):
-        own = len(re.findall(_GO + r"eval(?=\s)", c_noq, re.M))  # the shell's own eval is no folder of that name
+        # the shell's own eval is no folder of that name
+        own = (len(re.findall(_GO_EACH + r"eval(?=\s)", c_noq, re.M))
+               if re.search(_GO + r"eval(?=\s)", c_noq, re.M) else 0)
         whole += [(rel, (), None) for t, rel in resolved
                   if rel and rel != "." and rel[:1] != "/" and ":" not in rel and t not in went
                   and not (t == "eval" and lx.count("eval") <= own)]
@@ -2610,7 +2699,8 @@ def check_bash(ctx: Ctx, cmd: str, depth=0, alt=True, sh=True, lang=False):
             or PS_FED.search(c_noq):
         whole += [(ctx.rel(b), globs, typ) for b, globs, typ in walked]
     n = len(whole)  # from here on: what a formatter is given, which gets its own words (ROUTINE)
-    for m in FORMATS.finditer(c_noq):  # its own arguments, or the folder it runs in
+    # a formatter's own arguments, or the folder it runs in
+    for m in FORMATS_EACH.finditer(c_noq) if FORMATS.search(c_noq) else ():
         args = [t for t in itertools.takewhile(lambda t: t.strip(";&|()<>"), lex(c_noq[m.end():])) if t[:1] != "-"]
         for d in dirs:
             ctx.cwd = d

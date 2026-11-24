@@ -743,6 +743,31 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   file there is asked about by the guard's own rule). Checked live with the two agents passed through `--agents` (Claude
   Code 2.1.322, native Windows, 12 November 2026): a hook that cannot run blocks the call with the setting and
   lets it through without. Not checked live: the agent files themselves in a trusted folder.
+- How long it takes: after 12 seconds the guard answers with a question by itself (the point before this one), and
+  that question can come later than the 12 seconds, because the timer cannot answer while one search of a pattern
+  runs. A read-only agent's call is put to both sets of rules, one after the other, under that one limit, and
+  takes about the two times together. A line with many words that set a variable no longer takes the guard to
+  the limit (since 21 November 2026; before, 1,000 of `a=1;` with no blank between them, 3,000 lines that each
+  set a variable and read it, or 30 variables set to nothing in front of `echo 'x'` took the main session there):
+  20,000 of `a=1;` (80 KB) take the main session about 3 seconds and the read-only rules alone half a second on
+  the machine where this was measured. A row of 320 KB is at the limit: 10.5 seconds as the main session, 1.5
+  under the read-only rules alone and 12 as a read-only agent's call, which got the question in some runs; with
+  other work on the machine the main session got it too.
+  Not so in a line that also holds a quoted text like `"r${i}"` or `"a;b"`, in which a sign at which a command
+  can start (`;`, `&`, `|`, `{`, a backtick) has a word behind it that runs up to a quote. There the guard reads
+  the whole line for a command word in quotes as it did before: a row of variables with the square of its length,
+  and variables set to nothing 1.6 to 1.7 times as long with each of them. 8,000 of `a=1; ` in front of
+  `echo x "r${i}"` take the main session 5 seconds and a read-only agent's call 10; a here-document of 8,000
+  lines `KEY=value` in front of `echo "r${n}"` takes the main session 11.5 seconds and a read-only agent's call
+  to the question (3,000 lines: 2.4 seconds and 3.6); 36 variables set to nothing in front of `echo x "r${i}"`
+  take the main session 11 seconds and a read-only agent's call to the question, and 39 take the main session to
+  it too, after about 45.
+  Lines made up for it still reach the limit as the main session: 20,000 variables in front of a `cd`, a
+  here-string or a quoted command word (the question then came after 14 to 24 seconds); a wrapper's option
+  written 8,000 times with no blank (`env -i;env -i;...`; after 14 seconds, and after 32 under the read-only
+  rules alone); and a row of words that the guard reads in two ways each, where the time grows 1.6 to 2 times
+  with each of them (`a= env a= env ...` reached the limit at 21 pairs, one pair sooner than before this change;
+  28 options of `sudo -u -u -u ...` took 3.5 seconds).
 - The receipt of the final evaluation is a record, not a seal: it counts the uses that went through
   `expctl final-eval` in this checkout and in every worktree that git has registered, and a copy of its rows in
   git's common folder (`.git/nn-training-final-eval.jsonl`) keeps the uses of a worktree that was removed.

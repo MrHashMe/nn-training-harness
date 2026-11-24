@@ -122,6 +122,10 @@ refusal of a batch file's arguments"; and not the fourth session's two, "Lines w
 set a variable" and "The reading of the lines with many words that set a variable", which stand in
 front of the join's entry. Where a line above says "this branch", "local" or "not merged", that was
 so in the branch where it was written.
+On the user's "Reader first" of 24 November one fresh reader went through the hand joins of those
+four merges and found no wrong join. No file of the kit is changed; one sentence of the join's
+record in REPORT.md is made exact by a note ("The reading of the join of the four sessions'
+branches" below). Nothing is pushed.
 
 # Upgrade progress
 
@@ -5356,6 +5360,73 @@ run of GitHub's six jobs on it; whether a reader goes through the hand joins, th
 first; whether the pilot's session's later commits, `4a7775f` and `8050d18` so far, are merged here
 too; `main`; the ninth installer run; what the sessions' entries leave open; and whether the scratch
 of this work goes (twenty snapshot branches, their clones, probe projects and logs).
+(Added on 24 November: one fresh reader has gone through the hand joins since, on the user's "Reader
+first", and found no wrong join; the next entry. So "read by nobody but me", "No reader has gone
+through the guard's two places" and "no reader" in this entry held until then, and the second of the
+questions above is answered and done.)
+
+## The reading of the join of the four sessions' branches (24 November): no wrong join found, nothing of the kit changed, local only
+
+The user's word, 24 November: "Reader first", to the question whether a fresh reader goes through
+the hand joins before a push. With the question I had said what that answer covers: one fresh reader
+with read access only and a brief on correctness, on the hand joins, the guard's two places first;
+repairs of what it finds, their tests and their record, all local; no push. It is not a word for a
+second reader, for a reading of either side's own changes, for the pilot's session's later commits,
+for `main`, for the real install, for a re-run of a job on GitHub or for a deletion. Times in this
+entry are UTC. "I" is the session of the entry before this one.
+
+Done on that word:
+- One agent on Opus 5.5, told to read only, from 16:25 to 16:30: 237,424 tokens, 41 tool calls. The
+  brief named the four merges and the 23 places and gave an order: the guard's two places with four
+  questions, the place in `tests/test_kit.py`, the reference's paragraph, and the two record files
+  last. It ruled out writing, running anything of the kit, and a search for ways past the guard.
+- Its report begins: "I found no wrong join at any of the 23 places, and nothing lost, doubled or
+  changed in meaning. I made no changes and ran no Python, tests or guard." It has no finding for
+  the guard, the test file or the reference, and two small doubts for the record files: the notes at
+  the end of point 51 of REPORT.md run 53, 60, 57, and the fourth session's two sections stand in
+  front of "Round 2", which it calls no fault.
+- What it states I ran before I took it, by helpers of mine that read only. The joined guard: five
+  lines name `cmd`'s letters in a pattern, three with the capitals and two blind to case that are
+  the same in all three guards; of its 171 texts and patterns at the top level 22 hold the capitals,
+  each the fourth session's with the capitals put in, and the other 149 are that session's as they
+  are; none of the 15 that held the capitals in this branch's guard before the join holds fewer; the
+  four names and the one function that this branch's added lines use are the same text in the joined
+  guard, and the pattern for command words is this branch's letter for letter; `named()` differs
+  from this branch's in one line, that session's search in front. The test file: neither of the two
+  checks reads a name or a folder that the other sets, and no later line reads a name of theirs
+  before it sets it anew. The records: 64 points in the order of their numbers, and no heading
+  without its empty line. Not run again: the reference's paragraph and the sections that changed
+  places, which stand on the reader's comparisons and on the join's counts.
+- Two details of the report did not hold, and change nothing: the lines it gives for the notes of
+  point 51 are not where those stand, and the branch for names in quotes has the notes of point 49
+  as 55, 53, without the 60 that the report gives it.
+- Found through its first doubt: the join's record said that where both sides had added a note at
+  one place, a session's text stands first where it goes on from that session's own text. At seven
+  places both sides had added a note behind the same sentence of a session's own point, section or
+  entry: six in REPORT.md, the ends of points 51 and 52 among them, and one in this file, in "The
+  two faults under a virtual environment on Windows, repaired". There this branch's notes stand
+  first. A session's notes stand first at two places, where they go on from a note which that
+  session itself had put there: in the opening of REPORT.md and under "Questions for the user" here.
+  REPORT.md has a note at that sentence. No note is moved.
+- No file of the kit is changed, so no test ran; the passes on the joined state are those of the
+  entry before this one.
+- REPORT.md has the section "The reading of the join of the four sessions' branches", point 69 of
+  "Read this first", a note and a statement in the opening, a note at the end of point 68 and at six
+  places of "The join of the four sessions' branches". This file has a statement in the opening,
+  this entry, a note at the entry before it, an answered question and a note at the open ones. The
+  ledger is not touched.
+- Not done: no push, no second reader, no reading of the sides' own changes, no merge of the pilot's
+  session's later commits, no re-run of a job; nothing on `main`, nothing on the real install;
+  nothing deleted; no message to another session. The reader read the record files in part, and
+  nothing inside the sections that changed places. This record is read by nobody but me.
+- When I looked last (17:04 on 24 November) the four sessions' branches stood at `5424b57`,
+  `117ff79`, `533690b` and `8050d18`, as in the entry before this one, and GitHub's `test/round-9`
+  and `main` at `f08b6dd` and `e587b4f`.
+
+Next, each a separate word of the user's: whether the joined round goes to `test/round-9`, with one
+run of GitHub's six jobs on it; whether the notes at those seven places are put in the order of
+their numbers, which I would not do; and the questions of the entry before this one from its third
+on.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -5784,6 +5855,13 @@ of this work goes (twenty snapshot branches, their clones, probe projects and lo
   word for a push, for `main`, for the real install, for a reader, for a re-run of a job on GitHub
   or for a deletion. On 24 November the user said "Try again", after the session had stood still:
   taken as the word to go on with the join, and as no more.
+- Answered on 24 November ("Reader first"), from the join of the four sessions' branches: whether a
+  reader goes through the hand joins before a push. "The reading of the join of the four sessions'
+  branches" above. The word covers one fresh reader with read access only and a brief on
+  correctness, on the hand joins, the guard's two places first, repairs of what it finds, their
+  tests and their record, all local, as I had said with the question. It is not a word for a push,
+  for a second reader, for a reading of the sides' own changes, for `main`, for the real install,
+  for a merge of the sessions' later commits, for a re-run of a job on GitHub or for a deletion.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -5862,6 +5940,13 @@ of this work goes (twenty snapshot branches, their clones, probe projects and lo
   join here", and done; "The join of the four sessions' branches" above. Open in its place: whether
   the joined round goes to `test/round-9`, with one run of GitHub's six jobs on it, before `main`
   takes it, and whether a reader goes through the hand joins first. The others stand.)
+  (Added on 24 November with the reading of the join, by the same session: whether a reader goes
+  through the hand joins first is answered, "Reader first", and done: one fresh reader found no
+  wrong join; "The reading of the join of the four sessions' branches" above. Open still: whether
+  the joined round goes to `test/round-9`, with one run of GitHub's six jobs on it, before `main`
+  takes it. New: whether the notes at seven places of the joined records, where this branch's notes
+  stand in front of a session's, are put in the order of their numbers, which I would not do. The
+  others stand.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted

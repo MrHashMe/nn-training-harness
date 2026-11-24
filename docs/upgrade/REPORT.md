@@ -227,6 +227,16 @@ here: its points are 58 and 65, and its two sections stand right behind "Read th
 statement above says that a section is the last before "1. What changed and why", that commits are local
 or that a branch does not hold something, that was so where it was written. Nothing of the join is
 pushed: `test/round-9` stays at `f08b6dd` and `main` at `e587b4f`.
+(Added with point 69: "The join of the four sessions' branches" is not the last section before "1. What
+changed and why" any more: the section that the next statement names follows it.)
+On your "Reader first" of 24 November one fresh reader went through the 23 hand joins of those four
+merges, the guard's two places first, and found no wrong join. What it states of the guard, of the test
+file and of the order of the records I ran before I took it, and it holds, but for two details of its
+report that change nothing. No file of the kit is changed. One sentence of the join's record, on the
+order of the notes that both sides had added at one place, said more than the join did at seven places; a
+note at it says how the notes stand. The reading's section, "The reading of the join of the four
+sessions' branches", is the last before "1. What changed and why" now. In it and in this statement "I"
+and "this branch" are those of the statement before this one. Nothing is pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -2137,6 +2147,55 @@ Decision record: `docs/upgrade/LEDGER.md`.
     hand joins, the guard's two places first; whether the pilot's session's later commits, `4a7775f`
     and `8050d18` so far, are merged here too; `main`; the ninth installer run; and what points 52
     to 65 left open, less the join.
+    (Added with point 69: one fresh reader has gone through the hand joins since, on your "Reader
+    first" of 24 November, and found no wrong join; point 69. So "read by nobody but me" held of
+    them until then, and the second of the questions that this point leaves open is answered and
+    done. The fourth session's two sections follow point 69 now, not this point.)
+69. **One fresh reader went through the hand joins of the four merges, on your "Reader first", and
+    found no wrong join. No file of the kit is changed; one sentence of the join's record is made
+    exact. Nothing is pushed** (24 November; "The reading of the join of the four sessions'
+    branches"). One agent on Opus 5.5, told to read only and given a brief on correctness that ruled
+    out a search for ways past the guard, read the 23 places in the order I gave, the guard's two
+    first: 237,424 tokens, 41 tool calls, about five minutes. Its report begins "I found no wrong
+    join at any of the 23 places, and nothing lost, doubled or changed in meaning. I made no changes
+    and ran no Python, tests or guard." For the guard, the test file and the reference it has no
+    finding, and for the two record files two small doubts, "neither a fault of sense". It ran
+    nothing, so I put what it states to the files and to the three guards' own values before I took
+    it. Of the guard: five lines of the joined guard name `cmd`'s letters in a pattern, three with
+    the capitals and two that are blind to case and the same in all three guards; of its 171 texts
+    and patterns 22 hold the capitals, each the fourth session's with the capitals put in, and the
+    other 149 are that session's as they are; none that held the capitals in this branch's guard
+    before the join holds fewer now; the four names that this branch's added lines use and the one
+    function they call are the same text in the joined guard, as is the pattern whose groups they
+    read; and `named()` differs from this branch's in one line, the fourth session's search in
+    front. Of the test file: neither of the two checks reads a name or a folder that the other sets,
+    and no later line reads a name of theirs before it sets it anew. Of the records: the points
+    stand in the order of their numbers, and no heading lacks its empty line. Two details of the
+    report did not hold, and change nothing: the lines it gives for the notes of point 51 are not
+    where those stand, and the branch for names in quotes has the notes of point 49 as 55, 53,
+    without the 60 that the report gives it. Its first doubt, that the notes of point 51 run 53, 60,
+    57 and not in the order of their numbers, led to the one thing I correct. The join's record says
+    that where both sides had added a note at one place, a session's text stands first where it goes
+    on from that session's own text, and this branch's note elsewhere. At seven places both sides'
+    notes hang on the same sentence of a session's own point, section or entry, the ends of points
+    51 and 52 among them, and there this branch's notes stand first; a session's stand first at the
+    two places where they go on from a note which that session itself had put there. A note at that
+    sentence says so now. No note is moved: each names its point, and the order 55, 53 at point 49
+    is that session's own. Its second doubt, the place of the fourth session's two sections, it
+    calls no fault, and the join's record names it. What the reading does not cover: of the two
+    record files the reader read the first two merges' joins in full and of the last two the edges
+    of the places, the opening and "Read this first", and nothing inside the sections that changed
+    places; there the joins stand on my counts, as before. It read both sides' changes of the guard
+    in full, for the questions of the join; whether a change is right in itself was not asked of it.
+    So what point 68's section says of who has read `f2338d6` and the four repairs that it names
+    stands. No test ran: this commit changes this file and PROGRESS.md only, which no test reads,
+    and the passes on the joined state are those of point 68. This record is read by nobody but me.
+    Nothing is pushed: `test/round-9` stays at `f08b6dd` and `main` at `e587b4f`, and your real
+    install is untouched. When I looked last (17:04 on 24 November) the four sessions' branches
+    stood where point 68 names them, and no note of theirs had changed since. Open: whether the
+    joined round goes to `test/round-9`, with one run of GitHub's six jobs on it, before `main`
+    takes it; whether the notes at those seven places are put in the order of their numbers, which I
+    would not do; and what point 68 left open, less the reader.
 
 ## The reading of the lines with many words that set a variable (21 November 2026): the change had made long loops slow; repaired, at a price on other long lines; its record corrected
 
@@ -21979,6 +22038,9 @@ In short:
    of headings.
 5. **The hand joins are read by nobody but me.** What I did is count and compare: lines, words, patches
    and sizes for every joined file, and for the guard its answers and its times.
+   (Added with point 69: read by one fresh reader since, on your "Reader first" of 24 November, who found
+   no wrong join; "The reading of the join of the four sessions' branches". It read the joins of the
+   guard, of the test file and of the reference in full, and those of the two record files in part.)
 6. **The joined guard answers as this branch's guard did before the join**, on 21,567 texts of my own
    comparison and on 19,190 generated texts in the fourth session's own helper, whole check against whole
    check. In that helper's comparison of the changed functions and patterns one by one it differs from
@@ -22070,6 +22132,15 @@ Both sides' text is kept at each.
   a note at one place, a session's text stands first where it goes on from that session's own text, and
   this branch's note stands first elsewhere. A session's new sections and entries follow that session's
   earlier ones.
+  (Added with point 69: the sentence on the notes says more than the join did. At seven places both sides
+  had added a note behind the same sentence of a session's own point, section or entry: at the ends of
+  points 51 and 52, at two places each of "The reading of the two faults' repairs" and "The reading of
+  the folder's repair", and in one entry of `PROGRESS.md`, "The two faults under a virtual environment on
+  Windows, repaired". At each of them this branch's notes stand first and the session's follow, so the
+  notes of point 51 run 53, 60, 57 and those of point 52 run 54, 60, 56, 64. A session's notes stand
+  first at two places, where they go on from a note which that session itself had put there: in the
+  opening of this file and under "Questions for the user" in `PROGRESS.md`. No note is moved; "The
+  reading of the join of the four sessions' branches", under "The order of the notes".)
 - **Two sections moved** (the third merge). Git had put "The second reading of the two faults' repairs"
   and "The third reading of the two faults' repairs" in front of "1. What changed and why", behind
   fifteen other sections, since this branch's file had no empty line where the two sides' insertions met.
@@ -22112,6 +22183,9 @@ By helpers of mine that are not part of the kit. Each reads only.
   the reference's paragraph, the joined records or the move. By this project's record every reading of a
   change of the guard found something, so the guard's two places are what I would have a reader go
   through first; the last part.
+  (Added with point 69: one fresh reader has gone through them since, the guard's two places first, and
+  found no wrong join. Of the joined records it read the first two merges' places in full and the edges
+  of the others, and nothing inside the sections that changed places; the section after this one.)
 
 ### The joined guard
 
@@ -22248,6 +22322,8 @@ measure puts 36 windows of seconds on the screen.
   pilot's branch" and "The merged round on the test branch"; the three later ones of the session for
   names in quotes; and this one, the last before "1. What changed and why". Within a session the order is
   that in which the session wrote them.
+  (Added with point 69: "The reading of the join of the four sessions' branches", the section of point
+  69, follows this one and is the last before "1. What changed and why" now.)
 - **The fourth session's two sections stand right behind "Read this first"**, in front of "Round 2", the
   newer one first, where that session put them. Its text leaves it to whoever joins to move them in front
   of "1. What changed and why". I did not: the sections say where they stand ("right behind its point"),
@@ -22292,6 +22368,9 @@ measure puts 36 windows of seconds on the screen.
 - **No reader.** Your word covers none. The hand joins are read by nobody but me, and four of the
   sessions' repairs by nobody but their authors, by their records: `965aa34`, `26f9c9a`, `ebc28f0` and
   `8628536`. `f2338d6` is read by nobody but me, as before.
+  (Added with point 69: your "Reader first" of 24 November covers one, for the hand joins, and it has
+  read them; the section after this one. It read both sides' changes of the guard for the questions of
+  the join only, so what this bullet says of the five commits stands.)
 - **The pilot's session's reading of `ebc28f0` and `8628536`, and its repairs.** By that session's note a
   reader was started at 02:57 on 22 November, and point 66 was taken for its record. That session went on
   with it on 24 November, while I joined: when the fourth merge was committed, its repairs were changes
@@ -22320,6 +22399,8 @@ measure puts 36 windows of seconds on the screen.
   public for private details, as before.
 - **Whether a reader goes through the hand joins**, the guard's two places first, and whether before the
   push or after it. One fresh reader with a brief on correctness, as in the earlier readings.
+  (Added with point 69: answered by your "Reader first" of 24 November, before a push, and done; the
+  section after this one.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force. I would have GitHub's six jobs pass on the joined state first.
 - **The ninth installer run on your real install:** after `main`, as in the sections before this one.
@@ -22338,6 +22419,186 @@ answers and for the checks' names, in this session's scratch folder; copies of t
 trees of the second, third and fourth merge, on Windows under Python 3.11.7 and the 3.8.20 environment
 and in WSL under 3.12.3, on 22 and 24 November 2026, on this machine; `git fetch`, the tips of the
 sessions' local branches and the sessions' shared notes, read on this machine at 16:12 on 24 November.
+
+## The reading of the join of the four sessions' branches (24 November 2026): no wrong join found; no file of the kit changed, and one sentence of the join's record made exact
+
+Your word: "Reader first" (24 November), to my question after the join's record, "Have a fresh reader go
+through the hand joins before a push?" Beside the question I had written what that answer covers: one
+fresh reader with read access only and a brief on correctness, on the hand joins, the guard's two places
+first; repairs of what it finds, their tests and their record, all local; no push. Nor does it cover a
+second reader, a reading of either side's own changes, the pilot's session's later commits, `main`, your
+real install, a re-run of a job on GitHub or deleting anything. Dates and times in this section are UTC.
+"I" is the session that made the four merges and keeps this record.
+
+In short:
+
+1. **The reader found no wrong join at any of the 23 places.** Its report begins "I found no wrong join
+   at any of the 23 places, and nothing lost, doubled or changed in meaning. I made no changes and ran no
+   Python, tests or guard." It has no finding for the guard, for `tests/test_kit.py` or for the
+   reference, and two small doubts for the two record files, which it calls "neither a fault of sense".
+2. **I ran what it states before I took it.** It had run nothing, so what it says of the guard is read
+   from the text. Put to the three guards' own values, to the test file and to the record files, each
+   statement that I ran holds. Two details of the report do not, and they change nothing: line numbers
+   that are not where the notes stand, and a note which the branch that it names does not have.
+3. **No file of the kit is changed**, no test and no line of the reference. This record changes this file
+   and `PROGRESS.md` only.
+4. **One sentence of the join's record said more than the join did**, and the reader's first doubt led me
+   to it: the sentence on the order of the notes that both sides had added at one place. At seven places
+   this branch's notes stand in front of a session's, behind that session's own text. A note at the
+   sentence says how they stand. No note is moved.
+5. **What the reading does not cover.** The reader read in full both sides' changes of the guard, the
+   guard's two places, `named()`, the test file's place and what the third merge has in place of git's
+   own result in the reference. The two record files it read in part, and nothing inside the sections
+   that changed places. It was sent for the joins, not for the changes that were joined.
+6. **Nothing is pushed.** `test/round-9` is at `f08b6dd` and `main` at `e587b4f`, as before, and your
+   real install is untouched. No test ran, since nothing changed that a test reads.
+
+### The reader and its brief
+
+- **One agent on Opus 5.5**, started at 16:25 on 24 November and done at 16:30: 237,424 tokens, 41 tool
+  calls. It was told to read only: files of this worktree, and git commands that only read. By its report
+  it changed nothing; when it had ended, the worktree was clean and the branch stood at `cac04d3`, as
+  before.
+- **The brief** named the four merge commits with their parents and the commits where the two sides had
+  parted, the 23 places, and how to see what a merge commit has in place of git's own result (`git show
+  --remerge-diff`). It gave an order: the guard first, with four questions; then the place in
+  `tests/test_kit.py`; then the reference's paragraph; the two record files last, "as far as you get",
+  for order and sense and not for a count.
+- **The four questions on the guard:** whether anything of either side is lost, doubled or changed in
+  meaning at the two places; whether a place in the fourth session's new code should have taken this
+  branch's capital letters and did not, since git saw no conflict there; whether a line that this branch
+  added uses a name whose meaning that session changed; and `named()`, the one function that both sides
+  changed and git joined, read whole against both sides.
+- **What it ruled out:** writing anything, running the tests, Python, the guard or any program of the
+  kit, a git command that changes something, installing anything, other agents, folders outside this
+  worktree, and a search for ways past the guard. Where it thought that the joined guard answers a text
+  otherwise than the two sides' changes mean, it was to give that one text and the three answers it
+  expects, for me to run. It gave none.
+- **What it had beside the brief:** the worktree as it stood, with my record of the join in it. The brief
+  said which comparisons and passes I had made, so that it would not make them again.
+
+### What it states, and what I ran of it
+
+By helpers of mine that are not part of the kit; each reads only. The three guards are this branch's
+before the second merge (`1bac8d0`), the fourth session's (`117ff79`) and the joined one, each loaded as
+a module from a copy whose blob is the commit's. "This branch's change" of the guard is what `1bac8d0`
+has against `b5331fb`, where the fourth session's branch had parted: 70 lines added and 12 removed, from
+`f2338d6` and from the repair of names in quotes as the first merge brought it.
+
+| The reader states | What I ran | Result |
+|---|---|---|
+| `cmd`'s letters stand as a class in three patterns, `_AT`, `_START` and `_WORD_GO`, all three with the capitals; `CODE_FLAG` and `ATTACHED` name the letters blind to case, and neither side touched those two | a search of the joined guard for the letters, a search of both sides' changes for the two names, and the two patterns in the three guards | holds: five lines name the letters in a pattern; no changed line of either side holds one of the two names, and the two are the same pattern with the same flags in all three guards, blind to case |
+| The fourth session's new patterns all build on `_START` or `_WORD_GO`, so they carry the capitals | every text and compiled pattern at the top level of the three guards, compared | holds: of 171 in the joined guard 22 hold the capitals, each of them that session's with the capitals put in; the other 149 are that session's as they are, and of those `ATTACHED` alone holds the class of the small letters, blind to case |
+| Nothing of this branch is lost at the two places | the same values | holds for the letters: of the 15 that held the capitals in this branch's guard, none holds fewer in the joined one; six are the same text, nine are that session's new form of them |
+| That session's `_lead(_WRAPS)` gives the old `_LEADS`, and the groups of the pattern for command words number as before | the same values | holds: `_LEADS` is one text in all three guards and has no group; `COMMAND_WORD` has two groups in all three and is in the joined guard this branch's text, letter for letter |
+| This branch added no use of `_GO`; its new lines use `_LEADS` and the groups of `COMMAND_WORD` | the names in the 58 lines of code among the 70 added lines of this branch's change | holds: they use four names of the top level, `QUOTED`, `_AT`, `_LEADS` and `_START`, and call one function of the guard, `readings()`; each is the same text in the joined guard |
+| `named()` is this branch's whole, with that session's one change | the function's source in the three guards | holds: 81 lines in this branch's and in the joined one, and one line differs, the search in front (`and WORD_ANY.search(text)`) |
+| In `tests/test_kit.py` both checks are whole, their folders are separate, and no line after them reads a name of theirs | lines 1688 to 1742, read, and a search of the lines after them | holds: neither check reads a name or a folder that the other sets; after line 1742 no line holds `sups`, `sup`, `rec`, `codes` or `env4`, and `said` and `ran` are set anew further down before they are read |
+| In the reference this branch's three insertions stand where this branch had them, and the session's wording of the rest is that session's on purpose | not run again | stands on its reading, and on the count of words in the join's record |
+| Points 43 to 65 and 68 stand in the order of their numbers, and no heading in either record file lacks an empty line in front | a count over both record files, outside code blocks | holds, and for all 64 points from 1 to 68: each stands behind a smaller one; no heading of the second or third level lacks the line in either file |
+| The two sections that changed places are line for line those of `533690b`, and every section of a session that it compared is its source's, but for the notes added since | not run again | stands on its comparisons, and on the count of lines in the join's record |
+| The notes at the end of point 51 run 53, 60, 57 (its first doubt) | the notes at the end of every point from 43 on, listed | holds, and those of point 52 run 54, 60, 56, 64, which it did not name; "The order of the notes" below |
+| The fourth session's two sections stand between "Read this first" and "Round 2" (its second doubt; "Not a fault") | the headings | holds; the join's record says so, and why they are not moved |
+
+- **Two details of the report did not hold.** It gives "HEAD lines 1036–1050" for the notes of point 51;
+  in `cac04d3` those are lines 1267 to 1281, and lines 1036 to 1050 are in point 47. And it says that the
+  notes of point 49 run 55, 53, 60 "on the side branch `5424b57` itself". That branch has 55, 53: it does
+  not hold the record of the push, so it has no note of point 60, and the 60 came behind the two with the
+  first merge, by git itself. What the sentence is there for holds: the order 55 before 53 is that
+  session's own.
+- **Its own account of what it read:** "Read in full: both guard diffs, the two joined guard regions,
+  `named()`, the test-file join, and the REFERENCE remerge diff with both sides' word diffs. Read in
+  part: the record files. I read the first two merges' record joins in full. For the third and fourth I
+  read hunk headers, conflict edges and the "Read this first" and intro joins. Moved blocks I checked by
+  heading order and by diffing whole sections against their sources, not by reading their text." And: "I
+  did not re-read the text inside the moved sections, and did not check the "Read this first" points' own
+  content beyond where they stand."
+- **The 19 places of the record files, by a second route.** For the order of the notes I made git's own
+  result of each of the four merges again, as a tree that no branch holds, and laid each merge commit's
+  difference from that result over it, for this file and for `PROGRESS.md`. Every line of those
+  differences fits. Of the lines that a side had at one of the 19 places, each either stays where git's
+  result has it or is among the lines that the commit puts in. That is how I know which side's text
+  stands first at each place. The count of lines in the join's record stays the stronger check of what is
+  there.
+
+### The order of the notes
+
+- **What the join's record says.** "Where both sides had added a note at one place, a session's text
+  stands first where it goes on from that session's own text, and this branch's note stands first
+  elsewhere."
+- **What the join did.** At eight of the 19 places both sides had added a note behind the same text. At
+  seven of them that text is a sentence of a session's own point, section or entry: the ends of points 51
+  and 52; two places each in "The reading of the two faults' repairs" and "The reading of the folder's
+  repair"; and one entry of `PROGRESS.md`, "The two faults under a virtual environment on Windows,
+  repaired". At each of the seven this branch's notes stand first, in the order in which this branch
+  wrote them, and the session's follow. So the notes of point 51 run 53, 60, 57, and those of point 52
+  run 54, 60, 56, 64.
+- **Where a session's notes stand first:** at two places, where they go on from a note which that session
+  itself had put there before. One is the eighth of those places, under "Questions for the user" in
+  `PROGRESS.md`, where that session's note begins "by the same session". The other is in the opening of
+  this file, where the session's notes on the second and on the third reading of the two faults' repairs
+  follow its note on the first; there they met statements of this branch and no note of it.
+- **So the sentence said more than the join did.** Read as it stands, it puts the session's note first at
+  the seven places too, since each of those notes goes on from that session's own text. A note at the
+  sentence says how the notes stand.
+- **Nothing is moved,** and that is yours to decide. I would leave the notes: each names its point, so
+  its time can be read from it; the same order stands at all seven places; the file does not keep the
+  notes of a point in the order of their numbers elsewhere either, as point 49 shows; and a move would be
+  a second join by hand of text that is counted, for the order alone.
+
+### Not done, and why
+
+- **No change of the kit, and no test pass.** The reader found nothing to repair in the guard, the test
+  file or the reference, and what I ran found nothing either. No test reads the two files that this
+  record changes. The passes on the joined state are those of the section before this one.
+- **No new comparison of the guard's answers.** The reading's questions were put to the guards' patterns
+  and source, which is what the reader had read. The comparisons of answers and times in "The joined
+  guard" stand as they were made; texts with a capital `/C` or `/K` are in the first of them only, as the
+  brief told the reader.
+- **No reader has read the text inside the sections that changed places**, nor the points' own content
+  beyond where they stand: the reader says so. For those the join stands on the counts of the section
+  before this one.
+- **No second reader, and no reading of the sides' own changes.** The reader read both sides' changes of
+  the guard in full, this branch's and the fourth session's (`f471473` and `26f9c9a`), for the questions
+  of the join. Whether a change is right in itself was not asked of it, and its report says nothing of
+  that. So what the section before this one says of `f2338d6`, `965aa34`, `26f9c9a`, `ebc28f0` and
+  `8628536` stands. The pilot's session's record of its reading of the last two is on its own branch,
+  with point 66.
+- **This record is read by nobody but me.**
+- **No push, no merge of the pilot's session's later commits, no re-run of a job on GitHub, nothing on
+  `main` or on your real install.** Your word covers none of them.
+- **Nothing is deleted.** The helpers of this reading, their outputs, the reader's report and its brief
+  as this session's record holds them, and the four merges' differences from git's own results are in
+  this session's scratch folder. The helper for the 19 places left git's own result of each merge in the
+  repository's store, four trees that no branch holds, like the trial commits before.
+- **No message to the other sessions.** My note in the sessions' shared folder names this record's point
+  and its commit.
+- **The ledger is not touched:** a reading that changes no file of the kit decides nothing that has a
+  row, and the note on the round in its head says nothing that the reading changes.
+- **No new sum of this work's readers.** The last one in this file is that of the session for names in
+  quotes at its point 63, nineteen and one second reading. I have not counted the other sessions' later
+  readers, so I give this reader's own figures and no sum.
+
+### What needs your decision
+
+- **Whether the joined round goes to `test/round-9`.** With this record the branch is 27 commits ahead of
+  the test branch and none behind, so it would be a fast-forward with no force. A yes would cover what
+  the last one did: those commits going to `test/round-9`, the reading of GitHub's six jobs, and
+  follow-up pushes to that branch for repairs and for the record of the result. It would be the first run
+  of the joined state off this machine. Before a push I search what it makes public for private details,
+  as before.
+- **Whether the notes at the seven places are put in the order of their numbers.** I would leave them;
+  "The order of the notes" says why.
+- **Unchanged from the section before this one:** `main`, the ninth installer run, the pilot's session's
+  later commits, what the sessions' sections leave open, and the scratch of this work.
+
+With this record "Read this first" has 65 points, from 1 to 69; 7, 9, 66 and 67 are not there, as before.
+
+Sources: the reader's report and its brief, as this session's record holds them; the four merge commits,
+their parents and `git show --remerge-diff` on them; the guards of `1bac8d0`, `117ff79` and `cac04d3`;
+`tests/test_kit.py`, this file and `PROGRESS.md` at `cac04d3`; my helpers for the guards' values, for the
+notes' order and for the 19 places, in this session's scratch folder; `git fetch`, the tips of the
+sessions' local branches and the sessions' shared notes, read on this machine at 17:04 on 24 November.
 
 ## 1. What changed and why
 

@@ -126,6 +126,12 @@ On the user's "Reader first" of 24 November one fresh reader went through the ha
 four merges and found no wrong join. No file of the kit is changed; one sentence of the join's
 record in REPORT.md is made exact by a note ("The reading of the join of the four sessions'
 branches" below). Nothing is pushed.
+On the user's "Push test branch" of 24 November the joined round is on the public branch
+`test/round-9` (`f08b6dd` to `5db0ef2`), and all six of GitHub's jobs pass on it at the first
+attempt, the first run of the joined state off this machine ("The joined round on the test branch"
+below). `main` is as it was. The pilot's session's local branch holds four commits more, which the
+pushed branch does not hold. Where a line above says "Nothing is pushed" or "Nothing of it is
+pushed" of the join or of its reading, that held until this push.
 
 # Upgrade progress
 
@@ -5364,6 +5370,9 @@ of this work goes (twenty snapshot branches, their clones, probe projects and lo
 first", and found no wrong join; the next entry. So "read by nobody but me", "No reader has gone
 through the guard's two places" and "no reader" in this entry held until then, and the second of the
 questions above is answered and done.)
+(Added later on 24 November: the first of the questions above is answered by the user's "Push test
+branch", and done, and all six of GitHub's jobs pass on the joined state; "The joined round on the
+test branch" below, the entry of 24 November. So "no push" in this entry held until then.)
 
 ## The reading of the join of the four sessions' branches (24 November): no wrong join found, nothing of the kit changed, local only
 
@@ -5427,6 +5436,60 @@ Next, each a separate word of the user's: whether the joined round goes to `test
 run of GitHub's six jobs on it; whether the notes at those seven places are put in the order of
 their numbers, which I would not do; and the questions of the entry before this one from its third
 on.
+(Added later on 24 November: the first of these is answered by the user's "Push test branch", and
+done, and all six of GitHub's jobs pass on the pushed state; the next entry.)
+
+## The joined round on the test branch (24 November): pushed, all six jobs pass
+
+The user's word, 24 November: "Push test branch" (about 18:03), to the question whether the joined
+round goes to `test/round-9` now. With the question I had said what a yes covers: the branch's 27
+commits as a fast-forward with no force, the reading of GitHub's six jobs, and follow-up pushes to
+that branch for repairs and for the record of the result; and that it does not cover `main`. I took
+it as no word either for the real install, for a second reader, for a re-run of a job on GitHub, for
+a merge of the pilot's session's later commits or for a deletion. Times in this entry are UTC. "I"
+is the session of the two entries before this one.
+
+Done on that word:
+- Before the push: fetched (`test/round-9` at `f08b6dd`, `main` at `e587b4f`; this branch 27 commits
+  ahead and none behind), and what the push makes public searched for private details: the whole
+  tree of each of the 27 commits and the 1,700 lines of their messages. In the trees 40 different
+  lines match one of the patterns, each of them in the tree of `f08b6dd` already and none a detail
+  of the user's; in the messages none. Every commit has the account's no-reply address and dates in
+  UTC.
+- The push, at 18:06, as a fast-forward with no force: `f08b6dd` to `5db0ef2`.
+- GitHub's run 45455885298 on `5db0ef2` (18:06 to 18:30): all six jobs pass at the first attempt,
+  with 2,121 to 2,136 checks a job and none failed. It is the first run of the joined state off this
+  machine. Against the run before (44901828714, on `f08b6dd`): 66 to 75 checks more a job, 30 to 32
+  of them in the kit file, 35 in the review-fixes file, and in the loop file one outside Windows and
+  eight on Windows; by name no check of that run is missing, one of the loop file being worded anew.
+  The counts agree with this machine's passes on the joined state where the two can be compared, but
+  for one check of the loop file that this machine skips. The check that depends on the kit file's
+  own speed passes in all six jobs.
+- What the run does not show: a reading (`f2338d6`, `965aa34` and `26f9c9a` are each read by their
+  author only); the test files run from a virtual environment on Windows, which no job does; an
+  agent session; anything under PyTorch.
+- REPORT.md has the section "The joined round on the test branch", point 70 of "Read this first", a
+  note and a statement in the opening, and a note at 21 further places that called the commits
+  local, said that nothing is pushed or that GitHub's jobs had not run on the joined state, or put
+  the push as a question. This file has a statement in the opening, this entry, a note at each of
+  the two entries before it, an answered question and a note at the open ones. The ledger's head has
+  a note, and the ledger is built again (1,740 rows, as before, and no built entry without a row).
+- No test ran on this machine for this entry, so it put no window on the user's screen.
+- Beside this session, and not in the pushed branch: four commits on the pilot's session's local
+  branch, `4a7775f` and its record `8050d18` with point 66, and `246797f` and its record `97e6cfd`
+  with point 67, the repairs of a second reading. The last two came at 18:44 and 18:49, while this
+  record was being written; at 18:41 the branch and that session's note were as they had been before
+  the push. By its notes its eight test files ran on this machine from 17:45 to 18:43. I read the
+  subjects, the two points and the note, and checked nothing of them. Looked again at 18:58. Point
+  70 is this entry's, written into the shared notes at 18:42.
+- Not done: no merge, no second reader, no re-run of a job; nothing on `main`, nothing on the real
+  install; no package installed, nothing deleted; no message to another session. The push of this
+  record starts a further run of the six jobs, which this entry cannot hold.
+
+Next, each a separate word of the user's: `main`, for which the run of the six jobs on the joined
+state was the condition that I had named; whether the pilot's session's later commits are merged
+here, before `main` or after it; the ninth installer run; whether a reader goes through `f2338d6`,
+`965aa34` and `26f9c9a`; and the other questions of the last two entries, less the push.
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -5862,6 +5925,14 @@ on.
   tests and their record, all local, as I had said with the question. It is not a word for a push,
   for a second reader, for a reading of the sides' own changes, for `main`, for the real install,
   for a merge of the sessions' later commits, for a re-run of a job on GitHub or for a deletion.
+- Answered on 24 November ("Push test branch"), from the join and its reading: the joined round goes
+  to `test/round-9`. Done at 18:06 as a fast-forward with no force, `f08b6dd` to `5db0ef2`, after a
+  search of what it makes public for private details, and all six of GitHub's jobs pass on that
+  state at the first attempt; "The joined round on the test branch" above. With the question I had
+  said what a yes covers: the branch's 27 commits, the reading of GitHub's six jobs, and follow-up
+  pushes to that branch for repairs and for the record of the result; and that it does not cover
+  `main`. I took it as no word either for the real install, for a second reader, for a re-run of a
+  job on GitHub, for a merge of the pilot's session's later commits or for a deletion.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -5947,6 +6018,12 @@ on.
   takes it. New: whether the notes at seven places of the joined records, where this branch's notes
   stand in front of a session's, are put in the order of their numbers, which I would not do. The
   others stand.)
+  (Added later on 24 November with the push of the joined round, by the same session: whether the
+  joined round goes to `test/round-9` is answered, "Push test branch", and done, and all six of
+  GitHub's jobs pass on it; "The joined round on the test branch" above, the entry of 24 November.
+  Open in its place: `main`, for which the run of the six jobs on the joined state was the condition
+  that I had named. The pilot's session's later commits are not in the pushed round. The others
+  stand.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted

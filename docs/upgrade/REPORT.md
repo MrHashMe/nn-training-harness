@@ -237,6 +237,16 @@ order of the notes that both sides had added at one place, said more than the jo
 note at it says how the notes stand. The reading's section, "The reading of the join of the four
 sessions' branches", is the last before "1. What changed and why" now. In it and in this statement "I"
 and "this branch" are those of the statement before this one. Nothing is pushed.
+(Added with point 70: "The reading of the join of the four sessions' branches" is not the last section
+before "1. What changed and why" any more: the section that the next statement names follows it. And
+"Nothing is pushed" in the statement before this note, and "Nothing of the join is pushed" in the one
+before that, held until the push that the next statement names.)
+On your "Push test branch" of 24 November the joined round is on the public test branch: `test/round-9`
+went from `f08b6dd` to `5db0ef2`, and all six of GitHub's jobs pass on it at the first attempt. It is the
+first run of the joined state off this machine. Its section, "The joined round on the test branch", is
+the last before "1. What changed and why" now. In it and in this statement "I" and "this branch" are
+those of the two statements before this one. `main` is as it was. The pilot's session's local branch
+holds four commits more, which the pushed branch does not hold.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -1501,6 +1511,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 56. **On your word the kit refuses on Windows, before it starts anything, a batch file whose path
     `cmd.exe` would not take as written: `final-eval` before it records the use, and the loop for its
     evaluator and for the agent's program. What `cmd.exe` does with a path is measured** (21 November;
@@ -1551,6 +1564,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 57. **One fresh reader has gone through the repairs of point 51, on your word. It found three faults
     of one cause in the launch, which are repaired in a third local commit, and that the loop's stop
     reaches less than this record said, which is not repaired and is yours to decide. Nothing is
@@ -1629,6 +1645,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 58. **Lines with many words that set a variable are answered in time now, three kinds of them. No
     rule's answer changed: the timer's question went away on 21 lines made for this change and came
     in on two made-up lines. Read by nobody but me; nothing is pushed** (21 November; "Lines with
@@ -1703,6 +1722,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 59. **A fresh reader went through the refusal of a batch file's path and the reading's repair before it,
     on your word. It found no fault that breaks a start that worked before. Two of the refusal's checks
     depended on the temporary folder's path, and the rule missed a dot at a path's end and four names.
@@ -1761,6 +1783,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 60. **The merged round is on the public test branch, on your word, and all six of GitHub's jobs pass
     on it at the first attempt** (21 November; "The merged round on the test branch"). The number is
     60 because points 55, 56 and 57 are in the three sessions' local records, which this branch does
@@ -1796,6 +1821,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     the fourteen that the sessions made after them, and the joined state passes its tests on this
     machine; point 68. Whether it goes to `test/round-9` is open, and so are `main` and the
     installer run.)
+    (Added with point 70: it has gone to `test/round-9` since, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on the joined state; point 70. `main` and the
+    installer run are open.)
 61. **The starting session's branch is merged into this one, on your "Yes, merge here", and the two
     repairs of the readers' first finding are one function. The joined state passes its tests on
     this machine. No reader has gone through the joined function yet; nothing is pushed** (21
@@ -1848,6 +1876,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 62. **One fresh reader has gone through the repairs of point 57, on your word. It found none of the
     faults it was sent for; two smaller ones are repaired in a fourth local commit, and three
     sentences of mine say exactly what the code does now. Beside its findings: what ends in the
@@ -1920,6 +1951,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 63. **One fresh reader went through the joined function, on your "After the merge", and found no
     fault of the join. The guard's code stays as it is. Nine checks stand where no row stood, and
     three kinds of sentence are corrected. The tests pass on this machine; nothing is pushed** (21
@@ -1970,6 +2004,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 64. **On your word the loop refuses on Windows, before it starts anything, the arguments of a batch file
     that `cmd.exe` would not hand on as written. What `cmd.exe` does with a batch file's arguments is
     measured** (21 November; "The refusal of a batch file's arguments"). On your "Yes, add it", to my
@@ -2027,6 +2064,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 65. **A reader went through the change of point 58 and found a fault of it: it had made ordinary
     long loops slow, up to the timer's question. Repaired, at a price on other long lines, and the
     record of point 58 is corrected. The repair is read by nobody but me; nothing is pushed** (21
@@ -2105,6 +2145,9 @@ Decision record: `docs/upgrade/LEDGER.md`.
     `claude/kit-commit-verification-e52f2b` since, with the other sessions' branches, on your "Yes,
     join here", and the joined state passes its tests on this machine; point 68. Nothing of it is
     pushed.)
+    (Added with point 70, by the session that joined the four branches: this point's commits are on
+    the public branch `test/round-9` since, with the joined round, on your "Push test branch" of 24
+    November, and all six of GitHub's jobs pass on that state; point 70. `main` is as it was.)
 68. **The four sessions' branches are joined in this branch, on your word, and the joined state
     passes its tests on this machine** (22 and 24 November; "The join of the four sessions'
     branches"). On your "Yes, join here" of 21 November each branch is merged as it stood once its
@@ -2151,6 +2194,11 @@ Decision record: `docs/upgrade/LEDGER.md`.
     first" of 24 November, and found no wrong join; point 69. So "read by nobody but me" held of
     them until then, and the second of the questions that this point leaves open is answered and
     done. The fourth session's two sections follow point 69 now, not this point.)
+    (Added with point 70: pushed since, on your "Push test branch" of 24 November: `test/round-9`
+    went from `f08b6dd` to `5db0ef2`, this branch with the record of point 69, and all six of
+    GitHub's jobs pass on that state at the first attempt; point 70. So "Nothing is pushed" and
+    "GitHub's six jobs have not run on the joined state" held until then, and the first of the
+    questions that this point leaves open is answered and done. `main` stays at `e587b4f`.)
 69. **One fresh reader went through the hand joins of the four merges, on your "Reader first", and
     found no wrong join. No file of the kit is changed; one sentence of the join's record is made
     exact. Nothing is pushed** (24 November; "The reading of the join of the four sessions'
@@ -2196,6 +2244,44 @@ Decision record: `docs/upgrade/LEDGER.md`.
     joined round goes to `test/round-9`, with one run of GitHub's six jobs on it, before `main`
     takes it; whether the notes at those seven places are put in the order of their numbers, which I
     would not do; and what point 68 left open, less the reader.
+    (Added with point 70: pushed since, on your "Push test branch" of 24 November, with this point's
+    commit `5db0ef2` as the head of `test/round-9`, and all six of GitHub's jobs pass on that state
+    at the first attempt; point 70. So "Nothing is pushed" held until then, and the first of the
+    questions that this point leaves open is answered and done. `main` stays at `e587b4f`. The
+    fourth session's two sections, which the note at point 68 names, follow point 70 now.)
+70. **The joined round is on the public test branch, on your word, and all six of GitHub's jobs pass
+    on it at the first attempt** (24 November; "The joined round on the test branch"). On your "Push
+    test branch" this branch's 27 commits went to `test/round-9` as a fast-forward with no force,
+    `f08b6dd` to `5db0ef2`: the four sessions' work as far as `5424b57`, `117ff79`, `533690b` and
+    `f5aa600`, the four merge commits, and the records of points 68 and 69. With it the commits of
+    points 55 to 59, 61 to 65, 68 and 69 are public for the first time. Before the push I searched
+    the whole tree of each of the 27 commits and their messages for private details, and found
+    nothing that the tree of `f08b6dd` does not hold already; every commit has the no-reply address
+    and dates in UTC. GitHub's run 45455885298 on `5db0ef2` passes in all six jobs, with 2,121 to
+    2,136 checks a job and none failed. It is the first run of the joined state off this machine,
+    and of the nine commits that change the kit or its tests since `f08b6dd`: two jobs on macOS, two
+    on bare Linux and two on a Windows machine other than this one, under Python 3.15.2, 3.9.6,
+    3.8.18 and 3.8.10. Every job has 66 to 75 checks more than in the run before, on `f08b6dd`, and
+    by name no check of that run is missing, one of the loop file being worded anew; the counts
+    agree with this machine's passes on the joined state where the two can be compared, but for one
+    check of the loop file that this machine skips. The check that depends on the kit file's own
+    speed passes in all six jobs. A run is not a reading: `f2338d6` is read by nobody but me, and
+    `965aa34` and `26f9c9a` by nobody but their authors; and no job runs the test files from a
+    virtual environment on Windows, where this machine showed the two faults of point 48. `main`
+    stays at `e587b4f`, with round 8's guard, and your real install is untouched. Not in the pushed
+    branch: the pilot's session's four later commits, `4a7775f` and its record `8050d18` with point
+    66, and `246797f` and its record `97e6cfd` with point 67, which came while this record was being
+    written; this point is 70 for that reason. Of those I read the subjects, the two points and that
+    session's note; I checked nothing of them. By point 66 a fresh reader found no fault in
+    `8628536` and `ebc28f0`, which the pushed state holds, that breaks a start that worked before,
+    and three findings are repaired in `4a7775f`; by point 67 a second reader found one fault that
+    `4a7775f` had brought, and it is repaired in `246797f`. The record of this goes to the same
+    branch, as the word covers; that push starts a further run, which the record cannot hold. The
+    fourth session's two sections follow this point now. Open: `main`, for which the run on the
+    joined state was the condition that I had named; whether the pilot's session's later commits are
+    merged here, before `main` or after it, for which I would not hold `main`; the ninth installer
+    run; whether a reader goes through `f2338d6`, `965aa34` and `26f9c9a`; and what points 68 and 69
+    left open, less the push.
 
 ## The reading of the lines with many words that set a variable (21 November 2026): the change had made long loops slow; repaired, at a price on other long lines; its record corrected
 
@@ -20897,6 +20983,9 @@ job "macos-latest, Python 3.x" under Python 3.15.2, as then.
   (Added with point 68: answered by your "Yes, join here", and done: the round is in one branch, this
   one, and the joined state passes its tests on this machine; "The join of the four sessions' branches".
   Whether it goes to `test/round-9` is open.)
+  (Added with point 70: it has gone there since, on your "Push test branch" of 24 November, and all six
+  of GitHub's jobs pass on the joined state; "The joined round on the test branch", the section of 24
+  November.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force. It takes the round as the test branch holds it then.
 - **The ninth installer run on your real install**: after `main`, as in the sections before this one.
@@ -22060,6 +22149,9 @@ In short:
    three others at the ids named here.
 8. **Nothing is pushed.** `test/round-9` is at `f08b6dd` and `main` at `e587b4f`, as before, and your
    real install is untouched. GitHub's six jobs have not run on the joined state.
+   (Added with point 70: pushed since, on your "Push test branch" of 24 November: `test/round-9` is at
+   `5db0ef2`, and all six of GitHub's jobs pass on the joined state; "The joined round on the test
+   branch". `main` stays at `e587b4f`, and your real install is untouched.)
 9. **The sessions' texts stand as they wrote them.** Where one says that its commits are local, that a
    branch does not hold something or that a section is the last one, that was so where it was written. A
    note "Added with point 68" at the end of each of points 55 to 65 says where the commits are now.
@@ -22297,6 +22389,9 @@ arguments, and of the rule's silence outside Windows.
 
 Not run on the joined state: the six other files under the 3.8.20 environment; any file under Python
 3.15; macOS and bare Linux; and GitHub's six jobs, since nothing is pushed.
+(Added with point 70: GitHub's six jobs have run on the joined state since, and all pass: on macOS, on
+bare Linux and on a Windows machine other than this one, three of them under Python 3.15; "The joined
+round on the test branch". The six other files under the 3.8.20 environment have not run on it.)
 
 ### Windows on your screen
 
@@ -22365,6 +22460,8 @@ measure puts 36 windows of seconds on the screen.
 
 - **No push.** Your word covers none. So GitHub's six jobs have not run on the joined state, and nothing
   of the join has run off this machine.
+  (Added with point 70: your "Push test branch" of 24 November covers one, and it is done: the joined
+  round is on `test/round-9`, and GitHub's six jobs pass on it; "The joined round on the test branch".)
 - **No reader.** Your word covers none. The hand joins are read by nobody but me, and four of the
   sessions' repairs by nobody but their authors, by their records: `965aa34`, `26f9c9a`, `ebc28f0` and
   `8628536`. `f2338d6` is read by nobody but me, as before.
@@ -22397,6 +22494,9 @@ measure puts 36 windows of seconds on the screen.
   branch for repairs and for the record of the result. It would be the first run of the joined state off
   this machine, on macOS, on bare Linux and under Python 3.15. Before a push I search what it makes
   public for private details, as before.
+  (Added with point 70: answered by your "Push test branch" of 24 November, and done, after the reader
+  had gone through the hand joins; by then the branch was 27 commits ahead, with the record of that
+  reading. All six of GitHub's jobs pass on the joined state; "The joined round on the test branch".)
 - **Whether a reader goes through the hand joins**, the guard's two places first, and whether before the
   push or after it. One fresh reader with a brief on correctness, as in the earlier readings.
   (Added with point 69: answered by your "Reader first" of 24 November, before a push, and done; the
@@ -22452,6 +22552,9 @@ In short:
    that changed places. It was sent for the joins, not for the changes that were joined.
 6. **Nothing is pushed.** `test/round-9` is at `f08b6dd` and `main` at `e587b4f`, as before, and your
    real install is untouched. No test ran, since nothing changed that a test reads.
+   (Added with point 70: pushed since, on your "Push test branch" of 24 November: `test/round-9` is at
+   `5db0ef2`, this section's commit, and all six of GitHub's jobs pass on it; the section after this one.
+   `main` stays at `e587b4f`, and your real install is untouched.)
 
 ### The reader and its brief
 
@@ -22567,6 +22670,8 @@ has against `b5331fb`, where the fourth session's branch had parted: 70 lines ad
 - **This record is read by nobody but me.**
 - **No push, no merge of the pilot's session's later commits, no re-run of a job on GitHub, nothing on
   `main` or on your real install.** Your word covers none of them.
+  (Added with point 70: your "Push test branch" of 24 November covers the push, and it is done; the
+  section after this one. It covers none of the others.)
 - **Nothing is deleted.** The helpers of this reading, their outputs, the reader's report and its brief
   as this session's record holds them, and the four merges' differences from git's own results are in
   this session's scratch folder. The helper for the 19 places left git's own result of each merge in the
@@ -22587,6 +22692,8 @@ has against `b5331fb`, where the fourth session's branch had parted: 70 lines ad
   follow-up pushes to that branch for repairs and for the record of the result. It would be the first run
   of the joined state off this machine. Before a push I search what it makes public for private details,
   as before.
+  (Added with point 70: answered by your "Push test branch" of 24 November, and done: all six of GitHub's
+  jobs pass on the joined state; the section after this one.)
 - **Whether the notes at the seven places are put in the order of their numbers.** I would leave them;
   "The order of the notes" says why.
 - **Unchanged from the section before this one:** `main`, the ninth installer run, the pilot's session's
@@ -22599,6 +22706,230 @@ their parents and `git show --remerge-diff` on them; the guards of `1bac8d0`, `1
 `tests/test_kit.py`, this file and `PROGRESS.md` at `cac04d3`; my helpers for the guards' values, for the
 notes' order and for the 19 places, in this session's scratch folder; `git fetch`, the tips of the
 sessions' local branches and the sessions' shared notes, read on this machine at 17:04 on 24 November.
+
+## The joined round on the test branch (24 November 2026): all six of GitHub's jobs pass on it
+
+Your word: "Push test branch" (about 18:03 on 24 November), to my question after the last section's work,
+"Push the joined round to test/round-9 now?" Beside the question I had written what a yes covers: this
+branch's 27 commits going to `test/round-9` as a fast-forward with no force, the reading of GitHub's six
+jobs, and follow-up pushes to that branch for repairs and for the record of the result; and that it does
+not cover `main`. I took it as no word either for your real install, for a second reader, for a re-run of
+a job on GitHub, for a merge of what the pilot's session committed after the join, or for deleting
+anything. Times in this section are UTC, and of 24 November where no date stands. "I" is the session that
+keeps this record, as in the last two sections.
+
+In short:
+
+1. **All six of GitHub's jobs pass on `5db0ef2` at the first attempt**, with 2,121 to 2,136 checks a job
+   and none failed.
+2. **It is the first run of the joined state off this machine**, and of everything that this branch took
+   after `f08b6dd`: nine commits that change the kit or its tests, three of the pilot's session and two
+   each of the sessions for names in quotes, for the two faults and for lines with many words that set a
+   variable, and the hand joins of the four merges in the guard, in `tests/test_kit.py` and in the
+   reference. Two jobs ran on macOS, two on bare Linux and two on a Windows machine other than this one,
+   under Python 3.15.2, 3.9.6, 3.8.18 and 3.8.10.
+3. **Every job has 66 to 75 checks more than in the run before, and by name no check of that run is
+   missing**, one of the loop file being worded anew. The kit file has 30 to 32 more: 30 in every job,
+   one more where tmux is installed and two more on Windows. The review-fixes file has 35 more in every
+   job, and the loop file one more outside Windows and eight more on Windows. The other five files have
+   the counts of the run before, and each job skips the checks that it skipped then.
+4. **The counts agree with this machine's where the two can be compared**: the kit file has 1,329 checks
+   on GitHub's Windows as on this machine and on GitHub's Linux as in this machine's WSL, the
+   review-fixes file 226 and 228, the loop file 279 on ubuntu-latest as in WSL, and the ports file 138 on
+   Windows under Python 3.x as here. The one difference has a known reason: in the loop file GitHub's
+   Windows has 276 where this machine has 275, as it had 268 against 267 before the join, because one
+   check needs a link to a folder, which this account cannot make. It is skipped here and runs there.
+5. **The check that depends on the kit file's own speed passes in all six jobs**, and the ten new checks
+   of the pilot's session's refusals for a batch file, of its path and of its arguments, pass in both
+   Windows jobs, the only ones where they run.
+6. **A run is not a reading.** What the last two sections say of who has read what stands: `f2338d6` is
+   read by nobody but me, and `965aa34` and `26f9c9a` by nobody but their authors. `ebc28f0` and
+   `8628536` have had a reader since, by the pilot's session's record, which this branch does not hold;
+   what that reading repaired is in `4a7775f`, which the pushed state does not hold either. And no job
+   runs the test files from a virtual environment on Windows, where this machine showed the two faults of
+   point 48: the checks of their repairs pass in every job where they run, and that says nothing about an
+   environment.
+7. **`main` is as it was**, at `e587b4f`, and your real install is untouched. Both hold round 8's guard,
+   with the hole in the tee rule and the `.exe` gap.
+8. **The pilot's session has gone on, and the pushed branch holds none of that**: four local commits,
+   `4a7775f` and its record `8050d18` with point 66, and `246797f` and its record `97e6cfd` with point
+   67, the last two committed while this record was being written (18:44 and 18:49). Points 68 and 69 are
+   the join's and its reading's, so this section's point is 70.
+9. **This record goes to the same branch, as your word covers.** That push starts a further run of the
+   six jobs, which this record cannot hold.
+
+### The push, and GitHub's run
+
+- **Before the push** I fetched: `test/round-9` stood at `f08b6dd` and `main` at `e587b4f`, and this
+  branch was 27 commits ahead of the test branch and none behind. I searched what the push makes public
+  for private details once more, this time the whole tree of each of the 27 commits and the 1,700 lines
+  of their messages: for names, addresses, this machine's paths, the ids of sessions, the shapes of
+  tokens, a time zone and this machine's offset from UTC. In the trees 40 different lines in 18 files
+  match one of those patterns: in the guard, the reference, three test files, the upgrade's three record
+  files and ten of the scout's drafts and data files. They are the kit's own examples of such paths,
+  these records' own sentences on such searches, and rows and lines on other tools and on public pages in
+  the ledger and in the scout's files; none is a detail of yours, and each of the 40 stands in the tree
+  of `f08b6dd` already, which is public. In the messages no line matches. All 27 commits carry the
+  account's no-reply address, as author and as committer, and dates in UTC.
+- **The 27 commits**: six of the session for names in quotes (to `5424b57`, its own merge of this branch
+  among them), four of the fourth session (to `117ff79`), five of the session for the two faults (to
+  `533690b`), six of the pilot's session (to `f5aa600`), the four merge commits (`1bac8d0`, `bf0b9be`,
+  `28efba3`, `fce2f4d`), and my two records, `cac04d3` and `5db0ef2`. Outside `docs/upgrade` they change
+  seven files, with 1,128 lines added and 185 removed: the guard, the controller, the loop, the reference
+  and three test files. The workflow's file is not among them.
+- **The push**, at 18:06, as a fast-forward with no force: `f08b6dd` to `5db0ef2`.
+- **The run**: GitHub Actions, workflow run 45455885298 on `5db0ef2` (18:06 to 18:30). The four jobs on
+  Linux and Windows got a machine within three seconds, the two on macOS after five minutes. All six pass
+  at the first attempt. No line begins with `FAIL` in any of the six logs, and each log has its eight
+  lines `RESULT: ALL PASS`.
+- **The notes of this section** are marked "Added with point 70". They stand at 22 places of this file:
+  at the ends of the thirteen points 55 to 65, 68 and 69, once in the opening, once in "The merged round
+  on the test branch", four times in "The join of the four sessions' branches" and three times in "The
+  reading of the join of the four sessions' branches", where those say that nothing is pushed, that
+  GitHub's jobs have not run on the joined state, or put the push as a question. In the sessions' own
+  sections the sentences that call their commits local stand as they were written; the notes at their
+  points say where the commits are now.
+
+| Job | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 19 | 1,329 | 228 | 136 | 279 | 100 | 42 | 3 | 2,136 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 19 | 1,329 | 228 | 135 | 268 | 100 | 42 | 3 | 2,124 |
+| windows-latest, Python 3.x | 3.15.2 | 19 | 1,329 | 226 | 138 | 276 | 100 | 42 | 6 | 2,136 |
+| windows-latest, Python 3.8 | 3.8.10 | 19 | 1,329 | 226 | 137 | 276 | 100 | 42 | 6 | 2,135 |
+| macos-latest, Python 3.x | 3.15.2 | 19 | 1,330 | 228 | 136 | 268 | 100 | 42 | 6 | 2,129 |
+| macos-latest, Python system | 3.9.6 | 19 | 1,325 | 226 | 135 | 268 | 100 | 42 | 6 | 2,121 |
+
+Against the run before, 44901828714 on `f08b6dd` (21 November), with the two runs' checks compared by
+name: one check of that run is missing in every job, and it is there under a new name. The session for
+the two faults worded it anew in `74d1e22`: its name says "asks for the run's stop and then reports the
+launch's failure" where it said "stops the run and then reports the launch's failure", and goes on longer
+at its end. I count it as the check it was. New are 30 checks of the kit file in every job, one more in
+the three jobs that have tmux (both on Linux, and macOS under Python 3.x) and two more in the two on
+Windows; 35 of the review-fixes file in every job; and of the loop file one in the four jobs outside
+Windows and eight in the two on Windows. That makes 67 more on Linux and on macOS under Python 3.x, 66 on
+macOS under the system's Python and 75 on Windows. Each job skips what it skipped in the run before: the
+tmux checks where tmux is not installed (both Windows jobs, and macOS under the system's Python), the
+sandbox's checks where bubblewrap cannot be used (every job but ubuntu-latest), and the two checks that
+need PyTorch (every job). Five jobs ran on the image of the run before; the job on `ubuntu-24.04` ran on
+the image's version 20261116.133.1, where the run before had 20261116.376.1.
+
+### What the run shows, and what it does not
+
+- **The joined state passes off this machine**: on GitHub's Linux, macOS and Windows, under four
+  interpreters. Until this run it had passed on this machine alone: on Windows under 3.11.7, in WSL under
+  3.12.3, and the kit file and the loop file from the 3.8.20 environment (point 68).
+- **Both sides' rows pass on the guard's joined lines.** At the guard's two places that I joined by hand,
+  `cmd`'s `/C` and `/K` are this branch's and the lines around them the fourth session's. The seven rows
+  that put `cmd /C` and `cmd /K` to the guard, which the run before had on this branch's own lines, pass
+  in every job, and so do that session's seven named checks of its searches, which are new in this run.
+  In `named()`, the one function that both sides had changed and that git joined by itself, the
+  review-fixes file's seven new rows that put a line to it pass in every job. That is what a test can say
+  of a join; the reader of the last section went through the lines themselves.
+- **The guard's new rows are answered alike in all six jobs**: the kit file's 17 command lines (16 put to
+  it as Bash's, one as PowerShell's) and the review-fixes file's 28, with a program's name in quotes:
+  behind a word that sets a variable, behind `cmd /c` and `cmd /k`, in backticks, behind `sudo`, in a
+  `trap`, in a list of words, and as plain text that starts nothing. Each line is put to the guard as
+  text and gets the answer that its row names. No shell ran those lines.
+- **The launch and its supervisors** (the session for the two faults): six new checks pass in every job,
+  the one of four supervisors that are started together on one run among them, and the one of a launch
+  through tmux passes in the three jobs that have tmux.
+- **The refusals for a batch file** (the pilot's session): the ten new checks for Windows pass in both
+  Windows jobs, two in the kit file and eight in the loop file. The one for the other systems, that the
+  rule names nothing there, passes in the four other jobs.
+- **The check "session hook injects status after compaction"** passes in all six jobs. It needs the kit
+  file's two live runs to be still running when it is reached. Each has 30,000 steps with a sleep of 0.02
+  seconds, so at least 600 seconds, and this round's guard rows stand between their launch and the check.
+  By the times at which GitHub took the logs' lines, about 141 seconds (ubuntu-24.04), 210 (Windows under
+  3.8) and 272 (macOS under the system's Python) lie between the line behind the launch and this check's
+  line; the run before had 164, 277 and 190 there. Under Python 3.15 the file's first lines reach the log
+  late, and the times say only that the whole file took 301 to 437 seconds. So every job reached the
+  check with time to spare, and the times differ more from one machine to the next than from the run
+  before to this one. Whether the check gets a run of its own stands as a question from "The merge of the
+  three branches and its reading".
+- **The two faults under a virtual environment on Windows** (points 48, 57 and 62): the checks of the
+  repairs `74d1e22` and `965aa34` pass in every job where they run. On GitHub's Windows the test files
+  run under the interpreter that the workflow's `actions/setup-python` step installs, which is no virtual
+  environment's; single checks build an environment of their own, as before. So the run does not show the
+  test files run from an environment. That rests on this machine's passes of the kit file and the loop
+  file from the 3.8.20 environment, which point 68 records.
+- **Not shown:** the guard in a session with an agent, or in front of a shell that runs the line; an
+  agent session, a training run or a sleep on a Mac; and anything of the kit under PyTorch, since no
+  runner has it, so the benchmarks file has 42 checks there in the place of 54, as before.
+
+### Beside the run: what the pilot's session did since
+
+- **Four local commits on `claude/brave-robinson-27cbd9` are not in the pushed branch.** The first two
+  are `4a7775f` and its record `8050d18`, with point 66, both of 24 November (15:28 and 15:32), after the
+  fourth merge. Of them I read the subjects and point 66; I checked nothing of them. By that point a
+  fresh reader went through `8628536`, the refusal of a batch file's arguments, and `ebc28f0`, the
+  repairs of the path's refusal after its own reading; the pushed state holds both. The reader found "no
+  fault in either commit that breaks a start that worked before". Three findings are repaired in
+  `4a7775f`, in the controller, the loop, the reference and `tests/test_loop.py`: the rule missed a
+  variable's form whose text in front of the `=` holds a `%`, the check asked a run's folder by a link's
+  own path, and it asked the agent's arguments with more names than a session has.
+- **The other two came while this record was being written**: `246797f` at 18:44 and its record
+  `97e6cfd`, with point 67, at 18:49. At my look of 18:41 the branch stood at `8050d18`, and that
+  session's note, as it stood since 17:44, said that a fresh reader had gone through `4a7775f` and that
+  the repairs stood uncommitted in its worktree. Of the two I read the subjects, point 67 and that
+  session's note of 18:53; I checked nothing of them. By that point the reader found one fault that
+  `4a7775f` had brought, of which its report says that "on Windows a runs folder that cannot be resolved
+  now fails at `start` with a wrong message", and the point says that it held wider than the reader
+  wrote. The pushed state does not hold `4a7775f`. `246797f` repairs that and takes up the reader's three
+  other findings, in the four files that `4a7775f` changed, with 129 lines added and 67 removed. By that
+  record what `246797f` changes is read by nobody but its author.
+- **The three other sessions' branches** stand where the join took them, at `5424b57`, `117ff79` and
+  `533690b`, and their notes are as they were on 21 November.
+- **The numbers.** Points 66 and 67 are the pilot's session's, 68 and 69 the join's and its reading's,
+  and this section's point is 70; I wrote that into the shared notes at 18:42, before this record.
+
+### Not done, and why
+
+- **No merge of the pilot's session's later commits**: your word covers none, and two of the four came
+  while this record was being written.
+- **No second reader**: your word covers none. `f2338d6` is read by nobody but me, and `965aa34` and
+  `26f9c9a` by nobody but their authors, as the last two sections say.
+- **A re-run of a job on GitHub**: none was called for, since every job got a machine and passes.
+- **`main`, the ninth installer run and every deletion**: each needs your word.
+- **The run that the push of this record starts**: this record cannot hold it.
+- **No test ran on this machine for this record**, so it put no window on your screen. By its notes the
+  pilot's session ran its own eight test files on this machine from 17:45 to 18:43, and those do.
+- **No message to the other sessions.** My note in the sessions' shared folder names the push, the run's
+  result and this record's point.
+- **The ledger's rows are not touched**: a push and a run decide nothing that has a row. Its head has one
+  note more, on the state of the round.
+
+### What needs your decision
+
+- **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
+  with no force. What I had named as its condition in the join's section, that GitHub's six jobs pass on
+  the joined state, is met. It would take the round as the test branch holds it then: with round 9's
+  guard in the place of round 8's, without the pilot's session's later repairs, and with the three
+  commits that only their authors have read.
+- **Whether the pilot's session's later commits come into this branch**, four so far (`4a7775f`,
+  `8050d18`, `246797f` and `97e6cfd`), and whether before `main` moves or after it. That would be a fifth
+  merge with its own tests and a further push to the test branch, each on your word. That session's
+  second reading is recorded now. I would not hold `main` for it: by that session's records the reader of
+  point 66 found no fault in `8628536` or `ebc28f0` that breaks a start that worked before, the fault
+  that the reader of point 67 found came with `4a7775f`, which the pushed state does not hold, and until
+  `main` moves it keeps round 8's guard.
+- **The ninth installer run on your real install**: after `main`, as in the sections before this one.
+- **Whether a reader goes through `f2338d6`, `965aa34` and `26f9c9a`**, and whether before `main` or
+  after it. One fresh reader with a brief on correctness, as in the earlier readings.
+- **Whether the notes at the seven places are put in the order of their numbers**: open from the last
+  section; I would not.
+- **The scratch of this work**, which the join's section names: whether it goes is yours to say.
+- Unchanged from the last two sections: what they list, less the push to `test/round-9`.
+
+Sources: `git fetch` before and after the push, on 24 November 2026; a search of the trees of the 27
+commits and of their messages; GitHub Actions, workflow run 45455885298 of the public repository, read on
+24 November 2026 from its list of jobs and from each job's log, its checks counted as the lines that
+begin with `PASS`, `FAIL` and `SKIP` and split at the `RESULT:` lines, and its times taken from the time
+stamps that GitHub sets in front of the logs' lines; run 44901828714, read the same way, for the
+comparison, and the two runs' checks compared by name after run ids, paths and numbers were taken out;
+`.github/workflows/tests.yml`, which the 27 commits do not change; `tests/test_kit.py` for the two live
+runs' steps; this machine's passes on the joined state, which point 68 records; the tips of the sessions'
+local branches, points 66 and 67 in the pilot's session's branch and the sessions' shared notes, read on
+this machine at 18:41 and again at 18:58.
 
 ## 1. What changed and why
 

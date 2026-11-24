@@ -557,6 +557,9 @@ round are UTC.
   `claude/kit-commit-verification-e52f2b`, in four merge commits, and the joined state passes its tests on this
   machine; REPORT.md, "The join of the four sessions' branches". The sessions' records did not touch this ledger, and
   a join and a pass of the tests decide nothing that has a row here. Nothing of it is pushed.)
+  (Added later on 24 November: on the user's "Push test branch" the joined round is on the public branch
+  `test/round-9` (`f08b6dd` to `5db0ef2`), and all six of GitHub's jobs pass on it; REPORT.md, "The joined round on
+  the test branch". A push and a run decide nothing that has a row here. `main` is unchanged.)
 
 ## Coverage map
 

@@ -247,6 +247,15 @@ first run of the joined state off this machine. Its section, "The joined round o
 the last before "1. What changed and why" now. In it and in this statement "I" and "this branch" are
 those of the two statements before this one. `main` is as it was. The pilot's session's local branch
 holds four commits more, which the pushed branch does not hold.
+(Added with point 72: "The joined round on the test branch" is not the last section before "1. What
+changed and why" any more: the section that the next statement names follows it. And "`main` is as it
+was" in the statement before this note held until the push that the next statement names.)
+On your "Push main" of 24 November the public `main` has the joined round: it went from `e587b4f` to
+`94f763a`, the commit that the test branch holds, as a fast-forward of 66 commits with no force, and all
+six of GitHub's jobs pass on it at the first attempt. Its section, "`main` has the joined round", is the
+last before "1. What changed and why" now. In it and in this statement "I" and "this branch" are those of
+the three statements before this one. Your real install is as it was. The pilot's session's four later
+commits are not in `main`.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -2282,6 +2291,37 @@ Decision record: `docs/upgrade/LEDGER.md`.
     merged here, before `main` or after it, for which I would not hold `main`; the ninth installer
     run; whether a reader goes through `f2338d6`, `965aa34` and `26f9c9a`; and what points 68 and 69
     left open, less the push.
+    (Added with point 72: `main` is answered, "Push main", and done: it went to `94f763a` on 24
+    November, and all six of GitHub's jobs pass on it. The further run that this point names is
+    45465903914, on `94f763a`, and it passes in all six jobs too. Point 72.)
+72. **The public `main` has the joined round, on your word, and all six of GitHub's jobs pass on it
+    at the first attempt** (24 November; "`main` has the joined round"). On your "Push main"
+    GitHub's `main` went from `e587b4f` to `94f763a`, the commit that `test/round-9` holds, at 19:33
+    UTC: 66 commits as a fast-forward with no force, the 38 that went to the test branch on 20 and
+    21 November and the 28 that went to it on 24 November. GitHub held every one of them in the test
+    branch already, so the push made nothing public that was not; all carry the no-reply address and
+    dates in UTC. GitHub's run 45471455739 on `main` passes in all six jobs, with 2,121 to 2,136
+    checks a job and none failed: job for job the counts of the two runs on the test branch, on
+    `5db0ef2` and on `94f763a`. The second of those, 45465903914, is the run that the push of point
+    70's record started, and it passes in all six jobs too. So what is released is round 9 now, with
+    everything that followed it up to the join: outside `docs/upgrade`, `main` takes 18 files with
+    3,634 lines added and 197 removed, and round 8's guard, with the hole in the tee rule and the
+    `.exe` gap, is not on `main` any more. `main` takes the round as the test branch held it: with
+    the costs that its points name, for a read-only agent where a program's name stands in quotes
+    (points 49 and 55) and on some long lines (point 65); with `f2338d6`, which nobody but me has
+    read, and `965aa34` and `26f9c9a`, which nobody but their authors have read; and without the
+    pilot's session's four later commits, `4a7775f`, `8050d18`, `246797f` and `97e6cfd`. By that
+    session's note a reader is going through `246797f`, and the note takes point 71 for that
+    reading's record, so this point is 72. Of those commits I read no more than point 70 says, and
+    checked nothing. Your real install is untouched: it holds round 8, with the hole and the gap,
+    until a ninth installer run. The local `main` of the main checkout is not moved, since your word
+    does not cover it: it stays at `992f436`, 67 commits behind the public one, and 68 with this
+    record. The record of this goes to `main` and to the test branch, as the word covers; each of
+    the two pushes starts a further run, which the record cannot hold. Open: the ninth installer
+    run, which can come from `main` now; whether the pilot's session's later commits are merged here
+    and go to the test branch and to `main`; whether a reader goes through `f2338d6`, `965aa34` and
+    `26f9c9a`; whether the local `main` is moved to the public one; and what point 70 left open,
+    less `main`.
 
 ## The reading of the lines with many words that set a variable (21 November 2026): the change had made long loops slow; repaired, at a price on other long lines; its record corrected
 
@@ -11621,6 +11661,9 @@ Windows (3.15.2 and 3.8.10), 1,669 on macOS under "Python 3.x" (3.15.2) and 1,66
   with no force, and GitHub's six jobs would run there. I would take a yes to cover that push, the
   reading of the jobs, and the push of the record of the result to `main` and to the test branch. Not
   your real install, and no deletion.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install**, from `main` once it has the round, or from the test
   branch if you say so. Until it, the install's guard lets a `tee` with a redirection of its own write a
   kept file unasked.
@@ -11930,6 +11973,9 @@ repairs of the reading have not run on GitHub's machines or on a Mac.
   repairs". The reader took 183,242 tokens.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install.** Until it, the install's guard lets a `tee` with a
   redirection of its own, and `touch.exe` or `black.exe`, write a kept file unasked.
 - **Whether the proof pilot's branch is merged into this one.** The pilot ran on 20 November in a
@@ -12034,6 +12080,9 @@ five more in the review-fixes file, and the counts of that run in the other six 
   reading found something too.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install**, and **whether the proof pilot's branch is merged
   into this one**: as in the section before this one.
 - Unchanged: the other questions listed there.
@@ -12547,6 +12596,9 @@ have not run on GitHub's machines or on a Mac.
   where I had estimated 60,000 to 120,000. These repairs are smaller than the ones it read.
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install.** Until it, the install's guard lets a `tee` with a
   redirection of its own, and `touch.exe` or `black.exe`, write a kept file unasked.
 - **Whether the proof pilot's branch is merged into this one.** It has moved on since the first
@@ -12707,6 +12759,9 @@ eight more in the review-fixes file, and the counts of that run in the other six
   then.
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install**: as in the section before this one.
 - **Whether the other sessions' branches are merged into this one**: the proof pilot's, and those of the
   two new sessions once they hold something. Each merge needs your word. The pilot's record adds to the
@@ -20988,6 +21043,9 @@ job "macos-latest, Python 3.x" under Python 3.15.2, as then.
   November.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force. It takes the round as the test branch holds it then.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install**: after `main`, as in the sections before this one.
 - **Whether a reader goes through `f2338d6`.** Its part in the guard will be in the joined guard that
   the other session's reader is to go through, by that session's note; its two repairs of the
@@ -22503,6 +22561,9 @@ measure puts 36 windows of seconds on the screen.
   section after this one.)
 - **`main`.** "Push main" would move it from `e587b4f` to the head of the test branch, as a fast-forward
   with no force. I would have GitHub's six jobs pass on the joined state first.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **The ninth installer run on your real install:** after `main`, as in the sections before this one.
 - **Whether the pilot's session's two later commits come into this branch too**, `4a7775f` with the
   repairs of its reading and `8050d18` with their record and point 66, and whether before the round goes
@@ -22751,12 +22812,16 @@ In short:
    environment.
 7. **`main` is as it was**, at `e587b4f`, and your real install is untouched. Both hold round 8's guard,
    with the hole in the tee rule and the `.exe` gap.
+   (Added with point 72: `main` has the joined round since 19:33 on 24 November, on your "Push main"; the
+   section after this one. Your real install is as this item says.)
 8. **The pilot's session has gone on, and the pushed branch holds none of that**: four local commits,
    `4a7775f` and its record `8050d18` with point 66, and `246797f` and its record `97e6cfd` with point
    67, the last two committed while this record was being written (18:44 and 18:49). Points 68 and 69 are
    the join's and its reading's, so this section's point is 70.
 9. **This record goes to the same branch, as your word covers.** That push starts a further run of the
    six jobs, which this record cannot hold.
+   (Added with point 72: that run is 45465903914, on `94f763a`, and it passes in all six jobs; the
+   section after this one.)
 
 ### The push, and GitHub's run
 
@@ -22890,7 +22955,10 @@ the image's version 20261116.133.1, where the run before had 20261116.376.1.
   `26f9c9a` by nobody but their authors, as the last two sections say.
 - **A re-run of a job on GitHub**: none was called for, since every job got a machine and passes.
 - **`main`, the ninth installer run and every deletion**: each needs your word.
+  (Added with point 72: your word for `main` came, "Push main", and it is done; the section after this
+  one. The other two stand.)
 - **The run that the push of this record starts**: this record cannot hold it.
+  (Added with point 72: the section after this one holds it.)
 - **No test ran on this machine for this record**, so it put no window on your screen. By its notes the
   pilot's session ran its own eight test files on this machine from 17:45 to 18:43, and those do.
 - **No message to the other sessions.** My note in the sessions' shared folder names the push, the run's
@@ -22905,6 +22973,9 @@ the image's version 20261116.133.1, where the run before had 20261116.376.1.
   the joined state, is met. It would take the round as the test branch holds it then: with round 9's
   guard in the place of round 8's, without the pilot's session's later repairs, and with the three
   commits that only their authors have read.
+  (Added with point 72: answered on 24 November, "Push main", and done: `main` went to `94f763a`, the
+  commit that the test branch held, and all six of GitHub's jobs pass on it; "`main` has the joined
+  round".)
 - **Whether the pilot's session's later commits come into this branch**, four so far (`4a7775f`,
   `8050d18`, `246797f` and `97e6cfd`), and whether before `main` moves or after it. That would be a fifth
   merge with its own tests and a further push to the test branch, each on your word. That session's
@@ -22930,6 +23001,164 @@ comparison, and the two runs' checks compared by name after run ids, paths and n
 runs' steps; this machine's passes on the joined state, which point 68 records; the tips of the sessions'
 local branches, points 66 and 67 in the pilot's session's branch and the sessions' shared notes, read on
 this machine at 18:41 and again at 18:58.
+
+## `main` has the joined round (24 November 2026): pushed, all six of GitHub's jobs pass on it
+
+Your word: "Push main" (19:31 on 24 November), to my question after the last section's work, "Move
+GitHub's main to the test branch's head now?" Beside the question I had written what a yes covers:
+GitHub's `main` going from `e587b4f` to `94f763a`, 66 commits as a fast-forward with no force; the
+reading of GitHub's six jobs on it; and the record of the result, pushed to `main` and to the test
+branch. And what it does not cover: the local `main` of the main checkout, your real install, the pilot's
+session's later commits, a further reader, and any deletion. Times in this section are UTC, and of 24
+November where no date stands. "I" is the session that keeps this record, as in the last three sections.
+
+In short:
+
+1. **The public `main` has the joined round.** It went from `e587b4f` to `94f763a` at 19:33, as a
+   fast-forward of 66 commits with no force and with no merge commit of its own. `94f763a` is the commit
+   that `test/round-9` holds, so the two branches are one state.
+2. **All six of GitHub's jobs pass on `main` at the first attempt**, with 2,121 to 2,136 checks a job and
+   none failed. Job for job and test file for test file, the counts are those of the two runs on the test
+   branch.
+3. **The run that the push of the last section's record started passes too**: 45465903914, on `94f763a`
+   on the test branch, in all six jobs. So the joined state has passed three runs of the six jobs: one on
+   `5db0ef2` and two on `94f763a`, which differs from it in the record files alone.
+4. **The push made nothing public that was not.** GitHub held all 66 commits in `test/round-9` already.
+5. **What is released is round 9 now, with everything that followed it up to the join.** Outside
+   `docs/upgrade`, `main` takes 18 files with 3,634 lines added and 197 removed. Round 8's guard, with
+   the hole in the tee rule and the `.exe` gap, is not on `main` any more.
+6. **`main` takes the round as the test branch held it**, as I had written with the question of the last
+   section: with the costs that its points name, for a read-only agent where a program's name stands in
+   quotes (points 49 and 55) and on some long lines (point 65); with `f2338d6`, which nobody but me has
+   read, and `965aa34` and `26f9c9a`, which nobody but their authors have read; and without the pilot's
+   session's four later commits.
+7. **Your real install is untouched.** It holds round 8, with the hole in the tee rule and the `.exe`
+   gap, until a ninth installer run, which can come from `main` now.
+8. **The local `main` of the main checkout is not moved**: your word does not cover it. It stays at
+   `992f436`, which was one commit behind the public `main` before this push, is 67 behind since it, and
+   is 68 behind with this record.
+9. **This record goes to `main` and to the test branch, as your word covers.** Each of the two pushes
+   starts a further run of the six jobs, which this record cannot hold.
+
+### The push, and GitHub's run on `main`
+
+- **Before the push** I fetched, and I asked GitHub itself for its two refs: `main` stood at `e587b4f`
+  and `test/round-9` at `94f763a`. This branch stood at `94f763a` too, with nothing uncommitted, and
+  `e587b4f` is an ancestor of it. The sessions' local branches and their notes were as at 19:01, when the
+  last section's record was committed.
+- **The 66 commits**: the 38 from `b593bd0` to `f08b6dd`, which went to the test branch on 20 and 21
+  November, and the 28 that went to it on 24 November, the 27 of the last section and its record
+  `94f763a`. Eight of the 66 are merge commits. Of the other 58, 26 change files outside `docs/upgrade`;
+  the workflow's file is not among those files.
+- **Nothing new is public.** Every one of the 66 was in `test/round-9` when I pushed, and that branch is
+  public. Each was searched for private details before its own push to that branch, as the sections of
+  those pushes say; for this push I searched no tree again. I looked at the addresses and at the dates of
+  all 66 once more: each has the account's no-reply address, as author and as committer, and dates in
+  UTC.
+- **The push**, at 19:33, as a fast-forward with no force: `e587b4f` to `94f763a`. I pushed the commit to
+  GitHub's `main` by its id, so no local branch moved.
+- **The run**: GitHub Actions, workflow run 45471455739 on `main` at `94f763a` (19:33 to 19:55). The four
+  jobs on Linux and Windows got a machine within four seconds, the two on macOS after five minutes. All
+  six pass at the first attempt. No line begins with `FAIL` in any of the six logs, and each log has its
+  eight lines `RESULT: ALL PASS`.
+- **The notes of this section** are marked "Added with point 72". They stand at 14 places of this file:
+  at the eight places that put the push of `main` as a question, one in the list "What needs your
+  decision" of each of eight sections, the first of them "Round 9 on the test branch" and the last the
+  section before this one; at four more places of that last section, items 7 and 9 of its "In short" and
+  two lines of its "Not done, and why"; at the end of point 70; and once in the opening. The other
+  sentences of this file that say that `main` stays at `e587b4f` or is as it was, in points 37 to 69 and
+  in the sections of 20 to 24 November, have no note each: they held until 19:33 on 24 November, and this
+  section and point 72 say where `main` is now.
+
+| Job | Interpreter | Units | Kit | Review fixes | Ports | Loop | Remote | Benchmarks | Real shells | All |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ubuntu-latest, Python 3.x | 3.15.2 | 19 | 1,329 | 228 | 136 | 279 | 100 | 42 | 3 | 2,136 |
+| ubuntu-24.04, Python 3.8 | 3.8.18 | 19 | 1,329 | 228 | 135 | 268 | 100 | 42 | 3 | 2,124 |
+| windows-latest, Python 3.x | 3.15.2 | 19 | 1,329 | 226 | 138 | 276 | 100 | 42 | 6 | 2,136 |
+| windows-latest, Python 3.8 | 3.8.10 | 19 | 1,329 | 226 | 137 | 276 | 100 | 42 | 6 | 2,135 |
+| macos-latest, Python 3.x | 3.15.2 | 19 | 1,330 | 228 | 136 | 268 | 100 | 42 | 6 | 2,129 |
+| macos-latest, Python system | 3.9.6 | 19 | 1,325 | 226 | 135 | 268 | 100 | 42 | 6 | 2,121 |
+
+Against the two runs on the test branch, 45455885298 on `5db0ef2` and 45465903914 on `94f763a`, with the
+runs' checks compared by name: in every job and every test file this run has the checks that those two
+have, none fewer and none more. Each job skips what it skipped in them: the tmux checks where tmux is not
+installed (both Windows jobs, and macOS under the system's Python), the sandbox's checks where bubblewrap
+cannot be used (every job but ubuntu-latest), and the two checks that need PyTorch (every job). Five jobs
+ran on the image that they had in those two runs; the job on `ubuntu-24.04` ran on the image's version
+20261116.376.1, which it had in the run of 21 November, where those two runs had 20261116.133.1.
+
+### The run on the last record's commit
+
+- **Run 45465903914 on `94f763a` on the test branch** (19:02 to 19:25) is the run that the push of the
+  last section's record started, and which that record could not hold. All six jobs pass at the first
+  attempt, with no line that begins with `FAIL` and with eight lines `RESULT: ALL PASS` in each log, and
+  with the counts of the table above in every job and every test file. They are the counts of run
+  45455885298 on `5db0ef2` too, which the last section's table has.
+- **`94f763a` differs from `5db0ef2` in four files of `docs/upgrade`**, which no test reads. So the three
+  runs say the same of the kit, each on machines that GitHub gave anew.
+
+### What `main` holds now, and what it does not
+
+- **Round 9 and what followed it.** Outside `docs/upgrade` the push changes 18 files of `main`: the
+  guard, the controller, the loop, the remote controller and the run log; the settings fragment; the
+  skill's text, four of its references and the reviewer agent's file; the guide and the reference; and
+  four test files. 3,634 lines are added and 197 removed. In `docs/upgrade` nine files change, with
+  19,747 lines added and 23 removed: these records, the ledger and the scout's files.
+- **What changes for someone who installs from `main`** is what this file's sections from round 9 on
+  record. This section adds nothing to them.
+- **The costs that the round's points name are on `main` with it**: for a read-only agent where a
+  program's name stands in quotes (points 49 and 55), and on some long lines (point 65). Whether they are
+  accepted stands as those points put it; `main` has them since this push.
+- **A run is not a reading**, as the last section says: `f2338d6` is read by nobody but me, and `965aa34`
+  and `26f9c9a` by nobody but their authors. `main` has them so.
+- **Not in `main`**: the pilot's session's four later commits, `4a7775f`, `8050d18`, `246797f` and
+  `97e6cfd`, as the last section says of the pushed branch. That session's local branch stood at
+  `97e6cfd` at each of my looks for this section (19:29, 19:32, 19:46 and 19:57). By its note of 18:59 a
+  fresh reader is going through `246797f`, and the note takes point 71 for that reading's record; so this
+  section's point is 72, which I wrote into the shared notes at 19:58, before this record. Of that
+  session's work I read no more than the last section says, and checked nothing.
+- **Not shown by any of the three runs**: what the last section lists, unchanged. Among it are the guard
+  in a session with an agent, the test files run from a virtual environment on Windows, and anything of
+  the kit under PyTorch.
+
+### Not done, and why
+
+- **The local `main` of the main checkout is not moved.** Your word does not cover it, and that folder is
+  not this session's. It stays at `992f436`.
+- **The ninth installer run, a merge of the pilot's session's later commits, a further reader, a re-run
+  of a job, a deletion**: your word covers none of them, and no job needed a re-run.
+- **No new search of the trees for private details**, for the reason given above.
+- **No test ran on this machine for this record**, so it put no window on your screen.
+- **The runs that the two pushes of this record start**: this record cannot hold them.
+- **No message to the other sessions.** My note in the sessions' shared folder names the push, the run's
+  result and this record's point.
+- **The ledger's rows are not touched**: a push and a run decide nothing that has a row. Its head has one
+  note more, on the state of the round.
+- **This record is read by nobody but me.**
+
+### What needs your decision
+
+- **The ninth installer run on your real install.** It can come from `main` now. Until it, the install's
+  guard has the hole in the tee rule and the `.exe` gap, as the sections before this one say.
+- **Whether the pilot's session's later commits come into this branch**, and from it to the test branch
+  and to `main`: four so far, and a reading of the last of them is under way in that session. That would
+  be a fifth merge with its own tests, and each push, on your word.
+- **Whether a reader goes through `f2338d6`, `965aa34` and `26f9c9a`**, which `main` holds now. One fresh
+  reader with a brief on correctness, as in the earlier readings.
+- **Whether the local `main` of the main checkout is moved to the public one.** It is checked out in that
+  folder, so the move changes that folder's files.
+- **Whether the notes at the seven places are put in the order of their numbers**: open from the section
+  before the last one; I would not.
+- **The scratch of this work**, which the join's section names: whether it goes is yours to say.
+- Unchanged from the last three sections: what they list, less the two pushes.
+
+Sources: `git fetch` and `git ls-remote` before and after the push, on 24 November 2026; GitHub Actions,
+workflow runs 45471455739 and 45465903914 of the public repository, read on 24 November 2026 from their
+lists of jobs and from each job's log, their checks counted as the lines that begin with `PASS`, `FAIL`
+and `SKIP` and split at the `RESULT:` lines; run 45455885298, read the same way for the last section, for
+the comparison; `git rev-list` and `git diff --stat` between `e587b4f` and `94f763a`; the tips of the
+sessions' local branches and the sessions' shared notes, read on this machine at 19:29, at 19:32, at
+19:46 and at 19:57.
 
 ## 1. What changed and why
 

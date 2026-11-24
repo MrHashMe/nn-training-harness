@@ -560,6 +560,9 @@ round are UTC.
   (Added later on 24 November: on the user's "Push test branch" the joined round is on the public branch
   `test/round-9` (`f08b6dd` to `5db0ef2`), and all six of GitHub's jobs pass on it; REPORT.md, "The joined round on
   the test branch". A push and a run decide nothing that has a row here. `main` is unchanged.)
+  (Added later on 24 November: on the user's "Push main" the public `main` has the joined round (`e587b4f` to
+  `94f763a`, the commit that `test/round-9` holds), and all six of GitHub's jobs pass on it; REPORT.md, "`main` has
+  the joined round". A push and a run decide nothing that has a row here.)
 
 ## Coverage map
 

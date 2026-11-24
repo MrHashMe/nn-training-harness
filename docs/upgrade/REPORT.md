@@ -126,6 +126,13 @@ the agent's arguments are asked once its `--help` has run, not before anything s
 reading of the arguments' refusal", follows "The refusal of a batch file's arguments" and is the last
 before "1. What changed and why" now. It is two more local commits on the same branch, of 24 November,
 not pushed.
+On your "Yes, start reader" of 24 November a fresh reader went through what that reading changed. It
+found one fault that the change brought: a runs folder that cannot be resolved ended the loop's check
+with an error where it had passed, which is repaired; two texts were wider than the rule, the sentence
+named only a form's start, and the reading's new check depended on the machine, which are corrected or
+repaired but for an older limit of the tests: its section, "The reading of the arguments' repairs",
+follows "The reading of the arguments' refusal" and is the last before "1. What changed and why" now. It
+is two more local commits on the same branch, of the same day, not pushed.
 Decision record: `docs/upgrade/LEDGER.md`.
 
 ## Read this first
@@ -1111,6 +1118,85 @@ Decision record: `docs/upgrade/LEDGER.md`.
     other starts of a program that you name, the family with `.` or `..` behind the file's name, a
     batch-file evaluator named with forward slashes, and what point 52 left open, less its second
     question.
+    (Added with point 67: the reader is decided and done, on your "Yes, start reader" of 24 November. It
+    found one fault that the change brought, a runs folder that cannot be resolved, which ended the
+    check with an error where it had passed, and three smaller things; they are repaired or corrected
+    but for one older part. The branch holds twenty-five commits after `5ccc2d4` now. "The reading of
+    the arguments' repairs".)
+67. **A fresh reader went through what the reading of the arguments' refusal changed, on your word. It
+    found one fault that the change brought: a runs folder that cannot be resolved ended the loop's
+    check with an error where it had passed. Two texts were wider than the rule, the refusal's sentence
+    named only the start of a form, and the reading's new check depended on the machine. Repaired, but
+    for an older limit of the tests** (24 November; "The reading of the arguments' repairs"). On your
+    "Yes, start reader" one agent on Opus 5.5 with read access only read `4a7775f`, without my record of
+    it: 180,901 tokens, 23 tool calls. Asked first whether it had found a fault that makes something
+    wrong that worked before, it wrote: "No. I found no fault in `4a7775f` that breaks something that
+    worked before, except that on Windows a runs folder that cannot be resolved now fails at `start`
+    with a wrong message (finding 2). The rest are a doc-code mismatch, unclear messages and one test
+    that depends on the machine." It gave four findings, the fourth with three parts, and I ran every
+    one. The second is the fault, and it held wider than the reader wrote. Since `4a7775f` the check
+    asks a run's folder by the path that a launch reports, and for that it resolves the runs folder;
+    where that cannot be done the call raises an error, and nothing was there for it. With two links
+    that lead to each other as the runs folder the real `start` ended with Python's trace, on Windows
+    under Python 3.11.7 and in WSL under both interpreters, and on Windows under 3.8.20 with the words
+    that the agent's `--help` did not run, before that program was started at all. The check ended the
+    same way for a `runs_dir` with a NUL in it or one that is a number or a list, on both systems, on
+    Windows for an address that no machine has, and under 3.8.20 there for a name that Windows refuses.
+    The check takes such a folder as the settings name it now, as it did before `4a7775f`, and goes on:
+    every such folder passes it again under all four interpreters, and the real `start` goes on to the
+    agent's `--help` again, without a trace. It has no sentence of its own for such a folder, and the
+    launch of a run ends with a trace there, as before both commits; a question below. What did not
+    show: a `runs_dir` that names a share on a machine that this one does not have resolves and passes;
+    the reader's own case, a link to a share, was not made here. The first finding: the docstring and
+    the reference said that the text between the colon and the `=` may hold a `%`, and by those words
+    `%CD:%b=c%` is a form, for which the rule names nothing. The code is right: in eighteen starts,
+    alike under both interpreters, a `%` right behind the colon ended a name whose last letter is the
+    colon, and such a line arrived as written unless a variable has that name. Both texts say so now; my
+    brief had the same sentence. The third finding: for `%Os:junk%x=y%` the sentence said that `cmd.exe`
+    acts on `%Os:junk%`, a piece that arrives as written by itself. It names the form as far as
+    `cmd.exe` uses it up now, which was measured to be the first `%` behind the `=`. Which arguments are
+    refused is the same: each of 7,597, 83 and 22 kept starts gets a name from both rules or from
+    neither. The fourth finding, on the last reading's new check: on a volume that makes no junction the
+    whole test file would have ended there, and the check says what it leaves out now; under a temporary
+    folder given through a link to a folder named with a `&` it failed, where the reader had found "no
+    wrong outcome", and it takes its allowance from the path as given and from the resolved one now; and
+    under a temporary folder whose path holds a variable's name between `%` signs six older checks of
+    the group fail and that one with them, a matter of the test, which is left. One check is new, on
+    both systems, and one is changed; the rule's table has one row more and expects the whole form in
+    four. Of 41 copies with a part taken out or changed, 40 fail or stop the group on Windows under
+    Python 3.11.7, and the one that passes there fails under 3.8.20. The eight test files pass on
+    Windows under Python 3.11.7 and, from a virtual environment, under 3.8.20, and in WSL under 3.12.3
+    and 3.8.20: 1,933, 1,920, 1,933 and 1,920 checks, none failed. The code is `246797f`, 129 lines
+    added and 67 removed in four files, after `8050d18` on the pilot's local branch. Three slips of mine
+    cost nothing of yours: a trial read the checkout while I was changing it, I changed a helper script
+    while a task was running it, and two kept results were of another state than the one that I would
+    have cited them for; each of those runs was made again, and nothing was removed by me. This session
+    pushed nothing and merged nothing; your real install is untouched; `4a7775f` is read by one reader
+    now, and what this reading changed is read by nobody but me. The session that started this one has
+    joined the four sessions' branches in its own local branch, on your "Yes, join here" given there,
+    and by its note it pushed the joined round to `test/round-9` at 18:06 UTC of 24 November, on your
+    "Push test branch" given there: `claude/kit-commit-verification-e52f2b` and `test/round-9`, as this
+    clone has it, both stood at `5db0ef2` when I looked (18:47 UTC on 24 November, nothing fetched by
+    me). That state holds this branch as far as `f5aa600`, so it has both refusals and what the reading
+    of the first one changed, and two records of that session's own, points 68 and 69. This branch's
+    last four commits, the two of the reading of the arguments' refusal and this reading's two, are in
+    neither, and taking them in is your word; by its notes that session has put the question to you. By
+    its note of 18:42 UTC all six of GitHub's jobs passed on the pushed state; GitHub's machines, a Mac
+    among them, have run none of those four commits. In trials in memory the four files of `246797f`
+    join with `5db0ef2` by themselves, while REPORT.md, which that commit does not change, conflicts in
+    the three places of point 66's record, and this record's commit conflicts with it in REPORT.md
+    alone, in the same three places, where both sides add at one spot; neither joined state has run.
+    Points 57, 58, 60 to 63, 65, 68 and 69 are other sessions', and that session has taken point 70 in
+    its note, for a record that no branch held when I looked. Open: whether a reader goes through what
+    this reading changed (I would start one); whether the loop says so when the agent's `--help` did not
+    run (I would repair it); whether the loop's check gets sentences of its own for a folder that cannot
+    be read, which are the runs folder whose path is not to be had and finding 2 of point 59's reading
+    (I would take both in one small change); whether the check of the agent's path asks with a session's
+    names too (I would, with that change); whether the refusals' checks are made to hold under a
+    temporary folder whose path holds a variable's name (I would leave it); and from point 64 what this
+    point does not restate: the kit's other starts of a program that you name, the family with `.` or
+    `..` behind the file's name, a batch-file evaluator named with forward slashes, and what point 52
+    left open, less its second question.
 
 ## Round 2 (12 November 2026)
 
@@ -13189,6 +13275,11 @@ and times in this section are UTC.
    The check asks with the folder that a launch would report now. One cost, found by running and stated
    under finding 1: a runs folder whose link leads back to itself ends the check with Python's own error
    now.
+   (Added with point 67: that cost is gone, and it was wider than this says. The reader of this change
+   named it as a fault, and run, the check ended with an error also for a `runs_dir` that holds a NUL or
+   is no text, and on Windows for an address that no machine has; under Python 3.8.20 on Windows the
+   error was reported as the agent's `--help` not running. The check takes such a folder as the settings
+   name it now, as before `4a7775f`. "The reading of the arguments' repairs".)
 4. **The check asked the agent's arguments with more names than a session has. Held. Repaired, for the
    arguments.** It asked with the kit's environment and the two names that a session is given. A session
    is started without the names of a session above the loop, as `CLAUDECODE` where the loop is called
@@ -13219,6 +13310,8 @@ and times in this section are UTC.
    the new check; a symbolic link and a share on another machine reach it by reading alone. **`8628536`
    and `ebc28f0` are read by one reader now; what this reading changed is read by nobody but me,** and
    GitHub's machines, a Mac among them, have run none of it.
+   (Added with point 67: what this reading changed, `4a7775f`, is read by one reader now, on your "Yes,
+   start reader" of 24 November. "The reading of the arguments' repairs".)
 8. **Two slips of mine, which cost nothing of yours.** My first trial of finding 1 made its junction
    through `cmd.exe`, which cut my own command at the `&` in the target's name: a junction that points
    at a folder that is not there lies in this session's scratch folder since, and I left it. And the new
@@ -13236,6 +13329,12 @@ and times in this section are UTC.
    of the four. In trials in memory `4a7775f` joins with `fce2f4d` by itself, and this record's commit
    conflicts with it in REPORT.md alone, in three places where both sides add at one spot; neither
    joined state has run. Points 57, 58, 60 to 63 and 65 are other sessions'.
+   (Added with point 67: the branch holds twenty-five commits after `5ccc2d4` now. The branch of the
+   session that started this one stood at `5db0ef2` at the last look, with two commits of records after
+   its four merges, which hold points 68 and 69; it holds this branch as far as `f5aa600`, as before. By
+   that session's note it pushed that state to `test/round-9` at 18:06 UTC of 24 November, on your "Push
+   test branch" given there, so the public branch is no longer at `f08b6dd`, and by its note of 18:42
+   UTC all six of GitHub's jobs passed on it. "The reading of the arguments' repairs".)
 
 ### The reader and its brief
 
@@ -13310,6 +13409,11 @@ variables were printed, never a value.
      error under any of the four. I left it as it is, which is my decision and the third question below:
      the tested state stays the tested one, and a sentence of the loop's own for a runs folder that
      cannot be read belongs with finding 2.
+     (Added with point 67: it is not left any more. The reader of this change named it as a fault that
+     the change brought, and the whole check and the real `start` were run with such a folder: they
+     ended with Python's trace, or with the words that the agent's `--help` did not run. The check
+     passes such a folder again, as before `4a7775f`; a sentence of the loop's own is still a question.
+     "The reading of the arguments' repairs".)
    - My first trial was mistaken, and it left something. I made the junction with `mklink` through
      `cmd.exe`, and `cmd.exe` cut my own command at the `&` in the target's name. The junction that it
      made points at a folder `data` that does not exist. It lies in this session's scratch folder, and I
@@ -13381,6 +13485,9 @@ variables were printed, never a value.
    - The repair. For a piece that is a known name with a colon and a text, the rule also looks for a `=`
      in the pieces behind it, as far as the line's last `%`. The sentence names the piece as far as its
      own `%`, as `%OS:junk%`.
+     (Added with point 67: the sentence names the form as far as `cmd.exe` uses it up now, which is to
+     the first `%` behind the `=`, as `%OS:junk%x=y%`. Which arguments are refused is the same. "The
+     reading of the arguments' repairs".)
    - The counts, from 83 further starts, which gave the same under both interpreters: the arguments
      arrived as written in 32 and changed in 44, and nothing was started in 7. The rule of `8628536`
      agrees with `cmd.exe` in 51, refuses 9 that arrived as written, and names nothing in 23 that did
@@ -13479,6 +13586,9 @@ are on Windows and for a program that is a batch file.
 - **A runs folder whose link leads back to itself, on every system:** the loop's check would end with
   Python's error, as under finding 1, where the function that it calls was tried and the whole check was
   not. Before, the check passed, and by the code no run could be launched.
+  (Added with point 67: run since, the check did end so, and for more folders than this one. It passes
+  such a folder again now, and the launch of a run ends with a trace there, as before both commits. "The
+  reading of the arguments' repairs".)
 - **A batch-file agent, its arguments:** one refusal fewer. A `--model`, an `--effort` or a settings
   file's path that names, between `%` signs, a variable of the session above the loop is handed on as
   written by a session's `cmd.exe`, and is not refused any more.
@@ -13508,6 +13618,8 @@ are on Windows and for a program that is a batch file.
   over a `%` and are named, and four must not be named: no `%` behind the `=`, no text behind the colon,
   no `=`, and a name that no variable has. The eight rows, put to `cmd.exe` as starts: the first four
   arrived changed, the other four as written, under both interpreters.
+  (Added with point 67: 34 lines, 19 and 15 now. One row is new, and the four rows that reach over a `%`
+  expect the whole form where they expected its first piece. "The reading of the arguments' repairs".)
 - **The agent's check,** for finding 3: it names `%NN_GUARD_BEACON%` where it named `%NN_UNATTENDED%`,
   and has a sixth case, a `--model` that names a variable of the session above the loop, which the test
   sets itself and which must pass.
@@ -13588,6 +13700,9 @@ are on Windows and for a program that is a batch file.
   and the agent's `--help` case under 3.8.20; `cmd.exe` with delayed expansion on; another Windows than
   this one, so that every measurement is of one machine's `cmd.exe`; macOS and GitHub's machines, since
   nothing is pushed.
+  (Added with point 67: the loop's check itself, the real `start` and the launch of a run were run since
+  with a runs folder whose links lead back to each other, under four interpreters. "The reading of the
+  arguments' repairs".)
 - **Removed, and left behind:** by a search of this session's own commands and written scripts of this
   reading, I removed, moved or discarded nothing. The test files and the helper that runs the group
   alone clear the temporary folders that they make themselves, as the tests always do. Left in this
@@ -13600,6 +13715,8 @@ are on Windows and for a program that is a batch file.
   repair, `042a985`; the refusal of a batch file's path, `1a277aa`; what the reading of the refusal
   changed, `ebc28f0`; and the refusal of a batch file's arguments, `8628536`. **Read by nobody but me:**
   what this reading changed.
+  (Added with point 67: what this reading changed, `4a7775f`, is read by one reader now. "The reading of
+  the arguments' repairs".)
 
 ### Not done, and why
 
@@ -13608,6 +13725,8 @@ are on Windows and for a program that is a batch file.
   the kit through that start alone: the first decision below.
 - **Nothing for a runs folder whose link leads back to itself.** The reason is with finding 1: the third
   decision below.
+  (Added with point 67: the check passes such a folder again now, as before `4a7775f`. A sentence of the
+  loop's own for it is still a question. "The reading of the arguments' repairs".)
 - **The refusals too many stay:** `%=::%` where the asked environment holds that name, whatever follows
   `:~`, and the six names of finding 5. Each is on the side on which the rule misses nothing.
 - **Nothing for a state's model at `resume`,** the last of the smaller points: the sentence's cure
@@ -13615,6 +13734,8 @@ are on Windows and for a program that is a batch file.
 - **Findings 2 and 4 of the last reading are as they were,** except that the arguments' check no longer
   shares finding 4. Your word was for this reader's findings.
 - **No reader for what this reading changed.** Your word covered one reader.
+  (Added with point 67: your "Yes, start reader" of 24 November was for that reader. "The reading of the
+  arguments' repairs".)
 - **Nothing is pushed or merged by this session,** and your real install is untouched.
 - **The ledger is not touched** (`LEDGER.md`, `scout/`): this reading decides nothing that has a row.
 
@@ -13630,9 +13751,15 @@ are on Windows and for a program that is a batch file.
   `nnloop.py`, one new check and two changed ones, and the reference's paragraph. I would start one. The
   rule's new part reads across pieces, which is where the reader and I both went wrong once, and I am
   its only reader. The brief would be for correctness, as the six before it.
+  (Added with point 67: decided and done. On your "Yes, start reader" of 24 November one reader went
+  through it and found one fault that the change brought and three smaller things. "The reading of the
+  arguments' repairs".)
 - **Whether the loop's check gets sentences of its own for a folder that cannot be read:** the runs
   folder whose link leads back to itself, from this reading, and finding 2 of the last reading, the
   folder comparison. I would take both in one small change, on a word of yours.
+  (Added with point 67: the check no longer ends with an error for such a runs folder. It passes it, and
+  the launch of a run ends with a trace. The question stands for that launch and for finding 2. "The
+  reading of the arguments' repairs".)
 - **Whether the check of the agent's path asks with a session's names too,** which is finding 4 of the
   last reading, now alone. I would, with the next change of the loop's check: it is the same line of
   names.
@@ -13680,6 +13807,553 @@ to 14:17 UTC. The eight test files on the final state, from 14:19 to 15:27 UTC o
 to 14:39 UTC in WSL; by its note, the session that started this one ran tests of its own on this machine
 during that time, so how long a file took here says nothing. While they ran: the runs folder's resolver
 on links that cannot be resolved.
+
+## The reading of the arguments' repairs (24 November 2026): the reader found one fault that the change brought, a runs folder that cannot be resolved, which ended the loop's check with an error where it had passed; two texts were wider than the rule, the sentence named only a form's start, and the new check depended on the machine; repaired
+
+Your word: "Yes, start reader", to my question at the end of the reading of the arguments' refusal,
+"Start one fresh reader on what this reading changed?". I took it to cover that one reader, on what that
+reading changed, `4a7775f`, which nobody had read; the check of each finding; the repair of what holds
+inside that commit; tests; and local commits with their record. Not covered: a push, a merge, your real
+install, a further reader, and the repair of older faults outside that commit. It is the work of the
+pilot's session on its local branch, `claude/brave-robinson-27cbd9`: the commit `246797f` for the code
+and one for this record, after `8050d18`. No package was installed. All of it is of 24 November, and the
+times in this section are UTC.
+
+### In short
+
+1. **The reader found one fault that the change brought, and three smaller things.** Asked first whether
+   it had found a fault that makes something wrong that worked before, it wrote: "No. I found no fault
+   in `4a7775f` that breaks something that worked before, except that on Windows a runs folder that
+   cannot be resolved now fails at `start` with a wrong message (finding 2). The rest are a doc-code
+   mismatch, unclear messages and one test that depends on the machine." It read what the reading of the
+   arguments' refusal changed, `4a7775f`. Four findings, the fourth with three parts. I ran every one,
+   also what the reader called certain and what it found harmless.
+2. **A runs folder whose path is not to be had ended the loop's check with an error. Held, and wider
+   than the reader wrote. Repaired: the check does there what it did before `4a7775f`.** Since that
+   commit the check asks a run's folder by the path that a launch reports, and for that it resolves the
+   runs folder. Where that cannot be done the call raises an error, and nothing was there for it. With
+   two links that lead to each other as the runs folder the real `start` ended with Python's trace, on
+   Windows under Python 3.11.7 and in WSL under 3.12.3 and 3.8.20, and on Windows under 3.8.20 with the
+   words that the agent's `--help` did not run, before that program was started at all. The check ended
+   the same way for a `runs_dir` with a NUL in it and for one that is a number or a list, on both
+   systems, and on Windows under 3.8.20 for a name that Windows refuses. The reader had it for Windows
+   and for the wrong words. The check takes such a folder as the settings name it now, as before the
+   commit, and goes on. It has no sentence of its own for it, and the launch of a run ends with a trace
+   there, as it did before both commits: a decision below.
+3. **Two texts described a wider rule than the code has. Held for the texts; the code is right.** The
+   docstring and the reference said that the text between the colon and the `=` may hold a `%`. By those
+   words `%CD:%b=c%` is a form, and the rule names nothing for it. Run, it arrives as written: a `%`
+   right behind the colon ends a name whose last letter is the colon, and no variable here has such a
+   name. With a variable of the trial's own named `NNT:`, `%NNT:%x=y%` arrived changed, and the rule
+   names it. Eighteen starts, alike under both interpreters, and the rule fits `cmd.exe` in each. Both
+   texts say it as it is now. My brief had the same sentence, too wide by this one case.
+4. **The sentence named only the start of a form. Held. Repaired.** For `%Os:junk%x=y%` the refusal said
+   that `cmd.exe` acts on `%Os:junk%`, and that piece by itself arrives as written, as the reference
+   says. The sentence names the form as far as `cmd.exe` uses it up now, `%Os:junk%x=y%`. Where a form
+   ends was measured for it: at the first `%` behind the `=`. Which arguments are refused is the same:
+   each of 7,597, 83 and 22 kept starts gets a name from both rules or from neither.
+5. **The last reading's new check depended on the machine in three ways. Two are repaired, one of them
+   against the reader's "no wrong outcome"; the third is older and left.** On a volume that makes no
+   junction the whole test file would have ended at that check; it says what it leaves out now and goes
+   on. Under a temporary folder that is given through a link to a folder named with a `&` the check
+   failed, because it took its allowance from the path as given and the kit works with the resolved one;
+   it takes it from both now. Under a temporary folder whose path holds a variable's name between `%`
+   signs six older checks of the group fail, and that check with them: a matter of the test and not of
+   the kit, left, and a decision below.
+6. **What did not show when run, and what I did not run.** A `runs_dir` that names a share on a machine
+   that this one does not have resolves to a path under both interpreters on Windows, and the check
+   passes it; the wrong words came with an address that no machine has, and with another error of
+   Windows than the reader's. A link to a share, the reader's own case, was not made here. Its sentence
+   on the third part of finding 4 did not hold. And its sentence that the first launch failed with the
+   loop's words "launch failed" before the commit I did not run: the launch alone ended with a trace,
+   and no campaign was started.
+7. **Verified by running, on this machine only.** One check is new, on both systems, and one is changed;
+   the rule's table has one row more and expects the whole form in four. Of 41 copies with a part taken
+   out or changed, 40 fail or stop the group on Windows under Python 3.11.7, and the one that passes
+   there fails under 3.8.20. The eight test files pass on Windows and in WSL under two interpreters
+   each: 1,933 and 1,920 checks on Windows, 1,933 and 1,920 in WSL, none failed. **`4a7775f` is read by
+   one reader now; what this reading changed is read by nobody but me,** and GitHub's machines, a Mac
+   among them, have run none of it.
+8. **Three slips of mine, which cost nothing of yours.** A trial read the checkout while I was changing
+   it. I changed a helper script while a task was running it. And two kept results were of another state
+   than the one that I would have cited them for, which I saw from the files' times. Each of those runs
+   was made again, on a clean copy of the commit or on the final files, and only the later results are
+   used here. Nothing was removed by me in this reading.
+9. **This session pushed nothing and merged nothing.** The branch holds twenty-five commits after
+   `5ccc2d4`: the twenty-three of the last section and this reading's two. Your real install is
+   untouched. The session that started this one has joined the four sessions' branches in its own local
+   branch, on your "Yes, join here" given there, and by its note it pushed the joined round to
+   `test/round-9` at 18:06 UTC of 24 November, on your "Push test branch" given there:
+   `claude/kit-commit-verification-e52f2b` and `test/round-9`, as this clone has it, both stood at
+   `5db0ef2` when I looked (18:47 UTC on 24 November, nothing fetched by me). That state holds this
+   branch as far as `f5aa600`, so it has both refusals and what the reading of the first one changed,
+   and two records of that session's own, points 68 and 69. This branch's last four commits, the two of
+   the reading of the arguments' refusal and this reading's two, are in neither, and taking them in is
+   your word; by its notes that session has put the question to you. By its note of 18:42 UTC all six of
+   GitHub's jobs passed on the pushed state; GitHub's machines, a Mac among them, have run none of those
+   four commits. In trials in memory the four files of `246797f` join with `5db0ef2` by themselves,
+   while REPORT.md, which that commit does not change, conflicts in the three places of point 66's
+   record, and this record's commit conflicts with it in REPORT.md alone, in the same three places,
+   where both sides add at one spot; neither joined state has run. Points 57, 58, 60 to 63, 65, 68 and
+   69 are other sessions', and that session has taken point 70 in its note, for a record that no branch
+   held when I looked.
+
+### The reader and its brief
+
+- **One reader:** an agent of this session on Opus 5.5 with read access only, which here means the file
+  tools and git's commands that only read. By its brief it ran nothing: where a run would settle a
+  question it said so in its report, and I ran it. 180,901 tokens of the subscription, 23 tool calls,
+  about seven minutes, from 15:43 UTC.
+- **What it read:** `4a7775f`, with the files as they stood at the branch's head, `8050d18`, which
+  changes the records alone, and `8628536` as far as it needed it for the rule. In `expctl.py`: the rule
+  `batch_split` with the names beside it, and `runs_root` with its callers in the kit's three scripts.
+  In `nnloop.py`: the names that a session is started without, the list that a session's agent gets, the
+  campaign's runs folder and its environment for a run, `fill`, `evaluate`, `session`, `batch_args` and
+  `preflight`. The checks for a batch file in `tests/test_loop.py`, and the reference's entry. The brief
+  told it not to read `docs/upgrade`, and to take what the commit's message says as claims to check.
+- **What it was asked for:** nine questions. The rule's new part against the reading of `cmd.exe` that
+  it rests on, in both directions, with that reading taken as given. What the wider rule costs: ordinary
+  arguments that are refused though they would arrive as written. Whether the check's stand-in for a
+  run's folder is, in every situation, the folder that the loop later hands the evaluator; whether the
+  call can raise an error where the check reported or passed before, on Windows and on POSIX, under
+  Python 3.8 to 3.14; and what a user sees then. Whether the names that the agent's arguments are asked
+  with are those of a session's start. The other changed lines against their comments, their docstrings
+  and the commit's message. What worked before the commit and fails or behaves differently with it.
+  Other places in the kit with the same fault. Whether each new or changed check tests what its name
+  says, fails without its change, and depends on the machine that it runs on. And whether the
+  reference's entry agrees with the code.
+- **Not asked for:** ways past the guard. The brief said that the guard is no part of the reading. It
+  also told the reader never to print or list environment variables.
+- **Its report:** four findings, a list of what it checked and found right, and what it did not read or
+  settle. All three parts are below. Where I quote it, a dash of its text is written as a hyphen and its
+  sign of three dots as three dots, and its bold marks are left out.
+
+### The findings, each checked
+
+"Held" means that the fault showed when run. "At the commit" is a clean copy of the tree of `4a7775f`,
+"before it" one of `f5aa600`, and "the final files" are the working tree that became `246797f`. The
+trials ran on Windows 11 under Python 3.11.7 and, from a virtual environment, under 3.8.20, and where it
+says so in WSL under 3.12.3 and 3.8.20, from scratch scripts that are not part of the kit. Every start
+of a batch file was without a shell and from a list, as the kit's are. Only names of variables were
+printed, never a value.
+
+1. **The docstring and the reference described a wider rule than the code has. Held, for the two texts.
+   From `4a7775f`. The code is right, and the texts are corrected.**
+   - The reader's case, certain from the code as far as the two disagree: both texts said that the text
+     between the colon and the `=` may itself hold a `%`. By those words `%CD:%b=c%`, or `%Os:%x=y%`, is
+     a form whose text is `%b`. The code names nothing for it, since it wants a text in the piece that
+     holds the colon, and the table's row for `%Os:%x=y%` agrees with the code. So, it wrote, either the
+     code is right and both texts need "unless that text begins with the `%`", or "the code misses a
+     form". And: "Which side is right needs `cmd.exe`, which I did not run." It added that the code
+     contradicts my brief's sentence too, taken by its letter.
+   - When run: eighteen starts, alike under both interpreters. As written arrived `%Os:%x=y%`,
+     `%CD:%b=c%`, `%OS:%=y%` and `%OS:%`, and the rule names nothing for them. A `%` right behind the
+     colon ends a name, with the colon as its last letter, and no variable here has such a name. With a
+     variable of the trial's own named `NNT:`, `%NNT:%` and `%NNT:%x=y%` arrived changed, and the rule
+     names `%NNT:%` in both, as it does any known name. Changed too, and named: `%OS:*%b=c%` and
+     `%OS:*a%b=c%`, in which a `*` begins the text; `%CD:a%b=c%`; `a%OS: %x=y%` and `a%OS:b %x=y%`, in
+     which the text holds a space; `%NOPE%OS:a%b=c%`, behind a name that no variable has;
+     `%NNT_VAR:%OS%`, `%OS%CD%` and `a%b%OS%c`, in which a plain known name is used up; and
+     `%OS:~%x=y%`, with its `:~`. With `%OS:=x%` and with `%OS:*=x%` nothing was started, and the rule
+     names both.
+   - The repair is of the words alone. The docstring of `batch_split` and the reference say that the
+     text may hold a `%`, though not as its first sign, and that a `%` right behind the colon ends a
+     name instead, with `%CD:%b=c%` as the case that arrives as written unless a variable is named
+     `CD:`. The rule's lines for this are as they were. My brief's sentence was too wide by the same
+     case, and the reader checked the code against it, as it was told to.
+2. **A runs folder whose path is not to be had ended the check with an error. Held, wider than the
+   reader wrote. From `4a7775f`. Repaired.**
+   - The reader's case, certain from the code: the check calls `expctl.runs_root`, which resolves the
+     runs folder, and the call runs on every system, since it stands in front of the question whether
+     the program is a batch file. "Before, this line was a plain path join that could not raise." On
+     Windows, it wrote, Python 3.8 and 3.9 let every error of the system through but the one for a file
+     that is not there, and Python 3.10 and later every error outside a list of their own; its input was
+     a runs folder that is a link to a share that cannot be reached. The words that follow the agent's
+     `--help` catch that error and report it as that start not running: "That blames the agent, which
+     was never started." A link that leads back to itself gives a `RuntimeError` that nothing catches,
+     on POSIX up to Python 3.12 and on Windows under 3.10 to 3.12. Which error Windows gives for which
+     failing share, it could not check. Its fix: to call `runs_root` on Windows only, and to catch the
+     error "with a message of its own".
+   - When run at the commit, on Windows. Two junctions that lead to each other as the runs folder: under
+     Python 3.11.7 the check is left by a `RuntimeError`, and the real `start` ends with exit code 1 and
+     a trace of 31 lines; under 3.8.20 the real `start` ends with exit code 2 and one line, that the
+     agent's `--help` did not run, with Windows' error 1921 behind it. A `runs_dir` that names a share
+     at an address that no machine has, `\\0.0.0.0\nnkit\runs`: that one line under both, with error
+     1214. Called as the tests call it, the check is also left by a `ValueError` for a `runs_dir` with a
+     NUL in it and for one of 40,000 letters, and by a `TypeError` for one that is a number or a list,
+     under both. Under 3.8.20 it reports five more as the agent's `--help` not running: a name of 300
+     letters, the names `ru<n|s` and `ru*n?s`, a share named under `\\?\UNC` (error 123 each) and the
+     device's name `NUL` (error 87); under 3.11.7 those five resolve to a path and pass. Passing under
+     both: a runs folder in the project, a link to a folder that is not there, a share on a machine that
+     this one does not have, a device's name in a folder, a drive that is not there, and a path under
+     `\\?\` with a dot folder.
+   - In WSL at the commit, under both interpreters: with two symbolic links that lead to each other the
+     check is left by a `RuntimeError`, and the real `start` ends with exit code 1 and a trace, of 31
+     lines under 3.12.3 and of 24 under 3.8.20. A NUL gives a `ValueError`, a number and a list a
+     `TypeError`. A name of 300 letters and a path of 40,000 pass, and so does a link to a folder that
+     is not there.
+   - Before the commit the check passed every one of these folders, under all four interpreters. The
+     real `start` with the two links, and on Windows with the address, went on to the agent's `--help`
+     and ended there with exit code 2 and one line, since the trial's agent is a program that is not
+     there. The launch of a run alone ended with exit code 1 and a trace in such a project, before the
+     commit as at it. In no case was a campaign's folder or a branch made.
+   - What did not show, and what I did not run. A `runs_dir` that names a share on a machine that this
+     one does not have resolved to a path under both interpreters, and the check passed it. A link to a
+     share was not made: this account may make no symbolic link, and I raised no privilege. So the
+     reader's own input is not tried, and the wrong words are shown by the address and, under 3.8.20, by
+     the two junctions and the names that Windows refuses. The reader also wrote that before the commit
+     the first launch failed with the loop's words "launch failed". Those are the words of the loop for
+     a launch that fails inside a campaign; I ran the launch alone and no campaign, so that sentence is
+     neither confirmed nor contradicted here.
+   - The repair. `preflight` asks `expctl.runs_root` inside a `try`, and where that raises an error of
+     the system, a `RuntimeError`, a `TypeError` or a `ValueError`, it takes the runs folder as the
+     settings name it, which is what the check did before `4a7775f`. So a runs folder that resolves is
+     asked by the path that a launch reports, as the last reading made it, and one that does not is
+     asked as before it.
+   - On the final files, under all four interpreters: each of the folders above passes the check again,
+     seventeen kinds of runs folder on Windows and eight in WSL. The real `start` with the two links,
+     and on Windows with the address, ends with exit code 2 and the one line of the agent's program that
+     is not there, without a trace, and no campaign's folder and no branch is made. The launch alone
+     ends with a trace, as before.
+   - Not taken, and left. The reader's fix has two parts. The call still runs on every system: outside
+     Windows it costs one look at the folder and decides nothing, and the lines are the same for all
+     systems that way. And the check has no sentence of its own for such a folder: it passes it, as
+     before the commit, and the launch is what fails. A sentence there would be a new behaviour and no
+     repair of this commit; it is the third decision below, with a look at what a campaign says when its
+     first launch fails.
+3. **The refusal named only the start of a form. Held. From `4a7775f`. Repaired.**
+   - The reader's case, certain: for `%Os:junk%x=y%` the sentence says that `cmd.exe` acts on
+     `%Os:junk%`. "What `cmd.exe` changes is the whole `%Os:junk%x=y%`. REFERENCE.md itself says the
+     named piece on its own arrives as written, so a user who tests that piece alone finds nothing
+     wrong." And: "Users can recover, because the full line is printed." Beside it an older case, from
+     `8628536`: where a named piece reaches over the border between two arguments, it can hold a `"`
+     that Python put there and the user never wrote.
+   - When run at the commit, the sentence for five argument lists:
+     `acts on '%Os:junk%' in %Os:junk%x=y% run`; `'%os:junk%' in p "%os:junk% x=y% q"`;
+     `'%Os:a%' in %Os:a%x%y=z%`; `'%Os:b%' in %NOPE:a%Os:b%c=d%`; and `'%Os:b %' in a%Os:b %x=y%`.
+   - Where a form ends, measured so that the sentence can name it: four starts, alike under both
+     interpreters. `%Os:a%b=%c%` arrived with the form used up as far as the first `%` behind the `=`,
+     and with `c%` left behind it. A line with a variable of the trial's own, `%NNT_V:W%X=%T%`, arrived
+     changed, and as written with the name not set. With a value chosen so that the form gives the line
+     back it arrived as written too; the rule names the form there, which is a refusal of arguments that
+     arrive as written, made on purpose by the trial. So a form ends at the first `%` behind the `=`,
+     and what stands behind it is plain text again.
+   - The repair. For the first piece that begins a variable the rule finds the piece with which that
+     variable ends, and it names the text from the one to the other. For a plain known name, for a form
+     with `:~`, for one whose `=` stands in the piece itself and for `%=X:%` that is the piece itself,
+     as before.
+   - On the final files the five sentences name `'%Os:junk%x=y%'`, `'%os:junk% x=y%'`, `'%Os:a%x%y=z%'`,
+     `'%Os:b%c=d%'` and `'%Os:b %x=y%'`.
+   - Which arguments are refused is the same. The kept starts of the measurements, put to the rule of
+     `4a7775f` and to this one: of the 7,597 of the refusal's measurement, the 83 of the last reading
+     and the 22 of this one, each gets a name from both rules or from neither. The name differs in none
+     of the 7,597, in 20 of the 83 and in 7 of the 22, and every new name begins with the old one.
+   - Left, and wider by this repair: the `"`. The named text is the form in the line as Python writes
+     it, so where a form reaches into an argument that Python put in quotes, the name holds that `"`:
+     for the arguments `%OS:junk%` and `a b=c%` the rule names `%OS:junk% "a b=c%` now, where it named
+     `%OS:junk%`. The line is printed whole beside the name, with the same `"` in it.
+4. **The link's check in the tests depended on the machine. Three parts: two held and are repaired, one
+   of them against the reader; the third is older and left.**
+   - **A volume that makes no junction. Held, by a trial that made the call fail. Repaired.** The
+     reader: "If the temporary folder is on a volume without junctions (FAT or exFAT, some RAM disks),
+     `_winapi.CreateJunction` raises `OSError`. Nothing catches it, so the whole test file stops, not
+     just this one check." This machine's volumes make junctions, so the trial put the error in. With
+     the junction's call made to fail, the group ended at the commit after 33 checks, with Windows'
+     error and no result. On the final files the check prints a line that says what it leaves out and
+     why, and so does the new check of finding 2, which makes two junctions: 42 checks pass and two
+     lines say what was left out, under both interpreters. A real volume without junctions was not
+     tried.
+   - **A variable's name in the temporary folder's path. Held, and older. Not repaired.** The reader:
+     "If the temporary folder's path contains a name between `%` signs that `cmd.exe` knows, `got[1]` is
+     refused and the check fails. The checks at lines 647-651 and 680-683 share that limit, so it is
+     older." Under a temporary folder named `tp%OS%x`, under Python 3.11.7: before the commit 6 of the
+     group's 41 checks fail, at the commit 7 of 42, the six and the link's, and on the final files 7 of
+     43, under 3.8.20 too; the new check of finding 2 passes there. The six are the checks of the
+     evaluator's path, of the agent's path, of the evaluator's arguments, of the two folders, of the
+     agent's arguments and of the start through the command line: each expects a project under the
+     temporary folder to pass, and the kit refuses it rightly. It is the tests' own limit, six of the
+     seven are older than the commit that was read, and no machine here has such a temporary folder:
+     left, and the fifth decision below.
+   - **The path as given and as resolved. The reader found no wrong outcome; one showed. Repaired.** The
+     reader: "`cut` is computed from `str(tmp)`, but the runs path is resolved, so an 8.3 short temp
+     path differs from it. I traced the cases with `&`/`^`/spaces: the self-test folder (unresolved)
+     keeps `got[1]` matching `cut`, so I found no wrong outcome." This volume makes no short names, so
+     the trial built the same difference with a junction: a temporary folder given as `lnk`, a junction
+     to a folder named `Research&Dev`. At the commit the link's check failed there under both
+     interpreters, with 41 of 42 passing: the kit resolves the project's path, finds the `&` and refuses
+     rightly, and the check, which looked at the path as given, expected the campaign to pass. With a
+     junction to `Research Dev` all 42 passed. The check takes its allowance from the path as given and
+     from the resolved one now. On the final files all 43 pass under a link to `Research&Dev`, under a
+     link that is itself named `l&k` and leads to a plain folder, under a link to `Research Dev` and
+     under a plain folder, each under both interpreters.
+   - What the reader found fine there, and I tried no further: the module `_winapi` is asked for on
+     Windows only, and the two variables that the test sets are taken away again whatever happens.
+
+### What the reader checked and found right
+
+From reading alone, in the reader's words shortened:
+
+- **The rule's new part against the brief's reading:** "A `=` in a middle piece always has a `%` after
+  it." "Leaving out the last piece is correct: a `=` there has no closing `%`." The parts of the
+  condition bind as intended, and the new rule names everything that the rule of `8628536` named.
+- **Which piece is named:** "Choosing the first matching piece is safe: every form `cmd.exe` uses up
+  first is itself named, so it comes first." The exception is a name that Python does not show, as
+  `=ExitCode`, which the commit's message admits. `%%`, names in another case, a name of `cmd.exe`'s own
+  that the environment lacks, `%=C:%` and `:~` behave as before.
+- **The eight new rows of the table:** worked through by hand, each gives what the table expects; the
+  first four would fail with the change taken out; and the counts 33, 18 and 15 are right.
+- **What the wider rule costs:** it needs a known name with a colon and a text, a later `=` and a later
+  `%`. "Number formats, `%3A`-style URL codes, strftime codes (`%H:%M`) and `%(x)s` do not match unless
+  a name in the environment is spelled that way." It found no ordinary input beyond what the message
+  lists.
+- **The stand-in for a run's folder:** it is the folder in which a launch makes a run's folder, for a
+  runs folder that is relative or absolute, outside the project, a junction or a link, on a mapped or a
+  substituted drive, and one that is not there yet. The settings are loaded at that point at `start` and
+  at `resume`, and the self-test's folder is the one that the self-test uses.
+- **The agent's names:** the list "gives the same set of names as `session()`", and the rule "reads
+  names only, never values, so the empty values change nothing."
+- **Other code that calls the rule:** `final-eval` still refuses a `%` by its older check, the loop's
+  reading of a failed run uses `runs_root` only to read files, "and no other code calls `batch_split`."
+- **The reference:** the docstring of `batch_args` matches how Python writes the quotes, and the rest of
+  the entry matches the code, apart from finding 1.
+
+None of my runs contradicts this list, with two remarks, and both stand under the findings. Where the
+rule chooses the first piece that matches, what it named was the start of what `cmd.exe` uses up and not
+the whole, which is finding 3. And the stand-in is the folder of a launch only where that folder's path
+is to be had, which is finding 2. The table has 34 rows now, 19 named and 15 not.
+
+### What it could not judge by reading
+
+- **What `cmd.exe` does where a `%` follows the colon at once** (finding 1), **which error Windows gives
+  for which folder** (finding 2), and what a volume without junctions or a short name does to the link's
+  check (finding 4). The first two are run now. For the third the error was put in and the difference
+  was built with a junction, since this machine has neither such a volume nor short names.
+- **Not read or not settled, in its words:** "I ran nothing, so `cmd.exe`'s behaviour, including the
+  empty-text case in finding 1, rests on the author's measurements." "I did not read `docs/upgrade/`,
+  the guard hook, `nnremote.py` beyond its `runs_root` calls, or the test harness's `tmp` setup." "I did
+  not check the measured counts in the message (83 and 7,597 starts)." Those starts were put to both
+  rules again from the kept results, as finding 3 says.
+
+### Changes in the behaviour of existing features
+
+Against the branch as it stood before this reading, which is the kit of `4a7775f`.
+
+- **The loop's `start` and `resume` with a runs folder whose path is not to be had, on every system:**
+  the check passes such a folder again and goes on, as before `4a7775f`. At that commit it ended with
+  Python's trace, or with the words that the agent's `--help` did not run. That is so for two links that
+  lead to each other, for a `runs_dir` that holds a NUL or is a number or a list, and on Windows for an
+  address that no machine has and, under Python 3.8, for a name that Windows refuses. No run can be
+  launched in such a project: the launch ends with a trace, as before both commits, run for the links
+  and for the address.
+- **The refusal's sentence, on Windows for a batch file's arguments:** it names a variable's form as far
+  as `cmd.exe` uses it up, as `%OS:junk%x=y%`, where it named `%OS:junk%`. Which arguments are refused
+  does not change.
+- **`docs/REFERENCE.md`,** the entry on a start without a shell on Windows: that the text in front of
+  the `=` may hold a `%`, though not as its first sign, and what a `%` right behind the colon does; that
+  the sentence names such a variable as far as the `%` behind the `=`; what the check does with a runs
+  folder whose path is not to be had; and the eighteen starts and the runs folders of this reading.
+- **`tests/test_loop.py`:** the file no longer ends at the link's check where no junction can be made,
+  and the group passes under a temporary folder that is given through a link.
+- **Nothing changes** for a runs folder that resolves, in the project or behind a link; for which
+  arguments or paths are refused; for the agent's names; for `final-eval`; for a program that is no
+  batch file; for the kit's other starts; for `status` and for the guard.
+
+### Tests
+
+- **One check is new and one is changed,** both in `tests/test_loop.py`, in the group of refusals before
+  anything starts. The group has 43 checks on Windows now, where it had 42, and one more in WSL too, 35.
+- **The new check,** for finding 2, on both systems: a campaign whose `runs_dir` is a name that Windows
+  refuses, `ru<n|s`; one with a NUL in it; one that is a number; and one that is the first of two links
+  that lead to each other, junctions on Windows and symbolic links elsewhere. Each must pass every check
+  up to the agent's own program, as a runs folder in the project does. On Windows the folder that the
+  first junction leads to is renamed afterwards, since Windows' call wants its target in place. Where no
+  link can be made, the check says so in a line and tries the other three.
+- **The link's check,** for finding 4: where no junction can be made it says so in a line and is left
+  out, and it takes its allowance for a sign in the temporary folder's path from the path as given and
+  from the resolved one.
+- **The rule's table,** for finding 3: 34 argument lines now, 19 for which the rule must name the sign
+  or the variable and 15 for which it must not; it had 33, 18 and 15. The new row is `%Os:a%b=%c%`,
+  whose form ends at the first `%` behind the `=`, and four rows expect the whole form where they
+  expected its first piece.
+- **With a part taken out or changed,** on copies of the kit, on Windows under Python 3.11.7, with the
+  group alone, on the final files. The kit as it is passes all 43, and of the 41 copies 40 fail or stop
+  the group:
+
+  | on the copy | the checks that fail |
+  |---|---|
+  | the variable named to its first `%` again; the variable named as far as the line's last `%`; the case of a name counted where its text reaches over a `%` | the table |
+  | the way back to the folder's own path taken out; that way without the error for a value of another kind; without the error for a value that no path can hold; the way back built from the setting's value as it stands; that way without Python's error for links that lead back | the runs folder's |
+  | that way without the system's errors | none: all 43 pass |
+  | in the test, where no junction can be made: the link's check without its way out | the group stops with an error (OSError) after 34 checks |
+  | in the test, where no junction can be made: the new check without its way out | the group stops with an error (OSError) after 27 checks |
+  | in the test, under a temporary folder behind a link to a folder named with a `&`: the allowance taken from the path as given alone; in the test, under a temporary folder that is a link named with a `&`: the allowance taken from the resolved path alone | the link's |
+  | the rule's reading over a `%` taken out; the text behind the colon allowed to be empty; the piece behind the last `%` read too; only the next piece read | the table |
+  | the run's folder asked by the link's own path again; in the test: the folder behind the link named without a variable; in the test: the allowance for a sign in the temporary folder's path made unconditional | the link's |
+  | the rule's answer for arguments | the table, the evaluator's, the two folders', the link's, the agent's and the start through the command line |
+  | the `&` among the signs | the table, the evaluator's, the two folders' and the agent's |
+  | that the signs are looked for outside quotes only | the table, the evaluator's and the agent's |
+  | that a line break counts in quotes too; the pipe sign; `<`; `>`; `^`; that a quote behind a backslash is a quote; the form with `:~`; the form with a `=`; that only those forms follow a colon; `%=X:%`; that the case of a name does not count, alone; and in front of a colon; that the piece in front of the first `%` is no name; nor the one behind the last | the table |
+  | the evaluator's arguments | the evaluator's, the two folders' and the link's |
+  | the run's folder | the two folders' and the link's |
+  | the self-test's folder | the two folders' |
+  | the run's environment for the evaluator | the evaluator's |
+
+  The first six rows' thirteen copies try what this reading changed. The other ten rows' 28 try the
+  older parts again, because the blocks that hold them were written anew. The one copy that passes under
+  Python 3.11.7, the way back without the system's errors, fails the runs folder's check under 3.8.20,
+  under which Windows' errors are what the resolver raises. Under 3.8.20 fourteen of the copies ran,
+  twelve of this reading's thirteen and two older ones of the test: thirteen fail or stop the group, and
+  the one that passes there, the way back without Python's error for links that lead back, fails under
+  3.11.7 and in WSL. In WSL, under both interpreters, the six copies of the way back ran: five fail the
+  runs folder's check, and the one without the system's errors passes, as on Windows under 3.11.7. So
+  each of the four kinds of error in the way back has an interpreter under which the check fails without
+  it. Twelve of the last record's forty copies were not run again, the agent's nine and three of the
+  test's own: their lines are as they were.
+- **The group under six setups,** on the final files, each under both interpreters on Windows: a plain
+  temporary folder; one given through a link to a folder named `Research&Dev`; one through a link to
+  `Research Dev`; and one through a link that is itself named `l&k`: all 43 pass in each. With the
+  junction's call made to fail: 42 pass, and two lines say what was left out. Under a temporary folder
+  named `tp%OS%x`: 36 pass and 7 fail, as finding 4 says.
+- **`tests/test_loop.py` alone on the final state:** 276 checks on Windows under Python 3.11.7 and 279
+  in WSL under 3.12.3, one more than before on each. None failed.
+- **The eight test files on the final state,** from the working tree on Windows and from a clone with
+  the same change in WSL, before the commit was made:
+
+  | | Python | checks | failed |
+  |---|---|---|---|
+  | Windows | 3.11.7 | 1,933 | 0 |
+  | Windows, in a virtual environment | 3.8.20 | 1,920 | 0 |
+  | WSL | 3.12.3 | 1,933 | 0 |
+  | WSL, in a virtual environment | 3.8.20 | 1,920 | 0 |
+
+  That is one check more in each row than with the reading of the arguments' refusal, on Windows and in
+  WSL. `tests/test_kit.py` alone has 1,220 checks on Windows and 1,220 in WSL. The interpreters of the
+  second and the fourth row have no psutil. What is skipped, and why thirteen checks fewer run under
+  Python 3.8.20, is as in the first reading's section. The four changed files are the same in the
+  working tree, in the clone and in `246797f`, by their hashes.
+
+### Verified by running, and not
+
+- **By running, on this machine:** the four findings, as said at each; the rule against eighteen and
+  four new starts and, from the kept results, against the starts of the two earlier measurements; the
+  check, the real `start` and the real launch with runs folders whose path is not to be had, at the
+  commit, before it and on the final files; the 41 copies; the group under six setups; everything under
+  "Tests". Windows 11 with Python from python.org; WSL with Ubuntu.
+- **Put to the new and the changed checks:** as the runs folder, a name that Windows refuses, a NUL, a
+  number and two links that lead to each other, under four interpreters; the junction's call made to
+  fail; a temporary folder given through a link, with the `&` in the folder behind it and in the link's
+  own name; and the table's 34 rows.
+- **Reached by a trial alone, and by no check:** an address that no machine has, a list, a path of
+  40,000 letters, a name of 300, a name with `*` and `?`, a device's name and a share named under
+  `\\?\UNC`; the real `start` and the real launch; and where a form ends.
+- **By reading only:** that the kit's other commands that read the runs folder call the same resolver as
+  the launch, which was run; what the loop says where a launch fails inside a campaign; and that
+  `_winapi` is asked for on Windows only.
+- **Not run:** a real short name, and a real volume that makes no junction; a symbolic link on Windows;
+  a share on another machine, and a link to one; a whole campaign with a runs folder whose path is not
+  to be had, or with a batch file; another Python than these four, so none from 3.13 on, for which the
+  reader read the resolver differently; `cmd.exe` with delayed expansion on; another Windows than this
+  one, so that every measurement is of one machine's `cmd.exe`; macOS and GitHub's machines, since
+  neither `4a7775f` nor this reading's commits are pushed.
+- **Removed, and left behind:** by a search of this session's own commands and written scripts of this
+  reading, I removed and discarded nothing. One trial's helper renamed a folder inside its own work
+  folder, to build the two junctions, as the new check does. The test files and the helper that runs the
+  group alone clear the temporary folders that they make themselves, as the tests always do. Left in
+  this session's scratch folder: the trials' work folders with their junctions, the copies, the results,
+  and one output of a run that I interrupted and do not use; and in WSL, beside the earlier clones, the
+  clone in which the tests ran, two clones of the two commits and the trials' folders with their links.
+  The reader removed nothing and ran nothing.
+- **Read by one reader each:** the launcher's repair, `09af4a1`; the first reading's repairs, `829d5b3`;
+  the lookup's repair, `7edd37d`; of the second reading's repairs, `3784d0c`, the nine lines in
+  `ancestors`; the third reading's repairs, `c85f96a`; the folder's repair, `31af10c`; the reading's
+  repair, `042a985`; the refusal of a batch file's path, `1a277aa`; what the reading of the refusal
+  changed, `ebc28f0`; the refusal of a batch file's arguments, `8628536`; and what the reading of the
+  arguments' refusal changed, `4a7775f`. **Read by nobody but me:** what this reading changed.
+
+### Not done, and why
+
+- **No sentence of the loop's own for a runs folder whose path is not to be had.** The check passes it,
+  as before `4a7775f`, and the launch ends with a trace. A sentence is a new behaviour: the third
+  decision below.
+- **The resolving call still runs outside Windows,** where it decides nothing. The reader's fix would
+  have saved it there; I kept the lines the same for all systems.
+- **The older checks under a temporary folder whose path holds a variable's name** are as they were, and
+  the link's check with them: the fifth decision below.
+- **The `"` in a named form that reaches into an argument in quotes** stays, and is in more names now:
+  the line is printed whole beside it.
+- **What the last section left is as it was:** the agent's `--help` that does not run, the two cases
+  with `=ExitCode` in an inherited environment, the refusals too many, a state's model at `resume`, and
+  findings 2 and 4 of the reading of the refusal. Your word was for this reader's findings.
+- **No reader for what this reading changed.** Your word covered one reader.
+- **Nothing is pushed or merged by this session,** and your real install is untouched.
+- **The ledger is not touched** (`LEDGER.md`, `scout/`): this reading decides nothing that has a row.
+
+### What needs your decision
+
+- **Whether a reader goes through what this reading changed:** about fifteen lines of code in
+  `expctl.py` and `nnloop.py` with their comments, one new check and one changed one, and the
+  reference's sentences. I would start one. Every reader so far has found something, the rule's block
+  was written anew for the name, and I am its only reader. The brief would be for correctness, as the
+  seven before it; this reader took about 180,000 tokens, without my running of its findings.
+- **Whether the loop says so when the agent's `--help` did not run.** Unchanged from the last section,
+  where it is the first decision: I would repair it.
+- **Whether the loop's check gets sentences of its own for a folder that cannot be read:** the runs
+  folder whose path is not to be had, where the launch of a run ends with a trace today, and finding 2
+  of the reading of the refusal, the folder comparison. I would take both in one small change, on a word
+  of yours, after a look at what a campaign says when its first launch fails.
+- **Whether the check of the agent's path asks with a session's names too,** which is finding 4 of the
+  reading of the refusal. I would, with that change.
+- **Whether the refusals' checks are made to hold under a temporary folder whose path holds a variable's
+  name:** six older checks and the link's. It is a matter of the test and nothing of the kit. I would
+  leave it until a machine has such a folder.
+- Unchanged from the sections before: whether the refusal goes to the kit's other starts of a program
+  that you name (I would leave them until one is met); whether a path with `.` or `..` as a folder
+  behind the file's name is refused too (I would leave it); and whether a batch-file evaluator named
+  with forward slashes should start also where the loop is called in the project root. And what the
+  sections before those list.
+- **The merge is no question of this section.** By the notes of the session that started this one, you
+  gave three words in that session: "Yes, join here" on 21 November, for local merges of the four
+  sessions' branches into its local branch, `claude/kit-commit-verification-e52f2b`, with the records
+  joined by hand and tests on the joined state; "Reader first" on 24 November, for a reader of its hand
+  joins before a push; and "Push test branch" that day at about 18:03 UTC, for the joined round to go to
+  `test/round-9`, which by its note it did at 18:06 UTC. Where the branches stand, looked at 18:47 UTC
+  on 24 November with nothing fetched by me: that branch and `test/round-9`, as this clone has it, are
+  both at `5db0ef2`. After `f08b6dd` that is four merges of that session's own, which take `5424b57`
+  (`claude/sharp-faraday-6bd610`), `117ff79` (`claude/beautiful-bartik-32f1e5`), `533690b`
+  (`claude/fervent-gould-8d0820`) and this branch as it stood at `f5aa600`, and two commits of records,
+  the join's with point 68 (`cac04d3`) and the reading of the hand joins with point 69 (`5db0ef2`). By
+  its note of 18:42 UTC all six of GitHub's jobs passed on the pushed state, and that session has taken
+  point 70 for the record of the push and of that run; no branch held that record when I looked, and by
+  the note it goes to `test/round-9` too. This branch holds twenty-five commits after `5ccc2d4` now, and
+  the last four, the two of the reading of the arguments' refusal and this reading's two, are the ones
+  that `5db0ef2` lacks: that session's notes name them as not in the join and say that it has put to you
+  whether they are taken in. Merges tried in memory, with no branch, index or file touched: the four
+  files of `246797f` join with `5db0ef2` by themselves, and REPORT.md, which that commit does not
+  change, conflicts there in three places: they are those of the record beneath it, `8050d18`, which was
+  tried by itself too. With `f08b6dd`, where the public branch stood before the push, and with each of
+  the three other sessions' heads, all of which `5db0ef2` holds, the kit's code, the tests and the
+  reference join by themselves and REPORT.md and PROGRESS.md conflict, as they did for this branch
+  before this reading. This record's commit was tried the same way before it was made, on a commit
+  object that no branch holds: with `5db0ef2` REPORT.md conflicts in the same three places, each where
+  both sides add at one spot (behind the introduction's statement on the refusal of a batch file's
+  arguments, behind point 64 of "Read this first" and the last place in front of "1. What changed and
+  why"), and PROGRESS.md and the code join by themselves; in the joined PROGRESS.md this reading's entry
+  stands behind this branch's entry of the reading of the arguments' refusal and in front of that
+  branch's own entries, so its place there is for the hand that joins. No state that joins those four
+  commits with another branch has run. The records of all sides are joined by hand as before: points 39,
+  40, 44 and 46 of "Read this first" are the other session's; 48, 51, 57 and 62 came from
+  `claude/fervent-gould-8d0820`, 49, 55, 61 and 63 from `claude/sharp-faraday-6bd610` and 58 and 65 from
+  `claude/beautiful-bartik-32f1e5`; 53, 54, 60, 68 and 69 are the session's that started this one;
+  `5db0ef2`, which `test/round-9` has too, holds all of those beside this branch's 38, 41, 42, 43, 45,
+  47, 50, 52, 56, 59 and 64; 66 and 67 are on this branch alone; and by its note of 18:42 UTC that
+  session has taken point 70, for a record that no branch held when I looked.
+
+Sources: the reader's report, and runs on this machine on 24 November 2026. The reader, from 15:43 to
+15:50 UTC. From 16:02 to 17:36 UTC: the trials of the findings under the four interpreters, at the
+commit, before it and on the final files; the kept starts put to both rules; and the copies, from 16:44
+to 17:27 under Python 3.11.7, from 17:02 to 17:24 under 3.8.20 and from 16:45 to 16:56 in WSL. The eight
+test files on the final state, from 17:44 to 18:43 UTC on Windows and from 17:44 to 18:04 UTC in WSL; by
+its notes, nothing heavy of the session that started this one ran on this machine in that time.
 
 ## 1. What changed and why
 

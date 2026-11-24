@@ -1887,6 +1887,17 @@ class Campaign:
 
 # ---------------------------------------------------------------- commands
 
+def batch_args(what, word, env, rest, cure):
+    """Refuses the arguments of a batch file that cmd.exe, which runs it, would not hand on as written
+    (expctl.batch_split, measured on 21 November 2026): they reach it in quotes only where they have a space."""
+    line = subprocess.list2cmdline(rest)
+    cut = expctl.batch_split(subprocess.list2cmdline([word]), env, line)
+    if cut:
+        fail(f"{what} is a batch file, and cmd.exe, which runs it, does not hand on its arguments as written: it acts on "
+             f"{cut!r} in {line}, so the program behind the batch file would get other arguments, or none, or another "
+             f"command would run. {cure}.")
+
+
 def preflight(C: Campaign, agent, limits, args):
     root, cfg, L = C.root, C.cfg, C.L
     miss = [k for k in ("task", "train_command", "eval_command", "seeds", "run_budget_s", "editable_paths") if not L.get(k)]
@@ -1993,11 +2004,38 @@ def preflight(C: Campaign, agent, limits, args):
         # Windows (on Windows a batch file was not found), and a loop started with --detach from the project root
         if os.path.dirname(C.exe) and not os.path.isabs(C.exe):
             C.exe = os.path.join(os.getcwd(), C.exe)
+        # cmd.exe, which runs a batch file, does not take every path as written (expctl.batch_split): started, such a
+        # file fails or another one runs, so it is refused here, before any start. The evaluator's path is asked as
+        # evaluate() will hand it over: as written from the project root, where the loop in the background stands too
+        ev = C.fill(L["eval_command"])[0]
+        if os.name == "nt" and os.path.dirname(ev) and not (args.detach or os.path.samefile(".", root)):
+            ev = os.path.join(root, ev)
+        for what, word, env, cure in (
+                ("loop.eval_command's program", ev, C.run_env, "A path without it starts. Called in the project root "
+                 "or with --detach the loop hands Windows the path as loop.eval_command writes it, elsewhere with the "
+                 "project root's path in front"),
+                ("the agent's program", C.exe, os.environ, "Pass --agent-exe with a path without it")):
+            cut = expctl.batch_split(subprocess.list2cmdline([word]), env)
+            if cut:
+                fail(f"{what} is a batch file, and cmd.exe, which runs it, does not take its path as written: it acts "
+                     f"on {cut!r} in {word}, so the file would not start, or another one would. {cure}.")
+        # and its arguments: the evaluator's with a run's folder and with the self-test's, which lie in the project;
+        # the agent's below, once its --help has said which ones a session hands it
+        for d in (root / C.runs_rel / "0", C.dir / "selftest-0"):
+            batch_args("loop.eval_command's program", ev, C.run_env, C.fill(L["eval_command"], run_dir=d)[1:],
+                       "Take it out of loop.eval_command, or keep the project where its path has none (a run's folder, "
+                       "which stands for {run_dir}, lies in it), or name the program that the batch file starts")
         usage = subprocess.run([C.exe, "--help"], capture_output=True, encoding="utf-8", errors="replace",
                                timeout=60, **NOWIN).stdout
     except (OSError, subprocess.TimeoutExpired) as e:
         fail(f"{C.exe} --help did not run: {e}")
     C.restricted = agent == "claude" and "--restricted" in usage
+    batch_args("the agent's program", C.exe, {**os.environ, "NN_UNATTENDED": "", "NN_GUARD_BEACON": ""},  # a session's
+               agent_argv(agent, C.exe, "worker", args.model or C.st.get("model"), args.effort or C.st.get("effort"),
+                          limits["usd"], C.wt, C.restricted)[1:],
+               "Take it out of --model and --effort, or keep the project where its path has none (the worktree's "
+               "settings file, which lies in it, follows --settings), or pass --agent-exe with a program that is no "
+               "batch file")
     r = C.expctl("selftest")
     if r.returncode != 0:
         fail(f"expctl selftest fails, so the guard may not work; run it and fix what it reports:\n{r.stdout[-1500:]}")

@@ -288,6 +288,51 @@ def startable(program, env):
         for d in dirs + os.environ.get("PATH", "").split(os.pathsep))
 
 
+CMD_OWN = ("CD", "DATE", "TIME", "RANDOM", "ERRORLEVEL", "CMDEXTVERSION", "CMDCMDLINE", "HIGHESTNUMANODENUMBER",
+           "__CD__", "__APPDIR__", "PROMPT", "COMSPEC", "PATHEXT", "FIRMWARE_TYPE", "NUMBER_OF_PROCESSORS", "PROGRAMFILES",
+           "COMMONPROGRAMFILES")  # the names that have a value in cmd.exe though the start's environment lacks them
+
+
+def batch_split(word, env, rest=None):
+    """What keeps cmd.exe, which runs a batch file on Windows, from taking the file's path as written: the sign, or
+    the variable between two `%`, that it acts on. None where it takes the path, for a word that names no batch
+    file, and outside Windows. `word` is the path as the command line has it, in double quotes or not (Python puts a
+    word of a list in quotes where it has a space or a tab); `env` is the start's environment.
+    Measured on 21 November 2026 (Windows 11, Python 3.8 and 3.11). Outside quotes cmd.exe ends the path at `&`, a
+    comma, `;`, `=`, `(` and at any other space sign than the two above; it drops `^`, and `@` in front; and it
+    reads an option at `/` unless the path begins with a drive letter or with `/`. In quotes too it puts a
+    variable's value where its name stands between two `%`, and it finds no file by a path that ends in a dot:
+    Windows, for which dots and spaces at a path's end do not count, gives it that path as the batch file's. The
+    file is then not started, or another one is: for `a^b\\x.cmd` the one at `ab\\x.cmd`.
+    With `rest`, the arguments as the command line has them behind the path, the answer is about them: what keeps
+    cmd.exe from handing them on as written. Measured the same day (7,597 starts under each Python) with a batch
+    file that hands on all its arguments (`%*`). Outside quotes cmd.exe ends the command at `&` and `|`, reads a
+    redirection at `<` and `>` and drops `^`; a quote is every `"`, also one that Python wrote as `\\"`. In quotes
+    too it ends the line at a line break and puts a value for a variable between two `%`: for its name, for the
+    name with `:~` and numbers or with `:` and a text that holds a `=` behind it (`%CD:~0,2%`), and for `%=C:%`,
+    the folder it stands in. The program behind the batch file then gets other arguments, or none, or another
+    command runs. A comma, `;`, `=` and the other space signs change nothing there; they part two arguments only
+    for a batch file that reads them by number (`%1`), which is that file's own affair."""
+    name = word.strip('"')
+    if os.name != "nt" or os.path.splitext(name.rstrip(". "))[1].lower() not in (".bat", ".cmd"):
+        return None
+    names = {k.upper() for k in env}.union(CMD_OWN)
+    if rest is not None:
+        def valued(x):  # refused whatever follows `:~`, and for every drive's letter: more than was seen to change
+            key, _, how = x.partition(":")
+            return (x.upper() in names or key.upper() in names and (how[:1] == "~" or "=" in how)
+                    or re.fullmatch("=[A-Za-z]:", x))
+        var = next((x for x in rest.split("%")[1:-1] if valued(x)), None)
+        m = re.search(r"[\r\n]", rest) or re.search(r"[&|<>^]", re.sub(r'"[^"]*"?', "", rest))
+        return f"%{var}%" if var else m.group(0) if m else None
+    var = next((x for x in word.split("%")[1:-1] if x.upper() in names), None)
+    if var:
+        return f"%{var}%"
+    bare = re.sub(r'"[^"]*"?', "", word)  # what stands outside quotes
+    m = re.match("@", word) or re.search(r"[&(,;=^\s\u180e]" + ("" if re.match("[A-Za-z]:|/", bare) else "|/"), bare)
+    return m.group(0) if m else "." if name.endswith(".") else None
+
+
 def read_json(path):
     for attempt in (1, 2, 3):
         try:
@@ -3173,6 +3218,11 @@ def cmd_final_eval(args):
                           "folder only where the variable NoDefaultCurrentDirectoryInExePath is not set. "
                           f"There is {there}"
                           if there else ""))
+    cut = batch_split(words[0], env)
+    if cut:
+        return fail(2, "the final evaluation's program is a batch file, and cmd.exe, which runs it, does not take its "
+                       f"path as written: it acts on {cut!r} in {words[0]}, so the file would not start, or another "
+                       "one would. Put the path in double quotes in final_eval_commands.")
     d = root / FINAL_DIR
     receipt = d / "receipt.jsonl"
     before, edited, shared, sub = final_uses(root)

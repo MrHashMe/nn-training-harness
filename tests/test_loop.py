@@ -205,13 +205,15 @@ def resume(tmp, proj, exe, name, steps, *args, env=None):
     return r, state(proj, name), iters(proj, name)[n:]
 
 
-def refuse(proj, over=None, loop=None, agent="claude", tweak=None, in_container=False, **limits):
-    """What preflight says about a configuration, without starting anything. The agent's program does not exist,
-    so a configuration that passes every check ends with "--help did not run"."""
+def refuse(proj, over=None, loop=None, agent="claude", tweak=None, in_container=False, exe=None, detach=False, model=None,
+           **limits):
+    """What preflight says about a configuration, without starting anything. The agent's program does not exist
+    unless `exe` names one, so a configuration that passes every check ends with "--help did not run"."""
     cfg = nnloop.expctl.load_config(proj)
     cfg.update(over or {})
     cfg["loop"] = dict(cfg["loop"], **(loop or {}))
-    ns = argparse.Namespace(agent_exe=str(proj / "no-such-agent"), in_container=in_container, no_scout=True)
+    ns = argparse.Namespace(agent_exe=exe or str(proj / "no-such-agent"), in_container=in_container, no_scout=True,
+                            detach=detach, model=model, effort=None)
     C = nnloop.Campaign(proj, cfg, "zz", ns)
     if tweak:
         tweak(C)
@@ -586,6 +588,130 @@ def make_project(tmp):
 
 # ---------------------------------------------------------------- 2. refusals
 
+def batch_file_tests(tmp, proj, exe):
+    """Windows: cmd.exe, which runs a batch file, does not take every path as written, nor every argument. What it
+    does at each sign was measured on 21 November 2026; the rule is asked first, then the two programs the loop
+    starts by a path, and what it hands them."""
+    split, env = nnloop.expctl.batch_split, {"Os": "x"}
+    table = [("a,b\\x.cmd", ","), ("a;b\\x.cmd", ";"), ("a=b\\x.cmd", "="), ("a&b\\x.cmd", "&"), ("a(b\\x.cmd", "("),
+             ("a^b\\x.cmd", "^"), ("a\u00a0b\\x.cmd", "\u00a0"), ("a\u180eb\\x.cmd", "\u180e"), ("@a\\x.cmd", "@"),
+             ("a/x.cmd", "/"), ("\\\\box\\share\\a/x.cmd", "/"), ("p%OS%q\\x.BAT", "%OS%"), ('"p%os%q\\x.cmd"', "%os%"),
+             ('"p %CD% q\\x.cmd"', "%CD%"), ("p%ComSpec%q\\x.cmd", "%ComSpec%"), ("a%b%Os%c\\x.cmd", "%Os%"),
+             ("x,y.bat", ","),
+             # a dot at the end, which Windows drops and cmd.exe does not; four names that have a value in cmd.exe
+             # though the environment lacks them
+             ("a\\x.cmd.", "."), ('"a b\\x.cmd."', "."), ('"a\\x.bat ."', "."), ("a,b\\x.cmd.", ","),
+             ("%Firmware_Type%\\x.cmd", "%Firmware_Type%"), ('"%NUMBER_OF_PROCESSORS%\\x.cmd"', "%NUMBER_OF_PROCESSORS%"),
+             ("%ProgramFiles%\\x.cmd", "%ProgramFiles%"), ('"%CommonProgramFiles%\\x.cmd "', "%CommonProgramFiles%"),
+             # and what it takes: in quotes, the other signs, a slash behind a drive, a name that is no variable's, a
+             # space at the end, and a file that is no batch file
+             ('"a,b\\x.cmd "', None), ('"a\\x.cmd. "', None),
+             ('"a,b\\x.cmd"', None), ('"a b(1)\\x.cmd"', None), ("a)b\\x.cmd", None), ("a@b\\x.cmd", None),
+             ("a!b~c[d]{e}'f\\x.cmd", None), ("a\u00e9b\\x.cmd", None), ("C:/a/x.cmd", None), ("C:a/x.cmd", None),
+             ("/a/x.cmd", None), ("p%NOPE%q\\x.cmd", None), ("a%b\\x.cmd", None), ("a,b\\x.exe", None), ("a,b\\x", None)]
+    got = [split(w, env) for w, _ in table]
+    check(got == [want for _, want in table],
+          "a batch file's path: the rule names the sign or the variable that cmd.exe would act on, and nothing where "
+          f"cmd.exe takes the path ({[w for (w, want), g in zip(table, got) if g != want]})")
+    # the arguments, as the command line has them behind the path. Outside quotes four signs and the caret; in quotes
+    # too a line break and a variable, also with `:~` or with a `=` behind its colon. Python writes a quote inside a
+    # word as `\"`, which opens or shuts cmd.exe's quotes like any other. Then what cmd.exe hands on as written
+    table = [("a&b", "&"), ("a|b", "|"), ("a<b", "<"), ("a>b", ">"), ("a^b", "^"), ('"a b\\" &c"', "&"), ("a\nb", "\n"),
+             ('"a \r\nb"', "\r"), ("p%OS%q", "%OS%"), ('"p %os% q"', "%os%"), ("%CD:~0,2%", "%CD:~0,2%"),
+             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"),
+             ('"a &b|c<d>e^f"', None), ('a\\"&b', None), ("a,b;c=d (e) !f @g h", None), ("%OS:junk%", None),
+             ("%OS:%", None), ("%NOPE%", None), ("%NOPE:~0,2%", None), ("p%OS", None), ("OS%q", None), ("100%", None),
+             ("", None)]
+    got = [split("x.cmd", env, r) for r, _ in table]
+    check(got == [want for _, want in table] and split("x.exe", env, "a&b") is None,
+          "a batch file's arguments: the rule names the sign or the variable that cmd.exe would act on, and nothing "
+          "where it hands them on as written, nor for a program that is no batch file "
+          f"({[r for (r, want), g in zip(table, got) if g != want]})")
+    # a project whose own path cmd.exe would not take. Made a full one, the evaluator's path is refused where the loop
+    # is called in another folder, and taken as written with --detach and in the project root. The folder's name holds
+    # a variable between two `%`, which cmd.exe acts on in quotes too, and no comma: where the temporary folder's own
+    # path has a space, Python puts the full path in quotes, and a comma in quotes is no sign
+    proj2, here = tmp / "pro%RANDOM%j", os.getcwd()
+    shutil.copytree(proj, proj2)
+    for name in ("eval.cmd", "ev,al.cmd"):
+        put(proj2 / "data" / name, "@echo 1\n")
+    ev = {"eval_command": ["data\\eval.cmd", "x"]}  # without {run_dir}: a run's folder lies in the project, see below
+    got = [refuse(proj2, runs=5, loop=ev), refuse(proj2, runs=5, loop=ev, detach=True)]
+    os.chdir(proj2)
+    try:
+        got.append(refuse(proj2, runs=5, loop=ev))
+    finally:
+        os.chdir(here)
+    got += [refuse(proj2, runs=5, detach=True, loop={"eval_command": [w, "{run_dir}"]})
+            for w in ("data\\ev,al.cmd", "data/eval.cmd")]
+    want = ("acts on '%RANDOM%' in " + str(proj2 / "data" / "eval.cmd"), "--help did not run", "--help did not run",
+            "acts on ',' in data\\ev,al.cmd", "acts on '/' in data/eval.cmd")
+    check(all(w in g and ("loop.eval_command's program is a batch file" in g) == ("acts on" in w) for w, g in zip(want, got)),
+          "a batch-file evaluator whose path cmd.exe would cut is refused before anything starts, and its path is "
+          "asked as the loop will hand it over: with the project root's path in front only where the loop is called "
+          f"in another folder and without --detach ({[g.strip()[-160:] for w, g in zip(want, got) if w not in g]})")
+    (tmp / "ag%RANDOM%ent").mkdir()
+    shutil.copy(exe, tmp / "ag%RANDOM%ent" / "agent.cmd")
+    got = [refuse(proj, runs=5, exe=str(tmp / "ag%RANDOM%ent" / "agent.cmd")),
+           refuse(proj, runs=5, exe=str(tmp / "ag ent, x" / "no-such-agent.cmd"))]
+    ok = ("the agent's program is a batch file" in got[0] and "acts on '%RANDOM%'" in got[0]
+          and "--help did not run" in got[1] and "batch file" not in got[1])
+    check(ok, "an agent's batch file whose path cmd.exe would cut is refused before it is started; a path with a space, "
+          "which is handed over in quotes, is not" + ("" if ok else f" ({[g.strip()[-160:] for g in got]})"))
+    # the evaluator's arguments. A run's folder, which stands for {run_dir}, lies in the project, so here it holds the
+    # variable; a sign of the configuration's own is refused outside quotes and handed on in them; and a variable is
+    # one of the evaluator's environment
+    got = [refuse(proj2, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", *a]})
+           for a in (["{run_dir}"], ["x", "a&b"], ["x", "%PATH%"], ["x", "a &b"])]
+    ok = (all("loop.eval_command's program is a batch file" in g and "does not hand on its arguments as written" in g
+              and w in g for w, g in zip(("acts on '%RANDOM%' in ", "acts on '&' in x a&b, so", "acts on '%PATH%' in "), got))
+          and "--help did not run" in got[3] and "batch file" not in got[3])
+    check(ok, "a batch-file evaluator's arguments that cmd.exe would change are refused before anything starts: a run's "
+          "folder in a project whose path holds a variable, a `&` outside quotes and a variable of the evaluator's "
+          "environment; in quotes the `&` is handed on" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
+    # the self-test's folders lie in the project too, beside the runs, and both are asked. Where the runs' folder
+    # alone has a space, the self-test's reach cmd.exe without quotes, so a `&` in the project's path counts: unless
+    # the temporary folder's own path has a space, which puts every path under it in quotes. And where the runs'
+    # folder alone holds a variable, it is a run's folder that is refused
+    proj3, bare = tmp / "pro&j", not re.search(r"\s", str(tmp))
+    shutil.copytree(proj2, proj3)
+    got = [refuse(proj3, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]}, over={"runs_dir": d})
+           for d in ("my runs", "r%RANDOM%s")]
+    ok = (("acts on '&' in " in got[0]) == bare and ("--help did not run" in got[0]) != bare
+          and "acts on '%RANDOM%' in " in got[1])
+    check(ok, "the evaluator's arguments are asked with a run's folder and with the self-test's: a `&` in the project's "
+          "path is refused where the self-test's folder reaches cmd.exe without quotes, and a variable in the runs' "
+          "folder for a run's" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
+
+    def quiet(C):  # the kit's own self-test follows the checks, and is not what is asked here
+        C.expctl = lambda *a: argparse.Namespace(returncode=0)
+
+    # the agent's arguments are a session's: with --restricted the worktree's settings file, which lies in the
+    # project, and --model as the call gives it; a variable is one of a session's environment, which has two names
+    # of the loop's own. An agent without --restricted is handed no path. The agent is a copy in a folder with a
+    # space: its path goes in quotes, so cmd.exe takes it wherever the temporary folder lies
+    (tmp / "ag ent").mkdir()
+    exe = str(shutil.copy(exe, tmp / "ag ent" / "agent.cmd"))
+    got = [refuse(proj2, runs=5, exe=exe), refuse(proj, runs=5, exe=exe, model="a&b"),
+           refuse(proj, runs=5, exe=exe, model="%NN_UNATTENDED%")]
+    os.environ["FAKE_RESTRICTED"] = "0"
+    try:
+        got += [refuse(proj, runs=5, exe=exe, model="a &b", tweak=quiet), refuse(proj2, runs=5, exe=exe, tweak=quiet)]
+    finally:
+        del os.environ["FAKE_RESTRICTED"]
+    ok = (all("the agent's program is a batch file" in g and "does not hand on its arguments as written" in g and w in g
+              for w, g in zip(("acts on '%RANDOM%' in ", "acts on '&' in ", "acts on '%NN_UNATTENDED%' in "), got))
+          and not any("nnloop:" in g for g in got[3:]))
+    check(ok, "an agent's batch file is refused for the arguments a session would hand it: the settings file of a "
+          "project whose path holds a variable, a --model with a `&` and one that names a variable of a session; a "
+          "--model in quotes passes, and so does that project with an agent that has no --restricted"
+          + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
+    r = loop(proj2, "start", "--campaign", "n", "--agent", "claude", "--agent-exe", exe, "--max-runs", "5")
+    check(r.returncode == 2 and "does not hand on its arguments as written" in r.stderr
+          and not (proj2 / "experiments/loop/n").exists() and git(proj2, "branch", "--list", "nnloop/*") == "",
+          "start in that project with a batch-file agent: exit 2, and nothing was created")
+
+
 def refusal_tests(tmp, proj, exe):
     print("== refusals before anything starts ==")
     py = nnloop.expctl.load_config(proj)["python"]
@@ -637,6 +763,11 @@ def refusal_tests(tmp, proj, exe):
     check("--help did not run" in got, "a sound configuration passes every check up to the agent's own program"
           + ("" if "--help did not run" in got else f" (got: {got.strip()[:200]})"))
     check(py in " ".join(nnloop.expctl.load_config(proj)["final_eval_commands"]), "the config names the interpreter")
+    if os.name == "nt":
+        batch_file_tests(tmp, proj, exe)
+    else:
+        check(nnloop.expctl.batch_split("a,b/x.cmd", {}) is None and nnloop.expctl.batch_split("x.cmd", {}, "a&b") is None,
+              "outside Windows cmd.exe reads no path and no arguments: the rule for a batch file names nothing")
 
     r = loop(proj, "start", "--campaign", "n", "--agent", "claude", "--agent-exe", exe)
     check(r.returncode == 2 and "refusing to start without a limit" in r.stderr

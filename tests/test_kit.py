@@ -622,6 +622,19 @@ def env_tests(tmp):
     out, n = final('"sp ace\\final.cmd"', "--", "a b")
     check(out.get("ok") and n == 2 and 'ran [eval/final.py] ["a b"]' in (out.get("output_tail") or ""),
           "final-eval: a batch file stays Windows' to start, which takes its quoted path with a space (handed over: not)")
+    # cmd.exe ends a batch file's path that is not in quotes at a comma or a bracket (most other such signs the check
+    # for a shell refuses first): refused before a use is recorded. In quotes the same file starts
+    for folder in ("to,ols", "to(1)"):
+        (proj / folder).mkdir()
+        (proj / folder / "final.cmd").write_text("@echo ran [%1] [%2]\n")
+    got = [final(p) for p in ("to,ols\\final.cmd", "to(1)\\final.cmd")]
+    errs = [o.get("error") or "" for o, n in got]
+    check("acts on ','" in errs[0] and "acts on '('" in errs[1] and not any(n for o, n in got),
+          "final-eval: a batch file whose path cmd.exe would cut is refused before a use is recorded, and the refusal "
+          f"names the sign (was: recorded, and then not started; new rows {[n for o, n in got]})")
+    out, n = final('"to,ols\\final.cmd"')
+    check(out.get("ok") and n == 2 and "ran [eval/final.py] []" in (out.get("output_tail") or ""),
+          "final-eval: the same path in double quotes starts")
 
 
 def near(a, b, tol=1e-9):

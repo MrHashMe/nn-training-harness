@@ -2009,13 +2009,15 @@ def preflight(C: Campaign, agent, limits, args):
         # the agent's below, once its --help has said which ones a session hands it. A run's folder is asked by the
         # path a launch reports: where the runs folder is a link, the path it leads to (until 24 November 2026 it was
         # asked by the link's own path, which shows nothing of a sign in the folder behind it). Where that path is
-        # not to be had (links that lead back to each other, a name the system refuses, a value that is no path),
-        # the folder is asked by its own path, as it was, and is the launch's to report: that day's change first
-        # ended the check there, with a traceback or with that error laid on the agent's --help
+        # not to be had, the folder is asked as the settings name it, joined to the project as a launch joins it and
+        # not resolved, and it is expctl's selftest below or the first launch that ends on it: that day's change
+        # first ended the check there, with a traceback or with that error laid on the agent's --help. Which values
+        # those are depends on the Python and the system: one that is no text under every one tried; links that lead
+        # back to each other, a name the system refuses, a NUL in a name, a folder that cannot be read under some only
         try:
             runs = expctl.runs_root(root, C.cfg)
         except (OSError, RuntimeError, TypeError, ValueError):
-            runs = root / C.runs_rel
+            runs = root / str(C.cfg["runs_dir"])
         for d in (runs / "0", C.dir / "selftest-0"):
             batch_args("loop.eval_command's program", ev, C.run_env, C.fill(L["eval_command"], run_dir=d)[1:],
                        "Take it out of loop.eval_command, or keep the project and its runs folder where their paths "

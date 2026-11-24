@@ -745,41 +745,51 @@ the task that the other arms lack: read its edge with that in mind, or run the p
   sentence names such a variable as far as the `%` behind the `=`, which is the text `cmd.exe` acts on. A run's
   folder is asked by the path a launch reports, which for a link is the folder it leads to: until then it was asked
   by the link's own path, which shows nothing of a sign in that folder's name. Where the path a launch reports is
-  not to be had (links that lead back to each other, a name that Windows refuses, a `runs_dir` that is no path), the
-  folder is asked by its own path and the check passes it on, as it did before that day: the first launch is what
-  ends then, with a traceback. And a variable in the agent's arguments is one of a session's environment, which is
-  the loop's without the names of a session above the loop (`CLAUDECODE` and others) and with the two names the loop
-  gives a session: until then those names were asked too, and a `--model` that names one was refused though it
-  arrives as written. `final-eval` needed no change: its older check refuses each of those signs, as needing a
-  shell, in its command and in the arguments behind it. (Measured on 21 November 2026 on Windows 11 under Python 3.8
-  and 3.11, alike under both: 7,597 starts of three batch files, with 144 signs and words in up to nineteen forms of
-  an argument list. 2,835 of them were of a batch file that hands on all its arguments (`%*`): the rule names
-  something in each start where they did not arrive as written, and in 77 where they did, because it refuses
-  whatever follows `:~` behind a name (`%CD:~x%`) and `%=D:%` for every drive. The rule as repaired answers each of
-  those starts as before. On 22 November 2026, 83 further starts of such a batch file, alike under both Pythons, had
-  a `%` in the text in front of the `=` and the other words a reader had asked about. In 21 of them the arguments
-  were changed and the rule named nothing; it names each since the repair. In two the kit's rules still name
-  nothing, one for an argument and one for a batch file's path: there the start inherits an environment with
-  `=ExitCode`, a name that `cmd.exe` sets once it has run a program and that Python's `os.environ` does not show, so
-  the environments the loop makes for its evaluator and for a session lack it. Of the starts read here only the
-  agent's `--help` inherits the loop's environment: where the loop is called at such a prompt and the agent's batch
-  file lies in a folder named with `%=ExitCode%` and a space, `--help` finds no file, the check says nothing and the
-  loop takes the agent for one without `--restricted` (found that day, and left as it is). And the rule refuses nine
-  that arrived as written: two with `:~` behind a name, one with a name that only an environment made for the trial
-  had (`%=::%`), and six whose name has a letter that Python's capitals change and Windows' do not (`ß`, for one).
-  It compares names by Python's capitals, which put together every pair of letters that Windows' own table does (973
-  in the first plane, all tried), so no name is missed that way. A run's folder was put to the check as a full path
-  outside the project and behind a junction; a symbolic link, which Windows did not let the trial make, and a share
-  on another machine reach it by reading alone. On 24 November 2026, 18 further starts, alike under both Pythons,
-  asked what may follow the colon (a `%` at once, a `*`, a `~`, a `=`); the rule fits each. And a runs folder whose
-  path is not to be had was put to the check on Windows and in WSL, under four Pythons: two links that lead back to
-  each other, a name with a NUL and a number in each, and on Windows names that Windows refuses. Not refused: a
-  comma, `;`, `=` and a space sign other than a space, which change nothing there and part two arguments for a batch
-  file that reads them by number (`%1`), which is that file's own affair; and the arguments of the other starts
-  named above, which no check reads. The agent's arguments were put to the check for Claude Code, with a stand-in
-  agent; Codex's and Cursor's lists were put to the rule alone, with and without a model, and hold no sign of their
-  own. Delayed expansion was off here too.) The agent's program, and the loop's evaluator where the loop is called
-  outside the project root, need
+  not to be had, the folder is asked as `runs_dir` names it, joined to the project as a launch joins it and not
+  resolved, and the check does not end on it, as it did not before that day. Which folders those are depends on the
+  Python: a `runs_dir` that is no text is one under every Python tried, and links that lead back to each other, a
+  name that Windows refuses and a NUL in a name are under some only. With one of those three a campaign stops at its
+  first launch, also where the Python gives a path for the folder: the loop ends with exit code 1, and the line that
+  says why it stopped carries the last 300 characters of that launch's traceback (with `--detach` the start has
+  returned by then, and the line stands in `loop.log`). A `runs_dir` that is no text gets to no launch: the check's
+  last step, `expctl selftest`, fails on it, and the start is refused with that step's sentence. And a variable in
+  the agent's arguments is one of a session's environment, which is the loop's without the names of a session above
+  the loop (`CLAUDECODE` and others) and with the two names the loop gives a session: until then those names were
+  asked too, and a `--model` that names one was refused though it arrives as written. `final-eval` needed no change:
+  its older check refuses each of those signs, as needing a shell, in its command and in the arguments behind it.
+  (Measured on 21 November 2026 on Windows 11 under Python 3.8 and 3.11, alike under both: 7,597 starts of three
+  batch files, with 144 signs and words in up to nineteen forms of an argument list. 2,835 of them were of a batch
+  file that hands on all its arguments (`%*`): the rule names something in each start where they did not arrive as
+  written, and in 77 where they did, because it refuses whatever follows `:~` behind a name (`%CD:~x%`) and `%=D:%`
+  for every drive. The rule as repaired answers each of those starts as before. On 22 November 2026, 83 further
+  starts of such a batch file, alike under both Pythons, had a `%` in the text in front of the `=` and the other
+  words a reader had asked about. In 21 of them the arguments were changed and the rule named nothing; it names each
+  since the repair. In two the kit's rules still name nothing, one for an argument and one for a batch file's path:
+  there the start inherits an environment with `=ExitCode`, a name that `cmd.exe` sets once it has run a program and
+  that Python's `os.environ` does not show, so the environments the loop makes for its evaluator and for a session
+  lack it. Of the starts read here only the agent's `--help` inherits the loop's environment: where the loop is
+  called at such a prompt and the agent's batch file lies in a folder named with `%=ExitCode%` and a space, `--help`
+  finds no file, the check says nothing and the loop takes the agent for one without `--restricted` (found that day,
+  and left as it is). And the rule refuses nine that arrived as written: two with `:~` behind a name, one with a
+  name that only an environment made for the trial had (`%=::%`), and six whose name has a letter that Python's
+  capitals change and Windows' do not (`ß`, for one). It compares names by Python's capitals, which put together
+  every pair of letters that Windows' own table does (973 in the first plane, all tried), so no name is missed that
+  way. A run's folder was put to the check as a full path outside the project and behind a junction; a symbolic
+  link, which Windows did not let the trial make, and a share on another machine reach it by reading alone. On 24
+  November 2026, 18 further starts, alike under both Pythons, asked what may follow the colon (a `%` at once, a `*`,
+  a `~`, a `=`); the rule fits each. And a runs folder whose path is not to be had was put to the check on Windows
+  and in WSL, under four Pythons on each (3.8, 3.11, 3.12 and 3.14 on Windows; 3.8, 3.12, 3.13 and 3.14 in WSL): a
+  number and a list, which give no path under any of them; two links that lead back to each other, which give none
+  up to 3.12; a name with a NUL, which gives none under any but 3.14 on Windows; and on Windows a name that Windows
+  refuses and a folder that cannot be read, which give none under 3.8, and a share's address that Windows calls
+  invalid, which gives none under any of the four. The check ends on none of them. What a campaign then does was
+  seen in 60 real starts with a stand-in agent, nine of them with a plain runs folder, before that day's changes and
+  after them. Not refused: a comma, `;`, `=` and a space sign other than a space, which change nothing there and
+  part two arguments for a batch file that reads them by number (`%1`), which is that file's own affair; and the
+  arguments of the other starts named above, which no check reads. The agent's arguments were put to the check for
+  Claude Code, with a stand-in agent; Codex's and Cursor's lists were put to the rule alone, with and without a
+  model, and hold no sign of their own. Delayed expansion was off here too.) The agent's program, and the loop's
+  evaluator where the loop is called outside the project root, need
   no backslashes since 21 November 2026: the kit makes their relative path a full one, so the program, a batch
   file too, starts whichever way its slashes point, where the full path is none that is refused. Called in the
   project root, as a loop started with `--detach` is, the evaluator's path goes to Windows as written, so a

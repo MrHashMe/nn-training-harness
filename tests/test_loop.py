@@ -678,7 +678,7 @@ def batch_file_tests(tmp, proj, exe):
     # alone has a space, the self-test's reach cmd.exe without quotes, so a `&` in the project's path counts: unless
     # the temporary folder's own path has a space, which puts every path under it in quotes. And where the runs'
     # folder alone holds a variable, it is a run's folder that is refused
-    proj3, bare = tmp / "pro&j", not re.search(r"\s", str(tmp))
+    proj3, bare = tmp / "pro&j", not re.search(r"[ \t]", str(tmp))
     shutil.copytree(proj2, proj3)
     got = [refuse(proj3, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]}, over={"runs_dir": d})
            for d in ("my runs", "r%RANDOM%s")]
@@ -705,7 +705,7 @@ def batch_file_tests(tmp, proj, exe):
     else:
         got = [refuse(proj4, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]},
                       over={"runs_dir": d}) for d in ("far", "runs")]
-        cut = any(re.search(r"[&^]", p) and not re.search(r"\s", p) for p in (str(tmp), str(tmp.resolve())))
+        cut = any(re.search(r"[&^]", p) and not re.search(r"[ \t]", p) for p in (str(tmp), str(tmp.resolve())))
         ok = ("acts on '%RANDOM%' in " in got[0] and ("--help did not run" in got[1]) != cut
               and ("batch file" in got[1]) == cut)
         check(ok, "a run's folder is asked by the path a launch reports: a runs folder that is a link to a folder whose "
@@ -795,9 +795,11 @@ def refusal_tests(tmp, proj, exe):
     check("--help did not run" in got, "a sound configuration passes every check up to the agent's own program"
           + ("" if "--help did not run" in got else f" (got: {got.strip()[:200]})"))
     check(py in " ".join(nnloop.expctl.load_config(proj)["final_eval_commands"]), "the config names the interpreter")
-    # a runs folder whose path is not to be had is the launch's to report, not this check's: links that lead back to
-    # each other, a name that Windows refuses, a NUL in the name, a value that is no path. Windows' own call makes
-    # the links, as junctions, and wants the folder a junction leads to in place: that one is renamed afterwards
+    # a runs folder whose path is not to be had is not this check's to stop: links that lead back to each other, a
+    # name that Windows refuses, a NUL in the name, a value that is no text (the last under every Python, the others
+    # under some only: the rest give a path for them, which passes as well). The kit's own self-test, which follows
+    # the checks, or the first launch is what ends on such a folder. Windows' own call makes the links, as junctions,
+    # and wants the folder a junction leads to in place: that one is renamed afterwards
     loops, places = tmp / "loops", ["ru<n|s", "ru\0ns", 5]
     loops.mkdir()
     try:
@@ -814,9 +816,10 @@ def refusal_tests(tmp, proj, exe):
     except OSError:
         print("SKIP a runs folder whose links lead back to each other: this volume makes no link")
 
-    def passes(d):
+    def passes(d, tweak=None):
         try:
-            return bool(re.search(r"--help did not run: \[(WinError|Errno) 2\]", refuse(proj, runs=5, over={"runs_dir": d})))
+            return bool(re.search(r"--help did not run: \[(WinError|Errno) 2\]",
+                                  refuse(proj, runs=5, over={"runs_dir": d}, tweak=tweak)))
         except Exception as e:  # an error that leaves the check is the fault
             return repr(e)
     got = [passes(d) for d in places]
@@ -825,6 +828,27 @@ def refusal_tests(tmp, proj, exe):
           "project does: a name that Windows refuses, a NUL in the name, a number, and links that lead back to each "
           "other (was, after 24 November 2026's change to the path a launch reports: a traceback, or that error "
           f"given as the reason why the agent's --help did not run) ({got})")
+    # and such a folder is asked as the settings name it, joined to the project as a launch joins it: a rooted one is
+    # a folder outside the project (was: asked with the slashes at its ends taken off, which names a folder in the
+    # project). The resolving is made to fail here, as for a share that is away for a moment, so that the check is
+    # the same under every Python: by itself the NUL, with which no such folder can be made, ends it under every one
+    # tried but 3.14 on Windows, which gives a path for it
+    asked, rooted = [], "/nnkit-none/ru\0ns"
+
+    def spy(C):
+        fill = C.fill
+        C.fill = lambda xs, seed="", run_dir="": asked.append(run_dir) or fill(xs, seed, run_dir)
+
+    def away(*a):
+        raise OSError("away")
+    resolve, nnloop.expctl.runs_root = nnloop.expctl.runs_root, away
+    try:
+        got = passes(rooted, spy)
+    finally:
+        nnloop.expctl.runs_root = resolve
+    ok = got is True and proj / rooted / "0" in asked
+    check(ok, "a runs folder whose path is not to be had is asked as the settings name it: a rooted one as a folder "
+          "outside the project, not as one of that name in it" + ("" if ok else f" ({got}, {asked})"))
     if os.name == "nt":
         batch_file_tests(tmp, proj, exe)
     else:

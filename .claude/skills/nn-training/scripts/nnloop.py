@@ -961,9 +961,18 @@ class Campaign:
         failed = None if out.get("ok") else f"launch failed: {str(out.get('error') or r.stderr or r.stdout)[-300:]}"
         # A launch that failed after its supervisor had opened the run's log says that the command may be running
         # (command_may_run), with no supervisor to end it at its deadline. The loop then waits out the run's time and
-        # stops the run, as it does for one that does not end, before it goes on. (Was, for one commit: on at once, and
-        # the next run shared the machine with that command; before 20 November 2026 such a launch said ok, and the loop
-        # waited like this.) No exit record ends that wait: with that supervisor gone, nothing says that one is true
+        # asks for the run's stop, as it does for one that does not end, before it goes on. (Was, for one commit: on at
+        # once, and the next run shared the machine with that command; before 20 November 2026 such a launch said ok,
+        # and the loop waited like this.) No exit record ends that wait: with that supervisor gone, nothing says that
+        # one is true. The wait counts on the monotonic clock, which on Linux and macOS leaves out time asleep (the
+        # command has had its time awake), and against the campaign's GPU time, as if the command had run.
+        # shortcut: with no supervisor left, that stop reaches a process only where status takes the one that the run's
+        # heartbeat names for the run's: it ends that one's tree on Windows and sends it one SIGTERM elsewhere. Under a
+        # wrapper (`uv run`, a script with more steps) that is the trainer: the wrapper is not ended, and a script goes
+        # on with its next step. A run without a heartbeat it refuses. In the loop's sandbox the command ends with its
+        # supervisor (bubblewrap's --die-with-parent), and with it what it started where the box has a process
+        # namespace; without one, a process that the command started goes on. What does not end stays beside the next
+        # run; upgrade when `expctl stop` can end a run's processes without the run's supervisor
         if failed and not (out.get("command_may_run") and rid and out.get("run_dir")):
             return "crash", failed, rid
         run_dir = self.root / out["run_dir"]

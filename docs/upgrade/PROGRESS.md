@@ -111,10 +111,21 @@ On the user's "After the merge" of 21 November, given in the same session, one f
 through the joined function and found no fault of the join. The guard's code stays as it is; nine
 checks are added where no row stood and texts are corrected, in one further local commit on that
 session's branch ("The reading of the join of names in quotes" below). Nothing of it is pushed.
+On the user's "Yes, join here" of 21 November the four sessions' branches are joined in
+`claude/kit-commit-verification-e52f2b`, each as it stood once its reading was recorded, in four
+merge commits of 22 and 24 November, and the joined state passes its tests on this machine ("The
+join of the four sessions' branches" below). Nothing of it is pushed. This opening does not name
+every entry that the joined file holds: not the four of the session for the two faults, from "The
+two faults under a virtual environment on Windows, repaired" to "The third reading of the two
+faults' repairs"; not the pilot's ten after "The proof pilot", from "The launcher's repair" to "The
+refusal of a batch file's arguments"; and not the fourth session's two, "Lines with many words that
+set a variable" and "The reading of the lines with many words that set a variable", which stand in
+front of the join's entry. Where a line above says "this branch", "local" or "not merged", that was
+so in the branch where it was written.
 
 # Upgrade progress
 
-Last updated: 21 November 2026.
+Last updated: 24 November 2026.
 
 ## Standing decisions
 - 11 Nov, user: the usage limit of this session's model is the binding constraint. Do the most important things,
@@ -4732,6 +4743,10 @@ Next, each a separate word of the user's: how the round comes together again in 
 the sessions' later commits, and goes to `test/round-9`; `main`, after one run of the six jobs on
 that state; the ninth installer run; whether a reader goes through `f2338d6`; and the other
 questions of the last two entries, less the push.
+(Added on 24 November: the first of these is answered by the user's "Yes, join here" of 21 November,
+and done: the four sessions' branches are joined in this branch, and the joined state passes its
+tests on this machine; "The join of the four sessions' branches" below. Whether the joined round
+goes to `test/round-9` is open.)
 
 ## The reading of the repair of names in quotes (21 November): two kinds of harmless line pass again, a command behind a closed list is seen
 
@@ -5260,6 +5275,87 @@ stays, or a form that keeps more of the change's speed; whether the naming of co
 bounded form of its own; whether `{` goes out of what the search's look ahead reads, and what is
 done about the run of `{` outside quotes; where the four commits of this branch go; and the
 questions of the entry before this one but its first.
+(Added on 24 November, by the session that joined the four branches: the four commits of this
+entry's branch are in `claude/kit-commit-verification-e52f2b` since, with the other three sessions'
+branches, on the user's "Yes, join here"; the next entry.)
+
+## The join of the four sessions' branches (22 and 24 November): local only, the joined state passes its tests
+
+The user's word, 21 November: "Yes, join here" (about 12:28), to the question whether the four
+sessions' branches are joined in this one once their readings are recorded. With the question I had
+said what a yes covers: the local merges into `claude/kit-commit-verification-e52f2b`, the records
+joined by hand, the tests on this machine, which put terminal windows on the user's screen, and
+their record. It is not a word for a push, for `main`, for the real install, for a reader, for a
+re-run of a job on GitHub or for a deletion. The session stood still from about 03:42 on 22
+November; on the user's "Try again" of 24 November it went on with the join, and with no more. Dates
+and times in this entry are UTC. "I" is the session of this file's entries on the two merges and on
+the push.
+
+Done on that word:
+- Four merge commits, one for each branch as it stood once its reading was recorded in a commit:
+  `1bac8d0` (22 November, 03:10) for names in quotes, `claude/sharp-faraday-6bd610` at `5424b57`;
+  `bf0b9be` (24 November, 13:51) for lines with many words that set a variable,
+  `claude/beautiful-bartik-32f1e5` at `117ff79`; `28efba3` (14:24) for the two faults' repairs,
+  `claude/fervent-gould-8d0820` at `533690b`; `fce2f4d` (15:01) for the proof pilot,
+  `claude/brave-robinson-27cbd9` at `f5aa600`. With them this branch holds 21 commits that the
+  pushed `f08b6dd` does not hold, nine of which change the kit or its tests, and points 55 to 65 of
+  REPORT.md.
+- By hand, at 23 places where git stopped, with both sides' text kept: the guard at two (the fourth
+  session's lines with this branch's `/C` and `/K` of `cmd`), `tests/test_kit.py` at one, one
+  paragraph of the reference, REPORT.md at thirteen and this file at six. Two sections of REPORT.md
+  that git had set behind fifteen other sections are moved behind their session's earlier one, and
+  three empty lines that were missing in front of headings are put in.
+- Checked, by helpers of mine: each line of a hand-joined file stands as often as in this branch's
+  file plus the session's less their common base's, but for the few that REPORT.md names, and in the
+  reference each word, where a paragraph is wrapped anew; the files that git joined have the
+  sessions' own patch ids; the sizes of the last two merges are the sessions' own but for the lines
+  named in REPORT.md; "Read this first" has each number once. The hand joins are read by nobody but
+  me.
+- The joined guard: it answers as this branch's guard did before the join on 21,567 texts of my own
+  comparison and, whole check against whole check, on 19,190 generated texts in the fourth session's
+  helper `difffn.py`, which I read in full and ran as a copy. In that helper's comparison of the
+  changed functions and patterns one by one, on 100,000 texts, the one difference is that session's
+  repair: the search in front of the naming of command words says yes on 8,259 texts where the
+  naming finds no word, never the other way round, and that session's own two guards give the same
+  count. Timed with that session's helper on 25 long lines from its work, two runs in each of three
+  ways, it gives that session's guard's answers in all 75 rows and is in none slower than it by more
+  than a tenth and 0.1 s; other programs were at work on the machine beside the series. No reader
+  has gone through the guard's two places.
+- Tests on the joined state, 24 November: all eight files pass on Windows under Python 3.11.7 (2,147
+  checks: 19 in the units' file, 1,329 in the kit file, 226 review fixes, 138 ports, 275 loop, 100
+  remote, 54 benchmarks, 6 real shells) and in WSL under Python 3.12.3 (2,148: 19, 1,329, 228, 136,
+  279, 100, 54 and 3), and the kit file and the loop file from the 3.8.20 environment on Windows
+  (1,329 and 275). None failed. By name no check of the passes on the pushed state is missing, one
+  of the loop file being worded anew: on Windows the kit file has 32 more, the review-fixes file 35
+  and the loop file 8, and in WSL the kit file 31. The passes ran beside each other, beside another
+  session's passes and, at least from 15:14 on, beside other programs' work. Not run on the joined
+  state: the six other files under the 3.8.20 environment, any file under Python 3.15, macOS, bare
+  Linux, and GitHub's six jobs.
+- REPORT.md has the section "The join of the four sessions' branches", point 68 of "Read this
+  first", a statement and a note in the opening, a note at the end of each of points 55 to 65 and at
+  two places of "The merged round on the test branch", and an empty line in front of "The proof
+  pilot". This file has a sentence in the opening, the new date of its last update, this entry, a
+  note at the entry before it and at "The merged round on the test branch", an answered question and
+  a note at the open ones. The ledger's head has a note, and the ledger is built again (1,740 rows,
+  as before).
+- Not in the join: the reading that the pilot's session started at 02:57 on 22 November on `ebc28f0`
+  and `8628536` and what that session repairs after it; and whatever else a session commits after
+  the four ids. The pilot's session committed both on 24 November, after the fourth merge: its
+  repairs as `4a7775f` (15:28) and its record, with point 66, as `8050d18` (15:32). By its note of
+  15:43 a fresh reader goes through `4a7775f` since, on the word "Yes, start reader" given in that
+  session, and the note takes point 67 for that reading's record. So this record is point 68, and
+  points 66 and 67 are not in this branch. When I looked last (16:12 on 24 November) its branch
+  stood at `8050d18` and the three others at the ids named here.
+- Not done: no push, no reader, no re-run of a job; nothing on `main`, nothing on the real install;
+  no package installed, nothing deleted; no message to another session. The sessions' entries and
+  sections stand as they wrote them: where one says "local only" or "not merged", that was so in its
+  branch.
+
+Next, each a separate word of the user's: whether the joined round goes to `test/round-9`, with one
+run of GitHub's six jobs on it; whether a reader goes through the hand joins, the guard's two places
+first; whether the pilot's session's later commits, `4a7775f` and `8050d18` so far, are merged here
+too; `main`; the ninth installer run; what the sessions' entries leave open; and whether the scratch
+of this work goes (twenty snapshot branches, their clones, probe projects and logs).
 
 ## Not done, and why
 - Live checks: Codex (hooks need trust in `/hooks`), Cursor terminal agent (not installed), Hugging Face Jobs
@@ -5680,6 +5776,14 @@ questions of the entry before this one but its first.
   for repairs and for the record of the result, as I had said with the question. It is not a word
   for `main`, for the real install, for a reader, for a re-run of a job on GitHub, for a merge of
   the sessions' later commits or for a deletion.
+- Answered on 21 November ("Yes, join here"), from the merged round on the test branch: how the
+  round comes together again in one branch. "The join of the four sessions' branches" above. The
+  word covers the local merges of the four sessions' branches into
+  `claude/kit-commit-verification-e52f2b` once their readings are recorded, the records joined by
+  hand, the tests on this machine and their record, as I had said with the question. It is not a
+  word for a push, for `main`, for the real install, for a reader, for a re-run of a job on GitHub
+  or for a deletion. On 24 November the user said "Try again", after the session had stood still:
+  taken as the word to go on with the join, and as no more.
 - Open, from round 9: whether its two commits are pushed, to a test branch first or to `main`;
   whether the installer runs on the real install a ninth time, whose guard has the hole in the tee
   rule until then; which of the fourth report's large items is built next, if any (my order: a
@@ -5754,6 +5858,10 @@ questions of the entry before this one but its first.
   push", and done, and all six of GitHub's jobs pass; "The merged round on the test branch" above.
   Open in its place: how the round comes together again in one branch, with the seven commits that
   the three sessions made since, before `main` takes it. The others stand.)
+  (Added on 24 November, by the same session: how the round comes together again is answered, "Yes,
+  join here", and done; "The join of the four sessions' branches" above. Open in its place: whether
+  the joined round goes to `test/round-9`, with one run of GitHub's six jobs on it, before `main`
+  takes it, and whether a reader goes through the hand joins first. The others stand.)
 - Open, from round 8: whether the clock of this machine's WSL is mended, which is configuration
   outside this folder (the remedies are in REPORT.md, "What needs your decision" of the section "The
   second reading's fixes on the test branch"); whether further readers of my own fixes are wanted

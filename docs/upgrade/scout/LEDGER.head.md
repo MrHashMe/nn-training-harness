@@ -553,6 +553,10 @@ round are UTC.
   (Added later on 21 November: on the user's "Yes, push" the merged round is on the public branch `test/round-9`
   (`409182f` to `6f2812d`), and all six of GitHub's jobs pass on it; REPORT.md, "The merged round on the test branch".
   A push and a run decide nothing that has a row here. `main` is unchanged.)
+  (Added on 24 November: on the user's "Yes, join here" of 21 November the four sessions' branches are joined in
+  `claude/kit-commit-verification-e52f2b`, in four merge commits, and the joined state passes its tests on this
+  machine; REPORT.md, "The join of the four sessions' branches". The sessions' records did not touch this ledger, and
+  a join and a pass of the tests decide nothing that has a row here. Nothing of it is pushed.)
 
 ## Coverage map
 

@@ -615,13 +615,15 @@ def batch_file_tests(tmp, proj, exe):
           f"cmd.exe takes the path ({[w for (w, want), g in zip(table, got) if g != want]})")
     # the arguments, as the command line has them behind the path. Outside quotes four signs and the caret; in quotes
     # too a line break and a variable, also with `:~` or with a `=` behind its colon. Python writes a quote inside a
-    # word as `\"`, which opens or shuts cmd.exe's quotes like any other. Then what cmd.exe hands on as written
+    # word as `\"`, which opens or shuts cmd.exe's quotes like any other. The text that the `=` follows may reach
+    # over a `%`, or two, and into a later word, where a `%` follows that `=`. Then what cmd.exe hands on as written
     table = [("a&b", "&"), ("a|b", "|"), ("a<b", "<"), ("a>b", ">"), ("a^b", "^"), ('"a b\\" &c"', "&"), ("a\nb", "\n"),
              ('"a \r\nb"', "\r"), ("p%OS%q", "%OS%"), ('"p %os% q"', "%os%"), ("%CD:~0,2%", "%CD:~0,2%"),
-             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"),
+             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"), ("%Os:junk%x=y%", "%Os:junk%"),
+             ('"p %os:junk% x=y% q"', "%os:junk%"), ("%Os:a%x%y=z%", "%Os:a%"), ("%NOPE:a%Os:b%c=d%", "%Os:b%"),
              ('"a &b|c<d>e^f"', None), ('a\\"&b', None), ("a,b;c=d (e) !f @g h", None), ("%OS:junk%", None),
              ("%OS:%", None), ("%NOPE%", None), ("%NOPE:~0,2%", None), ("p%OS", None), ("OS%q", None), ("100%", None),
-             ("", None)]
+             ("%Os:junk%x=y", None), ("%Os:%x=y%", None), ("%Os:j%x%y%", None), ("%NOPE:a%b=c%", None), ("", None)]
     got = [split("x.cmd", env, r) for r, _ in table]
     check(got == [want for _, want in table] and split("x.exe", env, "a&b") is None,
           "a batch file's arguments: the rule names the sign or the variable that cmd.exe would act on, and nothing "
@@ -682,29 +684,50 @@ def batch_file_tests(tmp, proj, exe):
     check(ok, "the evaluator's arguments are asked with a run's folder and with the self-test's: a `&` in the project's "
           "path is refused where the self-test's folder reaches cmd.exe without quotes, and a variable in the runs' "
           "folder for a run's" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
+    # a run's folder is asked by the path a launch reports. Where the runs' folder is a link, that is the path the
+    # link leads to, of which the project's own path shows nothing: here a junction to a folder beside the project
+    # whose name holds a variable. (Windows' own call makes it: `cmd /c mklink` would act on that name itself.) With
+    # the runs' folder in the project it passes: unless the temporary folder's own path holds a `&` or a `^` and no
+    # space, which a run's folder then has either way
+    import _winapi
+    proj4, far = tmp / "linked", tmp / "f%RANDOM%r"
+    shutil.copytree(proj2, proj4)
+    far.mkdir()
+    _winapi.CreateJunction(str(far), str(proj4 / "far"))
+    got = [refuse(proj4, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]}, over={"runs_dir": d})
+           for d in ("far", "runs")]
+    cut = bool(bare and re.search(r"[&^]", str(tmp)))
+    ok = ("acts on '%RANDOM%' in " in got[0] and ("--help did not run" in got[1]) != cut
+          and ("batch file" in got[1]) == cut)
+    check(ok, "a run's folder is asked by the path a launch reports: a runs folder that is a link to a folder whose "
+          "name holds a variable is refused, though the project's own path holds none; with the runs folder in the "
+          "project it passes" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
 
     def quiet(C):  # the kit's own self-test follows the checks, and is not what is asked here
         C.expctl = lambda *a: argparse.Namespace(returncode=0)
 
     # the agent's arguments are a session's: with --restricted the worktree's settings file, which lies in the
     # project, and --model as the call gives it; a variable is one of a session's environment, which has two names
-    # of the loop's own. An agent without --restricted is handed no path. The agent is a copy in a folder with a
-    # space: its path goes in quotes, so cmd.exe takes it wherever the temporary folder lies
+    # of the loop's own and lacks those of a session above the loop (the second name is one of both kinds: a session
+    # gets the loop's and not its parent's). An agent without --restricted is handed no path. The agent is a copy in
+    # a folder with a space: its path goes in quotes, so cmd.exe takes it wherever the temporary folder lies
     (tmp / "ag ent").mkdir()
     exe = str(shutil.copy(exe, tmp / "ag ent" / "agent.cmd"))
     got = [refuse(proj2, runs=5, exe=exe), refuse(proj, runs=5, exe=exe, model="a&b"),
-           refuse(proj, runs=5, exe=exe, model="%NN_UNATTENDED%")]
-    os.environ["FAKE_RESTRICTED"] = "0"
+           refuse(proj, runs=5, exe=exe, model="%NN_GUARD_BEACON%")]
+    os.environ.update(FAKE_RESTRICTED="0", CLAUDE_CODE_SESSION_NNKIT="x")
     try:
-        got += [refuse(proj, runs=5, exe=exe, model="a &b", tweak=quiet), refuse(proj2, runs=5, exe=exe, tweak=quiet)]
+        got += [refuse(proj, runs=5, exe=exe, model="a &b", tweak=quiet), refuse(proj2, runs=5, exe=exe, tweak=quiet),
+                refuse(proj, runs=5, exe=exe, model="%CLAUDE_CODE_SESSION_NNKIT%", tweak=quiet)]
     finally:
-        del os.environ["FAKE_RESTRICTED"]
+        del os.environ["FAKE_RESTRICTED"], os.environ["CLAUDE_CODE_SESSION_NNKIT"]
     ok = (all("the agent's program is a batch file" in g and "does not hand on its arguments as written" in g and w in g
-              for w, g in zip(("acts on '%RANDOM%' in ", "acts on '&' in ", "acts on '%NN_UNATTENDED%' in "), got))
+              for w, g in zip(("acts on '%RANDOM%' in ", "acts on '&' in ", "acts on '%NN_GUARD_BEACON%' in "), got))
           and not any("nnloop:" in g for g in got[3:]))
     check(ok, "an agent's batch file is refused for the arguments a session would hand it: the settings file of a "
           "project whose path holds a variable, a --model with a `&` and one that names a variable of a session; a "
-          "--model in quotes passes, and so does that project with an agent that has no --restricted"
+          "--model in quotes passes, so does that project with an agent that has no --restricted, and so does a "
+          "--model that names a variable of the session above the loop, which a session does not get"
           + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
     r = loop(proj2, "start", "--campaign", "n", "--agent", "claude", "--agent-exe", exe, "--max-runs", "5")
     check(r.returncode == 2 and "does not hand on its arguments as written" in r.stderr

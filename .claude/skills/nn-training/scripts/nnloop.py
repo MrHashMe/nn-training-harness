@@ -1874,7 +1874,8 @@ class Campaign:
 
 def batch_args(what, word, env, rest, cure):
     """Refuses the arguments of a batch file that cmd.exe, which runs it, would not hand on as written
-    (expctl.batch_split, measured on 21 November 2026): they reach it in quotes only where they have a space."""
+    (expctl.batch_split, measured on 21 November 2026): they reach it in quotes only where they have a space or a
+    tab, or are empty."""
     line = subprocess.list2cmdline(rest)
     cut = expctl.batch_split(subprocess.list2cmdline([word]), env, line)
     if cut:
@@ -2004,18 +2005,24 @@ def preflight(C: Campaign, agent, limits, args):
             if cut:
                 fail(f"{what} is a batch file, and cmd.exe, which runs it, does not take its path as written: it acts "
                      f"on {cut!r} in {word}, so the file would not start, or another one would. {cure}.")
-        # and its arguments: the evaluator's with a run's folder and with the self-test's, which lie in the project;
-        # the agent's below, once its --help has said which ones a session hands it
-        for d in (root / C.runs_rel / "0", C.dir / "selftest-0"):
+        # and its arguments: the evaluator's with a run's folder and with the self-test's, which lies in the project;
+        # the agent's below, once its --help has said which ones a session hands it. A run's folder is asked by the
+        # path a launch reports: where the runs folder is a link, the path it leads to (until 24 November 2026 it was
+        # asked by the link's own path, which shows nothing of a sign in the folder behind it)
+        for d in (expctl.runs_root(root, C.cfg) / "0", C.dir / "selftest-0"):
             batch_args("loop.eval_command's program", ev, C.run_env, C.fill(L["eval_command"], run_dir=d)[1:],
-                       "Take it out of loop.eval_command, or keep the project where its path has none (a run's folder, "
-                       "which stands for {run_dir}, lies in it), or name the program that the batch file starts")
+                       "Take it out of loop.eval_command, or keep the project and its runs folder where their paths "
+                       "have none (a run's folder stands for {run_dir}, and the self-test's lies in the project), or "
+                       "name the program that the batch file starts")
         usage = subprocess.run([C.exe, "--help"], capture_output=True, encoding="utf-8", errors="replace",
                                timeout=60, **NOWIN).stdout
     except (OSError, subprocess.TimeoutExpired) as e:
         fail(f"{C.exe} --help did not run: {e}")
     C.restricted = agent == "claude" and "--restricted" in usage
-    batch_args("the agent's program", C.exe, {**os.environ, "NN_UNATTENDED": "", "NN_GUARD_BEACON": ""},  # a session's
+    # a variable is one of a session's environment: the loop's without the names of a session above it, which
+    # session() drops (until 24 November 2026 those were asked too), and with the two names a session is given
+    own = [k for k in os.environ if not PARENT_ENV.match(k)] + ["NN_UNATTENDED", "NN_GUARD_BEACON"]
+    batch_args("the agent's program", C.exe, dict.fromkeys(own, ""),
                agent_argv(agent, C.exe, "worker", args.model or C.st.get("model"), args.effort or C.st.get("effort"),
                           limits["usd"], C.wt, C.restricted)[1:],
                "Take it out of --model and --effort, or keep the project where its path has none (the worktree's "

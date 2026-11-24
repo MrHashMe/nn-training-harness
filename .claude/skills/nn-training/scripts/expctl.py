@@ -310,19 +310,24 @@ def batch_split(word, env, rest=None):
     redirection at `<` and `>` and drops `^`; a quote is every `"`, also one that Python wrote as `\\"`. In quotes
     too it ends the line at a line break and puts a value for a variable between two `%`: for its name, for the
     name with `:~` and numbers or with `:` and a text that holds a `=` behind it (`%CD:~0,2%`), and for `%=C:%`,
-    the folder it stands in. The program behind the batch file then gets other arguments, or none, or another
-    command runs. A comma, `;`, `=` and the other space signs change nothing there; they part two arguments only
-    for a batch file that reads them by number (`%1`), which is that file's own affair."""
+    the folder it stands in. The text between that `:` and the `=` may itself hold a `%` (`%CD:a%b=c%`): cmd.exe
+    reads on to the `=` and to the next `%` behind it, across words and quotes (measured on 22 November 2026; until
+    24 November the rule read that text to the first `%` only). The program behind the batch file then gets other
+    arguments, or none, or another command runs. A comma, `;`, `=` and the other space signs change nothing there;
+    they part two arguments only for a batch file that reads them by number (`%1`), which is that file's own
+    affair."""
     name = word.strip('"')
     if os.name != "nt" or os.path.splitext(name.rstrip(". "))[1].lower() not in (".bat", ".cmd"):
         return None
     names = {k.upper() for k in env}.union(CMD_OWN)
     if rest is not None:
-        def valued(x):  # refused whatever follows `:~`, and for every drive's letter: more than was seen to change
-            key, _, how = x.partition(":")
-            return (x.upper() in names or key.upper() in names and (how[:1] == "~" or "=" in how)
-                    or re.fullmatch("=[A-Za-z]:", x))
-        var = next((x for x in rest.split("%")[1:-1] if valued(x)), None)
+        parts = rest.split("%")
+
+        def valued(i):  # refused whatever follows `:~`, and for every drive's letter: more than was seen to change
+            key, _, how = parts[i].partition(":")  # the text in front of the `=` may reach over a `%`, or several
+            return (parts[i].upper() in names or re.fullmatch("=[A-Za-z]:", parts[i]) or key.upper() in names
+                    and (how[:1] == "~" or "=" in how or how and "=" in "%".join(parts[i + 1:-1])))
+        var = next((parts[i] for i in range(1, len(parts) - 1) if valued(i)), None)
         m = re.search(r"[\r\n]", rest) or re.search(r"[&|<>^]", re.sub(r'"[^"]*"?', "", rest))
         return f"%{var}%" if var else m.group(0) if m else None
     var = next((x for x in word.split("%")[1:-1] if x.upper() in names), None)

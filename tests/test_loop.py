@@ -615,13 +615,18 @@ def batch_file_tests(tmp, proj, exe):
           f"cmd.exe takes the path ({[w for (w, want), g in zip(table, got) if g != want]})")
     # the arguments, as the command line has them behind the path. Outside quotes four signs and the caret; in quotes
     # too a line break and a variable, also with `:~` or with a `=` behind its colon. Python writes a quote inside a
-    # word as `\"`, which opens or shuts cmd.exe's quotes like any other. Then what cmd.exe hands on as written
+    # word as `\"`, which opens or shuts cmd.exe's quotes like any other. The text that the `=` follows may reach
+    # over a `%`, or two, and into a later word, where a `%` follows that `=`: the variable is named as far as that
+    # `%`, which is what cmd.exe acts on (it was named to its first `%`), and no farther where another `%` comes
+    # behind it. Then what cmd.exe hands on as written
     table = [("a&b", "&"), ("a|b", "|"), ("a<b", "<"), ("a>b", ">"), ("a^b", "^"), ('"a b\\" &c"', "&"), ("a\nb", "\n"),
              ('"a \r\nb"', "\r"), ("p%OS%q", "%OS%"), ('"p %os% q"', "%os%"), ("%CD:~0,2%", "%CD:~0,2%"),
-             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"),
+             ('"%Os:a=b% c"', "%Os:a=b%"), ("%=C:%", "%=C:%"), ("%a%Os%", "%Os%"), ("%Os:junk%x=y%", "%Os:junk%x=y%"),
+             ('"p %os:junk% x=y% q"', "%os:junk% x=y%"), ("%Os:a%x%y=z%", "%Os:a%x%y=z%"),
+             ("%NOPE:a%Os:b%c=d%", "%Os:b%c=d%"), ("%Os:a%b=%c%", "%Os:a%b=%"),
              ('"a &b|c<d>e^f"', None), ('a\\"&b', None), ("a,b;c=d (e) !f @g h", None), ("%OS:junk%", None),
              ("%OS:%", None), ("%NOPE%", None), ("%NOPE:~0,2%", None), ("p%OS", None), ("OS%q", None), ("100%", None),
-             ("", None)]
+             ("%Os:junk%x=y", None), ("%Os:%x=y%", None), ("%Os:j%x%y%", None), ("%NOPE:a%b=c%", None), ("", None)]
     got = [split("x.cmd", env, r) for r, _ in table]
     check(got == [want for _, want in table] and split("x.exe", env, "a&b") is None,
           "a batch file's arguments: the rule names the sign or the variable that cmd.exe would act on, and nothing "
@@ -673,7 +678,7 @@ def batch_file_tests(tmp, proj, exe):
     # alone has a space, the self-test's reach cmd.exe without quotes, so a `&` in the project's path counts: unless
     # the temporary folder's own path has a space, which puts every path under it in quotes. And where the runs'
     # folder alone holds a variable, it is a run's folder that is refused
-    proj3, bare = tmp / "pro&j", not re.search(r"\s", str(tmp))
+    proj3, bare = tmp / "pro&j", not re.search(r"[ \t]", str(tmp))
     shutil.copytree(proj2, proj3)
     got = [refuse(proj3, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]}, over={"runs_dir": d})
            for d in ("my runs", "r%RANDOM%s")]
@@ -682,29 +687,56 @@ def batch_file_tests(tmp, proj, exe):
     check(ok, "the evaluator's arguments are asked with a run's folder and with the self-test's: a `&` in the project's "
           "path is refused where the self-test's folder reaches cmd.exe without quotes, and a variable in the runs' "
           "folder for a run's" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
+    # a run's folder is asked by the path a launch reports. Where the runs' folder is a link, that is the path the
+    # link leads to, of which the project's own path shows nothing: here a junction to a folder beside the project
+    # whose name holds a variable. (Windows' own call makes it: `cmd /c mklink` would act on that name itself.) With
+    # the runs' folder in the project it passes: unless the temporary folder's own path holds a `&` or a `^` and no
+    # space, which a run's folder then has either way. That path counts in both its forms, as the system gives it and
+    # as it resolves, since a short name or a link in it can hide the sign: a run's folder is asked by the second,
+    # the self-test's by the first. On a volume that makes no junction the check is left out
+    import _winapi
+    proj4, far = tmp / "linked", tmp / "f%RANDOM%r"
+    shutil.copytree(proj2, proj4)
+    far.mkdir()
+    try:
+        _winapi.CreateJunction(str(far), str(proj4 / "far"))
+    except OSError:  # the whole file ended here on such a volume
+        print("SKIP a runs folder that is a link to a folder whose name holds a variable: this volume makes no junction")
+    else:
+        got = [refuse(proj4, runs=5, detach=True, loop={"eval_command": ["data\\eval.cmd", "{run_dir}"]},
+                      over={"runs_dir": d}) for d in ("far", "runs")]
+        cut = any(re.search(r"[&^]", p) and not re.search(r"[ \t]", p) for p in (str(tmp), str(tmp.resolve())))
+        ok = ("acts on '%RANDOM%' in " in got[0] and ("--help did not run" in got[1]) != cut
+              and ("batch file" in got[1]) == cut)
+        check(ok, "a run's folder is asked by the path a launch reports: a runs folder that is a link to a folder whose "
+              "name holds a variable is refused, though the project's own path holds none; with the runs folder in the "
+              "project it passes" + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
 
     def quiet(C):  # the kit's own self-test follows the checks, and is not what is asked here
         C.expctl = lambda *a: argparse.Namespace(returncode=0)
 
     # the agent's arguments are a session's: with --restricted the worktree's settings file, which lies in the
     # project, and --model as the call gives it; a variable is one of a session's environment, which has two names
-    # of the loop's own. An agent without --restricted is handed no path. The agent is a copy in a folder with a
-    # space: its path goes in quotes, so cmd.exe takes it wherever the temporary folder lies
+    # of the loop's own and lacks those of a session above the loop (the second name is one of both kinds: a session
+    # gets the loop's and not its parent's). An agent without --restricted is handed no path. The agent is a copy in
+    # a folder with a space: its path goes in quotes, so cmd.exe takes it wherever the temporary folder lies
     (tmp / "ag ent").mkdir()
     exe = str(shutil.copy(exe, tmp / "ag ent" / "agent.cmd"))
     got = [refuse(proj2, runs=5, exe=exe), refuse(proj, runs=5, exe=exe, model="a&b"),
-           refuse(proj, runs=5, exe=exe, model="%NN_UNATTENDED%")]
-    os.environ["FAKE_RESTRICTED"] = "0"
+           refuse(proj, runs=5, exe=exe, model="%NN_GUARD_BEACON%")]
+    os.environ.update(FAKE_RESTRICTED="0", CLAUDE_CODE_SESSION_NNKIT="x")
     try:
-        got += [refuse(proj, runs=5, exe=exe, model="a &b", tweak=quiet), refuse(proj2, runs=5, exe=exe, tweak=quiet)]
+        got += [refuse(proj, runs=5, exe=exe, model="a &b", tweak=quiet), refuse(proj2, runs=5, exe=exe, tweak=quiet),
+                refuse(proj, runs=5, exe=exe, model="%CLAUDE_CODE_SESSION_NNKIT%", tweak=quiet)]
     finally:
-        del os.environ["FAKE_RESTRICTED"]
+        del os.environ["FAKE_RESTRICTED"], os.environ["CLAUDE_CODE_SESSION_NNKIT"]
     ok = (all("the agent's program is a batch file" in g and "does not hand on its arguments as written" in g and w in g
-              for w, g in zip(("acts on '%RANDOM%' in ", "acts on '&' in ", "acts on '%NN_UNATTENDED%' in "), got))
+              for w, g in zip(("acts on '%RANDOM%' in ", "acts on '&' in ", "acts on '%NN_GUARD_BEACON%' in "), got))
           and not any("nnloop:" in g for g in got[3:]))
     check(ok, "an agent's batch file is refused for the arguments a session would hand it: the settings file of a "
           "project whose path holds a variable, a --model with a `&` and one that names a variable of a session; a "
-          "--model in quotes passes, and so does that project with an agent that has no --restricted"
+          "--model in quotes passes, so does that project with an agent that has no --restricted, and so does a "
+          "--model that names a variable of the session above the loop, which a session does not get"
           + ("" if ok else f" ({[g.strip()[-200:] for g in got]})"))
     r = loop(proj2, "start", "--campaign", "n", "--agent", "claude", "--agent-exe", exe, "--max-runs", "5")
     check(r.returncode == 2 and "does not hand on its arguments as written" in r.stderr
@@ -763,6 +795,60 @@ def refusal_tests(tmp, proj, exe):
     check("--help did not run" in got, "a sound configuration passes every check up to the agent's own program"
           + ("" if "--help did not run" in got else f" (got: {got.strip()[:200]})"))
     check(py in " ".join(nnloop.expctl.load_config(proj)["final_eval_commands"]), "the config names the interpreter")
+    # a runs folder whose path is not to be had is not this check's to stop: links that lead back to each other, a
+    # name that Windows refuses, a NUL in the name, a value that is no text (the last under every Python, the others
+    # under some only: the rest give a path for them, which passes as well). The kit's own self-test, which follows
+    # the checks, or the first launch is what ends on such a folder. Windows' own call makes the links, as junctions,
+    # and wants the folder a junction leads to in place: that one is renamed afterwards
+    loops, places = tmp / "loops", ["ru<n|s", "ru\0ns", 5]
+    loops.mkdir()
+    try:
+        if os.name == "nt":
+            import _winapi
+            (loops / "b").mkdir()
+            _winapi.CreateJunction(str(loops / "b"), str(loops / "a"))
+            (loops / "b").rename(loops / "c")
+            _winapi.CreateJunction(str(loops / "a"), str(loops / "b"))
+        else:
+            os.symlink("b", loops / "a")
+            os.symlink("a", loops / "b")
+        places.append(str(loops / "a"))
+    except OSError:
+        print("SKIP a runs folder whose links lead back to each other: this volume makes no link")
+
+    def passes(d, tweak=None):
+        try:
+            return bool(re.search(r"--help did not run: \[(WinError|Errno) 2\]",
+                                  refuse(proj, runs=5, over={"runs_dir": d}, tweak=tweak)))
+        except Exception as e:  # an error that leaves the check is the fault
+            return repr(e)
+    got = [passes(d) for d in places]
+    check(got == [True] * len(places),
+          "a runs folder whose path is not to be had passes every check up to the agent's own program, as one in the "
+          "project does: a name that Windows refuses, a NUL in the name, a number, and links that lead back to each "
+          "other (was, after 24 November 2026's change to the path a launch reports: a traceback, or that error "
+          f"given as the reason why the agent's --help did not run) ({got})")
+    # and such a folder is asked as the settings name it, joined to the project as a launch joins it: a rooted one is
+    # a folder outside the project (was: asked with the slashes at its ends taken off, which names a folder in the
+    # project). The resolving is made to fail here, as for a share that is away for a moment, so that the check is
+    # the same under every Python: by itself the NUL, with which no such folder can be made, ends it under every one
+    # tried but 3.14 on Windows, which gives a path for it
+    asked, rooted = [], "/nnkit-none/ru\0ns"
+
+    def spy(C):
+        fill = C.fill
+        C.fill = lambda xs, seed="", run_dir="": asked.append(run_dir) or fill(xs, seed, run_dir)
+
+    def away(*a):
+        raise OSError("away")
+    resolve, nnloop.expctl.runs_root = nnloop.expctl.runs_root, away
+    try:
+        got = passes(rooted, spy)
+    finally:
+        nnloop.expctl.runs_root = resolve
+    ok = got is True and proj / rooted / "0" in asked
+    check(ok, "a runs folder whose path is not to be had is asked as the settings name it: a rooted one as a folder "
+          "outside the project, not as one of that name in it" + ("" if ok else f" ({got}, {asked})"))
     if os.name == "nt":
         batch_file_tests(tmp, proj, exe)
     else:
